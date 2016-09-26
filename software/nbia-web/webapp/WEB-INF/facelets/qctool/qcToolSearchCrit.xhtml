@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ncia="http://imaging.nci.nih.gov/ncia">
+	<ice:form id="qcToolSearchCritForm">
+		<f:subview id="qcToolTitleView" rendered="#{not qcToolBean.superRole}">
+			<table align="center">
+				<tr>
+					<td>
+						<div class="adminToolsContainer">
+							<h:outputText value="QC Tool " />
+							<ncia:help label="images/help_icon.png" helpId="-UsingtheQualityControlTool" />
+						</div>
+					</td>
+					
+							
+					
+				</tr>
+			</table>
+		</f:subview>
+
+		<f:subview id="qcToolDeleteTitleView"
+			rendered="#{qcToolBean.superRole}">
+			<table align="center">
+				<tr>
+					<td>
+						<div class="adminToolsContainer">
+							<h:outputText value="Approve Deletions " />
+							<ncia:help label="images/help_icon.png" helpId="-ApprovingImageDeletions" />
+						</div>
+					</td>
+				</tr>
+			</table>
+		</f:subview>
+
+		<div id="collectionAndDateRangeControls">
+			<ice:panelGroup id="noCollectionsMsg"
+				rendered="#{empty submissionReportsBean.authorizedProjectsSitesSelectItems}">
+				<span>Not authorized for any collection//sites</span>
+			</ice:panelGroup>
+
+			<ice:panelCollapsible id="statusSearchControlPanel" expanded="true">
+				<f:facet name="header">
+					<ice:panelGroup>
+						<ice:outputText id="formHeader" value="Search Controls" />
+					</ice:panelGroup>
+				</f:facet>
+        <f:subview id="qcToolDeleteView" rendered="#{qcToolBean.superRole}">
+            <ui:include src="./qcToolClassicView.xhtml"/>
+        </f:subview>
+        <f:subview id="qcToolDeleteView" rendered="#{not qcToolBean.superRole}">
+                <ice:panelTabSet tabChangeListener="#{dynamicQcSearchBean.tabChangeListener}" selectedIndex="#{dynamicQcSearchBean.tabIndex}">
+                        <ice:panelTab id="tab1" label="Classic">                
+                            <ui:include src="./qcToolClassicView.xhtml"/>
+                        </ice:panelTab>         
+                    <ice:panelTab id="tab2" label="Dynamic">                
+                        <ui:include src="../dynamicCreateCriteria.xhtml"/>
+                    </ice:panelTab>
+                </ice:panelTabSet>
+            </f:subview>            
+                <div id="notification" style="display: none;">
+                    <!--  the title is so this will go away if there is validation error -->
+                    <img src="images/ajax_indicator.gif" width="16" height="16"
+                        title="#{qcToolSearchBean.notificationHack}" alt="" />
+                    <f:verbatim>&amp;nbsp;</f:verbatim>
+                    Searching...
+                </div>
+            </ice:panelCollapsible>
+            <ice:messages id="noQCStatusError" for="slctQcStatus"
+                showDetail="false" layout="table" errorClass="errorLabel"
+                infoClass="infoLabel" />
+        </div>
+    </ice:form>
+</ui:composition>

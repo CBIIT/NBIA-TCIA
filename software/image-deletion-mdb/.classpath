@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/jboss-j2ee-4.0.4.GA.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/log4j-1.2.15.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/spring-core-3.2.8.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/spring-tx-3.2.8.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/spring-beans-3.2.8.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/spring-orm-3.2.8.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/imagezippingmdb/compile/spring-context-3.2.8.RELEASE.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nbia-dao"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nbia-services-commons"/>
+	<classpathentry exported="true" kind="var" path="NBIA_BASE"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

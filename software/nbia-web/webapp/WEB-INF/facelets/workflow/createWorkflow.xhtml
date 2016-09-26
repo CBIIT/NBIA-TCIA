@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ncia="http://imaging.nci.nih.gov/ncia"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:form id="createWorkFlowForm">
+
+<table summary="" cellpadding="5" cellspacing="0" border="0" class="contentPage" width="80%" align="center">
+  <tr>
+    <td colspan="2">
+      <div class="adminToolsContainer">
+        <h:outputText value="Workflow Item "/>
+        <ncia:help label="images/help_icon.png" helpId="-CreatingWorkflowitems" />
+      </div>
+      <br/>
+       <!-- <h3 align="center"> 
+        <ice:outputText value="#{addWorkFlowItemBean.errorMessage}"/>
+      </h3>     -->
+      <table border="0" cellpadding="5" cellspacing="0" width="100%" class="promptbox" style="display: block;">                 
+        <tr>
+          <td colspan="1">
+            <ice:outputLabel for="name" value="*Name: "/>
+          </td>
+          <td colspan="5">
+	  	              <ice:inputText id="name"
+	  	                             partialSubmit="true"
+	  	                             label="value"
+	  	                             value="#{addWorkFlowItemBean.name}"
+	  	                             size="20" maxlength="50"
+	  	                             styleClass="formField"
+	  	                             required="true"
+	  	                             title="Name your Workflow Item. The name length cannot be longer than 50 characters.">
+	  	                             <!-- <f:validator validatorId="gov.nih.nci.nbia.beans.workflow.nameValidator" />  -->
+	  	                             </ice:inputText>             
+	  	              <br/>
+	  	              <h:message id="nameError" for="name" infoClass="errorLabel" style="color:#FF0000;"/>
+	            </td>
+	          </tr>
+	          <tr>
+	            <td colspan="1">
+	  	              <ice:outputLabel for="visibilityWorkflowType" value="Type "/>
+          </td>
+          <td colspan="3">
+	        <ice:selectOneMenu id="visibilityWorkflowType" 
+	                           value="#{addWorkFlowItemBean.type}"
+	                           partialSubmit="true">
+	          <f:selectItems value="#{addWorkFlowItemBean.types}"/>     
+	        </ice:selectOneMenu>
+	       </td>
+	    </tr>
+	    <tr>
+	     <td colspan="1">
+            <ice:outputLabel for="visibilityWorkflowCollection" value="Collection "/>
+          </td>
+          <td colspan="3">
+	        <ice:selectOneMenu id="visibilityWorkflowCollection" 
+	                           value="#{addWorkFlowItemBean.collection}"
+	                           valueChangeListener="#{addWorkFlowItemBean.collectionChangeListener}"
+	                           partialSubmit="true">
+	          <f:selectItems value="#{addWorkFlowItemBean.collections}"/>     
+	        </ice:selectOneMenu>
+	       </td>
+	       <td colspan="1">
+            <ice:outputLabel for="newWorkflowCollection" value="New Collection for List"/>
+           </td>
+	       <td colspan="3"> 
+            <ice:inputText id="newWorkflowCollection"
+                           partialSubmit="true"
+                           rendered="true"
+                           value="#{addWorkFlowItemBean.newCollection}"
+                           size="30" 
+                           maxlength="100"
+                           styleClass="formField"
+                           title="Add a collection name. The length cannot be longer than 100 characters."/>
+          <br/>
+            <font align="left"  color="red">
+              <ice:outputText value="#{addWorkFlowItemBean.errorMessageCollection}" style="color: #FF0000;"/>
+            </font>  
+            
+          </td>
+          <td colspan="1">
+                    <ice:commandButton id="addCollectionToList"
+                           value="Add to Collection List"
+                           partialSubmit="true"
+                           action="#{addWorkFlowItemBean.addCollection}"/>
+           </td>
+          
+        </tr>
+        <tr>
+          <td colspan="1">
+            <ice:outputLabel for="visibilityWorkflowSite" value="Site "/>
+          </td>
+          <td colspan="3">
+	        <ice:selectOneMenu id="visibilityWorkflowSite" 
+	                           value="#{addWorkFlowItemBean.site}"
+	                           partialSubmit="true">
+	          <f:selectItems value="#{addWorkFlowItemBean.sites}"/>     
+	        </ice:selectOneMenu>
+	       </td>
+	       <td colspan="1">
+            <ice:outputLabel for="newWorkflowSite" value="New Site for List"/>
+           </td>
+	       <td colspan="3"> 
+            <ice:inputText id="newWorkflowSite"
+                           partialSubmit="true"
+                           rendered="true"
+                           value="#{addWorkFlowItemBean.newSite}"
+                           size="20" 
+                           maxlength="80"
+                           styleClass="formField"
+                           title="Add a Site name. The length cannot be longer than 100 characters."/>
+          <br/>
+            <font align="left"  color="red">
+              <ice:outputText value="#{addWorkFlowItemBean.errorMessageSite}" style="color: #FF0000;"/>
+            </font>  
+          </td>
+           <td colspan="1">
+                    <ice:commandButton id="addSiteToList"
+                           value="Add to Site List"
+                           partialSubmit="true"
+                           
+                           action="#{addWorkFlowItemBean.addSite}"/>
+           </td>
+        </tr>
+        <tr>
+          <td colspan="1">
+            <ice:outputLabel for="hyperlinkWorkFlow" value="*URL "/>
+          </td>
+          <td colspan="5">
+            <ice:inputText id="hyperlinkWorkFlow"
+           		   		   partialSubmit="true"
+                           rendered="true"
+                           required="true"
+                           label="URL"
+                           value="#{addWorkFlowItemBean.url}"
+                           size="100" maxlength="200"
+                           styleClass="formField"
+                           title="Add a URL which links to additional information. The length cannot be longer than 100 characters.">
+                           <!-- <f:validator validatorId="gov.nih.nci.nbia.beans.workflow.urlValidator" /> -->
+                           </ice:inputText>
+            <br/>
+            <h:message id="urlError" for="hyperlinkWorkFlow" infoClass="errorLabel"  style="color:#FF0000;"/>
+            <font align="left"  color="red">
+              <ice:outputText id="errorMessageID" value="#{addWorkFlowItemBean.errorMessage}" style="color: #FF0000;"/>
+            </font>  
+          </td>
+        </tr>
+        <tr>
+         <td colspan="2">
+        <ice:commandButton id="saveWorkflowButton"
+                           value="Save"
+                           action="#{addWorkFlowItemBean.submit}"/>
+           </td>      
+           <td colspan="2">
+        <ice:commandButton id="cancelWorkflowButton"
+                           value="Cancel"
+                           partialSubmit="true"
+                           onclick="cancelValidation();"
+                           action="#{addWorkFlowItemBean.cancel}"/>
+           </td>            
+        </tr>
+              
+     </table>
+ 
+     <br/>
+     </td>
+   </tr>
+ </table>
+</ice:form>
+</ui:composition>

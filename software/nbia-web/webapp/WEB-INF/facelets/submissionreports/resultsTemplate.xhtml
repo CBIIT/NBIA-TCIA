@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ncia="http://imaging.nci.nih.gov/ncia">
+<div class="submissionReportResultsContainer" style="width:80%;" align="center">                
+  <div class="submissionReportResultsBanner">
+    
+    <ui:insert name="banner"/>
+    
+    <ncia:help label="images/help_icon.png" 
+               helpId="#{helpId}" />     
+  </div>
+  <ui:include src="correctionWarning.xhtml"/>
+    
+  <div id="overallResultsCount" style="margin-top:30px">
+    <ice:form> 
+      <ice:panelCollapsible expanded="true">
+        <f:facet name="header">
+          <ice:panelGroup>
+            <ice:outputText value="Overall Counts"/>
+          </ice:panelGroup>  
+        </f:facet>
+        <ui:insert name="overallCounts"/> 
+      </ice:panelCollapsible>  
+    </ice:form>    
+  </div>
+
+  <ui:insert name="byDay"/>
+       
+</div>             
+</ui:composition>                

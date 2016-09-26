@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:ncia="http://imaging.nci.nih.gov/ncia">
+	
+	
+	<table cellspacing="0" cellpadding="0" width="100%" summary=""	border="0" valign="top">
+	<tr>
+	
+	<td colspan="2">
+	<h:form id="searchMenuForm">
+	<table style="table-layout:fixed" cellspacing="0" cellpadding="0" width="100%" summary="" border="0" valign="top">
+	<tr>
+	
+
+	
+	<td width="60%">
+	   <h:panelGroup>
+		<div class="adminToolsContainer">
+	    <f:subview id="simpleSearchHelp" rendered="#{!searchWorkflowBean.freeTextSearch}">
+	    	<div style="text-align:right">
+		<h:outputText value="Simple Search " /> 
+		<ncia:help label="images/help_icon.png"	helpId="-PerformingaSimpleSearch" />
+		</div>
+		</f:subview>				 
+      		  
+		<f:subview id="textSearchHelp" rendered="#{searchWorkflowBean.freeTextSearch}">
+		    <h:commandLink action="#" value="Text Search"	rendered="#{searchWorkflowBean.advanced}" immediate="true"  title="Text Search"/>
+		</f:subview>
+		</div>
+       </h:panelGroup>
+       </td>  
+       
+       	<td align="right">
+       	      	 <h:dataTable id="tableOfPatientResultTables1"
+       	   	                            value="#{searchResultBean.nodeTablesWrappers}"
+       	   	                            var="perNodeResult"
+       	   	                            style="border:none; padding-top: 0px; margin: 0px 0 0 0;">
+       	      <ice:column style="border:none; background-color:#F8F8F8;padding-top: 0px; margin: 0px 10px 0 0; ">
+       	   	 <ui:include src="../searchresults/searchResultButtons.xhtml">
+       	   		<ui:param name="perNodeResult" value="#{perNodeResult}"/>
+       	   	 </ui:include>     
+       	   	</ice:column>
+                  </h:dataTable>
+  	</td>
+      	
+  	</tr>
+  	</table>
+  	</h:form>
+  	</td>
+      	
+		</tr>
+		<tr>
+			<f:subview id="simpleView" rendered="#{!searchWorkflowBean.freeTextSearch}">
+			<td width="1%" valign="top">
+				<h:form id="searchForm">
+					<table  class="contentPage" cellspacing="0" cellpadding="0" width="100%" summary="" border="0" valign="top">
+						<tr>
+							<td>
+								<div id="resultsPerPageDiv" style="height: 40px;">
+								                <ice:outputLabel for="resultsPerPage" value="#{msg.search_resultsPerPage}" />
+								                
+								                 <span class="formFieldWhite">                        
+								                  <ice:selectOneMenu id="resultsPerPage" 
+								                                   value="#{searchWorkflowBean.resultPerPageOption}"
+								                                   style="margin-left: 15px"
+								                                   immediate="true"
+								                                   partialSubmit="true"
+								                                   valueChangeListener="#{searchWorkflowBean.resultPerPageOptionChangeListener}">
+								                    <f:selectItem itemValue="20" itemLabel="20" />
+								                    <f:selectItem itemValue="40" itemLabel="40"/>
+								                    <f:selectItem itemValue="60" itemLabel="60" />
+								                    <f:selectItem itemValue="100" itemLabel="100" />
+								                  </ice:selectOneMenu>
+								                </span>
+                						</div>
+                						<table>
+                						<tr>
+                						<td>
+								<f:subview id="collectionSearchCriteriaRow"
+									rendered="#{searchLookupBean.showCollectionSearch}">
+									<ui:include src="collectionSearchCriteria.xhtml" />
+								</f:subview>
+								</td>
+								</tr>
+								<tr>
+                						<td>
+								<f:subview id="modalityCriteria">
+									<ui:include src="modalitySearchCriteria.xhtml" />
+								</f:subview>
+								</td>
+								</tr>	
+					</table>
+						</td>
+						
+									<tr>
+									<td style="float:left;">
+							<f:subview id="anatomicCriteria"
+									rendered="#{searchWorkflowBean.showAnatomicCriteria}">
+									
+										
+											    <ice:outputText id="anatomicalHeader" style="float:left;font-weight: bold;" value="#{msg.criteria_AnatomicalSiteCriteria}" />
+											   
+										
+										
+										
+										
+										
+										
+										<div style="margin-left:4px; margin-top:20px;">
+											<div id="anatomicalSitesDiv" class="searchFormSelector">
+												<h:dataTable id="anatomicalSitesCheckboxesTable"
+													width="100%" border="0" cellpadding="0"
+													cellspacing="1"  style="margin-top:3px"
+													value="#{searchWorkflowBean.anatomicalSiteItems}"
+													var="anatomicalSiteItem">
+														<h:column id="anatomicalSiteItemsColumn">
+															<span style="white-space: nowrap;"> 
+														        <ice:outputLabel for="selectAnatomicalSites"  value="select Anatomical site" style="display:none"/> 
+															<ice:selectBooleanCheckbox id="selectAnatomicalSites"
+																style="float:left;"
+																value="#{anatomicalSiteItem.value}"
+																partialSubmit="true" valueChangeListener="#{searchWorkflowBean.modalityChangeListener}"/> 
+																	<h:outputText style="float:left;" value="#{anatomicalSiteItem.label}" />
+															</span>
+														</h:column>
+												</h:dataTable>
+											</div>
+										
+										</div>
+
+									
+								</f:subview>
+								</td>
+								</tr>
+		<tr>
+			<td>
+			
+			<f:subview id="collectionSearchCriteriaRow">
+				<ui:include src="manufacturerSearchCriteria.xhtml" />
+			</f:subview>
+			</td>
+		</tr>
+		<tr>
+		<td>
+		<!--ice:outputText id="dateHeader" style="float:left;font-weight: bold;" value="#{msg.search_visible_date}" /-->
+		<f:subview id="dateSearchCriteriaRow">
+				<ui:include src="dateSearchCriteria.xhtml" />
+        </f:subview>		
+        </td>
+        </tr>	
+		
+		<tr>
+		<td>
+		<!--ice:outputText id="patientHeader" style="float:left;font-weight: bold;" value="#{msg.patient_id}"/--> 
+		<f:subview id="patientSearchCriteriaRow">
+				<ui:include src="patientSearchCriteria.xhtml" />
+        </f:subview>		
+        </td>
+        </tr>	
+        <tr>
+		<td>
+		<f:subview id="baselineSearchCriteriaRow">
+				<ui:include src="baselineSearchCriteria.xhtml" />
+        </f:subview>		
+        </td>
+        </tr>				
+		<tr>
+		<td>
+		<div id="clear" style="height: 20px; margin-top:10px; margin-bottom:20px">
+		    <ice:commandLink id="addSeriesToBasketButton" action="#{searchWorkflowBean.reset}" >                                          
+			<ice:graphicImage value="images/reset.gif" alt="reset" style="border:none;display:inline;"/>                                                                               
+		    </ice:commandLink>
+		</div>
+		</td>
+		</tr>
+		<f:verbatim>&amp;nbsp;</f:verbatim>
+		<f:verbatim>&amp;nbsp;</f:verbatim>
+
+
+              
+              
+              
+              
+            </tr>
+            <tr>
+            		      	<td>
+	    		      	<h:inputHidden id="unauthorizedCollections" value="true" />
+	    		  		<h:message for="unauthorizedCollections" errorClass="errorLabel" infoClass="infoLabel" />
+	    		      	      <f:subview id="saveQueryView" rendered="#{!anonymousLoginBean.guestLoggedIn and !searchWorkflowBean.freeTextSearch and !searchWorkflowBean.dynamicSearch}">
+	    			      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    			        <tr>
+	    			          <td>
+	    			            <div align="right">
+	    			              <h:panelGrid columns="3" rendered="#{searchWorkflowBean.query.savedQueryId == 0 or searchWorkflowBean.toggleQuery}">
+	    			              <tr>
+	    			              <td>
+	    			                <ice:outputLabel for="queryName"  value="queryName" style="display:none"/> 
+	    			              </td>
+	    			              <td width="100%">
+	    			                <h:inputText id="queryName" 
+	    			                             value="#{searchResultBean.queryName}"
+	    			                             size="28"
+	    			                             maxlength="200" />
+	    			              </td>
+	    			           </tr>
+	    			           <tr>
+	    			              <td colspan="3">
+	    			              <div style="font-size:15px">
+	    			                 <h:commandLink id="saveQueryButton"
+	    			                                 value="Save Query"
+	    			                                 action="#{searchResultBean.saveQuery}" />
+	    			                                               
+	    					         <ncia:help label="images/help_icon.png" helpId="-CreatingSavedQueries" />
+	    					</div> 
+	    				      </td>	
+	    				      </tr>
+	    			              </h:panelGrid>
+	    			              
+	    			                
+	    			              
+	    			            </div>
+	    			           
+	    			           
+	    			            <div align="center">
+	    			              <h:panelGrid columns="1"
+	    			                           rendered="#{searchWorkflowBean.editingSavedQuery}">
+	    			                           
+	    			                 
+							<tr>
+	    			            		<td>
+	    			                <div>
+	    			                  <h:outputText value="#{msg.search_saveQuery}" />
+	    			                  <ncia:help label="images/help_icon.png" helpId="-EditingSavedQueries" />
+	    			                </div>
+	    			                </td>
+	    			                </tr>
+	    			                
+	    			                <h:panelGrid columns="2">
+	    			                <tr>
+	    			                <td>
+	    			                
+	    			                  <h:selectOneRadio value="#{searchResultBean.updateQuery}"
+	    			                                    layout="pageDirection"
+	    			                                    enabledClass="formMessage">
+	    			                    <f:selectItem itemValue="true"
+	    			                                  itemLabel="#{msg.search_updateQuery}#{searchResultBean.query.queryName}#{msg.search_newCriteria}" />
+	    			                    <f:selectItem itemValue="false"
+	    			                                  itemLabel="#{msg.search_saveQueryAs}" />
+	    			                  </h:selectOneRadio>
+	    			                 </td>
+	    			                 </tr>
+	    			                 
+	    			                  <h:panelGrid>
+	    			                  
+	    			               <tr>
+	    			               <td>
+	    			               
+	    			                    <h:inputText id="newQueryName" 
+	    			                                 value="#{searchResultBean.queryName}" 
+	    			                                 maxlength="200" 
+	    			                                 onfocus="javascript:selectRadio();"/>
+	    			         	</td>
+	    			         	</tr>
+	    			         	
+	    			                  </h:panelGrid>
+	    					<tr>
+	    					<td>
+	    			                  <h:commandButton id="editingSaveQueryButton" alt="Save Query" title="Save Query"
+	    			                                   image="images/SAVEQUERY.gif" 
+	    			                                   action="#{searchResultBean.saveQuery}" />
+	    			                </td>
+	    			                </tr>
+	    			                </h:panelGrid>
+	    			               
+	    			              </h:panelGrid>
+	    			              <div align="left">
+	    			              <h:inputHidden id="newDataQuery" value="true" />
+	    			              <h:message for="newDataQuery" errorClass="errorLabel" infoClass="infoLabel" />
+	    			              <h:messages for="queryName" errorClass="errorLabel" infoClass="infoLabel" />
+	    			              <h:message for="newQueryName" errorClass="errorLabel" infoClass="infoLabel" />
+	    			              </div>
+	    			            </div>
+	    			          </td>
+	    			          
+	    			        </tr>
+	    			      </table>
+	    		      </f:subview>
+      	</td>
+            
+            
+            </tr>
+            
+            </table>
+					</h:form>
+					</td>
+					</f:subview>
+			<td valign="top" width="90%" class="formField">
+			<f:subview id="criteriaView" >
+			  <ui:include src="../searchresults/searchResult.xhtml" />
+			</f:subview>
+			
+			</td>
+
+		</tr>
+	
+		
+		
+	</table>
+
+	<ice:form id="collectionDescriptionPopupForm">
+		<ice:panelPopup id="collectionDescriptionPopup"
+			style="z-index:999; background-color:#FFFFFF;" resizable="false"
+			draggable="false" modal="true"
+			visible="#{displayCollectionDescBean.collectionDescriptionPopupRendered}">
+
+			<f:facet name="header">
+				<ice:panelGroup styleClass="popupHeaderWrapper">
+					<table width="100%">
+						<tr>
+							<td width="100%"><ice:outputText
+									value="Description for #{displayCollectionDescBean.selectedCollectionLabel}" />
+							</td>
+							<td><ice:commandButton
+									id="collectionDescriptionPopupCloseButton"
+									image="images/cancel.png"
+									action="#{displayCollectionDescBean.toggleCollectionDescriptionPopup}"
+									title="Close Popup" alt="Close Popup"/></td>
+						</tr>
+					</table>
+				</ice:panelGroup>
+			</f:facet>
+
+			<f:facet name="body">
+				<ice:panelGroup style="overflow: auto; width:400px; height: 200px">
+					<ice:outputText
+						value="#{displayCollectionDescBean.collectionDescription}"
+						escape="false" />
+				</ice:panelGroup>
+			</f:facet>
+		</ice:panelPopup>
+	</ice:form>
+
+</ui:composition>

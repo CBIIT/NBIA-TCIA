@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+<project name="nbia-installer" default="install" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:antunit="antlib:org.apache.ant.antunit">
+	<description>
+    This ant build file is used to install the NBIA application. All targets will begin with install:.  
+    The default install target install will drop and create the database and user, configure tomcat, 
+    deploy the application to tomcat, configure the application. There install path include sub-paths for 
+    tomcat, database.  The BDA Macros are in use in the project that means that the user
+    will be prompted to contiue if the application or database already exist, this can be overridden by the
+    property force.reinstall.
+  </description>
+	<!-- Properties file related properties and tasks -->
+	<property environment="env"/>
+	<property file="local.properties"/>
+	<property file="project.properties"/>
+	<!-- beware: it is likely that this value was passed in on the command line -->
+	<property name="properties.file" value="${basedir}/install.properties"/>
+	<echo message="Using properties file of ${properties.file}."/>
+	<available file="${properties.file}" property="properties.file.exists"/>
+	<fail unless="properties.file.exists" message="The properties.file ${properties.file} does not exist, please make sure that you pass in an accurate file name with the 'ant -Dproperties.file=somepath/somefile', otherwise the build will fail."/>
+	<!-- strip whitespace out of the properties file -->
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=(.*[\w\d\/\{\}\\]+)[ \t]+\r*$" replace="\1=\2"/>
+	<replaceregexp file="${properties.file}" byline="true" match="^([\w\d.]+)=[ \t]+(.*[\w\d\/\{\}\\]+)\r*$" replace="\1=\2"/>
+	<property file="${properties.file}"/>
+	<property name="env.name" value="local"/>
+	<!-- Generic properties -->
+	<property name="log.dir" location="${basedir}/logs"/>
+	<property name="working.dir" location="${basedir}/working"/>
+	<property name="temp.dir" location="${working.dir}/temp"/>
+	<property name="common.lib.dir" location="${basedir}/common/resources/lib"/>
+	<property name="common.resources.dir" location="${basedir}/common/resources/"/>
+	<!-- bda process stuff -->
+	<!--property name="bda-utils.dir" location="${basedir}/bda-utils"/-->
+	<property name="tools.dir" location="${basedir}/${tools.dist.relative.dir}"/>
+	<property name="common.dir.src" location="${basedir}/${common.dist.relative.dir}"/>
+	<property name="common.dir.dest" location="${working.dir}/${common.dist.relative.dir}"/>
+	<property name="db.dir.src" location="${basedir}/${db.dist.relative.dir}"/>
+	<property name="db.dir.dest" location="${working.dir}/${db.dist.relative.dir}"/>
+	<property name="db-upgrade.dir.dest" location="${working.dir}/${db-upgrade.dist.relative.dir}"/>
+	<property name="db-install.dir.dest" location="${working.dir}/${db-install.dist.relative.dir}"/>
+	<property name="tools.dir.src" location="${basedir}/${tools.dist.relative.dir}"/>
+	<property name="jar-signing.keystore.abs-location" location="${jar-signing.keystore.location}"/>
+	<!-- Task definitions -->
+	<taskdef uri="antlib:org.apache.ant.antunit" resource="org/apache/ant/antunit/antlib.xml">
+		<classpath>
+			<pathelement location="${common.lib.dir}/antunit-1.0.jar"/>
+			<pathelement location="${common.lib.dir}/ant-antunit-1.1.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
+		<classpath>
+			<pathelement location="${common.lib.dir}/ant-contrib-1.0nci.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${common.lib.dir}/ant-contrib-1.0nci.jar"/>
+			<pathelement location="${common.lib.dir}/bcel-5.1.jar"/>
+			<pathelement location="${common.lib.dir}/commons-httpclient-3.1.jar"/>
+			<pathelement location="${common.lib.dir}/commons-logging-1.0.4.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="propertyvalidator" classname="gov.nih.nci.bda.PropertyValidator">
+		<classpath>
+			<pathelement location="${common.lib.dir}/propertyvalidator-0.1.8.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy">
+		<classpath>
+			<pathelement location="${common.lib.dir}/groovy-all-1.6.3.jar"/>
+			<pathelement location="${common.lib.dir}/commons-httpclient-3.1.jar"/>
+			<pathelement location="${common.lib.dir}/commons-logging-1.1.1nci.jar"/>
+			<pathelement location="${common.lib.dir}/commons-codec-1.3.jar"/>
+		</classpath>
+	</taskdef>
+	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
+		<classpath>
+			<pathelement path="${common.lib.dir}/xmltask-1.15.1.jar"/>
+			<pathelement path="${common.lib.dir}/xalan-2.7.1.jar"/>
+		</classpath>
+	</taskdef>
+	<trycatch>
+		<try>
+			<path id="liquibase_stuff">
+				<pathelement location="${common.lib.dir}/nbia-liquibase.jar"/>
+				<pathelement location="${common.lib.dir}/liquibase-core-1.9.3.jar"/>
+			</path>
+			<taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${common.lib.dir}/ant-classloadertask-1.0-RC2.jar"/>
+			<classloader loader="project" classpathref="liquibase_stuff"/>
+		</try>
+		<catch/>
+	</trycatch>
+	<!-- Includes-->
+	<import file="ctp.xml"/>
+	<import file="ctp-macrodefs.xml"/>
+	<import file="macrodefs.xml"/>
+	<import file="install-macros.xml"/>
+	<!-- this bda code is necessary for the backup/changelog stuff -->
+	<property name="install-logs.dir" location="${log.dir}"/>
+	<mkdir dir="${install-logs.dir}"/>
+	<tstamp>
+		<format property="install.time" pattern="yyyy-MM-dd-HH-mm"/>
+	</tstamp>
+	<record name="${install-logs.dir}/install-${install.time}.log" action="start"/>
+	<!-- end back/changelog stuff -->
+	<!-- Installer section -->
+	<target name="diag">
+		<echoproperties/>
+	</target>
+	<target name="keygen">
+		<generate-jar-signing-keystore/>
+	</target>
+	<!-- Wrapper target to deploy all containers to one server -->
+	<target name="install" description="Installs and configures tomcat, creates database, and deploys application" depends="
+    common:common:init,
+    build:db:new,
+    install:ctp,
+	install:tomcat:config,
+    install:all:post
+    "/>
+
+	<target name="install:tomcat:config" description="Configures Tomcat" depends="" unless="exclude.tomcat.config">
+		<if>
+			<equals arg1="${authentication.type}" arg2="ldap-auth"/>
+			<then>
+				<copy file="${common.resources.dir}/tomcat/jaas.config.ldap-auth" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/jaas.config" overwrite="true">
+					<filterset>
+						<filter token="application.context.name" value="${application.context.name}"/>
+						<filter token="ldap.url" value="${ldap.url}"/>
+						<filter token="ldap.basedn" value="${ldap.basedn}"/>
+						<filter token="ldap.user" value="${ldap.user}"/>
+						<filter token="ldap.pass" value="${ldap.pass}"/>
+					</filterset>
+				</copy>
+			</then>
+			 <elseif>
+			 	<equals arg1="${authentication.type}" arg2="ldap"/>
+			  <then>
+				<copy file="${common.resources.dir}/tomcat/jaas.config.ldap" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/jaas.config" overwrite="true">
+					<filterset>
+						<filter token="application.context.name" value="${application.context.name}"/>
+						<filter token="ldap.url" value="${ldap.url}"/>
+						<filter token="ldap.basedn" value="${ldap.basedn}"/>
+					</filterset>
+				</copy>
+			  </then>
+			 </elseif>
+			<else>
+				<copy file="${common.resources.dir}/tomcat/jaas.config" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/jaas.config" overwrite="true">
+					<filterset>
+						<filter token="database.type" value="${database.type}"/>
+						<filter token="database.driver" value="${database.driver}"/>
+						<filter token="database.url" value="${database.url}"/>
+						<filter token="database.user" value="${database.user}"/>
+						<filter token="database.password" value="${database.password}"/>
+					</filterset>
+				</copy>
+			</else>
+		</if>
+			<copy file="${common.resources.dir}/tomcat/setenv.bat" tofile="${gov.nih.nci.ncia.tomcat.home}/bin/setenv.bat" overwrite="true">
+				<filterset>
+					<filter token="tomcat.home" value="${gov.nih.nci.ncia.tomcat.home}"/>
+				</filterset>
+			</copy>
+			<copy file="${common.resources.dir}/tomcat/context.xml" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/context.xml" overwrite="true">
+			</copy>
+			<copy file="${common.resources.dir}/tomcat/log4j.properties" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/log4j.properties" overwrite="true">
+			</copy>
+			<copy file="${common.resources.dir}/tomcat/server.xml" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/server.xml" overwrite="true">
+				<filterset>
+					<filter token="database.type" value="${database.type}"/>
+					<filter token="database.driver" value="${database.driver}"/>
+					<filter token="database.url" value="${database.url}"/>
+					<filter token="database.user" value="${database.user}"/>
+					<filter token="database.password" value="${database.password}"/>
+					<filter token="tomcat.server.port" value="${tomcat.server.port}"/>
+				</filterset>
+			</copy>
+		    <copy file="${common.lib.dir}/${database.driver.jar}" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/${database.driver.jar}" overwrite="true">
+		</copy>
+		<copy file="${basedir}/install.properties" tofile="${basedir}/nbia.properties"/>
+	    <war destfile="${basedir}/nbia-wars/ncia.war" update="true">
+	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
+	    </war>
+	    <war destfile="${basedir}/nbia-wars/nbia-api.war" update="true">
+	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
+	    </war>		
+	    <war destfile="${basedir}/nbia-wars/nbia-download.war" update="true">
+	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
+	    </war>				
+		  <copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps">
+		    <fileset dir="${basedir}/nbia-wars"/>
+		  </copy>
+		  <copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-uat">
+		    <fileset dir="${basedir}/nbia-uat"/>
+		  </copy>
+			<echo message="Creating solr home = ${gov.nih.nci.ncia.solr.home}"/>
+			<mkdir dir="${gov.nih.nci.ncia.solr.home}"/>
+			<copy todir="${gov.nih.nci.ncia.solr.home}">
+				<fileset dir="${basedir}/common/resources/solr/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+
+	</target>
+	<target name="install:all:post" depends="common:common:init,
+                   install:ctp:server:post"/>
+	<target name="common:common:init:pre">
+		<!-- Set application.base.path based on platform -->
+		<condition property="application.base.path" value="${application.base.path.linux}">
+			<or>
+				<os family="unix"/>
+				<os family="mac"/>
+			</or>
+		</condition>
+		<condition property="application.base.path" value="${application.base.path.windows}">
+			<os family="windows"/>
+		</condition>
+		<echo message="application.base.path=${application.base.path}"/>
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+	</target>
+	<target name="common:common:init" depends="common:common:init:pre">
+		<!-- bda-blueprints-webapp can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
+		<echoproperties prefix="database"/>
+				<property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+				<property name="database.driver.file" value="${common.lib.dir}/${database.driver.jar}"/>
+				<property name="database.driver" value="com.mysql.jdbc.Driver"/>
+				<property name="database.schema" value="${database.name}"/>
+		<path id="jdbc.driver.classpath">
+			<pathelement location="${database.driver.file}"/>
+		</path>
+		<property name="properties.template.file" value="${basedir}/properties.template"/>
+		<filterset id="embedded.filterset">
+			<filter token="application.base.path" value="${application.base.path}"/>
+			<filter token="application.url" value="${application.url}"/>
+			<filter token="database.url" value="${database.url}"/>
+			<filter token="database.user" value="${database.user}"/>
+			<filter token="database.password" value="${database.password}"/>
+			<filter token="database.system.url" value="${database.system.url}"/>
+			<!-- added internal properties that may be used in a filtered copy -->
+			<filter token="database.driver" value="${database.driver}"/>
+			<!-- added for liquibase -->
+			<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
+			<filter token="database.dialect" value="${database.dialect}"/>
+			<filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
+			<filter token="env.LOGNAME" value="${env.LOGNAME}"/>
+			<filter token="env.JAVA_HOME" value="${env.JAVA_HOME}"/>
+			<filter token="project.name" value="project.name"/>
+		</filterset>
+		<!--OS Temp dir -->
+		<condition property="os.temp.dir" value="/tmp">
+			<or>
+				<os family="unix"/>
+				<os family="mac"/>
+			</or>
+		</condition>
+		<condition property="os.temp.dir" value="c:/temp">
+			<os family="windows"/>
+		</condition>
+		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in embedded.filterset and then copy with filter files -->
+		<copy todir="${common.dir.dest}" filtering="true">
+			<fileset dir="${common.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="embedded.filterset"/>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy>
+	</target>
+	<target name="install:common:validation:pre-install" description="Runs pre-install validation checks bda-utils" depends="common:common:init">
+		<validate-pre-install-common ant.check.version="${ant.minimum.version}" java.check.version.major="${java.major.version}" java.check.version.minor="${java.minor.version}" property.exclude.pattern.list="tomcat.*,jboss.*,ctp.*"/>
+	</target>
+	<target name="install:common:validation:post-install" description="Run post-install checks from bda-utils" depends="
+    common:common:init">
+		<validate-post-common/>
+	</target>
+	<target name="install:database:validation:pre-install" description="Runs pre-install validation checks bda-utils" depends="common:common:init,
+                       install:common:validation:pre-install">
+		<validate-pre-install-database database.version="${mysql.minimum.version}"/>
+	</target>
+	<target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database" depends="common:common:init,
+                      install:database:prep,
+                       install:database:validation:pre-install">
+		  <!-- Drop all schema objects or re-create the db -->
+			<database-clean database.driver.file="${common.lib.dir}/${database.driver.jar}"/>
+			<!-- Run baseline scripts stored in db.install.create.${database.type}.file.list variable -->
+			<switch value="${database.type}">
+			    <case value="oracle">
+				<database-install db.install.create.file.list="${db.install.create.oracle.file.list}" sql.delimiter=";" sql.delimitertype="row" database.driver.file="${common.lib.dir}/${database.driver.jar}"/>
+			    </case>
+			    <case value="mysql">
+				<database-install db.install.create.file.list="${db.install.create.mysql.file.list}" database.driver.file="${common.lib.dir}/${database.driver.jar}"/>
+			    </case>
+		</switch>
+		<database-upgrade database.changelog.file="${os.temp.dir}/nbia/db-upgrade.xml"/>
+		<database-tag/>
+		<antcall target="create-guest-account"/>
+	</target>
+	<target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="common:common:init">
+		<echoproperties prefix="database"/>
+	    	<copy todir="${working.dir}/db" filtering="true">
+		    <fileset dir="${db.dir.src}">
+			<include name="**/*"/>
+		    </fileset>
+		    <filterset refid="embedded.filterset"/>
+		    <filterset>
+			<filtersfile file="${properties.file}"/>
+			<filtersfile file="project.properties"/>
+		    </filterset>
+		</copy>
+		<copy todir="${db-upgrade.dir.dest}" filtering="true" flatten="true" overwrite="true">
+			<fileset dir="${db.dir.src}/db-upgrade/${database.type}">
+				<include name="**/db-upgrade.xml"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="build:db:new" description="Create new database " unless="exclude.database" depends="common:common:init">
+		<echoproperties prefix="database" />
+		<path id="liquibase_stuff">
+			<pathelement location="${common.lib.dir}/nbia-liquibase.jar" />
+			<pathelement location="${common.lib.dir}/liquibase-core-1.9.3.jar" />
+			<pathelement location="${database.driver.file}" />
+		</path>
+		<!--taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${common.lib.dir}/ant-classloadertask-1.0-RC2.jar" /-->
+		<classloader loader="project" classpathref="liquibase_stuff" />
+		<taskdef resource="liquibasetasks.properties">
+			<classpath refid="liquibase_stuff" />
+		</taskdef>
+		<copy todir="${db.dir.dest}/db-install" overwrite="true">
+			<fileset dir="${db.dir.src}/db-install/${database.type}">
+				<include name="**/*.sql" />
+			</fileset>
+		</copy>
+		<echo message="Dropping database objects" />
+		<dropAllDatabaseObjects driver="${database.driver}" url="${database.url}" username="${database.user}" password="${database.password}" promptOnNonLocalDatabase="${prompt.user.if.not.local.database}" classpathref="liquibase_stuff" defaultSchemaName="${database.schema}" />
+		<switch value="${database.type}">
+			<case value="oracle">
+				<for list="${db.install.create.oracle.file.list}" param="db.install.file">
+					<sequential>
+						<sql driver="${database.driver}" url="${database.url}" userid="${database.user}" password="${database.password}" src="${db.dir.dest}/db-install/@{db.install.file}" onerror="abort" autocommit="true" delimiter=";" delimitertype="row" keepformat="true">
+							<classpath>
+								<pathelement location="${database.driver.file}" />
+							</classpath>
+						</sql>
+					</sequential>
+				</for>
+			</case>
+			<case value="mysql">
+				<for list="${db.install.create.mysql.file.list}" param="db.install.file">
+					<sequential>
+						<sql driver="${database.driver}" url="${database.url}" userid="${database.user}" password="${database.password}" src="${db.dir.dest}/db-install/@{db.install.file}" onerror="abort" autocommit="true" delimiter=";" delimitertype="normal" keepformat="true">
+							<classpath>
+								<pathelement location="${database.driver.file}" />
+							</classpath>
+						</sql>
+					</sequential>
+				</for>
+			</case>
+		</switch>
+		<antcall target="build:db:update" />
+		<if>
+			<isset property="database.release.version" />
+			<then>
+				<tagDatabase driver="${database.driver}" url="${database.url}" username="${database.user}" password="${database.password}" classpathref="liquibase_stuff" defaultSchemaName="${database.schema}" tag="${database.release.version}">
+				</tagDatabase>
+			</then>
+			<else>
+				<fail message="Variable database.release.version must be set for possible future rolllback." />
+			</else>
+		</if>
+		<!-- should be part of the new database creation script TBD -->
+		<!--antcall target="create-guest-account"/-->
+	</target>
+
+	<target name="build:db:update" description="Update database" depends="common:common:init">
+		<echoproperties prefix="database" />
+		<path id="liquibase_stuff">
+			<pathelement location="${common.lib.dir}/nbia-liquibase.jar" />
+			<pathelement location="${common.lib.dir}/liquibase-core-1.9.3.jar" />
+			<pathelement location="${database.driver.file}" />
+		</path>
+		<!--taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${common.lib.dir}/ant-classloadertask-1.0-RC2.jar" /-->
+		<classloader loader="project" classpathref="liquibase_stuff" />
+		<taskdef resource="liquibasetasks.properties">
+			<classpath refid="liquibase_stuff" />
+		</taskdef>
+		<if>
+		    <isset property="database.update.temp.dir"/>
+		    <then>
+			<copy todir="${database.update.temp.dir}/" overwrite="true">
+						<fileset dir="${db.dir.src}/db-upgrade/${database.type}">
+							<include name="**/**/db-upgrade.xml" />
+						</fileset>
+					</copy>
+			<property name="database.changelog.file" value="${database.update.temp.dir}/db-upgrade.xml" />
+		    </then>
+		    <else>
+			<copy todir="${db-upgrade.dir.dest}/" overwrite="true">
+				<fileset dir="${db.dir.src}/db-upgrade/${database.type}">
+					<include name="**/**/db-upgrade.xml" />
+				</fileset>
+			</copy>
+			<property name="database.changelog.file" value="${db-upgrade.dir.dest}/db-upgrade.xml" />
+		    </else>
+		</if>
+		<!--basename property="changelog.file" file="${database.changelog.file}"/>
+		<echo message="changelog.file=${changelog.file} database.changelog.file=${database.changelog.file}"/-->
+		<updateDatabase driver="${database.driver}" url="${database.url}" username="${database.user}" password="${database.password}" classpathref="liquibase_stuff" promptOnNonLocalDatabase="${prompt.user.if.not.local.database}" defaultSchemaName="${database.schema}" dropFirst="false" changeLogFile="${database.changelog.file}" />
+	</target>
+	
+</project>

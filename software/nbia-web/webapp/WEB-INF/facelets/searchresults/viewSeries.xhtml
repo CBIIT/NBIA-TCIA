@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ncia="http://imaging.nci.nih.gov/ncia">
+
+<div id="trailimageid"/>
+
+<h:form id="imageForm">
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" class="contentPage" width="80%" align="center">
+  <tr>
+    <td>
+      <h:panelGroup>
+        <h:commandButton image="images/search_grey.gif" alt="Back To Search"
+                         action="#{searchWorkflowBean.backToSearch}" />
+        <h:graphicImage url="images/breadcrumb_arrows.gif" alt="breadcrumb arrow"/>
+        <h:commandButton image="images/study_grey.gif" action="displayStudy" />
+        <h:graphicImage url="images/breadcrumb_arrows.gif" alt="breadcrumb arrow"/>
+        <h:commandButton image="images/series_red.gif" action="viewImages" alt="view Images"/>
+      </h:panelGroup>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <div class="searchFormHeader">
+        <h:outputText value="#{msg.search_imagesSeries} #{seriesSearchResultBean.series.seriesInstanceUid}" />
+        <ncia:help label="images/help_icon.png" helpId="-searchresultsimagesforseries" />      
+      </div>
+      <table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <tbody>
+          <tr>
+            <td>
+              <div align="center" class="formMessage">
+                <h:outputText value="#{msg.search_imageResolution}" />
+              </div>
+              <br/>
+            </td>
+          </tr>
+          <tr valign="bottom">
+            <td>
+              <table width="100%" align="center" cellpadding="2" cellspacing="0">
+                <tr>
+                  <th width="106" valign="middle" class="formTitle" scope="col">
+                    <div align="left">
+                      <h:outputText value="#{msg.common_subjectId}" />
+                    </div>
+                  </th>
+                  <th width="106" valign="middle" class="formTitleII" scope="col">
+                    <div align="left">
+                      <h:outputText value="#{msg.common_studyId}" />
+                    </div>
+                  </th>
+                  <th class="formTitleII" scope="col">
+                    <div align="left">
+                      <h:outputText value="#{msg.search_date}" />
+                    </div>
+                  </th>
+                  <th width="97" class="formTitleII" scope="col">
+                    <div align="left">
+                      <h:outputText value="#{msg.search_modality}" />
+                    </div>
+                  </th>
+                  <th class="formTitleII" scope="col">
+                    <div align="left">
+                      <h:outputText value="#{msg.criteria_ManufacturerCriteria}" />
+                    </div>
+                  </th>
+                  <f:subview id="localNodeView1">
+                    <th class="formTitleII" scope="col">
+                      <div align="left">
+                        <h:outputText value="DICOM" />
+                      </div>
+                    </th>
+                  </f:subview>
+                  <th class="formTitleII" scope="col">
+		     <div align="left">
+		         <ice:graphicImage value="images/cart-empty.png" style="border:none;display:inline;" alt="Add to Basket"/>   
+		     </div>
+                  </th>
+                </tr>
+                <tr>
+                  <td class="formLabel">
+                    <h:outputText value="#{searchResultBean.patient.subjectId}" />
+                  </td>
+                  <td class="formField">
+                    <h:outputText value="#{studiesSearchResultBean.study.studyInstanceUid}" />
+                  </td>
+                  <td class="formField">
+                    <h:outputText value="#{studiesSearchResultBean.study.date}" />
+                  </td>
+                  <td class="formField">
+                    <h:outputText value="#{seriesSearchResultBean.series.modality}" />
+                  </td>
+                  <td class="formField">
+                    <f:verbatim>&amp;nbsp;</f:verbatim>
+                    <h:outputText value="#{seriesSearchResultBean.series.manufacturer}" />
+                  </td>
+                  <f:subview id="localNodeView2">
+                    <td class="formField">
+                      <h:commandButton image="images/dicom.gif" alt="view DICOM"
+                                       onclick="doDicomPopup(); return false;" 
+                                       onmouseover="return overlib('View DICOM header for the first image in the series');" 
+                                       onmouseout="return nd();"/>
+                    </td>
+                    <td class="formField">
+                      <div align="left">
+		    	<ice:commandButton  id="addSeriesToBasketButton" image="images/add-icon.png" 
+		    		  	rendered="#{empty basketBean.inBasketMap[seriesSearchResultBean.basketKey]}"
+		    		  	actionListener="#{seriesSearchResultBean.addCurrentSeriesToBasket}" title="Add To Basket"/>
+		    	<h:message for="addSeriesToBasketButton" errorClass="errorLabel" infoClass="infoLabel" />   
+		    		  	
+		    	<ice:commandButton  id="removeSeriesBasketButton" image="images/remove_icon.png" 
+		    		  	rendered="#{basketBean.inBasketMap[seriesSearchResultBean.basketKey]}"
+		    		  	actionListener="#{seriesSearchResultBean.removeCurrentSeriesToBasket}" title="Remove From Basket"/>
+		    		  	                                        
+		  </div>
+                    </td>
+                  </f:subview>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table width="100%" align="left" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td colspan="6" class="formLabel">
+                   <ui:include src="viewSeriesThumbnails.xhtml"/>
+                  </td>
+                </tr>
+                </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>        
+  </tr>
+</table>     
+</h:form>
+
+
+<table summary="" 
+       cellpadding="0"
+       cellspacing="0"
+       border="0"
+       class="contentPage"
+       style="margin-top: 20px" 
+       width="80%" align="center">
+        
+  <tr>
+    <td>
+      <h:form id="breadcrumbBottom">
+        <h:panelGroup>
+          <h:commandButton id="bCrumbSearch" alt="Back To Search"
+                           image="images/search_grey.gif" 
+                           action="#{searchWorkflowBean.backToSearch}" />
+          <h:graphicImage id="bCrumbArrow1" 
+                          url="images/breadcrumb_arrows.gif" alt="breadcrumb arrow"/>
+          <h:commandButton id="bCrumbStudy" alt="Display Study"
+                           image="images/study_grey.gif" 
+                           action="displayStudy" />
+          <h:graphicImage id="bCrumbArrow3" alt="breadcrumb arrow"
+                          url="images/breadcrumb_arrows.gif" />
+          <h:commandButton id="bCrumbSeries" alt="view Images"
+                           image="images/series_red.gif" 
+                           action="viewImages" />
+        </h:panelGroup>
+      </h:form>
+    </td>
+ 
+  </tr>
+</table>
+ 
+</ui:composition>

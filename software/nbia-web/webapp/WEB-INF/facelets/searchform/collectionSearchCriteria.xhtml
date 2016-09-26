@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+                
+                
+
+<table>
+<tr>
+<td>
+	  <ice:panelGroup>
+	    <ice:outputText id="collectionHeader" style="float:left;font-weight: bold;" value="#{msg.criteria_CollectionCriteria}" />
+	    <!-- f:subview id="collection_descriptions" rendered="#{securityBean.installationSite}">
+	      <a href="https://wiki.nci.nih.gov/x/lRWy"
+		 target="_blank">
+		<h:outputText value="#{msg.search_collectionDescriptions}" />
+	      </a>
+	    </f:subview-->
+	  </ice:panelGroup>
+  </td>
+ </tr>
+ <tr>
+ <td>  
+          <div id="collectionsDiv" class="searchFormSelector">
+            <h:dataTable id="collectionsCheckboxesTable"
+                         width="100%"
+                         border="0"
+                         cellpadding="0"  
+                         cellspacing="1"  style="margin-top:3px"
+                         value="#{searchWorkflowBean.collectionItems}"
+                         var="collectionItem">
+              <h:column id="collectionItemsColumn">
+              <ice:outputLabel for="selectCollection"  value="select Collection" style="display:none"/> 
+                <ice:selectBooleanCheckbox value="#{collectionItem.value}" id="selectCollection"
+                                           partialSubmit="true" valueChangeListener="#{searchWorkflowBean.modalityChangeListener}"/> 
+                <h:commandLink id="viewDescriptionLink" alt="view Description" title="view Description"
+                               actionListener="#{displayCollectionDescBean.collectionDescriptionAction}">
+                  <f:attribute name="collectionName" value="#{collectionItem}" />
+                  <h:graphicImage value="images/help.gif" style="border:0px" alt="help" title="help"/>
+                </h:commandLink>
+                <h:outputText value="#{collectionItem.label}"/>                                      
+              </h:column>    
+            </h:dataTable> 
+          </div>
+                 
+   </td>
+   </tr>
+   </table>
+   
+   
+
+</ui:composition>                

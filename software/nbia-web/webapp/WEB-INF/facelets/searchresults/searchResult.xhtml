@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ncia="http://imaging.nci.nih.gov/ncia"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+<h:form id="dataForm" style="cellpadding:0px; cellspacing:0;padding-top: 0px; margin:0">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="" valign="top"  align="center" >
+        <tr>
+          <td valign="top"  width="100%">                   
+            <!--h:message for="tableOfPatientResultTables"/-->
+            <!-- for the saved query when no active nodes in query -->
+            <ice:panelGroup rendered="#{empty searchResultBean.nodeTablesWrappers}" style="border: none;padding-top: 0px; margin: 0px 0 0 0;">
+              <ui:include src="patientResultsTable.xhtml" style="padding-top: 0px; margin: 0px 0 0 0;">
+	      	<ui:param name="perNodeResult" value="#{nodeTablesWrapper}"/>
+      	      </ui:include>     
+            </ice:panelGroup>
+            <!-- 
+              if this isn't ice table, v h table, scrollers will go haywire
+              -->
+            <ice:dataTable id="tableOfPatientResultTables"
+                           value="#{searchResultBean.nodeTablesWrappers}"
+                           width="100%"
+                           var="perNodeResult"
+                           style="border:none; padding-top: 0px; margin: 0px 0 0 0;">
+              <ice:column style="border:none; background-color:#F8F8F8;padding-top: 0px; margin: 0px 0 0 0; ">
+                <ui:include src="patientResultsTable.xhtml">
+		        <ui:param name="perNodeResult" value="#{perNodeResult}"/>
+      		</ui:include>      
+              </ice:column>
+            </ice:dataTable>
+          </td>
+        </tr>
+      </table>
+</h:form>        
+</ui:composition>

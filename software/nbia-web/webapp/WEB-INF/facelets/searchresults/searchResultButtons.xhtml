@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+  <ice:panelGroup>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="formMessage" style="text-align:left" >
+         <ice:commandLink id="addSeriesToBasketButton"  style="float:left;height:15px;border: solid 1px #2A4E77;" styleClass="button" action="#{perNodeResult.addAllPatientToBasket}">                                          
+		<ice:outputText value="Add all found to  " style="display:inline"/>
+		<ice:graphicImage value="images/cart-empty.png" style="border:none;display:inline;" alt="Add All To Basket"/>                                                                               
+	 </ice:commandLink>
+        
+        
+        <!--ice:outputText value="Add all found to " style="float:left;height:20px;" styleClass="button"  rendered="#{not empty searchResultBean.nodeTablesWrappers}" />
+        <h:commandButton action="#{perNodeResult.addAllPatientToBasket}" image="images/cart-empty.png" rendered="#{not empty searchResultBean.nodeTablesWrappers}"/-->
+        </td>
+
+        <td  class="formMessage" style="text-align:center" >
+          <!--  ice:panelGroup styleClass="iceMnuBarItem" style="float:left;height:30px"> 
+	      <ice:outputResource id="exportImageMetadata"
+	           label="Export Image Metadata"
+	           resource="#{perNodeResult.exportImageMetadata}"                                                                              
+	           fileName="#{perNodeResult.exportIMFileName}" 
+	           mimeType="text/csv" 
+	           attachment="true"/>              
+          </ice:panelGroup--> 
+        </td>
+      </tr>                
+    </table>
+  </ice:panelGroup>
+</ui:composition>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<f:subview id="notWaitingView">
+<!--  ensure this is in naming container so resultTable isnt dupe -->  
+<!--  regular search results  -->
+<ice:panelGroup id="patientResultsPanelGroup" rendered="#{(searchResultBean.firstTime) and (searchWorkflowBean.simpleSearch) }">
+<h:panelGrid id="panel" border="0" frame="box">
+<h:outputText value="Welcome to the Simple Search Screen" style="font-weight:bold"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="To perform a search use the selections on the left" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:graphicImage value="images/ssearchpic.jpg" style="border:none;display:inline;" alt="simple search screen example"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<hr/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="To perform other searches please use the menu bar above" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:graphicImage value="images/othersearches.jpg" style="border:none;display:inline;" alt="other searches example"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+</h:panelGrid>
+</ice:panelGroup>
+<ice:panelGroup id="patientResultsPanelGroup" rendered="#{(searchResultBean.firstTimeAdvanced) and (searchWorkflowBean.dynamicSearch) }">
+<h:panelGrid id="panel" border="0" frame="box">
+<h:outputText value="Welcome to the Advanced Screen" style="font-weight:bold"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="To perform a search add criteria on the left" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:graphicImage value="images/asearchpic.jpg" style="border:none;display:inline;" alt="advanced search screen example"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<hr/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="To perform other searches please use the menu bar above" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:graphicImage value="images/othersearches.jpg" style="border:none;display:inline;" alt="other searches example"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+</h:panelGrid>
+</ice:panelGroup>
+<ice:panelGroup id="patientResultsPanelGroup" rendered="#{(searchResultBean.firstTimeText) and (searchWorkflowBean.freeTextSearch) }">
+<h:panelGrid id="panel" border="0" frame="box">
+<h:outputText value="Welcome to the Text Search Screen" style="font-weight:bold"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="To perform a search add a word above and click submit" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:graphicImage value="images/tsearchpic.jpg" style="border:none;display:inline;" alt="text search screen example"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<hr/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="To perform other searches please use the menu bar above" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:graphicImage value="images/othersearches.jpg" style="border:none;display:inline;" alt="other searches example"/>
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+<h:outputText value="&lt;br/&gt;" escape="false" />
+</h:panelGrid>
+</ice:panelGroup>
+<ice:panelGroup id="patientResultsPanelGroup" rendered="#{(not searchResultBean.textResult)  and (((searchWorkflowBean.simpleSearch) and (not searchResultBean.firstTime))  or ((searchWorkflowBean.dynamicSearch) and (not searchResultBean.firstTimeAdvanced)))}">
+  <ice:dataTable id="patientResultsTable" 
+                 value="#{perNodeResult.patients}" 
+                 var="result" 
+                 rows="#{searchResultBean.resultsPerPage}" 
+                 scrollable="true" scrollHeight="43.3em"
+                 style="border:none;padding-top: 0px;  margin: 0px 0 0 0; text-align: center;"
+                 styleClass="contentPage"
+                 sortColumn="#{searchResultBean.sortColumnName}"
+        	 sortAscending="#{searchResultBean.ascending}"
+                 columnWidths="55em,35%,12%,10%,12%,10%,5%">
+    <h:column id="collectionIdColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+       		<ice:commandSortHeader columnName="#{searchResultBean.collectionNameHeader}" arrow="true" >
+				<ice:outputText value="#{searchResultBean.collectionNameHeader}" />
+			</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.patient.project}" />
+      </div>
+    </h:column>
+    <h:column id="subjectIdColumn" style="text-align:center;">
+          <f:facet name="header">
+            <h:panelGroup>
+    		<ice:commandSortHeader columnName="#{searchResultBean.patientHeader}" arrow="true" >
+    		<ice:outputText value="#{searchResultBean.patientHeader}"/>
+    	</ice:commandSortHeader>         
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:commandLink id="viewPatientLink"
+    	                       value="#{result.patient.subjectId}"
+    	                       action="#{perNodeResult.navPatient}"
+                           actionListener="#{perNodeResult.viewPatient}" />
+          </div>
+    </h:column>
+    <h:column id="matchStudiesCountColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+          <ice:commandSortHeader columnName="#{searchResultBean.matchedStudyHeader}" arrow="true" >
+	      		<ice:outputText value="#{searchResultBean.matchedStudyHeader}"/>
+    	</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.studyCounts}"  />
+      </div>
+    </h:column>
+    <h:column id="totalStudiesCountColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+             <ice:commandSortHeader columnName="#{searchResultBean.totalStudyHeader}" arrow="true" >
+	         		<ice:outputText value="#{searchResultBean.totalStudyHeader}"/>
+    	</ice:commandSortHeader>
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:outputText value="#{result.patient.totalNumberOfStudies}"  />
+          </div>
+    </h:column>
+    <h:column id="matchedSeriesCountColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+         <ice:commandSortHeader columnName="#{searchResultBean.matchedSeriesHeader}" arrow="true" >
+	 	<ice:outputText value="#{searchResultBean.matchedSeriesHeader}"/>
+    	</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.seriesCounts}" />
+      </div>
+    </h:column>
+    <h:column id="totalSeriesCountColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+             <ice:commandSortHeader columnName="#{searchResultBean.totalSeriesHeader}" arrow="true" >
+	     <ice:outputText value="#{searchResultBean.totalSeriesHeader}"/>
+    	</ice:commandSortHeader>
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:outputText value="#{result.patient.totalNumberOfSeries}" />
+          </div>
+    </h:column>
+    <h:column id="addToBasketColumn">
+    <f:facet name="header">
+     	<h:commandButton action="#{perNodeResult.addAllPatientInTableToBasket}" image="images/cart-empty.png"  title="Add to Basket"  alt="Add to Basket"  onclick="selectAllInContainingTable('MAINbody:criteriaView:dataForm:tableOfPatientResultTables:0:notWaitingView:patientResultsTable:tbody');"/>
+      </f:facet>       
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <div align="center" class="formFieldWhite">
+          <ice:outputLabel for="addPatientToBasketCheckbox"  value="addPatientToBasketCheckbox" style="display:none"/> 
+          <h:selectBooleanCheckbox id="addPatientToBasketCheckbox" style="display: none;" 
+                                   value="#{result.checked}" />
+          <h:commandButton action="#{perNodeResult.addPatientToBasket}"
+          			   rendered ="#{empty basketBean.patientInBasketMap[result.basketKey]}"
+                                   image="images/add-icon.png" 
+                                   title="Add To Basket"
+                                   alt="Add To Basket">                         
+	<f:setPropertyActionListener target="#{perNodeResult.toAdd}" value="#{result.patient.id}"/>
+	
+	  </h:commandButton>  
+	  <h:commandButton action="#{perNodeResult.removePatientFromBasket}"
+          			   rendered ="#{basketBean.patientInBasketMap[result.basketKey]}"
+                                   image="images/remove_icon.png" 
+                                   title="Remove From Basket"
+                                   alt="Remove From Basket">                                                             
+	<f:setPropertyActionListener target="#{perNodeResult.toAdd}" value="#{result.patient.id}"/>
+          </h:commandButton>                                                           
+        </div>
+      </div>
+    </h:column>                   
+  </ice:dataTable>
+  <ui:include src="searchResultPaginator.xhtml"/>
+</ice:panelGroup>
+
+
+
+
+<!-- For Empty FreeTextSearch Body -->
+<ice:panelGroup id="patientResultsPanelGroup" rendered="#{(not searchResultBean.textResult) and (searchWorkflowBean.freeTextSearch) and (not searchResultBean.firstTimeText)}">
+  <ice:dataTable id="patientResultsTableTextNada" 
+                 value="#{perNodeResult.patients}" 
+                 var="result" 
+                 rows="#{searchResultBean.resultsPerPage}" 
+                 scrollable="true" scrollHeight="43.3em"
+                 style="border:none; padding-top: 0px;  margin: 0px 0 0 0; text-align: center;"
+                 styleClass="contentPage"
+                 sortColumn="#{searchResultBean.sortColumnName}"
+        	 sortAscending="#{searchResultBean.ascending}"
+                 columnWidths="120px,160px,420px,75px,75px,75px">
+    <h:column id="collectionIdColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+       		<ice:commandSortHeader columnName="#{searchResultBean.collectionNameHeader}" arrow="true" >
+				<ice:outputText value="#{searchResultBean.collectionNameHeader}" />
+			</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.patient.project}" />
+      </div>
+    </h:column>
+    <h:column id="subjectIdColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+    		<ice:commandSortHeader columnName="#{searchResultBean.patientHeader}" arrow="true" >
+    		<ice:outputText value="#{searchResultBean.patientHeader}"/>
+    	</ice:commandSortHeader>         
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:commandLink id="viewPatientLink"
+    	                       value="#{result.patient.subjectId}"
+    	                       action="#{perNodeResult.navPatient}"
+                           actionListener="#{perNodeResult.viewPatient}" />
+          </div>
+    </h:column>
+    <h:column id="hitColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+          <ice:commandSortHeader columnName="#{searchResultBean.hitHeader}" arrow="true" >
+	      		<ice:outputText value="#{searchResultBean.hitHeader}"/>
+    	</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.hit}"  escape="false"/>
+      </div>
+    </h:column>
+    <h:column id="totalStudiesCountColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+             <ice:commandSortHeader columnName="#{searchResultBean.totalStudyHeader}" arrow="true" >
+	         		<ice:outputText value="#{searchResultBean.totalStudyHeader}"/>
+    	</ice:commandSortHeader>
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:outputText value="#{result.patient.totalNumberOfStudies}"  />
+          </div>
+    </h:column>
+    <h:column id="totalSeriesCountColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+             <ice:commandSortHeader columnName="#{searchResultBean.totalSeriesHeader}" arrow="true" >
+	     <ice:outputText value="#{searchResultBean.totalSeriesHeader}"/>
+    	</ice:commandSortHeader>
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:outputText value="#{result.patient.totalNumberOfSeries}" />
+          </div>
+    </h:column>
+    <h:column id="addToBasketColumn">
+    <f:facet name="header">
+     	<h:commandButton action="#{perNodeResult.addAllPatientInTableToBasket}" image="images/cart-empty.png"  title="Add to Basket" alt="Add to Basket"  onclick="selectAllInContainingTable('MAINbody:criteriaView:dataForm:tableOfPatientResultTables:0:notWaitingView:patientResultsTable:tbody');"/>
+            
+      </f:facet>       
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <div align="center" class="formFieldWhite">
+        <ice:outputLabel for="addPatientToBasketCheckbox"  value="addPatientToBasketCheckbox" style="display:none"/> 
+          <h:selectBooleanCheckbox id="addPatientToBasketCheckbox" style="display: none;" 
+                                   value="#{result.checked}" />
+          <h:commandButton action="#{perNodeResult.addPatientToBasket}"
+          			   rendered ="#{empty basketBean.patientInBasketMap[result.basketKey]}"
+                                   image="images/add-icon.png" 
+                                   title="Add To Basket" alt="Add To Basket">                         
+	<f:setPropertyActionListener target="#{perNodeResult.toAdd}" value="#{result.patient.id}"/>
+	
+	  </h:commandButton>  
+	  <h:commandButton action="#{perNodeResult.removePatientFromBasket}"
+          			   rendered ="#{basketBean.patientInBasketMap[result.basketKey]}"
+                                   image="images/remove_icon.png" 
+                                   title="Remove From Basket" alt="Remove From Basket">                                                             
+	<f:setPropertyActionListener target="#{perNodeResult.toAdd}" value="#{result.patient.id}"/>
+          </h:commandButton>                                                           
+        </div>
+      </div>
+    </h:column>                   
+  </ice:dataTable>
+
+</ice:panelGroup>
+
+
+<!--  text search results  -->
+<ice:panelGroup id="patientResultsPanelGroup" rendered="#{(searchResultBean.textResult and (not searchResultBean.firstTimeText))}">
+  <ice:dataTable id="patientResultsTableText" 
+                 value="#{perNodeResult.patients}" 
+                 var="result" 
+                 rows="#{searchResultBean.resultsPerPage}" 
+                 scrollable="true" scrollHeight="43.3em"
+                 style="border:none; padding-top: 0px;  margin: 0px 0 0 0; text-align: center;"
+                 styleClass="contentPage"
+                 sortColumn="#{searchResultBean.sortColumnName}"
+        	 sortAscending="#{searchResultBean.ascending}"
+                 columnWidths="120px,160px,420px,75px,75px,75px">
+    <h:column id="collectionIdColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+       		<ice:commandSortHeader columnName="#{searchResultBean.collectionNameHeader}" arrow="true" >
+				<ice:outputText value="#{searchResultBean.collectionNameHeader}" />
+			</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.patient.project}" />
+      </div>
+    </h:column>
+    <h:column id="subjectIdColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+    		<ice:commandSortHeader columnName="#{searchResultBean.patientHeader}" arrow="true" >
+    		<ice:outputText value="#{searchResultBean.patientHeader}"/>
+    	</ice:commandSortHeader>         
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:commandLink id="viewPatientLink"
+    	                       value="#{result.patient.subjectId}"
+    	                       action="#{perNodeResult.navPatient}"
+                           actionListener="#{perNodeResult.viewPatient}" />
+          </div>
+    </h:column>
+    <h:column id="hitColumn">
+      <f:facet name="header">
+        <h:panelGroup>
+          <ice:commandSortHeader columnName="#{searchResultBean.hitHeader}" arrow="true" >
+	      		<ice:outputText value="#{searchResultBean.hitHeader}"/>
+    	</ice:commandSortHeader>
+        </h:panelGroup>
+      </f:facet>
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <h:outputText value="#{result.hit}"  escape="false"/>
+      </div>
+    </h:column>
+    <h:column id="totalStudiesCountColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+             <ice:commandSortHeader columnName="#{searchResultBean.totalStudyHeader}" arrow="true" >
+	         		<ice:outputText value="#{searchResultBean.totalStudyHeader}"/>
+    	</ice:commandSortHeader>
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:outputText value="#{result.patient.totalNumberOfStudies}"  />
+          </div>
+    </h:column>
+    <h:column id="totalSeriesCountColumn">
+          <f:facet name="header">
+            <h:panelGroup>
+             <ice:commandSortHeader columnName="#{searchResultBean.totalSeriesHeader}" arrow="true" >
+	     <ice:outputText value="#{searchResultBean.totalSeriesHeader}"/>
+    	</ice:commandSortHeader>
+            </h:panelGroup>
+          </f:facet>
+          <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+            <h:outputText value="#{result.patient.totalNumberOfSeries}" />
+          </div>
+    </h:column>
+    <h:column id="addToBasketColumn">
+    <f:facet name="header">
+     	<h:commandButton action="#{perNodeResult.addAllPatientInTableToBasket}" image="images/cart-empty.png"  title="Add to Basket" alt="Add to Basket"  onclick="selectAllInContainingTable('MAINbody:criteriaView:dataForm:tableOfPatientResultTables:0:notWaitingView:patientResultsTable:tbody');"/>
+            
+      </f:facet>       
+      <div class="#{empty basketBean.patientInBasketMap[result.basketKey] ? '' : 'highlightedData'}">
+        <div align="center" class="formFieldWhite">
+        <ice:outputLabel for="addPatientToBasketCheckbox"  value="addPatientToBasketCheckbox" style="display:none"/> 
+          <h:selectBooleanCheckbox id="addPatientToBasketCheckbox" style="display: none;" 
+                                   value="#{result.checked}" />
+          <h:commandButton action="#{perNodeResult.addPatientToBasket}"
+          			   rendered ="#{empty basketBean.patientInBasketMap[result.basketKey]}"
+                                   image="images/add-icon.png" 
+                                   title="Add To Basket" alt="Add To Basket">                         
+	<f:setPropertyActionListener target="#{perNodeResult.toAdd}" value="#{result.patient.id}"/>
+	
+	  </h:commandButton>  
+	  <h:commandButton action="#{perNodeResult.removePatientFromBasket}"
+          			   rendered ="#{basketBean.patientInBasketMap[result.basketKey]}"
+                                   image="images/remove_icon.png" 
+                                   title="Remove From Basket" alt="Remove From Basket">                                                             
+	<f:setPropertyActionListener target="#{perNodeResult.toAdd}" value="#{result.patient.id}"/>
+          </h:commandButton>                                                           
+        </div>
+      </div>
+    </h:column>                   
+  </ice:dataTable>
+  <ui:include src="searchResultPaginatorText.xhtml"/>
+</ice:panelGroup>
+
+ 
+</f:subview>
+</ui:composition>

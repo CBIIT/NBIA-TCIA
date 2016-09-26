@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!-- these targets are rough around the edges, but for developer convience only. -->
+<project name="developer-conveniences">
+
+  <target name="deploy2" depends="build:nbia-web">
+    <copy file="../target/dist/exploded/nbia-ear/nbia.ear"
+          todir="${application.base.path.windows}/jboss-4.0.5.ga/server/${jboss.server.name}/deploy"/>
+  </target>
+
+  <target name="deploy">
+    <ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}"
+      target="${nbia-web.build.target}"
+      dir="${nbia-web.base.dir}">
+      <property name="project.name" value="${project.name}"/>
+      <property name="nbia.version" value="${nbia.version}"/>
+      <property name="nbia_prod_build_tag.final" value="${nbia_prod_build_tag.final}"/>
+    </ant>
+
+    <copy file="../target/dist/exploded/nbia-ear/nbia.ear"
+          todir="${application.base.path.windows}/jboss-4.0.5.ga/server/${jboss.server.name}/deploy"/>
+  </target>
+
+  <target name="deploy:local:ctp"
+          depends="dist:installer:prep">
+    <deploy-local target.name="install:ctp"/>
+  </target>
+  <target name="deploy:local:jboss"
+          depends="dist:installer:prep">
+    <deploy-local target.name="install:jboss"/>
+  </target>
+  <target name="deploy:local:database"
+          depends="dist:installer:prep">
+    <deploy-local target.name="install:database"/>
+  </target>
+
+</project>

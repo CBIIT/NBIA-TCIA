@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ncia="http://imaging.nci.nih.gov/ncia"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+                
+<h:form id="dataForm">
+      <table width="80%" border="0" cellpadding="0" cellspacing="0" align="center" class="contentPage">
+       <tbody>
+           <tr>
+	      <td>
+	        <h:panelGroup>
+	          <h:commandButton image="images/search_grey.gif" alt="Search" title="Search"
+	                     action="#{searchWorkflowBean.backToSearch}" />
+	          <h:graphicImage url="images/breadcrumb_arrows.gif" alt="breadcrumb arrow"/>
+	          <h:commandButton image="images/study_red.gif" action="displayStudy" alt="Study" title="Study"/>
+	        </h:panelGroup>
+	      </td>
+	      <td width="70%">
+	       <div class="searchFormHeader">
+	              <h:outputText value="#{msg.search_subjectResults} #{searchResultBean.patient.subjectId}) " />
+	              <ncia:help label="images/help_icon.png" helpId="-SearchResultsStudiesforSubject" />
+	        </div>
+	      </td>
+  	</tr>
+           <tr>
+	                    <td colspan="2">
+	  		     <div style="float:right; margin-right: 18px">
+	  		     	     <ice:commandLink id="addSeriesToBasketButton"  style="float:right; border: solid 1px #2A4E77;" styleClass="button" action="#{studiesSearchResultBean.addAllSeriesToBasket}">                                          
+	  		     	         <ice:outputText value="Add all found to  " style="display:inline"/>
+	  		     	  	 <ice:graphicImage value="images/cart-empty.png" style="border:none;display:inline;" alt="Add All To Basket"/>                                                                               
+	  		     	     </ice:commandLink>
+	  	                <br/>
+	  	                <h:message for="addSeriesToBasketButton" errorClass="errorLabel" infoClass="infoLabel" />         
+	  	              </div>                  
+	                    </td>
+	           
+		  </tr>
+          <tr>
+            <td colspan="3">
+	        <h:message for="studyTable"/>
+	         <h:dataTable id="studyTable" 
+	                               value="#{studiesSearchResultBean.studyResults}" 
+	                               var="study" 
+	                               cellpadding="15" 
+	                               cellspacing="2"
+	                               width="100%" 
+	                               binding="#{studiesSearchResultBean.studyData}">
+	               <h:column id="studyTableOneColumn">
+	                      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+	                          <tr>
+	                            <td valign="middle" class="formTitle" scope="col">
+	                              <div align="left">
+	                                <h:outputText value="#{msg.common_studyId}" />
+	                              </div>
+	                            </td>
+				                <td valign="middle" class="formTitle" scope="col">
+	                              <div align="left">
+	                                <h:outputText value="#{msg.search_description}" />
+	                              </div>
+	                            </td>	                            
+	                            <td class="formTitleII" scope="col">
+	                              <div align="left">
+	                                <h:outputText value="#{msg.search_date}" />
+	                              </div>
+	                            </td>
+	                            <td class="formTitleII" scope="col">
+	                              <div align="left">
+	                                <h:outputText value="Study Images" />
+	                              </div>
+	                            </td>
+	                            
+	                            <td class="formTitleII" scope="col">
+	                              <div align="left">
+									<h:outputText value="Add This Study To Basket" />
+	                              </div>
+	                            </td>
+	                                                  
+	                          </tr>
+	                          <tr>
+	                            <td class="formLabel" width="30%">
+	                              <h:outputText id="studyUid" value="#{study.study.studyInstanceUid}"/>
+	                            </td>
+	                            <td  class="formLabel">
+				    	         <h:outputText value="#{study.study.description}" />
+	                            </td>
+	                            <td class="formLabel">
+	                              <h:outputText value="#{msg.search_study_baseline}" 
+	                                            title="#{study.dateString}" />
+	                              <h:outputText value=" + #{study.study.offSetDesc}" 
+	                                            rendered="#{(study.study.offSetDesc) != null}" 
+	                                            title="#{study.dateString}" />
+	                            </td>
+	                            <td  class="formLabel">
+                                   <h:commandLink target="newWin"
+                                                    onclick="window.open('#{study.study.link}');return false;">
+                                                     <h:outputText value="DICOM Web Viewer"/>
+                                    </h:commandLink> 
+	                            </td>	
+	                            
+								<td class="formLabel" valign="middle" width="10%">
+                                   <h:commandLink id="addSeriesToBasketButton"  style="float:right; border: solid 1px #2A4E77;" styleClass="button" action="#{studiesSearchResultBean.addAstudySeriesToBasket(study.study.studyInstanceUid)}">
+									 <h:graphicImage value="images/cart-empty.png" style="border:none;display:inline;" />                                                                               
+								   </h:commandLink> 
+	                            </td>	
+	                            
+	                                                        
+	                          </tr>
+	                          
+	                          <tr>
+				    <td colspan="5" >
+				         <h:dataTable id="seriesTable" 
+				                                         value="#{study.seriesResults}" 
+				                                         var="series" 
+				                                         cellpadding="0" 
+				                                         cellspacing="0" 
+				                                         headerClass="formTitleIIII" 
+				                                         rowClasses="dataRowLight, dataRowDark" 
+				                                         width="100%"                                        
+				                                         styleClass="contentPageII"
+				                                         binding="#{studiesSearchResultBean.seriesData}"
+				                                         columnClasses="seriesDataCell, seriesDataCell, seriesDataCell, seriesDataCell, seriesDataCell, seriesDataCell, seriesDataCell, seriesDataCell">
+								<!--h:column id="viewSeriesColumn">
+								  <f:facet name="header">
+								<f:verbatim>&amp;nbsp;</f:verbatim>
+								</f:facet>
+								<div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}"
+									   style="width:100%">
+								<h:commandLink value="#{msg.search_showImages}" 
+									action="#{studiesSearchResultBean.viewSeries}" />
+								</div>
+								</h:column-->						                              
+				                              <h:column id="seriesUidColumn">
+				                                <f:facet name="header">
+				                                  <h:outputText value="#{msg.common_series}" />
+				                                </f:facet>
+				                                <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}" 
+				                                     style="width:100%">
+				                                  <h:outputText value="...."/><h:outputText  id="seriesUid" value="#{fn:substring(series.series.seriesInstanceUid,fn:length(series.series.seriesInstanceUid)-10,fn:length(series.series.seriesInstanceUid))}" />
+				                                </div>
+				                              </h:column>
+				                              <h:column id="seriesDescriptionColumn">
+				                                <f:facet name="header">
+				                                  <h:outputText value="#{msg.search_description}" />
+				                                </f:facet>
+				                                <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}" 
+				                                     style="width:100%">
+				                                  <f:verbatim>&amp;nbsp;</f:verbatim>
+				                                  <h:outputText value="#{series.series.description}" />
+				                                </div>
+				                              </h:column>
+				                              <h:column id="modalityColumn">
+				                                <f:facet name="header">
+				                                  <h:outputText value="#{msg.search_modality}" />
+				                                </f:facet>
+				                                <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}" 
+				                                     style="width:100%">
+				                                  <h:outputText value="#{series.series.modality}" />
+				                                </div>
+				                              </h:column>
+				                              <h:column id="manufacturerColumn">
+				                                <f:facet name="header">
+				                                  <h:outputText value="#{msg.criteria_ManufacturerCriteria}" />
+				                                </f:facet>
+				                                <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}" 
+				                                     style="width:100%">
+				                                  <f:verbatim>&amp;nbsp;</f:verbatim>
+				                                  <h:outputText value="#{series.series.manufacturer}" /> 
+				                                </div>
+				                              </h:column>
+											  <h:column id="numberImagesColumn">
+				                                <f:facet name="header">
+				                                  <h:outputText value="#{msg.common_images}" />
+				                                </f:facet>
+				                                <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}"  
+				                                     style="width:100%">
+				                                  <h:outputText value="#{series.series.numberImages}" />
+				                                </div>
+				                              </h:column>				                              
+				                              <h:column id="viewImagesColumn">
+							         <f:facet name="header">
+							           <h:outputText value="Thumbnails" />
+							         </f:facet>
+				                                <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}" align="center">
+							          <h:commandLink target="newWin"
+							                        onclick="doViewThumbnailPopup('#{series.series.id}'); return false;"  alt="view Thumbnails">
+							           <h:graphicImage value="images/old_new_magnifying_glass.png" alt="view Thumbnails" title="view Thumbnails"
+							             style="border: none;" width="20%"/>
+							          </h:commandLink> 
+				                                </div>
+				                              </h:column>
+				                              <h:column>
+				                                 <f:facet name="header">
+							      	   <h:outputText value="Cine mode" />
+								 </f:facet>
+								 <h:panelGroup style="text-align: center;margin-top:5px;margin-bottom:5px" 
+								       rendered ="#{series.series.numberImages gt 1 and series.series.maxFrameCount le 1}">
+								 <div align="center" class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}">
+								  <h:outputLink id="viewMovieLink"                       
+								                 target="slideshow" 
+								                 title = "movie link"
+								                 alt="movie link"
+								                 onclick="window.open('/ncia/viewSlideShow.jsf?seriesId=#{series.series.id}', 'slideshow', 'resizable=no,scrollbars=no,width=602,height=602');return false;">
+								     <img style="vertical-align: middle; margin-left: 5px"
+								          src="images/movie_reel_32x32.jpg"
+								          alt="movie link"/>
+  								  </h:outputLink>
+								 </div>
+							        </h:panelGroup>
+							        <h:panelGroup style="text-align: center;margin-top:5px;margin-bottom:5px" 
+								       rendered ="#{series.series.numberImages le 1 or series.series.maxFrameCount gt 1 }">
+								       <h:outputText value="NA" />
+								</h:panelGroup>       
+							    </h:column>
+				                <h:column>
+								<f:facet name="header">
+									<h:outputText value="DICOM" />
+								 </f:facet>
+								 <div align="center" class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}" >
+								 <h:commandButton image="images/dicom.gif" alt="view DICOM" title="view DICOM"
+								           onclick="doDicomTagPopup('#{series.series.id}'); return false;"
+								           onmouseover="return overlib('View DICOM header for the first image in the series');" onmouseout="return nd();"/>
+								 </div>
+				                 </h:column>
+				                 <h:column id="checkAllSeriesColumn" >
+								  
+				                      <div class="#{empty basketBean.inBasketMap[series.basketKey] ? '' : 'highlightedData'}"
+				                        style="width:100%">
+				                      <div align="center" class="formFieldWhite">
+				                      <h:selectBooleanCheckbox id="seriesSelectionCheckbox" value="#{series.checked}" style="display:none"/>
+								      <h:commandButton action="#{studiesSearchResultBean.addSeriesToBasket}"
+								             			 rendered ="#{empty basketBean.inBasketMap[series.basketKey]}"   
+								                                      image="images/add-icon.png" 
+								                                      title="Add To Basket" alt="Add To Basket" >                         
+								   	<f:setPropertyActionListener target="#{studiesSearchResultBean.toAdd}" value="#{series.series.id}"/>
+								   </h:commandButton>  
+								   <h:commandButton action="#{studiesSearchResultBean.removeSeriesFromBasket}"
+								             			      rendered ="#{basketBean.inBasketMap[series.basketKey]}"
+								                                      image="images/remove_icon.png" 
+								                                      title="Remove From Basket" alt="Remove From Basket">                                                             <br/>
+																	  
+								   <f:setPropertyActionListener target="#{studiesSearchResultBean.toAdd}" value="#{series.series.id}"/>
+          							</h:commandButton>       				                                   				                                                                   
+				                        </div>
+				                        </div>
+				                     </h:column>	
+																		
+				                    </h:dataTable>
+				                  </td>
+                      </tr>
+	                      </table>
+	                    </h:column>
+	                  </h:dataTable>
+            </td>
+          </tr>
+        </tbody>
+      </table> 
+</h:form>                  
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" class="contentPage" width="80%" align="center">
+  <tr>
+    <td>
+      <h:form id="breadcrumbBottom">
+        <h:panelGroup>
+          <h:commandButton id="bCrumbSearch" alt="Back To Search"
+                           image="images/search_grey.gif" 
+                           action="#{searchWorkflowBean.backToSearch}" />
+          <h:graphicImage id="bCrumbArrow1" 
+                          url="images/breadcrumb_arrows.gif" alt="breadcrumb arrow"/>
+          <h:commandButton id="bCrumbStudy" alt="Display Study"
+                           image="images/study_red.gif" 
+                           action="displayStudy" />
+        </h:panelGroup>
+      </h:form>
+    </td>
+  </tr>
+</table>
+               
+</ui:composition>

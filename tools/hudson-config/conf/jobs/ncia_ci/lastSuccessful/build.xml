@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<build>
+  <builtOn></builtOn>
+  <hudsonVersion>1.186</hudsonVersion>
+  <scm class="hudson.scm.SubversionChangeLogParser"/>
+  <culprits/>
+  <number>705</number>
+  <result>SUCCESS</result>
+  <duration>325952</duration>
+  <keepLog>false</keepLog>
+  <actions class="vector">
+    <hudson.scm.SubversionTagAction>
+      <tags class="hudson.util.CopyOnWriteMap$Tree">
+        <no-comparator/>
+        <entry>
+          <hudson.scm.SubversionSCM_-SvnInfo>
+            <url>http://gforge.nci.nih.gov/svnroot/ncia/trunk/software</url>
+            <revision>4633</revision>
+          </hudson.scm.SubversionSCM_-SvnInfo>
+          <list/>
+        </entry>
+      </tags>
+      <build class="build" reference="../../.."/>
+    </hudson.scm.SubversionTagAction>
+  </actions>
+</build>
