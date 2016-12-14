@@ -97,9 +97,45 @@ L-->
           </h2>
         </legend>
         <p style="text-align:left">  
-          <h:outputText value="Please contact application administrator at "/>
+          <h:outputText value="Important Reminder:  "/>
+          <h:outputText value="The Cancer Imaging Archive is not connected with NCI's password management system.  "/>
+          <h:outputText value="User accounts established on CBIIT's NBIA site are not recognized on this system.  "/>
+          <h:outputText value="Hence, you must register a new account with The Cancer Imaging Archive in order to utilize this system.  "/>
+          <br/>
+        </p>
+        <p style="text-align:left">
+          <h:outputText value="If you have entered an erroneous password multiple times, you may have been locked out of your account.  "/>
+          <h:outputText value="Please wait a few minutes (e.g. 15) for the account to unlock and try again. During that time, do not attempt to login, or else the lock may persist."/>
+          <br/>
+        </p>
+        <a href="https://www.cancerimagingarchive.net/pwm/public/ForgottenUsername">
+          <p style="text-align:left">
+            <h:outputText value="Click here if you have an account, but have forgotten your user name. "/>
+            <br/>
+          </p>
+        </a>
+        <a href="https://www.cancerimagingarchive.net/pwm/public/ForgottenPassword">
+          <p style="text-align:left">
+            <h:outputText value="Click here if you have an account, but have forgotten your password. "/>
+            <br/>
+          </p>
+        </a>
+        <a href="https://www.cancerimagingarchive.net/pwm/private/ChangePassword">
+          <p style="text-align:left">
+            <h:outputText value="Click here if you would like to change your password. "/>
+            <br/>
+          </p>
+        </a>
+        <a href="https://www.cancerimagingarchive.net/pwm/private/UpdateAttributes">
+          <p style="text-align:left">
+            <h:outputText value="Click here if you would like to update your contact information. "/>
+            <br/>
+          </p>
+        </a>
+        <p style="text-align:left">  
+          <h:outputText value="If you are still having trouble accessing your account, please contact the TCIA Support Center at "/>
           <h:outputText value="#{securityBean.adminEmailAddress}"/>
-          <h:outputText value=" for assistance."/>
+          <h:outputText value=" or call or text +1.385.275-8242 (+1.385.ASK-TCIA) during business hours for assistance."/>
           <br/>                
           <br/>
           <br/>

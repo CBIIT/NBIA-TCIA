@@ -17,6 +17,8 @@ import gov.nih.nci.nbia.util.PropertyLoader;
 import gov.nih.nci.nbia.util.StringUtil;
 import gov.nih.nci.nbia.util.SeriesComparitor;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +27,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +66,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
     private JButton pauseButton, resumeButton;
     private JButton closeButton, deleteButton;
     public static JLabel errorLabel;
+    private JButton agreementButton;
 
     /*Currently selected download. */
     private AbstractSeriesDownloader selectedDownload;
@@ -175,8 +179,38 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         setJMenuBar(menuBar);
     }
 
+
+	// TODO: Change the hardcoded URL to something that comes from a config file or property.
+    private class OpenUrlAction implements ActionListener {
+        @Override public void actionPerformed(ActionEvent e) {
+            // open(uri);
+            try {
+                final URI uri = new URI("https://wiki.cancerimagingarchive.net/x/c4hF");
+                Desktop.getDesktop().browse(uri);
+            } catch (Exception et) {
+                et.printStackTrace();
+            }
+        }
+    }
+    
     private JPanel createButtonsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
+
+        agreementButton = new JButton();
+        agreementButton.setText("<HTML><FONT color=\"#112299\">By clicking the Start button below, you agree to abide by the terms of TCIA's </FONT>"
+            + "<FONT color=\"#000099\"><U>Data Use Policy</U></FONT>"
+            + "<FONT color=\"#112299\">.</FONT>");
+        agreementButton.setBorderPainted(false);
+        agreementButton.setOpaque(false);
+        agreementButton.setBackground(Color.WHITE);
+        agreementButton.addActionListener (new OpenUrlAction());
+        agreementButton.setEnabled(true);
+        agreementButton.setVisible(true);
+
+        JPanel agreementPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        agreementPanel.add(agreementButton);
+        agreementPanel.setVisible(true);
+             
         JPanel buttonsPanel = new JPanel();
 
         startButton = new JButton("Start");
@@ -226,6 +260,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         errorLabel.setText(errorText);
         errorLabel.setVisible(false);
         errorPanel.add(errorLabel);
+        panel.add(agreementPanel, BorderLayout.NORTH);
         panel.add(buttonsPanel, BorderLayout.CENTER);
         panel.add(errorPanel, BorderLayout.SOUTH);
         return panel;

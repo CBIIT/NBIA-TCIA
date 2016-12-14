@@ -69,7 +69,15 @@ L-->
     <param-name>com.icesoft.faces.connectionTimeout</param-name>
     <param-value>1800000</param-value>
   </context-param>
-
+  <!-- added by lrt to deal with long running adds to the shopping cart -->
+  <context-param>
+    <param-name>com.icesoft.faces.blockingConnectionTimeout</param-name>
+    <param-value>1000000</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.icesoft.faces.heartbeatTimeout</param-name>
+    <param-value>500000</param-value>
+  </context-param>
   <!--  required or else popup windows will make icefaces unresponsive -->
   <context-param>
     <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
@@ -253,6 +261,19 @@ L-->
 </servlet-mapping>
 
 <!--end of CSRF-->
+
+  <!-- Steve Moore 2012.10.31 This supports the link to compute and provide the
+	JNLP file used for Query Tool
+  -->
+  <servlet>
+    <servlet-name>ServletName</servlet-name>
+    <servlet-class>edu.wustl.mir.erl.tcia.nlst.QueryToolDownload</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletName</servlet-name>
+    <url-pattern>/QueryToolDownload</url-pattern>
+  </servlet-mapping>
+  <!-- Steve Moore Query Tool end -->
 
   <servlet-mapping>
     <servlet-name>WADOServlet</servlet-name>

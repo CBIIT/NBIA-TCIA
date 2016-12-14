@@ -53,10 +53,10 @@ L-->
       </td>
       
       <td>
-        <img src="images/mainMenuSeparator.gif" 
+        <!-- <img src="images/mainMenuSeparator.gif" 
              width="1" 
              height="16"
-             alt="" />
+             alt="" /> -->
       </td>      
     </f:subview>
     <!-- link 1 ends -->
@@ -87,14 +87,35 @@ L-->
       <!-- link 2 ends -->
       
       <td>
-        <img src="images/mainMenuSeparator.gif" 
+        <!-- <img src="images/mainMenuSeparator.gif" 
              width="1" 
              height="16"
-             alt="" />
+             alt="" /> -->
       </td>
     </f:subview>
  
- 
+    <!-- link post2 begins -->
+    <f:subview id="queryToolSubview" rendered="#{securityBean.loggedIn}">
+      <td height="20" class="mainMenuItem"
+          onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()"
+          onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()">
+         <a class="mainMenuLink" 
+           style="color:#fff"
+           onclick="window.open('https://queries.cancerimagingarchive.net/NLSTQueryTool/faces/main.xhtml', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=750,height=700,scrollbars=yes,resizable=yes')">
+          <h:outputText value="Search NLST Data"/>
+         </a>
+      </td>
+      
+      <!-- link post2 ends -->
+      
+      <td>
+        <!-- <img src="images/mainMenuSeparator.gif" 
+             width="1" 
+             height="16"
+             alt="" /> -->
+      </td>
+    </f:subview>
+
     <f:subview id="simpleSearchForGuestSubview" 
                rendered="#{anonymousLoginBean.simpleSearchView and empty sessionScope.originalRequest}">
       <td height="20" class="mainMenuItem"
@@ -108,10 +129,10 @@ L-->
       <!-- link 2 ends -->
       
       <td>
-        <img src="images/mainMenuSeparator.gif" 
+        <!-- <img src="images/mainMenuSeparator.gif" 
              width="1" 
              height="16"
-             alt="" />
+             alt="" /> -->
       </td>
     </f:subview>
     
@@ -127,10 +148,10 @@ L-->
       </td>
       
       <td>
-        <img src="images/mainMenuSeparator.gif" 
+        <!-- <img src="images/mainMenuSeparator.gif" 
              width="1" 
              height="16"
-             alt="" />
+             alt="" /> -->
       </td>      
     </f:subview>
     <!-- link 4 ends -->
@@ -141,8 +162,22 @@ L-->
 	<ul >
 	    <li>
 	           <a href="#"
-	           onclick="window.open('/ncia/imageViewers.jsf', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=550,height=500,scrollbars=yes,resizable=yes')">
+	           onclick="window.open('https://wiki.cancerimagingarchive.net/x/sIAiAQ', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=1200,height=700,scrollbars=yes,resizable=yes')">
 	          <h:outputText value="#{msg.menu_dicomViewers}" />
+	        </a>
+	    	
+    	    </li>
+ 	    <li>
+	           <a href="#"
+	           onclick="window.open('https://wiki.cancerimagingarchive.net/x/sgH1', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=1200,height=700,scrollbars=yes,resizable=yes')">
+	          <h:outputText value="Persistent References (DOIs)" />
+	        </a>
+	    	
+    	    </li>
+ 	    <li>
+	           <a href="#"
+	           onclick="window.open('https://wiki.cancerimagingarchive.net/x/NIIiAQ', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=1200,height=700,scrollbars=yes,resizable=yes')">
+	          <h:outputText value="Programatic Interface (API)" />
 	        </a>
 	    	
     	    </li>
@@ -229,14 +264,14 @@ L-->
     </td>
     
      <td>
-                <img src="images/mainMenuSeparator.gif" 
+                <!-- <img src="images/mainMenuSeparator.gif" 
                      width="1" 
                      height="16"
-                     alt="" />
+                     alt="" /> -->
       </td>   
     
     
-     <f:subview id="adminToolsView" rendered="#{securityBean.loggedIn and (securityBean.hasQaRole or securityBean.hasAdminRole or securityBean.hasSuperCuratorRole or seriesDeletionBean.showDeletionLink or securityBean.hasCollectionDescRole)}">
+     <f:subview id="adminToolsView" rendered="#{securityBean.loggedIn and (securityBean.hasQaRole or securityBean.hasSuperCuratorRole or seriesDeletionBean.showDeletionLink or securityBean.hasCollectionDescRole)}">
           
             <td class="mainMenuItem">
               <h:outputText value="Admin" />
@@ -328,16 +363,8 @@ L-->
 	   	                       action="#{savedQueryBean.manageSavedQueries}"
 	   	                       value="#{msg.menu_manageSavedQueries}"/>
 	   	        
-			</li>
-		   </f:subview>
-		   <f:subview id="ManageSavedQueryView" rendered="#{securityBean.hasAdminRole}">
-            <li>
-				<h:outputLink value="#{NCIAConfig.getImageServerUrl()}/nbia-uat/index.html">				
-					<h:outputText value="User Authorization Tool" />
-					<f:param name="accessToken" value="#{securityBean.tokenValue}" />
-				</h:outputLink>
-            </li>
-		   </f:subview>
+	      </li>
+	</f:subview>
     
     </ul>
     </td>
@@ -345,10 +372,10 @@ L-->
 
         
      <td>
-            <img src="images/mainMenuSeparator.gif" 
+            <!-- <img src="images/mainMenuSeparator.gif" 
                  width="1" 
                  height="16"
-                 alt="" />
+                 alt="" /> -->
       </td>    
     
     <!-- link 5 begins -->
@@ -356,14 +383,15 @@ L-->
         onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()"
         onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()">
       <a class="mainMenuLink" 
-         onclick="window.open('{NBIA_WIKI_UG_URL}', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=750,height=700,scrollbars=yes,resizable=yes')">
-        <h:outputText style="white-space:nowrap" value="#{msg.menu_help}"/>
+         style="color:#fff" 
+         onclick="window.open('http://www.cancerimagingarchive.net/support/', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=no,menubar=no,location=no,width=1200,height=700,scrollbars=yes,resizable=yes')">
+           <h:outputText value="#{msg.menu_help}"/>
       </a>
     </td>
     <!-- link 5 ends -->
     <td>
-      <img src="images/mainMenuSeparator.gif" width="1" height="16"
-           alt="" />
+      <!-- <img src="images/mainMenuSeparator.gif" width="1" height="16"
+           alt="" /> -->
     </td>
 
     <f:subview id="logout" 
@@ -382,10 +410,10 @@ L-->
       <!-- link  ends -->
 
       <td>
-        <img src="images/mainMenuSeparator.gif" 
+        <!-- <img src="images/mainMenuSeparator.gif" 
              width="1" 
              height="16"
-             alt="" />
+             alt="" /> -->
       </td>     
     </f:subview>
     
@@ -406,4 +434,6 @@ L-->
 
 
 </ui:composition>
+
+
 

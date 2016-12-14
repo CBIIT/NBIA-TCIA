@@ -34,8 +34,23 @@ L-->
   <script language="javascript" 
           src="js/imageViewer.js" 
           type="text/javascript"></script>
-                    
-  <title><ui:insert name="title">NBIA - National Biomedical Imaging Archive</ui:insert></title>
+
+  <title><ui:insert name="title">The Cancer Imaging Archive</ui:insert></title>
+
+        <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24548737-1']);
+    _gaq.push(['_setDomainName', 'cancerimagingarchive.net']);
+    _gaq.push(['_trackPageview']);
+  
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 </head>
 
 <body>
@@ -111,6 +126,15 @@ L-->
                     </f:subview>                   
                   </td>
                </tr>
+               <tr>
+                  <td>
+                    <div id="APPftr">
+                       <ui:insert name="appFooter">
+                         <ui:include src="appFooter.xhtml"/>
+                       </ui:insert>
+                    </div>
+                  </td>
+               </tr>
                </table>
                </td>
                
@@ -122,13 +146,6 @@ L-->
       </td>
     </tr>
     <tr> <td>
-    <div id="APPftr"> 
-        <ui:insert name="appFooter">
-          <ui:include src="appFooter.xhtml"/>
-        </ui:insert>      
-      </div>
-    </td></tr>
-    <tr> <td>
       <div id="NCIfooter">
         <ui:insert name="footer">
           <ui:include src="footer.xhtml"/>
@@ -138,5 +155,6 @@ L-->
   </table>
   
 </body>
+
 
 </html>
