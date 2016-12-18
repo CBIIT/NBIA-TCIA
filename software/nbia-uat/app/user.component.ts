@@ -23,6 +23,7 @@ export class UserComponent {
 	postData: string;
 	wikiLink: string;
 	statusMessage: Message[] = [];
+	errorMessage: string;
 
     constructor(private userService: UserService) { 
 		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.manageUserWiki;
@@ -120,7 +121,6 @@ export class UserComponent {
 		else {
 			this.statusMessage.push({severity:'error', summary:'Error: ', detail:'Error occured while retriving data from server. Check the server connection please. Error code: '+error.status});
 		}
-		this.searchInProgress = false;
 	}		
 }
 

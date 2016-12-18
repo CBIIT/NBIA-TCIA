@@ -1,5 +1,4 @@
-//To Test: https://imaging-dev.nci.nih.gov/nbia-api/services/v1/getImage?SeriesInstanceUID=1.3.6.1.4.1.9328.50.1.3
-
+//To Test: https://imaging-dev.nci.nih.gov/nbia-api/services/v1/getImage?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.2103.7010.217057652328318927727295709419
 
 package gov.nih.nci.nbia.restAPI;
 
@@ -7,116 +6,116 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import com.sun.jersey.api.client.ClientResponse.Status;
+import org.apache.commons.io.IOUtils;
 
 
 @Path("/v1/getImage")
 public class V1_getImage extends getData {
-	static final int BUFFER = 2048;
+	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+
 	/**
 	 * This method get a set of images in a zip file
 	 *
-	 * @return InputStream - PipedInputStream
+	 * @return Response - StreamingOutput
 	 */
 	@GET
-	@Produces("application/x-zip-compressed")
-	public InputStream  constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid) throws IOException {
-		final String sid = 	seriesInstanceUid;
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid) throws IOException {
+//		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
+//		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
+		final String sid = seriesInstanceUid;
 		if (sid == null) {
-			throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("SeriesInstanceUID is required.").build());
-//			Response.status(400)
-//			.entity("Error: please specify SeriesInstanceUID for this search")
-//			.build().;
-			//need to improve to provide meaningful feedback
+			return Response.status(Status.BAD_REQUEST)
+					.entity("A parameter, SeriesInstanceUID, is required for this API call.")
+					.type(MediaType.APPLICATION_JSON).build();
 		}
 
-		Map<String,String> paramMap = new HashMap<String, String>();
+		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("seriesInstanceUID", sid);
 
-		//SecurityContextHolder will return the last logged in user if the user is not logged out.
-		//For getting around the problem, the path will be used here to determine if it is anonymousUser
-		if (!isUserHasAccess("anonymousUser", paramMap))
-			throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("Image with given SeriesInstanceUID" +sid + "is not in public domain.").build());
+		// SecurityContextHolder will return the last logged in user if the user
+		// is not logged out.
+		// For getting around the problem, the path will be used here to
+		// determine if it is anonymousUser
+		if (!isUserHasAccess("anonymousUser", paramMap)) {
+			return Response.status(Status.BAD_REQUEST)
+					.entity("Image with given SeriesInstanceUID," + sid + ", is not in public domain.")
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 
+		String zipName = sid + ".zip";
+		StreamingOutput stream = new StreamingOutput() {
+			public void write(OutputStream output) throws IOException, WebApplicationException {
+				// Generate your ZIP and write it to the OutputStream
+				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
+				InputStream in = null;
 
-		// we write to the PipedOutputStream
-		// that data is then available in the PipedInputStream which we return
-		final PipedOutputStream sink = new PipedOutputStream();
-		PipedInputStream source = new PipedInputStream(sink);
-
-
-		// apparently we need to write to the PipedOutputStream in a separate
-		// thread
-		Runnable runnable = new Runnable() {
-			public void run() {
-				ZipOutputStream zip = new ZipOutputStream(sink);
-				PrintStream writer = new PrintStream(new BufferedOutputStream(zip));
 				try {
+//					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
+//					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
+					List<String> fileNames = getImage(sid);
+//					Timestamp qetimestamp = new Timestamp(System.currentTimeMillis());
+//					System.out.println("Done with querying the file name list and start to zip and stram--"
+//							+ sdf.format(qetimestamp));
+					int counter = 0;
+					for (String filename : fileNames) {
+						in = new FileInputStream(new File(filename));
 
-					// return a error is brand is missing from the url string. Actually it will never reach this when sid is null.
-					if (sid == null) {
-						System.out.println("Error: please specify seriesInstanceUid for this search");
-//						return Response.status(400)
-//								.entity("Error: please specify seriesInstanceUid for this search")
-//								.build();
+						if (in != null) {
+							// Add Zip Entry
+							String fileNameInZip = String.format("%08d", ++counter)
+									+ filename.substring(filename.lastIndexOf("."));
+							zip.putNextEntry(new ZipEntry(fileNameInZip));
+
+							// Write file into zip
+							IOUtils.copy(in, zip);
+							zip.closeEntry();
+							in.close();
+						}
 					}
 
-					List<String> fileNames = getImage(sid);
-
-					for (String filename : fileNames) {
-						FileInputStream fis = new FileInputStream(new File(filename));
-						String fileNameInZip = sid+filename.substring(filename.lastIndexOf(File.separator));
-			            zip.putNextEntry(new ZipEntry(fileNameInZip));
-			            int count;
-			            byte[] data = new byte[2048];
-
-		                while ((count = fis.read(data, 0, data.length)) > 0) {
-		                	writer.write(data, 0, count);
-		                }
-
-
-		                closeInputStream(fis);
-		                writer.flush();
-						zip.closeEntry();
-			        }
+					zip.close();
+//					Timestamp zetimestamp = new Timestamp(System.currentTimeMillis());
+//					System.out.println("Done with zip and stream--" + sdf.format(zetimestamp));
+				} catch (FileNotFoundException fnex) {
+					fnex.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
-//					return Response.status(500)
-//							.entity("Server was not able to process your request")
-//							.build();
+				} finally {
+					zip.close();
+					// Flush output
+					if (output != null) {
+						output.flush();
+						output.close();
+					}
+					// Close input
+					if (in != null)
+						in.close();
 				}
-
-				writer.flush();
-				writer.close();
 			}
 		};
-		Thread writerThread = new Thread(runnable, "FileGenerator");
-		writerThread.start();
 
-		return source;
-
-	}
-
-	private void closeInputStream(FileInputStream bis) throws IOException {
-		if (bis != null) {
-			bis.close();
-			bis = null;
-		}
+		return Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM)
+				.header("Content-Disposition", "attachment; filename=\"" + zipName + "\"").build();
 	}
 }

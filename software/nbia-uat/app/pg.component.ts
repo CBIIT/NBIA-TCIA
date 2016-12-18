@@ -239,7 +239,6 @@ export class PgComponent{
 		else {
 			this.statusMessage.push({severity:'error', summary:'Error: ', detail:'Error occured while retriving data from server. Check the server connection please. Error code: '+error.status});
 		}
-		this.searchInProgress = false;
 	}			
 }
 
