@@ -73,7 +73,7 @@
 												action="#{addWorkFlowItemBean.editWorkflow}"
 												onclick="editWorkflow('#{item.id}');">	
 										</h:commandButton>
-										<input type="hidden" name="hiddenName" id="hiddenName"/>
+										<input type="hidden" name="hiddenName" id="hiddenName" value='#{item.id}'/>
                            </div>
  
              </ice:column>
@@ -89,7 +89,7 @@
                                              action="#{mngWorkFlowBean.deleteWorkflow}"
                                             onclick="delWorkflow('#{item.id}', '#{item.name}');">
                                 </h:commandButton>
-                                	<input type="hidden" name="hiddenDel" id="hiddenDel"/>
+									<input type="hidden" name="hiddenDel" id="hiddenDel" value='#{item.id}'/>
                             </div>
  
              </ice:column>
