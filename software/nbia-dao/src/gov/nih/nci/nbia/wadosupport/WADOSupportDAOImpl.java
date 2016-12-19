@@ -22,8 +22,10 @@ import org.hibernate.SQLQuery;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.util.*;
+
 import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.*;
 
@@ -132,7 +134,7 @@ public WADOSupportDTO getWADOSupportDTO(String study, String series, String imag
 	return returnValue;
 }
 @Transactional(propagation=Propagation.REQUIRED)
-public WADOSupportDTO getOviyamWADOSupportDTO(String image, String contentType, String user)
+public WADOSupportDTO getOviyamWADOSupportDTO(String image, String contentType, String user, WADOParameters params)
 {
 	WADOSupportDTO returnValue = new WADOSupportDTO();
 	log.info("Oviyam wado image-"+image);
@@ -193,7 +195,7 @@ public WADOSupportDTO getOviyamWADOSupportDTO(String image, String contentType, 
 		    returnValue.setImage(FileUtils.readFileToByteArray(imageFile));
 		} else
 		{
-			JPEGResult result = DCMUtils.getJPGFromFile(imageFile, new WADOParameters());
+			JPEGResult result = DCMUtils.getJPGFromFile(imageFile, params);
 			if (result.getErrors()!=null)
 			{
 				returnValue.setErrors(result.getErrors());
