@@ -162,7 +162,7 @@ public class StudyDAOImpl extends AbstractDAO
 			++i;
 		}
 		if (studyInstanceUid != null) {
-			where = where.append(" and UPPER(s.studyInstanceUID)=?");
+			where = where.append(" and s.studyInstanceUID=?");
 			paramList.add(studyInstanceUid.toUpperCase());
 			++i;
 		}
