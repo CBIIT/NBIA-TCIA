@@ -126,7 +126,6 @@ public class O_wado extends getData {
 		{
 			params.setTransferSyntax(transferSyntax);
 		}
-		params.setRows("48");
 		WADOSupportDTO wdto = getWadoImage(objectUID, contentType, user, params);
 		if (wdto.getErrors()!=null){
 			log.error("WADO Error: " + wdto.getErrors());
