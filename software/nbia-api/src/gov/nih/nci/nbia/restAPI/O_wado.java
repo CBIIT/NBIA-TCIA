@@ -35,6 +35,7 @@
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -67,13 +68,66 @@ public class O_wado extends getData {
 			@QueryParam("objectUID") String objectUID,
 			@QueryParam("contentType") String contentType,
 			@QueryParam("oviyamId") String oviyamId, 
-			@QueryParam("wadoUrl") String wadoUrl) {
+			@QueryParam("wadoUrl") String wadoUrl,
+			@QueryParam("rows") String rows,
+			@QueryParam("columns") String columns,
+			@QueryParam("region") String region,
+			@QueryParam("windowCenter") String windowCenter,
+			@QueryParam("windowWidth") String windowWidth,
+			@QueryParam("imageQuality") String imageQuality,
+			@QueryParam("frameNumber") String frameNumber,
+			@QueryParam("presentationUID") String presentationUID,
+			@QueryParam("presentationSeriesUID") String presentationSeriesUID,
+			@QueryParam("transferSyntax") String transferSyntax) {
  //       System.out.println("Oviyam wado called: + objectUID-"+objectUID+" contentType-"+contentType+" oviyamId:"+oviyamId+" wadoUrl");
 		String user=null;
 		if (oviyamId!=null&&oviyamId.length()>0){
 			user=OviyamUtil.getUser(oviyamId, wadoUrl);
 		}
-		WADOSupportDTO wdto = getWadoImage(objectUID, contentType, user);
+		WADOParameters params = new WADOParameters();
+		if (rows!=null&&rows.length()>0)
+		{
+			params.setRows(rows);
+		}
+		if (columns!=null&&columns.length()>0)
+		{
+			params.setColumns(columns);
+		}
+		
+		if (region!=null&&region.length()>0)
+		{
+			params.setRegion(region);
+		}
+		if (windowCenter!=null&&windowCenter.length()>0)
+		{
+			params.setWindowCenter(windowCenter);
+		}
+		if (windowWidth!=null&&windowWidth.length()>0)
+		{
+			params.setWindowWidth(windowWidth);
+		}
+		if (imageQuality!=null&&imageQuality.length()>0)
+		{
+			params.setImageQuality(imageQuality);
+		}
+		if (frameNumber!=null&&frameNumber.length()>0)
+		{
+			//params.setFrameNumber(frameNumber);
+		}
+		if (presentationUID!=null&&presentationUID.length()>0)
+		{
+			params.setPresentationUID(presentationUID);
+		}
+		if (presentationSeriesUID!=null&&presentationSeriesUID.length()>0)
+		{
+			params.setPresentationSeriesUID(presentationSeriesUID);
+		}
+		if (transferSyntax!=null&&transferSyntax.length()>0)
+		{
+			params.setTransferSyntax(transferSyntax);
+		}
+		params.setRows("48");
+		WADOSupportDTO wdto = getWadoImage(objectUID, contentType, user, params);
 		if (wdto.getErrors()!=null){
 			log.error("WADO Error: " + wdto.getErrors());
     		return Response.status(400).type("text/plain")
