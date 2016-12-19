@@ -368,10 +368,10 @@ public class getData {
 		return wdto;
 		
 	}
-	protected WADOSupportDTO getWadoImage(String image, String contentType, String user){
+	protected WADOSupportDTO getWadoImage(String image, String contentType, String user, WADOParameters params){
 		
 		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
-		WADOSupportDTO wdto = wadoDao.getOviyamWADOSupportDTO(image, contentType, user);
+		WADOSupportDTO wdto = wadoDao.getOviyamWADOSupportDTO(image, contentType, user, params);
 		return wdto;
 		
 	}
