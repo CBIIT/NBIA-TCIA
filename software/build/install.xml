@@ -168,6 +168,11 @@ L-->
 					<filter token="tomcat.home" value="${gov.nih.nci.ncia.tomcat.home}"/>
 				</filterset>
 			</copy>
+		    <copy file="${common.resources.dir}/tomcat/setenv.sh" tofile="${gov.nih.nci.ncia.tomcat.home}/bin/setenv.sh" overwrite="true">
+			    <filterset>
+				    <filter token="tomcat.home" value="${gov.nih.nci.ncia.tomcat.home}"/>
+			    </filterset>
+		    </copy>
 			<copy file="${common.resources.dir}/tomcat/context.xml" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/context.xml" overwrite="true">
 			</copy>
 			<copy file="${common.resources.dir}/tomcat/log4j.properties" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/log4j.properties" overwrite="true">
