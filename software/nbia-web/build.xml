@@ -214,6 +214,14 @@ L-->
   	  	                   replace="${nbia.wiki.user.guide.url}" flags="g" /> 
   	  	                   
   	<!-- end: Insert wiki link into login Failure and to quick links-->
+  	<!-- PWM-->
+  	<replace file="${webapp.dir}/WEB-INF/facelets/legalRules.xhtml"
+	  		   	           token="@@@"
+  	  	                   value="${gov.nih.nci.ncia.registration.server}"/> 
+  	<!-- TCIA BUILD -->
+  	<replace file="${webapp.dir}/WEB-INF/facelets/layout/footer.xhtml"
+	  		   	           token="@@@"
+  	  	                   value="${gov.nih.nci.ncia.tcia.build}"/> 
   </target>
 
   <target name="patch-jnlp" depends="copy-and-prepare-nbia_war">
