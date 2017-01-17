@@ -116,7 +116,7 @@ L-->
                     
     <dependency org="gov.nih.nci.csm"
                 name="csmapi"
-                rev="5.2"
+                rev="5.2.0.1"
                 conf="compile->master;runtime->default">
       <exclude module="jdom"/>
     </dependency>            
