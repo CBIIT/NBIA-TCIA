@@ -492,8 +492,9 @@ L-->
 			<property name="nbia.version" value="${nbia.version}"/>
 			<property name="nbia_prod_build_tag.final" value="${nbia_prod_build_tag.final}"/>
 			<property name="gov.nih.nci.ncia.wiki.context.sensitive.help.url" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
-			<property name="nbia.wiki.user.guide.url" value="${nbia.wiki.user.guide.url}"
-			/>
+			<property name="nbia.wiki.user.guide.url" value="${nbia.wiki.user.guide.url}"/>
+			<property name="gov.nih.nci.ncia.registration.server" value="${gov.nih.nci.ncia.registration.server}"/>
+			<property name="gov.nih.nci.ncia.tcia.build" value="${gov.nih.nci.ncia.tcia.build}"/>
 			<property name="property.file" value="${properties.file}"/>
 		</ant>
 	</target>
