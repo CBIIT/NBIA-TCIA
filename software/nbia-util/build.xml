@@ -48,7 +48,7 @@ L-->
   </target>
 
   <target name="compile" depends="-pre-clean, -init, ivy-compile" description="Compiles the Java source code">
-    <javac srcdir="${src.java.dir}" destdir="${classes.dir}" debug="true">
+    <javac srcdir="${src.java.dir}" destdir="${classes.dir}" debug="true" target="1.7" >
       <classpath refid="compile.classpath" />
     </javac>
   </target>
