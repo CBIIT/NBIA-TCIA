@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
 
 
 public class DirectoryBrowserPanel extends JPanel {
@@ -35,6 +37,18 @@ public class DirectoryBrowserPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				actionBrowse();
 			}
+		});
+		browseTextField.getDocument().addDocumentListener(new DocumentListener() {
+			public void insertUpdate(DocumentEvent e){
+				DownloadManagerFrame.startButton.setEnabled(true);
+			}
+		    public void changedUpdate(DocumentEvent e) {
+		        
+		    }
+		    
+		    public void removeUpdate(DocumentEvent e) {
+		        
+		    }
 		});
 	}
 
