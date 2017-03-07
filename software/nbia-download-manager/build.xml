@@ -84,7 +84,8 @@ L-->
         from="^(.*)\-working\@(.*)\.jar$" 
         to="\1.jar"/>
 
-    </move>                  
+    </move>
+	<copy file="${resources.dir}/nbia-services-grid.jar" toDir="${project.lib.dir}/runtime"/>
   </target> 
   
    
@@ -116,7 +117,7 @@ L-->
     <copy todir="${build}" filtering="true">
     	 <fileset dir="${resources.dir}" includes="**/*.properties" />
     </copy>
-       
+    	   
     <jar jarfile="${dist.jar}">
     	<fileset dir="${build}" includes="**/*.*" />
       <manifest>
@@ -125,7 +126,7 @@ L-->
       </manifest>
     </jar>
     <copy file="${dist.jar}" toDir="${target.dir}" />
-    
+
     <!--
     <copy todir="${target.dir}">
       <fileset dir="${project.lib.dir}/runtime">
