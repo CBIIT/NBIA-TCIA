@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
 
-
 public class DirectoryBrowserPanel extends JPanel {
 	public DirectoryBrowserPanel() {
 		JLabel fileLocation = new JLabel("Select Directory For Downloaded Files:");
