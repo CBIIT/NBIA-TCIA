@@ -38,7 +38,9 @@
 package gov.nih.nci.nbia.security;
 
 import gov.nih.nci.nbia.dao.AbstractDAO;
+import gov.nih.nci.nbia.ldapService.UserLdapService;
 import gov.nih.nci.nbia.util.NCIAConfig;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -48,12 +50,22 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.AuthorizationDAOImpl;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.security.exceptions.CSTransactionException;
+
 import org.apache.commons.lang.time.DateUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -69,6 +81,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
                                      implements NCIASecurityManager {
 
     private static Logger logger = Logger.getLogger(NCIASecurityManager.class);
+    static final Logger resultLog = Logger.getLogger("LDAPSyncRPT");
     // Constants used in CSM API but is not provided in CSM API. So define here.
     private static final byte ZERO = 0;
     private static final int PASSWORD_EXPIRY_DAYS = 60;
@@ -319,4 +332,175 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 			"Please re-register using the Register Now link on the login page.");
 		}
 	}
+    
+    public NCIAUser getUserInfoFromLDAP(String loginName) {
+    	UserLdapService uls= (UserLdapService)SpringApplicationContext.getBean("userLdapService");
+     	return (NCIAUser)uls.getUserGroupInfo(loginName).get(0);
+    }
+        
+	public void syncDBWithLDAP(String loginName) {
+		resultLog.debug("user " + loginName + " in LDAP/DB sync process:");
+
+		List<String> ignoreGroups = getIgnoreGroupList();
+		String publicGrpName = NCIAConfig.getPublicGroupName();
+		Set<Group> grpsInDB = null;
+		List<String> grpInDBList = null;
+
+		// need to check and add public group if it does not exist
+		checkThenAddGroup(publicGrpName);
+
+		NCIAUser nciaUser = getUserInfoFromLDAP(loginName);
+		Long userId = isUserExist(loginName);
+
+		if (null == userId) {
+			addNewUserToDB(nciaUser);
+		} else { // the user in DB already. Get Associated groups
+			try {
+				grpsInDB = (Set<Group>) upm.getGroups(userId.toString());
+
+				// add that to ignoreGroups list
+				if ((grpsInDB != null) && grpsInDB.size() > 0)
+					grpInDBList = new ArrayList<String>();
+				for (Group obj : grpsInDB) {
+					ignoreGroups.add(obj.getGroupName());
+					grpInDBList.add(obj.getGroupName());
+					resultLog.debug(loginName + "'s DB group: " + obj.getGroupName());
+				}
+			} catch (CSObjectNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		// get LDAP groups now
+		List<String> grps = nciaUser.getGroups();
+		if ((null != grps) && (!grps.contains(publicGrpName))) {
+			// user is in LDAP but not in public group -- possible case??
+			grps.add(publicGrpName);
+		}
+
+		if (grps != null) {
+			resultLog.debug("get number of LDAP group for the user " + grps.size());
+			for (int i = 0; i < grps.size(); ++i) {
+				String ldapGrpName = grps.get(i);
+				resultLog.debug("LDAP group:" + ldapGrpName);
+				if ((grpInDBList != null) && (grpInDBList.contains(ldapGrpName)))
+					grpInDBList.remove(ldapGrpName); // the group in both LDAP
+														// and DB then remove
+														// from the list
+				else {
+					if (!ignoreGroups.contains(ldapGrpName)) {
+						checkThenAddGroup(ldapGrpName);
+						try {
+							upm.assignUserToGroup(loginName, ldapGrpName);
+							resultLog.info("assign user " + loginName + " to group: " + ldapGrpName + " in database");
+						} catch (CSTransactionException e) {
+							e.printStackTrace();
+						}
+
+					}
+				}
+				// else System.out.println(ldapGrpName + " should be ignored");
+			}
+		}
+
+		if ((grpInDBList != null) && (grpInDBList.size() > 0)) {
+			deassignUserFromGroups(userId, grpInDBList);
+			rptDeassignedGrp(loginName, grpInDBList);
+		}
+	}
+    
+    private List<String> getIgnoreGroupList() {
+    	if ((null!= NCIAConfig.getLDAPGroupIgnoreList())  &&  (NCIAConfig.getLDAPGroupIgnoreList().length()>0))
+    		return  new ArrayList(Arrays.asList(NCIAConfig.getLDAPGroupIgnoreList().split(",")));
+    	else {
+    		return new ArrayList<String>();
+    	}
+    }
+    
+    private void rptDeassignedGrp(String loginName, List<String> grpInDBList) {
+    	for (String grpN: grpInDBList) {
+    		resultLog.info("Deassign user "+ loginName + "from grpup "+ grpN);
+    	}   	
+    }
+    
+	private Group isGroupExist(String grpName) {
+		Group exampleGroup = new Group();
+
+		exampleGroup.setGroupName(grpName);
+		GroupSearchCriteria gsc = new GroupSearchCriteria(exampleGroup);
+		List<Group> groupResult = upm.getObjects(gsc);
+		if ((groupResult != null) && (groupResult.size() > 0)) {
+			resultLog.debug("group " + grpName + " is in database already");
+			return ((Group) groupResult.get(0));
+		} else
+			return null;
+	}
+
+	private Long isUserExist(String loginName) {
+		User user = new User();
+		user.setLoginName(loginName);
+		UserSearchCriteria usc = new UserSearchCriteria(user);
+		List<User> userList = upm.getObjects(usc);
+
+		if ((userList != null) && (userList.size() > 0)) {
+			resultLog.debug("user " + loginName + " is in database already");
+			return userList.get(0).getUserId();
+		} else
+			return null;
+	}
+	
+	private void addNewUserToDB(NCIAUser nciaUser) {
+		resultLog.info("add new user:" + nciaUser.getLoginName() + " to db and public group");
+		User user = new User();
+		user.setLoginName(nciaUser.getLoginName());
+		user.setEmailId(nciaUser.getEmail());
+		user.setActiveFlag((byte) 1);
+		user.setFirstName("csm-need-this-firstN");
+		user.setLastName("csm-need-this-lastN");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		try {
+			user.setPasswordExpiryDate(
+					simpleDateFormat.parse(simpleDateFormat.format(Calendar.getInstance().getTime())));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			upm.createUser(user);
+			upm.assignUserToGroup(nciaUser.getLoginName(), NCIAConfig.getPublicGroupName());
+		} catch (CSTransactionException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void checkThenAddGroup(String grpName) {
+		Group grp = isGroupExist(grpName);
+		if (grp == null) {
+			try {
+				resultLog.info(grpName + " group is not in DB and add it now");
+				grp = new Group();
+				grp.setGroupName(grpName);
+				grp.setGroupDesc(grpName);
+				upm.createGroup(grp);
+			} catch (CSTransactionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void deassignUserFromGroups(Long userId, List<String> grpInDBList) {
+		for (String grpName : grpInDBList) {
+			Group exampleGroup = new Group();
+
+			exampleGroup.setGroupName(grpName);
+			GroupSearchCriteria gsc = new GroupSearchCriteria(exampleGroup);
+			List<Group> groupResult = upm.getObjects(gsc);
+			try {
+				upm.removeUserFromGroup(groupResult.get(0).getGroupId().toString(), userId.toString());
+			} catch (CSTransactionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+     
 }

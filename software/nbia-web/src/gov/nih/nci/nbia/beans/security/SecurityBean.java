@@ -204,6 +204,11 @@ public class SecurityBean {
 				System.out.println(token);
 				logger.info("authentication registered user");
 			}
+			
+			if (usingLDAP() && isInLDAP  && NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+				sm.syncDBWithLDAP(uname);
+			}
+			
 			isInLocal = sm.isInLocalDB(username);
 			
 			if (isInLDAP && isInLocal) {
@@ -530,4 +535,9 @@ public class SecurityBean {
 			return null;
 		}
 	}
+	public boolean usingLDAP() {
+		if (NCIAConfig.getAuthenticationType().toLowerCase().startsWith("ldap"))
+			return true;
+		else return false;
+	}  	
 }

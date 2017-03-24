@@ -669,6 +669,40 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("drilldown.className");
         checkProperty("drilldown.className", propertyValue);
         return propertyValue;
+    }
+    public static String getAuthenticationType() {
+        String propertyValue = properties.getProperty("authentication.type");
+        checkProperty("authentication.type", propertyValue);
+        return propertyValue;   	
+    }
+    
+    public static String getLDAPMailAttrName() {
+        String propertyValue = properties.getProperty("ldap.mail.attribute.name");
+        checkProperty("ldap.mail.attribute.name", propertyValue);
+        return propertyValue;   	
+    }
+    
+    public static String getLDAPMemberOfAttrName() {
+        String propertyValue = properties.getProperty("ldap.memberOf.attribute.name");
+        checkProperty("ldap.memberOf.attribute.name", propertyValue);
+        return propertyValue;   	
+    } 
+    
+    public static String getLDAPGroupIgnoreList() {
+        String propertyValue = properties.getProperty("ldap.group.ignore.list");
+        return propertyValue;   	
+    } 
+    public static String getPublicGroupName() {
+        String propertyValue = properties.getProperty("public.collection.access.group.name");
+        checkProperty("public.collection.access.group.name", propertyValue);
+        return propertyValue;   	
+    } 
+    public static String getProductVariation() {
+        String propertyValue = properties.getProperty("product.variation");
+        if(propertyValue==null || "".equals(propertyValue)|| " ".equals(propertyValue))
+        	return new String();
+
+        return propertyValue;   	
     }    
     
     /**

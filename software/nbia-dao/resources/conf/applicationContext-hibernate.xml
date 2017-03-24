@@ -34,12 +34,25 @@ L-->
 
   <!-- JNDI DataSource for JEE environments -->
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="classpath:hibernate.properties"/>
+    <!--property name="location" value="classpath:hibernate.properties"/-->	
+	<property name="locations">
+            <list>
+                <value>classpath:hibernate.properties</value>
+                <value>classpath:nbia.properties</value>
+            </list>
+        </property> 
+    <property name="ignoreUnresolvablePlaceholders" value="true"/>
   </bean>
 
 
   <bean id="hProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-    <property name="location" value="classpath:hibernate.properties" />
+    <!--property name="location" value="classpath:hibernate.properties" /-->
+		<property name="locations">
+            <list>
+                <value>classpath:hibernate.properties</value>
+                <value>classpath:nbia.properties</value>
+            </list>
+        </property> 
   </bean>
 
   <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ncia"/>
@@ -293,7 +306,20 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
     service MBean, using its bean name as JMX object name.
   -->
   <context:mbean-export/>
-
-
-
+  
+	<bean id="contextSource"
+		class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="${ldap.url}" />
+		<property name="base" value="${ldap.basedn}" />
+		<property name="userDn" value="${ldap.user}" />
+		<property name="password" value="${ldap.pass}" />
+		<property name="pooled" value="false"/>	
+	</bean>
+	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<constructor-arg ref="contextSource" />
+	</bean>
+	<bean id="userLdapService"
+		class="gov.nih.nci.nbia.ldapService.UserLdapService">
+		<property name="ldapTemplate" ref="ldapTemplate" />
+	</bean>  
 </beans>

@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-dao"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/csmapi-5.2.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/csmapi-5.2.0.1.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/dcm4che-1.4.23.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/hibernate-3.2.0.ga.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/jboss-j2ee-4.0.4.GA.jar"/>

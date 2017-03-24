@@ -144,7 +144,7 @@ L-->
 				<include name="NCIA.csm.new.hibernate.cfg.xml"/>
 			</fileset>
 		</copy>
-	    <if>
+	    <!--if>
 	     <available file="${tomcat.dir}/ahp_nbia.properties"/>
 	      <then>
 	      	<copy file="${tomcat.dir}/ahp_nbia.properties" tofile="${webapp.dir}/WEB-INF/classes/nbia.properties"/>
@@ -152,8 +152,8 @@ L-->
 	      <else>
 	      	<copy file="${property.dir}/install.properties" tofile="${webapp.dir}/WEB-INF/classes/nbia.properties"/>
 	      </else>
-	    </if>
-		<copy file="${property.dir}/install.properties" tofile="${webapp.dir}/WEB-INF/classes/nbia.properties"/>
+	    </if-->
+		<!--copy file="${property.dir}/install.properties" tofile="${webapp.dir}/WEB-INF/classes/nbia.properties"/-->
 		<copy file="${tomcat.dir}/DataSourceItem.xml" tofile="${webapp.dir}/WEB-INF/classes/DataSourceItem.xml"/>
 		<copy file="${tomcat.dir}/relationship.xml" tofile="${webapp.dir}/WEB-INF/classes/relationship.xml"/>
 	</target>

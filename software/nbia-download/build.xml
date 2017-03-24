@@ -126,7 +126,7 @@ L-->
         <include name="**/*"/>
       </fileset>
     </copy>
-  	<copy file="${property.dir}/install.properties" tofile="tmp.webapp/WEB-INF/classes/nbia.properties"/>
+  	<!--copy file="${property.dir}/install.properties" tofile="tmp.webapp/WEB-INF/classes/nbia.properties"/-->
 
     <copy todir="tmp.webapp/WEB-INF"
           file="config/applicationContext-service.xml"/>

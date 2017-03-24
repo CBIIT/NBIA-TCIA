@@ -167,7 +167,13 @@ L-->
       <dependency org="org.springframework"
                              name="spring-web"
                              rev="3.2.8.RELEASE"
-                             conf="compile->master;runtime->master"/>      
+                             conf="compile->master;runtime->master"/>
+							 
+	  <dependency org="org.springframework.ldap" 
+							name="spring-ldap-core"
+							rev="1.3.2.RELEASE"
+							conf="compile->master;runtime->master"/>
+
       
       <dependency org="aopalliance"
    		                     name="aopalliance"

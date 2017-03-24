@@ -124,4 +124,6 @@ public interface NCIASecurityManager {
      * Change the password for the user with loginName
      */
     public void modifyPasswordForNewUser(String loginName, String password) throws Exception;
+    
+    public void syncDBWithLDAP(String loginName) throws Exception;
 }

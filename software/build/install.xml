@@ -189,16 +189,20 @@ L-->
 			</copy>
 		    <copy file="${common.lib.dir}/${database.driver.jar}" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/${database.driver.jar}" overwrite="true">
 		</copy>
-		<copy file="${basedir}/install.properties" tofile="${basedir}/nbia.properties"/>
-	    <war destfile="${basedir}/nbia-wars/ncia.war" update="true">
+		<!--copy file="${basedir}/install.properties" tofile="${basedir}/nbia.properties"/-->
+		<copy file="${basedir}/install.properties" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/nbia.properties"/>
+	    <!--war destfile="${basedir}/nbia-wars/ncia.war" update="true">
 	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
+			<zipfileset dir="${basedir}"  prefix="WEB-INF/classes"/>
 	    </war>
 	    <war destfile="${basedir}/nbia-wars/nbia-api.war" update="true">
 	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
+			<zipfileset dir="${basedir}"  prefix="WEB-INF/classes"/>
 	    </war>		
 	    <war destfile="${basedir}/nbia-wars/nbia-download.war" update="true">
 	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
-	    </war>				
+			<zipfileset dir="${basedir}"  prefix="WEB-INF/classes"/>
+	    </war-->				
 		  <copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps">
 		    <fileset dir="${basedir}/nbia-wars"/>
 		  </copy>

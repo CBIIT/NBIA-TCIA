@@ -26,6 +26,7 @@
 package gov.nih.nci.nbia.security;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -43,6 +44,7 @@ public class NCIAUser implements Serializable {
     private Long userId;
     private String loginName;
     private String email;
+    private List<String> groups;
 
     public NCIAUser() {
     }
@@ -76,5 +78,18 @@ public class NCIAUser implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+	/**
+	 * @return the groups
+	 */
+	public List<String> getGroups() {
+		return groups;
+	}
+
+	/**
+	 * @param groups the groups to set
+	 */
+	public void setGroups(List<String> groups) {
+		this.groups = groups;
+	}
 }

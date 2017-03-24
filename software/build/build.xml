@@ -150,6 +150,7 @@ L-->
 	
 	<target name="build:local:install" description="Deply the wars to local tomcat defined in buildAHP3.properties" depends="
 		build:all">
+		<delete dir="${application.base.path.windows}/apache-tomcat-7.0.68/webapps/ncia"/>
 		<copy todir="${application.base.path.windows}/apache-tomcat-7.0.68/webapps" overwrite="true">
 			<fileset dir="${dist.exploded.dir}/nbia-wars">
 				<include name="ncia.war"/>
@@ -182,7 +183,7 @@ L-->
 		<ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}" target="${nbia-dao.build.target}" dir="${nbia-dao.base.dir}">
 			<property name="database.driver" value="${database.driver}"/>
 			<property name="database.dialect" value="${database.dialect}"/>
-			<property name="application.context.name" value="${application.context.name}"/>
+			<property name="application.context.name" value="${application.context.name}"/>			
 		</ant>
 	</target>
 	
@@ -890,6 +891,7 @@ L-->
 		</copy>
 		<copy file="${common.resources.dir}/tomcat/log4j.properties" tofile="${dist.exploded.dir}/tomcat-files/log4j.properties" overwrite="true">
 		</copy>
+		
 		<copy file="${common.resources.dir}/tomcat/server.xml" tofile="${dist.exploded.dir}/tomcat-files/server.xml" overwrite="true">
 			<filterset>
 				<filter token="database.type" value="${database.type}"/>
@@ -949,6 +951,7 @@ L-->
 		</copy>
 		<copy file="${common.resources.dir}/tomcat/log4j.properties" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/log4j.properties" overwrite="true">
 		</copy>
+		<copy file="${properties.file}" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/nbia.properties"/>
 		<copy file="${common.resources.dir}/tomcat/server.xml" tofile="${gov.nih.nci.ncia.tomcat.home}/conf/server.xml" overwrite="true">
 			<filterset>
 				<filter token="database.type" value="${database.type}"/>
