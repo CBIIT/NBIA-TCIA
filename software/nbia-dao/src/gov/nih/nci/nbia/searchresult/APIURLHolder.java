@@ -7,6 +7,11 @@ public class APIURLHolder {
 	public static String getUrl()
 	{
 		return url;
+		//return "http://localhost:45210";
+	}
+	public static String getExternalUrl()
+	{
+		return url;
 	}
 	public static String addUser(String user)
 	{
@@ -38,6 +43,7 @@ public class APIURLHolder {
 	public static String getWadoUrl()
 	{
 		return wadoUrl;
+		//return "http://localhost:45210/ncia/wado";
 	}
     public static void main(String[] args)
     {
