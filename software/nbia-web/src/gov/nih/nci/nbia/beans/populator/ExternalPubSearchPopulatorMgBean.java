@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class ExternalPubSearchPopulatorMgBean {
 
-	public void populate() {
+	public String populate() {
 
 	AnonymousLoginBean anonymousLoginBean = BeanManager.getAnonymousLoginBean();
 	try {
@@ -40,6 +40,7 @@ public class ExternalPubSearchPopulatorMgBean {
     catch (Exception e) {
         e.printStackTrace();
     }
+	    return "externalSearch";
 	}
 
 	private String collectionName;
