@@ -759,7 +759,7 @@ public class QcToolUpdateBean {
     {
         SecurityBean secure = BeanManager.getSecurityBean();
         String userName = secure.getUsername();
-    	String url = APIURLHolder.getUrl()+"/nbia-api/services/o/wado?contentType=application/dicom&objectUID="+
+    	String url = APIURLHolder.getExternalUrl()+"/nbia-api/services/o/wado?contentType=application/dicom&objectUID="+
     	imageSearchResult.getSopInstanceUid()+"&oviyamId="+APIURLHolder.addUser(userName)+
 		"&wadoUrl="+APIURLHolder.getWadoUrl();
 		setImageLink(url);
