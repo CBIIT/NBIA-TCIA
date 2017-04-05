@@ -78,11 +78,7 @@ L-->
 	                                <h:outputText value="#{msg.search_date}" />
 	                              </div>
 	                            </td>
-	                            <td class="formTitleII" scope="col">
-	                              <div align="left">
-	                                <h:outputText value="Study Images" />
-	                              </div>
-	                            </td>
+
 	                            
 	                            <td class="formTitleII" scope="col">
 	                              <div align="left">
@@ -105,12 +101,7 @@ L-->
 	                                            rendered="#{(study.study.offSetDesc) != null}" 
 	                                            title="#{study.dateString}" />
 	                            </td>
-	                            <td  class="formLabel">
-                                   <h:commandLink target="newWin"
-                                                    onclick="window.open('#{study.study.link}');return false;">
-                                                     <h:outputText value="DICOM Web Viewer"/>
-                                    </h:commandLink> 
-	                            </td>	
+
 	                            
 								<td class="formLabel" valign="middle" width="10%">
                                    <h:commandLink id="addSeriesToBasketButton"  style="float:right; border: solid 1px #2A4E77;" styleClass="button" action="#{studiesSearchResultBean.addAstudySeriesToBasket(study.study.studyInstanceUid)}">
