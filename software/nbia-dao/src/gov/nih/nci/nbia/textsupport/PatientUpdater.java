@@ -106,6 +106,7 @@ public class PatientUpdater {
 		   log.info("Last ran = "+solrDoc.toString());
 		   server.add(solrDoc);
 		   server.commit();
+		   //server.optimize();
 	  
 
 	  }
