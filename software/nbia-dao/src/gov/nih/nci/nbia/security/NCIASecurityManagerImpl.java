@@ -203,7 +203,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
         Map<String, TableProtectionElement> tempHastable = new Hashtable<String, TableProtectionElement>();
 
         //userRoles = combination of user PG and users groups PGs
-        Set<ProtectionGroupRoleContext> userRoles = new HashSet<ProtectionGroupRoleContext>();
+        List<ProtectionGroupRoleContext> userRoles = new ArrayList<ProtectionGroupRoleContext>();
 
         //step 1 get PG tied directly to user
         Set<ProtectionGroupRoleContext> userSpecificRoles = upm.getProtectionGroupRoleContextForUser(userId);
