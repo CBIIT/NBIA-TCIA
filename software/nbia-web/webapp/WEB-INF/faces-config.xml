@@ -64,6 +64,13 @@ L-->
   </navigation-rule>  
   <navigation-rule>
     <navigation-case>
+      <from-outcome>externalSearch</from-outcome>
+      <to-view-id>/searchMain.jsf</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>  
+  <navigation-rule>
+    <navigation-case>
       <from-outcome>searchReset</from-outcome>
       <to-view-id>/searchMain.jsf</to-view-id>
       <redirect />
