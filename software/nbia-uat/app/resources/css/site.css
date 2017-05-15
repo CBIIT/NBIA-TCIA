@@ -599,3 +599,9 @@ pre {
 .ui-tabview-left > .ui-tabview-nav {
     height: 150px;
 }
+
+ .hline{
+	width:100%; 
+	height:2px; 
+	background: #fff
+}

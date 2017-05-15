@@ -3,9 +3,9 @@
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.dao.SearchCriteria;
-import gov.nih.nci.security.dao.UserSearchCriteria;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 
@@ -21,17 +21,17 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/v3/getUserList")
-public class V3_getUserList extends getData{
-	private static final String[] columns={"loginName", "email", "active"};
+@Path("/v3/getGroupList")
+public class V3_getGroupList extends getData{
+	private static final String[] columns={"userGroup", "description"};
 	public final static String TEXT_CSV = "text/csv";
 
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method get a list of user login names
+	 * This method get a list of group names
 	 *
-	 * @return String - list of user login names
+	 * @return String - list of group names
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
@@ -41,28 +41,26 @@ public class V3_getUserList extends getData{
 		
 		try {
 			UserProvisioningManager upm = getUpm();
-			User user = new User();
-			SearchCriteria searchCriteria = new UserSearchCriteria(user);
+			Group group = new Group();
+			SearchCriteria searchCriteria = new GroupSearchCriteria(group);
 
-			java.util.List<User> existUserLst = upm.getObjects(searchCriteria);
-
-			if ( existUserLst != null) {
-				data = new ArrayList<Object []>();
-
-				for(User existUser : existUserLst) {
-					Object [] objs = {existUser.getLoginName(), existUser.getEmailId(), existUser.getActiveFlag()};
+			java.util.List<Group> existGroupLst = upm.getObjects(searchCriteria);
+			data = new ArrayList<Object []>();
+			if ( existGroupLst != null) {
+				
+				for(Group existGroup : existGroupLst) {
+					Object [] objs = {existGroup.getGroupName(), existGroup.getGroupDesc()};
 		            data.add(objs);
 		        }
 			}
 			else {
-				Object [] objs = {"Warning: No user has defined yet!", "NA", "NA"};
+				Object [] objs = {"Warning: No group has defined yet!", "NA"};
 				data.add(objs);
 			}
 		} catch (CSConfigurationException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (CSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

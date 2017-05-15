@@ -102,5 +102,16 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/jersey-servlet-1.17.1.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/spring-security-oauth2-1.0.5.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/spring-ldap-core-1.3.2.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-audit-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-base64-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-core-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-filecache-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-hp-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-image-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-imageio-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-imageio-rle-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-iod-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-net-2.0.25.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-soundex-2.0.25.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

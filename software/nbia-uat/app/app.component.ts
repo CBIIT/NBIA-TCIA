@@ -1,6 +1,7 @@
 import {Component, Input} from 'angular2/core';
 import {UserComponent} from "./user.component"
 import {PgComponent} from "./pg.component"
+import {GroupComponent} from "./group.component"
 import {PgRoleComponent} from "./pgRole.component"
 import {TabView} from 'primeng/primeng';
 import {TabPanel} from 'primeng/primeng';
@@ -56,11 +57,14 @@ import myGlobals = require('./conf/globals');
     <p-tabPanel header="Protection Group">
         <pg></pg>
     </p-tabPanel>
+    <p-tabPanel header="User Group">
+	   <group></group>
+    </p-tabPanel>	
     <p-tabPanel header="User Authorization">
 	   <pgRole [addedUser]="addedUser"></pgRole>
     </p-tabPanel>	
 	`,
-	directives: [UserComponent,PgComponent,PgRoleComponent,TabView,TabPanel]
+	directives: [UserComponent,PgComponent,GroupComponent,PgRoleComponent,TabView,TabPanel]
 })
 
 
@@ -69,6 +73,7 @@ export class AppComponent {
 	
 	constructor() {
 	  myGlobals.accessToken = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')[0].split('=')[1]; 
+//uncomment the below statement when check in!!!
 	  myGlobals.serviceUrl = window.location.protocol +"//"+ window.location.host+"/nbia-api/services/v3/"; 
 
     }

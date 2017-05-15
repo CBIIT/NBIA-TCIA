@@ -14,7 +14,7 @@ L-->
               http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
               http://www.springframework.org/schema/security/oauth http://www.springframework.org/schema/security/spring-security-oauth-1.0.xsd">
 
-  <http auto-config='true' access-denied-page="/login.jsp">
+  <http auto-config='true' >
     <intercept-url pattern="/services/v1/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
     <intercept-url pattern="/services/v2/**" access="ROLE_USER" />
     <intercept-url pattern="/services/v3/**" access="ROLE_USER" />

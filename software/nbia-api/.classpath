@@ -38,16 +38,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/runtime/nbia-domain.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/runtime/nbia-dao.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/aopalliance-1.0.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/asm-3.1.jar"/>
@@ -157,7 +147,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/csmapi-5.2.jar">
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/csmapi-5.2.0.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -173,11 +163,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/ehcache-1.2.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/esapi-2.1.0.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -202,77 +187,12 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jackson-core-asl-1.9.2.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jackson-jaxrs-1.9.2.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jackson-mapper-asl-1.9.2.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jackson-xc-1.9.2.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jdom-1.0.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jersey-client-1.17.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jersey-core-1.17.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jersey-json-1.17.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jersey-server-1.17.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jersey-servlet-1.17.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jettison-1.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jsf-api-1.2_12.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jsr311-api-1.1.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/jta-1.0.1B.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/runtime/log4j-1.2.15.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -445,7 +365,17 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/servlet-api-2.4.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-core-3.2.2.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/nbia-services-commons-working@nbia-services-commons-resolver.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-oauth2-1.0.5.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-web-3.2.2.RELEASE.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/jstl-1.2.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-taglibs-3.2.2.RELEASE.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

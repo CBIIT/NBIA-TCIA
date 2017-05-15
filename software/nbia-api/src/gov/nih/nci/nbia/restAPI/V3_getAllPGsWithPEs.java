@@ -3,7 +3,6 @@
 
 package gov.nih.nci.nbia.restAPI;
 
-import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;

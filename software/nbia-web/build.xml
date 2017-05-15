@@ -175,7 +175,7 @@ L-->
   </target>
 
   <target name="compile" depends="ivy-compile">
-    <javac srcdir="${src.java.dir}" destdir="${web.classes.dir}" debug="true">
+    <javac srcdir="${src.java.dir}" destdir="${web.classes.dir}" debug="true" includeantruntime="false">
       <classpath refid="project.compile.classpath" />
       <classpath refid="project.compile.web.classpath" />
     </javac>

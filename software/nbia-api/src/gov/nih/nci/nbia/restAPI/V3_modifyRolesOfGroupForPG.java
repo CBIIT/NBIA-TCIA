@@ -3,9 +3,9 @@
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.Role;
-import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 
@@ -19,8 +19,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-@Path("/v3/modifyRolesOfUserForPG")
-public class V3_modifyRolesOfUserForPG extends getData{
+@Path("/v3/modifyRolesOfGroupForPG")
+public class V3_modifyRolesOfGroupForPG extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
@@ -31,7 +31,7 @@ public class V3_modifyRolesOfUserForPG extends getData{
 	@POST
 	@Produces({MediaType.APPLICATION_JSON})
 
-	public Response  constructResponse(@QueryParam("loginName") String loginName, @QueryParam("PGName") String pgName, @QueryParam("roleNames") String roleNames) {
+	public Response  constructResponse(@QueryParam("groupName") String groupName, @QueryParam("PGName") String pgName, @QueryParam("roleNames") String roleNames) {
 		try {
 			UserProvisioningManager upm = getUpm();
 			//getProtection using protection group name
@@ -42,10 +42,10 @@ public class V3_modifyRolesOfUserForPG extends getData{
 				Role role = getRoleByRoleName(roleNameList[i]);
 				roleIds[i] = role.getId().toString();
 			}
-			User user = getUserByLoginName(loginName);
+			Group group = getGroupByGroupName(groupName);
 			
-			upm.removeUserFromProtectionGroup(pg.getProtectionGroupId().toString(), user.getUserId().toString());
-			upm.addUserRoleToProtectionGroup(user.getUserId().toString(), roleIds, pg.getProtectionGroupId().toString());
+			upm.removeGroupFromProtectionGroup(pg.getProtectionGroupId().toString(), group.getGroupId().toString());
+			upm.addGroupRoleToProtectionGroup(pg.getProtectionGroupId().toString(), group.getGroupId().toString(), roleIds);
 
 		} catch (CSConfigurationException e) {
 			e.printStackTrace();

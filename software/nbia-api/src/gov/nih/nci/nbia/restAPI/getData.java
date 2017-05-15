@@ -7,33 +7,28 @@ import gov.nih.nci.nbia.dao.PatientDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
 import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
 import gov.nih.nci.nbia.restSecurity.AuthorizationService;
-import gov.nih.nci.nbia.security.NCIASecurityManager;
-import gov.nih.nci.nbia.security.TableProtectionElement;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.nbia.util.NCIAConfig;
-import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.wadosupport.WADOParameters;
 import gov.nih.nci.nbia.wadosupport.WADOSupportDAO;
 import gov.nih.nci.nbia.wadosupport.WADOSupportDTO;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -41,9 +36,6 @@ import javax.ws.rs.core.Response;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.sun.jersey.api.client.ClientResponse.Status;
 
@@ -231,6 +223,17 @@ public class getData {
 		List<ProtectionGroup> list = upm.getObjects(searchCriteria);	
 		return list.get(0);
 	}
+	
+	// For UPT replacement GUI
+	public Group getGroupByGroupName(String groupName) throws Exception {
+		UserProvisioningManager upm = getUpm();
+		Group group = new Group();
+
+		group.setGroupName(groupName);		
+		SearchCriteria searchCriteria = new GroupSearchCriteria(group);
+		List<Group> list = upm.getObjects(searchCriteria);	
+		return list.get(0);
+	}	
 
 	// For UPT replacement GUI
 	public Role getRoleByRoleName(String roleName) throws Exception {
