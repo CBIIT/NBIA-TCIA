@@ -1,7 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Group} from '../../app/groups/group';
-import {Group} from '../../app/groups/group';
 import myGlobals = require('../../app/conf/globals');
 import {Headers} from "angular2/http";
 import {Observable} from 'rxjs/Observable';
@@ -79,7 +78,7 @@ export class GroupService {
 	
 	addNewPgRoleForGroup(groupName: string, pgName: String, roleNames: string)	{
 		var serviceUrl = myGlobals.serviceUrl +'assignGroupToPGWithRoles';
-		var params = '?groupName=' + groupName + '&PGName=' + pgName+ '&roleNames='+roleNames);
+		var params = '?groupName=' + groupName + '&PGName=' + pgName+ '&roleNames='+roleNames;
 		var headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		if(myGlobals.accessToken) {

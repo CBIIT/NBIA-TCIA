@@ -97,7 +97,7 @@ export class GroupComponent{
     save() {
 		this.statusMessage = [];
   
-		this.groupService.addNewPgRoleForGroup(this.selectedGroup.userGroup, this.selectedPGName, this.srs)
+		this.groupService.addNewPgRoleForGroup(this.selectedGroup.userGroup, this.selectedPGName, this.srs.join(","))
 		.subscribe(
 			data => this.postData = JSON.stringify(data),
 			error =>  {this.handleError(error);this.errorMessage = <any>error},
@@ -123,7 +123,11 @@ export class GroupComponent{
 	}	
 	
     findSelectedPgRoleIndex(): number {
-        return this.group.pgs.findIndex(x =>x.pgName === this.selectedPGName);
+ //ES6 freaure       return this.group.pgs.findIndex(x =>x.pgName === this.selectedPGName);
+	for ( var i = 0; i < this.group.pgs.length; i++) {
+		  if (this.group.pgs[i].pgName == this.selectedPGName)
+			return i;
+	}
     }
 
 	updateRole(){
