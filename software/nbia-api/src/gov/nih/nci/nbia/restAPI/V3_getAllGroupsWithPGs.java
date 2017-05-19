@@ -11,11 +11,13 @@ import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.util.ProtectionGroupRoleContextComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
@@ -50,13 +52,15 @@ public class V3_getAllGroupsWithPGs extends getData{
 			
 			List<Group> groups = getAllGroups();
 			for (Group grp : groups) {
-				Set<ProtectionGroupRoleContext> groupRoles = upm.getProtectionGroupRoleContextForGroup(grp.getGroupId().toString());
+				HashSet<ProtectionGroupRoleContext> groupRoles = (HashSet<ProtectionGroupRoleContext>)upm.getProtectionGroupRoleContextForGroup(grp.getGroupId().toString());
+				ArrayList<ProtectionGroupRoleContext> sortedList = new ArrayList<ProtectionGroupRoleContext>(groupRoles);
+				Collections.sort(sortedList, new ProtectionGroupRoleContextComparator());
 				JSONArray json = new JSONArray();
-				Iterator it = groupRoles.iterator();
-				while(it.hasNext()) {
+				
+				for(ProtectionGroupRoleContext gp: sortedList) {
 					JSONObject jobjpg = new JSONObject();
 					StringBuffer allRoleNames = new StringBuffer();
-					ProtectionGroupRoleContext gp = (ProtectionGroupRoleContext)it.next();
+
 					Iterator itr = gp.getRoles().iterator();
 					while (itr.hasNext()) {
 						Role role = (Role)itr.next();
@@ -101,4 +105,5 @@ public class V3_getAllGroupsWithPGs extends getData{
 		}
 		return null ;
 	}
+	
 }

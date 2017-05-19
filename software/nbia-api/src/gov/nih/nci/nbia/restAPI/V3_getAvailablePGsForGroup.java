@@ -61,6 +61,7 @@ public class V3_getAvailablePGsForGroup extends getData{
 			    }
 				
 			    allPg.removeAll(usedPg);
+			    Collections.sort(new ArrayList<String>(allPg));
 			}
 			else allPg.add("Warning: No Data Group found. Please create one first.");
 		} catch (CSConfigurationException e) {
