@@ -58,10 +58,13 @@ export class PgRoleComponent {
 	}
 	
     ngOnInit() {
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading data...'});
 		this.userNames = [];
 		this.userNames.push({label:'Select User', value:''});	
 		this.pgRoleService.getUserNames().
-		then(userNames => this.userNames = <SelectItem[]>userNames, 
+		then(userNames => {this.userNames = <SelectItem[]>userNames; this.statusMessage = [];
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
+		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 		
 		this.selectedUserName = null;
@@ -71,7 +74,6 @@ export class PgRoleComponent {
 		
 		this.allRoles = [];
 		this.statusMessage = [];
-		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 	}
 	
 	ngOnChanges(changes: any[]) {
@@ -180,7 +182,7 @@ export class PgRoleComponent {
 		else if (error.status == 200) {
 			this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Request sent to server.'});
 		}
-		else if (error.status === undefined){
+		else if (error.status == undefined){
 			this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Sent.'});
 		}
 		else {

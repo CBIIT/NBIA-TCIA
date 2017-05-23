@@ -605,3 +605,19 @@ pre {
 	height:2px; 
 	background: #fff
 }
+
+.ui-multiselect .ui-multiselect-label {
+    display: block;
+    padding: 3px 26px 3px 5px;
+	max-width: 348px;
+    white-space: nowrap;
+	border: 0;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+/*
+.ui-dialog {
+  top: 10px !important;
+}
+*/

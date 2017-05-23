@@ -37,7 +37,8 @@ export class PgComponent{
 	}
 
     ngOnInit() {
-        this.pgService.getPgs().then(pgs => this.pgs = pgs,
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading user data...'});
+        this.pgService.getPgs().then(pgs => {this.pgs = pgs; this.statusMessage = [];},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
     }
 

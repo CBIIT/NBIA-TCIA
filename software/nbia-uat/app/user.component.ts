@@ -30,7 +30,8 @@ export class UserComponent {
 	}
 
     ngOnInit() {
-        this.userService.getUsers().then(users => this.users = users,
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading user data...'});
+        this.userService.getUsers().then(users => {this.users = users; this.statusMessage = [];}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
     }
 

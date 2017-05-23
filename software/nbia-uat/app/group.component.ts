@@ -40,15 +40,15 @@ export class GroupComponent{
 	}
 
     ngOnInit() {
-        this.groupService.getGroups().then(groups => this.groups = groups,
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading group data...'});
+        this.groupService.getGroups().then(groups => {this.groups = groups; this.statusMessage = [];},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 		this.selectedGroupName = null;
 		
 		this.availablePgs = [];
 		this.availablePgs.push({label:'Choose', value:''});	
 		
-		this.allRoles = [];
-		this.statusMessage = [];	
+		this.allRoles = [];	
     }
 
     showDialogToAdd() {
@@ -153,7 +153,7 @@ export class GroupComponent{
 				() => console.log("Finished")
 			);
         this.groups.splice(this.findSelectedGroupIndex(), 1);
-        this.group = null;
+        //this.group = null;
         this.displayDialog = false;
     }
 	

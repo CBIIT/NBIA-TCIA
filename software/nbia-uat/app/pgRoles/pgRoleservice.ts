@@ -12,7 +12,9 @@ import {SelectItem} from 'primeng/components/api/selectitem';
 @Injectable()
 export class PgRoleService {
 
-	constructor(private http: Http) {}
+	constructor(private http: Http) {
+		
+	}
 
 	getUserNames() {
 		var serviceUrl = myGlobals.serviceUrl +'getUserNameList';
