@@ -133,6 +133,11 @@ public class GetSimpleSearch extends getData{
 			    criteria.setMinNumberOfStudiesValue(new Integer(inFormParams.get("value"+i).get(0)));
 				query.setCriteria(criteria);
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ModalityAndedSearchCriteria")){
+				ModalityAndedSearchCriteria criteria=new ModalityAndedSearchCriteria();
+			    criteria.setModalityAndedSearchValue(inFormParams.get("value"+i).get(0));
+				query.setCriteria(criteria);
+			}
 			i++;
 		}
         PatientSearcher patientSearcher = new PatientSearcher();

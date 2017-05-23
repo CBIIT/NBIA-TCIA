@@ -170,6 +170,11 @@ public class RESTUtil {
     	       form.add("criteriaType"+i,"MinNumberOfStudiesCriteria");
     	       form.add("value"+i, cri.getMinNumberOfStudiesValue().toString());
     	   }
+    	   if (scriteria instanceof ModalityAndedSearchCriteria) {
+    		   ModalityAndedSearchCriteria cri = (ModalityAndedSearchCriteria)scriteria;
+    	       form.add("criteriaType"+i,"ModalityAndedSearchCriteria");
+    	       form.add("value"+i, cri.getModalityAndedSearchValue().toString());
+    	   }
        i++;
       }
 
