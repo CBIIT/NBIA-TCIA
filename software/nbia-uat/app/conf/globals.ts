@@ -8,4 +8,5 @@ export var accessToken;
 export var wikiContextSensitiveHelpUrl="https://wiki.nci.nih.gov/display/NBIA/NBIA+Help+Topics#NBIAHelpTopics";
 export var manageUserWiki = "-ManagingUsers";
 export var managePGWiki = "-ManagingProtectionGroups";
+export var manageGroupWiki = "-ManagingUserGroups";
 export var userAuthorizationWiki = "-AddingProtectionGroupsandAssigningRoles";

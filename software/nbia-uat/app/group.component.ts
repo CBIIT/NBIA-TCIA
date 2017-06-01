@@ -36,7 +36,7 @@ export class GroupComponent{
 	srs: string[] = [];
 	
     constructor(private groupService: GroupService) {
-		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.managePGWiki;
+		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.manageGroupWiki;
 	}
 
     ngOnInit() {

@@ -71,29 +71,6 @@ public class EquipmentUtilTestCase extends TestCase {
 
 	}	
 
-	public void testConvertEquipmentAvailableSearchTerms() {
-		AvailableSearchTerms availableSearchTerms = new AvailableSearchTerms();
-		availableSearchTerms.setEquipment(constructManufacturers());
-		
-		Map<String, Map<String, Set<String>>> manu =
-			EquipmentUtil.convertEquipment(availableSearchTerms);
-		
-		assertTrue(manu.size()==2);
-		
-		Map<String, Set<String>> modelMap1 = manu.get("man1");
-		Set<String> versionSet1 = modelMap1.get("model1");
-		assertNotNull(modelMap1.get("model2"));
-		assertTrue(versionSet1.size()==2);
-		assertTrue(modelMap1.size()==2);
-		
-		Map<String, Set<String>> modelMap2 = manu.get("man2");
-		Set<String> versionSet2 = modelMap2.get("model1");
-		assertNotNull(modelMap2.get("model2"));
-		assertNotNull(modelMap2.get("model3"));
-		assertTrue(versionSet2.size()==2);
-		assertTrue(modelMap2.size()==3);
-	}
-
 	public void testConvertEquipmentMapOfStringMapOfStringSetOfString() {
 		
 		Map<String, Map<String, Set<String>>> manu

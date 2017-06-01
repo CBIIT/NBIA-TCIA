@@ -13,14 +13,14 @@
                     <div class="ui-grid-col-11" >
                         <div class="ui-grid ui-grid-responsive ui-grid-pad">
                             <div class="ui-grid-row" >
-                                <div class="ui-grid-col-5">Protection Group</div>
-								<div class="ui-grid-col-5">Assigned Role</div>
+                                <div class="ui-grid-col-5"><strong>Protection Group</strong></div>
+								<div class="ui-grid-col-5"><strong>Assigned Role</strong></div>
                             </div>
                             
                         </div>
                     </div>
 					<div class="ui-grid-col-1" align="right">
-						Edit Association
+						<strong>Edit Association</strong>
                     </div>
                 </div>		
                 <div class="ui-grid-row" *ngFor="#pg of group.pgs">
@@ -124,7 +124,7 @@
 		</div>
 		<footer>
 			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button type="button" pButton icon="fa-close" (click)="deassignPG()" label="Deassign PG"></button>
+				<button type="button" pButton icon="fa-close" (click)="deassignPG()" label="Remove PG"></button>
 				<button type="button" pButton icon="fa-check" (click)="updateRole()" label="Update Role"  [disabled]="srs.length==0"></button>			
 			</div>
 		</footer>
