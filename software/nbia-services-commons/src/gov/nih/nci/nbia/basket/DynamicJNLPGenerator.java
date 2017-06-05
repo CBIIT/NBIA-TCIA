@@ -77,6 +77,7 @@ public class DynamicJNLPGenerator {
            File dataFile = new File(System.getProperty("java.io.tmpdir"), "jnlp-data"+currentTimeMillis+".txt");
            OutputStream os = new FileOutputStream(dataFile);
            IOUtils.writeLines(seriesDownloadData, System.getProperty("line.separator"), os);
+           os.close();
            argsBuilder.append("<argument>").append(dataFile.getAbsolutePath()).append("</argument>");
             //get user id and included annotation
             StringBuffer propXMLBuilder = new StringBuffer();

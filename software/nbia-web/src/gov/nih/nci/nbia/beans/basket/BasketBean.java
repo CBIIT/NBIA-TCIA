@@ -20,7 +20,6 @@ import gov.nih.nci.nbia.basket.DownloadRecorder;
 import gov.nih.nci.nbia.beans.BeanManager;
 import gov.nih.nci.nbia.beans.searchresults.DefaultThumbnailURLResolver;
 import gov.nih.nci.nbia.beans.searchresults.ImageResultWrapper;
-import gov.nih.nci.nbia.beans.searchresults.PatientResultWrapper;
 import gov.nih.nci.nbia.beans.security.AnonymousLoginBean;
 import gov.nih.nci.nbia.beans.security.SecurityBean;
 import gov.nih.nci.nbia.customserieslist.FileGenerator;
@@ -36,18 +35,23 @@ import gov.nih.nci.nbia.basket.DynamicJNLPGenerator;
 import gov.nih.nci.nbia.util.MessageUtil;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.NCIAConstants;
+import gov.nih.nci.nbia.util.SeriesDTOConverter;
 import gov.nih.nci.nbia.util.SlideShowUtil;
+import gov.nih.nci.nbia.util.StringEncrypter;
 import gov.nih.nci.nbia.zip.ZipManager;
 import gov.nih.nci.nbia.searchresult.ImageSearchResult;
 import gov.nih.nci.nbia.searchresult.SeriesSearchResult;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,10 +64,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.servlet.http.HttpServletRequest;
 
-
-
-
-
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.icesoft.faces.async.render.SessionRenderer;
@@ -259,7 +260,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
             return BasketBean.HTTP_DOWNLOAD;
         } else if (hasBasketChangedSinceDownload) {
             ImageZippingMessage izm = new ImageZippingMessage();
-            String mqURL = NCIAConfig.getMessagingUrl();
             izm.setEmailAddress(sb.getEmail());
             izm.setUserName(sb.getUsername());
 
@@ -589,12 +589,7 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
             System.out.println("No data in data basket, do not show the download manager");
             return null;
         }
-
-
         String jnlp = RESTUtil.getJNLP(this.getSeriesItems(), sb.getPassword(), getIncludeAnnotation(), sb.getTokenValue());
-        		
-
-
         ByteArrayResource bar = new ByteArrayResource(jnlp.getBytes());
         return bar;
     }
@@ -602,6 +597,104 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
     public String getJnlpFileName(){
         return jnlpFileName;
     }
+	
+	public com.icesoft.faces.context.Resource getStandaloneDMFile() throws Exception {
+		long currentTimeMillis = System.currentTimeMillis();
+		manifestFileName = "NBIADM-" + currentTimeMillis + ".manifest";
+
+		if (basket.isEmpty()) {
+			logger.info("No data in data basket, do not show the download manager");
+			return null;
+		}
+
+		List<String> seriesDownloadData = new ArrayList<String>();
+		boolean hasPrivateCollection = false;
+		for (BasketSeriesItemBean seriesItem : basket.getSeriesItems()) {
+
+			String collection = seriesItem.getProject();
+			String patientId = seriesItem.getPatientId();
+			String studyInstanceUid = seriesItem.getStudyId();
+			String seriesInstanceUid = seriesItem.getSeriesId();
+			String annotation = seriesItem.getAnnotated();
+			Integer numberImages = seriesItem.getTotalImagesInSeries();
+			Long imagesSize = seriesItem.getTotalSizeForAllImagesInSeries();
+			Long annoSize = seriesItem.getAnnotationsSize();
+			String url = "url";
+			String displayName = "displayName";
+
+			if (!isPublicCollection(collection)) {
+				hasPrivateCollection = true;
+			}
+
+			String argument = "" + collection + "|" + patientId + "|" + studyInstanceUid + "|" + seriesInstanceUid + "|"
+					+ annotation + "|" + numberImages + "|" + imagesSize + "|" + annoSize + "|" + url + "|"
+					+ displayName + "|" + true;
+			seriesDownloadData.add(argument);
+		}
+
+		String dataFileName = "NBIADM-" + sb.getUsername() + "-" + currentTimeMillis;
+		File dataFile = new File(System.getProperty("java.io.tmpdir"), dataFileName);
+		OutputStream os = new FileOutputStream(dataFile);
+		IOUtils.writeLines(seriesDownloadData, System.getProperty("line.separator"), os);
+		if (hasPrivateCollection) {
+			String encryptedPassword = this.encrypt(sb.getPassword());
+			IOUtils.write(sb.getUsername() + "\n" + encryptedPassword + "\n" + NCIAConfig.getEncryptionKey(), os);
+		}
+		os.close();
+
+		StringBuffer outSB = new StringBuffer();
+		outSB.append("downloadServerUrl=" + NCIAConfig.getDownloadServerUrl() + "\n");
+		outSB.append("includeAnnotation=" + getIncludeAnnotation() + "\n");
+
+		outSB.append("noOfrRetry=" + NCIAConfig.getNoOfRetry() + "\n");
+		String tmpDir = System.getProperty("java.io.tmpdir");
+		if (File.separatorChar != '/')
+			tmpDir = tmpDir.replace(File.separatorChar, '/');
+		outSB.append("tempLoc=" + tmpDir + "/\n");
+
+		if (hasPrivateCollection) {
+			outSB.append("databasketId=" + dataFileName + "-x\n");
+		} else
+			outSB.append("databasketId=" + dataFileName + "\n");
+
+		ByteArrayResource bar = new ByteArrayResource(outSB.toString().getBytes());
+		return bar;
+	}
+
+	public String getManifestFileName() {
+		return manifestFileName;
+	}
+
+	private HashSet<String> getPubicCollections() throws Exception {
+		HashSet<String> pubCollectionSet = new HashSet<String>();
+		List<String> pubCollections = null;
+		pubCollections = SecurityBean.getCollectionForPublicRole();
+
+		for (String cname : pubCollections) {
+			pubCollectionSet.add(cname.split("//")[0]);
+		}
+		return pubCollectionSet;
+	}
+
+	private boolean isPublicCollection(String collection) {
+		HashSet<String> set;
+		try {
+			set = getPubicCollections();
+			if (set.contains(collection)) {
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	private String encrypt(String password) throws Exception {
+		StringEncrypter encrypter = new StringEncrypter();
+		return encrypter.encryptString(password);
+	}
 
     private String exportFileName;
 
@@ -786,6 +879,8 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
      * jnlpTemplate and list of seriesItem.
      */
     private String jnlpFileName;
+    
+    private String manifestFileName;
 
     /**
      * The path of where to place the zip file.

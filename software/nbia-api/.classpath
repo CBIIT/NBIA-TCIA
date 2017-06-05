@@ -81,7 +81,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/nbia-dao-working@nbia-dao-resolver.jar">
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/nbia-dao-working@nbia-dao-resolver.jar" sourcepath="/NBIA_BASE/nbia-dao/src">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -367,7 +367,7 @@
 	</classpathentry>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/servlet-api-2.4.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-core-3.2.2.RELEASE.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/nbia-services-commons-working@nbia-services-commons-resolver.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/nbia-services-commons-working@nbia-services-commons-resolver.jar" sourcepath="/NBIA_BASE/nbia-services-commons/src"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-oauth2-1.0.5.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-security-web-3.2.2.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/jstl-1.2.jar"/>

@@ -11,6 +11,7 @@ package gov.nih.nci.nbia.servlet;
 import gov.nih.nci.nbia.DownloadProcessor;
 import gov.nih.nci.nbia.dto.AnnotationDTO;
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.StringEncrypter;
 
 import java.io.File;
@@ -60,6 +61,10 @@ public class DownloadServlet extends HttpServlet {
             Boolean includeAnnotation = Boolean.valueOf(request.getParameter("includeAnnotation"));
             Boolean hasAnnotation = Boolean.valueOf(request.getParameter("hasAnnotation"));
             String sopUids = request.getParameter("sopUids");
+            
+            if ((userId==null) ||(userId.length() <1)) {
+            	userId = NCIAConfig.getGuestUsername();
+            }
 
             logger.info("sopUids:"+sopUids);
             logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation + " hasAnnotation: " + hasAnnotation);

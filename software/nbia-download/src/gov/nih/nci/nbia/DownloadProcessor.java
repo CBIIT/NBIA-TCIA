@@ -108,10 +108,12 @@ public class DownloadProcessor {
         if(isGuestEnabled() && userId.equals(NCIAConfig.getGuestUsername())) {
              guestLogin = true;
         }
+
         NCIASecurityManager mgr = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-        if(!guestLogin && !mgr.login(userId, password)) {
+        if(!guestLogin && !mgr.login(userId, password)) {      	
              return false;
         }
+       
         return true;
     }
 

@@ -20,9 +20,11 @@ import gov.nih.nci.nbia.util.MessageUtil;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.util.StringUtil;
-
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.nbia.security.TableProtectionElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -539,5 +541,21 @@ public class SecurityBean {
 		if (NCIAConfig.getAuthenticationType().toLowerCase().startsWith("ldap"))
 			return true;
 		else return false;
-	}  	
+	} 
+	
+	public static List<String> getCollectionForPublicRole() throws CSObjectNotFoundException {
+		List<String> publicProtectionElemLst = new ArrayList<String>();
+		String csmContextName = NCIAConfig.getCsmApplicationName() + ".";
+
+		NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
+		Set<TableProtectionElement> publicPEs = mgr.getSecurityMapForPublicRole();
+		for (TableProtectionElement tPE : publicPEs) {
+			String protectionElementName = tPE.getAttributeValue();
+			if (protectionElementName.indexOf("//") != -1) {
+				protectionElementName = protectionElementName.replaceFirst(csmContextName, "");
+				publicProtectionElemLst.add(protectionElementName);
+			}
+		}
+		return publicProtectionElemLst;
+	}
 }

@@ -185,6 +185,17 @@ L-->
                                         attachment="false"/>  
                   </ice:panelGroup> 
                 </td>
+                <td>
+                  <ice:panelGroup styleClass="iceMnuBarItem">  
+                    <ice:outputResource id="launchStandaloneDM"
+                                        label="Download Manifest"
+                                        resource="#{basketBean.standaloneDMFile}"                                                                              
+                                        fileName="#{basketBean.manifestFileName}" 
+                                        mimeType="application/x-java-manifest-file" 
+                                        rendered="true"
+                                        attachment="false"/>  
+                  </ice:panelGroup> 
+                </td>                
                 <td>              
                   <ice:panelGroup styleClass="iceMnuBarItem" 
                                   rendered="#{basketBean.enableCreateAList}"> 
