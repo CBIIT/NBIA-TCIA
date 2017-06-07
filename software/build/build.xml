@@ -145,7 +145,7 @@ L-->
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="
 		clean,
 		init,
-		compute-tag-properties, build:nbia-web, dist:ctp-client, dist:ctp-server,dist:solr, build:nbia-api">
+		compute-tag-properties, build:nbia-web, dist:ctp-client, dist:ctp-server,dist:solr, build:nbia-api, build:nbia-standaloneDM">
 	</target>
 	
 	<target name="build:local:install" description="Deply the wars to local tomcat defined in buildAHP3.properties" depends="
@@ -383,6 +383,11 @@ L-->
 			<property name="gov.nih.nci.ncia.wiki.context.sensitive.help.url" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
 		</ant>
 	</target>
+	
+	<target name="build:nbia-standaloneDM" depends="init,
+                   build:nbia-util">
+		<ant inheritAll="false" inheritRefs="false" antfile="buildDMC.xml" target="${nbia-download-manager.build.target}" dir="${nbia-download-manager.base.dir}"/>
+	</target>	
 	
 	<target name="keygen">
 		<sequential>

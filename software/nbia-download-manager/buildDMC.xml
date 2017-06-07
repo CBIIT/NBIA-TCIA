@@ -1,0 +1,125 @@
+<!--
+ant -f buildDMC.xml
+-->
+
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="StandaloneDMProject" default="run" basedir=".">
+	<description>
+		Create a executable jar for Standalond Download Manager with Ant build script
+	</description>
+
+	<property name="projectName" value="StandaloneDM" />
+	<property name="common.dir" value="${basedir}/../" />
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="bin" />
+	<property name="dist.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager" />
+	<property name="dist.lib.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager/lib" />
+	<property name="resources.dir" location="resources" />
+	<property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
+	<property name="lib.dir" value="${project.lib.dir}/compile" />	
+	<property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
+	<property name="main-class" value="gov.nih.nci.nbia.StandaloneDM" />
+
+	<path id="common.classpath">
+		<fileset dir="${common.dir}/target/lib">
+			<include name="ivy-*.jar" />
+		</fileset>
+	</path>
+
+	<!-- Task definitions -->
+	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="common.classpath" />
+
+	<!-- Targets -->
+	<target name="ivy-settings">
+		<ivy:settings file="${global.ivy.settings.file}"/>
+	</target>
+
+	<!-- ivy start -->
+	<target name="ivy-compile" depends="ivy-settings">
+		<ivy:resolve file="ivy.xml"
+                 conf="compile" />
+		<ivy:retrieve conf="compile" 
+                  pattern="${project.lib.dir}/[conf]/[artifact]-[revision].[ext]" />
+
+		<move todir="${project.lib.dir}/compile">
+			<fileset dir="${project.lib.dir}/compile">
+				<include name="*-working@*.jar"/>
+			</fileset>
+			<mapper type="regexp" 
+              from="^(.*)\-working\@(.*)\.jar$" 
+              to="\1.jar"/>
+		</move>
+	</target>
+
+	<target name="ivy-runtime" depends="ivy-settings">
+		<ivy:resolve file="ivy.xml"
+                 conf="runtime" />
+		<ivy:retrieve conf="runtime" 
+                  pattern="${project.lib.dir}/[conf]/[artifact]-[revision].[ext]" />
+
+		<move todir="${project.lib.dir}/runtime">
+			<fileset dir="${project.lib.dir}/runtime">
+				<include name="*-working@*.jar"/>
+			</fileset>
+			<mapper type="regexp" 
+        from="^(.*)\-working\@(.*)\.jar$" 
+        to="\1.jar"/>
+		</move>
+	</target>
+
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<path id="classpath">
+		<fileset dir="${project.lib.dir}">
+			<include name="/compile/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- Need classpath to run this -->
+	<target name="compile" depends="init, ivy-compile" description="compile the source ">
+		<javac includeantruntime="false" srcdir="${src.dir}"
+                       destdir="${build.dir}" classpathref="classpath" />
+	</target>
+
+	<!-- Group all dependencies into a big dependency-all.jar -->
+	<target name="copy-dependencies" depends="ivy-runtime">
+
+		<mkdir dir="${dist.lib.dir}" />
+
+		<jar jarfile="${dist.lib.dir}/dependencies-all.jar">
+			<zipgroupfileset dir="${project.lib.dir}/runtime">
+				<include name="**/*.jar" />
+			</zipgroupfileset>
+		</jar>
+
+	</target>
+
+	<!-- jar it, extract above dependency-all.jar and zip it with project files -->
+	<target name="jar" depends="compile, copy-dependencies"
+                description="package, output to JAR">
+		<copy todir="${build.dir}" filtering="true">
+			<fileset dir="${resources.dir}" includes="**/*.properties" />
+		</copy>
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${dist.lib.dir}" />
+
+		<jar jarfile="${dist.dir}/${projectName}.jar" basedir="${build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+			<zipfileset src="${dist.lib.dir}/dependencies-all.jar"
+                                excludes="META-INF/*.SF" />
+		</jar>
+
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<!-- Default, run this -->
+	<target name="run" depends="clean, compile, jar" />
+
+</project>
