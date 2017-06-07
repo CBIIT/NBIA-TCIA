@@ -8,6 +8,7 @@
 
 package gov.nih.nci.nbia.basket;
 
+import gov.nih.nci.nbia.lookup.BasketSeriesItemBean;
 import junit.framework.TestCase;
 
 public class BasketSeriesItemBeanTestCase extends TestCase {
