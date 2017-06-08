@@ -8,5 +8,5 @@ export var accessToken;
 export var wikiContextSensitiveHelpUrl="https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics";
 export var manageUserWiki = "-ManagingUsers";
 export var managePGWiki = "-ManagingProtectionGroups";
-export var manageGroupWiki = "-ManagingUsersGroups";
-export var userAuthorizationWiki = "-ManagingAddingProtectionGroupsandAssigningRoles";
+export var manageGroupWiki = "-ManagingUserGroups";
+export var userAuthorizationWiki = "-AddingProtectionGroupsandAssigningRoles";
