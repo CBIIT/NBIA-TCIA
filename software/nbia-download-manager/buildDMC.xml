@@ -71,15 +71,16 @@ ant -f buildDMC.xml
 	</target>
 
 	<path id="project.compile.classpath">
-		<fileset dir="${project.lib.dir}">
-			<include name="/compile/*.jar" />
+		<fileset dir="${project.lib.dir}/compile">
+			<include name="*.jar" />
 		</fileset>
 	</path>
 
 	<!-- Need project.compile.classpath to run this -->
 	<target name="compile" depends="init, ivy-compile" description="compile the source ">
-		<javac includeantruntime="false" srcdir="${src.dir}"
-                       destdir="${build.dir}" classpathref="project.compile.classpath" />	   
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+			<classpath refid="project.compile.classpath"/>
+		</javac>		
 	</target>
 
 	<!-- Group all dependencies into a big dependency-all.jar -->
