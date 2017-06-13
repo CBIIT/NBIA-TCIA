@@ -205,11 +205,12 @@ public class SecurityBean {
 				token=RESTUtil.getToken(username, password);
 				System.out.println(token);
 				logger.info("authentication registered user");
+				if (usingLDAP() && isInLDAP  && NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+					sm.syncDBWithLDAP(uname);
+				}
 			}
 			
-			if (usingLDAP() && isInLDAP  && NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
-				sm.syncDBWithLDAP(uname);
-			}
+
 			
 			isInLocal = sm.isInLocalDB(username);
 			
