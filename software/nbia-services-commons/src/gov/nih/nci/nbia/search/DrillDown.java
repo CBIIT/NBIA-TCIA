@@ -8,6 +8,8 @@
 
 package gov.nih.nci.nbia.search;
 
+import java.util.List;
+
 import gov.nih.nci.nbia.searchresult.ImageSearchResult;
 import gov.nih.nci.nbia.searchresult.ImageSearchResultEx;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
@@ -26,7 +28,7 @@ public interface DrillDown {
 	 * For a given patient, return all the studies for it.
 	 */
 	public StudySearchResult[] retrieveStudyAndSeriesForPatient(PatientSearchResult patientSearchResult, String userName);
-
+	public StudySearchResult[] retrieveStudyAndSeriesForPatients(List<PatientSearchResult> patientSearchResults, String userName);
 
 	/**
 	 * For a given series id, return all the images for it.  This id is

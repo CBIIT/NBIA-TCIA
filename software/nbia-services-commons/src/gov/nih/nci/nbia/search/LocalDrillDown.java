@@ -86,7 +86,43 @@ public class LocalDrillDown implements DrillDown {
 			throw new RuntimeException(ex);
 		}
 	}
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>If "patient public" is true and this search result isn't for something
+	 * that is public, return a 0 length study result array.
+	 */
+	public StudySearchResult[] retrieveStudyAndSeriesForPatients(List<PatientSearchResult> patientSearchResults, String userName) {
+		try {
+	      //if (isPatientPublic) {
+		//		PublicData publicData = new PublicData();
+		//		publicData.setAuthorizationManager(authorizationManager);
+		//		if (!publicData.checkPublicPatient(patientSearchResult.getId())) {
+		//			return new StudySearchResult[0];
+		//		}
 
+		//	} 
+			//StudyDAO studyDAO = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
+			//List<StudyDTO> studies = studyDAO.findStudiesBySeriesId(patientSearchResult.computeListOfSeriesIds());
+			List<Integer> input=new ArrayList<Integer>();
+			for (PatientSearchResult patient:patientSearchResults){
+			   input.addAll(patient.computeListOfSeriesIds());
+			}
+			List<StudyDTO> studies=RESTUtil.getStudyDrillDown(input, userName);
+			List<StudySearchResultImpl> results = new ArrayList<StudySearchResultImpl>();
+			for(StudyDTO studyDTO : studies) {
+				results.add(constructResult(studyDTO));
+			}
+
+			results = StudyUtil.calculateOffsetValues(results);
+
+			return results.toArray(new StudySearchResult[]{});
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex);
+		}
+	}
 
 	/**
 	 * {@inheritDoc}
