@@ -8,11 +8,11 @@
 
 package gov.nih.nci.nbia.dao;
 
-import java.util.List;
-
+import java.util.*;
+import gov.nih.nci.nbia.searchresult.*;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
-import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
+import gov.nih.nci.ncia.criteria.*;
 
 
 
@@ -24,6 +24,6 @@ public interface ValueAndCountDAO {
 
 	public List<ValuesAndCountsDTO> getValuesAndCounts(ValuesAndCountsCriteria criteria) throws DataAccessException;
 	public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException;
-		
+	public Map<String, ExtendedPatientSearchResult> extendedQuery(ExtendedSearchResultCriteria criteria) throws DataAccessException;
 
 }

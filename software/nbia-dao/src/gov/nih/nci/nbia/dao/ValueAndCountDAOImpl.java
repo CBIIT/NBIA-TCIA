@@ -14,16 +14,19 @@ import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesDTO;
 import gov.nih.nci.nbia.query.DICOMQuery;
+import gov.nih.nci.nbia.searchresult.ExtendedPatientSearchResult;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.CollectionCriteria;
+import gov.nih.nci.ncia.criteria.ExtendedSearchResultCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -50,6 +53,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String MANUFACTURER_QUERY="select manufacturer, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs, general_equipment ge"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id ";
+	private final static String EXTENDED_QUERY="select patient_pk_id, count(distinct image_pk_id) imageCount, sum(dicom_size) disksize from general_image gi ";
+	
 	static Logger log = Logger.getLogger(ValueAndCountDAOImpl.class);
 	
 
@@ -336,6 +341,37 @@ public class ValueAndCountDAOImpl extends AbstractDAO
              
               patientWhereStmt=patientWhereStmt.replace("p.patientId", "p.patient_id");
              return patientWhereStmt;
-}
+    }
+    @Transactional
+    public Map<String, ExtendedPatientSearchResult> extendedQuery(ExtendedSearchResultCriteria criteria) throws DataAccessException{
+    	Map<String, ExtendedPatientSearchResult> returnValue=new HashMap();
+        PatientCriteria pcriteria=new PatientCriteria();
+        for (String item:criteria.getSeriesIds())
+        {
+        	pcriteria.setCollectionValue(item);
+        }
+        CriteriaHandlerFactory handlerFac = CriteriaHandlerFactory.getInstance();
+    	String whereStatement="";
+    	try {
+			whereStatement=processPatientCriteria(pcriteria,handlerFac);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	whereStatement=" where general_series_pk_id "+whereStatement.substring(19);
+    	if (whereStatement.length()<2) return returnValue;
+    	String SQLQuery = EXTENDED_QUERY+whereStatement+" group by patient_id ";
+    	List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+    	        .list();
+    	
+        for(Object[] row : data)
+        {
+           String patientId=row[0].toString();
+           ExtendedPatientSearchResult item = new ExtendedPatientSearchResult();
+           item.setDiskSpace(new Long((long)Double.parseDouble(row[2].toString())));
+           item.setImageCount(new Long((long)Double.parseDouble(row[1].toString())));;
+           returnValue.put(patientId, item);
+        }
+    	return returnValue;
+    }
 
 }
