@@ -1,5 +1,6 @@
 package gov.nih.nci.nbia.restUtil;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
+import gov.nih.nci.nbia.searchresult.ExtendedPatientSearchResult;
 import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.dto.ImageDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
@@ -14,6 +15,18 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class JSONUtil {
 	
 	public static String getJSONforPatients(List<PatientSearchResult> patients){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(patients);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
+	public static String getJSONforExtendedPatients(List<ExtendedPatientSearchResult> patients){
 		String jsonInString = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
