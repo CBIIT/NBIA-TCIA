@@ -10,12 +10,15 @@ package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandler;
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandlerFactory;
+import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
+import gov.nih.nci.nbia.dto.CriteriaValuesDTO;
 import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.CollectionCriteria;
+import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
 
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	public static final String CLOSE_PARENTHESIS = " ) ";
 	private static final String COLLECTION_FIELD = "dp.project ";
 	private static final String SITE_FIELD = "dp.dp_site_name ";
+    public static final String PATIENT_ID = "p.patientId ";
 	private final static String COLLECTION_QUERY="select project, count(*) thecount from patient p, trial_data_provenance dp where p.trial_dp_pk_id=dp.trial_dp_pk_id ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
@@ -181,6 +185,102 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
+   @Transactional
+   public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException{
+    	List<CriteriaValuesForPatientDTO> returnValue=new ArrayList<CriteriaValuesForPatientDTO>();
+    	PatientCriteria pc=criteria.getPatientCriteria();
+    	CriteriaHandlerFactory handlerFac = CriteriaHandlerFactory.getInstance();
+    	String whereStatement="";
+    	try {
+			whereStatement=processPatientCriteria(pc,handlerFac);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	// Collections
+        String SQLQuery = COLLECTION_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+whereStatement;
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();	
+        CriteriaValuesForPatientDTO item=new CriteriaValuesForPatientDTO();
+        item.setCriteria("Collections");
+        List<CriteriaValuesDTO> values=new ArrayList<CriteriaValuesDTO>();
+        for(Object[] row : data)
+        {
+           CriteriaValuesDTO value=new CriteriaValuesDTO();
+           value.setCriteria(row[0].toString());
+           value.setCount(row[1].toString());
+           values.add(value);
+        }
+        if (values.size()>0)
+        {
+           item.setValues(values);
+           returnValue.add(item);
+        }  
+        
+        //Modality        
+        SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+whereStatement;
+		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();	
+        item=new CriteriaValuesForPatientDTO();
+        item.setCriteria("Image Modality");
+        values=new ArrayList<CriteriaValuesDTO>();
+        for(Object[] row : data)
+        {
+           CriteriaValuesDTO value=new CriteriaValuesDTO();
+           value.setCriteria(row[0].toString());
+           value.setCount(row[1].toString());
+           values.add(value);
+        }
+        if (values.size()>0)
+        {
+           item.setValues(values);
+           returnValue.add(item);
+        }  
+        
+        //bodyPart        
+        SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+whereStatement;
+		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();	
+        item=new CriteriaValuesForPatientDTO();
+        item.setCriteria("Anatomical Site");
+        values=new ArrayList<CriteriaValuesDTO>();
+        for(Object[] row : data)
+        {
+           CriteriaValuesDTO value=new CriteriaValuesDTO();
+           value.setCriteria(row[0].toString());
+           value.setCount(row[1].toString());
+           values.add(value);
+        }
+        if (values.size()>0)
+        {
+           item.setValues(values);
+           returnValue.add(item);
+        }  
+        //Manufacturer        
+        SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+whereStatement;
+		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();	
+        item=new CriteriaValuesForPatientDTO();
+        item.setCriteria("Manufacturer");
+        values=new ArrayList<CriteriaValuesDTO>();
+        for(Object[] row : data)
+        {
+           CriteriaValuesDTO value=new CriteriaValuesDTO();
+           value.setCriteria(row[0].toString());
+           value.setCount(row[1].toString());
+           values.add(value);
+        }
+        if (values.size()>0)
+        {
+           item.setValues(values);
+           returnValue.add(item);
+        }  
+        
+		return returnValue;
+    }
     private static String processAuthorizationSites(AuthorizationCriteria authCrit)  {
    
 
@@ -222,6 +322,20 @@ public class ValueAndCountDAOImpl extends AbstractDAO
             return whereStmt;
         }
     }
-	
+    private static String processPatientCriteria(PatientCriteria pc,
+			 CriteriaHandlerFactory theHandlerFac) throws Exception {
+
+              CriteriaHandler handler = null;
+
+              String patientWhereStmt = "";
+              if (pc != null) {
+
+                 handler = theHandlerFac.createCriteriaCollection();
+                 patientWhereStmt += (AND + handler.handle(PATIENT_ID, pc));
+             }
+             
+              patientWhereStmt=patientWhereStmt.replace("p.patientId", "p.patient_id");
+             return patientWhereStmt;
+}
 
 }
