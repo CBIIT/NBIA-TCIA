@@ -6,6 +6,7 @@ public class ValuesAndCountsCriteria {
 	private String bodyPart;
 	private String collection;
 	private String modality;
+	private PatientCriteria patientCriteria;
 	public String getObjectType() {
 		return objectType;
 	}
@@ -35,6 +36,12 @@ public class ValuesAndCountsCriteria {
 	}
 	public void setModality(String modality) {
 		this.modality = modality;
+	}
+	public PatientCriteria getPatientCriteria() {
+		return patientCriteria;
+	}
+	public void setPatientCriteria(PatientCriteria patientCriteria) {
+		this.patientCriteria = patientCriteria;
 	}
 
 }
