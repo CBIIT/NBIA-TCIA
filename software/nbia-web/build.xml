@@ -215,9 +215,9 @@ L-->
   	  	                   
   	<!-- end: Insert wiki link into login Failure and to quick links-->
   	<!-- PWM-->
-  	<replace file="${webapp.dir}/WEB-INF/facelets/legalRules.xhtml"
+  	<!-- <replace file="${webapp.dir}/WEB-INF/facelets/legalRules.xhtml"
 	  		   	           token="@@@"
-  	  	                   value="${gov.nih.nci.ncia.registration.server}"/> 
+  	  	                   value="${gov.nih.nci.ncia.registration.server}"/> -->
   	<!-- TCIA BUILD -->
   	<replace file="${webapp.dir}/WEB-INF/facelets/layout/footer.xhtml"
 	  		   	           token="@@@"
