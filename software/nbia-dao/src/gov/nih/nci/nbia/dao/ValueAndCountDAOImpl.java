@@ -203,7 +203,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		}
     	// Collections
         String SQLQuery = COLLECTION_QUERY+processAuthorizationSites(criteria.getAuth());
-        SQLQuery=SQLQuery+whereStatement;
+        SQLQuery=SQLQuery+whereStatement+" group by project ";
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();	
         CriteriaValuesForPatientDTO item=new CriteriaValuesForPatientDTO();
@@ -224,7 +224,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         
         //Modality        
         SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth());
-        SQLQuery=SQLQuery+whereStatement;
+        SQLQuery=SQLQuery+whereStatement+" group by modality ";
 		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();	
         item=new CriteriaValuesForPatientDTO();
@@ -245,7 +245,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         
         //bodyPart        
         SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth());
-        SQLQuery=SQLQuery+whereStatement;
+        SQLQuery=SQLQuery+whereStatement+" group by body_part_examined ";
 		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();	
         item=new CriteriaValuesForPatientDTO();
@@ -265,7 +265,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }  
         //Manufacturer        
         SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth());
-        SQLQuery=SQLQuery+whereStatement;
+        SQLQuery=SQLQuery+whereStatement+" group by manufacturer ";
 		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();	
         item=new CriteriaValuesForPatientDTO();
