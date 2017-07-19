@@ -282,7 +282,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         	   value.setCriteria("");
            } else {
               value.setCriteria(row[0].toString());
-           
+           }
            value.setCount(row[1].toString());
            values.add(value);
         }
