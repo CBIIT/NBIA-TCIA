@@ -82,6 +82,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     private List<ValuesAndCountsDTO> collectionQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = COLLECTION_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+" group by project ";
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();		
         for(Object[] row : data)
