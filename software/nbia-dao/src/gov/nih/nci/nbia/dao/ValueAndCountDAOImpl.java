@@ -254,7 +254,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         for(Object[] row : data)
         {
            CriteriaValuesDTO value=new CriteriaValuesDTO();
-           value.setCriteria(row[0].toString());
+           if (row[0]==null){
+        	   value.setCriteria("");
+           } else {
+              value.setCriteria(row[0].toString());
+           }
            value.setCount(row[1].toString());
            values.add(value);
         }
@@ -274,7 +278,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         for(Object[] row : data)
         {
            CriteriaValuesDTO value=new CriteriaValuesDTO();
-           value.setCriteria(row[0].toString());
+           if (row[0]==null){
+        	   value.setCriteria("");
+           } else {
+              value.setCriteria(row[0].toString());
+           
            value.setCount(row[1].toString());
            values.add(value);
         }
