@@ -1,11 +1,13 @@
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
+import gov.nih.nci.nbia.dao.CustomSeriesListDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dao.InstanceDAO;
 import gov.nih.nci.nbia.dao.PatientDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
 import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
+import gov.nih.nci.nbia.dto.CustomSeriesListDTO;
 import gov.nih.nci.nbia.restSecurity.AuthorizationService;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -28,6 +30,7 @@ import gov.nih.nci.nbia.wadosupport.WADOSupportDTO;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.ws.rs.WebApplicationException;
@@ -131,7 +134,8 @@ public class getData {
 	
 	protected Response formatResponse(String format, List<Object[]> data, String[] columns) {
 		String returnString = null;
-		
+		System.out.println("data---"+data);
+		System.out.println("columns---"+columns);
 		if ((data != null) && (data.size() > 0)) {
 			if ((format == null) || (format.equalsIgnoreCase("JSON"))) {
 				returnString = FormatOutput.toJSONArray(columns, data).toString();
@@ -300,13 +304,37 @@ public class getData {
 		return results;
 	}
 	
-	
 	protected List<Object[]> getPatientByCollection(String collection, List<String> authorizedCollections) {
 		List<Object []> results = null;
 
 		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
 		try {
 			results = tDao.getPatientByCollection(collection, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<Object[]>) results;
+	}
+	
+	protected List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedCollections) {
+		List<Object []> results = null;
+
+		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
+		try {
+			results = tDao.getPatientByCollection(collection, dateFrom, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<Object[]>) results;
+	}
+	protected List<Object[]> getPatientByCollectionAndModality(String collection, String modality,List<String> authorizedCollections) {
+		List<Object []> results = null;
+
+		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
+		try {
+			results = tDao.getPatientByCollectionAndModality(collection, modality, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -326,7 +354,18 @@ public class getData {
 		}
 		return (List<Object[]>) results;
 	}
-	
+	protected List<Object[]> getPatientStudyFromDate(String collection, String patientId, String dateFrom, List<String> authorizedCollections) {
+		List<Object []> results = null;
+
+		StudyDAO tDao = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
+		try {
+			results = tDao.getPatientStudyFromDate(collection, patientId, dateFrom, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<Object[]>) results;
+	}
 
 	protected List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedCollections) {
 		List<Object[]> results = null;
@@ -334,6 +373,50 @@ public class getData {
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
 			results = tDao.getSeries(collection, patientId, studyInstanceUid, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}
+	protected List<String> getSOPUIDS(String seriesInstanceUID, List<String> authorizedCollections) {
+		List<String> results = null;
+
+		InstanceDAO tDao = (InstanceDAO)SpringApplicationContext.getBean("instanceDAO");
+		try {
+			results = tDao.getImages(seriesInstanceUID, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}
+	protected List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedCollections) {
+		List<Object[]> results = null;
+
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		try {
+			results = tDao.getSeriesSize(seriesInstanceUID, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}
+	protected List<Object[]> getSharedListContents(String name) {
+		List<Object[]> results = null;
+
+		CustomSeriesListDAO customSeriesListDAO = (CustomSeriesListDAO)SpringApplicationContext.getBean("customSeriesListDAO");
+		try {
+			CustomSeriesListDTO tdto = customSeriesListDAO.findCustomSeriesListByName(name);
+			if (tdto!=null){
+				results=new ArrayList<Object[]>();
+				for (String id:tdto.getSeriesInstanceUIDs()){
+				         results.add(new Object[]{id});
+				}
+			}  else {
+				System.out.println("DTO is null");
+			}
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -368,6 +451,13 @@ public class getData {
 		
 		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
 		WADOSupportDTO wdto = wadoDao.getWADOSupportDTO(params, user);
+		return wdto;
+		
+	}
+	protected WADOSupportDTO getWadoImage(String sOPInstanceUID, String seriesInstanceUid, String user){
+		
+		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
+		WADOSupportDTO wdto = wadoDao.getWADOSupportForSingleImageDTO(sOPInstanceUID, seriesInstanceUid, user);
 		return wdto;
 		
 	}
