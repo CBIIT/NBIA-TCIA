@@ -16,7 +16,9 @@ import gov.nih.nci.nbia.internaldomain.GeneralImage;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
@@ -75,5 +77,48 @@ public class InstanceDAOImpl extends AbstractDAO
 		return rs;
 	}
 
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getImages(String seriesInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
+		StringBuffer where = new StringBuffer();
+		List<String> rs = null;
+		String hql = "select i.SOPInstanceUID " +
+		" from GeneralImage i, GeneralSeries s where i.SOPInstanceUID is not null ";
 
+		List<String> paramList = new ArrayList<String>();
+		int i = 0;
+
+		if (seriesInstanceUid != null) {
+			where = where.append(" and i.seriesInstanceUID=?");
+			paramList.add(seriesInstanceUid.toUpperCase());
+			++i;
+		}
+		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+		if (i > 0) {
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			rs = getHibernateTemplate().find(hql + where.toString(), values);
+		} else
+			rs = getHibernateTemplate().find(hql + where.toString());
+
+		return rs;
+	}
+	private StringBuffer addAuthorizedProjAndSites(List<String> authorizedProjAndSites) {
+		StringBuffer where = new StringBuffer();
+
+		if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())){
+			where = where.append(" and s.projAndSite in (");
+
+			for (Iterator<String> projAndSites =  authorizedProjAndSites.iterator(); projAndSites .hasNext();) {
+	    		String str = projAndSites.next();
+	            where.append (str);
+
+	            if (projAndSites.hasNext()) {
+	            	where.append(",");
+	            }
+	        }
+			where.append(")");
+		}
+		System.out.println("&&&&&&&&&&&& where clause for project and group=" + where.toString());
+		return where;
+	}
 }

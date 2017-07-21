@@ -26,4 +26,5 @@ public interface InstanceDAO {
      * Return all the images matching criteria.  
      */
 	public List<Object[]> getImages(String sOPInstanceUID, String patientId, String studyInstanceUid, String seriesInstanceUid, List<String> authorizedProjAndSites);
+	public List<String> getImages(String seriesInstanceUid, List<String> authorizedProjAndSites);
 }
