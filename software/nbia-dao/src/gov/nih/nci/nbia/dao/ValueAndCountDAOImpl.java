@@ -8,15 +8,20 @@
 
 package gov.nih.nci.nbia.dao;
 
+
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandler;
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandlerFactory;
 import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
+import gov.nih.nci.nbia.dto.EquipmentDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesDTO;
 import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.searchresult.ExtendedPatientSearchResult;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.nbia.util.TreeNode;
+import gov.nih.nci.nbia.util.TreeData;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.ExtendedSearchResultCriteria;
@@ -24,9 +29,15 @@ import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -36,6 +47,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 public class ValueAndCountDAOImpl extends AbstractDAO
                                    implements ValueAndCountDAO {
@@ -56,8 +69,12 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	private final static String EXTENDED_QUERY="select patient_pk_id, count(distinct image_pk_id) imageCount, sum(dicom_size) disksize from general_image gi ";
 	
 	static Logger log = Logger.getLogger(ValueAndCountDAOImpl.class);
-	
-
+	 private GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+	 private Map<String, Map<String, Set<String>>> manufacturerModelSoftwareItems;
+	 public ValueAndCountDAOImpl(){
+         Collection<EquipmentDTO> resultSetList = generalSeriesDAO.findEquipmentOfVisibleSeries();
+         manufacturerModelSoftwareItems = createManufacturerMap(resultSetList);
+	 }
 
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<ValuesAndCountsDTO> getValuesAndCounts(ValuesAndCountsCriteria criteria) throws DataAccessException{
@@ -77,8 +94,13 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         {
         	return manufacturerQuery(criteria);
         }
+        if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER_TREE"))
+        {
+        	return manufacturerQuery(criteria);
+        }
         return null;
 	}
+	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> collectionQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = COLLECTION_QUERY+processAuthorizationSites(criteria.getAuth());
@@ -95,6 +117,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
+	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> modalityQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth());
@@ -124,6 +147,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
+	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> bodyPartQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth());
@@ -153,6 +177,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
+	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> manufacturerQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth());
@@ -191,7 +216,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
-   @Transactional
+	@Transactional(propagation=Propagation.REQUIRED)
    public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException{
     	List<CriteriaValuesForPatientDTO> returnValue=new ArrayList<CriteriaValuesForPatientDTO>();
     	PatientCriteria pc=criteria.getPatientCriteria();
@@ -351,7 +376,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
               patientWhereStmt=patientWhereStmt.replace("p.patientId", "p.patient_id");
              return patientWhereStmt;
     }
-    @Transactional
+    @Transactional(propagation=Propagation.REQUIRED)
     public Map<String, ExtendedPatientSearchResult> extendedQuery(ExtendedSearchResultCriteria criteria) throws DataAccessException{
     	Map<String, ExtendedPatientSearchResult> returnValue=new HashMap();
         PatientCriteria pcriteria=new PatientCriteria();
@@ -382,5 +407,78 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
     	return returnValue;
     }
+    @Transactional(propagation=Propagation.REQUIRED)
+    public TreeNode manufacturerTreeQuery(ValuesAndCountsCriteria criteria){
+    	
+  //  	TreeNode<TreeData> root = new TreeNode<TreeData>(new TreeData("root", "All Manufactures"));
+ //   	{
+ ///   	    TreeNode<TreeData> node0 = root.addChild(new TreeData("Manufacturer", "GE"));
+  //  	    TreeNode<TreeData> node1 = root.addChild(new TreeData("Manufacturer", "Phillips"));
+  //  	    TreeNode<TreeData> node2 = root.addChild(new TreeData("Manufacturer", "Siemens"));
+  //  	    TreeNode<TreeData> node21 = node2.addChild(new TreeData("Model", "Number 1"));
 
+  //  	}
+   // 	return root;
+        Set<String> manufacturers = manufacturerModelSoftwareItems.keySet();
+        TreeNode<TreeData> rootTreeNode = new TreeNode<TreeData>(new TreeData("root", "All Manufactures"));
+        for (String man : manufacturers) {
+        	TreeNode<TreeData> manufacturerNode = rootTreeNode.addChild(new TreeData("Manufacturer", man));
+            Map<String, Set<String>> modelMap = manufacturerModelSoftwareItems.get(man);
+            Set<String> models = modelMap.keySet();
+
+            for (String model : models) {
+            	TreeNode<TreeData> modelNode = manufacturerNode.addChild(new TreeData("Model", model));
+
+                Set<String> versions = modelMap.get(model);
+
+                for (String ver : versions) {
+
+                	TreeNode<TreeData> softwareVersionNode = modelNode.addChild(new TreeData("Software Ver.", model));
+                }
+
+            }
+
+        }
+    	
+    	return rootTreeNode;
+    }
+    
+    public static void processManufacturerObjectArray(EquipmentDTO equipment,
+            Map<String, Map<String, Set<String>>> manu) {
+        String manufacturer = equipment.getManufacturer();
+        String model = equipment.getModel();
+        String softwareVersion = equipment.getVersion();
+
+        Map<String, Set<String>> modelHashMap;
+        Set<String> softwareVersions;
+
+        if ((manufacturer != null) && (model != null) && (softwareVersion != null)) {
+             if (manu.get(manufacturer) != null) {
+             modelHashMap = manu.get(manufacturer);
+        }
+        else {
+             modelHashMap = new LinkedHashMap<String, Set<String>>();
+             manu.put(manufacturer, modelHashMap);
+        }
+
+        if (modelHashMap.get(model) != null) {
+            softwareVersions = modelHashMap.get(model);
+        }
+        else {
+            softwareVersions = new HashSet<String>();
+            modelHashMap.put(model, softwareVersions);
+        }
+
+        softwareVersions.add(softwareVersion);
+     }    	
+}
+    
+    private static Map<String, Map<String, Set<String>>> createManufacturerMap(Collection<EquipmentDTO> resultSetList) {
+        Map<String, Map<String, Set<String>>> manufacturerMap = new LinkedHashMap<String, Map<String, Set<String>>>();
+        for (EquipmentDTO equipment : resultSetList) {
+        	processManufacturerObjectArray(equipment, manufacturerMap);            	              
+        }
+        return manufacturerMap;
+    }
+    
 }
