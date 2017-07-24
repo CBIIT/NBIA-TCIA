@@ -5,6 +5,7 @@ import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.dto.ImageDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
+import gov.nih.nci.nbia.util.*;
 import java.io.IOException;
 import java.util.List;
 import gov.nih.nci.nbia.textsupport.PatientTextSearchResultImpl;
@@ -87,6 +88,18 @@ public class JSONUtil {
 		return jsonInString;
 	}
 	public static String getJSONforPatientCounts(List<CriteriaValuesForPatientDTO> valuesAndCounts){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(valuesAndCounts);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
+	public static String getJSONforTreeNode(TreeNode valuesAndCounts){
 		String jsonInString = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
