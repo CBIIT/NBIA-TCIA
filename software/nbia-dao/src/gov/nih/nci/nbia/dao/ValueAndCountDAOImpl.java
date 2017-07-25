@@ -59,7 +59,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	private static final String COLLECTION_FIELD = "dp.project ";
 	private static final String SITE_FIELD = "dp.dp_site_name ";
     public static final String PATIENT_ID = "p.patientId ";
-	private final static String COLLECTION_QUERY="select project, count(*) thecount from patient p, trial_data_provenance dp where p.trial_dp_pk_id=dp.trial_dp_pk_id ";
+	private final static String COLLECTION_QUERY="select project, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp where p.trial_dp_pk_id=dp.trial_dp_pk_id ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String BODYPART_QUERY="select body_part_examined, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
@@ -432,7 +432,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
                 Set<String> versions = modelMap.get(model);
 
                 for (String ver : versions) {
-
+                	System.out.println("model:"+model);
                 	TreeNode<TreeData> softwareVersionNode = modelNode.addChild(new TreeData("Software Ver.", model));
                 }
 
