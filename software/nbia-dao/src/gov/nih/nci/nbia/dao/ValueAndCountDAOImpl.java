@@ -121,7 +121,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> modalityQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-        String SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth())+"VISIBILITY in ('1' , '12')";
+        String SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth())+" and VISIBILITY in ('1' , '12') ";
         
 		if (criteria.getCollection() != null) {
 			SQLQuery=SQLQuery+" and dp.project=:project";
@@ -151,7 +151,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> bodyPartQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-        String SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth())+"VISIBILITY in ('1' , '12')";
+        String SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth())+" and VISIBILITY in ('1' , '12') ";
         
 		if (criteria.getCollection() != null) {
 			SQLQuery=SQLQuery+" and dp.project=:project";
@@ -181,7 +181,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> manufacturerQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-        String SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth())+"VISIBILITY in ('1' , '12')";
+        String SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth())+" AND VISIBILITY in ('1' , '12') ";
         
 		if (criteria.getCollection() != null) {
 			SQLQuery=SQLQuery+" and dp.project=:project";
