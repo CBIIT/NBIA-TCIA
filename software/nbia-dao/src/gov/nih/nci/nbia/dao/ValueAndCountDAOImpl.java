@@ -170,11 +170,12 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		List<Object[]> data= query.list();		
         for(Object[] row : data)
         {
-
-           ValuesAndCountsDTO item=new ValuesAndCountsDTO();
-           item.setCriteria(row[0].toString());
-           item.setCount(row[1].toString());
-           returnValue.add(item);
+           if (row[0]!=null){
+              ValuesAndCountsDTO item=new ValuesAndCountsDTO();
+              item.setCriteria(row[0].toString());
+              item.setCount(row[1].toString());
+              returnValue.add(item);
+           }
         }
 		return returnValue;
     }
