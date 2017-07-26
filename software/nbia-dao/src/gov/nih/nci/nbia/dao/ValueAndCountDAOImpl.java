@@ -410,15 +410,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     @Transactional(propagation=Propagation.REQUIRED)
     public TreeNode manufacturerTreeQuery(ValuesAndCountsCriteria criteria){
     	
-  //  	TreeNode<TreeData> root = new TreeNode<TreeData>(new TreeData("root", "All Manufactures"));
- //   	{
- ///   	    TreeNode<TreeData> node0 = root.addChild(new TreeData("Manufacturer", "GE"));
-  //  	    TreeNode<TreeData> node1 = root.addChild(new TreeData("Manufacturer", "Phillips"));
-  //  	    TreeNode<TreeData> node2 = root.addChild(new TreeData("Manufacturer", "Siemens"));
-  //  	    TreeNode<TreeData> node21 = node2.addChild(new TreeData("Model", "Number 1"));
 
-  //  	}
-   // 	return root;
         Set<String> manufacturers = manufacturerModelSoftwareItems.keySet();
         TreeNode<TreeData> rootTreeNode = new TreeNode<TreeData>(new TreeData("root", "All Manufactures"));
         for (String man : manufacturers) {
@@ -430,10 +422,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
             	TreeNode<TreeData> modelNode = manufacturerNode.addChild(new TreeData("Model", model));
 
                 Set<String> versions = modelMap.get(model);
-
                 for (String ver : versions) {
-                	System.out.println("model:"+model);
-                	TreeNode<TreeData> softwareVersionNode = modelNode.addChild(new TreeData("Software Ver.", model));
+                	TreeNode<TreeData> softwareVersionNode = modelNode.addChild(new TreeData("Software Ver.", ver));
                 }
 
             }
@@ -454,23 +444,23 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 
         if ((manufacturer != null) && (model != null) && (softwareVersion != null)) {
              if (manu.get(manufacturer) != null) {
-             modelHashMap = manu.get(manufacturer);
-        }
-        else {
-             modelHashMap = new LinkedHashMap<String, Set<String>>();
-             manu.put(manufacturer, modelHashMap);
-        }
+                modelHashMap = manu.get(manufacturer);
+             }
+             else {
+                modelHashMap = new LinkedHashMap<String, Set<String>>();
+                manu.put(manufacturer, modelHashMap);
+             }
 
-        if (modelHashMap.get(model) != null) {
-            softwareVersions = modelHashMap.get(model);
-        }
-        else {
-            softwareVersions = new HashSet<String>();
-            modelHashMap.put(model, softwareVersions);
-        }
+             if (modelHashMap.get(model) != null) {
+                 softwareVersions = modelHashMap.get(model);
+             }
+             else {
+                 softwareVersions = new HashSet<String>();
+                 modelHashMap.put(model, softwareVersions);
+             }
 
-        softwareVersions.add(softwareVersion);
-     }    	
+             softwareVersions.add(softwareVersion);
+         }    	
 }
     
     private static Map<String, Map<String, Set<String>>> createManufacturerMap(Collection<EquipmentDTO> resultSetList) {
