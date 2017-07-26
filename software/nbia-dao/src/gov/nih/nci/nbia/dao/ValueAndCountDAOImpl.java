@@ -59,7 +59,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	private static final String COLLECTION_FIELD = "dp.project ";
 	private static final String SITE_FIELD = "dp.dp_site_name ";
     public static final String PATIENT_ID = "p.patientId ";
-	private final static String COLLECTION_QUERY="select project, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp where p.trial_dp_pk_id=dp.trial_dp_pk_id ";
+	private final static String COLLECTION_QUERY="select dp.project, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs "
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String BODYPART_QUERY="select body_part_examined, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
@@ -104,7 +105,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     private List<ValuesAndCountsDTO> collectionQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = COLLECTION_QUERY+processAuthorizationSites(criteria.getAuth());
-        SQLQuery=SQLQuery+" group by project ";
+        SQLQuery=SQLQuery+" and VISIBILITY in ('1' , '12') group by dp.project ";
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();		
         for(Object[] row : data)
@@ -120,7 +121,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> modalityQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-        String SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth());
+        String SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth())+"VISIBILITY in ('1' , '12')";
         
 		if (criteria.getCollection() != null) {
 			SQLQuery=SQLQuery+" and dp.project=:project";
@@ -150,7 +151,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> bodyPartQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-        String SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth());
+        String SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth())+"VISIBILITY in ('1' , '12')";
         
 		if (criteria.getCollection() != null) {
 			SQLQuery=SQLQuery+" and dp.project=:project";
@@ -180,7 +181,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> manufacturerQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-        String SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth());
+        String SQLQuery = MANUFACTURER_QUERY+processAuthorizationSites(criteria.getAuth())+"VISIBILITY in ('1' , '12')";
         
 		if (criteria.getCollection() != null) {
 			SQLQuery=SQLQuery+" and dp.project=:project";
