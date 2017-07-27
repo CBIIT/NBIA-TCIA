@@ -215,7 +215,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	        List<String> results = getHibernateTemplate().find(hql);
 	        long elapsedTime = System.currentTimeMillis() - startTime;
 	        logger.info("Results returned from query in " + elapsedTime + " ms.");
-
+            int i=0;
+            int x=0;
 	        /* Convert the results to PatientResultSet objects */
 	        if (results != null) {
 
@@ -610,15 +611,16 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
     	String whereStmt = "";
         // Filter by series security groups
-        whereStmt += SERIES_SECURITY_GROUP_NULL;
+        // whereStmt += SERIES_SECURITY_GROUP_NULL;
 
-        if ((authCrit.getSeriesSecurityGroups() != null) && !authCrit.getSeriesSecurityGroups().isEmpty()) {
+       // if ((authCrit.getSeriesSecurityGroups() != null) && !authCrit.getSeriesSecurityGroups().isEmpty()) {
             // Users are always allowed to view null series security groups
-            whereStmt += HqlUtils.buildInClause(SERIES_SECURITY_GROUP_IN, authCrit.getSeriesSecurityGroups());
-        }
+       // += HqlUtils.buildInClause(SERIES_SECURITY_GROUP_IN, authCrit.getSeriesSecurityGroups());
+       // }
 
-        whereStmt += CLOSE_PARENTHESIS;
-        return whereStmt;
+      //  whereStmt += CLOSE_PARENTHESIS;
+      //  return whereStmt;
+    	return "";
     }
 
     /**
