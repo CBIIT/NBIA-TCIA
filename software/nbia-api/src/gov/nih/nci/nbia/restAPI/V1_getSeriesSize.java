@@ -35,6 +35,7 @@
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -43,6 +44,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.sun.jersey.api.client.ClientResponse.Status;
 
 
 @Path("/v1/getSeriesSize")
@@ -61,6 +64,11 @@ public class V1_getSeriesSize extends getData {
 	public Response  constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUID, 
 			@QueryParam("format") String format) {
 		List<String> authorizedCollections = null;
+		if (seriesInstanceUID == null) {
+			return Response.status(Status.BAD_REQUEST)
+					.entity("A parameter, SeriesInstanceUID is required for this API call.")
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		try {
 			authorizedCollections = getPublicCollections();
 		} catch (Exception e) {

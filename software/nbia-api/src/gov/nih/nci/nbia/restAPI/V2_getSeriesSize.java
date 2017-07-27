@@ -17,6 +17,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.sun.jersey.api.client.ClientResponse.Status;
+
 
 @Path("/v2/getSeriesSize")
 public class V2_getSeriesSize extends getData{
@@ -35,6 +37,11 @@ public class V2_getSeriesSize extends getData{
 	public Response  constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUID, 
 			@QueryParam("format") String format)  {
 		List<String> authorizedCollections = null;
+		if (seriesInstanceUID == null) {
+			return Response.status(Status.BAD_REQUEST)
+					.entity("A parameter, SeriesInstanceUID is required for this API call.")
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		try {
 			authorizedCollections = getAuthorizedCollections();
 		} catch (Exception e) {
