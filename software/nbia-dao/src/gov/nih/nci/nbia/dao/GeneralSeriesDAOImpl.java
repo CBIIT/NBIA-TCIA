@@ -665,7 +665,7 @@ return seriesList;
 	}
 
 	private static void setSeriesSecurityGroups(DetachedCriteria criteria, List<String> securityGroups)
-	{
+	{/** security groups no longer used
 		Conjunction con = new Conjunction();
 
 		if (securityGroups != null && securityGroups.size() != 0)
@@ -679,7 +679,7 @@ return seriesList;
 		else
 		{
 			criteria.add(Restrictions.isNull("securityGroup"));
-		}
+		} **/
 	}
 
 	/**
