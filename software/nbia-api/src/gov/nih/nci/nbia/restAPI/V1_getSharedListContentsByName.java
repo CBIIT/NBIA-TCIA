@@ -35,6 +35,7 @@
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -43,6 +44,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.sun.jersey.api.client.ClientResponse.Status;
 
 
 @Path("/v1/getContentsByName")
@@ -60,6 +63,11 @@ public class V1_getSharedListContentsByName extends getData {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 	public Response  constructResponse(@QueryParam("name") String name) {
 		List<String> authorizedCollections = null;
+		if (name == null) {
+			return Response.status(Status.BAD_REQUEST)
+					.entity("A parameter, name is required for this API call.")
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		List<Object[]> data = getSharedListContents(name);
 		return formatResponse("json", data, columns);
 	}
