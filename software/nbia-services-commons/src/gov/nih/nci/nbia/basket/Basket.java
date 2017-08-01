@@ -273,6 +273,8 @@ System.out.println("!!!form get= "+result.getSeriesSearchResult().getId().toStri
 		returnBean.setStudyDescription(seriesDTO.getStudyDescription());
 		returnBean.setSeriesDescription(seriesDTO.getDescription());
 		returnBean.setPatientpk(seriesDTO.getPatientpk());
+		returnBean.setSeriesNumber(seriesDTO.getSeriesNumber());
+		returnBean.setStudy_id(seriesDTO.getStudy_id());
 		return returnBean;
 	}
 

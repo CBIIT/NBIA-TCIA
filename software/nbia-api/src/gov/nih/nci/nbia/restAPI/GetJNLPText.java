@@ -124,6 +124,9 @@ public class GetJNLPText extends getData{
 		returnBean.setStudyDate(seriesDTO.getStudyDate());
 		returnBean.setStudyDescription(seriesDTO.getStudyDescription());
 		returnBean.setSeriesDescription(seriesDTO.getDescription());
+		returnBean.setStudy_id(seriesDTO.getStudy_id());
+		returnBean.setSeriesDescription(seriesDTO.getDescription());
+		returnBean.setSeriesNumber(seriesDTO.getSeriesNumber());
 		returnBean.setPatientpk(seriesDTO.getPatientpk());
 		return returnBean;
 	}

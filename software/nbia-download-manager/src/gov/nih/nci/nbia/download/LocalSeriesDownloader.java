@@ -92,11 +92,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 	private List<String> sopUidsList = new ArrayList<String>();
 
 	private String createDirectory() {
-
-		String localLocation = outputDirectory.getAbsolutePath()
-				+ File.separator + this.collection + File.separator
-				+ this.patientId + File.separator + this.studyInstanceUid
-				+ File.separator + this.seriesInstanceUid;
+		String localLocation = createDownloadDir(dirType);
 		File f = new File(localLocation);
 		try {
 			int count = 0;
@@ -201,12 +197,12 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		postParams.add(new BasicNameValuePair("userId", this.userId));
 		postParams.add(new BasicNameValuePair("sopUids", this.sopUids));
 		postParams.add(new BasicNameValuePair("seriesUid", this.seriesInstanceUid));
-		postParams.add(new BasicNameValuePair("includeAnnotation", Boolean .toString(this.includeAnnotation)));
-		postParams.add(new BasicNameValuePair("hasAnnotation", Boolean .toString(this.hasAnnotation)));
+		postParams.add(new BasicNameValuePair("includeAnnotation", Boolean.toString(this.includeAnnotation)));
+		postParams.add(new BasicNameValuePair("hasAnnotation", Boolean.toString(this.hasAnnotation)));
 		// this is ignored
 		postParams.add(new BasicNameValuePair("Range", "bytes=" + downloaded + "-"));
 		postParams.add(new BasicNameValuePair("password", password));
-
+		//postParams.add(new BasicNameValuePair("dirType", Boolean.toString(this.dirType)));		
 		httpPostMethod.addHeader("password", password);
 		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
 			@Override
@@ -448,5 +444,47 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 	// new EasySSLProtocolSocketFactory(),
 	// 443));
 	// }
+	private String createDownloadDir(boolean dirType){
+		String fileLoc;
+		if (this.dirType) {				
+			fileLoc = outputDirectory.getAbsolutePath()
+				+ File.separator + this.collection + File.separator
+				+ this.patientId + File.separator + this.studyInstanceUid
+				+ File.separator + this.seriesInstanceUid;
+		}
+		else {		
+			fileLoc = outputDirectory.getAbsolutePath()
+					+ File.separator + this.collection + File.separator
+					+ this.patientId + File.separator 
+					+ getPartOfName(this.studyDate)
+					+ getPartOfName(this.studyId)
+					+ getDescPartOfName(this.studyDesc)
+					+ this.studyInstanceUid.substring(this.studyInstanceUid.length()-5)	
+					+ File.separator 
+					+ getPartOfName(this.seriesNum)
+					+ getDescPartOfName(this.seriesDesc)
+					+ this.seriesInstanceUid.substring(this.seriesInstanceUid.length()-5);
+		}
+		return fileLoc;
+	}
+	
+	private String getDescPartOfName(String str) {
+		if ((str != null) && (str.length() >= 1)) {
+			if (str.equals("null"))
+				return "";
+			else
+				return str.substring(0, Math.min(str.length(), 53)) + "-";
+		} else
+			return "";
+	}
 
+	private String getPartOfName(String str) {
+		if ((str != null) && (str.length() >= 1)) {
+			if (str.equals("null"))
+				return "";
+			else
+				return str + "-";
+		} else
+			return "";
+	}	
 }

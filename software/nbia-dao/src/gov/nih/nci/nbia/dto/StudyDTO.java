@@ -56,12 +56,21 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StudyDTO implements Comparable<StudyDTO>  {
     
-    private String studyId;
+    private String studyId; //study instance UID
     private Date date;
     private String description;
-    private Integer id;
+    private Integer id;		//study pk id
+    private String study_id; //study_id
+    
+    public String getStudy_id() {
+		return study_id;
+	}
 
-    // A filtered list of series that belong to this study
+	public void setStudy_id(String study_id) {
+		this.study_id = study_id;
+	}
+
+	// A filtered list of series that belong to this study
     private List<SeriesDTO> seriesList = new ArrayList<SeriesDTO>();
 
     public StudyDTO() {

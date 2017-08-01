@@ -148,7 +148,9 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 	                  String password,
 	                  Integer imagesSize,
 	                  Integer annoSize,
-	                  String seriesIdentifier, Integer noOfRetry){
+	                  String seriesIdentifier, Integer noOfRetry,
+	                  String studyDate, String studyId, String studyDesc,
+	                  String seriesNum, String seriesDesc){
 
 		this.serverUrl = serverUrl;
 		this.collection = collection;
@@ -164,6 +166,12 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 		this.annoSize = annoSize;
 		this.seriesIdentifier = seriesIdentifier;
 		this.noOfRetry = noOfRetry;
+		this.studyDate = studyDate;
+		this.studyId = studyId;
+		this.studyDesc = studyDesc;
+		this.seriesNum = seriesNum;
+		this.seriesDesc = seriesDesc;
+				
 		computeTotalSize();
 		downloaded = 0;
 		this.additionalInfo = new StringBuffer();
@@ -247,6 +255,12 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     protected int annoSize;
     protected int noOfRetry;
     protected StringBuffer additionalInfo;
+    protected boolean dirType;
+    protected String studyDate;
+    protected String studyId;
+    protected String studyDesc;
+    protected String seriesNum;
+    protected String seriesDesc;
     protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     protected NBIAIOUtils.ProgressInterface progressUpdater = new ProgressUpdater();
@@ -285,5 +299,12 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 	public void setAdditionalInfo(StringBuffer additionalInfo) {
 		this.additionalInfo.append(additionalInfo);
 	}
+	
+	public boolean isDirType() {
+		return dirType;
+	}
 
+	public void setDirType(boolean dirType) {
+		this.dirType = dirType;
+	}
 }

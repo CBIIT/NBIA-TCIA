@@ -624,6 +624,9 @@ return seriesList;
 				sd.setTotalSizeForAllImagesInSeries(gs.getTotalSize());
 				sd.setProject(gs.getStudy().getPatient().getDataProvenance().getProject());
 				sd.setDataProvenanceSiteName(gs.getStudy().getPatient().getDataProvenance().getDpSiteName());
+				sd.setStudyDate(gs.getStudy().getStudyDate());
+				sd.setStudyDesc(gs.getStudy().getStudyDesc());
+				sd.setStudy_id(gs.getStudy().getStudyId());
 				returnList.add(sd);
 			}
 		}

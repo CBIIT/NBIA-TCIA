@@ -259,6 +259,16 @@ public class SeriesSearchResult implements Comparable<SeriesSearchResult>,
     private String studyDate;
     private String maxFrameCount;
     private String patientpk;
+    private String study_id;
+    
+	public String getStudy_id() {
+		return study_id;
+	}
+
+	public void setStudy_id(String study_id) {
+		this.study_id = study_id;
+	}
+
 	public String getStudyDescription() {
 		return studyDescription;
 	}

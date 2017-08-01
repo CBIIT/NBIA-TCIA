@@ -45,6 +45,11 @@ public class JnlpArgumentsParser {
                 series.setUrl(result[8]);
                 series.setDisplayName(result[9]);
                 series.setLocal(Boolean.valueOf(result[10]));
+                series.setStudyDate(result[11]);
+                series.setStudyId(result[12]);
+                series.setStudyDesc(result[13]);
+                series.setSeriesNum(result[14]);
+                series.setSeriesDesc(result[15]);
 
                 seriesDataList.add(series);
             }

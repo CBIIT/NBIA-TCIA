@@ -10,6 +10,8 @@ package gov.nih.nci.nbia.dto;
 
 import gov.nih.nci.nbia.util.UidDisplayUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -42,8 +44,43 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String manufacturerModelName;
     private String softwareVersion;
     private String maxFrameCount;
+    private Date studyDate;    
+    private String studyDesc;
+    private String study_id; //study_id
     
-    public Integer getNumberImages() {
+    public Date getStudyDate() {
+		return studyDate;
+	}
+    
+	public String getStudyDateString() {
+	    if (studyDate == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(studyDate);
+	}    
+
+    public void setStudyDate(Date studyDate) {
+		this.studyDate = studyDate;
+	}
+
+	public String getStudyDesc() {
+		return studyDesc;
+	}
+
+	public void setStudyDesc(String studyDesc) {
+		this.studyDesc = studyDesc;
+	}
+
+	public String getStudy_id() {
+		return study_id;
+	}
+
+	public void setStudy_id(String study_id) {
+		this.study_id = study_id;
+	}
+
+	public Integer getNumberImages() {
         return numberImages;
     }
 

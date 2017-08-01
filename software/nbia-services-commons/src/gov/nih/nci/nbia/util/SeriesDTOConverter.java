@@ -11,12 +11,15 @@ package gov.nih.nci.nbia.util;
 import gov.nih.nci.nbia.dto.SeriesDTO;
 import gov.nih.nci.nbia.searchresult.SeriesSearchResult;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SeriesDTOConverter {
     public static List<SeriesSearchResult> convert(List<SeriesDTO> dtos) {
     	List<SeriesSearchResult> results = new ArrayList<SeriesSearchResult>();
+
     	for(SeriesDTO dto : dtos) {
     		SeriesSearchResult result = new SeriesSearchResult();
 
@@ -37,6 +40,9 @@ public class SeriesDTOConverter {
     		result.setTotalSizeForAllImagesInSeries(dto.getTotalSizeForAllImagesInSeries());
     		result.setMaxFrameCount(dto.getMaxFrameCount());
     		result.setPatientpk(dto.getPatientPkId());
+    		result.setStudy_id(dto.getStudy_id());
+    		result.setStudyDescription(dto.getStudyDesc());
+    		result.setStudyDate(dto.getStudyDateString());
     		results.add(result);
     	}
     	return results;
