@@ -8,7 +8,8 @@ L-->
 
 <pretty-config xmlns="http://ocpsoft.com/prettyfaces-xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
   <url-mapping id="databasket">
     <pattern> /externalDataBasketDisplay.jsf</pattern>

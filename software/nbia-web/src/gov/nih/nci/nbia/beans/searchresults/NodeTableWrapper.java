@@ -1,4 +1,4 @@
-/*L
+/*Lseries.setStudy_id(studySearchResult.getStudy_id());
  *  Copyright SAIC, Ellumen and RSNA (CTP)
  *
  *
@@ -148,6 +148,7 @@ public class NodeTableWrapper {
 					    	series.setStudyDate(sdf.format(date));
 					    }
 						series.setStudyDescription(studySearchResult.getDescription());
+						series.setStudy_id(studySearchResult.getStudy_id());
 						selectedSeries.add(series);
 					}
 				}

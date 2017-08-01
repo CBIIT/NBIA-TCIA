@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -621,14 +622,19 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 			Long annoSize = seriesItem.getAnnotationsSize();
 			String url = "url";
 			String displayName = "displayName";
-
+			String studyDate = seriesItem.getStudyDate();
+			String studyDesc = cleanStr(seriesItem.getStudyDescription());
+			String seriesDesc = cleanStr(seriesItem.getSeriesDescription());
+			String study_id = cleanStr(seriesItem.getStudy_id());
+			String seriesNumber = seriesItem.getSeriesNumber();
+			
 			if (!isPublicCollection(collection)) {
 				hasPrivateCollection = true;
 			}
 
 			String argument = "" + collection + "|" + patientId + "|" + studyInstanceUid + "|" + seriesInstanceUid + "|"
 					+ annotation + "|" + numberImages + "|" + imagesSize + "|" + annoSize + "|" + url + "|"
-					+ displayName + "|" + true;
+					+ displayName + "|" + true + "|" + studyDate + "|" + study_id + "|" + studyDesc + "|" + seriesNumber + "|" + seriesDesc;
 			seriesDownloadData.add(argument);
 		}
 
@@ -1186,7 +1192,11 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 		return annotationFileSizeHeader;
 	}
 
-
-
-
+	public String cleanStr(String in) {
+		if ((in != null) && (in.length() > 0)) {
+			String out= in.replaceAll("[^a-zA-Z0-9 .-]", "");
+			return out;
+		}
+		else return null;
+	}
 }
