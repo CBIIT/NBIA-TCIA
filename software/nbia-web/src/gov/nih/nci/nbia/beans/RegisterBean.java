@@ -74,6 +74,7 @@ public class RegisterBean {
     private String state = "";
     private String country = "";
     private String reasonForRegistration;
+    private String pwm=gov.nih.nci.nbia.util.NCIAConfig.getPWM();
     private boolean registerToUsersList;
     /**
      * List of titles.
@@ -549,4 +550,13 @@ public class RegisterBean {
 	public void setRegisterToUsersList(boolean registerToUsersList) {
 		this.registerToUsersList = registerToUsersList;
 	}
+
+	public String getPwm() {
+		return pwm;
+	}
+
+	public void setPwm(String pwm) {
+		this.pwm = pwm;
+	}
+	
 }

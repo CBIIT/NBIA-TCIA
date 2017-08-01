@@ -301,7 +301,25 @@ public class GeneralSeriesDAOImpl extends AbstractDAO
 
 		return rs;
 	}
-
+	public List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedProjAndSites) throws DataAccessException{
+		StringBuffer where = new StringBuffer();
+		List<Object[]> rs = null;
+		String hql = "select sum(gi.dicomSize), s.imageCount "+
+		" from GeneralSeries s join s.generalImageCollection gi where s.visibility in ('1', '12') ";
+		List<String> paramList = new ArrayList<String>();
+		int i = 0;
+		if (i > 0) {
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			rs = getHibernateTemplate().find(hql + where.toString(), values);
+		} else
+			rs = getHibernateTemplate().find(hql + where.toString());
+		if (seriesInstanceUID != null) {
+			where = where.append(" and s.seriesInstanceUID=?");
+			paramList.add(seriesInstanceUID);
+			++i;
+		}
+		return rs;
+	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	public Collection<String> findDistinctModalitiesFromVisibleSeries() throws DataAccessException {
 		String hql =
@@ -650,7 +668,7 @@ return seriesList;
 	}
 
 	private static void setSeriesSecurityGroups(DetachedCriteria criteria, List<String> securityGroups)
-	{
+	{/** security groups no longer used
 		Conjunction con = new Conjunction();
 
 		if (securityGroups != null && securityGroups.size() != 0)
@@ -664,7 +682,7 @@ return seriesList;
 		else
 		{
 			criteria.add(Restrictions.isNull("securityGroup"));
-		}
+		} **/
 	}
 
 	/**

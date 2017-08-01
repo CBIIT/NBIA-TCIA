@@ -618,6 +618,11 @@ public class NCIAConfig {
         checkProperty("gov.nih.nci.ncia.workflow.updateinterval", propertyValue);
         return propertyValue;
     }
+    public static String getPWM(){
+        String propertyValue = properties.getProperty("gov.nih.nci.ncia.registration.server");
+        checkProperty("gov.nih.nci.ncia.registration.server", propertyValue);
+        return propertyValue;
+    }
     
     public static String getQctoolSearchResultsMaxNumberOfRows(){
         String propertyValue = properties.getProperty("qctool.search.results.max.number.of.rows");

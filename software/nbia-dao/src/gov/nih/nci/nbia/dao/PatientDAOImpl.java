@@ -15,6 +15,9 @@ import gov.nih.nci.nbia.util.SiteData;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;  
+import java.util.Date; 
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -74,7 +77,50 @@ public class PatientDAOImpl extends AbstractDAO
 
         return rs;
 	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer whereCondition = new StringBuffer();
+		Date date1=null;
+		try {
+			date1=new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}  
+		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
+		whereCondition.append(date1 == null ? "":" and gs.maxSubmissionTimestamp>?");
+		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
+				" where gs.visibility in ('1', '12') and p.patientId = gs.patientId "+ whereCondition;
+		List<Object[]> rs = collection == null ?
+				getHibernateTemplate().find(hql):
+				getHibernateTemplate().find(hql, collection.toUpperCase(), date1); // protect against sql injection
+				
+	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
+
+        return rs;
+	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollectionAndModality(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer whereCondition = new StringBuffer();
+
+		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
+		whereCondition.append(modality == null ? "":" and gs.modality=?");
+		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
+				" where gs.visibility in ('1', '12') and p.patientId = gs.patientId "+ whereCondition;
+		List<Object[]> rs = collection == null ?
+				getHibernateTemplate().find(hql):
+				getHibernateTemplate().find(hql, collection, modality); // protect against sql injection
+				
+	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
+
+        return rs;
+	}
 	/**
 	 * Construct the partial where clause which contains checking with authorized project and site combinations.
 	 *

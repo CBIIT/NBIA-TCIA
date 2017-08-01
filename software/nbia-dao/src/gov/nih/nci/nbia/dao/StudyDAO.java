@@ -28,7 +28,7 @@ public interface StudyDAO  {
 
 
     public List<Object[]> getPatientStudy(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException;
-
+    public List<Object[]> getPatientStudyFromDate(String collection, String patientId, String fromDate, List<String> authorizedProjAndSites) throws DataAccessException;
     /**
      * This method will deal with the query where a list of SeriesPkId's
      * is passed in as a Query to the QueryHandler.  It will then return

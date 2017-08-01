@@ -270,6 +270,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
      </bean>
      <bean id="imageFileDeletionService" class="gov.nih.nci.nbia.deletion.ImageFileDeletionServiceImpl">
    </bean>
+   <bean id="ValueAndCountDAO" class="gov.nih.nci.nbia.dao.ValueAndCountDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+   </bean>
     <!-- Define all the services below -->
    <bean id="annotation" class="gov.nih.nci.nbia.internaldomain.Annotation" scope="prototype"/>
    <bean id="series" class="gov.nih.nci.nbia.internaldomain.GeneralSeries" scope="prototype" />

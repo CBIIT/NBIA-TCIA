@@ -94,9 +94,11 @@ public class QueryHandlerImpl extends AbstractDAO
 					                   criteria,
 					                   authorizedSiteData);
 			//add this for IDRI security group
+			/** security groups no longer used
 			casd.setSeriesSecurityGroups(generateAlias(elementTree.get(3).getAlias()),
 					                     criteria,
 					                     seriesSecurityGroups);
+		    **/
 			criteria.addOrder(Order.asc("patientId"));
 			List<Object[]> p = executeQuery(criteria);
 
@@ -189,9 +191,10 @@ public class QueryHandlerImpl extends AbstractDAO
 					                   criteria,
 					                   authorizedSiteData);
 			//add this for IDRI security group
+			/** security groups no longer used
 			casd.setSeriesSecurityGroups(generateAlias(elementTree.get(3).getAlias()),
 					                     criteria,
-					                     seriesSecurityGroups);
+					                     seriesSecurityGroups);  **/
 
 			List<Object[]> searchResults = executeQuery(criteria);
 			if (searchResults != null) { 

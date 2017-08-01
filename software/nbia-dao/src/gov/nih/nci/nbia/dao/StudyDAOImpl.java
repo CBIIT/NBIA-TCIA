@@ -13,6 +13,8 @@ import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -180,7 +182,54 @@ public class StudyDAOImpl extends AbstractDAO
 
         return rs;
 	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientStudyFromDate(String collection, String patientId, String fromDate, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		String hql = "select distinct s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
+				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
+				"s.patient.ethnicGroup, s.patient.dataProvenance.project, " +
+				"(select count(*) from GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID) "  +
+				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1', '12') ";
+		StringBuffer where = new StringBuffer();
+		List<Object[]> rs = null;
+		Date date1=null;
+		try {
+			date1=new SimpleDateFormat("yyyy/MM/dd").parse(fromDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}  
+		List<Object> paramList = new ArrayList<Object>();
+		int i = 0;
 
+		if (collection != null) {
+			where = where.append(" and UPPER(s.patient.dataProvenance.project)=?");
+			paramList.add(collection.toUpperCase());
+		++i;
+		}
+		if (patientId != null) {
+			where = where.append(" and UPPER(s.patient.patientId)=?");
+			paramList.add(patientId.toUpperCase());
+			++i;
+		}
+		if (date1 != null) {
+			where = where.append("  and gs.maxSubmissionTimestamp>?");
+			paramList.add(date1);
+			++i;
+		}
+
+		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+		
+	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
+		
+		if (i > 0) {
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			rs = getHibernateTemplate().find(hql + where.toString(), values);
+		} else
+			rs = getHibernateTemplate().find(hql + where.toString());
+
+        return rs;
+	}
 	/**
 	 * Construct the partial where clause which contains checking with authorized project and site combinations.
 	 *

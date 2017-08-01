@@ -52,7 +52,7 @@ public class CriteriaForAuthorizedSiteData {
 	public void setSeriesSecurityGroups(String tableAlias, 
 			                            DetachedCriteria criteria, 
 			                            List<String> securityGroups)
-	{
+	{/** security groups no longer used
 		Conjunction con = new Conjunction();
 		if(tableAlias != null)
 		{
@@ -84,6 +84,6 @@ public class CriteriaForAuthorizedSiteData {
 			{
 				criteria.add(Restrictions.isNull("securityGroup"));
 			}
-		}
-	}
+		}**/
+	} 
 }

@@ -21,6 +21,7 @@ public interface WADOSupportDAO  {
   public SessionFactory getSessionFactory();
   public WADOSupportDTO getWADOSupportDTO(String study, String series, String image, String user);
   public WADOSupportDTO getWADOSupportDTO(String study, String series, String image);
+  public WADOSupportDTO getWADOSupportForSingleImageDTO(String study, String series, String user);
   public WADOSupportDTO getWADOSupportDTO(WADOParameters params, String user);
   public WADOSupportDTO getOviyamWADOSupportDTO(String image, String contentType, String user, WADOParameters params);
   public List <DICOMSupportDTO> getDICOMSupportDTO(DICOMParameters params, List<String> extraFields);
