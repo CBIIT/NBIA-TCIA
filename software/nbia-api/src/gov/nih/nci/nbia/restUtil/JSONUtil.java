@@ -111,4 +111,16 @@ public class JSONUtil {
 		}
 		return jsonInString;
 	}
+	public static String getJSONforStringList(List<String> values){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(values);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
 }
