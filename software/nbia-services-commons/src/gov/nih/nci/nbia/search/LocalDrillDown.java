@@ -396,6 +396,7 @@ public class LocalDrillDown implements DrillDown {
 		result.setStudyInstanceUid(studyDTO.getStudyId());
 		result.setDate(studyDTO.getDate());
 		result.setDescription(studyDTO.getDescription());
+		result.setStudy_id(studyDTO.getStudy_id());
 
 		List<SeriesSearchResult> newSeriesList = new ArrayList<SeriesSearchResult>();
 		for(SeriesDTO seriesDto : studyDTO.getSeriesList()) {

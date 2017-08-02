@@ -163,10 +163,17 @@ public class StudySearchResultImpl implements StudySearchResult {
 	public void setUser(String user) {
 		this.user = user;
 	}
+	
+    public String getStudy_id() {
+		return study_id;
+	}
+
+	public void setStudy_id(String study_id) {
+		this.study_id = study_id;
+	}
 
 /////////////////////////////////////PRIVATE/////////////////////////////////////////
-	
-    private String studyInstanceUid;
+	private String studyInstanceUid;
     private Date date;
     private String description;
     private Integer id;
@@ -175,4 +182,5 @@ public class StudySearchResultImpl implements StudySearchResult {
     // A filtered list of series that belong to this study
     private SeriesSearchResult[] seriesList;	
 	private String user;
+	private String study_id;
 }

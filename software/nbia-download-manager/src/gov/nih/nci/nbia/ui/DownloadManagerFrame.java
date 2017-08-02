@@ -84,6 +84,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
     private Integer maxThreads;
 
     private DirectoryBrowserPanel directoryBrowserPanel;
+    private RadioButtonPanel radioButtonPanel;
 
     public DownloadManagerFrame(String userId,
     		                    String password,
@@ -124,6 +125,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         
         /* Set up browse panel.*/
         directoryBrowserPanel = new DirectoryBrowserPanel();
+        radioButtonPanel = new RadioButtonPanel();
 
         /* Set up Downloads table.*/
         createTable();
@@ -135,6 +137,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         JPanel southPanel = new JPanel();    
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));       
         southPanel.add(directoryBrowserPanel);
+		southPanel.add(radioButtonPanel);
         southPanel.add(buttonsPanel);
         
         /* Add panels to the display.*/               	         
@@ -293,7 +296,12 @@ public class DownloadManagerFrame extends JFrame implements Observer {
                                    seriesData.get(i).getImagesSize(),
                                    seriesData.get(i).getAnnoSize(),
                                    
-                                   StringUtil.displayAsSixDigitString(seriesCnt), noOfRetry);
+                                   StringUtil.displayAsSixDigitString(seriesCnt), noOfRetry,
+                                   seriesData.get(i).getStudyDate(),
+                                   seriesData.get(i).getStudyId(),
+                                   seriesData.get(i).getStudyDesc(),
+                                   seriesData.get(i).getSeriesNum(),
+                                   seriesData.get(i).getSeriesDesc());
             tableModel.addDownload(seriesDownloader);
 
             studyIdToSeriesCntMap.put(seriesData.get(i).getStudyInstanceUid(),
@@ -305,7 +313,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
      * Grab the file location from the application for where to put downloaded files
      * and make sure each downloader is set to put files there.
      */
-    private void setSeriesDownloadersOutputDirectory(String fileLocation) {
+    private void setSeriesDownloadersOutputDirectory(String fileLocation, boolean dirType) {
         File outputDir = null;
         if(fileLocation == null){
         	outputDir = new java.io.File(".");
@@ -317,6 +325,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         for(int i =0;i<tableModel.getRowCount();i++) {
         	AbstractSeriesDownloader downloader = tableModel.getDownload(i);
         	downloader.setOutputDirectory(outputDir);
+        	downloader.setDirType(dirType);
         }
     }
 
@@ -339,7 +348,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
     /* start the download. */
     private void actionStart(){
        startButton.setEnabled(false);
-       setSeriesDownloadersOutputDirectory(this.directoryBrowserPanel.getDirectory());
+       setSeriesDownloadersOutputDirectory(this.directoryBrowserPanel.getDirectory(), this.radioButtonPanel.isClassicDir());
 
         SwingUtilities.invokeLater(new Runnable(){
             public void run(){

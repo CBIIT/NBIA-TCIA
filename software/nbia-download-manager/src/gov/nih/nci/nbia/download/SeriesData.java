@@ -21,7 +21,42 @@ public class SeriesData {
 	private String url;
 	private String displayName;
 	private boolean local;
+	private String studyDate;
+	private String studyId;
+	private String studyDesc;
+	private String seriesNum;
+	private String seriesDesc;
 	
+	public String getStudyDate() {
+		return studyDate;
+	}
+	public void setStudyDate(String studyDate) {
+		this.studyDate = studyDate;
+	}
+	public String getStudyId() {
+		return studyId;
+	}
+	public void setStudyId(String studyId) {
+		this.studyId = studyId;
+	}
+	public String getStudyDesc() {
+		return studyDesc;
+	}
+	public void setStudyDesc(String studyDesc) {
+		this.studyDesc = studyDesc;
+	}
+	public String getSeriesNum() {
+		return seriesNum;
+	}
+	public void setSeriesNum(String seriesNum) {
+		this.seriesNum = seriesNum;
+	}
+	public String getSeriesDesc() {
+		return seriesDesc;
+	}
+	public void setSeriesDesc(String seriesDesc) {
+		this.seriesDesc = seriesDesc;
+	}
 	public String getUrl() {
 		return url;
 	}

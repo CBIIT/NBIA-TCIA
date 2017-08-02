@@ -160,6 +160,7 @@ public class StudiesSearchResultBean {
 					SeriesSearchResult series = seriesWrapper.getSeries();
 					series.setStudyDate(studywraper.getDateString());
 					series.setStudyDescription(studywraper.getStudy().getDescription());
+					series.setStudy_id(studywraper.getStudy().getStudy_id());
 					return series;
 				}
 			}
@@ -317,6 +318,7 @@ public class StudiesSearchResultBean {
 				SeriesSearchResult series = seriesWrapper.getSeries();
 				series.setStudyDate(study.getDateString());
 				series.setStudyDescription(study.getStudy().getDescription());
+				series.setStudy_id(study.getStudy().getStudy_id());
 				seriesList.add(series);
 				seriesWrapper.setChecked(true);
 			}

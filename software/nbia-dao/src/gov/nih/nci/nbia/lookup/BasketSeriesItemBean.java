@@ -374,6 +374,24 @@ public class BasketSeriesItemBean implements Comparable<BasketSeriesItemBean> {
     private String seriesDescription;
     private String studyDescription;
     private String studyDate;
+    private String seriesNumber;
+    private String study_id;  //corresponding to the database column name exactly
+
+	public String getStudy_id() {
+		return study_id;
+	}
+
+	public void setStudy_id(String study_id) {
+		this.study_id = study_id;
+	}
+
+	public String getSeriesNumber() {
+		return seriesNumber;
+	}
+
+	public void setSeriesNumber(String seriesNumber) {
+		this.seriesNumber = seriesNumber;
+	}
 
 	public String getStudyDescription() {
 		return studyDescription;

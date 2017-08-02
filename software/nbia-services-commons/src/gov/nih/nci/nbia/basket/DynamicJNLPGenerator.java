@@ -59,6 +59,11 @@ public class DynamicJNLPGenerator {
                 Long annoSize = seriesItem.getAnnotationsSize();
                 String url = "url";
                 String displayName = "displayName";
+    			String studyDate = seriesItem.getStudyDate();
+    			String studyDesc = cleanStr(seriesItem.getStudyDescription());
+    			String seriesDesc = cleanStr(seriesItem.getSeriesDescription());
+    			String study_id = cleanStr(seriesItem.getStudy_id());
+    			String seriesNumber = seriesItem.getSeriesNumber();
 
                 String argument = "" +
                                   collection + "|" +
@@ -70,8 +75,8 @@ public class DynamicJNLPGenerator {
                                   imagesSize + "|" +
                                   annoSize + "|" +
                                   url + "|" +
-                                  displayName+ "|" +
-                                  true;
+                                  displayName + "|" +
+                                  true + "|" + studyDate + "|" + study_id + "|" + studyDesc + "|" + seriesNumber + "|" + seriesDesc;
                 seriesDownloadData.add(argument);
             }
            File dataFile = new File(System.getProperty("java.io.tmpdir"), "jnlp-data"+currentTimeMillis+".txt");
@@ -163,4 +168,12 @@ public class DynamicJNLPGenerator {
         StringEncrypter encrypter = new StringEncrypter();
         return encrypter.encryptString(password);
     }
+    
+	public String cleanStr(String in) {
+		if ((in != null) && (in.length() > 0)) {
+			String out= in.replaceAll("[^a-zA-Z0-9 .-]", "");
+			return out;
+		}
+		else return null;
+	}    
 }

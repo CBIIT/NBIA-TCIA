@@ -60,7 +60,7 @@ public class DownloadServlet extends HttpServlet {
             String password = request.getHeader("password");
             Boolean includeAnnotation = Boolean.valueOf(request.getParameter("includeAnnotation"));
             Boolean hasAnnotation = Boolean.valueOf(request.getParameter("hasAnnotation"));
-            String sopUids = request.getParameter("sopUids");
+            String sopUids = request.getParameter("sopUids");          		
             
             if ((userId==null) ||(userId.length() <1)) {
             	userId = NCIAConfig.getGuestUsername();
@@ -78,45 +78,43 @@ public class DownloadServlet extends HttpServlet {
                        sopUids);
         	}
     }
-    protected void processRequest(HttpServletResponse response,
-            String seriesUid,
-            String userId,
-            String password,
-            Boolean includeAnnotation,
-            Boolean hasAnnotation,
-            String sopUids) throws IOException{
+    
+	protected void processRequest(HttpServletResponse response, String seriesUid, String userId, String password,
+			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids) throws IOException {
 
-        DownloadProcessor processor = new DownloadProcessor();
-        List<AnnotationDTO> annoResults= new ArrayList<AnnotationDTO>();
-        boolean hasAccess=false;
+		DownloadProcessor processor = new DownloadProcessor();
+		List<AnnotationDTO> annoResults = new ArrayList<AnnotationDTO>();
+		boolean hasAccess = false;
 
-        try{
-            password = decrypt(password);
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-        List<ImageDTO2> imageResults = processor.process(seriesUid, sopUids);
-        if((imageResults == null) || imageResults.isEmpty() ){
-            //no data for this series
-            logger.info("no data for series: " +seriesUid);
-        }else{
-            hasAccess = processor.hasAccess(userId, password, imageResults.get(0).getProject(), imageResults.get(0).getSite(), imageResults.get(0).getSsg());
-        }
+		try {
+			password = decrypt(password);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		List<ImageDTO2> imageResults = processor.process(seriesUid, sopUids);
+		if ((imageResults == null) || imageResults.isEmpty()) {
+			// no data for this series
+			logger.info("no data for series: " + seriesUid);
+		} else {
+			hasAccess = processor.hasAccess(userId, password, imageResults.get(0).getProject(),
+					imageResults.get(0).getSite(), imageResults.get(0).getSsg());
+		}
 
-        if(hasAccess){
-            if(includeAnnotation && hasAnnotation){
-                annoResults = processor.process(seriesUid);
-            }
-            sendResponse(response, imageResults, annoResults);
-            //compute the size for this series
-            long size = computeContentLength(imageResults, annoResults);
-            try{
-                processor.recordDownload(seriesUid, userId, size);
-            }catch(Exception e){
-                logger.error("Exception recording download "  + e.getMessage());
-            }
-        }
-    }
+		if (hasAccess) {
+			if (includeAnnotation && hasAnnotation) {
+				annoResults = processor.process(seriesUid);
+			}
+			sendResponse(response, imageResults, annoResults);
+			// compute the size for this series
+			long size = computeContentLength(imageResults, annoResults);
+			try {
+				processor.recordDownload(seriesUid, userId, size);
+			} catch (Exception e) {
+				logger.error("Exception recording download " + e.getMessage());
+			}
+		}
+	}
+	
     private void sendResponse(HttpServletResponse response,
             List<ImageDTO2> imageResults,
             List<AnnotationDTO> annoResults) throws IOException {
@@ -131,7 +129,6 @@ public class DownloadServlet extends HttpServlet {
             sendAnnotationData(annoResults, tos);
             sendImagesData(imageResults, tos);
 
-
             logger.info("total time to send  files are " + (System.currentTimeMillis() - start)/1000 + " ms.");
         }
         finally {
@@ -141,8 +138,8 @@ public class DownloadServlet extends HttpServlet {
 
     private void sendImagesData(List<ImageDTO2> imageResults,
                                 TarArchiveOutputStream tos) throws IOException {
-
         InputStream dicomIn = null;
+        try {
         for (ImageDTO2 imageDto : imageResults){
              String filePath = imageDto.getFileName();
              String sop = imageDto.getSOPInstanceUID();
@@ -163,6 +160,9 @@ public class DownloadServlet extends HttpServlet {
                   IOUtils.closeQuietly(dicomIn);
                   logger.info("DownloadServlet Image transferred at " + new Date().getTime());
              }
+        }
+        } catch (Exception ex){
+        	ex.printStackTrace();
         }
     }
 

@@ -64,4 +64,6 @@ public interface StudySearchResult extends Comparable<StudySearchResult> {
     public void setLink(String link);
     public String getUser();
     public void setUser(String user);
+    public void setStudy_id(String study_id);
+    public String getStudy_id();
 }
