@@ -112,9 +112,27 @@ public class GetSimpleSearch extends getData{
 					query.getManufacturerCriteria().setCollectionValue(inFormParams.get("value"+i).get(0));
 				}
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ModelCriteria")){
+				if (query.getModelCriteria()==null){
+					ModelCriteria criteria=new ModelCriteria();
+				   criteria.setCollectionValue(inFormParams.get("value"+i).get(0));
+				   query.setCriteria(criteria);
+				} else {
+					query.getModelCriteria().setCollectionValue(inFormParams.get("value"+i).get(0));
+				}
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("SoftwareVersionCriteria")){
+				if (query.getSoftwareVersionCriteria()==null){
+					SoftwareVersionCriteria criteria=new SoftwareVersionCriteria();
+				   criteria.setSoftwareVersionValue((inFormParams.get("value"+i).get(0)));
+				   query.setCriteria(criteria);
+				} else {
+					query.getSoftwareVersionCriteria().setSoftwareVersionValue(inFormParams.get("value"+i).get(0));
+				}
+			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("DateRangeCriteria")){
 				DateRangeCriteria criteria=new DateRangeCriteria();
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			    criteria.setFromDate(formatter.parse(inFormParams.get("fromDate"+i).get(0)));
 			    criteria.setToDate(formatter.parse(inFormParams.get("toDate"+i).get(0)));
 				query.setCriteria(criteria);
