@@ -118,7 +118,6 @@ public class RESTUtil {
     {
       // Use a form because there are an unknown number of values
       MultivaluedMap form = new MultivaluedMapImpl(); 
-
        int i=0;
        // Step through all criteria given, the form fields are appended with an integer
        // to maintain grouping in REST call (dataGroup0, dataGroup1...)
@@ -151,10 +150,24 @@ public class RESTUtil {
     	         form.add("value"+i, value);
     		   }
     	   }
+    	   if (scriteria instanceof ModelCriteria) {
+    		   ModelCriteria cri = (ModelCriteria)scriteria;
+    		   for (String value:((ModelCriteria) scriteria).getModelObjects()){
+    	         form.add("criteriaType"+i,"ModelCriteria");
+    	         form.add("value"+i, value);
+    		   }
+    	   }
+    	   if (scriteria instanceof SoftwareVersionCriteria) {
+    		   SoftwareVersionCriteria cri = (SoftwareVersionCriteria)scriteria;
+    		   for (String value:(Collection<String>)((SoftwareVersionCriteria) scriteria).getSoftwareVersionObjects()){
+    	         form.add("criteriaType"+i,"SoftwareVersionCriteria");
+    	         form.add("value"+i, value);
+    		   }
+    	   }
     	   if (scriteria instanceof DateRangeCriteria) {
     		   DateRangeCriteria cri = (DateRangeCriteria)scriteria;
     		   form.add("criteriaType"+i,"DateRangeCriteria");
-    		   SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+    		   SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     	       form.add("fromDate"+i, formatter.format(cri.getFromDate()));
     	       form.add("toDate"+i, formatter.format(cri.getToDate()));
     	   }
