@@ -73,10 +73,7 @@ public class GetPermissibleData extends getData{
 				List<String> permissibleDataItems = null;
 				QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
 				List<String> values=qh.getPermissibleData(packageName, dataSource, field);
-				System.out.println("length:"+values.size());
-                for (String value:values){
-                	System.out.println(value);
-                }
+
 				
 				return Response.ok(JSONUtil.getJSONforStringList(values)).type("application/json")
 						.build();
