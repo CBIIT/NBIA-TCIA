@@ -107,8 +107,9 @@ public class StudyDAOImpl extends AbstractDAO
                 studyDTO.setStudyId(row[2].toString());
                 studyDTO.setDate((Date) row[4]);
                 studyDTO.setDescription(Util.nullSafeString(row[5]));
-                studyDTO.setStudy_id(row[18].toString());
-
+                if (row[18]!=null){
+                    studyDTO.setStudy_id(row[18].toString());
+                }
                 studyDTO.setId(seriesDTO.getStudyPkId());
 
                 // Add the series to the study
