@@ -72,7 +72,7 @@ public class GetSimpleSearch extends getData{
 		auth.setSeriesSecurityGroups(seriesSecurityGroups);
 		auth.setSites(authorizedSiteData);
 		query.setCriteria(auth);
-
+        System.out.println(inFormParams.get("criteriaType"+i).get(0));
 		while (inFormParams.get("criteriaType"+i)!=null)
 		{
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("CollectionCriteria")){
