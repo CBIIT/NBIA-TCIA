@@ -43,8 +43,10 @@ public class ModelSoftwareCriteriaHandler implements CriteriaHandler {
         if (inputCrit instanceof ModelCriteria) {
             isModel = true;
             tempCollection = ((ModelCriteria) inputCrit).getModelObjects();
+            System.out.println("is a model");
         } else if (inputCrit instanceof SoftwareVersionCriteria) {
             isModel = false;
+            System.out.println("is a SoftwareVersionCriteria");
             tempCollection = ((SoftwareVersionCriteria) inputCrit).getSoftwareVersionObjects();
         }
 
@@ -54,7 +56,7 @@ public class ModelSoftwareCriteriaHandler implements CriteriaHandler {
             if (!tempQueryString.equals("")) {
                 tempQueryString += " OR ";
             }
-
+            System.out.println("val"+val);
             tempQueryString += ("(" + DICOMQueryHandler.MANUFACTURER_FIELD +
             " = '" + val.split("\\|\\|")[0] + "' AND " +
             DICOMQueryHandler.MODEL_FIELD + " = '" + val.split("\\|\\|")[1] +
