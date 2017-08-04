@@ -35,6 +35,7 @@
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -59,7 +60,9 @@ public class V2_getSeries extends getData {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("format") String format,
-			@QueryParam("PatientID") String patientId, @QueryParam("StudyInstanceUID") String studyInstanceUid) {
+			@QueryParam("PatientID") String patientId, @QueryParam("StudyInstanceUID") String studyInstanceUid,
+			@QueryParam("Modality") String modality, @QueryParam("BodyPartExamined") String bodyPartExamined,
+			@QueryParam("ManufacturerModelName") String manufacturerModelName, @QueryParam("Manufacturer") String manufacturer)  {
 		List<String> authorizedCollections = null;
 		try {
 			authorizedCollections = getAuthorizedCollections();
@@ -67,7 +70,8 @@ public class V2_getSeries extends getData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		List<Object[]> data = getSeries(collection, patientId, studyInstanceUid, authorizedCollections);
+		List<Object[]> data = getSeries(collection, patientId, studyInstanceUid, authorizedCollections,
+				modality, bodyPartExamined, manufacturerModelName, manufacturer);
 		return formatResponse(format, data, columns);
 	}
 }

@@ -367,12 +367,14 @@ public class getData {
 		return (List<Object[]>) results;
 	}
 
-	protected List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedCollections) {
+	protected List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedCollections,
+			String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer) {
 		List<Object[]> results = null;
 
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
-			results = tDao.getSeries(collection, patientId, studyInstanceUid, authorizedCollections);
+			results = tDao.getSeries(collection, patientId, studyInstanceUid, authorizedCollections,
+					modality, bodyPartExamined, manufacturerModelName, manufacturer);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
