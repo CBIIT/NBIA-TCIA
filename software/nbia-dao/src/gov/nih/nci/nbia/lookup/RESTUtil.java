@@ -127,6 +127,7 @@ public class RESTUtil {
     		   for (String collection:((CollectionCriteria) scriteria).getCollectionObjects()){
     	         form.add("criteriaType"+i,"CollectionCriteria");
     	         form.add("value"+i, collection);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof ImageModalityCriteria) {
@@ -134,6 +135,7 @@ public class RESTUtil {
     		   for (String value:((ImageModalityCriteria) scriteria).getImageModalityObjects()){
     	         form.add("criteriaType"+i,"ImageModalityCriteria");
     	         form.add("value"+i, value);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof AnatomicalSiteCriteria) {
@@ -141,6 +143,7 @@ public class RESTUtil {
     		   for (String value:((AnatomicalSiteCriteria) scriteria).getAnatomicalSiteValueObjects()){
     	         form.add("criteriaType"+i,"AnatomicalSiteCriteria");
     	         form.add("value"+i, value);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof ManufacturerCriteria) {
@@ -148,6 +151,7 @@ public class RESTUtil {
     		   for (String value:((ManufacturerCriteria) scriteria).getManufacturerObjects()){
     	         form.add("criteriaType"+i,"ManufacturerCriteria");
     	         form.add("value"+i, value);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof ModelCriteria) {
@@ -155,6 +159,7 @@ public class RESTUtil {
     		   for (String value:((ModelCriteria) scriteria).getModelObjects()){
     	         form.add("criteriaType"+i,"ModelCriteria");
     	         form.add("value"+i, value);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof SoftwareVersionCriteria) {
@@ -162,6 +167,7 @@ public class RESTUtil {
     		   for (String value:(Collection<String>)((SoftwareVersionCriteria) scriteria).getSoftwareVersionObjects()){
     	         form.add("criteriaType"+i,"SoftwareVersionCriteria");
     	         form.add("value"+i, value);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof DateRangeCriteria) {
@@ -170,25 +176,28 @@ public class RESTUtil {
     		   SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     	       form.add("fromDate"+i, formatter.format(cri.getFromDate()));
     	       form.add("toDate"+i, formatter.format(cri.getToDate()));
+  	           i++;
     	   }
     	   if (scriteria instanceof PatientCriteria) {
     		   PatientCriteria cri = (PatientCriteria)scriteria;
     		   for (String value:((PatientCriteria) scriteria).getPatientIdObjects()){
     	         form.add("criteriaType"+i,"PatientCriteria");
     	         form.add("value"+i, value);
+    	         i++;
     		   }
     	   }
     	   if (scriteria instanceof MinNumberOfStudiesCriteria) {
     		   MinNumberOfStudiesCriteria cri = (MinNumberOfStudiesCriteria)scriteria;
     	       form.add("criteriaType"+i,"MinNumberOfStudiesCriteria");
     	       form.add("value"+i, cri.getMinNumberOfStudiesValue().toString());
+  	           i++;
     	   }
     	   if (scriteria instanceof ModalityAndedSearchCriteria) {
     		   ModalityAndedSearchCriteria cri = (ModalityAndedSearchCriteria)scriteria;
     	       form.add("criteriaType"+i,"ModalityAndedSearchCriteria");
     	       form.add("value"+i, cri.getModalityAndedSearchValue().toString());
+  	           i++;
     	   }
-       i++;
       }
 
 
