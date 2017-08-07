@@ -32,14 +32,12 @@ public class RadioButtonPanel extends JPanel implements ActionListener{
 	private boolean classicDirSet = false;
  
     public RadioButtonPanel() {
-        super(new BorderLayout());
         JLabel dirType = new JLabel("Select Directory Type For Downloaded Files:");
         //Create the radio buttons.
         JRadioButton classicButton = new JRadioButton(classicString);
         classicButton.setMnemonic(KeyEvent.VK_C);
         classicButton.setActionCommand(classicString);
         
-
         JRadioButton descButton = new JRadioButton(descString);
         descButton.setMnemonic(KeyEvent.VK_D);
         descButton.setActionCommand(descString);
@@ -53,15 +51,10 @@ public class RadioButtonPanel extends JPanel implements ActionListener{
         //Register a listener for the radio buttons.
         classicButton.addActionListener(this);
         descButton.addActionListener(this);
-  
-        //Put the radio buttons in a column in a panel.
-        JPanel radioPanel = new JPanel(new GridLayout(1, 3));
-        radioPanel.add(dirType);        
-        radioPanel.add(descButton);
-        radioPanel.add(classicButton);
- 
-        add(radioPanel, BorderLayout.LINE_START);
-        setBorder(BorderFactory.createEmptyBorder(0,20,0,0));
+		
+		add(dirType);        
+        add(descButton);
+        add(classicButton);		
     }
  
     /** Listens to the radio buttons. */

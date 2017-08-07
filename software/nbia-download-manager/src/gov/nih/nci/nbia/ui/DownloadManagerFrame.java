@@ -135,9 +135,9 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         
         /* Set up items for the southern part of the UI.*/
         JPanel southPanel = new JPanel();    
-        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));       
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS)); 
+		southPanel.add(radioButtonPanel);	
         southPanel.add(directoryBrowserPanel);
-		southPanel.add(radioButtonPanel);
         southPanel.add(buttonsPanel);
         
         /* Add panels to the display.*/               	         
