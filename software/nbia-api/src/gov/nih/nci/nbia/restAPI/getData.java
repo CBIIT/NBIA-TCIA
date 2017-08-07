@@ -405,17 +405,15 @@ public class getData {
 		}
 		return results;
 	}
-	protected List<Object[]> getSharedListContents(String name) {
+	protected List<Object[]> getSharedListContents(String name, List<String> authorizedCollections) {
 		List<Object[]> results = null;
 
 		CustomSeriesListDAO customSeriesListDAO = (CustomSeriesListDAO)SpringApplicationContext.getBean("customSeriesListDAO");
 		try {
 			CustomSeriesListDTO tdto = customSeriesListDAO.findCustomSeriesListByName(name);
 			if (tdto!=null){
-				results=new ArrayList<Object[]>();
-				for (String id:tdto.getSeriesInstanceUIDs()){
-				         results.add(new Object[]{id});
-				}
+				GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+				results = tDao.getSeries(tdto.getSeriesInstanceUIDs(), authorizedCollections);
 			}  else {
 				System.out.println("DTO is null");
 			}

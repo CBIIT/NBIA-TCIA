@@ -50,7 +50,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 
 @Path("/v1/getContentsByName")
 public class V1_getSharedListContentsByName extends getData {
-	private static final String[] columns={"SeriesInstanceUID"};
+	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount"};
 	public final static String TEXT_CSV = "text/csv";
 
 	@Context private HttpServletRequest httpRequest;
@@ -63,12 +63,18 @@ public class V1_getSharedListContentsByName extends getData {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 	public Response  constructResponse(@QueryParam("name") String name) {
 		List<String> authorizedCollections = null;
+		try {
+			authorizedCollections = getPublicCollections();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (name == null) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, name is required for this API call.")
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		List<Object[]> data = getSharedListContents(name);
+		List<Object[]> data = getSharedListContents(name, authorizedCollections);
 		return formatResponse("json", data, columns);
 	}
 }
