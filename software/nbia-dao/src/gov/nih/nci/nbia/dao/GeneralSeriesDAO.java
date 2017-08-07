@@ -82,6 +82,7 @@ public interface GeneralSeriesDAO  {
 	public List<String> getManufacturerValues(String collection, String modality, String bodyPart, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites,
 			String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer) throws DataAccessException;
+	public List<Object[]> getSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<String> getRequestedProjectAndSite(Map<String,String> queryParams) throws DataAccessException;
 }
