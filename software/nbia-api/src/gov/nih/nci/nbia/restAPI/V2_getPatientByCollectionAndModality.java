@@ -11,7 +11,10 @@
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
+
 import org.springframework.dao.DataAccessException;
+
+import com.sun.jersey.api.client.ClientResponse.Status;
 
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
@@ -45,7 +48,11 @@ public class V2_getPatientByCollectionAndModality extends getData{
 	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("Modality") String modality,
 			@QueryParam("format") String format) {
 		List<String> authorizedCollections = null;
-		
+		if (collection == null||modality == null) {
+			return Response.status(Status.BAD_REQUEST)
+					.entity("A parameter, Collection and Modality, are required for this API call.")
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		try {
 			authorizedCollections = getAuthorizedCollections();
 		} catch (Exception e) {

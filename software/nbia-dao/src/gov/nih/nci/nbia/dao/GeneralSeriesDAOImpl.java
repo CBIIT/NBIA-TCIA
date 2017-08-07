@@ -263,7 +263,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO
 	 * @param seriesInstanceUid Series Instance UID
 	 */
 	@Transactional(propagation=Propagation.REQUIRED)
-	public List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
+	public List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites, 
+			String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer) throws DataAccessException {
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, " +
@@ -287,6 +288,26 @@ public class GeneralSeriesDAOImpl extends AbstractDAO
 		if (studyInstanceUid != null) {
 			where = where.append(" and s.studyInstanceUID=?");
 			paramList.add(studyInstanceUid);
+			++i;
+		}
+		if (modality != null) {
+			where = where.append(" and s.modality=?");
+			paramList.add(modality);
+			++i;
+		}
+		if (bodyPartExamined != null) {
+			where = where.append(" and s.bodyPartExamined=?");
+			paramList.add(bodyPartExamined);
+			++i;
+		}
+		if (manufacturerModelName != null) {
+			where = where.append(" and s.generalEquipment.manufacturerModelName=?");
+			paramList.add(manufacturerModelName);
+			++i;
+		}
+		if (manufacturer != null) {
+			where = where.append(" and s.generalEquipment.manufacturer=?");
+			paramList.add(manufacturer);
 			++i;
 		}
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
