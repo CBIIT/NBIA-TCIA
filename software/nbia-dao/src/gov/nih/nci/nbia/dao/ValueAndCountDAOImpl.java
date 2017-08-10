@@ -395,7 +395,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		}
     	whereStatement=" where general_series_pk_id "+whereStatement.substring(19);
     	if (whereStatement.length()<2) return returnValue;
-    	String SQLQuery = EXTENDED_QUERY+whereStatement+" group by patient_id ";
+    	String SQLQuery = EXTENDED_QUERY+whereStatement+" group by patient_pk_id ";
     	List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
     	        .list();
     	
