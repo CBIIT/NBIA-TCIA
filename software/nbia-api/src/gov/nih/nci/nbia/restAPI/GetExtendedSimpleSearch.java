@@ -144,6 +144,10 @@ public class GetExtendedSimpleSearch extends getData{
 		}
         PatientSearcher patientSearcher = new PatientSearcher();
         List<PatientSearchResult> patients = patientSearcher.searchForPatients(query);
+        if (patients==null||patients.isEmpty()){
+    		return Response.ok(JSONUtil.getJSONforExtendedPatients(new ArrayList<ExtendedPatientSearchResult>())).type("application/json")
+    				.build();
+        }
         ExtendedSearchResultCriteria ec=new ExtendedSearchResultCriteria();
         List<String> seriesList=new ArrayList();
         for (PatientSearchResult patient:patients){
