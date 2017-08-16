@@ -683,10 +683,11 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 	}
 
 	private boolean isPublicCollection(String collection) {
-		HashSet<String> set;
 		try {
-			set = getPubicCollections();
-			if (set.contains(collection)) {
+			if (collectionSet==null){
+				collectionSet = getPubicCollections();
+			}	
+			if (collectionSet.contains(collection)) {
 				return true;
 			}
 		} catch (Exception e) {
@@ -1055,6 +1056,7 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
     // we only want to resort if the oder or column has changed.
     private String oldSort = sortColumnName;
     private boolean oldAscending = ascending;
+    private HashSet<String> collectionSet;
 
    // ----------------
     /**
