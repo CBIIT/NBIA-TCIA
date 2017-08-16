@@ -691,7 +691,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 				return true;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
