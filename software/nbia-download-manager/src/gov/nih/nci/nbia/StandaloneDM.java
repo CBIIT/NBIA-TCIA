@@ -181,6 +181,20 @@ public class StandaloneDM {
 		passwdFld = new JPasswordField();
 		contentPane.add(passwdFld);
 		passwdFld.setBounds(187, 129, 333, 36);
+		
+		userNameFld.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	passwdFld.requestFocus();
+	        }
+	    });	
+		
+		passwdFld.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	submitUserCredential();
+	        }
+	    });
 
 		JLabel lblNewLabel_1 = new JLabel("Password");
 		contentPane.add(lblNewLabel_1);
@@ -188,65 +202,69 @@ public class StandaloneDM {
 
 		return contentPane;
 	}
+	
+	private void submitUserCredential() {
+		userId = userNameFld.getText();
+		password = passwdFld.getText();
+		List<String> seriesInfo = null;
 
+		if ((userId.length() < 1) || (password.length() < 1)) {
+			statusLbl.setText("Please enter a valid user name and password.");
+			statusLbl.setForeground(Color.red);
+		} else {
+			try {
+				seriesInfo = connectAndReadFromURL(new URL(serverUrl),
+						fileLoc + basketId.substring(0, basketId.length() - 2));
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				int lastRecInx = seriesInfo.size() - 1;
+				String[] strResult = new String[seriesInfo.size()];
+				String key = seriesInfo.get(lastRecInx);
+				String encryptedPassword = this.encrypt(password, key);
+				if (loggedIn(userId, encryptedPassword, seriesInfo.get(lastRecInx - 2),
+						seriesInfo.get(lastRecInx - 1))) {
+					seriesInfo.remove(lastRecInx);
+					seriesInfo.remove(lastRecInx - 1);
+					seriesInfo.remove(lastRecInx - 2);
+					seriesInfo.toArray(strResult);
+
+					List<SeriesData> seriesData = JnlpArgumentsParser.parse(strResult);
+
+					DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword,
+							includeAnnotation, seriesData, serverUrl, noOfRetry);
+					manager.setVisible(true);
+					frame.setVisible(false);
+				} else {
+					statusLbl.setText("Invalid User name and/or password.  Please try it again.");
+					statusLbl.setForeground(Color.red);
+				}
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	private String encrypt(String password, String key) throws Exception {
+		StringEncrypter encrypter = new StringEncrypter();
+		return encrypter.encryptString(password, key);
+	}
+
+	private boolean loggedIn(String uid, String pwd, String ruid, String rpwd) {
+		if (uid.equals(ruid) && pwd.equals(rpwd)) {
+			return true;
+		} else
+			return false;
+	}
+	
 	private class BtnListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals(SubmitBtnLbl)) {
-				userId = userNameFld.getText();
-				password = passwdFld.getText();
-				List<String> seriesInfo = null;
-
-				if ((userId.length() < 1) || (password.length() < 1)) {
-					statusLbl.setText("Please enter a valid user name and password.");
-					statusLbl.setForeground(Color.red);
-				} else {
-					try {
-						seriesInfo = connectAndReadFromURL(new URL(serverUrl),
-								fileLoc + basketId.substring(0, basketId.length() - 2));
-					} catch (MalformedURLException e1) {
-						e1.printStackTrace();
-					}
-					try {
-						int lastRecInx = seriesInfo.size() - 1;
-						String[] strResult = new String[seriesInfo.size()];
-						String key = seriesInfo.get(lastRecInx);
-						String encryptedPassword = this.encrypt(password, key);
-						if (loggedIn(userId, encryptedPassword, seriesInfo.get(lastRecInx - 2),
-								seriesInfo.get(lastRecInx - 1))) {
-							seriesInfo.remove(lastRecInx);
-							seriesInfo.remove(lastRecInx - 1);
-							seriesInfo.remove(lastRecInx - 2);
-							seriesInfo.toArray(strResult);
-
-							List<SeriesData> seriesData = JnlpArgumentsParser.parse(strResult);
-
-							DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword,
-									includeAnnotation, seriesData, serverUrl, noOfRetry);
-							manager.setVisible(true);
-							frame.setVisible(false);
-						} else {
-							statusLbl.setText("Invalid User name and/or password.  Please try it again.");
-							statusLbl.setForeground(Color.red);
-						}
-
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
+				submitUserCredential();
 			}
-		}
-
-		private String encrypt(String password, String key) throws Exception {
-			StringEncrypter encrypter = new StringEncrypter();
-			return encrypter.encryptString(password, key);
-		}
-
-		private boolean loggedIn(String uid, String pwd, String ruid, String rpwd) {
-			if (uid.equals(ruid) && pwd.equals(rpwd)) {
-				return true;
-			} else
-				return false;
 		}
 	}
 
