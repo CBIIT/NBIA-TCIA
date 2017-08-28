@@ -601,7 +601,7 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 	
 	public com.icesoft.faces.context.Resource getStandaloneDMFile() throws Exception {
 		long currentTimeMillis = System.currentTimeMillis();
-		manifestFileName = "NBIADM-" + currentTimeMillis + ".manifest";
+		manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 
 		if (basket.isEmpty()) {
 			logger.info("No data in data basket, do not show the download manager");
@@ -638,7 +638,7 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 			seriesDownloadData.add(argument);
 		}
 
-		String dataFileName = "NBIADM-" + sb.getUsername() + "-" + currentTimeMillis;
+		String dataFileName = "manifest-" + sb.getUsername() + "-" + currentTimeMillis;
 		File dataFile = new File(System.getProperty("java.io.tmpdir"), dataFileName);
 		OutputStream os = new FileOutputStream(dataFile);
 		IOUtils.writeLines(seriesDownloadData, System.getProperty("line.separator"), os);

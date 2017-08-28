@@ -18,7 +18,6 @@ L-->
                 xmlns:ice="http://www.icesoft.com/icefaces/component"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
-  
 <h:form id="basketForm">
 <table summary="" cellpadding="0" cellspacing="0" border="0" class="contentPage" width="90%" align="center" valign="top">
   <tr>
@@ -46,37 +45,45 @@ L-->
             <table width="100%" border="0" cellspacing="0">
               <tr>
                 <td colspan="2" >                  
-                  <f:subview id="popupWarning" 
+                  <!--f:subview id="popupWarning" 
                              rendered="#{basketBean.sizeBelowHttpDownloadThreshold}">
                     <b>
                       <h:outputText styleClass="formMessage" 
                                     value="#{msg.dataBasket_popupBlocker}" />
                     </b>
-                  </f:subview>
-                  <!--f:subview id="remotePauseWarning">
-                    <span>If there are remote series in the basket, there will be a pause per series as it is downloaded from the remote machine.</span>
-                    <br/>
-                    <br/>                 
-                  </f:subview-->                  
-                  <h:panelGroup rendered="#{not empty basketBean.seriesItems}">
-                    <span>In order to use the Download Manager, a JRE must be installed on the client machine.</span>
-                    
-                    <span>To download the JRE, click</span>
-                    <a href="http://www.java.com/en/download/manual.jsp" 
-                       target="_blank">here</a>
-                    <span>.</span>
-                    <span> Mac users, click</span>
-                    <a href="https://wiki.cancerimagingarchive.net/x/TwE7AQ" 
-                       target="_blank">here</a>
-                    <span>for special instructions.</span>
-                  </h:panelGroup>
+                  </f:subview-->
+                 
+					<h:panelGroup rendered="#{not empty basketBean.seriesItems}">
+						<center>
+							<div style="font-family: Arial; font-size: 15px; font-weight: bold; color: red">
+								Before clicking the Start Download button you must install
+								the <a
+									href="https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics-DownloadingTCIAImages"
+									target="_blank">TCIA Downloader</a> app on your computer.
+								<br />
+								<div style="display: inline-block;">If you cannot install this app, you can run our </div>
+								<div style="display: inline-block;">
+									<ice:outputResource id="launchDownload"
+										label="temporary TCIA Downloader"
+										resource="#{basketBean.launchDownloadManager}"
+										fileName="#{basketBean.jnlpFileName}"
+										mimeType="application/x-java-jnlp-file" rendered="true"
+										attachment="false" style="font-weight:bold;" />
+								</div>
+								<div style="display: inline-block;"> instead.
+									<ncia:help label="images/help_icon.png"
+										helpId="-DownloadManager" />
+								</div>
+							</div>
+						</center>
+					</h:panelGroup>
                             
                   <!--  only relevant when done zipping... but harmless to "show" -->
                   <!--  updates the server state that downloading is done
                         and shows popup to actually get the zipped file -->
                   <!-- since this button will fire an action in the current window
                        the focus will come back to main window which we dont want
-                       so delay the popup a few seconds -->   
+                       so delay the popup a few seconds -->   	
                   <!-- the server knows when it is done... so this is contorted
                        but dont want to set downloading bit low until
                        the js on this page gets a chance to fire. if server
@@ -176,19 +183,8 @@ L-->
                 </td>
                 <td>
                   <ice:panelGroup styleClass="iceMnuBarItem">  
-                    <ice:outputResource id="launchDownload"
-                                        label="Download Manager"
-                                        resource="#{basketBean.launchDownloadManager}"                                                                              
-                                        fileName="#{basketBean.jnlpFileName}" 
-                                        mimeType="application/x-java-jnlp-file" 
-                                        rendered="true"
-                                        attachment="false"/>  
-                  </ice:panelGroup> 
-                </td>
-                <td>
-                  <ice:panelGroup styleClass="iceMnuBarItem">  
                     <ice:outputResource id="launchStandaloneDM"
-                                        label="Download Manifest"
+                                        label="Start Download"
                                         resource="#{basketBean.standaloneDMFile}"                                                                              
                                         fileName="#{basketBean.manifestFileName}" 
                                         mimeType="application/x-nbia-manifest-file" 
@@ -456,9 +452,6 @@ L-->
   </tr>
 <tr>
 <td>
-  <h:outputText value="#{msg.dataBasket_validText}" />
-      <br/>
-      <br/>
       <h:outputText value="#{msg.dataBasket_sizeText}" />
       <br/>
       <br/>

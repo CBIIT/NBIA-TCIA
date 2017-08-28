@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -70,6 +71,8 @@ import org.apache.http.params.HttpParams;
  *
  */
 public class StandaloneDM {
+	private static final String winTitle = "TCIA Downloader";
+	private static final String launcerMsg = "To run Standlone Download Manager, please provide a manifest file as a augument. Download a manifest file from NBIA/TCIA portal and open the app with it.";
 	JFrame frame;
 	private static final String SubmitBtnLbl = "Submit";
 	private JLabel statusLbl;
@@ -103,15 +106,16 @@ public class StandaloneDM {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			System.setProperty("jnlp.localSeriesDownloader.className",
+					"gov.nih.nci.nbia.download.LocalSeriesDownloader");
+			System.setProperty("jnlp.remoteSeriesDownloader.className",
+					"gov.nih.nci.nbia.download.RemoteSeriesDownloader");
+			StandaloneDM sdm = new StandaloneDM();
+			sdm.launch();
 		} else {
-			System.out.println(
-					"Please enter the Download Manager Manifest file as a augument.  If you do not have one, go to NBIA/TCIA portal to create one.");
+			JOptionPane.showMessageDialog(null, launcerMsg);
+			System.exit(0);
 		}
-
-		System.setProperty("jnlp.localSeriesDownloader.className", "gov.nih.nci.nbia.download.LocalSeriesDownloader");
-		System.setProperty("jnlp.remoteSeriesDownloader.className", "gov.nih.nci.nbia.download.RemoteSeriesDownloader");
-		StandaloneDM sdm = new StandaloneDM();
-		sdm.launch();
 	}
 
 	public StandaloneDM() {
@@ -130,6 +134,7 @@ public class StandaloneDM {
 			frame.setBounds(100, 100, 640, 320);
 			frame.setContentPane(constructLoginPanel());// frame.setSize(800,
 														// 480);
+	        frame.setTitle(winTitle);
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		} else {
@@ -146,6 +151,7 @@ public class StandaloneDM {
 			List<SeriesData> seriesData = JnlpArgumentsParser.parse(strResult);
 			DownloadManagerFrame manager = new DownloadManagerFrame("", "", includeAnnotation, seriesData, serverUrl,
 					noOfRetry);
+			manager.setTitle(winTitle);
 			manager.setVisible(true);
 		}
 	}
@@ -234,6 +240,7 @@ public class StandaloneDM {
 
 					DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword,
 							includeAnnotation, seriesData, serverUrl, noOfRetry);
+					manager.setTitle(winTitle);
 					manager.setVisible(true);
 					frame.setVisible(false);
 				} else {
