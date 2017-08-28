@@ -81,14 +81,15 @@ public class InstanceDAOImpl extends AbstractDAO
 	public List<String> getImages(String seriesInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
 		StringBuffer where = new StringBuffer();
 		List<String> rs = null;
-		String hql = "select i.SOPInstanceUID " +
-		" from GeneralImage i, GeneralSeries s where i.SOPInstanceUID is not null ";
+		String hql = "select gi.SOPInstanceUID " +
+		" from GeneralSeries s join s.generalImageCollection gi where "
+		+ " gi.SOPInstanceUID is not null ";
 
 		List<String> paramList = new ArrayList<String>();
 		int i = 0;
 
 		if (seriesInstanceUid != null) {
-			where = where.append(" and i.seriesInstanceUID=?");
+			where = where.append(" and gi.seriesInstanceUID=?");
 			paramList.add(seriesInstanceUid.toUpperCase());
 			++i;
 		}
