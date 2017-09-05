@@ -72,7 +72,7 @@ import org.apache.http.params.HttpParams;
  */
 public class StandaloneDM {
 	private static final String winTitle = "TCIA Downloader";
-	private static final String launcerMsg = "To run Standlone Download Manager, please provide a manifest file as a augument. Download a manifest file from NBIA/TCIA portal and open the app with it.";
+	private static final String launcerMsg = "To run TCIA Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the app with it.";
 	JFrame frame;
 	private static final String SubmitBtnLbl = "Submit";
 	private JLabel statusLbl;
@@ -92,25 +92,7 @@ public class StandaloneDM {
 	public static void main(String[] args) {
 		if (args != null && (args.length > 0)) {
 			String fileName = args[0];
-			FileInputStream propFile;
-			try {
-				propFile = new FileInputStream(fileName);
-				Properties p = new Properties(System.getProperties());
-				p.load(propFile);
-				// set the system properties
-				System.setProperties(p);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.setProperty("jnlp.localSeriesDownloader.className",
-					"gov.nih.nci.nbia.download.LocalSeriesDownloader");
-			System.setProperty("jnlp.remoteSeriesDownloader.className",
-					"gov.nih.nci.nbia.download.RemoteSeriesDownloader");
-			StandaloneDM sdm = new StandaloneDM();
+			StandaloneDM sdm = new StandaloneDM(fileName);
 			sdm.launch();
 		} else {
 			JOptionPane.showMessageDialog(null, launcerMsg);
@@ -118,7 +100,8 @@ public class StandaloneDM {
 		}
 	}
 
-	public StandaloneDM() {
+	public StandaloneDM(String fileName) {
+		loadManifestFile(fileName);
 		this.serverUrl = System.getProperty("downloadServerUrl");
 		this.basketId = System.getProperty("databasketId");
 		this.includeAnnotation = Boolean.valueOf((System.getProperty("includeAnnotation")));
@@ -127,6 +110,28 @@ public class StandaloneDM {
 		this.userId = null;
 		this.password = null;
 	}
+	
+	public void loadManifestFile(String fileName) {
+		FileInputStream propFile;
+		try {
+			propFile = new FileInputStream(fileName);
+			Properties p = new Properties(System.getProperties());
+			p.load(propFile);
+			// set the system properties
+			System.setProperties(p);
+			System.setProperty("jnlp.localSeriesDownloader.className",
+					"gov.nih.nci.nbia.download.LocalSeriesDownloader");
+			System.setProperty("jnlp.remoteSeriesDownloader.className",
+					"gov.nih.nci.nbia.download.RemoteSeriesDownloader");	
+			propFile.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
 
 	public void launch() {
 		if (basketId.endsWith("-x")) {
@@ -140,7 +145,6 @@ public class StandaloneDM {
 		} else {
 			List<String> seriesInfo = null;
 			try {
-//				System.out.println("download data file="+ fileLoc + basketId);
 				seriesInfo = connectAndReadFromURL(new URL(serverUrl), fileLoc + basketId);
 			} catch (MalformedURLException e1) {
 				e1.printStackTrace();
