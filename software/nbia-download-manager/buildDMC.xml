@@ -15,9 +15,36 @@ ant -f buildDMC.xml
 	<property name="dist.lib.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager/lib" />
 	<property name="resources.dir" location="resources" />
 	<property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
-	<property name="lib.dir" value="${project.lib.dir}/compile" />	
+	<property name="lib.dir" value="${project.lib.dir}/compile" />
 	<property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
-	<property name="main-class" value="gov.nih.nci.nbia.StandaloneDM" />
+	<!--property name="main-class" value="gov.nih.nci.nbia.StandaloneDM" /-->
+	<property name="javac.compilerargs" value="-XDignore.symbol.file=true"/>
+	<property name="javafx.run.width" value="800"/>
+	<property name="javafx.run.height" value="600"/>
+	<property name="package.dir" location="packages"/>
+	<property name="application.title" value="TCIA Downloader" />
+	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
+	<property name="package.resource.dir" location="packageSrc" />
+	<property name="package.version" value="1.0" />
+	<property name="copyright" value="(c) 2017 NCI, Leidos, Ellumen" />	
+
+	<condition property="IS_MAC" value="true" else="false">
+		<os family="mac"/>
+	</condition>
+
+	<condition property="license.file.name" value="StandaloneDMLicense.txt" else="StandaloneDMLicense.rtf">
+		<os family="mac"/>
+	</condition>
+
+	<condition property="javafx.main.class" value="gov.nih.nci.nbia.StandaloneDMForMac" else="gov.nih.nci.nbia.StandaloneDM">
+		<os family="mac"/>
+	</condition>
+
+	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
+		<not>
+			<os family="mac"/>
+		</not>
+	</condition>
 
 	<path id="common.classpath">
 		<fileset dir="${common.dir}/target/lib">
@@ -66,6 +93,11 @@ ant -f buildDMC.xml
 		</move>
 	</target>
 
+	<target name="getMacLib" if="IS_MAC">
+		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
+		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/runtime"/>
+	</target>
+
 	<target name="init">
 		<mkdir dir="${build.dir}" />
 	</target>
@@ -77,10 +109,10 @@ ant -f buildDMC.xml
 	</path>
 
 	<!-- Need project.compile.classpath to run this -->
-	<target name="compile" depends="init, ivy-compile" description="compile the source ">
-		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+	<target name="compile" depends="init, ivy-compile, getMacLib" description="compile the source ">
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}"  excludes="${excludes}">
 			<classpath refid="project.compile.classpath"/>
-		</javac>		
+		</javac>
 	</target>
 
 	<!-- Group all dependencies into a big dependency-all.jar -->
@@ -99,6 +131,11 @@ ant -f buildDMC.xml
 	<!-- jar it, extract above dependency-all.jar and zip it with project files -->
 	<target name="jar" depends="compile, copy-dependencies"
                 description="package, output to JAR">
+		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDM" else="gov.nih.nci.nbia.StandaloneDMForMac">
+			<not>
+				<os family="mac"/>
+			</not>
+		</condition>
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
@@ -120,7 +157,39 @@ ant -f buildDMC.xml
 		<delete dir="${dist.dir}" />
 	</target>
 
+	<target name="cleanPackage" description="clean up package directory before making new installer">
+		<delete dir="${package.dir}" quiet="false" />
+	</target>
+
 	<!-- Default, run this -->
 	<target name="run" depends="clean, compile, jar" />
+
+	<target xmlns:fx="javafx:com.sun.javafx.tools.ant" name="package" depends="cleanPackage,jar">
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${java.home}/../lib/ant-javafx.jar;packageSrc" />
+		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="all" outdir="${package.dir}" outfile="${application.title}" verbose="true">
+
+			<fx:application id="standaloneDMApp" name="${application.title}" mainClass="${javafx.main.class}" version="${package.version}">
+				<fx:argument>sample.tcia</fx:argument>
+			</fx:application>
+
+			<fx:resources>
+				<fx:fileset dir="${dist.dir}" includes="*.jar" />
+				<fx:fileset dir="${package.resource.dir}" type="license" includes="${license.file.name}" />
+			</fx:resources>
+			
+			<fx:info title="${application.title}" vendor="${application.vendor}" category="Research" copyright="${copyright}" license="3 Clause BSD">
+				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for Downloader App">
+				</fx:association>
+			</fx:info>
+			
+            <fx:bundleArgument arg="win.exe.systemWide" value="true"/>
+
+            <fx:bundleArgument arg="linux.bundleName" value="ca-image-downloader"/>
+            <fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
+            <fx:bundleArgument arg="mac.CFBundleName" value="CAImage Downloader"/>
+            <fx:bundleArgument arg="win.menuGroup" value="CAImage Downloader"/>
+
+		</fx:deploy>
+	</target>
 
 </project>

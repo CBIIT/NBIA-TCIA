@@ -71,8 +71,8 @@ import org.apache.http.params.HttpParams;
  *
  */
 public class StandaloneDM {
-	private static final String winTitle = "TCIA Downloader";
-	private static final String launcerMsg = "To run TCIA Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the app with it.";
+	private final String winTitle = "TCIA Downloader";
+	public static final String launchMsg = "To run TCIA Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the file with TCIA Downloader app.";
 	JFrame frame;
 	private static final String SubmitBtnLbl = "Submit";
 	private JLabel statusLbl;
@@ -91,25 +91,21 @@ public class StandaloneDM {
 	 */
 	public static void main(String[] args) {
 		if (args != null && (args.length > 0)) {
-			String fileName = args[0];
-			StandaloneDM sdm = new StandaloneDM(fileName);
+			String fileName = args[0];			
+			StandaloneDM sdm = new StandaloneDM();
+			sdm.loadManifestFile(fileName);
 			sdm.launch();
 		} else {
-			JOptionPane.showMessageDialog(null, launcerMsg);
+			JOptionPane.showMessageDialog(null, launchMsg);
 			System.exit(0);
 		}
 	}
-
-	public StandaloneDM(String fileName) {
-		loadManifestFile(fileName);
-		this.serverUrl = System.getProperty("downloadServerUrl");
-		this.basketId = System.getProperty("databasketId");
-		this.includeAnnotation = Boolean.valueOf((System.getProperty("includeAnnotation")));
-		this.noOfRetry = NumberUtils.toInt(System.getProperty("noOfrRetry"));
-		this.fileLoc = System.getProperty("tempLoc");
+	
+	public StandaloneDM() {
 		this.userId = null;
 		this.password = null;
 	}
+	
 	
 	public void loadManifestFile(String fileName) {
 		FileInputStream propFile;
@@ -124,6 +120,11 @@ public class StandaloneDM {
 			System.setProperty("jnlp.remoteSeriesDownloader.className",
 					"gov.nih.nci.nbia.download.RemoteSeriesDownloader");	
 			propFile.close();
+			this.serverUrl = System.getProperty("downloadServerUrl");
+			this.basketId = System.getProperty("databasketId");
+			this.includeAnnotation = Boolean.valueOf((System.getProperty("includeAnnotation")));
+			this.noOfRetry = NumberUtils.toInt(System.getProperty("noOfrRetry"));
+			this.fileLoc = System.getProperty("tempLoc");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -171,7 +172,7 @@ public class StandaloneDM {
 		ImageIcon iconLogo = new ImageIcon("Images/global.logo");
 		lblNewLabel_2.setIcon(iconLogo);
 
-		statusLbl = new JLabel("Some or all images about to download are private collection(s).  Please login first.");
+		statusLbl = new JLabel("<html>Some or all images about to download are private collection(s).<br>Please login first.</html>");
 		contentPane.add(statusLbl);
 		statusLbl.setBounds(110, 11, 500, 42);
 		JLabel lblNewLabel = new JLabel("User Name");
