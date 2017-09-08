@@ -171,8 +171,7 @@ public class StandaloneDM {
 		contentPane.add(lblNewLabel_2);
 		ImageIcon iconLogo = new ImageIcon("Images/global.logo");
 		lblNewLabel_2.setIcon(iconLogo);
-
-		statusLbl = new JLabel("<html>Some or all images about to download are private collection(s).<br>Please login first.</html>");
+		statusLbl = new JLabel("<html>Some or all of the images you are about to download are from<br>private collection(s). Please log in first.</html>");
 		contentPane.add(statusLbl);
 		statusLbl.setBounds(110, 11, 500, 42);
 		JLabel lblNewLabel = new JLabel("User Name");
