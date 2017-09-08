@@ -184,10 +184,10 @@ ant -f buildDMC.xml
 			
             <fx:bundleArgument arg="win.exe.systemWide" value="true"/>
 
-            <fx:bundleArgument arg="linux.bundleName" value="ca-image-downloader"/>
+            <fx:bundleArgument arg="linux.bundleName" value="image-downloader"/>
             <fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
-            <fx:bundleArgument arg="mac.CFBundleName" value="CAImage Downloader"/>
-            <fx:bundleArgument arg="win.menuGroup" value="CAImage Downloader"/>
+            <fx:bundleArgument arg="mac.CFBundleName" value="Image Downloader"/>
+            <fx:bundleArgument arg="win.menuGroup" value="Image Downloader"/>
 
 		</fx:deploy>
 	</target>
