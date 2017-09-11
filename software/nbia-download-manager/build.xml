@@ -96,14 +96,19 @@ L-->
   </target>
   
   <target name="compile" depends="ivy-compile">
-    
+	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
+	<not>
+		<os family="mac"/>
+	</not>
+	</condition>
     <javac srcdir="${src.java.dir}"
            destdir="${build}"
            debug="on"
     	   target="1.7" 
            deprecation = "on"
            optimize="off"
-           includes="**">
+           includes="**"
+		   excludes="${excludes}">
       <classpath refid="classpath"/>
     </javac>
    </target>
