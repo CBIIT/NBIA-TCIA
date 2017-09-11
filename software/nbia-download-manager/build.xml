@@ -1,37 +1,40 @@
 <!--L
-   Copyright SAIC, Ellumen and RSNA (CTP)
+	 Copyright SAIC, Ellumen and RSNA (CTP)
 
 
-   Distributed under the OSI-approved BSD 3-Clause License.
-   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+	 Distributed under the OSI-approved BSD 3-Clause License.
+	 See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
 L-->
 
 <!--
-  Expecting following properties from caller:
-    signjar.alias
-    signjar.storepass
-    signjar.keystore
+	Expecting following properties from caller:
+		signjar.alias
+		signjar.storepass
+		signjar.keystore
   -->  
 <project name="nbia-download-manager" 
-         default="run" 
-         basedir="." 
-         xmlns:ivy="antlib:org.apache.ivy.ant">
+				 default="run" 
+				 basedir="." 
+				 xmlns:ivy="antlib:org.apache.ivy.ant">
 
-  <!-- Properties -->
-  <property name="src.java.dir" location="src"/>
-  <property name="build" location="bin"/>
-  <property name="resources.dir" location="resources" />
-  <property name="dist.jar" value="NBIADownloadManager.jar"/>  
-  <property name="user.name" value="NBIA" />
-  <property name="common.dir" value="${basedir}/../" />  
-  <property name="target.dir" value="${common.dir}/target/dist/exploded/nbia-download-manager" />
-  <property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
+	<!-- Properties -->
+	<property name="src.java.dir" location="src"/>
+	<property name="build" location="bin"/>
+	<property name="resources.dir" location="resources" />
+	<property name="dist.jar" value="NBIADownloadManager.jar"/>
+	<property name="user.name" value="NBIA" />
+	<property name="common.dir" value="${basedir}/../" />
+	<property name="target.dir" value="${common.dir}/target/dist/exploded/nbia-download-manager" />
+	<property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
   
   <!-- define this for unittesting.xml import -->
-  <property name="classes.to.test.dir" value="${build}"/>
-  <property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
-  <property name="bda-utils.lib.dir" value="${common.dir}/target/bda-utils"/>  
-  
+	<property name="classes.to.test.dir" value="${build}"/>
+	<property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
+	<property name="bda-utils.lib.dir" value="${common.dir}/target/bda-utils"/>  
+	<property name="javac.compilerargs" value="-XDignore.symbol.file=true"/>
+	<condition property="IS_MAC" value="true" else="false">
+		<os family="mac"/>
+	</condition> 
    <!-- Paths -->
   <path id="classpath">
     <fileset dir="${project.lib.dir}/compile/">
@@ -86,16 +89,20 @@ L-->
 
     </move>
 	<copy file="${resources.dir}/nbia-services-grid.jar" toDir="${project.lib.dir}/runtime"/>
-  </target> 
-  
-   
+  </target>
+
+ 	<target name="getMacLib" if="IS_MAC">
+		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
+		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/runtime"/>
+	</target> 
+	
   <target name="-init" depends="-pre-clean, init-test">
     <mkdir dir="${target.dir}" />
     <mkdir dir="${project.lib.dir}"/> 
     <mkdir dir="${build}"/>
   </target>
   
-  <target name="compile" depends="ivy-compile">
+  <target name="compile" depends="ivy-compile, getMacLib">
 	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
 	<not>
 		<os family="mac"/>
@@ -112,7 +119,6 @@ L-->
       <classpath refid="classpath"/>
     </javac>
    </target>
-
 
   <target name="dist" 
           depends="compile, ivy-runtime"
@@ -132,13 +138,6 @@ L-->
     </jar>
     <copy file="${dist.jar}" toDir="${target.dir}" />
 
-    <!--
-    <copy todir="${target.dir}">
-      <fileset dir="${project.lib.dir}/runtime">
-        <include name="*.jar" />
-      </fileset>      
-    </copy>
-    -->
     <delete file="${dist.jar}"/>
   </target>
     
