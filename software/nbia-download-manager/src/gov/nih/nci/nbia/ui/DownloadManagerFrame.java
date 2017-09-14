@@ -181,6 +181,11 @@ public class DownloadManagerFrame extends JFrame implements Observer {
         JMenuBar menuBar = new MenuBar();
         setJMenuBar(menuBar);
     }
+    
+    public void setDefaultDownloadDir(String dir) {
+    		directoryBrowserPanel.setDefaultDirectory(dir);
+    		startButton.setEnabled(true);
+    }
 
 
 	// TODO: Change the hardcoded URL to something that comes from a config file or property.

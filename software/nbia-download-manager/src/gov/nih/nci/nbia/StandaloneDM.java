@@ -30,6 +30,7 @@ import gov.nih.nci.nbia.ui.DownloadManagerFrame;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
 import gov.nih.nci.nbia.util.StringEncrypter;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -157,6 +158,7 @@ public class StandaloneDM {
 			DownloadManagerFrame manager = new DownloadManagerFrame("", "", includeAnnotation, seriesData, serverUrl,
 					noOfRetry);
 			manager.setTitle(winTitle);
+			manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator +"Desktop");
 			manager.setVisible(true);
 		}
 	}
@@ -245,6 +247,7 @@ public class StandaloneDM {
 					DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword,
 							includeAnnotation, seriesData, serverUrl, noOfRetry);
 					manager.setTitle(winTitle);
+					manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator +"Desktop");
 					manager.setVisible(true);
 					frame.setVisible(false);
 				} else {

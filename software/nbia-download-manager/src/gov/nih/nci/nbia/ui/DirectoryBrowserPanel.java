@@ -54,6 +54,10 @@ public class DirectoryBrowserPanel extends JPanel {
 	public String getDirectory() {
 		return browseTextField.getText();
 	}
+	
+	public void setDefaultDirectory(String defaultDir) {
+		browseTextField.setText(defaultDir);
+	}
 
 	//////////////////////////////////PRIVATE///////////////////////////
 	/* Add download text field. */
