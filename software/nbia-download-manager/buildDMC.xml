@@ -48,17 +48,18 @@ ant -f buildDMC.xml
 	</condition>
 	
 	<condition property="native.bundles" value="all" else="rpm">
-		<not>
-			<os family="unix"/>
-		</not>
-	</condition>	
+		<or>
+			<os family="mac"/>
+			<os family="windows"/>
+		</or>	
+	</condition>		
 	
 	<condition property="icon.file.name" value="TCIA Downloader.ico">
 			<os family="windows"/>
 	</condition>
 	
 	<condition property="icon.file.name" value="TCIA Downloader.icns">
-			<os family="unix"/>
+			<os family="mac"/>
 	</condition>
 	
 	<condition property="icon.file.name" value="TCIA Downloader.png">
