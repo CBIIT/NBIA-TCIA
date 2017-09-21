@@ -609,7 +609,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 		}
 		String manifest = RESTUtil.getManifest(this.getSeriesItems(), sb.getPassword(), getIncludeAnnotation(), sb.getTokenValue(), manifestFileName);
 		
-        System.out.println("MANIFESTTTTTTTTTTTTTTTTT:"+manifest);
 		ByteArrayResource bar = new ByteArrayResource(manifest.getBytes());
 		return bar;
 	}
