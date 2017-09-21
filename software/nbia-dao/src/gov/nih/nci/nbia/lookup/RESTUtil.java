@@ -396,6 +396,49 @@ public class RESTUtil {
         return output;
 		
 	}
+	public static String getManifest(List<BasketSeriesItemBean> seriesItems,
+            String password, 
+            boolean annotation,
+            String userToken,
+            String manifestFileName)
+       {
+       // Use a form because there are an unknown number of values
+       MultivaluedMap form = new MultivaluedMapImpl(); 
+       if ((seriesItems==null)||(seriesItems.size()==0))
+       {
+          return "";
+       }
+       // Step through all data in series items for display in download manager
+       for (BasketSeriesItemBean item:seriesItems){
+         form.add("list",item.getSeriesId());
+       }
+       form.add("password", password); 
+       form.add("manifestFileName", manifestFileName); 
+       String annotationString="false";
+       if (annotation){
+         annotationString="true";
+       }
+      form.add("includeAnnotation", annotationString); 
+      ClientConfig cc = new DefaultClientConfig();
+      cc.getClasses().add(JacksonJsonProvider.class);
+      Client client = Client.create(); 
+      WebResource resource = client.resource(APIURLHolder.getUrl()
+    	      +"/nbia-api/services/getManifestText"); 
+      ClientResponse response = resource.accept(MediaType.TEXT_PLAIN)
+    	      .type(MediaType.APPLICATION_FORM_URLENCODED)
+      .header("Authorization",  "Bearer "+userToken)
+      .post(ClientResponse.class, form);
+      // check response status code
+      if (response.getStatus() != 200) {
+          throw new RuntimeException("Failed : HTTP error code : "
+        	      + response.getStatus());
+}
+
+// display response
+String output = response.getEntity(String.class);
+return output;
+
+}
 	
 	public static List<PatientSearchResult> getTextSearch(String textValue,
             String userToken)
