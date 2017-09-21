@@ -26,7 +26,8 @@ ant -f buildDMC.xml
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
 	<property name="package.version" value="1.0" />
-	<property name="copyright" value="(c) 2017 NCI, Leidos, Ellumen" />	
+	<property name="copyright" value="(c) 2017 NCI, Leidos, Ellumen" />
+	<property name="icon.file.name" value="StandaloneDMIcon.ico" />
 
 	<condition property="IS_MAC" value="true" else="false">
 		<os family="mac"/>
@@ -39,12 +40,31 @@ ant -f buildDMC.xml
 	<condition property="javafx.main.class" value="gov.nih.nci.nbia.StandaloneDMForMac" else="gov.nih.nci.nbia.StandaloneDM">
 		<os family="mac"/>
 	</condition>
-
+	
 	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
 		<not>
 			<os family="mac"/>
 		</not>
 	</condition>
+	
+	<condition property="native.bundles" value="all" else="rpm">
+		<or>
+			<os family="mac"/>
+			<os family="windows"/>
+		</or>	
+	</condition>		
+	
+	<condition property="icon.file.name" value="TCIA Downloader.ico">
+			<os family="windows"/>
+	</condition>
+	
+	<condition property="icon.file.name" value="TCIA Downloader.icns">
+			<os family="mac"/>
+	</condition>
+	
+	<condition property="icon.file.name" value="TCIA Downloader.png">
+			<os family="unix"/>
+	</condition>	
 
 	<path id="common.classpath">
 		<fileset dir="${common.dir}/target/lib">
@@ -167,7 +187,7 @@ ant -f buildDMC.xml
 
 	<target xmlns:fx="javafx:com.sun.javafx.tools.ant" name="package" depends="clean, cleanPackage, jar">
 		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${java.home}/../lib/ant-javafx.jar;packageSrc" />
-		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="rpm" outdir="${package.dir}" outfile="${application.title}" verbose="true">
+		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="${native.bundles}" outdir="${package.dir}" outfile="${application.title}" verbose="true">
 
 			<fx:application id="standaloneDMApp" name="${application.title}" mainClass="${javafx.main.class}" version="${package.version}">
 				<fx:argument>sample.tcia</fx:argument>
@@ -176,19 +196,23 @@ ant -f buildDMC.xml
 			<fx:resources>
 				<fx:fileset dir="${dist.dir}" includes="*.jar" />
 				<fx:fileset dir="${package.resource.dir}" type="license" includes="${license.file.name}" />
+				
+				<!--fx:fileset dir="${package.resource.dir}" os="unix" type="icon" includes="${icon.file.name}.png" />
+				<fx:fileset dir="${package.resource.dir}" os="unix" type="icon" includes="${icon.file.name}.icns" /-->
 			</fx:resources>
 			
 			<fx:info title="${application.title}" vendor="${application.vendor}" category="Research" copyright="${copyright}" license="3 Clause BSD">
-				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for Downloader App">
+				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for Downloader App" icon="${icon.file.name}">
 				</fx:association>
+				<fx:icon href="${icon.file.name}"  kind="default" width="32" height="32" depth="8"/>
 			</fx:info>
 			
             <fx:bundleArgument arg="win.exe.systemWide" value="true"/>
 
             <fx:bundleArgument arg="linux.bundleName" value="TCIADownloader"/>
             <fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
-            <fx:bundleArgument arg="mac.CFBundleName" value="Image Downloader"/>
-            <fx:bundleArgument arg="win.menuGroup" value="Image Downloader"/>
+            <fx:bundleArgument arg="mac.CFBundleName" value="TCIADownloader"/>
+            <fx:bundleArgument arg="win.menuGroup" value="TCIADownloader"/>
 
 		</fx:deploy>
 	</target>

@@ -66,7 +66,7 @@ public class DirectoryBrowserPanel extends JPanel {
 
 	private void actionBrowse(){
 		chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
+		chooser.setCurrentDirectory(new java.io.File(getDirectory()));
         chooser.setDialogTitle("Select Directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
