@@ -83,7 +83,7 @@ public class GetManifestText extends getData{
 			input.add(item);
 			System.out.println("Input is :"+item);
 		}
-        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUID(input);
+        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUIDAnyVisibility(input);
 
 		List<SeriesSearchResult> seriesFound=SeriesDTOConverter.convert(ssList);
 		List<BasketSeriesItemBean> seriesItems=new ArrayList<BasketSeriesItemBean>();
@@ -156,7 +156,7 @@ public class GetManifestText extends getData{
 		
 
         
-		return Response.ok(outSB.toString()).type("application/text")
+		return Response.ok(outSB.toString()).type("application/x-nbia-manifest-file")
 				.build();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
