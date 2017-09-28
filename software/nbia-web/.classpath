@@ -37,7 +37,6 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/spring-orm-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/spring-tx-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/spring-web-3.2.8.RELEASE.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/icefaces-comps.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/icefaces-facelets-1.8.2.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/icefaces.jar"/>
@@ -50,5 +49,6 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/jackson-mapper-asl-1.9.2.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/jackson-xc-1.9.2.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/runtime/spring-security-oauth2-1.0.5.RELEASE.jar"/>
+	<classpathentry exported="true" kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

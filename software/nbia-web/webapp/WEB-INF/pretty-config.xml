@@ -80,6 +80,13 @@ L-->
 	<query-param name="collectionName">#{externalPubSearchPopulatorMgBean.collectionName}</query-param>
     <view-id> /searchMain.jsf </view-id>
     <action>#{externalPubSearchPopulatorMgBean.populate}</action>
-  </url-mapping> 
+  </url-mapping>
+  
+  <url-mapping id="externalPatientSearch">
+    <pattern> /externalPatientSearch.jsf</pattern>
+	<query-param name="patientID">#{externalPatientSearchPopulatorMgBean.patientID}</query-param>
+    <view-id> /studyDisplay.jsf </view-id>
+    <action>#{externalPatientSearchPopulatorMgBean.populate}</action>
+  </url-mapping>    
        
 </pretty-config>

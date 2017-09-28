@@ -167,6 +167,7 @@ public class SecurityCheckFilter implements Filter {
                !checkforloginpage.endsWith("registerMain.jsf") &&
                !checkforloginpage.endsWith("accountSupport.jsf") &&
                !checkforloginpage.contains("externalLinks.jsf") &&
+			   !checkforloginpage.contains("externalPatientSearch.jsf") &&
               checkforloginpage.endsWith(".jsf");
     }
 }

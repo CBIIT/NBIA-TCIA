@@ -35,7 +35,7 @@ public class ExternalPubSearchPopulatorMgBean {
 
 	AnonymousLoginBean anonymousLoginBean = BeanManager.getAnonymousLoginBean();
 	try {
-		anonymousLoginBean.externalBypassLogin(collectionName);
+		anonymousLoginBean.externalBypassLogin(collectionName, null);
 	}
     catch (Exception e) {
         e.printStackTrace();

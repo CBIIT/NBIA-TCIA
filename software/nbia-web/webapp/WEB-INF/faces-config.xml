@@ -68,7 +68,14 @@ L-->
       <to-view-id>/searchMain.jsf</to-view-id>
       <redirect />
     </navigation-case>
-  </navigation-rule>  
+  </navigation-rule>
+  <navigation-rule>
+    <navigation-case>
+      <from-outcome>externalPatSearch</from-outcome>
+      <to-view-id>/studyDisplay.jsf</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>     
   <navigation-rule>
     <navigation-case>
       <from-outcome>searchReset</from-outcome>
@@ -432,12 +439,18 @@ L-->
     <managed-bean-class>gov.nih.nci.nbia.beans.populator.DataBasketPopulatorMgBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
-    <managed-bean>
+  <managed-bean>
     <description>Populates the simple search result page for a external page load request</description>
     <managed-bean-name>externalPubSearchPopulatorMgBean</managed-bean-name>
     <managed-bean-class>gov.nih.nci.nbia.beans.populator.ExternalPubSearchPopulatorMgBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean> 
+  </managed-bean>
+  <managed-bean>
+    <description>Populates the patient search result page for a external page load request</description>
+    <managed-bean-name>externalPatientSearchPopulatorMgBean</managed-bean-name>
+    <managed-bean-class>gov.nih.nci.nbia.beans.populator.ExternalPatientSearchPopulatorMgBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>    
   <managed-bean>
     <description>Create Customized Image Series List</description>
     <managed-bean-name>customSeriesListBean</managed-bean-name>

@@ -23,6 +23,7 @@ import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.RangeData;
 import gov.nih.nci.nbia.beans.BeanManager;
 import gov.nih.nci.nbia.beans.DynamicSearchBean;
+import gov.nih.nci.nbia.beans.searchresults.PatientResultWrapper;
 import gov.nih.nci.nbia.beans.searchresults.SearchResultBean;
 import gov.nih.nci.nbia.beans.security.SecurityBean;
 import gov.nih.nci.nbia.dto.ModalityDescDTO;
@@ -515,38 +516,36 @@ public class SearchWorkflowBean {
      *
      * @throws Exception
      */
-    public String submitSearch() throws Exception {
-        String result = validateBeforeSearch();
-    	SearchResultBean srb = BeanManager.getSearchResultBean();
-    	logger.debug("***** setting false for simple search *********");
-    	srb.setFirstTime(false);
-        if(result!=null) {
-            return null;
-        }
+	public String submitSearch() throws Exception {
+		String result = validateBeforeSearch();
+		SearchResultBean srb = BeanManager.getSearchResultBean();
+		logger.debug("***** setting false for simple search *********");
+		srb.setFirstTime(false);
+		if (result != null) {
+			return null;
+		}
 
-    	// Attempt to build the query for submission
-        if (!buildQuery()) {
-            // If there is a validation error, stay on the
-            // same page
-        	srb = BeanManager.getSearchResultBean();
-        	srb.setPatientResults(null);
-            return null;
-        }
-        try {
-            asynchronousQuery(query);
-            if (this.resultPerPageOption != null) {
-            	srb = BeanManager.getSearchResultBean();
-            	srb.setResultsPerPage(new Integer(resultPerPageOption));
-            }
-        }
-        catch (Exception e) {
-            logger.error("Error submitting query", e);
-            e.printStackTrace();
-        }
+		// Attempt to build the query for submission
+		if (!buildQuery()) {
+			// If there is a validation error, stay on the
+			// same page
+			srb = BeanManager.getSearchResultBean();
+			srb.setPatientResults(null);
+			return null;
+		}
+		try {
+			asynchronousQuery(query);
+			if (this.resultPerPageOption != null) {
+				srb = BeanManager.getSearchResultBean();
+				srb.setResultsPerPage(new Integer(resultPerPageOption));
+			}
+		} catch (Exception e) {
+			logger.error("Error submitting query", e);
+			e.printStackTrace();
+		}
 
-        return "search";
-    }
-
+		return "search";
+	}
 
     /**
      * Called when the user pressed the Back to Simple Search or Back to
@@ -656,15 +655,6 @@ public class SearchWorkflowBean {
         freeTextSearch = false;
         simpleSearch = true;
         return newSearch();
-    }
-
-    public String externalSimpleSearch(String collectionName) {
-    	dynamicSearch = false;
-        advanced = false;
-        usSearch = false;
-        freeTextSearch = false;
-        simpleSearch = true;
-        return externalSearch(collectionName);
     }
 
     public String repopulateSearch() {
@@ -1101,6 +1091,7 @@ public class SearchWorkflowBean {
     private Date dateTo;
 
     private static final String SEARCH = "search";
+    private static final String PATIENT_SEARCH = "displayStudy";
     private static final String DYNAMIC_SEARCH = "dynamicSearch";
     private static final String FREE_TEXT_SEARCH = "freeTextSearch";
     private boolean fromSavedQuery= false;
@@ -1212,42 +1203,89 @@ public class SearchWorkflowBean {
             return "loginFail";
         }
     }
+    
+	public String externalSimpleSearch(String collectionName, String patientID) {
+		dynamicSearch = false;
+		advanced = false;
+		usSearch = false;
+		freeTextSearch = false;
+		simpleSearch = true;
+		if (patientID == null)
+			return externalCollectionSearch(collectionName);
+		else
+			return externalPatientSearch(patientID);
+	}
 
-    private String externalSearch(String collectionName) {
-        logger.debug("calling external search action");
+	private String externalCollectionSearch(String collectionName) {
+		logger.debug("calling external search action");
 
-        SecurityBean secure = BeanManager.getSecurityBean();
+		SecurityBean secure = BeanManager.getSecurityBean();
 
-        if (secure.getLoggedIn()) {
-            SearchResultBean resultBean = BeanManager.getSearchResultBean();
-            resultBean.setPatientResults(null);
-            editingSavedQuery = false;
-            setDefaultValues();
+		if (secure.getLoggedIn()) {
+			SearchResultBean resultBean = BeanManager.getSearchResultBean();
+			resultBean.setPatientResults(null);
+			editingSavedQuery = false;
+			setDefaultValues();
 
-        	List<String> collectionNames = lookupMgr.getSearchCollection();
-        	//Collections.sort(collectionNames);
-            collectionItems = JsfUtil.getBooleanSelectItemsFromStrings(collectionNames);
-            SelectItem item = JsfUtil.findSelectItemByLabel(collectionItems, collectionName);
-    		if(item!=null) {
-    			item.setValue(true);
-    		}
+			List<String> collectionNames = lookupMgr.getSearchCollection();
+			// Collections.sort(collectionNames);
+			collectionItems = JsfUtil.getBooleanSelectItemsFromStrings(collectionNames);
+			SelectItem item = JsfUtil.findSelectItemByLabel(collectionItems, collectionName);
+			if (item != null) {
+				item.setValue(true);
+			}
 
-    		try {
-    			submitSearch();
+			try {
+				submitSearch();
 
-    		} catch (Exception e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-            return SEARCH;
-        }
-        else {
-            MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
-            secure.setLoginFailure(false);
-            return "loginFail";
-        }
-    }
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return SEARCH;
+		} else {
+			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
+			secure.setLoginFailure(false);
+			return "loginFail";
+		}
+	}
+    
+	private String externalPatientSearch(String patientID) {
+		logger.debug("calling external patient search action");
 
+		SecurityBean secure = BeanManager.getSecurityBean();
+
+		if (secure.getLoggedIn()) {
+			SearchResultBean resultBean = BeanManager.getSearchResultBean();
+			resultBean.setPatientResults(null);
+			editingSavedQuery = false;
+			setDefaultValues();
+
+			patientCriteria = true;
+			setPatientInput(patientID);
+			try {
+				submitSearch();
+				List<PatientResultWrapper> patList = resultBean.getPatientResults();
+				if ((patList != null) && (patList.size() > 0)) {
+					resultBean.viewPatient(resultBean.getPatientResults().get(0));
+					return "externalPatSearch";
+				} else {
+					MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "patientNoFoundInPublicDomain");
+					secure.setLoginFailure(false);
+					return "loginFail";
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return SEARCH;
+		} else {
+			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
+			secure.setLoginFailure(false);
+			return "loginFail";
+		}
+	}
 
     private void addSelectedSoftwareVersion(String ver) {
     	if (!StringUtil.isEmpty(ver) && (!this.selectedSoftwareVersions.contains(ver))) {
@@ -1539,7 +1577,6 @@ public class SearchWorkflowBean {
             return;
         }
 		for (SelectItem selectItem : modalityItems) {
-			System.out.println("modality changed:" + selectItem.getLabel() + " "+ selectItem.getValue());
 			if (selectItem.getLabel().equals("US")) {
 				if (selectItem.getValue().equals(Boolean.TRUE)) {
 					System.out.println("modality changed:"
@@ -1649,37 +1686,33 @@ public class SearchWorkflowBean {
     	}
     }
 
-   public void resultPerPageOptionChangeListener(ValueChangeEvent event) {
-	   if (!event.getPhaseId().equals(PhaseId.INVOKE_APPLICATION)) {
-   		event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-   		event.queue();
-           return;
-       }
-	    String resultPerPageOptionNewValue = (String)event.getNewValue();
-		System.out.println("resultPerPageOption new value" + resultPerPageOptionNewValue);
+	public void resultPerPageOptionChangeListener(ValueChangeEvent event) {
+		if (!event.getPhaseId().equals(PhaseId.INVOKE_APPLICATION)) {
+			event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+			event.queue();
+			return;
+		}
+		String resultPerPageOptionNewValue = (String) event.getNewValue();
 		this.resultPerPageOption = resultPerPageOptionNewValue;
 		try {
 			submitSearch();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
-   }
-
-   public void modalityAndAnyOptionChangeListener(ValueChangeEvent event) {
-	   if (!event.getPhaseId().equals(PhaseId.INVOKE_APPLICATION)) {
-   		event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-   		event.queue();
-           return;
-       }
-	    String modalityAndedSearch = (String)event.getNewValue();
-		System.out.println("modalityAndedSearch new value" + modalityAndedSearch);
+	public void modalityAndAnyOptionChangeListener(ValueChangeEvent event) {
+		if (!event.getPhaseId().equals(PhaseId.INVOKE_APPLICATION)) {
+			event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+			event.queue();
+			return;
+		}
+		String modalityAndedSearch = (String) event.getNewValue();
 		this.modalityAndedSearch = modalityAndedSearch;
 		try {
 			submitSearch();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-   }
+	}
 }
