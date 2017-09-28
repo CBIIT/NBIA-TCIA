@@ -607,63 +607,9 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 			logger.info("No data in data basket, do not show the download manager");
 			return null;
 		}
-
-		List<String> seriesDownloadData = new ArrayList<String>();
-		boolean hasPrivateCollection = false;
-		for (BasketSeriesItemBean seriesItem : basket.getSeriesItems()) {
-
-			String collection = seriesItem.getProject();
-			String patientId = seriesItem.getPatientId();
-			String studyInstanceUid = seriesItem.getStudyId();
-			String seriesInstanceUid = seriesItem.getSeriesId();
-			String annotation = seriesItem.getAnnotated();
-			Integer numberImages = seriesItem.getTotalImagesInSeries();
-			Long imagesSize = seriesItem.getTotalSizeForAllImagesInSeries();
-			Long annoSize = seriesItem.getAnnotationsSize();
-			String url = "url";
-			String displayName = "displayName";
-			String studyDate = seriesItem.getStudyDate();
-			String studyDesc = cleanStr(seriesItem.getStudyDescription());
-			String seriesDesc = cleanStr(seriesItem.getSeriesDescription());
-			String study_id = cleanStr(seriesItem.getStudy_id());
-			String seriesNumber = seriesItem.getSeriesNumber();
-			
-			if (!isPublicCollection(collection)) {
-				hasPrivateCollection = true;
-			}
-
-			String argument = "" + collection + "|" + patientId + "|" + studyInstanceUid + "|" + seriesInstanceUid + "|"
-					+ annotation + "|" + numberImages + "|" + imagesSize + "|" + annoSize + "|" + url + "|"
-					+ displayName + "|" + true + "|" + studyDate + "|" + study_id + "|" + studyDesc + "|" + seriesNumber + "|" + seriesDesc;
-			seriesDownloadData.add(argument);
-		}
-
-		String dataFileName = "manifest-" + sb.getUsername() + "-" + currentTimeMillis;
-		File dataFile = new File(System.getProperty("java.io.tmpdir"), dataFileName);
-		OutputStream os = new FileOutputStream(dataFile);
-		IOUtils.writeLines(seriesDownloadData, System.getProperty("line.separator"), os);
-		if (hasPrivateCollection) {
-			String encryptedPassword = this.encrypt(sb.getPassword());
-			IOUtils.write(sb.getUsername() + "\n" + encryptedPassword + "\n" + NCIAConfig.getEncryptionKey(), os);
-		}
-		os.close();
-
-		StringBuffer outSB = new StringBuffer();
-		outSB.append("downloadServerUrl=" + NCIAConfig.getDownloadServerUrl() + "\n");
-		outSB.append("includeAnnotation=" + getIncludeAnnotation() + "\n");
-
-		outSB.append("noOfrRetry=" + NCIAConfig.getNoOfRetry() + "\n");
-		String tmpDir = System.getProperty("java.io.tmpdir");
-		if (File.separatorChar != '/')
-			tmpDir = tmpDir.replace(File.separatorChar, '/');
-		outSB.append("tempLoc=" + tmpDir + "/\n");
-
-		if (hasPrivateCollection) {
-			outSB.append("databasketId=" + dataFileName + "-x\n");
-		} else
-			outSB.append("databasketId=" + dataFileName + "\n");
-
-		ByteArrayResource bar = new ByteArrayResource(outSB.toString().getBytes());
+		String manifest = RESTUtil.getManifest(this.getSeriesItems(), sb.getPassword(), getIncludeAnnotation(), sb.getTokenValue(), manifestFileName);
+		
+		ByteArrayResource bar = new ByteArrayResource(manifest.getBytes());
 		return bar;
 	}
 
