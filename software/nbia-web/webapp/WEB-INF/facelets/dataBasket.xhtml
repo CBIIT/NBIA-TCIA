@@ -55,25 +55,18 @@ L-->
                  
 					<h:panelGroup rendered="#{not empty basketBean.seriesItems}">
 						<center>
-							<div style="font-family: Arial; font-size: 15px; font-weight: bold; color: red">
-								Before clicking the Start Download button you must install
-								the<span style="display:inline-block;width:1px;"></span>
+							<div style="font-family: Arial; font-size: 15px">
+								Before clicking Start Download, you must install the TCIA Downloader app.
+								<span style="display:inline-block;width:1px;"></span>
 								<a href="https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics-DownloadingTCIAImages"
-									target="_blank">TCIA Downloader</a> app on your computer.
-								<br />
-								<div style="display: inline-block;">If you cannot install this app, you can run our </div>
-								<div style="display: inline-block;">
-									<ice:outputResource id="launchDownload"
-										label="temporary TCIA Downloader"
+									target="_blank">Download the app for Windows, Mac, or Linux.</a>
+								<br/>If you cannot install the app, run the<span style="display:inline-block;width:1px;"></span> 
+								<div style="display: inline-block;"><ice:outputResource id="launchDownload"
+										label=" temporary TCIA Downloader "
 										resource="#{basketBean.launchDownloadManager}"
 										fileName="#{basketBean.jnlpFileName}"
 										mimeType="application/x-java-jnlp-file" rendered="true"
-										attachment="false" style="font-weight:bold;" />
-								</div>
-								<div style="display: inline-block;"> instead.
-									<ncia:help label="images/help_icon.png"
-										helpId="-DownloadManager" />
-								</div>
+										attachment="false" style="font-weight:bold;" /></div>instead.
 							</div>
 						</center>
 					</h:panelGroup>
