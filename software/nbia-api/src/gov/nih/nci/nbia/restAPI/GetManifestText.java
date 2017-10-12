@@ -134,7 +134,7 @@ public class GetManifestText extends getData{
 		OutputStream os = new FileOutputStream(dataFile);
 		IOUtils.writeLines(seriesDownloadData, System.getProperty("line.separator"), os);
 		if (hasPrivateCollection) {
-			String encryptedPassword = password;
+			String encryptedPassword = encrypt(user, password);
 			IOUtils.write(user + "\n" + encryptedPassword + "\n" + NCIAConfig.getEncryptionKey(), os);
 		}
 		os.close();
@@ -151,9 +151,9 @@ public class GetManifestText extends getData{
 
 		if (hasPrivateCollection) {
 			outSB.append("databasketId=" + dataFileName + "-x\n");
-		} else
+		} else {
 			outSB.append("databasketId=" + dataFileName + "\n");
-		
+		}
 
         
 		return Response.ok(outSB.toString()).type("application/x-nbia-manifest-file")
