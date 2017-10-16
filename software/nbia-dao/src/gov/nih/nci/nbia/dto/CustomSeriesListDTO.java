@@ -76,6 +76,7 @@ public class CustomSeriesListDTO {
 	}
 	public List<String> getSeriesInstanceUIDs() {
 		HashSet<String> setOfIds = new HashSet<String>(seriesInstanceUIDs);
+		
 		return new ArrayList<String>(setOfIds);
 	}
 	public void setSeriesInstanceUIDs(List<String> seriesInstanceUIDs) {
