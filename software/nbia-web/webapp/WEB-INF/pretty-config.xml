@@ -36,6 +36,12 @@ L-->
     <action>#{dicomTagViewerPopulatorMgBean.populate}</action>
   </url-mapping> 
    
+  <url-mapping id="showManifestResource">
+    <pattern> /showManifest.jsf</pattern>
+    <view-id> /showManifest.jsf </view-id>
+  </url-mapping> 
+   
+   
   <url-mapping id="viewSeries">
     <pattern> /viewSeriesPopup.jsf</pattern>
     <query-param name="seriesId">#{viewSeriesPopulatorMgBean.seriesId}</query-param>

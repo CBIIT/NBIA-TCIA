@@ -210,6 +210,12 @@ L-->
   </navigation-rule>
   <navigation-rule>
     <navigation-case>
+      <from-outcome>showManifest</from-outcome>
+      <to-view-id>/showManifest.jsf</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+    <navigation-case>
       <from-outcome>submissionReports</from-outcome>
       <to-view-id>/submissionReports.jsf</to-view-id>
       <redirect /> 
