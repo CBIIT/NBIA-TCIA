@@ -803,9 +803,7 @@ public class QcToolUpdateBean {
 		}
 		String manifest="";
 	//	if (isSelectedFiles){
-		  System.out.println("!!!!!! calling manafest");
 		  manifest = RESTUtil.getQCManifest(seriesList, sb.getPassword(), false, sb.getTokenValue(), manifestFileName);
-		  System.out.println("!!!!!! called manafest:"+manifest);
 	//	}
 		ByteArrayResource bar = new ByteArrayResource(manifest.getBytes());
 		return bar;
