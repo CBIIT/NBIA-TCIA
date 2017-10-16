@@ -277,6 +277,22 @@ L-->
 					action="#{qcToolSearchBean.requestRpt}" />
 
 			</ice:panelCollapsible>
+			
+			<ice:panelCollapsible id="manifestFilePanel" expanded="true">
+				<f:facet name="header">
+					<ice:panelGroup>
+						<ice:outputText id="formHeader"
+							value="Create Manifest File" />
+					</ice:panelGroup>
+				</f:facet>
+
+                     	<ice:commandButton id="manifestlink" value="Generate Manifest"
+							onclick="window.open('/ncia/showManifest.jsf', 'manifestShow', 'resizable=yes,scrollbars=no,width=300,height=200');return true;">
+						</ice:commandButton>
+
+
+			</ice:panelCollapsible>
+
 
 		</ice:panelGroup>
 		<ice:panelPopup id="resultPagePnlPop" resizable="false"
