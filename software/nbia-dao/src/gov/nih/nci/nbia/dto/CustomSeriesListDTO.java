@@ -13,7 +13,8 @@ import gov.nih.nci.nbia.util.NCIAConfig;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
+import java.util.HashSet;
+import java.util.ArrayList;
 /**
  * Represents customized series list for data transfer purposes
  * @author lethai
@@ -74,10 +75,12 @@ public class CustomSeriesListDTO {
 		this.date = date;
 	}
 	public List<String> getSeriesInstanceUIDs() {
-		return seriesInstanceUIDs;
+		HashSet<String> setOfIds = new HashSet<String>(seriesInstanceUIDs);
+		return new ArrayList<String>(setOfIds);
 	}
 	public void setSeriesInstanceUIDs(List<String> seriesInstanceUIDs) {
-		this.seriesInstanceUIDs = seriesInstanceUIDs;
+		HashSet<String> setOfIds = new HashSet<String>(seriesInstanceUIDs);
+		this.seriesInstanceUIDs = new ArrayList<String>(setOfIds);
 	}
 	 public String getDateString() {
 	        if (date == null) {
