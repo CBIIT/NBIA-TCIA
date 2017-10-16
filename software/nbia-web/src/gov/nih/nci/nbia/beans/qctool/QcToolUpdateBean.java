@@ -17,6 +17,7 @@ import gov.nih.nci.nbia.dao.QcStatusDAO;
 import gov.nih.nci.nbia.dicomtags.LocalDicomTagViewer;
 import gov.nih.nci.nbia.dto.QcCustomSeriesListDTO;
 import gov.nih.nci.nbia.dto.QcSearchResultDTO;
+import gov.nih.nci.nbia.lookup.RESTUtil;
 import gov.nih.nci.nbia.mail.MailManager;
 import gov.nih.nci.nbia.qctool.VisibilityStatus;
 import gov.nih.nci.nbia.search.LocalDrillDown;
@@ -37,6 +38,13 @@ import java.util.List;
 import java.util.Set;
 
 import javax.faces.model.SelectItem;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
+import com.icesoft.faces.context.ByteArrayResource;
+import javax.servlet.http.*;
+import javax.servlet.*;
+import java.io.*;
+import java.nio.charset.*;
 
 /**
  * This bean is used to update the QC status
@@ -216,6 +224,7 @@ public class QcToolUpdateBean {
 			for (int i = 0; i < qsrDTOList.size(); ++i) {
 				QcSearchResultDTO aDTO = qsrDTOList.get(i);
 				newQsrDTOList.add(i, new QcSearchResultDTO(aDTO));
+				System.out.println(aDTO.isSelected());
 				if (aDTO.isSelected()) {
 					seriesList.add(aDTO.getSeries());
 					statusList.add(aDTO.getVisibility());
@@ -754,7 +763,12 @@ public class QcToolUpdateBean {
 	public void setImageLink(String imageLink) {
 		this.imageLink = imageLink;
 	}
-
+	public String getManifestFileName() {
+		return manifestFileName;
+	}
+	public void setManifestFileName(String manifestFileName) {
+		this.manifestFileName = manifestFileName;
+	}
     private void createLink(ImageSearchResult imageSearchResult)
     {
         SecurityBean secure = BeanManager.getSecurityBean();
@@ -764,7 +778,38 @@ public class QcToolUpdateBean {
 		"&wadoUrl="+APIURLHolder.getWadoUrl();
 		setImageLink(url);
     }
-      
+	public com.icesoft.faces.context.Resource getStandaloneDMFile() throws Exception {
+		long currentTimeMillis = System.currentTimeMillis();
+		manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
+		List<QcSearchResultDTO> qsrDTOList = qcToolSearchBean.getQsrDTOList();
+		SecurityBean sb = BeanManager.getSecurityBean();
+		qcToolSearchBean.setIfNotClickedSubmit(true);
+        boolean isSelectedFiles=false;
+        seriesList.clear();
+		if (qsrDTOList != null) {
+			
+			System.out.println("In QCToolSearchBean:getStandaloneDMFile() - qsrDTOList is NOT NULL - and qsrDTOList size is: " + qsrDTOList.size());
+			
+			
+			for (int i = 0; i < qsrDTOList.size(); ++i) {
+				QcSearchResultDTO aDTO = qsrDTOList.get(i);
+				System.out.println(aDTO.isSelected());
+				if (aDTO.isSelected()) {
+					seriesList.add(aDTO.getSeries());
+					isSelectedFiles=true;
+				} // end if (aDTO.isSelected()) {
+			
+			}// End forLoop
+		}
+		String manifest="";
+	//	if (isSelectedFiles){
+		  System.out.println("!!!!!! calling manafest");
+		  manifest = RESTUtil.getQCManifest(seriesList, sb.getPassword(), false, sb.getTokenValue(), manifestFileName);
+		  System.out.println("!!!!!! called manafest:"+manifest);
+	//	}
+		ByteArrayResource bar = new ByteArrayResource(manifest.getBytes());
+		return bar;
+	} 
 
 	//////////////////////////// PRIVATE //////////////////////////////
 	private static final String DELETE = "Delete";
@@ -811,5 +856,6 @@ public class QcToolUpdateBean {
 	private List<SelectItem> imgNumItems;
 	private int currentSeriesSize = 0;
 	private String selectedImgNumField = "1";
+    private String manifestFileName;
 
 }
