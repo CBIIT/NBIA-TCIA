@@ -793,7 +793,6 @@ public class QcToolUpdateBean {
 			
 			for (int i = 0; i < qsrDTOList.size(); ++i) {
 				QcSearchResultDTO aDTO = qsrDTOList.get(i);
-				System.out.println(aDTO.isSelected());
 				if (aDTO.isSelected()) {
 					seriesList.add(aDTO.getSeries());
 					isSelectedFiles=true;
