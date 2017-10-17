@@ -708,6 +708,30 @@ public class NCIAConfig {
         	return new String();
 
         return propertyValue;   	
+    } 
+
+    public static String getWinInstallerLink() {
+        String propertyValue = properties.getProperty("win.downloader.installer.path");
+        checkProperty("win.downloader.installer.path", propertyValue);
+        return propertyValue;   	
+    } 
+    
+    public static String getMacInstallerLink() {
+        String propertyValue = properties.getProperty("mac.downloader.installer.path");
+        checkProperty("mac.downloader.installer.path", propertyValue);
+        return propertyValue;   	
+    } 
+    
+    public static String getCentOSInstallerLink() {
+        String propertyValue = properties.getProperty("centos.downloader.installer.path");
+        checkProperty("centos.downloader.installer.path", propertyValue);
+        return propertyValue;   	
+    }
+    
+    public static String getUbuntuInstallerLink() {
+        String propertyValue = properties.getProperty("ubuntu.downloader.installer.path");
+        checkProperty("ubuntu.downloader.installer.path", propertyValue);
+        return propertyValue;   	
     }    
     
     /**

@@ -52,23 +52,41 @@ L-->
                                     value="#{msg.dataBasket_popupBlocker}" />
                     </b>
                   </f:subview-->
-                 
+                 	<br/>
 					<h:panelGroup rendered="#{not empty basketBean.seriesItems}">
-						<center>
-							<div style="font-family: Arial; font-size: 15px">
-								Before clicking Start Download, you must install the TCIA Downloader app.
-								<span style="display:inline-block;width:1px;"></span>
-								<a href="https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics-DownloadingTCIAImages"
-									target="_blank">Download the app for Windows, Mac, or Linux.</a>
-								<br/>If you cannot install the app, run the<span style="display:inline-block;width:1px;"></span> 
-								<div style="display: inline-block;"><ice:outputResource id="launchDownload"
+							<div style="font-family: Arial; font-size: 15px; display: table; margin-right: auto; margin-left: auto;">
+								<div style="margin: 0; display: inline-block; float: left;">
+								Before clicking Start Download, you must install the TCIA Downloader app. Download the app for&#160;</div>
+								<div style="margin: 0; display: inline-block; float: left;">
+							    <h:outputLink value="#{basketBean.winInstallerLink}"> 
+	       								<h:outputText value="Windows" />	
+	  								</h:outputLink></div>
+	  								<div style="margin: 0; display: inline-block; float: left;">,&#160;</div>
+	  								<div style="margin: 0; display: inline-block; float: left;">
+	  								<h:outputLink value="#{basketBean.macInstallerLink}"> 
+	       								<h:outputText value="Mac"/>	
+	  								</h:outputLink></div>
+	  								<div style="margin: 0; display: inline-block; float: left;">, or Linux (</div>
+	  								<div style="margin: 0; display: inline-block; float: left;">
+	  								<h:outputLink value="#{basketBean.centOSInstallerLink}"> 
+	       								<h:outputText value="RPM"/>	
+	  								</h:outputLink> </div>
+	  								<div style="margin: 0; display: inline-block; float: left;">&#160;or&#160;</div>
+								<div style="margin: 0; display: inline-block; float: left;">
+									<h:outputLink value="#{basketBean.ubuntuInstallerLink}"> 
+	       								<h:outputText value="DEB"/>	
+	  							</h:outputLink></div>
+	  							<div style="margin: 0; display: inline-block; float: left;">). </div>
+	  							<br/>
+								<div style="margin: 0; display: inline-block; float: left;">If you cannot install the app, run the&#160;</div> 
+								<div style="margin: 0; display: inline-block;float: left;"><ice:outputResource id="launchDownload"
 										label=" temporary TCIA Downloader "
 										resource="#{basketBean.launchDownloadManager}"
 										fileName="#{basketBean.jnlpFileName}"
 										mimeType="application/x-java-jnlp-file" rendered="true"
-										attachment="false" style="font-weight:bold;" /></div>instead.
+										attachment="false" /></div>
+								<div style="margin: 0; display: inline-block;float: left;">&#160;instead.</div>		
 							</div>
-						</center>
 					</h:panelGroup>
                             
                   <!--  only relevant when done zipping... but harmless to "show" -->

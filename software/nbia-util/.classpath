@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-  <classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-util/compile/log4j-1.2.15.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-util/compile/log4j-1.2.15.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/nbia-util-working@nbia-util-resolver.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
