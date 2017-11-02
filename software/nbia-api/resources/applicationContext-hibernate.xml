@@ -146,6 +146,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
+  <bean id="collectionDescDAO" class="gov.nih.nci.nbia.dao.CollectionDescDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
     <bean id="WADOSupportDAO" class="gov.nih.nci.nbia.wadosupport.WADOSupportDAOImpl">
     <property name="sessionFactory">
       <ref bean="sessionFactory"/>

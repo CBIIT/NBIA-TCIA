@@ -13,6 +13,7 @@ import gov.nih.nci.nbia.internaldomain.CollectionDesc;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -59,8 +60,26 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			getHibernateTemplate().evict(c);
 		}
 		return dto;
-	}
+	}	@Transactional(propagation=Propagation.REQUIRED)
+	
+	public List<CollectionDescDTO> findCollectionDescs() throws DataAccessException{
 
+
+        List<CollectionDescDTO> returnValue=new ArrayList<CollectionDescDTO>();
+        DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+        criteria.add(Restrictions.isNotNull("collectionName"));
+        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+        System.out.println("collectionDescList:"+collectionDescList.size());
+		for(CollectionDesc collectionDesc : collectionDescList)	{
+			CollectionDescDTO dto = new CollectionDescDTO();
+			dto.setDescription(collectionDesc.getDescription());
+			dto.setId(collectionDesc.getId());
+			dto.setCollectionName(collectionDesc.getCollectionName());
+			System.out.println("Description:"+dto.getDescription());
+			returnValue.add(dto);
+		}
+		return returnValue;
+	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	public long save(CollectionDescDTO collectionDescDTO) throws DataAccessException {
 

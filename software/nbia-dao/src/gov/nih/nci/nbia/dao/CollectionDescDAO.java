@@ -25,7 +25,7 @@ public interface CollectionDescDAO  {
 	 */
 	public List<String> findCollectionNames() throws DataAccessException;
 
-	
+	public List<CollectionDescDTO> findCollectionDescs() throws DataAccessException;
 	public CollectionDescDTO findCollectionDescByCollectionName(String collectionName) throws DataAccessException;
 	
 	public long save(CollectionDescDTO collectionDescDTO) throws DataAccessException;
