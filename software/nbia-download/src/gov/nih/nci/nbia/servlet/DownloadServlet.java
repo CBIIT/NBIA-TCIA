@@ -9,10 +9,16 @@
 package gov.nih.nci.nbia.servlet;
 
 import gov.nih.nci.nbia.DownloadProcessor;
+import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dto.AnnotationDTO;
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.dto.SeriesDTO;
+import gov.nih.nci.nbia.lookup.BasketSeriesItemBean;
+import gov.nih.nci.nbia.searchresult.SeriesSearchResult;
 import gov.nih.nci.nbia.util.NCIAConfig;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.util.StringEncrypter;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -217,6 +223,10 @@ public class DownloadServlet extends HttpServlet {
             response.setHeader("Content-Disposition","attachment;filename=downloadname.txt");
             try{
                 List <String> readLines = IOUtils.readLines(new FileReader(fileName));
+                List <String> seriesIds=parse(readLines);
+                if (seriesIds!=null){
+                	readLines = getFullManifestString(seriesIds);
+                }
                 OutputStream os = response.getOutputStream();
                 IOUtils.writeLines(readLines, System.getProperty("line.separator"), os);
                 os.close();
@@ -224,4 +234,120 @@ public class DownloadServlet extends HttpServlet {
               e.printStackTrace();
         }
      }
+    
+    // All below added to fix manifest problem
+	private static List<String> getFullManifestString(List<String> list){
+		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		List<String> input = new ArrayList<String>();
+		for (String item:list){
+			input.add(item);
+		}
+		System.out.println("Regenerating Manifest");
+        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUIDAnyVisibility(input);
+
+		List<SeriesSearchResult> seriesFound=convert(ssList);
+		List<BasketSeriesItemBean> seriesItems=new ArrayList<BasketSeriesItemBean>();
+		for (SeriesSearchResult series:seriesFound){
+			seriesItems.add(convert(series));
+		}
+		List<String> seriesDownloadData = new ArrayList<String>();
+		for (BasketSeriesItemBean seriesItem : seriesItems) {
+
+			String collection = seriesItem.getProject();
+			String patientId = seriesItem.getPatientId();
+			String studyInstanceUid = seriesItem.getStudyId();
+			String seriesInstanceUid = seriesItem.getSeriesId();
+			String annotation = seriesItem.getAnnotated();
+			Integer numberImages = seriesItem.getTotalImagesInSeries();
+			Long imagesSize = seriesItem.getTotalSizeForAllImagesInSeries();
+			Long annoSize = seriesItem.getAnnotationsSize();
+			String url = "url";
+			String displayName = "displayName";
+			String studyDate = seriesItem.getStudyDate();
+			String studyDesc = cleanStr(seriesItem.getStudyDescription());
+			String seriesDesc = cleanStr(seriesItem.getSeriesDescription());
+			String study_id = cleanStr(seriesItem.getStudy_id());
+			String seriesNumber = seriesItem.getSeriesNumber();
+			String argument = "" + collection + "|" + patientId + "|" + studyInstanceUid + "|" + seriesInstanceUid + "|"
+					+ annotation + "|" + numberImages + "|" + imagesSize + "|" + annoSize + "|" + url + "|"
+					+ displayName + "|" + true + "|" + studyDate + "|" + study_id + "|" + studyDesc + "|" + seriesNumber + "|" + seriesDesc;
+			seriesDownloadData.add(argument);
+		}
+		return seriesDownloadData;
+	}
+	private static BasketSeriesItemBean convert(SeriesSearchResult seriesDTO){
+		BasketSeriesItemBean returnBean = new BasketSeriesItemBean(seriesDTO);
+
+		returnBean.setAnnotationsFlag(seriesDTO.isAnnotated());
+		returnBean.setAnnotationsSize(seriesDTO.getAnnotationsSize());
+		returnBean.setPatientId(seriesDTO.getPatientId());
+		returnBean.setProject(seriesDTO.getProject());
+		returnBean.setSeriesId(seriesDTO.getSeriesInstanceUid());
+		returnBean.setSeriesPkId(seriesDTO.getId());
+		returnBean.setStudyId(seriesDTO.getStudyInstanceUid());
+		returnBean.setStudyPkId(seriesDTO.getStudyId());
+		returnBean.setTotalImagesInSeries(seriesDTO.getNumberImages());
+		returnBean.setTotalSizeForAllImagesInSeries(seriesDTO.getTotalSizeForAllImagesInSeries());
+		returnBean.setStudyDate(seriesDTO.getStudyDate());
+		returnBean.setStudyDescription(seriesDTO.getStudyDescription());
+		returnBean.setSeriesDescription(seriesDTO.getDescription());
+		returnBean.setStudy_id(seriesDTO.getStudy_id());
+		returnBean.setSeriesDescription(seriesDTO.getDescription());
+		returnBean.setSeriesNumber(seriesDTO.getSeriesNumber());
+		returnBean.setPatientpk(seriesDTO.getPatientpk());
+		return returnBean;
+	}
+	private static String cleanStr(String in) {
+		if ((in != null) && (in.length() > 0)) {
+			String out= in.replaceAll("[^a-zA-Z0-9 .-]", "");
+			return out;
+		}
+		else return null;
+	}
+    private static List<String> parse(List<String> args){
+        List<String> seriesDataList = new ArrayList<String>();
+        for(String seriesData:args ) {
+            String series;
+            String[] result = StringUtils.split(seriesData,"\\|");
+            if(result != null && result.length > 0) {
+            	if (result.length > 11){
+            		// its a new style manifest just send i
+            		return null;
+            	}
+                series=result[3];
+                seriesDataList.add(series);
+            }
+        }
+        return seriesDataList;
+    }
+    private static List<SeriesSearchResult> convert(List<SeriesDTO> dtos) {
+    	List<SeriesSearchResult> results = new ArrayList<SeriesSearchResult>();
+
+    	for(SeriesDTO dto : dtos) {
+    		SeriesSearchResult result = new SeriesSearchResult();
+
+    		result.setId(dto.getSeriesPkId());
+    		result.setSeriesInstanceUid(dto.getSeriesUID());
+    		result.setStudyId(dto.getStudyPkId());
+    		result.setStudyInstanceUid(dto.getStudyId());
+    		result.setNumberImages(dto.getNumberImages());
+    		result.setSeriesNumber(dto.getSeriesNumber());
+    		result.setManufacturer(dto.getManufacturer());
+    		result.setModality(dto.getModality());
+    		result.setAnnotated(dto.isAnnotationsFlag());
+    		result.setProject(dto.getProject());
+            
+    		result.setPatientId(dto.getPatientId());
+    		result.setAnnotationsSize(dto.getAnnotationsSize());
+    		result.setDescription(dto.getDescription());
+    		result.setTotalSizeForAllImagesInSeries(dto.getTotalSizeForAllImagesInSeries());
+    		result.setMaxFrameCount(dto.getMaxFrameCount());
+    		result.setPatientpk(dto.getPatientPkId());
+    		result.setStudy_id(dto.getStudy_id());
+    		result.setStudyDescription(dto.getStudyDesc());
+    		result.setStudyDate(dto.getStudyDateString());
+    		results.add(result);
+    	}
+    	return results;
+    }
 }
