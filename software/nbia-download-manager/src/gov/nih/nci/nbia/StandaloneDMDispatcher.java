@@ -93,6 +93,7 @@ public class StandaloneDMDispatcher {
 
 	public StandaloneDMDispatcher() {
 		os = System.getProperty("os.name").toLowerCase();
+		System.out.println("os type="+os);
 	}
 
 	public void loadManifestFile(String fileName) {

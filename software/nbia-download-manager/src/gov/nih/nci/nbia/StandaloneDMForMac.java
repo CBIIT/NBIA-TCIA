@@ -10,11 +10,11 @@ import javax.swing.SwingUtilities;
  * @author Q. Pan
  *
  */
-public class StandaloneDMForMac extends StandaloneDM {
+public class StandaloneDMForMac extends StandaloneDMDispatcher {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
-			StandaloneDM app = new StandaloneDM();
+			StandaloneDMDispatcher app = new StandaloneDMDispatcher();
 			Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
 				List<File> files = ofe.getFiles();
 				if (files != null && files.size() > 0) {
@@ -22,7 +22,7 @@ public class StandaloneDMForMac extends StandaloneDM {
 						app.loadManifestFile(files.get(0).getAbsolutePath());
 						app.launch();
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, StandaloneDM.launchMsg);
+						JOptionPane.showMessageDialog(null, StandaloneDMDispatcher.launchMsg);
 						e.printStackTrace();
 					}
 				} else {
@@ -38,7 +38,7 @@ public class StandaloneDMForMac extends StandaloneDM {
 					app.launch();
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, StandaloneDM.launchMsg);
+				JOptionPane.showMessageDialog(null, StandaloneDMDispatcher.launchMsg);
 			}
 		});
 	}
