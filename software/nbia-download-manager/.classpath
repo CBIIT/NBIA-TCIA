@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="resources"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/log4j-1.2.15.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/nbia-util.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/compile/rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

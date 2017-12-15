@@ -43,8 +43,9 @@ public class DownloadServletVersion extends HttpServlet {
 		if (os.startsWith("windows")) {
 			urlForDownload = winUrl;
 			System.out.println("windows installer url=" + winUrl);
-		} else if (os.equals("Mac")) {
+		} else if (os.startsWith("mac")) {
 			urlForDownload = macUrl;
+			System.out.println("mac installer url=" + macUrl);
 		} else if (os.equals("CentOS")) {
 			urlForDownload = centOsUrl;
 		} else if (os.equals("Ubuntu")) {
