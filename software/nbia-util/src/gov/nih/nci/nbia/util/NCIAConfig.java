@@ -732,6 +732,12 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("ubuntu.downloader.installer.path");
         checkProperty("ubuntu.downloader.installer.path", propertyValue);
         return propertyValue;   	
+    } 
+    
+    public static String getLatestDownloaderVersion() {
+        String propertyValue = properties.getProperty("latest.TCIA.downloader.version");
+        checkProperty("latest.TCIA.downloader.version", propertyValue);
+        return propertyValue;   	
     }    
     
     /**

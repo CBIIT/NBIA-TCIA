@@ -23,7 +23,7 @@ import java.util.Observable;
 public abstract class AbstractSeriesDownloader extends Observable implements Runnable {
     /* These are the status names. */
     public static final String STATUSES[] = {"Not Started","Downloading",
-        "Paused", "Complete", "Cancelled", "Error", "No Data"};
+        "Paused", "Complete", "Cancelled", "Error", "No Data", "Not Authorized"};
 
     /*These are the status codes.*/
     public static final int NOT_STARTED = 0;
@@ -33,6 +33,7 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     public static final int CANCELLED = 4;
     public static final int ERROR = 5;
     public static final int NO_DATA =6;
+    public static final int NOT_AUTHORIZED =7;    
 
     /* Constructor for SeriesDownloader */
     public AbstractSeriesDownloader() {
@@ -80,6 +81,14 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
         pcs.firePropertyChange("status", oldStatus, status);
         stateChanged();
     }
+    
+    protected void unauthorized() {
+        int oldStatus = status;
+        status = NOT_AUTHORIZED ;
+
+        pcs.firePropertyChange("status", oldStatus, status);
+        stateChanged();
+    }    
 
 
     public void stateChanged(){

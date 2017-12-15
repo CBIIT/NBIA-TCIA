@@ -56,7 +56,8 @@ public class StatusCellRenderer extends JPanel implements TableCellRenderer {
             } 
         }; 
         comp.add(text);
-        if(StringUtils.equalsIgnoreCase(value.toString(), "Complete") || StringUtils.equalsIgnoreCase(value.toString(), "Error")) {
+        if(StringUtils.equalsIgnoreCase(value.toString(), "Complete") || StringUtils.equalsIgnoreCase(value.toString(), "Error") ||
+        		StringUtils.equalsIgnoreCase(value.toString(), "Not Authorized")) {
             JButton button = new JButton("...");
             button.setMargin(new Insets(0, 0, 0, 0));
             button.setPreferredSize(new Dimension(25, 15));  

@@ -151,6 +151,8 @@ L-->
 	<target name="build:local:install" description="Deply the wars to local tomcat defined in buildAHP3.properties" depends="
 		build:all">
 		<delete dir="${application.base.path.windows}/apache-tomcat-7.0.68/webapps/ncia"/>
+		<delete dir="${application.base.path.windows}/apache-tomcat-7.0.68/webapps/nbia-download"/>
+		<delete dir="${application.base.path.windows}/apache-tomcat-7.0.68/webapps/nbia-api"/>		
 		<copy todir="${application.base.path.windows}/apache-tomcat-7.0.68/webapps" overwrite="true">
 			<fileset dir="${dist.exploded.dir}/nbia-wars">
 				<include name="ncia.war"/>

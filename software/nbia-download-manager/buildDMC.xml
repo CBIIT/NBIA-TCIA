@@ -152,7 +152,7 @@ ant -f buildDMC.xml
 	<!-- jar it, extract above dependency-all.jar and zip it with project files -->
 	<target name="jar" depends="compile, copy-dependencies"
                 description="package, output to JAR">
-		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDM" else="gov.nih.nci.nbia.StandaloneDMForMac">
+		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDMDispatcher" else="gov.nih.nci.nbia.StandaloneDMForMac">
 			<not>
 				<os family="mac"/>
 			</not>

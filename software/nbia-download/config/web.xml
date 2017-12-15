@@ -29,10 +29,30 @@ L-->
     <servlet-class>gov.nih.nci.nbia.servlet.DownloadServlet</servlet-class>
   </servlet>
   
+   <servlet>
+    <servlet-name>DownloadServletVersion</servlet-name>
+    <servlet-class>gov.nih.nci.nbia.servlet.DownloadServletVersion</servlet-class>
+  </servlet>
+   
+  <servlet>
+    <servlet-name>DownloadServletV2</servlet-name>
+    <servlet-class>gov.nih.nci.nbia.servlet.DownloadServletV2</servlet-class>
+  </servlet>  
+  
   <servlet-mapping>
     <servlet-name>DownloadServlet</servlet-name>
     <url-pattern>/servlet/DownloadServlet</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>DownloadServletVersion</servlet-name>
+    <url-pattern>/servlet/DownloadServletVersion</url-pattern>
+  </servlet-mapping> 
+
+  <servlet-mapping>
+    <servlet-name>DownloadServletV2</servlet-name>
+    <url-pattern>/servlet/DownloadServletV2</url-pattern>
+  </servlet-mapping>    
   
  
 </web-app>

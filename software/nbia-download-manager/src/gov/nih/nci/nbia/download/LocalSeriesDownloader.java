@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.ProxySelector;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -263,6 +264,15 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			
 			/* Make sure response code is in the 200 range. */
 			if (responseCode / 100 != 2) {
+				if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
+					System.out.println("@@@@@@@@@@@@@ Not Authorized to access");
+					additionalInfo
+					.append("Not authorized to access series: "+ this.seriesInstanceUid);
+					unauthorized();
+					httpClient.getConnectionManager().shutdown();
+					return;
+				}
+				else {
 				// additionalInfo.append("incorrect response code");
 				System.out.println(getTimeStamp() +" for the seriers "+ this.seriesInstanceUid +" incorrect response code received "
 						+"--attempt" + attempt);
@@ -279,6 +289,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 					this.progressUpdater.bytesCopied(0);
 				}
 				connectAndReadFromURL(url, attempt + 1);
+				}
 			}
 
 			/*
@@ -350,6 +361,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 										// recovery
 		int downloadedImgSize = 0;
 		int downloadedAnnoSize = 0;
+		
 		// End lrt additions
 		try {
 			// the pause button affects this loop
@@ -406,6 +418,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		} finally {
 			org.apache.commons.io.IOUtils.closeQuietly(zis);
 		}
+
 		// Begin lrt additions
 		if (status == COMPLETE) {
 			if (sopUidsList.size() != Integer.valueOf(numberOfImages).intValue()) {
