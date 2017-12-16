@@ -12,12 +12,14 @@
  */
 package gov.nih.nci.nbia;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.ProxySelector;
 import java.net.URL;
@@ -93,7 +95,7 @@ public class StandaloneDMDispatcher {
 
 	public StandaloneDMDispatcher() {
 		os = System.getProperty("os.name").toLowerCase();
-		System.out.println("os type="+os);
+		System.out.println("os type=" + os);
 	}
 
 	public void loadManifestFile(String fileName) {
@@ -181,35 +183,14 @@ public class StandaloneDMDispatcher {
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
 		System.out.println("download url: " + downloadUrl);
 		String installerPath = null;
-		String fileName = downloadUrl.substring(1 + downloadUrl.lastIndexOf('/'), downloadUrl.lastIndexOf('?'));
-
-		System.out.println("!!!!File name =" + fileName);
 
 		if (n == 0) {
 			System.out.println("auto update");
-			try {
-				installerPath = saveFile(new URL(downloadUrl), fileName);
-				if (os.contains("windows")) {
-					try {
-						System.out.println("!!installing msi");
-						Runtime rf = Runtime.getRuntime();
-						Process pf = rf.exec("msiexec /i \"" + installerPath + "\"");
-						System.exit(0);
-					} catch (Exception e) {
-						// System.out.println(e.toString()); // not necessary
-						e.printStackTrace();
-					}
-				}
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			saveAndInstall(downloadUrl);
 		} else if (n == 1) {
 			System.out.println("download only");
 			try {
-				installerPath = saveFile(new URL(downloadUrl), fileName);
-				JOptionPane.showMessageDialog(null, "The latest installer is downloaded to " + installerPath + ".");
+				saveFile(downloadUrl);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -219,42 +200,106 @@ public class StandaloneDMDispatcher {
 		}
 	}
 
-	public String saveFile(URL url, String fileAcutal) throws IOException {
-		System.out.println("opening connection");
+	String getInstallerName(String downloadUrl) {
+		String fileName = downloadUrl.substring(1 + downloadUrl.lastIndexOf('/'), downloadUrl.lastIndexOf('?'));
 		String home = System.getProperty("user.home");
 
-		String fileName = null;
 		if (os.contains("windows")) {
 
-			fileName = home + "\\Downloads\\" + fileAcutal;
+			fileName = home + "\\Downloads\\" + fileName;
+		} else if (os.startsWith("mac")) {
+			fileName = home + "/Downloads/" + fileName;
 		}
-		System.out.println("Attempting to read from file in: " + new File(fileName).getCanonicalPath());
-		InputStream in = url.openStream();
-		FileOutputStream fos = new FileOutputStream(new File(fileName));
 
-		System.out.println("Downloading installer to  " + fileName);
-
-		int length = -1;
-		ProgressMonitorInputStream pmis;
-		pmis = new ProgressMonitorInputStream(null, "Downloading...", in);
-		ProgressMonitor monitor = pmis.getProgressMonitor();
-		monitor.setMinimum(0);
-		monitor.setMaximum((int) 200000000); // The actual size is much smaller,
-												// but we have no way to know
-												// the actual size so picked
-												// this big number
-
-		byte[] buffer = new byte[1024];// buffer for portion of data from
-		// connection
-
-		while ((length = pmis.read(buffer)) > -1) {
-			fos.write(buffer, 0, length);
-		}
-		fos.close();
-		in.close();
-		pmis.close();
-		System.out.println("file was downloaded");
 		return fileName;
+	}
+
+	private void saveAndInstall(String downloadUrl) {
+		System.out.println("Download and install");
+		Thread t = new Thread() {
+			public void run() {
+				downloadInstaller(downloadUrl);
+				install(downloadUrl);
+			}
+		};
+		t.start();
+	}
+
+	private void saveFile(String downloadUrl) throws IOException {
+		System.out.println("opening connection");
+		Thread t = new Thread() {
+			public void run() {
+				downloadInstaller(downloadUrl);
+				JOptionPane.showMessageDialog(null, "The latest installer is downloaded to " + getInstallerName(downloadUrl) + ".");
+			}
+		};
+		t.start();
+	}
+
+	private void downloadInstaller(String downloadUrl) {
+		String fileName = getInstallerName(downloadUrl);
+		System.out.println("Attempting to read from file in: " + fileName);
+		InputStream in;
+		try {
+			URL url = new URL(downloadUrl);
+			in = url.openStream();
+
+			FileOutputStream fos = new FileOutputStream(new File(fileName));
+
+			System.out.println("Downloading installer to  " + fileName);
+
+			int length = -1;
+			ProgressMonitorInputStream pmis;
+			pmis = new ProgressMonitorInputStream(null, "Downloading...", in);
+			ProgressMonitor monitor = pmis.getProgressMonitor();
+			monitor.setMinimum(0);
+			monitor.setMaximum((int) 200000000); // The actual size is much smaller,
+													// but we have no way to know
+													// the actual size so picked
+													// this big number
+
+			byte[] buffer = new byte[1024];// buffer for portion of data from
+			// connection
+
+			while ((length = pmis.read(buffer)) > 0) {
+				fos.write(buffer, 0, length);
+			}
+			fos.close();
+			in.close();
+			pmis.close();
+			System.out.println("file was downloaded");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void install(String downloadUrl) {
+		String installerPath = getInstallerName(downloadUrl);
+		if (os.contains("windows")) {
+			try {
+				System.out.println("!!installing msi");
+				Runtime.getRuntime().exec("msiexec /i \"" + installerPath + "\"");
+//				System.exit(0);
+			} catch (Exception e) {
+				// System.out.println(e.toString()); // not necessary
+				e.printStackTrace();
+			}
+		} else if (os.startsWith("mac")) {
+			try {
+				System.out.println("!!installing dmg");
+				Runtime.getRuntime().exec(new String[] { "/usr/bin/open", installerPath });
+//				System.exit(0);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		int n = JOptionPane.showConfirmDialog(null, "Installing new version of TCIA Downloader... Do you want to stop the current process?" );
+		if (n == 0) {
+			System.exit(0);
+		}
 	}
 
 	private static List<String> connectAndReadFromURL(URL url) {
