@@ -140,6 +140,13 @@ public class StandaloneDMDispatcher {
 
 	private void getNewVersionInfo() {
 		List<String> resp = null;
+		if (!(os.contains("windows") || os.startsWith("mac"))) {
+			this.os = getLinuxPlatform();
+			if (this.os.equals("other")) {
+				JOptionPane.showMessageDialog(null, "New version of TCIA Downloader is released but the OS platform of your system is not supported currently.");
+				return;
+			}
+		}
 		try {
 			String versionServerUrl = serverUrl.substring(0, serverUrl.lastIndexOf('/'))
 					.concat("/DownloadServletVersion");
@@ -207,7 +214,7 @@ public class StandaloneDMDispatcher {
 		if (os.contains("windows")) {
 
 			fileName = home + "\\Downloads\\" + fileName;
-		} else if (os.startsWith("mac")) {
+		} else {
 			fileName = home + "/Downloads/" + fileName;
 		}
 
@@ -294,6 +301,26 @@ public class StandaloneDMDispatcher {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (os.equals("CentOS")) {
+			// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
+			try {
+				System.out.println("!!installing rpm =" + installerPath);
+				String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum install " + installerPath };
+				Process pb = Runtime.getRuntime().exec(cmd);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if (os.equals("Ubuntu")) {
+			//sudo dpkg -i tciadownloader_1.0-2_amd64.deb
+			try {
+				System.out.println("!!installing deb =" + installerPath);
+				String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " + installerPath };
+				Process pb = Runtime.getRuntime().exec(cmd);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		}
 		
 		int n = JOptionPane.showConfirmDialog(null, "Installing new version of TCIA Downloader... Do you want to stop the current process?" );
@@ -368,5 +395,33 @@ public class StandaloneDMDispatcher {
 			}
 		}
 		return data;
+	}
+	
+	private String getLinuxPlatform() {
+		String linuxOS = "other";
+		if (os.contains("nux")) {
+			String[] cmd = { "/bin/sh", "-c", "cat /etc/*-release" };
+			try {
+				Process p = Runtime.getRuntime().exec(cmd);
+				BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				String line = "";
+				while ((line = bri.readLine()) != null) {
+					System.out.println(line);
+					if (line.contains("Ubuntu")) {
+						linuxOS = "Ubuntu";
+						break;
+					}
+					else if (line.contains("CentOS")) {
+						linuxOS = "CentOS";
+						break;
+					}
+				}
+				bri.close();
+				return linuxOS;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return linuxOS;
 	}
 }
