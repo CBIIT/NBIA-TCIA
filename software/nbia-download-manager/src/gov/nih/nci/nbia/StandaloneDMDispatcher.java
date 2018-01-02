@@ -223,10 +223,11 @@ public class StandaloneDMDispatcher {
 
 	private void saveAndInstall(String downloadUrl) {
 		System.out.println("Download and install");
+		final String dlUrl = downloadUrl;
 		Thread t = new Thread() {
 			public void run() {
-				downloadInstaller(downloadUrl);
-				install(downloadUrl);
+				downloadInstaller(dlUrl);
+				install(dlUrl);
 			}
 		};
 		t.start();
@@ -234,10 +235,11 @@ public class StandaloneDMDispatcher {
 
 	private void saveFile(String downloadUrl) throws IOException {
 		System.out.println("opening connection");
+		final String dlUrl = downloadUrl;
 		Thread t = new Thread() {
 			public void run() {
-				downloadInstaller(downloadUrl);
-				JOptionPane.showMessageDialog(null, "The latest installer is downloaded to " + getInstallerName(downloadUrl) + ".");
+				downloadInstaller(dlUrl);
+				JOptionPane.showMessageDialog(null, "The latest installer is downloaded to " + getInstallerName(dlUrl) + ".");
 			}
 		};
 		t.start();
