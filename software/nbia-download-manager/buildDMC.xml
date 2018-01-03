@@ -25,7 +25,7 @@ ant -f buildDMC.xml
 	<property name="application.title" value="TCIA Downloader" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
-	<property name="package.version" value="1.0" />
+	<property name="package.version" value="2.0" />
 	<property name="copyright" value="(c) 2017 NCI, Leidos, Ellumen" />
 	<property name="icon.file.name" value="StandaloneDMIcon.ico" />
 
@@ -37,7 +37,7 @@ ant -f buildDMC.xml
 		<os family="mac"/>
 	</condition>
 
-	<condition property="javafx.main.class" value="gov.nih.nci.nbia.StandaloneDMForMac" else="gov.nih.nci.nbia.StandaloneDM">
+	<condition property="javafx.main.class" value="gov.nih.nci.nbia.StandaloneDMForMac" else="gov.nih.nci.nbia.StandaloneDMDispatcher">
 		<os family="mac"/>
 	</condition>
 	
