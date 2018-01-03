@@ -259,7 +259,7 @@ public class StandaloneDMDispatcher {
 
 			int length = -1;
 			ProgressMonitorInputStream pmis;
-			pmis = new ProgressMonitorInputStream(null, "Downloading...", in);
+			pmis = new ProgressMonitorInputStream(null, "Downloading new version of installer for TCIA Downloader App...", in);
 			ProgressMonitor monitor = pmis.getProgressMonitor();
 			monitor.setMinimum(0);
 			monitor.setMaximum((int) 200000000); // The actual size is much smaller,
@@ -307,9 +307,29 @@ public class StandaloneDMDispatcher {
 			// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
 			try {
 				System.out.println("!!installing rpm =" + installerPath);
-				String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum install " + installerPath };
+				// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum install -v "
+				// + installerPath };
+				String[] cmd = { "sudo", "yum", "install", "-v", installerPath };
 				Process pb = Runtime.getRuntime().exec(cmd);
-			} catch (IOException e) {
+				BufferedReader readerStd = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+
+				BufferedReader readerErr = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+
+				String line = null;
+				while ((line = readerStd.readLine()) != null) {
+					System.out.println(line);
+				}
+				System.out.println("------ Std Err -------");
+				while ((line = readerErr.readLine()) != null) {
+					System.out.println(line);
+				}
+
+				if (pb.waitFor() == 0) {
+					System.out.println("success");
+				} else {
+					System.out.println("Failed");
+				}
+			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -317,15 +337,34 @@ public class StandaloneDMDispatcher {
 			//sudo dpkg -i tciadownloader_1.0-2_amd64.deb
 			try {
 				System.out.println("!!installing deb =" + installerPath);
-				String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " + installerPath };
+				//String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " + installerPath };
+				String[] cmd = { "sudo", "dpkg", "-i", installerPath};
 				Process pb = Runtime.getRuntime().exec(cmd);
-			} catch (IOException e) {
+				BufferedReader readerStd = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+
+				BufferedReader readerErr = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+
+				String line = null;
+				while ((line = readerStd.readLine()) != null) {
+					System.out.println(line);
+				}
+				System.out.println("------ Std Err -------");
+				while ((line = readerErr.readLine()) != null) {
+					System.out.println(line);
+				}
+
+				if (pb.waitFor() == 0) {
+					System.out.println("success");
+				} else {
+					System.out.println("Failed");
+				}				
+			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
 		
-		int n = JOptionPane.showConfirmDialog(null, "Installing new version of TCIA Downloader... Do you want to stop the current process?" );
+		int n = JOptionPane.showConfirmDialog(null, "Installing new version of TCIA Downloader. Do you want to stop the current app?" );
 		if (n == 0) {
 			System.exit(0);
 		}
