@@ -13,6 +13,7 @@
 package gov.nih.nci.nbia;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.ProxySelector;
 import java.net.URL;
@@ -30,6 +32,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -185,8 +188,12 @@ public class StandaloneDMDispatcher {
 
 	private void constructDownloadPanel(String downloadUrl) {
 		Object[] options = { installBtnLbl, downloadBtnLbl, remindMeBtnLbl };
-
-		int n = JOptionPane.showOptionDialog(null, newVersionMsg, "New Version Notification",
+		String nVMsg = newVersionMsg;
+		if (os.equalsIgnoreCase("CentOS") || os.equalsIgnoreCase("Ubuntu")) {
+			nVMsg = nVMsg + "\nIf choosing Update automatically, you need to enter a sudo password later.";
+		}
+	
+		int n = JOptionPane.showOptionDialog(null, nVMsg, "New Version Notification",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
 		System.out.println("download url: " + downloadUrl);
 		String installerPath = null;
@@ -289,7 +296,7 @@ public class StandaloneDMDispatcher {
 			try {
 				System.out.println("!!installing msi");
 				Runtime.getRuntime().exec("msiexec /i \"" + installerPath + "\"");
-//				System.exit(0);
+				// System.exit(0);
 			} catch (Exception e) {
 				// System.out.println(e.toString()); // not necessary
 				e.printStackTrace();
@@ -298,76 +305,120 @@ public class StandaloneDMDispatcher {
 			try {
 				System.out.println("!!installing dmg");
 				Runtime.getRuntime().exec(new String[] { "/usr/bin/open", installerPath });
-//				System.exit(0);
+				// System.exit(0);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (os.equals("CentOS")) {
-			// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
-			try {
-				System.out.println("!!installing rpm =" + installerPath);
-				// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum install -v "
-				// + installerPath };
-				String[] cmd = { "sudo", "yum", "install", "-v", installerPath };
-				Process pb = Runtime.getRuntime().exec(cmd);
-				BufferedReader readerStd = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+		} else {
+			String pas = JOptionPane.showInputDialog("Please enter a sudo password for installing the new version:");
+			if (pas != null) {
+				if (os.equals("CentOS")) {
+					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
+					try {
+						System.out.println("!!installing rpm =" + installerPath);
+						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum install -v "
+						// + installerPath };
+						// String[] cmd = { "sudo", "yum", "-y", "install", "-v", installerPath };
+						// String[] cmd = { "sudo", "yum", "-y", "install", "-v",
+						// "/home/panq/Downloads/TCIADownloader-2.0-1.x86_64.rpm"};
+						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum -v -y remove
+						// TCIADownloader.x86_64;sudo yum -y install
+						// /home/panq/Downloads/TCIADownloader-2.0-1.x86_64.rpm"};
+						// String[] cmd = { "/bin/bash", "-c",
+						// "/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum
+						// -y -q install /home/panq/Downloads/TCIADownloader-2.0-1.x86_64.rpm" };
+						String[] cmd = { "/bin/bash", "-c",
+								"/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install "
+										+ installerPath };
 
-				BufferedReader readerErr = new BufferedReader(new InputStreamReader(pb.getInputStream()));
+						Process pb = Runtime.getRuntime().exec(cmd);
+						BufferedWriter writer = null;
+						writer = new BufferedWriter(new OutputStreamWriter(pb.getOutputStream()));
+						writer.write(pas);
+						writer.write('\n');
+						writer.flush();
 
-				String line = null;
-				while ((line = readerStd.readLine()) != null) {
-					System.out.println(line);
-				}
-				System.out.println("------ Std Err -------");
-				while ((line = readerErr.readLine()) != null) {
-					System.out.println(line);
-				}
+						// BufferedReader readerStd = new BufferedReader(new
+						// InputStreamReader(pb.getInputStream()));
+						//
+						// BufferedReader readerErr = new BufferedReader(new
+						// InputStreamReader(pb.getInputStream()));
+						//
+						// String line = null;
+						// while ((line = readerStd.readLine()) != null) {
+						// System.out.println(line);
+						// }
+						// System.out.println("------ Std Err -------");
+						// while ((line = readerErr.readLine()) != null) {
+						// System.out.println(line);
+						// }
+						//
+						String status = null;
 
-				if (pb.waitFor() == 0) {
-					System.out.println("success");
-				} else {
-					System.out.println("Failed");
+						if (pb.waitFor() == 0) {
+							System.out.println("success");
+							status = "successfully";
+						} else {	
+							System.out.println("Failed");
+							status = "unsuccessfully";
+						}
+						
+						int n = JOptionPane.showConfirmDialog(null,
+								"Installation of new version of TCIA Downloader is completed " + status +". Exit the current app?");
+						if (n == 0) {
+							System.exit(0);
+						}				
+					} catch (IOException | InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else if (os.equals("Ubuntu")) {
+					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
+					try {
+						System.out.println("!!installing deb =" + installerPath);
+						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " +
+						// installerPath };
+						//String[] cmd = { "sudo", "dpkg", "-i", installerPath };
+						String[] cmd = { "/bin/bash", "-c",
+								"/usr/bin/sudo -S dpkg -r TCIADownloader.x86_64;/usr/bin/sudo -S dpkg -i "
+										+ installerPath };
+
+						Process pb = Runtime.getRuntime().exec(cmd);
+						BufferedWriter writer = null;
+						writer = new BufferedWriter(new OutputStreamWriter(pb.getOutputStream()));
+						writer.write(pas);
+						writer.write('\n');
+						writer.flush();
+						
+						String status = null;
+
+						if (pb.waitFor() == 0) {
+							System.out.println("success");
+							status = "successfully";
+						} else {	
+							System.out.println("Failed");
+							status = "unsuccessfully";
+						}
+						
+						int n = JOptionPane.showConfirmDialog(null,
+								"Installation of new version of TCIA Downloader is completed " + status +". Exit the current app?");
+						if (n == 0) {
+							System.exit(0);
+						}				
+					} catch (IOException | InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		} else if (os.equals("Ubuntu")) {
-			//sudo dpkg -i tciadownloader_1.0-2_amd64.deb
-			try {
-				System.out.println("!!installing deb =" + installerPath);
-				//String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " + installerPath };
-				String[] cmd = { "sudo", "dpkg", "-i", installerPath};
-				Process pb = Runtime.getRuntime().exec(cmd);
-				BufferedReader readerStd = new BufferedReader(new InputStreamReader(pb.getInputStream()));
-
-				BufferedReader readerErr = new BufferedReader(new InputStreamReader(pb.getInputStream()));
-
-				String line = null;
-				while ((line = readerStd.readLine()) != null) {
-					System.out.println(line);
-				}
-				System.out.println("------ Std Err -------");
-				while ((line = readerErr.readLine()) != null) {
-					System.out.println(line);
-				}
-
-				if (pb.waitFor() == 0) {
-					System.out.println("success");
-				} else {
-					System.out.println("Failed");
-				}				
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
 		}
-		
-		int n = JOptionPane.showConfirmDialog(null, "Installing new version of TCIA Downloader. Do you want to stop the current app?" );
-		if (n == 0) {
-			System.exit(0);
-		}
+
+//		int n = JOptionPane.showConfirmDialog(null,
+//				"Installation of new version of TCIA Downloader is completed. Exit the current app?");
+//		if (n == 0) {
+//			System.exit(0);
+//		}
 	}
 
 	private static List<String> connectAndReadFromURL(URL url) {

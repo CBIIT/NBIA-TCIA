@@ -47,7 +47,8 @@ ant -f buildDMC.xml
 		</not>
 	</condition>
 	
-	<condition property="native.bundles" value="all" else="rpm">
+	<!--condition property="native.bundles" value="all" else="rpm"-->
+	<condition property="native.bundles" value="all" else="deb">
 		<or>
 			<os family="mac"/>
 			<os family="windows"/>
