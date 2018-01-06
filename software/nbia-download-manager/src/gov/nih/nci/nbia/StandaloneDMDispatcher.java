@@ -380,8 +380,7 @@ public class StandaloneDMDispatcher {
 						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " +
 						// installerPath };
 						//String[] cmd = { "sudo", "dpkg", "-i", installerPath };
-						String[] cmd = { "/bin/bash", "-c",
-								"/usr/bin/sudo -S dpkg -r TCIADownloader.x86_64;/usr/bin/sudo -S dpkg -i "
+						String[] cmd = { "/bin/bash", "-c", "/usr/bin/sudo -S dpkg -i "
 										+ installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
