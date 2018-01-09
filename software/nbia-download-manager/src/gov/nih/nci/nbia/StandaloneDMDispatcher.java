@@ -36,6 +36,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
@@ -98,7 +104,6 @@ public class StandaloneDMDispatcher {
 
 	public StandaloneDMDispatcher() {
 		os = System.getProperty("os.name").toLowerCase();
-		System.out.println("os type=" + os);
 	}
 
 	public void loadManifestFile(String fileName) {
@@ -116,7 +121,6 @@ public class StandaloneDMDispatcher {
 			propFile.close();
 			this.serverUrl = System.getProperty("downloadServerUrl");
 			manifestVersion = System.getProperty("manifestVersion");
-			System.out.println("manifest version is " + manifestVersion);
 			checkManifestVersion(manifestVersion);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -128,8 +132,6 @@ public class StandaloneDMDispatcher {
 	}
 
 	private void checkManifestVersion(String manifestVersion) {
-		System.out.println("manifest version =" + manifestVersion + ", supported Version=" + supportedVersion
-				+ ", app version= " + appVersion);
 		if (((manifestVersion == null) && (supportedVersion != null))
 				|| ((manifestVersion != null) && (supportedVersion != null)
 						&& (Double.valueOf(manifestVersion) < Double.valueOf(supportedVersion)))) {
@@ -146,25 +148,20 @@ public class StandaloneDMDispatcher {
 		if (!(os.contains("windows") || os.startsWith("mac"))) {
 			this.os = getLinuxPlatform();
 			if (this.os.equals("other")) {
-				JOptionPane.showMessageDialog(null, "New version of TCIA Downloader is released but the OS platform of your system is not supported currently.");
+				JOptionPane.showMessageDialog(null,
+						"New version of TCIA Downloader is released but the OS platform of your system is not supported currently.");
 				return;
 			}
 		}
 		try {
 			String versionServerUrl = serverUrl.substring(0, serverUrl.lastIndexOf('/'))
 					.concat("/DownloadServletVersion");
-			System.out.println("version server url=" + versionServerUrl);
 			resp = connectAndReadFromURL(new URL(versionServerUrl));
-
-			for (String msg : resp) {
-				System.out.println("&&&&&&&&resp = " + msg);
-			}
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		}
 		if ((resp != null) && (resp.size() == 3)) {
 			key = resp.get(2);
-			System.out.println("!!Get the encription key");
 		}
 		if ((resp != null) && (Double.parseDouble(resp.get(0)) > Double.parseDouble(appVersion))) {
 			constructDownloadPanel(resp.get(1));
@@ -175,11 +172,9 @@ public class StandaloneDMDispatcher {
 		getNewVersionInfo();
 
 		if ((manifestVersion == null) || (manifestVersion.equals("1.0"))) {
-			System.out.println("first generation manifest file");
 			StandaloneDMV1 sdm = new StandaloneDMV1();
 			sdm.launch();
 		} else if (manifestVersion.equals("2.0")) {
-			System.out.println("second generation manifest file");
 			StandaloneDMV2 sdm = new StandaloneDMV2();
 			sdm.setKey(key);
 			sdm.launch();
@@ -192,17 +187,14 @@ public class StandaloneDMDispatcher {
 		if (os.equalsIgnoreCase("CentOS") || os.equalsIgnoreCase("Ubuntu")) {
 			nVMsg = nVMsg + "\nIf choosing Update automatically, you need to enter a sudo password later.";
 		}
-	
-		int n = JOptionPane.showOptionDialog(null, nVMsg, "New Version Notification",
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
-		System.out.println("download url: " + downloadUrl);
-		String installerPath = null;
+
+		int n = JOptionPane.showOptionDialog(null, nVMsg, "New Version Notification", JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
 
 		if (n == 0) {
-			System.out.println("auto update");
 			saveAndInstall(downloadUrl);
 		} else if (n == 1) {
-			System.out.println("download only");
+
 			try {
 				saveFile(downloadUrl);
 			} catch (IOException e) {
@@ -210,7 +202,6 @@ public class StandaloneDMDispatcher {
 				e.printStackTrace();
 			}
 		} else if (n == 2) {
-			System.out.println("remind me later");
 		}
 	}
 
@@ -229,7 +220,6 @@ public class StandaloneDMDispatcher {
 	}
 
 	private void saveAndInstall(String downloadUrl) {
-		System.out.println("Download and install");
 		final String dlUrl = downloadUrl;
 		Thread t = new Thread() {
 			public void run() {
@@ -241,36 +231,78 @@ public class StandaloneDMDispatcher {
 	}
 
 	private void saveFile(String downloadUrl) throws IOException {
-		System.out.println("opening connection");
 		final String dlUrl = downloadUrl;
 		Thread t = new Thread() {
 			public void run() {
 				downloadInstaller(dlUrl);
-				JOptionPane.showMessageDialog(null, "The latest installer is downloaded to " + getInstallerName(dlUrl) + ".");
+				JOptionPane.showMessageDialog(null,
+						"The latest installer is downloaded to " + getInstallerName(dlUrl) + ".");
 			}
 		};
 		t.start();
+		
 	}
 
 	private void downloadInstaller(String downloadUrl) {
 		String fileName = getInstallerName(downloadUrl);
-		System.out.println("Attempting to read from file in: " + fileName);
 		InputStream in;
+
+		// Create a trust manager that does not validate certificate chains
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			public void checkClientTrusted(X509Certificate[] certs, String authType) {
+				// here is the place to check client certs and throw an
+				// exception if certs are wrong. When there is nothing all certs
+				// accepted.
+			}
+
+			public void checkServerTrusted(X509Certificate[] certs, String authType) {
+				// here is the place to check server certs and throw an
+				// exception if certs are wrong. When there is nothing all certs
+				// accepted.
+			}
+		} };
+		// Install the all-trusting trust manager
+		try {
+			final SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new java.security.SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+			// Create all-trusting host name verifier
+			HostnameVerifier allHostsValid = new HostnameVerifier() {
+				public boolean verify(String hostname, SSLSession session) {
+					// Here is the palce to check host name against to
+					// certificate owner
+					return true;
+				}
+			};
+			// Install the all-trusting host verifier
+			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+		} catch (KeyManagementException | NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally {
+		}
+
 		try {
 			URL url = new URL(downloadUrl);
 			in = url.openStream();
-
 			FileOutputStream fos = new FileOutputStream(new File(fileName));
-
-			System.out.println("Downloading installer to  " + fileName);
 
 			int length = -1;
 			ProgressMonitorInputStream pmis;
-			pmis = new ProgressMonitorInputStream(null, "Downloading new version of installer for TCIA Downloader App...", in);
+			pmis = new ProgressMonitorInputStream(null,
+					"Downloading new version of installer for TCIA Downloader App...", in);
+
 			ProgressMonitor monitor = pmis.getProgressMonitor();
 			monitor.setMinimum(0);
-			monitor.setMaximum((int) 200000000); // The actual size is much smaller,
-													// but we have no way to know
+			monitor.setMaximum((int) 200000000); // The actual size is much
+													// smaller,
+													// but we have no way to
+													// know
 													// the actual size so picked
 													// this big number
 
@@ -283,7 +315,6 @@ public class StandaloneDMDispatcher {
 			fos.close();
 			in.close();
 			pmis.close();
-			System.out.println("file was downloaded");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -294,16 +325,12 @@ public class StandaloneDMDispatcher {
 		String installerPath = getInstallerName(downloadUrl);
 		if (os.contains("windows")) {
 			try {
-				System.out.println("!!installing msi");
 				Runtime.getRuntime().exec("msiexec /i \"" + installerPath + "\"");
-				// System.exit(0);
 			} catch (Exception e) {
-				// System.out.println(e.toString()); // not necessary
 				e.printStackTrace();
 			}
 		} else if (os.startsWith("mac")) {
 			try {
-				System.out.println("!!installing dmg");
 				Runtime.getRuntime().exec(new String[] { "/usr/bin/open", installerPath });
 				// System.exit(0);
 			} catch (Exception e) {
@@ -316,18 +343,6 @@ public class StandaloneDMDispatcher {
 				if (os.equals("CentOS")) {
 					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
 					try {
-						System.out.println("!!installing rpm =" + installerPath);
-						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum install -v "
-						// + installerPath };
-						// String[] cmd = { "sudo", "yum", "-y", "install", "-v", installerPath };
-						// String[] cmd = { "sudo", "yum", "-y", "install", "-v",
-						// "/home/panq/Downloads/TCIADownloader-2.0-1.x86_64.rpm"};
-						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo yum -v -y remove
-						// TCIADownloader.x86_64;sudo yum -y install
-						// /home/panq/Downloads/TCIADownloader-2.0-1.x86_64.rpm"};
-						// String[] cmd = { "/bin/bash", "-c",
-						// "/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum
-						// -y -q install /home/panq/Downloads/TCIADownloader-2.0-1.x86_64.rpm" };
 						String[] cmd = { "/bin/bash", "-c",
 								"/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install "
 										+ installerPath };
@@ -339,36 +354,20 @@ public class StandaloneDMDispatcher {
 						writer.write('\n');
 						writer.flush();
 
-						// BufferedReader readerStd = new BufferedReader(new
-						// InputStreamReader(pb.getInputStream()));
-						//
-						// BufferedReader readerErr = new BufferedReader(new
-						// InputStreamReader(pb.getInputStream()));
-						//
-						// String line = null;
-						// while ((line = readerStd.readLine()) != null) {
-						// System.out.println(line);
-						// }
-						// System.out.println("------ Std Err -------");
-						// while ((line = readerErr.readLine()) != null) {
-						// System.out.println(line);
-						// }
-						//
 						String status = null;
 
 						if (pb.waitFor() == 0) {
-							System.out.println("success");
 							status = "successfully";
-						} else {	
-							System.out.println("Failed");
+						} else {
 							status = "unsuccessfully";
 						}
-						
+
 						int n = JOptionPane.showConfirmDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status +". Exit the current app?");
+								"Installation of new version of TCIA Downloader is completed " + status
+										+ ". Exit the current app?");
 						if (n == 0) {
 							System.exit(0);
-						}				
+						}
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -376,12 +375,7 @@ public class StandaloneDMDispatcher {
 				} else if (os.equals("Ubuntu")) {
 					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
 					try {
-						System.out.println("!!installing deb =" + installerPath);
-						// String[] cmd = { "/bin/bash", "-c", "echo \"password\"| sudo dpkg -i " +
-						// installerPath };
-						//String[] cmd = { "sudo", "dpkg", "-i", installerPath };
-						String[] cmd = { "/bin/bash", "-c", "/usr/bin/sudo -S dpkg -i "
-										+ installerPath };
+						String[] cmd = { "/bin/bash", "-c", "/usr/bin/sudo -S dpkg -i " + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;
@@ -389,22 +383,21 @@ public class StandaloneDMDispatcher {
 						writer.write(pas);
 						writer.write('\n');
 						writer.flush();
-						
+
 						String status = null;
 
 						if (pb.waitFor() == 0) {
-							System.out.println("success");
 							status = "successfully";
-						} else {	
-							System.out.println("Failed");
+						} else {
 							status = "unsuccessfully";
 						}
-						
+
 						int n = JOptionPane.showConfirmDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status +". Exit the current app?");
+								"Installation of new version of TCIA Downloader is completed " + status
+										+ ". Exit the current app?");
 						if (n == 0) {
 							System.exit(0);
-						}				
+						}
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -412,12 +405,6 @@ public class StandaloneDMDispatcher {
 				}
 			}
 		}
-
-//		int n = JOptionPane.showConfirmDialog(null,
-//				"Installation of new version of TCIA Downloader is completed. Exit the current app?");
-//		if (n == 0) {
-//			System.exit(0);
-//		}
 	}
 
 	private static List<String> connectAndReadFromURL(URL url) {
@@ -459,7 +446,8 @@ public class StandaloneDMDispatcher {
 			httpPostMethod.setEntity(query);
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-			System.out.println("Dispatcher:Response code for requesting data file: " + responseCode);
+			// System.out.println("Dispatcher:Response code for requesting data
+			// file: " + responseCode);
 			if (responseCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
 				data = IOUtils.readLines(inputStream);
@@ -487,7 +475,7 @@ public class StandaloneDMDispatcher {
 		}
 		return data;
 	}
-	
+
 	private String getLinuxPlatform() {
 		String linuxOS = "other";
 		if (os.contains("nux")) {
@@ -497,12 +485,10 @@ public class StandaloneDMDispatcher {
 				BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				String line = "";
 				while ((line = bri.readLine()) != null) {
-					System.out.println(line);
 					if (line.contains("Ubuntu")) {
 						linuxOS = "Ubuntu";
 						break;
-					}
-					else if (line.contains("CentOS")) {
+					} else if (line.contains("CentOS")) {
 						linuxOS = "CentOS";
 						break;
 					}

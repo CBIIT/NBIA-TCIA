@@ -24,7 +24,8 @@ public class JnlpArgumentsParser {
     public static List<SeriesData> parse(String [] args){
         int length = args.length;
         List<SeriesData> seriesDataList = new ArrayList<SeriesData>();
-        for(int i=0; i< length; i++ ) {
+
+        for(int i=0; i< length; i++ ) {        	
             SeriesData series = new SeriesData();
             String[] result = StringUtils.split(args[i],"\\|");
             if(result != null && result.length > 0) {

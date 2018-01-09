@@ -125,13 +125,8 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 
     public List<BasketSeriesItemBean> getSortedSeriesItems() {
     	List<BasketSeriesItemBean> toSort = basket.getSeriesItems();
-    	System.out.println("sortColumnName is - "+sortColumnName);
-    	// if (!oldSort.equals(sortColumnName) ||
-        //     oldAscending != ascending) {
-    		 sort(toSort);
-        //     oldSort = sortColumnName;
-        //     oldAscending = ascending;
-        //}
+
+    	sort(toSort);
     	return toSort;
     }
 
@@ -234,8 +229,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
                 Set<String> keys = seriesItemMap.keySet();
                 for(String key: keys){
                     BasketSeriesItemBean bsib = seriesItemMap.get(key);
-                    System.out.println("::downloadBasket:"+bsib.getProject());
-
                     SeriesSearchResult seriesDTO = bsib.getSeriesSearchResult();
                     localSeriesDTOs.put(seriesDTO.getId().toString(),seriesDTO);
                 }
@@ -498,7 +491,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
             imageList =  new ListDataModel(wrappers);
             icefacesDataModel = new IcefacesRowColumnDataModel(wrappers);
         }catch (Exception e) {
-            System.out.println("inside the exception" );
             e.printStackTrace();
     	}
     }
@@ -587,7 +579,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
         long currentTimeMillis = System.currentTimeMillis();
         jnlpFileName = "dynamic-jnlp-" + currentTimeMillis + ".jnlp";
         if(basket.isEmpty()){
-            System.out.println("No data in data basket, do not show the download manager");
             return null;
         }
         String jnlp = RESTUtil.getJNLP(this.getSeriesItems(), sb.getPassword(), getIncludeAnnotation(), sb.getTokenValue());
@@ -662,7 +653,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
     public com.icesoft.faces.context.Resource getExport() throws Exception{
         exportFileName = "seriesInstanceUids" + System.currentTimeMillis() + ".csv";
         if(basket.isEmpty()){
-            System.out.println("No data in data basket, do not show the export");
             return null;
         }
         FileGenerator fg = new FileGenerator();
@@ -679,7 +669,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 
     public boolean getEnableCreateAList(){
     	Boolean localSeries = getLocalSeriesList();
-    	System.out.println("EnableCreateAList...  localSeries: " + localSeries);
         return (sb.getHasLoggedInAsRegisteredUser() && localSeries);
     }
     
@@ -914,7 +903,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
             double currentBasketSize = basket.calculateSizeInMB();
             double ftpLimit = NCIAConfig.getFtpThreshold();
             if(currentBasketSize >= ftpLimit){
-                System.out.println("do not show download all button");
                 return false;
             }
         }
@@ -976,7 +964,6 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 	public com.icesoft.faces.context.Resource getExportImageMetadata() throws Exception{
 		exportIMFileName = "seriesInstanceUids" + System.currentTimeMillis() + ".csv";
 		if(basket.isEmpty()){
-			System.out.println("No data in data basket, do not show the export");
 		    return null;
 		}
 		FileGenerator fg = new FileGenerator();

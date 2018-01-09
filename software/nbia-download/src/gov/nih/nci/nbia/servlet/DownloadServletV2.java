@@ -63,19 +63,13 @@ public class DownloadServletV2 extends HttpServlet {
 			String userId = request.getParameter("userId");
 			String password = request.getHeader("password");
 
-			System.out.println("user Id =" + userId);
-			System.out.println("password =" + password);
-			System.out.println("serverManifestLoc=" + serverManifestLoc);
-
 			if ((userId == null) || (password == null)) {
 				userId = NCIAConfig.getGuestUsername();
-				System.out.println("!!public user");
 			} else if (!loggedIn(userId, password)) {
 				response.sendError(HttpURLConnection.HTTP_UNAUTHORIZED,
 						"Incorrect username and/or password. Please try it again.");
 				return;
 			}
-			System.out.print("The user passed authentication");
 			downloadManifestFile(serverManifestLoc, response, userId, password);
 		} else {
 			String seriesUid = request.getParameter("seriesUid");
@@ -101,17 +95,14 @@ public class DownloadServletV2 extends HttpServlet {
 		try {
 			password = decrypt(password);
 			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
-			System.out.println("@@@@@@@@@before check login");
+
 			if (mgr.login(userId, password)) {
-				System.out.println("!!!loged in");
 				return true;
 			} else {
-				System.out.println("!!! NOT loged in");
 				return false;
 			}
 		} catch (CSException cse) {
 			// cse.printStackTrace();
-			System.out.println("@@@@@@@@@catch cseexception");
 			return false;
 		} catch (CSInternalLoginException e) {
 			// TODO Auto-generated catch block
@@ -259,7 +250,6 @@ public class DownloadServletV2 extends HttpServlet {
 
 	private void downloadManifestFile(String fileName, HttpServletResponse response, String userId, String password) {
 		logger.info("looking for manifest file name ..." + fileName);
-		System.out.println("looking for manifest file name ..." + fileName);
 
 		response.setContentType("text/plain");
 		response.setHeader("Content-Disposition", "attachment;filename=downloadname.txt");

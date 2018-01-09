@@ -218,7 +218,6 @@ public class DownloadServlet extends HttpServlet {
     }
     private void downloadJNLPDataFile(String fileName, HttpServletResponse response) {
             logger.info("looking for file name ..."+fileName);
-            System.out.println("looking for file name ..."+fileName);
             response.setContentType("text/plain");
             response.setHeader("Content-Disposition","attachment;filename=downloadname.txt");
             try{
@@ -242,7 +241,7 @@ public class DownloadServlet extends HttpServlet {
 		for (String item:list){
 			input.add(item);
 		}
-		System.out.println("Regenerating Manifest");
+		logger.info("Regenerating Manifest");
         List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUIDAnyVisibility(input);
 
 		List<SeriesSearchResult> seriesFound=convert(ssList);

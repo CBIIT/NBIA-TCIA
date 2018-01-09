@@ -99,7 +99,6 @@ public class StandaloneDMV2 extends StandaloneDM {
 	void checkCompatibility() {
 		if (serverUrl.endsWith("DownloadServlet")) {
 			this.serverUrl = serverUrl.concat("V2");
-			System.out.println("Server url is :" + serverUrl);
 		}
 
 		if (!serverUrl.endsWith("DownloadServletV2")) {
@@ -120,7 +119,6 @@ public class StandaloneDMV2 extends StandaloneDM {
 	}
 
 	protected List<SeriesData> getSeriesInfo(String userId, String password) {
-		System.out.println("@@@@@@@@@@@ServerUrl = " + serverUrl);
 		List<String> seriesInfo = null;
 		try {
 			seriesInfo = connectAndReadFromURL(new URL(serverUrl), fileLoc + basketId, userId, password);
@@ -234,7 +232,8 @@ public class StandaloneDMV2 extends StandaloneDM {
 			httpPostMethod.setEntity(query);
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-			System.out.println("!!!!!Response code for requesting datda file: " + responseCode);
+			// System.out.println("!!!!!Response code for requesting datda file:
+			// " + responseCode);
 
 			if (responseCode != HttpURLConnection.HTTP_OK) {
 				return null;

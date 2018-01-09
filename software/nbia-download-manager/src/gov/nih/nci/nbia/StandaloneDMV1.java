@@ -182,8 +182,9 @@ public class StandaloneDMV1 extends StandaloneDM {
 			UrlEncodedFormEntity query = new UrlEncodedFormEntity(postParams);
 			httpPostMethod.setEntity(query);
 			HttpResponse response = httpClient.execute(httpPostMethod);
-			int responseCode = response.getStatusLine().getStatusCode();
-			System.out.println("Response code for requesting datda file: " + responseCode);
+			// int responseCode = response.getStatusLine().getStatusCode();
+			// System.out.println("Response code for requesting datda file: " +
+			// responseCode);
 			InputStream inputStream = response.getEntity().getContent();
 			data = IOUtils.readLines(inputStream);
 		} catch (MalformedURLException e) {

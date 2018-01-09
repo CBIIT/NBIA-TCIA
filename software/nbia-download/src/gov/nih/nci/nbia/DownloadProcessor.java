@@ -65,22 +65,16 @@ public class DownloadProcessor {
 			AuthorizationManager am = new AuthorizationManager(userId);
 			List<SiteData> siteList = am.getAuthorizedSites(RoleType.READ);
 			List<String> ssgList = am.getAuthorizedSeriesSecurityGroups(RoleType.READ);
-			System.out.println(
-					"@@@@@@@@@@@@@ check hass access: project =" + project + " sitename=" + siteName + " ssg=" + ssg);
+
 			for (SiteData siteData : siteList) {
-				System.out.println("@@@@@@@@@@@@@ allowed project=" + siteData.getCollection() + " allowed site ="
-						+ siteData.getSiteName());
 				if ((siteData.getCollection().equals(project) && siteData.getSiteName().equals(siteName))) {
 					if (!isBlank(ssg)) {
 						for (String authSsg : ssgList) {
-							System.out.println("authorized Ssg =" + authSsg);
 							if (authSsg.equals(ssg)) {
-								System.out.println("!!!!!authorized");
 								return true;
 							}
 						}
 					} else if (isBlank(ssg)) {
-						System.out.println("!!!!!blank ssg still authorized");
 						return true;
 					}
 				}

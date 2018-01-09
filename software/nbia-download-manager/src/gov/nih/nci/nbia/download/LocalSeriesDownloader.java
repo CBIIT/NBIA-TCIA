@@ -79,9 +79,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 
 		computeTotalSize();
 		URL url = new URL(serverUrl);
-		System.out.println(this.seriesInstanceUid +" -- start downloading");
 		this.connectAndReadFromURL(url, 0);
-		System.out.println(this.seriesInstanceUid +" -- downloading complete");
 	}
 
 // /////////////////////////////////////////PRIVATE//////////////////////////////////////
@@ -109,9 +107,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				if (!f.exists()) {
 					mkdirResult = f.mkdirs();
 					if (mkdirResult == false) {
-						System.out.println("couldnt create directory: "
-							+ localLocation + " \tattempt number: "
-							+ count);
 						count++;
 					} else {
 						break;
@@ -136,14 +131,12 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		if (attempt >= 1 && attempt < noOfRetry) {
 			Random randomGenerator = new Random();
 			int randomInt = randomGenerator.nextInt(60000) + attempt * 120000;
-			System.out .println(getTimeStamp () + this.seriesInstanceUid +" attempt "+ attempt +" put into sleep for " + randomInt + "millisecond");
+//			System.out .println(getTimeStamp () + this.seriesInstanceUid +" attempt "+ attempt +" put into sleep for " + randomInt + "millisecond");
 			try {
 				
 				Thread.sleep(randomInt);
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
-				System.out.println("awakened prematurely:" + ex.getMessage());
-
 			}
 		}
 	}
@@ -153,17 +146,13 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 	}
 
 	private void connectAndReadFromURL(URL url, int attempt) throws Exception {
-		System.out.println(getTimeStamp() + " attempt" + attempt + " for the series" + this.seriesInstanceUid);
 		if (attempt >= noOfRetry) {
 			additionalInfo.append(getTimeStamp() + " For series " + this.seriesInstanceUid +" Reached max retry (" + noOfRetry + ") attempts.\n");
-			System.out.println(additionalInfo + "--attempt" + attempt +" changing to error status");
 			error();
 			return;
 		}
-		
 		letSleep(attempt);
-		System.out.println(getTimeStamp() + " After coming out from sleep for series " + seriesInstanceUid +" @ attempt" + attempt);
-		
+
 		TrustStrategy easyStrategy = new TrustStrategy() {
 			@Override
 			public boolean isTrusted(X509Certificate[] certificate,
@@ -211,40 +200,32 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 					int executionCount, HttpContext context) {
 				if (executionCount >= noOfRetry) {
 					// Do not retry if over max retry count
-					System.out .println(getTimeStamp() + seriesInstanceUid +" reached max retry handler attempt," + noOfRetry + "  stop downloading");
 					additionalInfo.append("Reached max retry (" + noOfRetry + ") attempts using Request handler.\n");
 					return false;
 				}
 				if (exception instanceof NoHttpResponseException) {
 					// Retry on when server dropped connection
-					System.out.println("NoHttpResponseException exception- Retry if the server dropped connection on us ");
 					return true;
 				}
 				if (exception instanceof SSLHandshakeException) {
 					// Do not retry on SSL handshake exception
-					System.out.println("SSLHandshakeException exception - no retry");
 					return false;
 				}
 				if (exception instanceof java.net.SocketTimeoutException) {
 					// Retry on socket timeout exception
-					System.out.println(getTimeStamp() +"java.net.SocketTimeoutException exception- for series" + seriesInstanceUid  +"--attempt" + executionCount);
 					additionalInfo.append(getTimeStamp() + " Request Handler attempt").append(executionCount).append(" for SocketTimeOutException \n");
 					letSleep(executionCount);
-					System.out.println(getTimeStamp() +" After coming out from sleep for series " + seriesInstanceUid +" @ attempt" + executionCount);
 					return true;
 				}
 				if (exception instanceof java.net.SocketException) {
 					// Retry on socket timeout exception
-					System.out.println(getTimeStamp() + "java.net.SocketException - for series" + seriesInstanceUid +"--attempt" + executionCount);
 					additionalInfo.append(getTimeStamp() +" Request Handler attempt").append(executionCount) .append(" for SocketException \n");
 					letSleep(executionCount);
-					System.out.println(getTimeStamp() +"After coming out from sleep for series " + seriesInstanceUid +" @ attempt" + executionCount);
 					return true;
 				}
 				HttpRequest request = (HttpRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
 				boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
 				if (idempotent) {
-					System.out.println("idempotent exception - Retry");
 					// Retry if the request is considered idempotent
 					return true;
 				}
@@ -260,12 +241,11 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		try {
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-			System.out.println(getTimeStamp() +" response code: " + responseCode + "for the seriers " + this.seriesInstanceUid + "--attempt--"+ attempt);
+//			System.out.println(getTimeStamp() +" response code: " + responseCode + "for the seriers " + this.seriesInstanceUid + "--attempt--"+ attempt);
 			
 			/* Make sure response code is in the 200 range. */
 			if (responseCode / 100 != 2) {
 				if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
-					System.out.println("@@@@@@@@@@@@@ Not Authorized to access");
 					additionalInfo
 					.append("Not authorized to access series: "+ this.seriesInstanceUid);
 					unauthorized();
@@ -274,14 +254,11 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				}
 				else {
 				// additionalInfo.append("incorrect response code");
-				System.out.println(getTimeStamp() +" for the seriers "+ this.seriesInstanceUid +" incorrect response code received "
-						+"--attempt" + attempt);
 				additionalInfo.append(getTimeStamp() + " retry attempt").append(attempt + 1).append("for incorrect response code \n");
 				httpClient.getConnectionManager().shutdown();
 				
 				//it could be caused by the exclusion list is large than 1000 and result in sql execution error.
 				if ( this.sopUidsList.size()>= 1000) {
-					System.out.println(getTimeStamp() +" for the seriers "+ this.seriesInstanceUid +" exclusion list size="+ this.sopUidsList.size()+ " so redo whole series");
 					additionalInfo.append(getTimeStamp() + "redo whole series because server internal error.");
 					this.sopUidsList.clear();
 					this.sopUids="";
@@ -296,7 +273,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			 * Set the size for this download if it hasn't been already set.
 			 */
 			if (size == -1) {
-				System.out.println("no data found for the series");
 				status = NO_DATA;
 				stateChanged();
 			}
@@ -304,28 +280,28 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		} catch (javax.net.ssl.SSLPeerUnverifiedException e) {
 			// exclude downloading already download image.
 			this.sopUids = StringUtil.encodeListEntriesWithSingleQuotes(this.sopUidsList);
-			System.out.println(getTimeStamp() +" SSLPeerUnverifiedException-- for series "+this.seriesInstanceUid +" @ attempt--"+ attempt);
+//			System.out.println(getTimeStamp() +" SSLPeerUnverifiedException-- for series "+this.seriesInstanceUid +" @ attempt--"+ attempt);
 			e.printStackTrace();
 			additionalInfo.append(getTimeStamp() +" image retry attempt ").append(attempt + 1).append(" for SSLPeer Unverified Exception \n");
 			connectAndReadFromURL(url, attempt + 1);
 		} catch (SocketTimeoutException e) {
 			// exclude downloading already download image.
 			this.sopUids = StringUtil.encodeListEntriesWithSingleQuotes(this.sopUidsList);
-			System.out.println(getTimeStamp() +" SocketTimeoutException-- for series " + this.seriesInstanceUid +" @ attempt--"+ attempt);
+//			System.out.println(getTimeStamp() +" SocketTimeoutException-- for series " + this.seriesInstanceUid +" @ attempt--"+ attempt);
 			e.printStackTrace();
 			additionalInfo.append(getTimeStamp() +" image retry attempt ").append(attempt + 1).append(" for Socket timeout exception \n");
 			connectAndReadFromURL(url, attempt + 1);
 		} catch (SocketException e) {
 			// exclude downloading already download image.
 			this.sopUids = StringUtil.encodeListEntriesWithSingleQuotes(this.sopUidsList);
-			System.out.println(getTimeStamp() +" SocketException-- for series " + this.seriesInstanceUid + " @ attempt--"+ attempt);
+//			System.out.println(getTimeStamp() +" SocketException-- for series " + this.seriesInstanceUid + " @ attempt--"+ attempt);
 			e.printStackTrace();
 			additionalInfo.append(getTimeStamp() +" image retry attempt ").append(attempt + 1).append(" for Socket exception \n");
 			connectAndReadFromURL(url, attempt + 1);
 		} catch (org.apache.http.MalformedChunkCodingException e) {
 			// exclude downloading already download image.
 			this.sopUids = StringUtil.encodeListEntriesWithSingleQuotes(this.sopUidsList);
-			System.out.println(getTimeStamp() +" MalformedChunkCodingException-- for series " + this.seriesInstanceUid +" @ attempt--"+ attempt);
+//			System.out.println(getTimeStamp() +" MalformedChunkCodingException-- for series " + this.seriesInstanceUid +" @ attempt--"+ attempt);
 			e.printStackTrace();
 			additionalInfo.append(getTimeStamp() +" image retry attempt ").append(attempt + 1).append(" for MalformedChunkCodingException \n");
 			connectAndReadFromURL(url, attempt + 1);
@@ -333,13 +309,13 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			if ((e instanceof java.net.SocketTimeoutException) || (e instanceof java.io.IOException)){
 				// exclude downloading already download image.
 				this.sopUids = StringUtil.encodeListEntriesWithSingleQuotes(this.sopUidsList);
-				System.out.println(getTimeStamp() +" java.net.SocketTimeoutException-- for series"+this.seriesInstanceUid  + "@ attempt--"+ attempt);
+//				System.out.println(getTimeStamp() +" java.net.SocketTimeoutException-- for series"+this.seriesInstanceUid  + "@ attempt--"+ attempt);
 				e.printStackTrace();
 				additionalInfo.append(getTimeStamp() +" image retry attempt").append(attempt + 1).append(" for Socket timeout exception \n");
 				connectAndReadFromURL(url, attempt + 1);
 			}
 			else {
-				System.out.println(getTimeStamp() +"!!!!! cought exception for series "+ this.seriesInstanceUid +" @attempt--"+ attempt);
+//				System.out.println(getTimeStamp() +"!!!!! cought exception for series "+ this.seriesInstanceUid +" @attempt--"+ attempt);
 				e.printStackTrace();
 			}
 		}
@@ -347,7 +323,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		finally {
 			httpClient.getConnectionManager().shutdown();
 		}
-		System.out.println("Leaving connectAndReadFromURL.........for " + this.seriesInstanceUid +" @ attempt " + attempt);
 	}
 
 	private void readFromConnection(InputStream is) throws Exception {
@@ -370,8 +345,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			while (status == DOWNLOADING) {
 				TarArchiveEntry tarArchiveEntry = zis.getNextTarEntry();
 				if (tarArchiveEntry == null) {
-					System.out.println(this.seriesInstanceUid
-							+ " reaching end of file");
 					status = COMPLETE;
 					break;
 				}
@@ -403,7 +376,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				int bytesDownloaded = downloaded - startDownloaded;
 				if (bytesDownloaded != fileSize) {
 					additionalInfo.append(" file size mismatch for instance " + sop + "\n");
-					System.out.println(this.seriesInstanceUid + additionalInfo);
 					error();
 				} else {
 					if (pos > 0) { // image file
