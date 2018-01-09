@@ -332,7 +332,7 @@ public class StandaloneDMDispatcher {
 		} else if (os.startsWith("mac")) {
 			try {
 				Runtime.getRuntime().exec(new String[] { "/usr/bin/open", installerPath });
-				// System.exit(0);
+				System.exit(0);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
