@@ -41,7 +41,10 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
 
@@ -346,7 +349,15 @@ public class StandaloneDMDispatcher {
 				e.printStackTrace();
 			}
 		} else {
-			String pas = JOptionPane.showInputDialog("Please enter a sudo password for installing the new version:");
+			JLabel pwLabel = new JLabel("Sudo Password");
+			JTextField password = new JPasswordField();
+			Object[] objs = {pwLabel, password};
+			int result = JOptionPane.showConfirmDialog(null,  objs, "Please enter a sudo password", JOptionPane.OK_CANCEL_OPTION);
+			String pas = null;
+			if (result == JOptionPane.OK_OPTION) {
+				pas = password.getText();
+			}
+			
 			if (pas != null) {
 				if (os.equals("CentOS")) {
 					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
