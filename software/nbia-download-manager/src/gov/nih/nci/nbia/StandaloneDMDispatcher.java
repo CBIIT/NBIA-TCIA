@@ -193,6 +193,7 @@ public class StandaloneDMDispatcher {
 
 		if (n == 0) {
 			saveAndInstall(downloadUrl);
+			System.exit(0);
 		} else if (n == 1) {
 
 			try {
@@ -228,6 +229,12 @@ public class StandaloneDMDispatcher {
 			}
 		};
 		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void saveFile(String downloadUrl) throws IOException {
@@ -332,7 +339,6 @@ public class StandaloneDMDispatcher {
 		} else if (os.startsWith("mac")) {
 			try {
 				Runtime.getRuntime().exec(new String[] { "/usr/bin/open", installerPath });
-				System.exit(0);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -364,7 +370,7 @@ public class StandaloneDMDispatcher {
 
 						int n = JOptionPane.showConfirmDialog(null,
 								"Installation of new version of TCIA Downloader is completed " + status
-										+ ". Exit the current app?");
+										+ ".");
 						if (n == 0) {
 							System.exit(0);
 						}
@@ -394,7 +400,7 @@ public class StandaloneDMDispatcher {
 
 						int n = JOptionPane.showConfirmDialog(null,
 								"Installation of new version of TCIA Downloader is completed " + status
-										+ ". Exit the current app?");
+										+ ".");
 						if (n == 0) {
 							System.exit(0);
 						}
