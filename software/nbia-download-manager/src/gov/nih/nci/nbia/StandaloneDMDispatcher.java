@@ -32,7 +32,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -86,6 +85,7 @@ public class StandaloneDMDispatcher {
 	protected String manifestVersion = null;
 	protected static String os = null;
 	private String key = null;
+	private boolean nogo = true;
 
 	/**
 	 * @param args
@@ -146,8 +146,8 @@ public class StandaloneDMDispatcher {
 	private void getNewVersionInfo() {
 		List<String> resp = null;
 		if (!(os.contains("windows") || os.startsWith("mac"))) {
-			this.os = getLinuxPlatform();
-			if (this.os.equals("other")) {
+			StandaloneDMDispatcher.os = getLinuxPlatform();
+			if (StandaloneDMDispatcher.os.equals("other")) {
 				JOptionPane.showMessageDialog(null,
 						"New version of TCIA Downloader is released but the OS platform of your system is not supported currently.");
 				return;
@@ -171,6 +171,9 @@ public class StandaloneDMDispatcher {
 	public void launch() {
 		getNewVersionInfo();
 
+		if (nogo == true)
+			return;
+
 		if ((manifestVersion == null) || (manifestVersion.equals("1.0"))) {
 			StandaloneDMV1 sdm = new StandaloneDMV1();
 			sdm.launch();
@@ -193,16 +196,17 @@ public class StandaloneDMDispatcher {
 
 		if (n == 0) {
 			saveAndInstall(downloadUrl);
-			System.exit(0);
+			nogo = true;
 		} else if (n == 1) {
-
 			try {
 				saveFile(downloadUrl);
+				nogo = false;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (n == 2) {
+			nogo = false;
 		}
 	}
 
@@ -222,19 +226,15 @@ public class StandaloneDMDispatcher {
 
 	private void saveAndInstall(String downloadUrl) {
 		final String dlUrl = downloadUrl;
-		Thread t = new Thread() {
+
+		Thread t = new Thread(new Runnable() {
 			public void run() {
 				downloadInstaller(dlUrl);
 				install(dlUrl);
+				// System.exit(0);;
 			}
-		};
+		});
 		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void saveFile(String downloadUrl) throws IOException {
@@ -247,7 +247,6 @@ public class StandaloneDMDispatcher {
 			}
 		};
 		t.start();
-		
 	}
 
 	private void downloadInstaller(String downloadUrl) {
@@ -305,6 +304,7 @@ public class StandaloneDMDispatcher {
 					"Downloading new version of installer for TCIA Downloader App...", in);
 
 			ProgressMonitor monitor = pmis.getProgressMonitor();
+			monitor.setMillisToPopup(0);
 			monitor.setMinimum(0);
 			monitor.setMaximum((int) 200000000); // The actual size is much
 													// smaller,
@@ -319,9 +319,11 @@ public class StandaloneDMDispatcher {
 			while ((length = pmis.read(buffer)) > 0) {
 				fos.write(buffer, 0, length);
 			}
+			pmis.close();
+			fos.flush();
 			fos.close();
 			in.close();
-			pmis.close();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -368,12 +370,8 @@ public class StandaloneDMDispatcher {
 							status = "unsuccessfully";
 						}
 
-						int n = JOptionPane.showConfirmDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status
-										+ ".");
-						if (n == 0) {
-							System.exit(0);
-						}
+						JOptionPane.showMessageDialog(null,
+								"Installation of new version of TCIA Downloader is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -398,12 +396,8 @@ public class StandaloneDMDispatcher {
 							status = "unsuccessfully";
 						}
 
-						int n = JOptionPane.showConfirmDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status
-										+ ".");
-						if (n == 0) {
-							System.exit(0);
-						}
+						JOptionPane.showMessageDialog(null,
+								"Installation of new version of TCIA Downloader is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
