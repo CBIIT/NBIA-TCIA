@@ -85,7 +85,7 @@ public class StandaloneDMDispatcher {
 	protected String manifestVersion = null;
 	protected static String os = null;
 	private String key = null;
-	private boolean nogo = true;
+	private boolean nogo = false;
 
 	/**
 	 * @param args
