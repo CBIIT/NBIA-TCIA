@@ -37,7 +37,6 @@ import javax.faces.model.SelectItem;
  */
 public class QcToolBean {
 
-
     public QcToolBean() {
     	
     	setUpAdditionalQCFlags();
