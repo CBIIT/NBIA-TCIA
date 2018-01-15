@@ -188,7 +188,8 @@ public class QcToolBean {
     		else			
     		    qcBatchNums.add(new SelectItem(""+ i));
     	}
-    	
+    	qcBatchNums.add(new SelectItem("Any"));
+    	qcBatchNums.add(new SelectItem("None"));
     //---------------------------------------------    
     	
     	qcSubmissionTypes.clear();
