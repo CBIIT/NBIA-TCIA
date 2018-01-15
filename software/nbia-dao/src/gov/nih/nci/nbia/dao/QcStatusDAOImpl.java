@@ -327,10 +327,16 @@ public class QcStatusDAOImpl extends AbstractDAO
 		retStr = " and gs.patientPkId = pt.id and pt.dataProvenance = tdp.id ";
 		
 		if(additionalQcFlagList[0] != null && additionalQcFlagList[0].trim().length() > 0){	
-			int batchNum = Integer.parseInt(additionalQcFlagList[0]);				
-			if(batchNum > 0){
-				retStr += " and gs.batch=" + batchNum;
-			}			
+			if (additionalQcFlagList[0].equalsIgnoreCase("None")){
+				retStr += " and gs.batch is null";
+			} else if (additionalQcFlagList[0].equalsIgnoreCase("Any")){
+				retStr += " and gs.batch is not null";
+			} else {
+			     int batchNum = Integer.parseInt(additionalQcFlagList[0]);				
+			     if(batchNum > 0){
+				   retStr += " and gs.batch=" + batchNum;
+			     }		
+			  }
 		}
 		
 		if(additionalQcFlagList[1] != null && additionalQcFlagList[1].trim().length() > 0){		
