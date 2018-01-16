@@ -30,6 +30,7 @@ import gov.nih.nci.nbia.dto.DicomTagDTO;
 import gov.nih.nci.nbia.searchresult.APIURLHolder;
 import gov.nih.nci.nbia.searchresult.ImageSearchResult;
 import gov.nih.nci.nbia.searchresult.ImageSearchResultEx;
+import gov.nih.nci.nbia.executors.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -224,7 +225,6 @@ public class QcToolUpdateBean {
 			for (int i = 0; i < qsrDTOList.size(); ++i) {
 				QcSearchResultDTO aDTO = qsrDTOList.get(i);
 				newQsrDTOList.add(i, new QcSearchResultDTO(aDTO));
-				System.out.println(aDTO.isSelected());
 				if (aDTO.isSelected()) {
 					seriesList.add(aDTO.getSeries());
 					statusList.add(aDTO.getVisibility());
@@ -284,7 +284,6 @@ public class QcToolUpdateBean {
 				return null;
 			}
 		}
-
 		String newStatus = VisibilityStatus.stringStatusFactory(
 				selectedQcStatus).getNumberValue().toString();
 		
@@ -330,10 +329,21 @@ public class QcToolUpdateBean {
 		if (comments.equals(INITIAL_COMMENT)) {
 			comments = "";
 		}
-		
-		QcStatusDAO qsDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
-		qsDao.updateQcStatus(seriesList, statusList, newStatus, additionalQcFlagList, newAdditionalQcFlagList, 
-				secure.getUsername(), comments);	
+		if (background){
+		  BulkUpdateMessage message= new BulkUpdateMessage();
+		  message.setSeriesList(seriesList);
+		  message.setStatusList(statusList);
+		  message.setNewStatus(newStatus);
+		  message.setAdditionalQcFlagList(additionalQcFlagList);
+		  message.setNewAdditionalQcFlagList(newAdditionalQcFlagList);
+		  message.setUserName(secure.getUsername());
+		  message.setComments(comments);
+		  AsynchonousServices.performBulkUpdating(message);
+		} else {
+ 		  QcStatusDAO qsDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
+ 		  qsDao.updateQcStatus(seriesList, statusList, newStatus, additionalQcFlagList, newAdditionalQcFlagList, 
+ 				secure.getUsername(), comments);	
+		}
 		
 		comments = INITIAL_COMMENT;
 		selectedQcStatus = null;
@@ -769,7 +779,16 @@ public class QcToolUpdateBean {
 	public void setManifestFileName(String manifestFileName) {
 		this.manifestFileName = manifestFileName;
 	}
-    private void createLink(ImageSearchResult imageSearchResult)
+	
+    public boolean isBackground() {
+		return background;
+	}
+
+	public void setBackground(boolean background) {
+		this.background = background;
+	}
+
+	private void createLink(ImageSearchResult imageSearchResult)
     {
         SecurityBean secure = BeanManager.getSecurityBean();
         String userName = secure.getUsername();
@@ -854,5 +873,6 @@ public class QcToolUpdateBean {
 	private int currentSeriesSize = 0;
 	private String selectedImgNumField = "1";
     private String manifestFileName;
+    private boolean background;
 
 }
