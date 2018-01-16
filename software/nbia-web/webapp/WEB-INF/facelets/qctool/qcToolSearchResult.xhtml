@@ -244,6 +244,11 @@ L-->
                                      <f:selectItems value="#{qcToolBean.qcReleasedStatus}" />
                                    </ice:selectOneMenu>                                                 
                                </td> 
+                               <td class="formField" >                               
+                    		     <ice:outputLabel for="RunBackground" value="Run in background?" />
+                                <ice:selectBooleanCheckbox id="SlctRec" partialSubmit="false" title="Select"
+                                    value="#{qcToolUpdateBean.background}" />                                                
+                               </td> 
                                                                                       
 						</tr>
 						</table><br/><br/>
