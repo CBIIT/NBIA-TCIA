@@ -223,9 +223,7 @@ public class DownloadServlet extends HttpServlet {
             try{
                 List <String> readLines = IOUtils.readLines(new FileReader(fileName));
                 List <String> seriesIds=parse(readLines);
-                if (seriesIds!=null){
-                	readLines = getFullManifestString(seriesIds);
-                }
+               	readLines = getFullManifestString(seriesIds);
                 OutputStream os = response.getOutputStream();
                 IOUtils.writeLines(readLines, System.getProperty("line.separator"), os);
                 os.close();
@@ -242,7 +240,7 @@ public class DownloadServlet extends HttpServlet {
 			input.add(item);
 		}
 		logger.info("Regenerating Manifest");
-        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUIDAnyVisibility(input);
+        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUID(input);
 
 		List<SeriesSearchResult> seriesFound=convert(ssList);
 		List<BasketSeriesItemBean> seriesItems=new ArrayList<BasketSeriesItemBean>();
@@ -309,10 +307,6 @@ public class DownloadServlet extends HttpServlet {
             String series;
             String[] result = StringUtils.split(seriesData,"\\|");
             if(result != null && result.length > 0) {
-            	if (result.length > 11){
-            		// its a new style manifest just send i
-            		return null;
-            	}
                 series=result[3];
                 seriesDataList.add(series);
             }
