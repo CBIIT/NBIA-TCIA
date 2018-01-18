@@ -144,6 +144,7 @@ public class Application {
 
 	        List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
 	        postParams.add(new BasicNameValuePair("serverjnlpfileloc",fileName));
+	        postParams.add(new BasicNameValuePair("isJNLP","Y"));
 	        UrlEncodedFormEntity query = new UrlEncodedFormEntity(postParams);
 	        httpPostMethod.setEntity(query);
 	        HttpResponse response = httpClient.execute(httpPostMethod);
