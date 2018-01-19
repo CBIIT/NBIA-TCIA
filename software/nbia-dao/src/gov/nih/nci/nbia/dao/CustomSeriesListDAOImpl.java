@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Conjunction;
@@ -172,15 +173,22 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 					results.add(obj);
 				}
 			}
-
+            HashMap <String,String>userTable=new HashMap<String,String>();
 			for (Object[] row : results){
 					String uName = (String) row[0];
 					String name = (String) row[1];
 					String series = (String) row[2];
-					String email = findEmailByUserName(uName);
+					String email= userTable.get(uName);
+					if (email==null){
+					    email = findEmailByUserName(uName);
+					    if (email==null)
+					    {
+					    	email=" ";
+					    }
+					    userTable.put(uName, email);
+			        }
 					returnList.add(new QcCustomSeriesListDTO(uName, name, series, email));
-				}
-
+			}
 			return returnList;
 		}
 

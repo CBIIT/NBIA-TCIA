@@ -233,18 +233,18 @@ public class QcStatusDAOImpl extends AbstractDAO
 		for (int i = 0; i < seriesList.size(); ++i) {
 			String seriesId = seriesList.get(i);
 			
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - in forLoop B4 calling updateDb with the following params: ");
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) -  seriesId = " + seriesId);
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) -  statusList.get(" + i + ") = " + statusList.get(i));
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) -  newStatus = " + newStatus);
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - additionalQcFlagList[0] is batchNum b4 = " + additionalQcFlagList[0]);
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - newAdditionalQcFlagList[0] is batchNum after = " + newAdditionalQcFlagList[0]);
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - additionalQcFlagList[1] is submissionType b4 = " + additionalQcFlagList[1]);
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - newAdditionalQcFlagList[1] is submissionType after = " + newAdditionalQcFlagList[1]);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - in forLoop B4 calling updateDb with the following params: ");
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) -  seriesId = " + seriesId);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) -  statusList.get(" + i + ") = " + statusList.get(i));
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) -  newStatus = " + newStatus);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - additionalQcFlagList[0] is batchNum b4 = " + additionalQcFlagList[0]);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - newAdditionalQcFlagList[0] is batchNum after = " + newAdditionalQcFlagList[0]);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - additionalQcFlagList[1] is submissionType b4 = " + additionalQcFlagList[1]);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - newAdditionalQcFlagList[1] is submissionType after = " + newAdditionalQcFlagList[1]);
 			
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - additionalQcFlagList[2] is releasedStatus b4 = " + additionalQcFlagList[2]);
-			System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - newAdditionalQcFlagList[2] is releasedStatus after = " + newAdditionalQcFlagList[2]);
-			
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - additionalQcFlagList[2] is releasedStatus b4 = " + additionalQcFlagList[2]);
+		//	System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - newAdditionalQcFlagList[2] is releasedStatus after = " + newAdditionalQcFlagList[2]);
+		//	
 			updateDb(seriesId, statusList.get(i), newStatus, additionalQcFlagList, newAdditionalQcFlagList, userName, comment);
 			
 		}
@@ -327,10 +327,16 @@ public class QcStatusDAOImpl extends AbstractDAO
 		retStr = " and gs.patientPkId = pt.id and pt.dataProvenance = tdp.id ";
 		
 		if(additionalQcFlagList[0] != null && additionalQcFlagList[0].trim().length() > 0){	
-			int batchNum = Integer.parseInt(additionalQcFlagList[0]);				
-			if(batchNum > 0){
-				retStr += " and gs.batch=" + batchNum;
-			}			
+			if (additionalQcFlagList[0].equalsIgnoreCase("None")){
+				retStr += " and gs.batch is null";
+			} else if (additionalQcFlagList[0].equalsIgnoreCase("Any")){
+				retStr += " and gs.batch is not null";
+			} else {
+			     int batchNum = Integer.parseInt(additionalQcFlagList[0]);				
+			     if(batchNum > 0){
+				   retStr += " and gs.batch=" + batchNum;
+			     }		
+			  }
 		}
 		
 		if(additionalQcFlagList[1] != null && additionalQcFlagList[1].trim().length() > 0){		

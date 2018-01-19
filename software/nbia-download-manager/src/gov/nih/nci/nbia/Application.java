@@ -129,12 +129,12 @@ public class Application {
 
 	        HttpParams httpParams = new BasicHttpParams();
 	        HttpConnectionParams.setConnectionTimeout(httpParams, 50000);
-	        HttpConnectionParams.setSoTimeout(httpParams,  new Integer(12000));
+	        HttpConnectionParams.setSoTimeout(httpParams,  new Integer(120000));
 	        httpClient = new DefaultHttpClient(ccm,httpParams);
 	        httpClient.setRoutePlanner(new ProxySelectorRoutePlanner(schemeRegistry, ProxySelector.getDefault()));
 	//        // Additions by lrt for tcia -
 	//        //    attempt to reduce errors going through a Coyote Point Equalizer load balance switch
-	        httpClient.getParams().setParameter("http.socket.timeout", new Integer(12000));
+	        httpClient.getParams().setParameter("http.socket.timeout", new Integer(120000));
 	        httpClient.getParams().setParameter("http.socket.receivebuffer", new Integer(16384));
 	        httpClient.getParams().setParameter("http.tcp.nodelay", true);
 	        httpClient.getParams().setParameter("http.connection.stalecheck", false);
@@ -144,6 +144,7 @@ public class Application {
 
 	        List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
 	        postParams.add(new BasicNameValuePair("serverjnlpfileloc",fileName));
+	        postParams.add(new BasicNameValuePair("isJNLP","Y"));
 	        UrlEncodedFormEntity query = new UrlEncodedFormEntity(postParams);
 	        httpPostMethod.setEntity(query);
 	        HttpResponse response = httpClient.execute(httpPostMethod);

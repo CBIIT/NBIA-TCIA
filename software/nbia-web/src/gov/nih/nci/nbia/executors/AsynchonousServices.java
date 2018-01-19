@@ -21,5 +21,12 @@ public class AsynchonousServices {
 		zippingTaskExecutor.fire(parameter);
 		
 	}
+	public static void performBulkUpdating(BulkUpdateMessage parameter){
+		TaskExecutor taskExecutor=(TaskExecutor)SpringApplicationContext.getBean("taskExecutor");
+		BulkUpdateTask task = new BulkUpdateTask();
+		BulkUpdateTaskExecutor bulkUpdateTaskExecutor = new BulkUpdateTaskExecutor(taskExecutor, task);
+		bulkUpdateTaskExecutor.fire(parameter);
+		
+	}
 	
 }

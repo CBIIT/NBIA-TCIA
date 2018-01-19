@@ -37,7 +37,6 @@ import javax.faces.model.SelectItem;
  */
 public class QcToolBean {
 
-
     public QcToolBean() {
     	
     	setUpAdditionalQCFlags();
@@ -188,7 +187,8 @@ public class QcToolBean {
     		else			
     		    qcBatchNums.add(new SelectItem(""+ i));
     	}
-    	
+    	qcBatchNums.add(new SelectItem("Any"));
+    	qcBatchNums.add(new SelectItem("None"));
     //---------------------------------------------    
     	
     	qcSubmissionTypes.clear();

@@ -58,8 +58,9 @@ public class DownloadServlet extends HttpServlet {
               HttpServletResponse response) throws ServletException,IOException {
         //first check if its download for jnlpfile at server or dicom images download
         String serverjnlpfileloc = request.getParameter("serverjnlpfileloc");
+        String isJNLP = request.getParameter("isJNLP"); 
         if(StringUtils.isNotBlank(serverjnlpfileloc)) {
-            downloadJNLPDataFile(serverjnlpfileloc, response);
+            downloadJNLPDataFile(serverjnlpfileloc, isJNLP, response);
         } else {
             String seriesUid = request.getParameter("seriesUid");
             String userId = request.getParameter("userId");
@@ -216,15 +217,15 @@ public class DownloadServlet extends HttpServlet {
         }
         return contentSize;
     }
-    private void downloadJNLPDataFile(String fileName, HttpServletResponse response) {
+    private void downloadJNLPDataFile(String fileName, String isJNLP, HttpServletResponse response) {
             logger.info("looking for file name ..."+fileName);
             response.setContentType("text/plain");
             response.setHeader("Content-Disposition","attachment;filename=downloadname.txt");
             try{
                 List <String> readLines = IOUtils.readLines(new FileReader(fileName));
                 List <String> seriesIds=parse(readLines);
-                if (seriesIds!=null){
-                	readLines = getFullManifestString(seriesIds);
+                if (isJNLP!=null&&isJNLP.equalsIgnoreCase("Y")){
+                   	readLines = getFullManifestString(seriesIds);              	
                 }
                 OutputStream os = response.getOutputStream();
                 IOUtils.writeLines(readLines, System.getProperty("line.separator"), os);
@@ -242,7 +243,7 @@ public class DownloadServlet extends HttpServlet {
 			input.add(item);
 		}
 		logger.info("Regenerating Manifest");
-        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUIDAnyVisibility(input);
+        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUID(input);
 
 		List<SeriesSearchResult> seriesFound=convert(ssList);
 		List<BasketSeriesItemBean> seriesItems=new ArrayList<BasketSeriesItemBean>();
@@ -309,10 +310,6 @@ public class DownloadServlet extends HttpServlet {
             String series;
             String[] result = StringUtils.split(seriesData,"\\|");
             if(result != null && result.length > 0) {
-            	if (result.length > 11){
-            		// its a new style manifest just send i
-            		return null;
-            	}
                 series=result[3];
                 seriesDataList.add(series);
             }
