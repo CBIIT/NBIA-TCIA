@@ -223,8 +223,8 @@ public class DownloadServlet extends HttpServlet {
             response.setHeader("Content-Disposition","attachment;filename=downloadname.txt");
             try{
                 List <String> readLines = IOUtils.readLines(new FileReader(fileName));
-                List <String> seriesIds=parse(readLines);
                 if (isJNLP!=null&&isJNLP.equalsIgnoreCase("Y")){
+                	List <String> seriesIds=parse(readLines);
                    	readLines = getFullManifestString(seriesIds);              	
                 }
                 OutputStream os = response.getOutputStream();
