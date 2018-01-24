@@ -275,6 +275,7 @@ public class DownloadServlet extends HttpServlet {
 		}
 		return seriesDownloadData;
 	}
+	
 	private static BasketSeriesItemBean convert(SeriesSearchResult seriesDTO){
 		BasketSeriesItemBean returnBean = new BasketSeriesItemBean(seriesDTO);
 
