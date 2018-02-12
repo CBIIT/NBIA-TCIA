@@ -32,15 +32,15 @@ import java.util.List;
 public class ExternalPubSearchPopulatorMgBean {
 
 	public String populate() {
+		String path = "externalSearch";
 
-	AnonymousLoginBean anonymousLoginBean = BeanManager.getAnonymousLoginBean();
-	try {
-		anonymousLoginBean.externalBypassLogin(collectionName, null);
-	}
-    catch (Exception e) {
-        e.printStackTrace();
-    }
-	    return "externalSearch";
+		AnonymousLoginBean anonymousLoginBean = BeanManager.getAnonymousLoginBean();
+		try {
+			path = anonymousLoginBean.externalBypassLogin(collectionName, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return path;
 	}
 
 	private String collectionName;
@@ -48,6 +48,7 @@ public class ExternalPubSearchPopulatorMgBean {
 	public String getCollectionName() {
 		return collectionName;
 	}
+
 	public void setCollectionName(String collectionName) {
 		this.collectionName = collectionName;
 	}

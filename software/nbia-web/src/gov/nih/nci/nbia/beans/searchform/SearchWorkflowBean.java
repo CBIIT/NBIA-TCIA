@@ -1221,6 +1221,12 @@ public class SearchWorkflowBean {
 		SecurityBean secure = BeanManager.getSecurityBean();
 
 		if (secure.getLoggedIn()) {
+			List<String> allowedCollections = secure.getAuthorizedCollections();
+			
+			if (!allowedCollections.contains(collectionName)) {
+				return "externalSearchLogin";
+			}
+			
 			SearchResultBean resultBean = BeanManager.getSearchResultBean();
 			resultBean.setPatientResults(null);
 			editingSavedQuery = false;
@@ -1241,7 +1247,8 @@ public class SearchWorkflowBean {
 				e.printStackTrace();
 				return "externalSearchLogin";
 			}
-			return SEARCH;
+			return "externalSearch";
+			//return SEARCH;
 		} else {
 			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
 			secure.setLoginFailure(true);
