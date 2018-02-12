@@ -52,6 +52,31 @@ public class PatientDAOImpl extends AbstractDAO
 
 		return pDto;
 	}
+	
+	/**
+	 * Fetch Patient Object through patient ID
+	 * @param pid patient id
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	public PatientDTO getPatientByPatientId(String pid) throws DataAccessException
+	{
+		PatientDTO pDto = null;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Patient.class);
+		criteria.add(Restrictions.eq("patientId", pid));
+
+		List<Patient> result = getHibernateTemplate().findByCriteria(criteria);
+		if (result != null && result.size() > 0)
+		{
+			Patient patient = result.get(0);
+			pDto = new PatientDTO();
+			pDto.setProject(patient.getDataProvenance().getProject());
+			pDto.setSiteName(patient.getDataProvenance().getDpSiteName());
+
+		}
+
+		return pDto;
+	}	
 
 	/**
 	 * Fetch Patient Object through project, ie. collection

@@ -23,6 +23,11 @@ public interface PatientDAO {
 	 * @param pid patient PK id
 	 */
 	public PatientDTO getPatientById(Integer pid) throws DataAccessException;
+	/**
+	 * Fetch Patient Object through patient ID
+	 * @param pid patient id
+	 */	
+	public PatientDTO getPatientByPatientId(String pid) throws DataAccessException;
 
 	/**
 	 * Fetch Patient Object through project, ie. collection

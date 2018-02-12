@@ -142,7 +142,13 @@ L-->
 					styleClass="errorLabel" />
 	  			</td>
 				</tr>
-
+				<f:subview id="externalSchMsg" rendered="#{anonymousLoginBean.isExternalSearchLogin}">
+				<tr>
+					<td colspan="2">
+				  		<h:outputText value="#{msg.patientNoFoundInPublicDomain}" styleClass="errorLabel"/>
+				  	</td>
+				</tr>
+	  			</f:subview>
 	  			<tr>
 	  			<td align="center" colspan="2">
 	  			<a href="#"

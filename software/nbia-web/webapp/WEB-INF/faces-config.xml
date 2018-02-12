@@ -51,6 +51,13 @@ L-->
   </navigation-rule>
   <navigation-rule>
     <navigation-case>
+      <from-outcome>externalSearchLogin</from-outcome>
+      <to-view-id>/login.jsf</to-view-id>
+      <redirect />      
+    </navigation-case>
+  </navigation-rule>  
+  <navigation-rule>
+    <navigation-case>
       <from-outcome>home</from-outcome>
       <to-view-id>/home.jsf</to-view-id> 
       <redirect />
@@ -709,6 +716,6 @@ L-->
 <validator>  
     <validator-id>gov.nih.nci.nbia.beans.workflow.urlValidator</validator-id>  
     <validator-class>gov.nih.nci.nbia.beans.workflow.URLValidator</validator-class>  
-  </validator>   
+  </validator> 
 </faces-config>
 

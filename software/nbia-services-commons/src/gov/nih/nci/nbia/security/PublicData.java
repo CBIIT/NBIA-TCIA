@@ -48,6 +48,33 @@ public class PublicData {
 
 		return isPublic;
 	}
+	
+	public boolean checkPublicPatient(String pid)
+	{
+		if(authorizationManager==null) {
+			throw new RuntimeException("must call setAuthMgr before invoking this method checkPublicXXX");
+		}
+		boolean isPublic = false;
+		PatientDAO pDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
+
+		PatientDTO patientDto = pDao.getPatientByPatientId(pid);
+		if (patientDto == null)
+		{
+			throw new RuntimeException("Cannot find Patient in PublicData class");
+		}
+		List<SiteData> siteData = authorizationManager.getAuthorizedSites();
+		for (SiteData site : siteData)
+		{
+			if (site.getCollection().equals(patientDto.getProject())
+					&& site.getSiteName().equals(patientDto.getSiteName()))
+			{
+				isPublic = true;
+				break;
+			}
+		}
+
+		return isPublic;
+	}	
 
 	public boolean checkPublicSeries(Integer seriesId)
 	{

@@ -10,7 +10,6 @@ package gov.nih.nci.nbia.beans.security;
 
 import gov.nih.nci.nbia.beans.BeanManager;
 import gov.nih.nci.nbia.dao.LoginHistoryDAO;
-import gov.nih.nci.nbia.dto.ImageDTO;
 import gov.nih.nci.nbia.lookup.RESTUtil;
 import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.security.AuthorizationManager;
@@ -24,8 +23,10 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.nbia.security.TableProtectionElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -210,8 +211,6 @@ public class SecurityBean {
 				}
 			}
 			
-
-			
 			isInLocal = sm.isInLocalDB(username);
 			
 			if (isInLDAP && isInLocal) {
@@ -254,7 +253,13 @@ public class SecurityBean {
 			loginFailure = false;
 
 			recordLogin();
-			return setupAuthorization(uname);
+
+			String action = setupAuthorization(uname);
+
+			if (IsExtPrivPatientSearch() )
+				return "externalPatSearch";
+			else return action;
+		
 		} else {
 			loginFailure = true;
 			return LOGIN_FAIL;
@@ -444,6 +449,10 @@ public class SecurityBean {
 		this.loginFailure = loginFailure;
 	}
 
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
 	/**
 	 * @return true if the installation site is ncicb, false otherwise
 	 */
@@ -559,4 +568,19 @@ public class SecurityBean {
 		}
 		return publicProtectionElemLst;
 	}
+	
+	private boolean IsExtPrivPatientSearch() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		HttpServletRequest request = (HttpServletRequest)externalContext.getRequest();
+		String patID = (String)request.getSession().getAttribute("extPatSearch");
+	
+		if (!NCIAConfig.getGuestUsername().equalsIgnoreCase(username) && patID != null) {
+			String action = BeanManager.getSearchWorkflowBean().externalPatientSearch(patID);
+			request.getSession().setAttribute("extPatSearch", null);
+			BeanManager.getAnonymousLoginBean().setIsExternalSearchLogin(false);
+			return true;
+		}			
+		return false;
+	}
+	
 }

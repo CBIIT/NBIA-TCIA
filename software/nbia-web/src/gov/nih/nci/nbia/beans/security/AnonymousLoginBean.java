@@ -10,6 +10,7 @@ package gov.nih.nci.nbia.beans.security;
 
 import gov.nih.nci.nbia.beans.BeanManager;
 import gov.nih.nci.nbia.beans.searchform.SearchWorkflowBean;
+import gov.nih.nci.nbia.util.MessageUtil;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import org.apache.log4j.Logger;
 /**
@@ -24,7 +25,8 @@ public class AnonymousLoginBean {
     private static Logger logger = Logger.getLogger(AnonymousLoginBean.class);
 
     private boolean isGuestEnabled = false;
-    private String guestUserName ="";
+    private boolean isExternalSearchLogin = false;
+	private String guestUserName ="";
     //private String guestPassword ="";
     private boolean guestLoggedIn = false;
 
@@ -46,6 +48,7 @@ public class AnonymousLoginBean {
     public String getGuestUserName(){
     	return guestUserName;
     }
+    
 
    /* public String getGuestPassword(){
     	return guestPassword;
@@ -64,18 +67,38 @@ public class AnonymousLoginBean {
     	return swfb.newSimpleSearch();
     }
     
-    public String externalBypassLogin(String collectionName, String patientID) throws Exception {
-    	SecurityBean securityBean = BeanManager.getSecurityBean();
-    	logger.info("anonymousloginbean/externalBypassLogin............ guestusername: " + guestUserName );
-       	guestLoggedIn = true;
-    	String loginStatus = securityBean.login(guestUserName, "");
-    	if(loginStatus != null && loginStatus.equals("loginFail")){
-    		guestLoggedIn = false;
-    		return loginStatus;
-    	}
-    	SearchWorkflowBean swfb = BeanManager.getSearchWorkflowBean();
-    	return swfb.externalSimpleSearch(collectionName, patientID);
-    }
+	public String externalBypassLogin(String collectionName, String patientID) throws Exception {
+		SecurityBean securityBean = BeanManager.getSecurityBean();
+		logger.info("anonymousloginbean/externalBypassLogin............ guestusername: " + guestUserName);
+		guestLoggedIn = true;
+		String loginStatus = securityBean.login(guestUserName, "");
+		if (loginStatus != null && loginStatus.equals("loginFail")) {
+			guestLoggedIn = false;
+			return loginStatus;
+		}
+		SearchWorkflowBean swfb = BeanManager.getSearchWorkflowBean();
+		String action = swfb.externalSimpleSearch(collectionName, patientID);
+
+		if (action.equals("externalSearchLogin")) {
+			guestLoggedIn = false;
+			securityBean.setLoginFailure(true);
+			securityBean.setUsername(null);
+			securityBean.setLoggedIn(false);
+			isExternalSearchLogin = true;
+			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "patientNoFoundInPublicDomain");
+		}
+
+		return action;
+	}
+    
+    public boolean getIsExternalSearchLogin() {
+		return isExternalSearchLogin;
+	}
+
+	public void setIsExternalSearchLogin(boolean isExternalSearchLogin) {
+		this.isExternalSearchLogin = isExternalSearchLogin;
+	}
+
     
     public boolean getGuestLoggedIn() {
     	return guestLoggedIn;

@@ -1052,7 +1052,6 @@ public class SearchWorkflowBean {
     private List<SelectItem> anatomicalSiteItems = new ArrayList<SelectItem>();
     private List<SelectItem> usMultiModalityItems = new ArrayList<SelectItem>();
     private List<SelectItem> kernelItems = new ArrayList<SelectItem>();
-    private List<SelectItem> remoteNodeItems = new ArrayList<SelectItem>();
 
     /**
      * Reference to lookup bean in order to populate dropdowns.
@@ -1228,7 +1227,6 @@ public class SearchWorkflowBean {
 			setDefaultValues();
 
 			List<String> collectionNames = lookupMgr.getSearchCollection();
-			// Collections.sort(collectionNames);
 			collectionItems = JsfUtil.getBooleanSelectItemsFromStrings(collectionNames);
 			SelectItem item = JsfUtil.findSelectItemByLabel(collectionItems, collectionName);
 			if (item != null) {
@@ -1241,16 +1239,17 @@ public class SearchWorkflowBean {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return "externalSearchLogin";
 			}
 			return SEARCH;
 		} else {
 			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
-			secure.setLoginFailure(false);
-			return "loginFail";
+			secure.setLoginFailure(true);
+			return "externalSearchLogin";
 		}
 	}
     
-	private String externalPatientSearch(String patientID) {
+	public String externalPatientSearch(String patientID) {
 		logger.debug("calling external patient search action");
 
 		SecurityBean secure = BeanManager.getSecurityBean();
@@ -1270,9 +1269,8 @@ public class SearchWorkflowBean {
 					resultBean.viewPatient(resultBean.getPatientResults().get(0));
 					return "externalPatSearch";
 				} else {
-					MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "patientNoFoundInPublicDomain");
-					secure.setLoginFailure(false);
-					return "loginFail";
+					secure.setLoginFailure(true);
+					return "externalSearchLogin";
 				}
 
 			} catch (Exception e) {
@@ -1282,11 +1280,11 @@ public class SearchWorkflowBean {
 			return SEARCH;
 		} else {
 			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
-			secure.setLoginFailure(false);
-			return "loginFail";
+			secure.setLoginFailure(true);
+			return "externalSearchLogin";
 		}
 	}
-
+	
     private void addSelectedSoftwareVersion(String ver) {
     	if (!StringUtil.isEmpty(ver) && (!this.selectedSoftwareVersions.contains(ver))) {
             this.selectedSoftwareVersions.add(ver);
