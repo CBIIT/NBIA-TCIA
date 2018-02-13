@@ -81,7 +81,7 @@ public class AnonymousLoginBean {
 
 		if (action.equals("externalSearchLogin")) {
 			guestLoggedIn = false;
-			securityBean.setLoginFailure(true);
+			securityBean.setLoginFailure(false);
 			securityBean.setUsername(null);
 			securityBean.setLoggedIn(false);
 			isExternalSearchLogin = true;

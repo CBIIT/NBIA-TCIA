@@ -1248,7 +1248,6 @@ public class SearchWorkflowBean {
 				return "externalSearchLogin";
 			}
 			return "externalSearch";
-			//return SEARCH;
 		} else {
 			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
 			secure.setLoginFailure(true);
@@ -1276,7 +1275,6 @@ public class SearchWorkflowBean {
 					resultBean.viewPatient(resultBean.getPatientResults().get(0));
 					return "externalPatSearch";
 				} else {
-					secure.setLoginFailure(true);
 					return "externalSearchLogin";
 				}
 
@@ -1287,7 +1285,6 @@ public class SearchWorkflowBean {
 			return SEARCH;
 		} else {
 			MessageUtil.addErrorMessage("MAINbody:loginForm:pass", "securitySearch");
-			secure.setLoginFailure(true);
 			return "externalSearchLogin";
 		}
 	}
