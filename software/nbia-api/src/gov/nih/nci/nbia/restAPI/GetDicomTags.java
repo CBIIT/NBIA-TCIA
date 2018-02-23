@@ -57,7 +57,7 @@ public class GetDicomTags extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(@QueryParam("SeriesUID") String seriesUID) {
-		String message;
+		String message="";
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
