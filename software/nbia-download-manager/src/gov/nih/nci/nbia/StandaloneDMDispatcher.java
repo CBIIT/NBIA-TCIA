@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -67,6 +68,8 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import gov.nih.nci.nbia.util.PropertyLoader;
+
 /**
  * @author Q. Pan
  *
@@ -79,7 +82,7 @@ public class StandaloneDMDispatcher {
 															// certain version
 															// is no longer
 															// supported
-	private final static String appVersion = "2.0";
+	private final static String appVersion = "3.0";
 	private static final String osParam = "os";
 	private static final String installBtnLbl = "Update automatically";
 	private static final String downloadBtnLbl = "Update manually";
@@ -89,6 +92,7 @@ public class StandaloneDMDispatcher {
 	protected static String os = null;
 	private String key = null;
 	private boolean nogo = false;
+	private List seriesList = null;
 
 	/**
 	 * @param args
@@ -125,6 +129,10 @@ public class StandaloneDMDispatcher {
 			this.serverUrl = System.getProperty("downloadServerUrl");
 			manifestVersion = System.getProperty("manifestVersion");
 			checkManifestVersion(manifestVersion);
+			if (manifestVersion.equals("3.0")) {
+				seriesList = getSeriesList(fileName);
+			}
+				
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -184,6 +192,10 @@ public class StandaloneDMDispatcher {
 			StandaloneDMV2 sdm = new StandaloneDMV2();
 			sdm.setKey(key);
 			sdm.launch();
+		} else if (manifestVersion.equals("3.0")) {
+			StandaloneDMV3 sdm = new StandaloneDMV3();
+			sdm.setKey(key);
+			sdm.launch(seriesList);
 		}
 	}
 
@@ -218,7 +230,6 @@ public class StandaloneDMDispatcher {
 		String home = System.getProperty("user.home");
 
 		if (os.contains("windows")) {
-
 			fileName = home + "\\Downloads\\" + fileName;
 		} else {
 			fileName = home + "/Downloads/" + fileName;
@@ -463,6 +474,7 @@ public class StandaloneDMDispatcher {
 				InputStream inputStream = response.getEntity().getContent();
 				data = IOUtils.readLines(inputStream);
 			}
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -511,5 +523,66 @@ public class StandaloneDMDispatcher {
 			}
 		}
 		return linuxOS;
+	}
+	
+	private List<String> getSeriesList(String fileName) {
+	    BufferedReader reader = null;
+	    List<String> seriesList = new ArrayList<String>();
+	    try {
+	        //open file
+	        reader = new BufferedReader(new FileReader(fileName));
+
+	        //read first line
+	        String line = reader.readLine();
+
+	        //go through the entire file line for line
+	        while (line != null) {
+	            if (line.equalsIgnoreCase("ListOfSeriesToDownload="))
+	            	break;
+	            line = reader.readLine();
+	        }
+	        String data;
+	        while((data = reader.readLine()) != null) {  // read and store only line    
+	        	  seriesList.add(data.replaceFirst(",", ""));
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            //always close file readers!
+	            reader.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return seriesList;
+	}
+	
+	public static String getOnlineHelpUrl(){
+		return NBIA_PROPERTIES.getProperty("online_help_url");
+	}
+	
+	public static String getBuildTime(){
+		return NBIA_PROPERTIES.getProperty("time_stamp");
+	}
+	
+	public static String getAppVersion(){
+		return appVersion;
+	}		
+	
+	private static Properties NBIA_PROPERTIES = null;
+
+	static {
+		try {
+			NBIA_PROPERTIES = PropertyLoader.loadProperties("config.properties");
+		} catch (Exception e) {
+			/*
+			 * Create EMPTY properties to avoid null pointer exceptions
+			 */
+			if (NBIA_PROPERTIES == null) {
+				NBIA_PROPERTIES = new Properties();
+			}
+		}
 	}
 }

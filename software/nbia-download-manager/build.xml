@@ -18,6 +18,7 @@ L-->
 				 xmlns:ivy="antlib:org.apache.ivy.ant">
 
 	<!-- Properties -->
+	<property file="../build/defaultAHP3.properties"/>
 	<property name="src.java.dir" location="src"/>
 	<property name="build" location="bin"/>
 	<property name="resources.dir" location="resources" />
@@ -51,6 +52,10 @@ L-->
   <!-- Task definitions -->
   <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="common.classpath" />
   <import file="../common/unittesting.xml"/>
+  
+  <tstamp>
+     <format property="time.stamp" pattern="yyyy-MM-dd_HH"/>
+  </tstamp>
   
   <!-- Targets -->
   <target name="ivy-settings">
@@ -125,6 +130,7 @@ L-->
           description="generate the distribution">
 
     <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+    <filter token="time.stamp" value="${time.stamp}"/>	
     <copy todir="${build}" filtering="true">
     	 <fileset dir="${resources.dir}" includes="**/*.properties" />
     </copy>

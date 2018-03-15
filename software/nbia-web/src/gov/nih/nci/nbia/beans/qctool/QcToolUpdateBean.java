@@ -17,11 +17,13 @@ import gov.nih.nci.nbia.dao.QcStatusDAO;
 import gov.nih.nci.nbia.dicomtags.LocalDicomTagViewer;
 import gov.nih.nci.nbia.dto.QcCustomSeriesListDTO;
 import gov.nih.nci.nbia.dto.QcSearchResultDTO;
+import gov.nih.nci.nbia.lookup.BasketSeriesItemBean;
 import gov.nih.nci.nbia.lookup.RESTUtil;
 import gov.nih.nci.nbia.mail.MailManager;
 import gov.nih.nci.nbia.qctool.VisibilityStatus;
 import gov.nih.nci.nbia.search.LocalDrillDown;
 import gov.nih.nci.nbia.util.MessageUtil;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SlideShowUtil;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.util.StringUtil;
@@ -797,35 +799,48 @@ public class QcToolUpdateBean {
 		"&wadoUrl="+APIURLHolder.getWadoUrl();
 		setImageLink(url);
     }
+
 	public com.icesoft.faces.context.Resource getStandaloneDMFile() throws Exception {
 		long currentTimeMillis = System.currentTimeMillis();
 		manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 		List<QcSearchResultDTO> qsrDTOList = qcToolSearchBean.getQsrDTOList();
 		SecurityBean sb = BeanManager.getSecurityBean();
 		qcToolSearchBean.setIfNotClickedSubmit(true);
-        boolean isSelectedFiles=false;
-        seriesList.clear();
+		boolean isSelectedFiles = false;
+		seriesList.clear();
 		if (qsrDTOList != null) {
-			
-			System.out.println("In QCToolSearchBean:getStandaloneDMFile() - qsrDTOList is NOT NULL - and qsrDTOList size is: " + qsrDTOList.size());
-			
-			
+
+			System.out.println(
+					"In QCToolSearchBean:getStandaloneDMFile() - qsrDTOList is NOT NULL - and qsrDTOList size is: "
+							+ qsrDTOList.size());
+
 			for (int i = 0; i < qsrDTOList.size(); ++i) {
 				QcSearchResultDTO aDTO = qsrDTOList.get(i);
 				if (aDTO.isSelected()) {
 					seriesList.add(aDTO.getSeries());
-					isSelectedFiles=true;
+					isSelectedFiles = true;
 				} // end if (aDTO.isSelected()) {
-			
-			}// End forLoop
+
+			} // End forLoop
 		}
-		String manifest="";
-	//	if (isSelectedFiles){
-		  manifest = RESTUtil.getQCManifest(seriesList, sb.getPassword(), false, sb.getTokenValue(), manifestFileName);
-	//	}
-		ByteArrayResource bar = new ByteArrayResource(manifest.getBytes());
+
+		StringBuffer outSB = new StringBuffer();
+		outSB.append("downloadServerUrl=" + NCIAConfig.getDownloadServerUrl() + "\n");
+		String annotationString = "true";
+		outSB.append("includeAnnotation=" + annotationString + "\n");
+		outSB.append("noOfrRetry=" + NCIAConfig.getNoOfRetry() + "\n");
+		outSB.append("databasketId=" + manifestFileName + "\n");
+
+		// Manifest file will be versioned too
+		outSB.append("manifestVersion=" + NCIAConfig.getLatestDownloaderVersion().trim() + "\n");
+		outSB.append("ListOfSeriesToDownload=\n");
+	
+		for (String bs : seriesList) {
+			outSB.append(bs + "\n");
+		}
+		ByteArrayResource bar = new ByteArrayResource(outSB.toString().getBytes());
 		return bar;
-	} 
+	}
 
 	//////////////////////////// PRIVATE //////////////////////////////
 	private static final String DELETE = "Delete";

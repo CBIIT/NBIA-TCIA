@@ -37,7 +37,12 @@ L-->
   <servlet>
     <servlet-name>DownloadServletV2</servlet-name>
     <servlet-class>gov.nih.nci.nbia.servlet.DownloadServletV2</servlet-class>
-  </servlet>  
+  </servlet>
+  
+   <servlet>
+    <servlet-name>DownloadServletV3</servlet-name>
+    <servlet-class>gov.nih.nci.nbia.servlet.DownloadServletV3</servlet-class>
+  </servlet>    
   
   <servlet-mapping>
     <servlet-name>DownloadServlet</servlet-name>
@@ -54,6 +59,9 @@ L-->
     <url-pattern>/servlet/DownloadServletV2</url-pattern>
   </servlet-mapping>    
   
- 
+   <servlet-mapping>
+    <servlet-name>DownloadServletV3</servlet-name>
+    <url-pattern>/servlet/DownloadServletV3</url-pattern>
+  </servlet-mapping>  
 </web-app>
 

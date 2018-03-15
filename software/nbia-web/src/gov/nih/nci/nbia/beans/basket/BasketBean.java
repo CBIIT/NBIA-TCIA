@@ -64,6 +64,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -598,10 +599,35 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 			logger.info("No data in data basket, do not show the download manager");
 			return null;
 		}
-		String manifest = RESTUtil.getManifest(this.getSeriesItems(), sb.getPassword(), getIncludeAnnotation(), sb.getTokenValue(), manifestFileName);
 		
-		ByteArrayResource bar = new ByteArrayResource(manifest.getBytes());
+		StringBuffer outSB = new StringBuffer();
+		outSB.append("downloadServerUrl=" + NCIAConfig.getDownloadServerUrl() + "\n");
+		String annotationString="false";
+
+		if (getIncludeAnnotation()){
+	         annotationString="true";
+	       }
+	
+		outSB.append("includeAnnotation=" +  annotationString + "\n");
+		outSB.append("noOfrRetry=" + NCIAConfig.getNoOfRetry() + "\n");
+		outSB.append("databasketId=" + manifestFileName + "\n");
+
+
+		// Manifest file will be versioned too
+		outSB.append("manifestVersion=" + NCIAConfig.getLatestDownloaderVersion().trim() + "\n");
+		outSB.append("ListOfSeriesToDownload=\n");
+
+		for (BasketSeriesItemBean bs : this.getSeriesItems()) {
+			outSB.append(bs.getSeriesId()+"\n");
+		}
+		ByteArrayResource bar = new ByteArrayResource(outSB.toString().getBytes());
 		return bar;
+	}
+	
+	public boolean isBeyondLimit() {
+		if (getSeriesItems().size() > 9999)
+			return true;
+		else return false;
 	}
 
 	public String getManifestFileName() {

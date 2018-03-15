@@ -34,11 +34,11 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public abstract class StandaloneDM {
 	protected final String winTitle = "TCIA Downloader";
-	private static final String SubmitBtnLbl = "Submit";
-	JFrame frame;
+	protected static final String SubmitBtnLbl = "Submit";	
+	protected JFrame frame;
 	protected JLabel statusLbl;
-	private JTextField userNameFld;
-	private JPasswordField passwdFld;
+	protected JTextField userNameFld;
+	protected JPasswordField passwdFld;
 	protected String serverUrl;
 	protected boolean includeAnnotation;
 	protected Integer noOfRetry;
@@ -124,7 +124,7 @@ public abstract class StandaloneDM {
 		return contentPane;
 	}
 
-	abstract void launch();
+//	abstract void launch();
 
 	abstract void submitUserCredential(String userId, String password);
 

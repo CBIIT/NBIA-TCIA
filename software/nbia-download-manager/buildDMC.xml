@@ -6,7 +6,7 @@ ant -f buildDMC.xml
 	<description>
 		Create a executable jar for Standalond Download Manager with Ant build script
 	</description>
-
+	<property file="../build/defaultAHP3.properties"/>
 	<property name="projectName" value="StandaloneDM" />
 	<property name="common.dir" value="${basedir}/../" />
 	<property name="src.dir" location="src" />
@@ -75,6 +75,10 @@ ant -f buildDMC.xml
 
 	<!-- Task definitions -->
 	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="common.classpath" />
+	
+	  <tstamp>
+	     <format property="time.stamp" pattern="yyyy-MM-dd_HH"/>
+	  </tstamp>	
 
 	<!-- Targets -->
 	<target name="ivy-settings">
@@ -132,6 +136,7 @@ ant -f buildDMC.xml
 	<!-- Need project.compile.classpath to run this -->
 	<target name="compile" depends="init, ivy-compile, getMacLib" description="compile the source ">
 		<echo>Exclude file: ${excludes}</echo>
+
 		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}"  excludes="${excludes}">
 			<classpath refid="project.compile.classpath"/>
 		</javac>
@@ -158,6 +163,8 @@ ant -f buildDMC.xml
 				<os family="mac"/>
 			</not>
 		</condition>
+	    <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+	    <filter token="time.stamp" value="${time.stamp}"/>		
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
