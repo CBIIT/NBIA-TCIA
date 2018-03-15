@@ -6,7 +6,7 @@ import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.dto.ImageDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
-import gov.nih.nci.nbia.dto.CollectionDescDTO;
+import gov.nih.nci.nbia.dto.*;
 import gov.nih.nci.nbia.util.*;
 
 import java.io.IOException;
@@ -73,6 +73,18 @@ public class JSONUtil {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			jsonInString = mapper.writeValueAsString(images);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
+	public static String getJSONforDicomTagDTOs(List<DicomTagDTO> DicomTagDTOs){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(DicomTagDTOs);
 		} catch (Exception e) {
 
 			e.printStackTrace();
