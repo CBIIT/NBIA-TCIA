@@ -79,6 +79,8 @@ L-->
 	<property name="nbia-ctp.artifact.dir" value="${nbia-ctp.base.dir}/target"/>
 	<!-- solr -->
 	<property name="solr.dist.dir" value="${dist.exploded.dir}/${solr.dist.relative.dir}"/>
+	<!-- branding -->
+	<property name="branding.dir" value="${common.dir}/resources/branding/${branding.folder}"/>
 	<!-- Paths -->
 	<path id="project.classpath">
 		<fileset dir="${lib.dir}">
@@ -482,7 +484,7 @@ L-->
 								<attribute name="Trusted-Library" value="${jar.manifest.secure.attribute.Trusted-Library}"/>
 							</manifest>
 						</jar>
-						<signjar destDir="${target.dir}/dist/exploded/nbia-download-manager" alias="${jar-signing.keystore.alias}" keystore="${jar-signing.keystore.location}" storepass="${jar-signing.keystore.password}" keypass="${jar-signing.keystore.password}" lazy="true">
+						<signjar destDir="${target.dir}/dist/exploded/nbia-download-manager" alias="${jar-signing.keystore.alias}" keystore="${jar-signing.keystore.location}" storepass="${jar-signing.keystore.password}" keypass="${jar-signing.keystore.password}" tsaurl="http://timestamp.comodoca.com" lazy="true">
 							<path>
 								<fileset dir="${target.dir}/dist/exploded/nbia-download-manager" includes="${just.jar.filename}"/>
 							</path>
@@ -495,7 +497,37 @@ L-->
 				<echo message="jar-signing.execution.time not set to build, not signing jars"/>
 			</else>
 		</if>
-		<ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}" target="${nbia-web.build.target}" dir="${nbia-web.base.dir}">
+		<copy todir="${nbia-web.base.dir}-temp">
+			<fileset dir="${nbia-web.base.dir}">
+			</fileset>
+		</copy>
+		<copy todir="${nbia-web.base.dir}-temp/webapp/css">
+			<fileset dir="${branding.dir}">
+				<include name="*.css"/>
+			</fileset>
+		</copy>
+		<copy todir="${nbia-web.base.dir}-temp/webapp/WEB-INF/facelets/layout/">
+			<fileset dir="${branding.dir}">
+				<include name="*.xhtml"/>
+			</fileset>
+		</copy>
+		<copy todir="${nbia-web.base.dir}-temp/src/">
+			<fileset dir="${branding.dir}">
+				<include name="*.properties"/>
+			</fileset>
+		</copy>
+		<copy todir="${nbia-web.base.dir}-temp/webapp/WEB-INF/facelets/">
+			<fileset dir="${branding.dir}">
+				<include name="welcome.xhtml"/>
+				<include name="welcomeText.xhtml"/>
+			</fileset>
+		</copy>
+		<copy todir="${nbia-web.base.dir}-temp/webapp/images/">
+			<fileset dir="${branding.dir}/images">
+				<include name="*.*"/>
+			</fileset>
+		</copy>
+		<ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}" target="${nbia-web.build.target}" dir="${nbia-web.base.dir}-temp">
 			<property name="project.name" value="${project.name}"/>
 			<property name="nbia.version" value="${nbia.version}"/>
 			<property name="nbia_prod_build_tag.final" value="${nbia_prod_build_tag.final}"/>
@@ -505,6 +537,7 @@ L-->
 			<property name="gov.nih.nci.ncia.tcia.build" value="${gov.nih.nci.ncia.tcia.build}"/>
 			<property name="property.file" value="${properties.file}"/>
 		</ant>
+		<delete dir="${nbia-web.base.dir}-temp"/>
 	</target>
 	
 	<target name="-branding">
