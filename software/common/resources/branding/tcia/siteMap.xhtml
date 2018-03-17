@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+               
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+               
+<html>
+
+<head>
+<style>
+ul.b {list-style-type:circle;}
+li.e{list-style-type : square;}
+li.c {list-style-position:inside;}
+</style>
+</head>
+
+<body>
+<h:form>
+<ul class="b">
+  	
+    
+     	<li class="e">
+	        <h4> <a href="/ncia">HOME</a> </h4>
+	</li>
+        
+	<li class="c">	
+	    <a href="mailto:ncicbiit@mail.nih.gov?subject=NBIA - National Biomedical Imaging Archive">Contact Us</a>
+	</li>
+
+	<li class="c">	
+	    <a href="http://ncia.nci.nih.gov/ncia/">About Us</a>
+	</li>
+
+	<li class="c">	
+	    <a href="http://ncia.nci.nih.gov/ncia/overview/">Overview</a>
+	</li>
+	
+	<li class="e">	
+            <h4>Registering With NBIA</h4>
+	</li>
+	
+	<li class="c">		
+	    <a href="legalRules.xhtml">Legal Rules</a>
+	</li>
+
+	<li class="c">	
+	    <a href="registerMain.xhtml">Register</a>
+	</li>
+
+	<li class="e">	
+	    <h4>NBIA Account Help</h4>
+	</li>
+
+	<li class="c">	
+	    <a href="login.xhtml">Login Page</a>
+	</li>
+	
+	<li class="e">
+		    <h4>Searching the Image</h4>
+	</li>
+	
+
+	
+	<f:subview id="simpleSearchHelp" rendered="#{!securityBean.loggedIn}"> 
+		<li class="c">	
+		    <a href="searchMain.xhtml">Simple Search</a>
+		</li>
+		
+		<!-- <li class="c">	
+		    <a href="freeTextSearch.xhtml">Text Search</a>
+		</li>
+		
+		<li class="c">	
+		    <a href="dynamicSearch.xhtml">Advanced Search</a>
+		</li> -->
+		
+	 </f:subview>   
+	
+	 
+	<f:subview id="simpleSearchHelp" rendered="#{securityBean.loggedIn}">
+		<li class="c">
+		    <h:commandLink action="#{searchWorkflowBean.newSimpleSearch}"  value="#{msg.common_simpleSearch}"/>
+	    </li> 
+	    
+	    <li class="c">
+		    <h:commandLink action="#{searchWorkflowBean.newFreeTextSearch}" value="#{msg.common_textSearch}"/>
+	    </li> 
+	    
+	    <li class="c">
+		   <h:commandLink action="#{searchWorkflowBean.newDynamicSearch}" value="#{msg.common_advSearch}"/>
+	    </li> 
+	</f:subview>
+	
+	
+	<li class="e">
+	    <h4>Help</h4>
+	</li>
+
+	<li class="c">	
+	  <a href="https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+User%27s+Guide" target="_self">
+			<h:outputText value="NBIA Help" />
+		</a>
+	</li>
+    
+    
+</ul>
+</h:form>
+</body>
+</html>
+</ui:composition>
