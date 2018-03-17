@@ -142,7 +142,16 @@ public class StandaloneDMV3 extends StandaloneDM {
 	public void launch(List<String> seriesList) {
 		checkCompatibility();
 		this.seriesList = seriesList;
-		constructLoginWin();
+		if (seriesList.size() > 9999) {
+			int result = JOptionPane.showConfirmDialog(null,
+					"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
+					"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION);
+
+			if (result == JOptionPane.OK_OPTION) {
+				constructLoginWin();
+			}
+		}
+		else constructLoginWin();
 	}
 
 	void submitUserCredential(String userId, String password) {

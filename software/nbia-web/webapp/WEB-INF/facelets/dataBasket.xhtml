@@ -197,7 +197,7 @@ L-->
                   </ice:panelGroup>
                 </td>
                 <td>
-                  <ice:panelGroup styleClass="iceMnuBarItem"  onclick="if (#{basketBean.beyondLimit}) {if (!confirm('The number of series in data basket exceeds the limited 9999 series. Click OK to download the first 9999 series.')) {return false;}}">  
+                  <ice:panelGroup styleClass="iceMnuBarItem"  onclick="if (#{basketBean.beyondLimit}) {if (!confirm('The number of series in data basket exceeds the limitation of 9999 series. Consider to break it down into mulitiple downloads.')) {return false;}}">  
                     <ice:outputResource id="launchStandaloneDM"
                                         label="Start Download"
                                         resource="#{basketBean.standaloneDMFile}"                                                                              

@@ -70,7 +70,7 @@ public class DownloadServletV3 extends HttpServlet {
 			if (s != null)
 				seriesList.add(s);
 		}
-
+System.out.println("received # series=" + seriesList.size());
 		// check file type and authenticate user
 		if (numberOfSeries > 0) {
 

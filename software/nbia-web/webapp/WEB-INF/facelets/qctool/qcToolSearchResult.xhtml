@@ -290,12 +290,19 @@ L-->
 							value="Create Manifest File" />
 					</ice:panelGroup>
 				</f:facet>
+				<ice:commandButton id="manifestlink" value="Generate Manifest"
+					onclick="window.open('/ncia/showManifest.jsf', 'manifestShow', 'resizable=yes,scrollbars=no,width=300,height=200');return true;">
+				</ice:commandButton>
 
-                     	<ice:commandButton id="manifestlink" value="Generate Manifest"
-							onclick="window.open('/ncia/showManifest.jsf', 'manifestShow', 'resizable=yes,scrollbars=no,width=300,height=200');return true;">
-						</ice:commandButton>
-
-
+                  <!--ice:panelGroup styleClass="iceMnuBarItem"  onclick="if (#{qcToolUpdateBean.beyondLimit}) {if (!confirm('The number of series selected exceeds the limitation of 9999 series. Consider to break them down into mulitiple manifest files.')) {return false;}}">  
+                    <ice:outputResource id="launchStandaloneDM"
+                                        label="Generate Manifest"
+                                        resource="#{qcToolUpdateBean.standaloneDMFile}"                                                                             
+                                        fileName="#{qcToolUpdateBean.manifestFileName}" 
+                                        mimeType="application/x-nbia-manifest-file" 
+                                        rendered="true"
+                                        attachment="false"/>  
+                  </ice:panelGroup--> 
 			</ice:panelCollapsible>
 
 
