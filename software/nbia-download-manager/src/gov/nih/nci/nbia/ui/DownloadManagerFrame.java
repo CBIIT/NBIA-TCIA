@@ -110,7 +110,12 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	}
 
 	private void buildUI() {
-		setTitle("NBIA Download Manager");
+		String appName=System.getProperty("branding_appname");
+		if (appName==null) {
+		    setTitle("NBIA Download Manager");
+		} else {
+			setTitle(appName+" Download Manager");
+		}
 		setSize(800, 480);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -201,11 +206,14 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 
 	private JPanel createButtonsPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-
-		agreementButton = new JButton();
-		agreementButton.setText(
+		String appName=System.getProperty("branding_appname");
+        
+	  	agreementButton = new JButton();
+	  	if (appName!=null&&appName.equalsIgnoreCase("TCIA")) {
+		   agreementButton.setText(
 				"<HTML><FONT color=\"#112299\">By clicking the Start button below, you agree to abide by the terms of TCIA's </FONT>"
 						+ "<FONT color=\"#000099\"><U>Data Use Policy</U></FONT>" + "<FONT color=\"#112299\">.</FONT>");
+	  	}
 		agreementButton.setBorderPainted(false);
 		agreementButton.setOpaque(false);
 		agreementButton.setBackground(Color.WHITE);

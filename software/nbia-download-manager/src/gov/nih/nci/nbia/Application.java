@@ -74,6 +74,7 @@ public class Application {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		System.setProperty("branding_appname", NBIA_PROPERTIES.getProperty( "branding_appname"));
 		String userId = System.getProperty("jnlp.userId");
 		String password = System.getProperty("jnlp.password");
 		String codebase = System.getProperty("jnlp.codebase");
