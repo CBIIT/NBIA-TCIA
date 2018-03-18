@@ -385,6 +385,7 @@ L-->
 			<!-- Need absolution location, relative path would fail in sub-project since file would not exist -->
 			<property name="jar-signing.keystore.abs-location" value="${jar-signing.keystore.abs-location}"/>
 			<property name="gov.nih.nci.ncia.wiki.context.sensitive.help.url" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+			<property name="branding.appname" value="${branding.appname}"/>
 		</ant>
 	</target>
 	
@@ -475,7 +476,7 @@ L-->
 						<echo message="modifying manifest first because of Java 7 changes"/>
 						<jar file="${target.dir}/dist/exploded/nbia-download-manager/${just.jar.filename}" update="true">
 							<manifest>
-								<attribute name="Application-Name" value="NBIA Download Manager"/>
+								<attribute name="Application-Name" value="${branding.appname} Download Manager"/>
 								<attribute name="Codebase" value="${jar.manifest.secure.attribute.Codebase}"/>
 								<attribute name="Permissions" value="${jar.manifest.secure.attribute.Permissions}"/>
 								<attribute name="Application-Library-Allowable-Codebase" value="${jar.manifest.secure.attribute.Application-Library-Allowable-Codebase}"/>
@@ -525,6 +526,11 @@ L-->
 		<copy todir="${nbia-web.base.dir}-temp/webapp/images/">
 			<fileset dir="${branding.dir}/images">
 				<include name="*.*"/>
+			</fileset>
+		</copy>
+		<copy todir="${nbia-web.base.dir}-temp/webapp">
+			<fileset dir="${branding.dir}">
+				<include name="*.jsp"/>
 			</fileset>
 		</copy>
 		<ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}" target="${nbia-web.build.target}" dir="${nbia-web.base.dir}-temp">
