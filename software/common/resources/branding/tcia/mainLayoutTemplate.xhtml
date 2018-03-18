@@ -34,8 +34,23 @@ L-->
   <script language="javascript" 
           src="js/imageViewer.js" 
           type="text/javascript"></script>
-                    
-  <title><ui:insert name="title">NBIA - National Biomedical Imaging Archive</ui:insert></title>
+
+  <title><ui:insert name="title">The Cancer Imaging Archive</ui:insert></title>
+
+        <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24548737-1']);
+    _gaq.push(['_setDomainName', 'cancerimagingarchive.net']);
+    _gaq.push(['_trackPageview']);
+  
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 </head>
 
 <body>
@@ -67,6 +82,10 @@ L-->
   <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1001;"></div>
   <span id="dbType" style="display:none;">mysql</span>
   <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" align="center">
+            <tr>
+                <td>
+                    <table summary="" cellpadding="0" cellspacing="0" border="0" width="80%"
+                        height="100%" align="center">
    <tr>
       <td>  
         <f:subview id="NCIheader">
@@ -76,6 +95,9 @@ L-->
         </f:subview>
       </td>
     </tr>
+                    </table>
+                </td>
+            </tr>
     <tr>
       <!-- application hdr begins -->
       <td height="100%" valign="top" >
@@ -111,6 +133,15 @@ L-->
                     </f:subview>                   
                   </td>
                </tr>
+               <tr>
+                  <td>
+                    <div id="APPftr">
+                       <ui:insert name="appFooter">
+                         <ui:include src="appFooter.xhtml"/>
+                       </ui:insert>
+                    </div>
+                  </td>
+               </tr>
                </table>
                </td>
                
@@ -121,13 +152,6 @@ L-->
         </table>
       </td>
     </tr>
-    <tr> <td>
-    <div id="APPftr"> 
-        <ui:insert name="appFooter">
-          <ui:include src="appFooter.xhtml"/>
-        </ui:insert>      
-      </div>
-    </td></tr>
     <tr> <td>
       <div id="NCIfooter">
         <ui:insert name="footer">
