@@ -738,8 +738,13 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("latest.TCIA.downloader.version");
         checkProperty("latest.TCIA.downloader.version", propertyValue);
         return propertyValue;   	
-    }    
+    }   
     
+    public static String getAppName() {
+        String propertyValue = properties.getProperty("branding.appname");
+        checkProperty("branding.appname", propertyValue);
+        return propertyValue;   	
+    } 
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer
