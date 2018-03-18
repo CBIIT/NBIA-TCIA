@@ -1175,4 +1175,9 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
 	public String getUbuntuInstallerLink(){
 		return NCIAConfig.getUbuntuInstallerLink();
 	}		
+	
+	public String getAppName() {
+		return NCIAConfig.getAppName();
+	}
+
 }
