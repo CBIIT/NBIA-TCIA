@@ -56,7 +56,9 @@ L-->
 					<h:panelGroup rendered="#{not empty basketBean.seriesItems}">
 							<div style="font-family: Arial; font-size: 15px; display: table; margin-right: auto; margin-left: auto;">
 								<div style="margin: 0; display: inline-block; float: left;">
-								Before clicking Start Download, you must install the TCIA Downloader app. Download the app for&#160;</div>
+								Before clicking Start Download, you must install the <h:outputText value=" "/> 
+								<h:outputText value="#{basketBean.appName}"/> 
+								Downloader app. Download the app for&#160;</div>
 								<div style="margin: 0; display: inline-block; float: left;">
 							    <h:outputLink value="#{basketBean.winInstallerLink}"> 
 	       								<h:outputText value="Windows" />	
@@ -84,7 +86,7 @@ L-->
 									target="_blank">here</a></div>
 								<div style="margin: 0; display: inline-block; float: left;">&#160;for more detailed instruction on how to install the app. If you cannot install the app, run the&#160;</div> 
 								<div style="margin: 0; display: inline-block;float: left;"><ice:outputResource id="launchDownload"
-										label=" temporary TCIA Downloader "
+										label=" temporary #{basketBean.appName} Downloader "
 										resource="#{basketBean.launchDownloadManager}"
 										fileName="#{basketBean.jnlpFileName}"
 										mimeType="application/x-java-jnlp-file" rendered="true"
