@@ -130,6 +130,7 @@ L-->
           description="generate the distribution">
 
     <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+  	<filter token="APPNAME" value="${branding.appname}"/>
     <filter token="time.stamp" value="${time.stamp}"/>	
     <copy todir="${build}" filtering="true">
     	 <fileset dir="${resources.dir}" includes="**/*.properties" />
