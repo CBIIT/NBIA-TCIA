@@ -745,6 +745,16 @@ public class NCIAConfig {
         checkProperty("branding.appname", propertyValue);
         return propertyValue;   	
     } 
+    public static String getButtonText() {
+        String propertyValue = properties.getProperty("gui.text");
+        checkProperty("gui.text", propertyValue);
+        return propertyValue;   	
+    } 
+    public static String getButtonAction() {
+        String propertyValue = properties.getProperty("gui.link");
+        checkProperty("gui.link", propertyValue);
+        return propertyValue;   	
+    } 
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer

@@ -535,6 +535,22 @@ public class SecurityBean {
 	public void setNewPassword2(String pass2) {
 		newPassword2 = pass2;
 	}
+	
+	public String getButtonText() {
+		return NCIAConfig.getButtonText();
+	}
+	public String getButtonAction() {
+		return NCIAConfig.getButtonAction();
+	}	
+	
+	public boolean getButtonRendered() {
+		if (getButtonText()==null||getButtonText().length()<1)
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	public String getTokenValue(){
 		if (token!=null){
 			if (token.isExpired())
