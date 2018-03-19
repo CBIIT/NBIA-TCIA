@@ -33,7 +33,11 @@ L-->
       </a>
     </td>
     
-	
+    <f:subview id="searchLinkSubview" rendered="#{securityBean.buttonRendered}">
+      <td height="20" class="mainMenuItem">
+      <h:commandButton type="button" value="#{securityBean.buttonText}" onclick="window.location.href='#{securityBean.buttonAction}'" style="background:#4CAF50; color: #FFFFFF;" />
+      </td>
+	 </f:subview>
     <!-- link 1 begins -->
     <f:subview id="homeLinkSubview" rendered="#{securityBean.loggedIn}">
       <td height="20" class="mainMenuItem"
