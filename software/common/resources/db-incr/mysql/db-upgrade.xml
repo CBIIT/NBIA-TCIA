@@ -1904,4 +1904,21 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
          </sql>
   </changeSet> 
     
+    
+    
+      <changeSet id="6.5.3.GUI.tracking" author="gustafss" dbms="mysql">
+         <comment>
+           nonbinary collation and indexs
+         </comment>          
+         <sql>          
+		 CREATE TABLE GUI_ACTION_HISTORY (
+			 GUI_ACTION_HISTORY_PK_ID BIGINT,
+			 ACTION_TIMESTAMP DATE,
+			 ACTION VARCHAR(255),
+			 PRIMARY KEY(GUI_ACTION_HISTORY_PK_ID)
+		 );		
+         </sql>
+  </changeSet> 
+
+
 </databaseChangeLog>
