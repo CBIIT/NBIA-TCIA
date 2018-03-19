@@ -1868,5 +1868,40 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
           group by  g.patient_pk_id,p.patient_id,dp.project;
     </createView>
 </changeSet>
+  <changeSet id="6.5.3.collation.indexes" author="gustafss" dbms="mysql">
+         <comment>
+           nonbinary collation and indexs
+         </comment>          
+         <sql>          
+            alter table general_image convert to character set latin1 COLLATE latin1_general_ci;
+			create index instanceNumberindx on general_image(INSTANCE_NUMBER);
+			create index contentDateindx on general_image(CONTENT_DATE);
+			create index contentTimeindx on general_image(CONTENT_TIME);
+			create index imageTypeindx on general_image(IMAGE_TYPE);
+			create index acquisitionDateindx on general_image(ACQUISITION_DATE);
+			create index acquisitionTimeindx on general_image(ACQUISITION_TIME);
+			create index acquisitionNumberindx on general_image(ACQUISITION_NUMBER);
+			create index lossyImageCompressionindx on general_image(LOSSY_IMAGE_COMPRESSION);
+			create index imageOrientationPatientindx on general_image(IMAGE_ORIENTATION_PATIENT);
+			create index pixelSpacingindx on general_image(PIXEL_SPACING);
+			create index imagePositionPatientindx on general_image(IMAGE_POSITION_PATIENT);
+			create index sliceLocationindx on general_image(SLICE_LOCATION);
+			create index contrastBolusAgentindx on general_image(CONTRAST_BOLUS_AGENT);
+			create index SOPClassUIDindx on general_image(SOP_CLASS_UID);
+			create index patientPositionindx on general_image(PATIENT_POSITION);
+			create index sourceToDetectorDistanceindx on general_image(SOURCE_TO_DETECTOR_DISTANCE);
+			create index sourceSubjectDistanceindx on general_image(SOURCE_SUBJECT_DISTANCE);
+			create index focalSpotSizeindx on general_image(FOCAL_SPOT_SIZE);
+			create index storageMediaFileSetUIDindx on general_image(STORAGE_MEDIA_FILE_SET_UID);
+			create index acquisitionDatetimeindx on general_image(ACQUISITION_DATETIME);
+			create index imageCommentsindx on general_image(IMAGE_COMMENTS);
+			create index imageLateralityindx on general_image(IMAGE_LATERALITY);
+			create index acquisitionMatrixindx on general_image(ACQUISITION_MATRIX);
+			create index columnsindx on general_image(I_COLUMNS);
+			create index rowsindx on general_image(I_ROWS);
+			create index usFrameNumindx on general_image(US_FRAME_NUMBER);
+			create index usColorDataPresentindx on general_image(US_COLOR_DATA_PRESENT);			
+         </sql>
+  </changeSet> 
     
 </databaseChangeLog>
