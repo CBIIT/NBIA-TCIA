@@ -140,6 +140,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 			if (result == JOptionPane.OK_OPTION) {
 				constructLoginWin();
 			}
+			else System.exit(0);
 		} else
 			constructLoginWin();
 	}
