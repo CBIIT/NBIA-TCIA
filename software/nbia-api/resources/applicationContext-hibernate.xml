@@ -81,6 +81,7 @@ L-->
         <value>gov/nih/nci/nbia/internaldomain/SavedQueryAttribute.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/SavedQueryLastExec.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/SubmissionHistory.hbm.xml</value>
+        <value>gov/nih/nci/nbia/internaldomain/GUIActionHistory.hbm.xml</value>
       </list>
     </property>
 
@@ -179,6 +180,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
     </property>
   </bean>
   <bean id="customSeriesListDAO" class="gov.nih.nci.nbia.dao.CustomSeriesListDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <bean id="GUIActionDAO" class="gov.nih.nci.nbia.dao.GUIActionDAOImpl">
     <property name="sessionFactory">
       <ref bean="sessionFactory"/>
     </property>
