@@ -62,31 +62,41 @@ public class DownloadServletV3 extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// This servlet processes Manifest download related requests only. JNLP
 		// download related requests are processed at DownloadServlet
-		int numberOfSeries = Integer.parseInt(request.getParameter("numberOfSeries"));
-		List<String> seriesList = new ArrayList<String>();
+		String numOfS = request.getParameter("numberOfSeries");
 
-		for (int i = 1; i <= numberOfSeries; ++i) {
-			String s = request.getParameter("series" + Integer.toString(i));
-			if (s != null)
-				seriesList.add(s);
-		}
-System.out.println("received # series=" + seriesList.size());
-		// check file type and authenticate user
-		if (numberOfSeries > 0) {
+		if (numOfS != null) {
+			int numberOfSeries = Integer.parseInt(numOfS);
+			List<String> seriesList = new ArrayList<String>();
 
-			String userId = request.getParameter("userId");
-			String password = request.getHeader("password");
-
-			if ((userId == null) || (password == null)) {
-				userId = NCIAConfig.getGuestUsername();
-			} else if (!loggedIn(userId, password)) {
-				response.sendError(HttpURLConnection.HTTP_UNAUTHORIZED,
-						"Incorrect username and/or password. Please try it again.");
-				return;
+			for (int i = 1; i <= numberOfSeries; ++i) {
+				String s = request.getParameter("series" + Integer.toString(i));
+				if (s != null)
+					seriesList.add(s);
 			}
 
-			downloadManifestFile(seriesList, response, userId);
-		} else {
+			//authenticate user
+			if (numberOfSeries > 0) {
+				String userId = request.getParameter("userId");
+				String password = request.getHeader("password");
+
+				if ((userId == null) || (password == null)) {
+					userId = NCIAConfig.getGuestUsername();
+				} 
+				else if (!loggedIn(userId, password)) {
+					response.sendError(HttpURLConnection.HTTP_UNAUTHORIZED,
+							"Incorrect username and/or password. Please try it again.");
+					return;
+				}
+
+				downloadManifestFile(seriesList, response, userId);
+			}
+			else {
+				response.sendError(HttpURLConnection.HTTP_BAD_REQUEST,
+						"The manifest file should include at least one series instance UID.");
+				return;
+			}
+		} 
+		else { // individual download request
 			String seriesUid = request.getParameter("seriesUid");
 			String userId = request.getParameter("userId");
 			String password = request.getHeader("password");

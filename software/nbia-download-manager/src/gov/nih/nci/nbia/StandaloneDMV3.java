@@ -16,8 +16,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//import javax.servlet.http.HttpServletResponse;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,14 +31,10 @@ import javax.swing.SwingConstants;
 
 import gov.nih.nci.nbia.download.SeriesData;
 import gov.nih.nci.nbia.ui.DownloadManagerFrame;
+import gov.nih.nci.nbia.ui.ProgressIndicator;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
-import gov.nih.nci.nbia.util.StringEncrypter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -54,16 +48,11 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
@@ -92,6 +81,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 	private String ManifestVersion = null;
 	private String key = null;
 	private List<String> seriesList = null;
+	private final static ProgressIndicator pi = new ProgressIndicator();
 
 	/**
 	 * @param args
@@ -100,7 +90,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 	public StandaloneDMV3() {
 		super();
 		this.basketId = System.getProperty("databasketId");
-		// this.fileLoc = System.getProperty("tempLoc");
 		this.ManifestVersion = System.getProperty("manifestVersion");
 	}
 
@@ -141,17 +130,25 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 	public void launch(List<String> seriesList) {
 		checkCompatibility();
-		this.seriesList = seriesList;
-		if (seriesList.size() > 9999) {
-			int result = JOptionPane.showConfirmDialog(null,
-					"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
-					"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION);
+		if ((seriesList == null) || (seriesList.size() <= 0)) {
+			JOptionPane.showMessageDialog(null,
+					"This version of Download App requires to have at least one series instance UID in manifest file.");
+			System.exit(0);
+		} else {
+			this.seriesList = seriesList;
+			if (seriesList.size() > 9999) {
+				int result = JOptionPane.showConfirmDialog(null,
+						"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
+						"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.INFORMATION_MESSAGE);
 
-			if (result == JOptionPane.OK_OPTION) {
+				if (result == JOptionPane.OK_OPTION) {
+					constructLoginWin();
+				} else
+					System.exit(0);
+			} else
 				constructLoginWin();
-			}
 		}
-		else constructLoginWin();
 	}
 
 	void submitUserCredential(String userId, String password) {
@@ -182,11 +179,17 @@ public class StandaloneDMV3 extends StandaloneDM {
 				seriesInfo.toArray(strResult);
 
 				List<SeriesData> seriesData = JnlpArgumentsParser.parse(strResult);
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 
 				DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword, includeAnnotation,
 						seriesData, serverUrl, noOfRetry);
 				manager.setTitle(winTitle);
 				manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
+				// manager.setBounds(100, 100, 928, 690);
 				manager.setVisible(true);
 				frame.setVisible(false);
 			} catch (Exception ex) {
@@ -219,7 +222,8 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 			HttpParams httpParams = new BasicHttpParams();
 			// HttpConnectionParams.setConnectionTimeout(httpParams, 50000);
-			// HttpConnectionParams.setSoTimeout(httpParams, new Integer(12000));
+			// HttpConnectionParams.setSoTimeout(httpParams, new
+			// Integer(12000));
 			HttpConnectionParams.setConnectionTimeout(httpParams, 500000);
 			HttpConnectionParams.setSoTimeout(httpParams, new Integer(120000));
 			httpClient = new DefaultHttpClient(ccm, httpParams);
@@ -292,7 +296,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 			ex.printStackTrace();
 		}
 
-		// setDefaultSize(16);
 		frame = new JFrame("Standalone Download Manager");
 		frame.setBounds(100, 100, 928, 690);
 		frame.setContentPane(constructLoginPanel());
@@ -307,7 +310,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 		for (Object key : keys) {
 			if (key != null && key.toString().toLowerCase().contains("font")) {
-				System.out.println(key);
 				Font font = UIManager.getDefaults().getFont(key);
 				if (font != null) {
 					font = font.deriveFont((float) size);
@@ -333,7 +335,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		guestBtn.setBounds(606, 50, 140, 36);
 		guestBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				submitUserCredential(null, null);
+				submitRequest(null, null);
 			}
 		});
 		guestPanel.add(guestBtn);
@@ -363,8 +365,9 @@ public class StandaloneDMV3 extends StandaloneDM {
 				if ((userId.length() < 1) || (password.length() < 1)) {
 					statusLbl.setText("Please enter a valid user name and password.");
 					statusLbl.setForeground(Color.red);
-				} else
-					submitUserCredential(userId, password);
+				} else {
+					submitRequest(userId, password);
+				}
 			}
 		});
 		submitBtn.setBounds(606, 238, 140, 36);
@@ -414,10 +417,25 @@ public class StandaloneDMV3 extends StandaloneDM {
 					statusLbl.setText("Please enter a valid user name and password.");
 					statusLbl.setForeground(Color.red);
 				} else
-					submitUserCredential(userId, password);
+					submitRequest(userId, password);
 			}
 		});
 
 		return contentPane;
+	}
+
+	private void submitRequest(String userId, String password) {
+		pi.showPB(true);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					submitUserCredential(userId, password);
+				} catch (Exception e) {
+				}
+				pi.dismiss();
+			}
+		}).start();
 	}
 }

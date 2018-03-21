@@ -25,7 +25,7 @@ ant -f buildDMC.xml
 	<property name="application.title" value="TCIA Downloader" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
-	<property name="package.version" value="2.0" />
+	<property name="package.version" value="3.0" />
 	<property name="copyright" value="(c) 2018 NCI, Leidos, Ellumen" />
 	<property name="icon.file.name" value="StandaloneDMIcon.ico" />
 
@@ -164,7 +164,8 @@ ant -f buildDMC.xml
 			</not>
 		</condition>
 	    <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
-	    <filter token="time.stamp" value="${time.stamp}"/>		
+	    <filter token="time.stamp" value="${time.stamp}"/>
+	  	<filter token="APPNAME" value="${branding.appname}"/>
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>

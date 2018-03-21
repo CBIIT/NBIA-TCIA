@@ -100,17 +100,17 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		this.serverUrl = downloadServerUrl;
 		this.password = password;
 		Collections.sort(series, new SeriesComparitor());
-		System.out.println("max threads: " + maxThreads + " serverurl " + serverUrl);
+		//System.out.println("max threads: " + maxThreads + " serverurl " + serverUrl);
 		try {
 			addDownload(series);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Error adding series to data table: " + e.getMessage());
+			//System.out.println("Error adding series to data table: " + e.getMessage());
 		}
 	}
 
 	private void buildUI() {
-		String appName=System.getProperty("branding_appname");
+		String appName = Application.getAppTitle();
 		if (appName==null) {
 		    setTitle("NBIA Download Manager");
 		} else {
@@ -206,24 +206,24 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 
 	private JPanel createButtonsPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		String appName=System.getProperty("branding_appname");
-        
-	  	agreementButton = new JButton();
-	  	if (appName!=null&&appName.equalsIgnoreCase("TCIA")) {
-		   agreementButton.setText(
-				"<HTML><FONT color=\"#112299\">By clicking the Start button below, you agree to abide by the terms of TCIA's </FONT>"
-						+ "<FONT color=\"#000099\"><U>Data Use Policy</U></FONT>" + "<FONT color=\"#112299\">.</FONT>");
-	  	}
-		agreementButton.setBorderPainted(false);
-		agreementButton.setOpaque(false);
-		agreementButton.setBackground(Color.WHITE);
-		agreementButton.addActionListener(new OpenUrlAction());
-		agreementButton.setEnabled(true);
-		agreementButton.setVisible(true);
-
+		String appName = Application.getAppTitle();
 		JPanel agreementPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		agreementPanel.add(agreementButton);
-		agreementPanel.setVisible(true);
+		if (appName != null && appName.equalsIgnoreCase("TCIA")) {
+			agreementButton = new JButton();
+			agreementButton.setText(
+					"<HTML><FONT color=\"#112299\">By clicking the Start button below, you agree to abide by the terms of TCIA's </FONT>"
+							+ "<FONT color=\"#000099\"><U>Data Use Policy</U></FONT>"
+							+ "<FONT color=\"#112299\">.</FONT>");
+			agreementButton.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+			agreementButton.setContentAreaFilled(false);
+			agreementButton.setOpaque(false);
+			agreementButton.setBackground(Color.WHITE);
+			agreementButton.addActionListener(new OpenUrlAction());
+			agreementButton.setEnabled(true);
+			agreementButton.setVisible(true);
+			agreementPanel.add(agreementButton);
+			agreementPanel.setVisible(true);
+		}
 
 		JPanel buttonsPanel = new JPanel();
 
