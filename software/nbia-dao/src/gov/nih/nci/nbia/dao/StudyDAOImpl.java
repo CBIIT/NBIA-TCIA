@@ -134,7 +134,102 @@ public class StudyDAOImpl extends AbstractDAO
         }
         return returnList;
     }
+	@Transactional(propagation=Propagation.REQUIRED)
+    public List<StudyDTO> findStudiesBySeriesUIds(Collection<String> seriesPkIds) throws DataAccessException {
+    	if(seriesPkIds.size()==0) {
+    		return new ArrayList<StudyDTO>();
+    	}
 
+        String selectStmt = SQL_QUERY_SELECT;
+        String fromStmt = SQL_QUERY_FROM;
+        String whereStmt = SQL_QUERY_WHERE;
+
+        // Add the series PK IDs to the where clause
+        whereStmt += "and series.seriesInstanceUID IN (";
+
+        whereStmt += constructSeriesIUdList(seriesPkIds);
+
+        whereStmt += ")";
+
+        long start = System.currentTimeMillis();
+        logger.info("Issuing query: " + selectStmt + fromStmt + whereStmt);
+
+        List<Object[]> seriesResults = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
+        long end = System.currentTimeMillis();
+        logger.info("total query time: " + (end - start) + " ms");
+
+
+        // List of StudyDTOs to eventually be returned
+        Map<Integer, StudyDTO> studyList = new HashMap<Integer, StudyDTO>();
+        Iterator<Object[]> iter = seriesResults.iterator();
+
+        // Loop through the results.  There is one result for each series
+        while (iter.hasNext()) {
+        	Object[] row = iter.next();
+
+            // Create the seriesDTO
+            SeriesDTO seriesDTO = new SeriesDTO();
+            //modality should never be null... but currently possible
+            seriesDTO.setModality(Util.nullSafeString(row[8]));
+            //Getting real data from Surendra, find data for manufacture could be null
+            seriesDTO.setManufacturer(Util.nullSafeString(row[9]));
+            seriesDTO.setSeriesUID(row[3].toString());
+            seriesDTO.setSeriesNumber(Util.nullSafeString(row[10]));
+            seriesDTO.setSeriesPkId((Integer) row[0]);
+            seriesDTO.setDescription(Util.nullSafeString(row[7]));
+            seriesDTO.setNumberImages((Integer) row[6]);
+            Boolean annotationFlag = (Boolean) row[11];
+            if(annotationFlag!=null) {
+            	seriesDTO.setAnnotationsFlag(true);
+            }
+            seriesDTO.setAnnotationsSize((row[15] != null) ? (Long) row[15] : 0);
+            seriesDTO.setStudyPkId((Integer) row[1]);
+            seriesDTO.setStudyId(row[2].toString());
+            seriesDTO.setTotalImagesInSeries((Integer)row[6]);
+            seriesDTO.setTotalSizeForAllImagesInSeries((Long)row[12]);
+            seriesDTO.setPatientId((String)row[13]);
+            seriesDTO.setProject((String)row[14]);
+            seriesDTO.setMaxFrameCount((String)row[16]);
+            seriesDTO.setPatientPkId(row[17].toString());
+            // Try to get the study if it already exists
+            StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
+
+            if (studyDTO != null) {
+                // Study already exists.  Just add series info
+                studyDTO.getSeriesList().add(seriesDTO);
+            } else {
+                // Create the StudyDTO
+                studyDTO = new StudyDTO();
+                studyDTO.setStudyId(row[2].toString());
+                studyDTO.setDate((Date) row[4]);
+                studyDTO.setDescription(Util.nullSafeString(row[5]));
+                if (row[18]!=null){
+                    studyDTO.setStudy_id(row[18].toString());
+                }
+                studyDTO.setId(seriesDTO.getStudyPkId());
+
+                // Add the series to the study
+                studyDTO.getSeriesList().add(seriesDTO);
+
+                // Add the study to the list
+                studyList.put(studyDTO.getId(), studyDTO);
+            }
+        }
+
+        //maybe a candidate to move this out of DAO into higher level
+
+        // Convert to a list for sorting and to be returned
+        List<StudyDTO> returnList = new ArrayList<StudyDTO>(studyList.values());
+
+        // Sort the studies
+        Collections.sort(returnList);
+        for (StudyDTO studyDTO : returnList) {
+        	List<SeriesDTO> seriesList = new ArrayList<SeriesDTO>(studyDTO.getSeriesList());
+            Collections.sort(seriesList);
+            studyDTO.setSeriesList(seriesList);
+        }
+        return returnList;
+    }
 	/**
 	 * Fetch a set of patient/study info filtered by query keys
 	 * This method is used for NBIA Rest API.
@@ -280,6 +375,23 @@ public class StudyDAOImpl extends AbstractDAO
         }
     	return theWhereStmt;
     }
+    
+    /**
+    * Given a collection of strings, return a Stirng that is a comma
+    * separate list of the single-quoted integers, without a trailing comma
+    */
+   private static String constructSeriesIUdList(Collection<String> theSeriesPkIds) {
+   	String theWhereStmt = "";
+   	for (Iterator<String> i = theSeriesPkIds.iterator(); i.hasNext();) {
+           String seriesPkId = i.next();
+           theWhereStmt += ("'" + seriesPkId + "'");
+
+           if (i.hasNext()) {
+           	theWhereStmt += ",";
+           }
+       }
+   	return theWhereStmt;
+   }
     private static int PARAMETER_LIMIT = 700;
 
 	private <T> Collection<Collection<T>> split(Collection<T> bigCollection, int maxBatchSize) {
