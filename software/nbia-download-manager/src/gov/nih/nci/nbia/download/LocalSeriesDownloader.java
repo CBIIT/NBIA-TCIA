@@ -76,7 +76,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 	 */
 	public void runImpl() throws Exception {
 		this.sopUids = StringUtil.encodeListEntriesWithSingleQuotes(this.sopUidsList);
-
 		computeTotalSize();
 		URL url = new URL(serverUrl);
 		this.connectAndReadFromURL(url, 0);
@@ -160,6 +159,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				return true;
 			}
 		};
+
 		// set up a TrustManager that trusts everything
 		SSLSocketFactory sslsf = new SSLSocketFactory(easyStrategy, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 		Scheme httpsScheme = new Scheme("https", 443, sslsf);

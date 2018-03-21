@@ -90,7 +90,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 	public StandaloneDMV3() {
 		super();
 		this.basketId = System.getProperty("databasketId");
-		// this.fileLoc = System.getProperty("tempLoc");
 		this.ManifestVersion = System.getProperty("manifestVersion");
 	}
 
@@ -131,18 +130,25 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 	public void launch(List<String> seriesList) {
 		checkCompatibility();
-		this.seriesList = seriesList;
-		if (seriesList.size() > 9999) {
-			int result = JOptionPane.showConfirmDialog(null,
-					"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
-					"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION);
+		if ((seriesList == null) || (seriesList.size() <= 0)) {
+			JOptionPane.showMessageDialog(null,
+					"This version of Download App requires to have at least one series instance UID in manifest file.");
+			System.exit(0);
+		} else {
+			this.seriesList = seriesList;
+			if (seriesList.size() > 9999) {
+				int result = JOptionPane.showConfirmDialog(null,
+						"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
+						"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.INFORMATION_MESSAGE);
 
-			if (result == JOptionPane.OK_OPTION) {
+				if (result == JOptionPane.OK_OPTION) {
+					constructLoginWin();
+				} else
+					System.exit(0);
+			} else
 				constructLoginWin();
-			}
-			else System.exit(0);
-		} else
-			constructLoginWin();
+		}
 	}
 
 	void submitUserCredential(String userId, String password) {
@@ -178,7 +184,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				pi.dismiss();
+
 				DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword, includeAnnotation,
 						seriesData, serverUrl, noOfRetry);
 				manager.setTitle(winTitle);
@@ -290,7 +296,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 			ex.printStackTrace();
 		}
 
-		// setDefaultSize(16);
 		frame = new JFrame("Standalone Download Manager");
 		frame.setBounds(100, 100, 928, 690);
 		frame.setContentPane(constructLoginPanel());
@@ -305,7 +310,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 		for (Object key : keys) {
 			if (key != null && key.toString().toLowerCase().contains("font")) {
-				System.out.println(key);
 				Font font = UIManager.getDefaults().getFont(key);
 				if (font != null) {
 					font = font.deriveFont((float) size);
@@ -362,8 +366,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 					statusLbl.setText("Please enter a valid user name and password.");
 					statusLbl.setForeground(Color.red);
 				} else {
-					// statusLbl.setText("Contacting server...");
-					// statusLbl.setForeground(Color.blue);
 					submitRequest(userId, password);
 				}
 			}
@@ -432,8 +434,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 					submitUserCredential(userId, password);
 				} catch (Exception e) {
 				}
-				frame.dispose(); // AFTER THE LONG FUNCTION
-									// FINISHES, DISPOSE JFRAME
+				pi.dismiss();
 			}
 		}).start();
 	}

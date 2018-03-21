@@ -164,7 +164,8 @@ ant -f buildDMC.xml
 			</not>
 		</condition>
 	    <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
-	    <filter token="time.stamp" value="${time.stamp}"/>		
+	    <filter token="time.stamp" value="${time.stamp}"/>
+	  	<filter token="APPNAME" value="${branding.appname}"/>
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
