@@ -67,8 +67,7 @@ public class GetStudyDrillDownWithSeriesIds extends getData{
 		List<Integer> input = new ArrayList<Integer>();
  		List<StudyDTO> studies = studyDAO.findStudiesBySeriesUIds(list);
 
-		
-		return Response.ok(JSONUtil.getJSONforStudies(studies)).type("application/json")
+				return Response.ok(JSONUtil.getJSONforStudies(studies)).type("application/json")
 				.build();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
