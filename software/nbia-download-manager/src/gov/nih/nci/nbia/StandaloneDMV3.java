@@ -431,7 +431,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 		frame.setCursor(waitCursor);
 		submitUserCredential(userId, password);
 		frame.setCursor(defaultCursor);
-
 		// pi.showPB(true);
 		//
 		// new Thread(new Runnable() {
