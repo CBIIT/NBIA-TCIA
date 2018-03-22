@@ -12,6 +12,7 @@
 package gov.nih.nci.nbia;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,12 +77,12 @@ import org.apache.http.params.HttpParams;
 public class StandaloneDMV3 extends StandaloneDM {
 	private final static String serverVersionMsg = "The Download server version is not compatible with this TCIA Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
 	private static final String GuestBtnLbl = "Guest Login";
-	private String basketId;
-	private String fileLoc;
-	private String ManifestVersion = null;
+//	private String basketId;
+//	private String fileLoc;
+//	private String ManifestVersion = null;
 	private String key = null;
 	private List<String> seriesList = null;
-	private final static ProgressIndicator pi = new ProgressIndicator();
+//	private final static ProgressIndicator pi = new ProgressIndicator();
 
 	/**
 	 * @param args
@@ -89,8 +90,8 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 	public StandaloneDMV3() {
 		super();
-		this.basketId = System.getProperty("databasketId");
-		this.ManifestVersion = System.getProperty("manifestVersion");
+//		this.basketId = System.getProperty("databasketId");
+//		this.ManifestVersion = System.getProperty("manifestVersion");
 	}
 
 	void checkCompatibility() {
@@ -425,17 +426,23 @@ public class StandaloneDMV3 extends StandaloneDM {
 	}
 
 	private void submitRequest(String userId, String password) {
-		pi.showPB(true);
+		Cursor waitCursor = new Cursor(Cursor.WAIT_CURSOR);
+		Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+		frame.setCursor(waitCursor);
+		submitUserCredential(userId, password);
+		frame.setCursor(defaultCursor);
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					submitUserCredential(userId, password);
-				} catch (Exception e) {
-				}
-				pi.dismiss();
-			}
-		}).start();
+		// pi.showPB(true);
+		//
+		// new Thread(new Runnable() {
+		// @Override
+		// public void run() {
+		// try {
+		// submitUserCredential(userId, password);
+		// } catch (Exception e) {
+		// }
+		// pi.dismiss();
+		// }
+		// }).start();
 	}
 }
