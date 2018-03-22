@@ -32,7 +32,6 @@ import javax.swing.SwingConstants;
 
 import gov.nih.nci.nbia.download.SeriesData;
 import gov.nih.nci.nbia.ui.DownloadManagerFrame;
-import gov.nih.nci.nbia.ui.ProgressIndicator;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
 
 import java.io.File;
@@ -82,7 +81,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 //	private String ManifestVersion = null;
 	private String key = null;
 	private List<String> seriesList = null;
-//	private final static ProgressIndicator pi = new ProgressIndicator();
 
 	/**
 	 * @param args
@@ -431,17 +429,5 @@ public class StandaloneDMV3 extends StandaloneDM {
 		frame.setCursor(waitCursor);
 		submitUserCredential(userId, password);
 		frame.setCursor(defaultCursor);
-		// pi.showPB(true);
-		//
-		// new Thread(new Runnable() {
-		// @Override
-		// public void run() {
-		// try {
-		// submitUserCredential(userId, password);
-		// } catch (Exception e) {
-		// }
-		// pi.dismiss();
-		// }
-		// }).start();
 	}
 }
