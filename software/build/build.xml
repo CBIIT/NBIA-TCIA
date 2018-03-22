@@ -521,6 +521,7 @@ L-->
 			<fileset dir="${branding.dir}">
 				<include name="welcome.xhtml"/>
 				<include name="welcomeText.xhtml"/>
+				<include name="legalRules.xhtml"/>
 			</fileset>
 		</copy>
 		<copy todir="${nbia-web.base.dir}-temp/webapp/images/">
