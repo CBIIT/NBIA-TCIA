@@ -226,7 +226,10 @@ public class StandaloneDMDispatcher {
 	}
 
 	String getInstallerName(String downloadUrl) {
-		String fileName = downloadUrl.substring(1 + downloadUrl.lastIndexOf('/'), downloadUrl.lastIndexOf('?'));
+		int lastIndex = downloadUrl.length();
+		if (downloadUrl.contains("?"))
+			lastIndex = downloadUrl.lastIndexOf('?');
+		String fileName = downloadUrl.substring(1 + downloadUrl.lastIndexOf('/'), lastIndex);
 		String home = System.getProperty("user.home");
 
 		if (os.contains("windows")) {
@@ -308,6 +311,7 @@ public class StandaloneDMDispatcher {
 		}
 
 		try {
+			System.out.println("begin to download installer");
 			URL url = new URL(downloadUrl);
 			in = url.openStream();
 			FileOutputStream fos = new FileOutputStream(new File(fileName));
