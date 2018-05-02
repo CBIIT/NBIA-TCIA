@@ -46,6 +46,7 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String maxFrameCount;
     private Date studyDate;    
     private String studyDesc;
+    private String bodyPartExamined;
     private String study_id; //study_id
     
     public Date getStudyDate() {
@@ -125,7 +126,15 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
         this.seriesUID = seriesUID;
     }
 
-    /**
+    public String getBodyPartExamined() {
+		return bodyPartExamined;
+	}
+
+	public void setBodyPartExamined(String bodyPartExamined) {
+		this.bodyPartExamined = bodyPartExamined;
+	}
+
+	/**
      * Used to sort.
      *
      * @param o
