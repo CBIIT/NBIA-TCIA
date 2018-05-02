@@ -17,9 +17,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class MenuBar extends JMenuBar{	
-	
+
 	public MenuBar() {
 		JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -40,8 +41,53 @@ public class MenuBar extends JMenuBar{
                 BrowserLauncher.openUrl();
             }
         });
-		
-        helpMenu.add(helpMenuItem);        
+        helpMenu.add(helpMenuItem);      
+        
+		add(fileMenu);
+		add(helpMenu);
+	}
+	
+	public MenuBar(String version, String helpDeskUrl) {
+		JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        JMenuItem fileExitMenuItem = new JMenuItem("Exit",
+                KeyEvent.VK_X);
+        fileExitMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                actionExit();
+            }
+        });
+        fileMenu.add(fileExitMenuItem);
+		JMenu helpMenu = new JMenu("Help");
+		fileMenu.setMnemonic(KeyEvent.VK_H);
+		JMenuItem helpMenuItem = new JMenuItem("Online Help",
+                KeyEvent.VK_O);
+        helpMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                BrowserLauncher.openUrl();
+            }
+        });
+        helpMenu.add(helpMenuItem); 
+        
+        JMenuItem helpdeskInfoMenuItem =  new JMenuItem("Help Desk Info",
+        		KeyEvent.VK_I);
+        helpdeskInfoMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                BrowserLauncher.openUrl(helpDeskUrl);
+            }
+        });
+        helpMenu.add(helpdeskInfoMenuItem);
+        
+        JMenuItem aboutMenuItem =  new JMenuItem("About",
+        		KeyEvent.VK_A);
+        aboutMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	JOptionPane.showOptionDialog(null, "Version: " +version, 
+            			"About", JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, null, new Object[]{}, null);
+            }
+        });
+        helpMenu.add(aboutMenuItem);        
+        
 		add(fileMenu);
 		add(helpMenu);
 	}	

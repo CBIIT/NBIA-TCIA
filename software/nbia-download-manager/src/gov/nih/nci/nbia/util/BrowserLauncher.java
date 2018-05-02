@@ -38,6 +38,19 @@ public class BrowserLauncher {
             openUrlForOthers(url);
         }
     }
+    
+    /**
+     * open a web browser from a given url
+     */
+    public static void openUrl(String url){
+        if (isMac){
+            openUrlForMac(url);
+        }else if(isWin){
+            openUrlForWindows(url);
+        }else{
+            openUrlForOthers(url);
+        }
+    }    
 
     private static void openUrlForMac(String url){
         try{
