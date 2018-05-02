@@ -151,6 +151,9 @@ public class GetSimpleSearchCriteriaValues extends getData{
         	
         }
         PatientCriteria pcriteria=buildPatientCrit(patientList);
+        if (pcriteria==null) {
+        	return Response.ok("").build();
+        }
 		ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
 		criteria.setAuth(auth);
 		criteria.setPatientCriteria(pcriteria);
