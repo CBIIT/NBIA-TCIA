@@ -68,6 +68,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import gov.nih.nci.nbia.util.DownloaderProperties;
 import gov.nih.nci.nbia.util.PropertyLoader;
 
 /**
@@ -78,11 +79,13 @@ public class StandaloneDMDispatcher {
 	public static final String launchMsg = "To run TCIA Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the file with TCIA Downloader app.";
 	private final static String newVersionMsg = "There is a new version of the TCIA Downloader available.";
 	private final static String manifestVersionMsg = "The manifest file version is not suported by this TCIA Downloader.  Please generate a new manifest file compatible with TCIA Downloader version ";
+	private final static String manifestVersionNewMsg = "The version of manifest file is higher than the version of this app.  Please upgrade your app.";
 	private static final String supportedVersion = null; // for future when
 															// certain version
 															// is no longer
 															// supported
-	private final static String appVersion = "3.0";
+//	private final static String appVersion = "3.0";
+	private static String appVersion = null;
 	private static final String osParam = "os";
 	private static final String installBtnLbl = "Update automatically";
 	private static final String downloadBtnLbl = "Update manually";
@@ -93,6 +96,7 @@ public class StandaloneDMDispatcher {
 	private String key = null;
 	private boolean nogo = false;
 	private List seriesList = null;
+	private boolean majorityPublic = true;
 
 	/**
 	 * @param args
@@ -111,6 +115,7 @@ public class StandaloneDMDispatcher {
 
 	public StandaloneDMDispatcher() {
 		os = System.getProperty("os.name").toLowerCase();
+		appVersion = DownloaderProperties.getAppVersion();
 	}
 
 	public void loadManifestFile(String fileName) {
@@ -132,7 +137,7 @@ public class StandaloneDMDispatcher {
 			if (manifestVersion.equals("3.0")) {
 				seriesList = getSeriesList(fileName);
 			}
-				
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,6 +148,13 @@ public class StandaloneDMDispatcher {
 	}
 
 	private void checkManifestVersion(String manifestVersion) {
+		if ((manifestVersion != null) && (Double.valueOf(manifestVersion) > Double.valueOf(appVersion))) {
+			Object[] options = { "OK" };
+			int n = JOptionPane.showOptionDialog(null, manifestVersionNewMsg,
+					"Incompatible Manifest File Version Notification", JOptionPane.OK_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+		}
+
 		if (((manifestVersion == null) && (supportedVersion != null))
 				|| ((manifestVersion != null) && (supportedVersion != null)
 						&& (Double.valueOf(manifestVersion) < Double.valueOf(supportedVersion)))) {
@@ -171,11 +183,15 @@ public class StandaloneDMDispatcher {
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		}
-		if ((resp != null) && (resp.size() == 3)) {
+		if ((resp != null) && (resp.size() >= 3)) {
 			key = resp.get(2);
 		}
+
 		if ((resp != null) && (Double.parseDouble(resp.get(0)) > Double.parseDouble(appVersion))) {
-			constructDownloadPanel(resp.get(1));
+			if (resp.size() >= 4) {
+				constructDownloadPanel(resp.get(1), resp.get(3));
+			} else
+				constructDownloadPanel(resp.get(1));
 		}
 	}
 
@@ -196,18 +212,36 @@ public class StandaloneDMDispatcher {
 			StandaloneDMV3 sdm = new StandaloneDMV3();
 			sdm.setKey(key);
 			sdm.launch(seriesList);
+		} else {
+			JOptionPane.showMessageDialog(null, "The version of manifest file, " + manifestVersion
+					+ ", might be incompatible with this version of app. Please upgrade your app.");
+			return;
 		}
+
 	}
 
 	private void constructDownloadPanel(String downloadUrl) {
 		Object[] options = { installBtnLbl, downloadBtnLbl, remindMeBtnLbl };
+		constructDownloadPanelWithOption(downloadUrl, options);
+	}
+
+	private void constructDownloadPanel(String downloadUrl, String forceUpgrade) {
+		if (forceUpgrade.equalsIgnoreCase("true") || forceUpgrade.equalsIgnoreCase("yes")) {
+			Object[] options = { installBtnLbl, downloadBtnLbl };
+			constructDownloadPanelWithOption(downloadUrl, options);
+		} else {
+			constructDownloadPanel(downloadUrl);
+		}
+	}
+
+	private void constructDownloadPanelWithOption(String downloadUrl, Object[] options) {
 		String nVMsg = newVersionMsg;
 		if (os.equalsIgnoreCase("CentOS") || os.equalsIgnoreCase("Ubuntu")) {
 			nVMsg = nVMsg + "\nIf choosing Update automatically, you need to enter a sudo password later.";
 		}
 
 		int n = JOptionPane.showOptionDialog(null, nVMsg, "New Version Notification", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
+				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
 		if (n == 0) {
 			saveAndInstall(downloadUrl);
@@ -311,7 +345,6 @@ public class StandaloneDMDispatcher {
 		}
 
 		try {
-			System.out.println("begin to download installer");
 			URL url = new URL(downloadUrl);
 			in = url.openStream();
 			FileOutputStream fos = new FileOutputStream(new File(fileName));
@@ -366,13 +399,14 @@ public class StandaloneDMDispatcher {
 		} else {
 			JLabel pwLabel = new JLabel("Sudo Password");
 			JTextField password = new JPasswordField();
-			Object[] objs = {pwLabel, password};
-			int result = JOptionPane.showConfirmDialog(null,  objs, "Please enter a sudo password", JOptionPane.OK_CANCEL_OPTION);
+			Object[] objs = { pwLabel, password };
+			int result = JOptionPane.showConfirmDialog(null, objs, "Please enter a sudo password",
+					JOptionPane.OK_CANCEL_OPTION);
 			String pas = null;
 			if (result == JOptionPane.OK_OPTION) {
 				pas = password.getText();
 			}
-			
+
 			if (pas != null) {
 				if (os.equals("CentOS")) {
 					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
@@ -472,13 +506,18 @@ public class StandaloneDMDispatcher {
 			httpPostMethod.setEntity(query);
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-			// System.out.println("Dispatcher:Response code for requesting data
-			// file: " + responseCode);
+
 			if (responseCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
 				data = IOUtils.readLines(inputStream);
 			}
+			else {
+				JOptionPane.showMessageDialog(null, "Incorrect response from server: " + responseCode);
+			}
 
+		} catch (java.net.ConnectException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -528,65 +567,39 @@ public class StandaloneDMDispatcher {
 		}
 		return linuxOS;
 	}
-	
+
 	private List<String> getSeriesList(String fileName) {
-	    BufferedReader reader = null;
-	    List<String> seriesList = new ArrayList<String>();
-	    try {
-	        //open file
-	        reader = new BufferedReader(new FileReader(fileName));
-
-	        //read first line
-	        String line = reader.readLine();
-
-	        //go through the entire file line for line
-	        while (line != null) {
-	            if (line.equalsIgnoreCase("ListOfSeriesToDownload="))
-	            	break;
-	            line = reader.readLine();
-	        }
-	        String data;
-	        while((data = reader.readLine()) != null) {  // read and store only line    
-	        	  seriesList.add(data.replaceFirst(",", ""));
-	        }
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            //always close file readers!
-	            reader.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return seriesList;
-	}
-	
-	public static String getOnlineHelpUrl(){
-		return NBIA_PROPERTIES.getProperty("online_help_url");
-	}
-	
-	public static String getBuildTime(){
-		return NBIA_PROPERTIES.getProperty("time_stamp");
-	}
-	
-	public static String getAppVersion(){
-		return appVersion;
-	}		
-	
-	private static Properties NBIA_PROPERTIES = null;
-
-	static {
+		BufferedReader reader = null;
+		List<String> seriesList = new ArrayList<String>();
 		try {
-			NBIA_PROPERTIES = PropertyLoader.loadProperties("config.properties");
-		} catch (Exception e) {
-			/*
-			 * Create EMPTY properties to avoid null pointer exceptions
-			 */
-			if (NBIA_PROPERTIES == null) {
-				NBIA_PROPERTIES = new Properties();
+			// open file
+			reader = new BufferedReader(new FileReader(fileName));
+
+			// read first line
+			String line = reader.readLine();
+
+			// go through the entire file line for line
+			while (line != null) {
+				if (line.equalsIgnoreCase("ListOfSeriesToDownload="))
+					break;
+				line = reader.readLine();
+			}
+			String data;
+			while ((data = reader.readLine()) != null) { // read and store only
+															// line
+				seriesList.add(data.replaceFirst(",", ""));
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// always close file readers!
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
+		return seriesList;
 	}
 }

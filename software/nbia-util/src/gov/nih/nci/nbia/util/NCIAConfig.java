@@ -738,7 +738,13 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("latest.TCIA.downloader.version");
         checkProperty("latest.TCIA.downloader.version", propertyValue);
         return propertyValue;   	
-    }   
+    }
+    
+    public static String getDownloaderAppForcedUpgrade() {
+        String propertyValue = properties.getProperty("force.downloader.upgrade");
+        checkProperty("force.downloader.upgrade", propertyValue);
+        return propertyValue;   	
+    }       
     
     public static String getAppName() {
         String propertyValue = properties.getProperty("branding.appname");

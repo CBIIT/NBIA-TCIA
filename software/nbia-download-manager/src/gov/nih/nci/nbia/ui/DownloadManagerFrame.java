@@ -9,10 +9,12 @@
 package gov.nih.nci.nbia.ui;
 
 import gov.nih.nci.nbia.Application;
+import gov.nih.nci.nbia.StandaloneDMDispatcher;
 import gov.nih.nci.nbia.download.SeriesDownloaderFactory;
 import gov.nih.nci.nbia.download.AbstractSeriesDownloader;
 import gov.nih.nci.nbia.download.SeriesData;
 import gov.nih.nci.nbia.util.ThreadPool;
+import gov.nih.nci.nbia.util.DownloaderProperties;
 import gov.nih.nci.nbia.util.PropertyLoader;
 import gov.nih.nci.nbia.util.StringUtil;
 import gov.nih.nci.nbia.util.SeriesComparitor;
@@ -34,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Properties;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -95,7 +99,6 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		this.noOfRetry = noOfRetry;
 		this.errorText = "An error has occurred.";
 		buildUI();
-		PropertyLoader.loadProperties("config.properties");
 		this.maxThreads = Application.getNumberOfMaxThreads();
 		this.serverUrl = downloadServerUrl;
 		this.password = password;
@@ -108,6 +111,33 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			//System.out.println("Error adding series to data table: " + e.getMessage());
 		}
 	}
+	
+	public DownloadManagerFrame(boolean standalone, String userId, String password, boolean includeAnnotation, List<SeriesData> series,
+			String downloadServerUrl, Integer noOfRetry) {
+		this.userId = userId;
+		this.includeAnnotation = includeAnnotation;
+		this.noOfRetry = noOfRetry;
+		this.errorText = "An error has occurred.";
+		String version = "Release " + DownloaderProperties.getAppVersion() + " Build \""
+				+ DownloaderProperties.getBuildTime() + "\"";
+		if (standalone) {
+			buildUI(version, DownloaderProperties.getHelpDeskUrl());
+		}
+		else buildUI();
+		
+
+		this.maxThreads = Application.getNumberOfMaxThreads();
+		this.serverUrl = downloadServerUrl;
+		this.password = password;
+		Collections.sort(series, new SeriesComparitor());
+		//System.out.println("max threads: " + maxThreads + " serverurl " + serverUrl);
+		try {
+			addDownload(series);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//System.out.println("Error adding series to data table: " + e.getMessage());
+		}
+	}	
 
 	private void buildUI() {
 		String appName = Application.getAppTitle();
@@ -150,6 +180,47 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
 	}
 
+	private void buildUI(String version, String helpDeskUrl) {
+		String appName = Application.getAppTitle();
+		if (appName==null) {
+		    setTitle("NBIA Download Manager");
+		} else {
+			setTitle(appName+" Download Manager");
+		}
+		setSize(800, 480);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				actionExit();
+			}
+		});
+
+		/* Set up file menu. */
+		createMenuBar(version, helpDeskUrl);
+
+		/* Set up browse panel. */
+		directoryBrowserPanel = new DirectoryBrowserPanel();
+		radioButtonPanel = new RadioButtonPanel();
+
+		/* Set up Downloads table. */
+		createTable();
+
+		/* Set up buttons panel. */
+		JPanel buttonsPanel = createButtonsPanel();
+
+		/* Set up items for the southern part of the UI. */
+		JPanel southPanel = new JPanel();
+		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+		southPanel.add(radioButtonPanel);
+		southPanel.add(directoryBrowserPanel);
+		southPanel.add(buttonsPanel);
+
+		/* Add panels to the display. */
+		getContentPane().setLayout(new BorderLayout());
+
+		getContentPane().add(createDownloadsPanel(), BorderLayout.CENTER);
+		getContentPane().add(southPanel, BorderLayout.SOUTH);
+	}
+	
 	private JPanel createDownloadsPanel() {
 		JPanel downloadsPanel = new JPanel();
 
@@ -183,6 +254,11 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		JMenuBar menuBar = new MenuBar();
 		setJMenuBar(menuBar);
 	}
+	
+	private void createMenuBar(String version, String helpDeskUrl) {
+		JMenuBar menuBar = new MenuBar(version, helpDeskUrl);
+		setJMenuBar(menuBar);
+	}	
 
 	public void setDefaultDownloadDir(String dir) {
 		directoryBrowserPanel.setDefaultDirectory(dir);

@@ -166,6 +166,7 @@ ant -f buildDMC.xml
 	    <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
 	    <filter token="time.stamp" value="${time.stamp}"/>
 	  	<filter token="APPNAME" value="${branding.appname}"/>
+		<filter token="help.desk.url" value="${help.desk.url}"/>
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
@@ -195,7 +196,7 @@ ant -f buildDMC.xml
 	<target name="run" depends="clean, compile, jar" />
 
 	<target xmlns:fx="javafx:com.sun.javafx.tools.ant" name="package" depends="clean, cleanPackage, jar">
-		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${java.home}/../lib/ant-javafx.jar;packageSrc" />
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${java.home}/../lib/ant-javafx.jar;packageSrc;" />
 		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="${native.bundles}" outdir="${package.dir}" outfile="${application.title}" verbose="true">
 
 			<fx:application id="standaloneDMApp" name="${application.title}" mainClass="${javafx.main.class}" version="${package.version}">
