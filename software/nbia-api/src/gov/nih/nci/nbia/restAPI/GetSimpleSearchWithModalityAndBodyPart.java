@@ -35,7 +35,6 @@ import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 
 import java.text.SimpleDateFormat;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
