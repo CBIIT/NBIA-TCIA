@@ -169,21 +169,41 @@ public class StandaloneDMV3 extends StandaloneDM {
 			}
 
 			JFrame f = showProgress("Loading your data");
+			
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					if (DownloaderProperties.getMajorityPublic()) {
 
-			if (DownloaderProperties.getMajorityPublic()) {
+						List<String> seriesInfo = getSeriesInfo(seriesList);
+						if (seriesInfo != null) {
+							constructDownloadManager(seriesInfo, null, null);
+						} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
+							constructLoginWin();
+						}
+					} else {
+						constructLoginWin();
+					}
 
-				List<String> seriesInfo = getSeriesInfo(seriesList);
-				if (seriesInfo != null) {
-					constructDownloadManager(seriesInfo, null, null);
-				} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
-					constructLoginWin();
+					f.setVisible(false);
+					f.dispose();
 				}
-			} else {
-				constructLoginWin();
-			}
+			});
 
-			f.setVisible(false);
-			f.dispose();
+//			if (DownloaderProperties.getMajorityPublic()) {
+//
+//				List<String> seriesInfo = getSeriesInfo(seriesList);
+//				if (seriesInfo != null) {
+//					constructDownloadManager(seriesInfo, null, null);
+//				} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
+//					constructLoginWin();
+//				}
+//			} else {
+//				constructLoginWin();
+//			}
+//
+//			f.setVisible(false);
+//			f.dispose();
 		}
 	}
 
@@ -577,7 +597,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		loginUserPanel.add(passwdFld);
 
 		statusLbl = new JLabel("");
-		statusLbl.setBounds(70, 226, 463, 36);
+		statusLbl.setBounds(70, 226, 502, 36);
 		statusLbl.setVerticalAlignment(SwingConstants.BOTTOM);
 		loginUserPanel.add(statusLbl);
 
@@ -606,13 +626,13 @@ public class StandaloneDMV3 extends StandaloneDM {
 				"Please log in to download required images. If you do not have a TCIA user account, please contact the ");
 		infoLbl.setForeground(new Color(105, 105, 105));
 		infoLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
-		infoLbl.setBounds(40, 34, 669, 42);
+		infoLbl.setBounds(40, 34, 675, 42);
 		contentPane.add(infoLbl);
 
 		JLabel helpDeskLbl = new JLabel("<HTML><U>TCIA Help Desk.</U></HTML>");
 		helpDeskLbl.setForeground(new Color(0, 0, 128));
 		helpDeskLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
-		helpDeskLbl.setBounds(710, 43, 155, 25);
+		helpDeskLbl.setBounds(715, 43, 155, 25);
 		contentPane.add(helpDeskLbl);
 
 		helpDeskLbl.addMouseListener(new MouseAdapter() {
