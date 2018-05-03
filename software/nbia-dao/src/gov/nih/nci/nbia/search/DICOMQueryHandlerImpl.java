@@ -118,6 +118,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || series.modality || '/' || series.bodyPartExamined ";
+    
 
     //switch query to include aim criteria conditionally
 
@@ -246,7 +248,78 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 			throw new RuntimeException(e);
 		}
     }
+	@Transactional(propagation=Propagation.REQUIRED)
+    public List<PatientStudySeriesQuintuple> findQuintles(DICOMQuery theQuery) throws DataAccessException {
+		try {
+	        query = theQuery;
 
+	        selectStmt = SQL_QUERY_SELECT2;
+	        fromStmt = SQL_QUERY_FROM_NEITHER;
+	        whereStmt = SQL_QUERY_WHERE_NEITHER;
+
+	        /* List to return */
+	        List<PatientStudySeriesQuintuple> patientList = new ArrayList<PatientStudySeriesQuintuple>();
+
+	        /* Process non-image criteria */
+	        this.nonImageProcess();
+
+	        /* Process UrlParamCriteria if the DICOMQuery is URLType */
+	        if (query.isQueryFromUrl()) {
+	            whereStmt += urlCriteriaProcess();
+	        }
+
+	        /* Process Authorization */
+	        String rc = authorizationProcess(query);
+
+	        if (rc == null) {
+	            return new ArrayList<PatientStudySeriesQuintuple>();
+	        }
+	        else {
+	        	whereStmt += rc;
+	        }
+            
+	        /* Process image criteria */
+	        String imageClause = imageCriteriaProcess(this.query);
+	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
+
+	        /* Run the query */
+	        logger.info("Search Issuing query : " + hql);
+	        long startTime = System.currentTimeMillis();
+	        List<String> results = getHibernateTemplate().find(hql);
+	        long elapsedTime = System.currentTimeMillis() - startTime;
+	        logger.info("Results returned from query in " + elapsedTime + " ms.");
+            int i=0;
+            int x=0;
+	        /* Convert the results to PatientResultSet objects */
+	        if (results != null) {
+
+	            for (String str : results) {
+
+	                //Parse out the primary keys These are concatenated into one
+	                //column to improve performance The fewer columns returned, the
+	                //better that Hibernate performs
+	            	
+
+	                String[] ids = str.split("/");
+
+	                PatientStudySeriesQuintuple prs = new PatientStudySeriesQuintuple();
+	                prs.setPatientPkId(Integer.valueOf(ids[0]));
+	                prs.setStudyPkId(Integer.valueOf(ids[1]));
+	                prs.setSeriesPkId(Integer.valueOf(ids[2]));
+	                prs.setModality(ids[3]);
+	                prs.setBodyPart(ids[4]);
+	                patientList.add(prs);
+	            }
+	        }
+
+
+	        return patientList;
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+    }
     private String urlCriteriaProcess() throws Exception {
         CriteriaHandler handler = CriteriaHandlerFactory.getInstance().createUrlParamCriteria();
         String whereStmt = "";
