@@ -18,6 +18,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +41,7 @@ import gov.nih.nci.nbia.ui.DownloadManagerFrame;
 import gov.nih.nci.nbia.util.BrowserLauncher;
 import gov.nih.nci.nbia.util.DownloaderProperties;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
+import sun.swing.DefaultLookup;
 
 import java.io.File;
 import java.io.IOException;
@@ -167,48 +170,45 @@ public class StandaloneDMV3 extends StandaloneDM {
 					System.exit(0);
 				}
 			}
-
-			JFrame f = showProgress("Loading your data");
 			
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (DownloaderProperties.getMajorityPublic()) {
-
-						List<String> seriesInfo = getSeriesInfo(seriesList);
-						if (seriesInfo != null) {
-							constructDownloadManager(seriesInfo, null, null);
-						} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
-							constructLoginWin();
-						}
-					} else {
-						constructLoginWin();
-					}
-
+			JFrame f; 
+			String os = System.getProperty("os.name").toLowerCase();			
+			if (os.startsWith("mac")) {
+				f = showProgressForMac("Loading your data");
+				SwingUtilities.invokeLater(new Runnable() {
+				    public void run() {
+				    	createMainWin();
 					f.setVisible(false);
 					f.dispose();
-				}
-			});
-
-//			if (DownloaderProperties.getMajorityPublic()) {
-//
-//				List<String> seriesInfo = getSeriesInfo(seriesList);
-//				if (seriesInfo != null) {
-//					constructDownloadManager(seriesInfo, null, null);
-//				} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
-//					constructLoginWin();
-//				}
-//			} else {
-//				constructLoginWin();
-//			}
-//
-//			f.setVisible(false);
-//			f.dispose();
+				    }
+				});
+			} 
+			else {
+				f = showProgress("Loading your data");
+				createMainWin();
+				f.setVisible(false);
+				f.dispose();
+			}
 		}
 	}
+	
+	void createMainWin() {
+		if (DownloaderProperties.getMajorityPublic()) {
+			List<String> seriesInfo = getSeriesInfo(seriesList);
+			if (seriesInfo != null) {
+				constructDownloadManager(seriesInfo, null, null);
+			} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
+				constructLoginWin();
+			}
+		} else {
+			constructLoginWin();
+		}
+	}
+	
 
 	JFrame showProgress(String message) {
 		JFrame f = new JFrame("Info");
+		f = new JFrame("Info");
 		f.setUndecorated(true);
 
 		JPanel p = new JPanel();
@@ -227,6 +227,25 @@ public class StandaloneDMV3 extends StandaloneDM {
 		f.setVisible(true);
 		return f;
 	}
+	
+	JFrame showProgressForMac(String message) {
+		JFrame f = new JFrame("Info");
+		f.setUndecorated(true);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BorderLayout());
+		JLabel waitInfo = new JLabel("Loading your data...");
+		waitInfo.setForeground(new Color(105, 105, 105));
+		waitInfo.setFont(new Font("Tahoma", Font.BOLD, 13));
+		waitInfo.setHorizontalAlignment(JLabel.CENTER);
+		waitInfo.setVerticalAlignment(JLabel.CENTER);
+		p.add(waitInfo,BorderLayout.CENTER);
+		f.getContentPane().add(p);
+		f.setSize(360, 40);
+		f.setLocationRelativeTo(null);
+		f.setVisible(true);
+		return f;
+	}	
 
 	void submitUserCredential(String userId, String password) {
 		List<String> seriesInfo = null;
@@ -623,16 +642,23 @@ public class StandaloneDMV3 extends StandaloneDM {
 		contentPane.add(versionLabel);
 
 		JLabel infoLbl = new JLabel(
-				"Please log in to download required images. If you do not have a TCIA user account, please contact the ");
+				"Please log in to download required images. If you do not have a TCIA user account, please contact the Help Desk.");
 		infoLbl.setForeground(new Color(105, 105, 105));
 		infoLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
-		infoLbl.setBounds(40, 34, 675, 42);
+		infoLbl.setBounds(40, 34, 796, 42);
 		contentPane.add(infoLbl);
+		
+		JLabel helpDeskLbl;
 
-		JLabel helpDeskLbl = new JLabel("<HTML><U>TCIA Help Desk.</U></HTML>");
-		helpDeskLbl.setForeground(new Color(0, 0, 128));
-		helpDeskLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
-		helpDeskLbl.setBounds(715, 43, 155, 25);
+		helpDeskLbl = new JLabel();
+		helpDeskLbl.setIcon(javax.swing.UIManager.getIcon("OptionPane.informationIcon"));
+		helpDeskLbl.setToolTipText("Click to get phone number/email address of the Help Desk.");
+		helpDeskLbl.setBounds(810, 20, 40, 40);
+
+//		JLabel helpDeskLbl = new JLabel("<HTML><U>TCIA Help Desk.</U></HTML>");
+//		helpDeskLbl.setForeground(new Color(0, 0, 128));
+//		helpDeskLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
+//		helpDeskLbl.setBounds(715, 43, 155, 25);
 		contentPane.add(helpDeskLbl);
 
 		helpDeskLbl.addMouseListener(new MouseAdapter() {
