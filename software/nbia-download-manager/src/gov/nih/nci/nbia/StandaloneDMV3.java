@@ -93,7 +93,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 	private List<String> seriesList = null;
 	private int returnStatus;
 	JProgressBar progressBar;
-	JLabel helpDeskLabel2 = new JLabel("<HTML><U>TCIA Help Desk.</U></HTML>");
+	JLabel helpDeskLabel2 = new JLabel("<HTML><U>Help Desk.</U></HTML>");
 
 	/**
 	 * @param args
