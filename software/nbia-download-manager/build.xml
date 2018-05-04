@@ -117,7 +117,7 @@ L-->
     <javac srcdir="${src.java.dir}"
            destdir="${build}"
            debug="on"
-    	   target="1.7" 
+    	   target="1.8" 
            deprecation = "on"
            optimize="off"
            includes="**"
