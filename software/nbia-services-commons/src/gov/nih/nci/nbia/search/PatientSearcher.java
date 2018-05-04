@@ -181,6 +181,8 @@ public class PatientSearcher {
                 patientDTO.setTotalNumberOfSeries(cachedPatientData.getSeriesNumber());
                 patientDTO.setSubjectId(cachedPatientData.getPatientId());
                 patientDTO.setProject(cachedPatientData.getProject());
+                patientDTO.addModalities(modality);
+                patientDTO.addBodyParts(bodyPart);
                 patients.put(patientId, patientDTO);
             }
         }
