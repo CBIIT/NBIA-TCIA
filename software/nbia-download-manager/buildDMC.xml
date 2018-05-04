@@ -14,6 +14,7 @@ ant -f buildDMC.xml
 	<property name="dist.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager" />
 	<property name="dist.lib.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager/lib" />
 	<property name="resources.dir" location="resources" />
+	<property name="images.dir" location="images" />	
 	<property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
 	<property name="lib.dir" value="${project.lib.dir}/compile" />
 	<property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
@@ -170,6 +171,9 @@ ant -f buildDMC.xml
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
+	    <copy todir="${build.dir}" filtering="false">
+	     	<fileset dir="${images.dir}" includes="info.png" />
+	    </copy> 
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${dist.lib.dir}" />
 

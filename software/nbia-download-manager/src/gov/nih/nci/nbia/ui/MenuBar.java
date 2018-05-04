@@ -73,7 +73,7 @@ public class MenuBar extends JMenuBar{
         		KeyEvent.VK_I);
         helpdeskInfoMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                BrowserLauncher.openUrl(helpDeskUrl);
+                BrowserLauncher.openUrlForHelpDesk();
             }
         });
         helpMenu.add(helpdeskInfoMenuItem);

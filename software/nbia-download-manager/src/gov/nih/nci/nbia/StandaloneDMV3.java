@@ -629,7 +629,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		helpDeskLabel2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				BrowserLauncher.openUrl(DownloaderProperties.getHelpDeskUrl());
+				BrowserLauncher.openUrlForHelpDesk();
 			}
 
 		});
@@ -651,20 +651,18 @@ public class StandaloneDMV3 extends StandaloneDM {
 		JLabel helpDeskLbl;
 
 		helpDeskLbl = new JLabel();
-		helpDeskLbl.setIcon(javax.swing.UIManager.getIcon("OptionPane.informationIcon"));
+		ImageIcon image = new ImageIcon(this.getClass().getClassLoader().getResource("info.png"));
+		helpDeskLbl = new JLabel(image);		
 		helpDeskLbl.setToolTipText("Click to get phone number/email address of the Help Desk.");
-		helpDeskLbl.setBounds(810, 20, 40, 40);
-
-//		JLabel helpDeskLbl = new JLabel("<HTML><U>TCIA Help Desk.</U></HTML>");
-//		helpDeskLbl.setForeground(new Color(0, 0, 128));
-//		helpDeskLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
-//		helpDeskLbl.setBounds(715, 43, 155, 25);
+		helpDeskLbl.setBounds(826, 20, 36, 36);
 		contentPane.add(helpDeskLbl);
 
 		helpDeskLbl.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				BrowserLauncher.openUrl(DownloaderProperties.getHelpDeskUrl());
+				System.out.println("mouse clicked");
+				//BrowserLauncher.openUrl(DownloaderProperties.getHelpDeskUrl());
+				BrowserLauncher.openUrlForHelpDesk();
 			}
 
 		});
