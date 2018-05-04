@@ -118,7 +118,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
-    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || series.modality || '/' || series.bodyPartExamined ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') ";
     
 
     //switch query to include aim criteria conditionally
@@ -299,15 +299,17 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	                //column to improve performance The fewer columns returned, the
 	                //better that Hibernate performs
 	            	
-
 	                String[] ids = str.split("/");
 
 	                PatientStudySeriesQuintuple prs = new PatientStudySeriesQuintuple();
 	                prs.setPatientPkId(Integer.valueOf(ids[0]));
 	                prs.setStudyPkId(Integer.valueOf(ids[1]));
 	                prs.setSeriesPkId(Integer.valueOf(ids[2]));
-	                prs.setModality(ids[3]);
-	                prs.setBodyPart(ids[4]);
+	                if (ids.length>3) {
+	                   prs.setModality(ids[3]);
+	                } if (ids.length>4) {
+	                   prs.setBodyPart(ids[4]);
+	                }
 	                patientList.add(prs);
 	            }
 	        }
