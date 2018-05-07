@@ -172,7 +172,7 @@ ant -f buildDMC.xml
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
 	    <copy todir="${build.dir}" filtering="false">
-	     	<fileset dir="${images.dir}" includes="info.png" />
+	     	<fileset dir="${images.dir}" includes="**/*.png" />
 	    </copy> 
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${dist.lib.dir}" />
