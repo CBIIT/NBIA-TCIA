@@ -93,7 +93,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 	private List<String> seriesList = null;
 	private int returnStatus;
 	JProgressBar progressBar;
-	JLabel helpDeskLabel2 = new JLabel("<HTML><U>Help Desk.</U></HTML>");
 
 	/**
 	 * @param args
@@ -269,9 +268,9 @@ public class StandaloneDMV3 extends StandaloneDM {
 			setStatus(statusLbl, "Invalid User name and/or password.  Please try it again.", Color.red);
 			return;
 		} else if (seriesInfo == null && returnStatus == CLIENT_NOT_AUTHORIZED) {
-			setStatus(statusLbl, "You do not have access to all the images. Please obtain permission through the",
+			setStatus(statusLbl, "Please contact the Help Desk to request the permission to access all the images.",
 					Color.red);
-			helpDeskLabel2.setVisible(true);
+			//helpDeskLabel2.setVisible(true);
 			return;
 		} else if (seriesInfo != null) {
 			constructDownloadManager(seriesInfo, userId, encryptedPassword);
@@ -616,23 +615,10 @@ public class StandaloneDMV3 extends StandaloneDM {
 		loginUserPanel.add(passwdFld);
 
 		statusLbl = new JLabel("");
-		statusLbl.setBounds(70, 226, 502, 36);
+		statusLbl.setBounds(70, 226, 524, 36);
+		statusLbl.setFont(new Font("SansSerif", Font.PLAIN, 13));
 		statusLbl.setVerticalAlignment(SwingConstants.BOTTOM);
 		loginUserPanel.add(statusLbl);
-
-		helpDeskLabel2.setForeground(new Color(0, 0, 128));
-		helpDeskLabel2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		helpDeskLabel2.setBounds(70, 268, 155, 25);
-		helpDeskLabel2.setVerticalAlignment(SwingConstants.TOP);
-		loginUserPanel.add(helpDeskLabel2);
-		helpDeskLabel2.setVisible(false);
-		helpDeskLabel2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				BrowserLauncher.openUrlForHelpDesk();
-			}
-
-		});
 
 		JLabel versionLabel = new JLabel("Release " + DownloaderProperties.getAppVersion() + " Build \""
 				+ DownloaderProperties.getBuildTime() + "\"");
@@ -644,7 +630,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		JLabel infoLbl = new JLabel(
 				"Please log in to download required images. If you do not have a TCIA user account, please contact the Help Desk.");
 		infoLbl.setForeground(new Color(105, 105, 105));
-		infoLbl.setFont(new Font("Tahoma", Font.BOLD, 13));
+		infoLbl.setFont(new Font("SansSerif", Font.BOLD, 13));
 		infoLbl.setBounds(40, 34, 796, 42);
 		contentPane.add(infoLbl);
 		
@@ -679,7 +665,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 			@Override
 			public void focusGained(FocusEvent e) {
 				statusLbl.setText("");
-				helpDeskLabel2.setVisible(false);
 			}
 
 			@Override
@@ -711,7 +696,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 			@Override
 			public void focusGained(FocusEvent e) {
 				statusLbl.setText("");
-				helpDeskLabel2.setVisible(false);
 			}
 
 			@Override
