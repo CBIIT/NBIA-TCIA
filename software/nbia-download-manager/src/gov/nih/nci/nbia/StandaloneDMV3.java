@@ -268,7 +268,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 			setStatus(statusLbl, "Invalid User name and/or password.  Please try it again.", Color.red);
 			return;
 		} else if (seriesInfo == null && returnStatus == CLIENT_NOT_AUTHORIZED) {
-			setStatus(statusLbl, "Please contact the Help Desk to request the permission to access all the images.",
+			setStatus(statusLbl, "Contact the help desk to request permission to access all of the images.",
 					Color.red);
 			//helpDeskLabel2.setVisible(true);
 			return;
@@ -628,7 +628,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		contentPane.add(versionLabel);
 
 		JLabel infoLbl = new JLabel(
-				"Please log in to download required images. If you do not have a TCIA user account, please contact the Help Desk.");
+				"Log in to download these images.  If you do not have a user account, contact the help desk.");
 		infoLbl.setForeground(new Color(105, 105, 105));
 		infoLbl.setFont(new Font("SansSerif", Font.BOLD, 13));
 		infoLbl.setBounds(40, 34, 796, 42);
