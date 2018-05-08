@@ -308,7 +308,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	                if (ids.length>3) {
 	                   prs.setModality(ids[3]);
 	                } if (ids.length>4) {
-	                   prs.setBodyPart(ids[4]);
+	                   if (ids[4]!=null) {
+	                      prs.setBodyPart(ids[4].toUpperCase());
+	                   }
 	                }
 	                patientList.add(prs);
 	            }
