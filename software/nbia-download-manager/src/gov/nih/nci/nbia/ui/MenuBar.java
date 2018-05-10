@@ -61,7 +61,7 @@ public class MenuBar extends JMenuBar{
         fileMenu.add(fileExitMenuItem);
 		JMenu helpMenu = new JMenu("Help");
 		fileMenu.setMnemonic(KeyEvent.VK_H);
-		JMenuItem helpMenuItem = new JMenuItem("Online Help",
+		JMenuItem helpMenuItem = new JMenuItem("Documentation",
                 KeyEvent.VK_O);
         helpMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -70,7 +70,7 @@ public class MenuBar extends JMenuBar{
         });
         helpMenu.add(helpMenuItem); 
         
-        JMenuItem helpdeskInfoMenuItem =  new JMenuItem("Help Desk Info",
+        JMenuItem helpdeskInfoMenuItem =  new JMenuItem("Help Desk",
         		KeyEvent.VK_I);
         helpdeskInfoMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

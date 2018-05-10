@@ -628,7 +628,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		contentPane.add(versionLabel);
 
 		JLabel infoLbl = new JLabel(
-				"Log in to download these images.  If you do not have a user account, contact the help desk.");
+				"This download contains restricted data. Log in or contact the help desk for access.");
 		infoLbl.setForeground(new Color(105, 105, 105));
 		infoLbl.setFont(new Font("SansSerif", Font.BOLD, 13));
 		infoLbl.setBounds(40, 34, 796, 42);
