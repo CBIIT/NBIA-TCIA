@@ -938,7 +938,8 @@ L-->
 		</copy>
 		<copy file="${common.resources.dir}/tomcat/log4j.properties" tofile="${dist.exploded.dir}/tomcat-files/log4j.properties" overwrite="true">
 		</copy>
-		
+		<copy file="${common.resources.dir}/tomcat/ahp_nbia.properties" tofile="${dist.exploded.dir}/tomcat-files/nbia.properties" overwrite="true">
+		</copy>
 		<copy file="${common.resources.dir}/tomcat/server.xml" tofile="${dist.exploded.dir}/tomcat-files/server.xml" overwrite="true">
 			<filterset>
 				<filter token="database.type" value="${database.type}"/>
