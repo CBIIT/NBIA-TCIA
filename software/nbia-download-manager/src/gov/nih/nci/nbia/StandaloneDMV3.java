@@ -5,34 +5,43 @@
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
  */
-
-/**
- *
- */
 package gov.nih.nci.nbia;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import gov.nih.nci.nbia.download.SeriesData;
 import gov.nih.nci.nbia.ui.DownloadManagerFrame;
+import gov.nih.nci.nbia.util.BrowserLauncher;
+import gov.nih.nci.nbia.util.DownloaderProperties;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
+import sun.swing.DefaultLookup;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +70,7 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
+
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.ProxySelectorRoutePlanner;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -76,11 +86,13 @@ import org.apache.http.params.HttpParams;
 public class StandaloneDMV3 extends StandaloneDM {
 	private final static String serverVersionMsg = "The Download server version is not compatible with this TCIA Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
 	private static final String GuestBtnLbl = "Guest Login";
-//	private String basketId;
-//	private String fileLoc;
-//	private String ManifestVersion = null;
+	private final static int CLIENT_LOGIN_NEEDED = 460;
+	private final static int CLIENT_LOGIN_FAILED = 461;
+	private final static int CLIENT_NOT_AUTHORIZED = 462;
 	private String key = null;
 	private List<String> seriesList = null;
+	private int returnStatus;
+	JProgressBar progressBar;
 
 	/**
 	 * @param args
@@ -88,8 +100,6 @@ public class StandaloneDMV3 extends StandaloneDM {
 
 	public StandaloneDMV3() {
 		super();
-//		this.basketId = System.getProperty("databasketId");
-//		this.ManifestVersion = System.getProperty("manifestVersion");
 	}
 
 	void checkCompatibility() {
@@ -122,9 +132,23 @@ public class StandaloneDMV3 extends StandaloneDM {
 			e1.printStackTrace();
 		}
 
-		String[] strResult = new String[seriesInfo.size()];
-		seriesInfo.toArray(strResult);
-		return JnlpArgumentsParser.parse(strResult);
+		if (seriesInfo != null) {
+			String[] strResult = new String[seriesInfo.size()];
+			seriesInfo.toArray(strResult);
+			return JnlpArgumentsParser.parse(strResult);
+		} else
+			return null;
+	}
+
+	protected List<String> getSeriesInfo(List seriesList) {
+		List<String> seriesInfo = null;
+		try {
+			seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesList, null, null);
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+
+		return seriesInfo;
 	}
 
 	public void launch(List<String> seriesList) {
@@ -141,14 +165,86 @@ public class StandaloneDMV3 extends StandaloneDM {
 						"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.INFORMATION_MESSAGE);
 
-				if (result == JOptionPane.OK_OPTION) {
-					constructLoginWin();
-				} else
+				if (result != JOptionPane.OK_OPTION) {
 					System.exit(0);
-			} else
-				constructLoginWin();
+				}
+			}
+			
+			JFrame f; 
+			String os = System.getProperty("os.name").toLowerCase();			
+			if (os.startsWith("mac")) {
+				f = showProgressForMac("Loading your data");
+				SwingUtilities.invokeLater(new Runnable() {
+				    public void run() {
+				    	createMainWin();
+					f.setVisible(false);
+					f.dispose();
+				    }
+				});
+			} 
+			else {
+				f = showProgress("Loading your data");
+				createMainWin();
+				f.setVisible(false);
+				f.dispose();
+			}
 		}
 	}
+	
+	void createMainWin() {
+		if (DownloaderProperties.getMajorityPublic()) {
+			List<String> seriesInfo = getSeriesInfo(seriesList);
+			if (seriesInfo != null) {
+				constructDownloadManager(seriesInfo, null, null);
+			} else if (returnStatus == CLIENT_LOGIN_NEEDED) {
+				constructLoginWin();
+			}
+		} else {
+			constructLoginWin();
+		}
+	}
+	
+
+	JFrame showProgress(String message) {
+		JFrame f = new JFrame("Info");
+		f = new JFrame("Info");
+		f.setUndecorated(true);
+
+		JPanel p = new JPanel();
+		Border margin = new EmptyBorder(30, 20, 20, 20);
+		p.setBorder(new TitledBorder(
+				new TitledBorder(margin, "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), message,
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		p.setLayout(new BorderLayout(30, 30));
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setIndeterminate(true);
+		p.add(progressBar, BorderLayout.CENTER);
+
+		f.getContentPane().add(p);
+		f.setSize(360, 80);
+		f.setLocationRelativeTo(null);
+		f.setVisible(true);
+		return f;
+	}
+	
+	JFrame showProgressForMac(String message) {
+		JFrame f = new JFrame("Info");
+		f.setUndecorated(true);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BorderLayout());
+		JLabel waitInfo = new JLabel("Loading your data...");
+		waitInfo.setForeground(new Color(105, 105, 105));
+		waitInfo.setFont(new Font("Tahoma", Font.BOLD, 13));
+		waitInfo.setHorizontalAlignment(JLabel.CENTER);
+		waitInfo.setVerticalAlignment(JLabel.CENTER);
+		p.add(waitInfo,BorderLayout.CENTER);
+		f.getContentPane().add(p);
+		f.setSize(360, 40);
+		f.setLocationRelativeTo(null);
+		f.setVisible(true);
+		return f;
+	}	
 
 	void submitUserCredential(String userId, String password) {
 		List<String> seriesInfo = null;
@@ -168,36 +264,45 @@ public class StandaloneDMV3 extends StandaloneDM {
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		}
-		if (seriesInfo == null) {
-			statusLbl.setText("Invalid User name and/or password.  Please try it again.");
-			statusLbl.setForeground(Color.red);
+		if (seriesInfo == null && returnStatus == CLIENT_LOGIN_FAILED) {
+			setStatus(statusLbl, "Invalid User name and/or password.  Please try it again.", Color.red);
 			return;
-		} else {
-			try {
-				String[] strResult = new String[seriesInfo.size()];
-				seriesInfo.toArray(strResult);
-
-				List<SeriesData> seriesData = JnlpArgumentsParser.parse(strResult);
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-
-				DownloadManagerFrame manager = new DownloadManagerFrame(userId, encryptedPassword, includeAnnotation,
-						seriesData, serverUrl, noOfRetry);
-				manager.setTitle(winTitle);
-				manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
-				// manager.setBounds(100, 100, 928, 690);
-				manager.setVisible(true);
-				frame.setVisible(false);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		} else if (seriesInfo == null && returnStatus == CLIENT_NOT_AUTHORIZED) {
+			setStatus(statusLbl, "Contact the help desk to request permission to access all of the images.",
+					Color.red);
+			//helpDeskLabel2.setVisible(true);
+			return;
+		} else if (seriesInfo != null) {
+			constructDownloadManager(seriesInfo, userId, encryptedPassword);
 		}
 	}
 
-	private static List<String> connectAndReadFromURL(URL url, List<String> seriesList, String userId, String passWd) {
+	private void constructDownloadManager(List<String> seriesInfo, String userId, String password) {
+		try {
+			String[] strResult = new String[seriesInfo.size()];
+			seriesInfo.toArray(strResult);
+
+			List<SeriesData> seriesData = JnlpArgumentsParser.parse(strResult);
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+			DownloadManagerFrame manager = new DownloadManagerFrame(true, userId, password, includeAnnotation,
+					seriesData, serverUrl, noOfRetry);
+			manager.setTitle(winTitle);
+			manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
+			manager.setVisible(true);
+
+			if (frame != null)
+				frame.setVisible(false);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	private List<String> connectAndReadFromURL(URL url, List<String> seriesList, String userId, String passWd) {
 		List<String> data = null;
 		DefaultHttpClient httpClient = null;
 		TrustStrategy easyStrategy = new TrustStrategy() {
@@ -258,6 +363,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 			int responseCode = response.getStatusLine().getStatusCode();
 
 			if (responseCode != HttpURLConnection.HTTP_OK) {
+				returnStatus = responseCode;
 				return null;
 			} else {
 				InputStream inputStream = response.getEntity().getContent();
@@ -296,8 +402,15 @@ public class StandaloneDMV3 extends StandaloneDM {
 		}
 
 		frame = new JFrame("Standalone Download Manager");
-		frame.setBounds(100, 100, 928, 690);
-		frame.setContentPane(constructLoginPanel());
+		frame.setResizable(false);
+
+		if (true) {
+			frame.setBounds(100, 100, 910, 528);
+			frame.setContentPane(createloginPanelV2());
+		} else {
+			frame.setBounds(100, 100, 928, 690);
+			frame.setContentPane(constructLoginPanel());
+		}
 		frame.setTitle(winTitle);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -393,17 +506,29 @@ public class StandaloneDMV3 extends StandaloneDM {
 		lblOr.setBounds(419, 212, 81, 26);
 		contentPane.add(lblOr);
 
-		JLabel versionLabel = new JLabel("Release " + StandaloneDMDispatcher.getAppVersion() + " Build \""
-				+ StandaloneDMDispatcher.getBuildTime() + "\"");
+		JLabel versionLabel = new JLabel("Release " + DownloaderProperties.getAppVersion() + " Build \""
+				+ DownloaderProperties.getBuildTime() + "\"");
 		versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		versionLabel.setForeground(new Color(70, 130, 180));
-		versionLabel.setBounds(319, 584, 260, 20);
+		versionLabel.setBounds(315, 584, 260, 20);
 		contentPane.add(versionLabel);
 
 		userNameFld.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				passwdFld.requestFocus();
+			}
+		});
+
+		userNameFld.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				statusLbl.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
 			}
 		});
 
@@ -420,7 +545,170 @@ public class StandaloneDMV3 extends StandaloneDM {
 			}
 		});
 
+		passwdFld.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				statusLbl.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
 		return contentPane;
+	}
+
+	/**
+	 * Create the panel.
+	 */
+	private JPanel createloginPanelV2() {
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(36, 36, 36, 36));
+		contentPane.setLayout(null);
+
+		JPanel loginUserPanel = new JPanel();
+		loginUserPanel.setBounds(40, 91, 825, 306);
+		contentPane.add(loginUserPanel);
+		loginUserPanel
+				.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(153, 180, 209), null), "",
+						TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 120, 215)));
+		loginUserPanel.setLayout(null);
+
+		JLabel lblNewLabel_1 = new JLabel("User Name");
+		lblNewLabel_1.setBounds(70, 80, 118, 36);
+		loginUserPanel.add(lblNewLabel_1);
+
+		JButton submitBtn = new JButton(SubmitBtnLbl);
+		submitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				userId = userNameFld.getText();
+				password = passwdFld.getText();
+				if ((userId.length() < 1) || (password.length() < 1)) {
+					setStatus(statusLbl, "Please enter a valid user name and password.", Color.red);
+				} else {
+					setStatus(statusLbl, "Checking your access permission...", Color.blue);
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							submitRequest(userId, password);
+						}
+					});
+				}
+			}
+		});
+		submitBtn.setBounds(606, 238, 140, 36);
+		loginUserPanel.add(submitBtn);
+
+		userNameFld = new JTextField();
+		userNameFld.setBounds(200, 80, 333, 36);
+		loginUserPanel.add(userNameFld);
+		userNameFld.setColumns(10);
+
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(70, 156, 118, 36);
+		loginUserPanel.add(lblPassword);
+
+		passwdFld = new JPasswordField();
+		passwdFld.setBounds(200, 156, 333, 36);
+		loginUserPanel.add(passwdFld);
+
+		statusLbl = new JLabel("");
+		statusLbl.setBounds(70, 226, 524, 36);
+		statusLbl.setFont(new Font("SansSerif", Font.PLAIN, 13));
+		statusLbl.setVerticalAlignment(SwingConstants.BOTTOM);
+		loginUserPanel.add(statusLbl);
+
+		JLabel versionLabel = new JLabel("Release " + DownloaderProperties.getAppVersion() + " Build \""
+				+ DownloaderProperties.getBuildTime() + "\"");
+		versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		versionLabel.setForeground(new Color(70, 130, 180));
+		versionLabel.setBounds(318, 427, 266, 20);
+		contentPane.add(versionLabel);
+
+		JLabel infoLbl = new JLabel(
+				"This download contains restricted data. Log in or contact the help desk for access.");
+		infoLbl.setForeground(new Color(105, 105, 105));
+		infoLbl.setFont(new Font("SansSerif", Font.BOLD, 13));
+		infoLbl.setBounds(40, 34, 796, 42);
+		contentPane.add(infoLbl);
+		
+		JLabel helpDeskLbl;
+
+		helpDeskLbl = new JLabel();
+		ImageIcon image = new ImageIcon(this.getClass().getClassLoader().getResource("info.png"));
+		helpDeskLbl = new JLabel(image);		
+		helpDeskLbl.setToolTipText("Click to get phone number/email address of the Help Desk.");
+		helpDeskLbl.setBounds(826, 20, 36, 36);
+		contentPane.add(helpDeskLbl);
+
+		helpDeskLbl.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("mouse clicked");
+				//BrowserLauncher.openUrl(DownloaderProperties.getHelpDeskUrl());
+				BrowserLauncher.openUrlForHelpDesk();
+			}
+
+		});
+
+		userNameFld.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				passwdFld.requestFocus();
+			}
+		});
+
+		userNameFld.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				statusLbl.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
+		passwdFld.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				userId = userNameFld.getText();
+				password = passwdFld.getText();
+				if ((userId.length() < 1) || (password.length() < 1)) {
+					setStatus(statusLbl, "Please enter a valid user name and password.", Color.red);
+				} else {
+					setStatus(statusLbl, "Checking your access permission...", Color.blue);
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							submitRequest(userId, password);
+						}
+					});
+				}
+			}
+		});
+
+		passwdFld.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				statusLbl.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
+		return contentPane;
+	}
+
+	private void setStatus(JLabel statusLbl, String msg, Color c) {
+		statusLbl.setText(msg);
+		statusLbl.setForeground(c);
 	}
 
 	private void submitRequest(String userId, String password) {

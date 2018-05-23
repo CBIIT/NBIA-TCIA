@@ -37,7 +37,6 @@ public class DownloadServletVersion extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String os = request.getParameter(osParam);
-
 		String urlForDownload = null;
 		if (os.startsWith("windows")) {
 			urlForDownload = winUrl;
@@ -49,12 +48,22 @@ public class DownloadServletVersion extends HttpServlet {
 			urlForDownload = ubuntuUrl;
 		}
 
+		String forcedGrade = null;
+		try {
+			forcedGrade = NCIAConfig.getDownloaderAppForcedUpgrade();
+		}
+		catch (RuntimeException ex) {
+			forcedGrade = "false";
+			//ex.printStackTrace();
+		}
+
 		response.setStatus(HttpServletResponse.SC_OK);
 
 		List<String> readLines = new ArrayList<String>();
 		readLines.add(NCIAConfig.getLatestDownloaderVersion());
 		readLines.add(urlForDownload);
 		readLines.add(NCIAConfig.getEncryptionKey());
+		readLines.add(forcedGrade);
 		OutputStream outStream = response.getOutputStream();
 		IOUtils.writeLines(readLines, System.getProperty("line.separator"), outStream);
 		outStream.close();

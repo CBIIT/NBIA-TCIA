@@ -13,8 +13,6 @@ import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dto.AnnotationDTO;
 import gov.nih.nci.nbia.dto.ImageDTO2;
 import gov.nih.nci.nbia.dto.SeriesDTO;
-import gov.nih.nci.nbia.lookup.BasketSeriesItemBean;
-import gov.nih.nci.nbia.searchresult.SeriesSearchResult;
 import gov.nih.nci.nbia.security.AuthorizationManager;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -27,7 +25,6 @@ import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,12 +37,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JFrame;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -54,6 +49,9 @@ import org.apache.log4j.Logger;
  */
 public class DownloadServletV3 extends HttpServlet {
 	private static Logger logger = Logger.getLogger(DownloadServlet.class);
+	private final static int CLIENT_LOGIN_NEEDED = 460;
+	private final static int CLIENT_LOGIN_FAILED = 461;
+	private final static int CLIENT_NOT_AUTHORIZED = 462;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
@@ -83,7 +81,7 @@ public class DownloadServletV3 extends HttpServlet {
 					userId = NCIAConfig.getGuestUsername();
 				} 
 				else if (!loggedIn(userId, password)) {
-					response.sendError(HttpURLConnection.HTTP_UNAUTHORIZED,
+					response.sendError(CLIENT_LOGIN_FAILED,
 							"Incorrect username and/or password. Please try it again.");
 					return;
 				}
@@ -281,10 +279,23 @@ public class DownloadServletV3 extends HttpServlet {
 		try {
 			List<String> readLines = null;
 			readLines = getManifestRec(seriesList, userId);
-			OutputStream os = response.getOutputStream();
-			IOUtils.writeLines(readLines, System.getProperty("line.separator"), os);
-			os.close();
-		} catch (IOException e) {
+			if (readLines == null) {
+				if (userId.equals(NCIAConfig.getGuestUsername()) || (userId == null)) {
+					response.sendError(CLIENT_LOGIN_NEEDED, "Login needed.");
+					return;
+				}
+				else if ((userId != null)  && !(userId.equals(NCIAConfig.getGuestUsername())) ){
+					response.sendError(CLIENT_NOT_AUTHORIZED, "Insufficient privilege.");
+					return;
+				}
+			} else {
+				OutputStream os = response.getOutputStream();
+				IOUtils.writeLines(readLines, System.getProperty("line.separator"), os);
+				os.close();
+			}
+		} catch (
+
+		IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -305,6 +316,11 @@ public class DownloadServletV3 extends HttpServlet {
 			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 			List<SeriesDTO> seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID(seriesUids,
 					authorizedSiteData, null);
+
+			if  (seriesDTOsFound.size() < seriesUids.size() ) {
+				//Has some unauthorized data
+				return null;
+			}
 			List<String> seriesDownloadData = new ArrayList<String>();
 			for (SeriesDTO series : seriesDTOsFound) {
 				String collection = series.getProject();
@@ -335,7 +351,7 @@ public class DownloadServletV3 extends HttpServlet {
 						+ seriesNumber + "|" + seriesDesc;
 				seriesDownloadData.add(argument);
 			}
-			System.out.println("going to return # series=" + seriesDownloadData.size());
+
 			return seriesDownloadData;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

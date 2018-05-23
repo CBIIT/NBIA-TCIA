@@ -63,7 +63,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
-	private final static String BODYPART_QUERY="select body_part_examined, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
+	private final static String BODYPART_QUERY="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String MANUFACTURER_QUERY="select manufacturer, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs, general_equipment ge"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id ";
@@ -159,7 +159,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		if (criteria.getModality() != null) {
 			SQLQuery=SQLQuery+" and gs.modality=:modality";
 		}
-		SQLQuery = SQLQuery+" group by body_part_examined";
+		SQLQuery = SQLQuery+" group by upper(body_part_examined)";
 		Query query = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery);
 		if (criteria.getCollection() != null) {
 			query.setParameter("project", criteria.getCollection());

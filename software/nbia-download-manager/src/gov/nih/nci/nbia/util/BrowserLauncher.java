@@ -30,6 +30,7 @@ public class BrowserLauncher {
      */
     public static void openUrl(){
         String url = Application.getOnlineHelpUrl();
+        
         if (isMac){
             openUrlForMac(url);
         }else if(isWin){
@@ -38,12 +39,37 @@ public class BrowserLauncher {
             openUrlForOthers(url);
         }
     }
+    
+    public static void openUrlForHelpDesk(){
+      String url = DownloaderProperties.getHelpDeskUrl();
+
+      if (isMac){
+          openUrlForMac(url);
+      }else if(isWin){
+          openUrlForWindows(url);
+      }else{
+          openUrlForOthers(url);
+      }
+  }   
+    
+    /**
+     * open a web browser from a given url
+     */
+    public static void openUrl(String url){
+        if (isMac){
+            openUrlForMac(url);
+        }else if(isWin){
+            openUrlForWindows(url);
+        }else{
+            openUrlForOthers(url);
+        }
+    }    
 
     private static void openUrlForMac(String url){
         try{
             /* the fowllowing reflection codes to open browser on Mac is from 
              * http://www.centerkey.com/java/browser/ 
-             * */
+             * */      	
             Class fileMgr = Class.forName("com.apple.eio.FileManager");
             Method openURL = fileMgr.getDeclaredMethod("openURL",new Class[] {String.class});
             openURL.invoke(null, new Object[] {url});

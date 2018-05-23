@@ -62,6 +62,8 @@ import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultImpl;
+import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
+import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModalityAndBodyPartImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,6 +139,68 @@ public class PatientSearcher {
         return returnList;
     }
 
+    public List<PatientSearchResultWithModilityAndBodyPart> searchForPatientsExtended(DICOMQuery query) throws Exception {
+
+        Map<Integer, PatientSearchResultWithModalityAndBodyPartImpl> patients = new HashMap<Integer, PatientSearchResultWithModalityAndBodyPartImpl>();
+        long startTime = System.currentTimeMillis();
+
+        // Run the query
+        DICOMQueryHandler dqh = (DICOMQueryHandler)SpringApplicationContext.getBean("dicomQueryHandler");
+        List<PatientStudySeriesQuintuple> resultSets = dqh.findQuintles(query);
+
+        Iterator<PatientStudySeriesQuintuple> iter = resultSets.iterator();
+
+        while (iter.hasNext()) {
+        	PatientStudySeriesQuintuple prs = (PatientStudySeriesQuintuple) iter.next();
+
+            Integer patientId = prs.getPatientPkId();
+            Integer studyId = prs.getStudyPkId();
+            Integer seriesId = prs.getSeriesPkId();
+            String modality = prs.getModality();
+            String bodyPart = prs.getBodyPart();
+
+            // Look to see if patient has already been encountered
+            PatientSearchResultWithModalityAndBodyPartImpl patient = patients.get(patientId);
+
+            if (patient != null) {
+                // Patient is already in list, just add series, modality and bodyPart data
+                patient.addSeriesForStudy(studyId, seriesId);
+                patient.addModalities(modality);
+                patient.addBodyParts(bodyPart);
+            } else {
+                // Need to add the patient to the list
+            	PatientSearchResultWithModalityAndBodyPartImpl patientDTO = new PatientSearchResultWithModalityAndBodyPartImpl();
+                patientDTO.setId(prs.getPatientPkId());
+
+                // Add the series and study to the list
+                patientDTO.addSeriesForStudy(studyId, seriesId);
+
+                // Get the other patient data from the cache
+                StudyNumberDTO cachedPatientData = ApplicationFactory.getInstance().getStudyNumberMap().getStudiesForPatient(prs.getPatientPkId());
+                patientDTO.setTotalNumberOfStudies(cachedPatientData.getStudyNumber());
+                patientDTO.setTotalNumberOfSeries(cachedPatientData.getSeriesNumber());
+                patientDTO.setSubjectId(cachedPatientData.getPatientId());
+                patientDTO.setProject(cachedPatientData.getProject());
+                patientDTO.addModalities(modality);
+                patientDTO.addBodyParts(bodyPart);
+                patients.put(patientId, patientDTO);
+            }
+        }
+        List<PatientSearchResultWithModilityAndBodyPart> returnList=new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
+        // Convert to a list and sort prior to returning
+        for (PatientSearchResultWithModalityAndBodyPartImpl patient:patients.values())
+        {
+        	returnList.add(patient);
+        }
+        Collections.sort(returnList);
+
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        query.setElapsedTimeInMillis(elapsedTime);
+        logger.info("Results returned and built into DTOs in " + elapsedTime +" ms.");
+
+        return returnList;
+    }
+    
     /////////////////////////////////////PRIVATE//////////////////////////////////////////
 
     private static Logger logger = Logger.getLogger(PatientSearcher.class);

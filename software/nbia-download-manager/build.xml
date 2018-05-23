@@ -22,6 +22,7 @@ L-->
 	<property name="src.java.dir" location="src"/>
 	<property name="build" location="bin"/>
 	<property name="resources.dir" location="resources" />
+	<property name="images.dir" location="images" />	
 	<property name="dist.jar" value="NBIADownloadManager.jar"/>
 	<property name="user.name" value="NBIA" />
 	<property name="common.dir" value="${basedir}/../" />
@@ -116,7 +117,6 @@ L-->
     <javac srcdir="${src.java.dir}"
            destdir="${build}"
            debug="on"
-    	   target="1.7" 
            deprecation = "on"
            optimize="off"
            includes="**"
@@ -131,11 +131,14 @@ L-->
 
     <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
   	<filter token="APPNAME" value="${branding.appname}"/>
-    <filter token="time.stamp" value="${time.stamp}"/>	
+    <filter token="time.stamp" value="${time.stamp}"/>
+	<filter token="help.desk.url" value="${help.desk.url}"/>
     <copy todir="${build}" filtering="true">
-    	 <fileset dir="${resources.dir}" includes="**/*.properties" />
+    		<fileset dir="${resources.dir}" includes="**/*.properties" />
     </copy>
-    	   
+    <copy todir="${build}" filtering="false">
+     	<fileset dir="${images.dir}" includes="**/*.png" />
+    </copy>   	   
     <jar jarfile="${dist.jar}">
     	<fileset dir="${build}" includes="**/*.*" />
       <manifest>
