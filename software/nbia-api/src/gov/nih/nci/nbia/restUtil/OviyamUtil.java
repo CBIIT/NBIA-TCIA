@@ -14,6 +14,7 @@ public class OviyamUtil {
     private static Map<String, String> userMap = new HashMap<String, String>();
     private static Map<String, CollectionUtil> userCollections = new HashMap<String, CollectionUtil>();
     
+    
 	public static String getUser(String oviyamId, String wadoUrl)
 	{
 		String returnValue = null;
