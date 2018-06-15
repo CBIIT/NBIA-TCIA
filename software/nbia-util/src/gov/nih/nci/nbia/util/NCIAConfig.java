@@ -753,12 +753,12 @@ public class NCIAConfig {
     } 
     public static String getButtonText() {
         String propertyValue = properties.getProperty("gui.text");
-        checkProperty("gui.text", propertyValue);
+        //checkProperty("gui.text", propertyValue);
         return propertyValue;   	
     } 
     public static String getButtonAction() {
         String propertyValue = properties.getProperty("gui.link");
-        checkProperty("gui.link", propertyValue);
+        //checkProperty("gui.link", propertyValue);
         return propertyValue;   	
     } 
     /**
