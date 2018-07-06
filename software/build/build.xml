@@ -890,6 +890,13 @@ L-->
 			 	<filter token="qctool.visibility.stage6" value="${qctool.visibility.stage6}"/>
 			 	<filter token="qctool.visibility.stage7" value="${qctool.visibility.stage7}"/>
 			 	<filter token="qctool.batchNumberSelect.size" value="${qctool.batchNumberSelect.size}"/>
+				<filter token="win.downloader.installer.path" value="${win.downloader.installer.path}"/>
+			 	<filter token="mac.downloader.installer.path" value="${mac.downloader.installer.path}"/>
+			 	<filter token="centos.downloader.installer.path" value="${centos.downloader.installer.path}"/>
+			 	<filter token="ubuntu.downloader.installer.path" value="${ubuntu.downloader.installer.path}"/>
+			 	<filter token="latest.TCIA.downloader.version" value="${latest.TCIA.downloader.version}"/>
+			 	<filter token="force.downloader.upgrade" value="${force.downloader.upgrade}"/>
+			 	<filter token="help.desk.url" value="${help.desk.url}"/>
 			</filterset>
 		</copy>
 		<antcall target="build:all"/>
