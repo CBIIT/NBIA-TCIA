@@ -748,12 +748,12 @@ public class NCIAConfig {
     
     public static String getAppName() {
         String propertyValue = properties.getProperty("branding.appname");
-        checkProperty("branding.appname", propertyValue);
+        //checkProperty("branding.appname", propertyValue);
         return propertyValue;   	
     } 
     public static String getButtonText() {
         String propertyValue = properties.getProperty("gui.text");
-        checkProperty("gui.text", propertyValue);
+        //checkProperty("gui.text", propertyValue);
         return propertyValue;   	
     } 
     public static String getButtonAction() {
