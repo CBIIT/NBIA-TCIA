@@ -25,4 +25,5 @@ public interface WADOSupportDAO  {
   public WADOSupportDTO getWADOSupportDTO(WADOParameters params, String user);
   public WADOSupportDTO getOviyamWADOSupportDTO(String image, String contentType, String user, WADOParameters params);
   public List <DICOMSupportDTO> getDICOMSupportDTO(DICOMParameters params, List<String> extraFields);
+  public WADOSupportDTO getThumbnailDTO(String series, String image, String user);
 }
