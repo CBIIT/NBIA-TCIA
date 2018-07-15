@@ -37,6 +37,7 @@ package gov.nih.nci.nbia.restAPI;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
@@ -68,32 +69,26 @@ public class GetWado extends getData {
 	 */
 	@POST
 	@Produces({"application/dicom", "image/jpeg"})
-	public Response  constructResponse(@QueryParam("requestType") String requestType,
-			@QueryParam("studyUID") String studyUID, 
-			@QueryParam("seriesUID") String seriesUID,
-			@QueryParam("objectUID") String objectUID,
-			@QueryParam("contentType") String contentType,
-			@QueryParam("charset") String charset,
-			@QueryParam("anonymize") String anonymize,
-			@QueryParam("annotation") String annotation,
-			@QueryParam("rows") String rows,
-			@QueryParam("columns") String columns,
-			@QueryParam("region") String region,
-			@QueryParam("windowCenter") String windowCenter,
-			@QueryParam("windowWidth") String windowWidth,
-			@QueryParam("imageQuality") String imageQuality,
-			@QueryParam("frameNumber") String frameNumber,
-			@QueryParam("presentationUID") String presentationUID,
-			@QueryParam("presentationSeriesUID") String presentationSeriesUID,
-			@QueryParam("transferSyntax") String transferSyntax) {
+	public Response  constructResponse(@FormParam("requestType") String requestType,
+			@FormParam("studyUID") String studyUID, 
+			@FormParam("seriesUID") String seriesUID,
+			@FormParam("objectUID") String objectUID,
+			@FormParam("contentType") String contentType,
+			@FormParam("charset") String charset,
+			@FormParam("anonymize") String anonymize,
+			@FormParam("annotation") String annotation,
+			@FormParam("rows") String rows,
+			@FormParam("columns") String columns,
+			@FormParam("region") String region,
+			@FormParam("windowCenter") String windowCenter,
+			@FormParam("windowWidth") String windowWidth,
+			@FormParam("imageQuality") String imageQuality,
+			@FormParam("frameNumber") String frameNumber,
+			@FormParam("presentationUID") String presentationUID,
+			@FormParam("presentationSeriesUID") String presentationSeriesUID,
+			@FormParam("transferSyntax") String transferSyntax) {
 		List<String> authorizedCollections = null;
-		try {
-			authorizedCollections = getPublicCollections();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+ 
         WADOParameters params = new WADOParameters();
 		if (requestType!=null&&requestType.length()>0)
 		{
