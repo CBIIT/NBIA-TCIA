@@ -85,4 +85,7 @@ public interface GeneralSeriesDAO  {
 	public List<Object[]> getSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<String> getRequestedProjectAndSite(Map<String,String> queryParams) throws DataAccessException;
+	public List<String> getSeriesFromPatientStudySeriesUIDs(List<String> patientIDs,
+	           List<String> studyIDs,
+	           List<String> seriesIDs) throws DataAccessException;
 }

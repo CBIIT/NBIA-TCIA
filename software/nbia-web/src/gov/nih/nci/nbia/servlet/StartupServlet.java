@@ -49,7 +49,7 @@ import org.quartz.TriggerUtils;
 import org.quartz.impl.StdSchedulerFactory;
 import  gov.nih.nci.nbia.textsupport.SolrUpdateJob;
 import gov.nih.nci.nbia.workflowsupport.WorkflowUpdateJob;
-
+import gov.nih.nci.nbia.executors.PropertiesUpdateJob;
 
 public class StartupServlet extends HttpServlet {
 
@@ -146,7 +146,17 @@ public class StartupServlet extends HttpServlet {
                Scheduler.DEFAULT_GROUP,
                WorkflowUpdateJob.class);
 
+       System.out.println("Properties update");
+       SimpleTrigger propertiesTrigger = new SimpleTrigger("pTrigger",
+               null,
+               new Date(startTime),
+               null,
+               SimpleTrigger.REPEAT_INDEFINITELY,
+               5 * 60000L);
 
+       JobDetail propertiesUpdateJobDetail = new JobDetail("Properties",
+               Scheduler.DEFAULT_GROUP,
+               PropertiesUpdateJob.class);
         //Schedule the tasks...
         try {
             SchedulerFactory sf = new StdSchedulerFactory();
@@ -155,6 +165,7 @@ public class StartupServlet extends HttpServlet {
             // my jobs  first!
             scheduler.scheduleJob(solrUpdateJobDetail, solrTrigger);
             scheduler.scheduleJob(worflowUpdateJobDetail, workflowTrigger);
+            scheduler.scheduleJob(propertiesUpdateJobDetail, propertiesTrigger);
             //Job 1 - Latest Curation Date
             scheduler.scheduleJob(latestCurationDateJobDetail, latestCurationDateTrigger);
 

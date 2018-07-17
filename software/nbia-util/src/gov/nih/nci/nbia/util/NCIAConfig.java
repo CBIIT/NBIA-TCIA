@@ -126,6 +126,22 @@ public class NCIAConfig {
 		}
      }
 
+     public static void update() {
+	   ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	   InputStream input = classLoader.getResourceAsStream("nbia.properties");
+	   // ...
+	   properties = new Properties();
+	     	 
+	   try {
+		  properties.load(input);
+	
+		
+	   } catch (IOException e) {
+		// TODO Auto-generated catch block
+		  e.printStackTrace();
+	   }
+     }
+     
      public static boolean getShowCollectionSearchCriteria() {
          String propertyValue = properties.getProperty("show.collection.search.criteria");
          checkProperty("show.collection.search.criteria", propertyValue);
