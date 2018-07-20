@@ -169,13 +169,16 @@ public class StandaloneDMDispatcher {
 	private void getNewVersionInfo() {
 		List<String> resp = null;
 		if (!(os.contains("windows") || os.startsWith("mac"))) {
-			StandaloneDMDispatcher.os = getLinuxPlatform();
-			if (StandaloneDMDispatcher.os.equals("other")) {
+			String linuxOs = getLinuxPlatform();
+			if (linuxOs.equals("other")) {
 				JOptionPane.showMessageDialog(null,
-						"New version of TCIA Downloader is released but the OS platform of your system is not supported currently.");
-				return;
+						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Ubuntu are supported currently.");
+//				return;
+				//check the os properties of installed software to determined the installer type  	
+				StandaloneDMDispatcher.os = DownloaderProperties.getInstallerType();
 			}
 		}
+		
 		try {
 			String versionServerUrl = serverUrl.substring(0, serverUrl.lastIndexOf('/'))
 					.concat("/DownloadServletVersion");

@@ -43,5 +43,9 @@ public class DownloaderProperties {
 	public static boolean getMajorityPublic() {
 		return Boolean.parseBoolean(NBIA_PROPERTIES.getProperty("majority_public"));
 	}
+	
+	public static String getInstallerType() {
+		return NBIA_PROPERTIES.getProperty("linux_installer_type");
+	}
 
 }
