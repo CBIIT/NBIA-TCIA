@@ -468,4 +468,11 @@ public class getData {
 		return wdto;
 		
 	}
+	protected WADOSupportDTO getThumbnail(String sOPInstanceUID, String seriesInstanceUid, String user){
+		
+		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
+		WADOSupportDTO wdto = wadoDao.getThumbnailDTO(seriesInstanceUid, sOPInstanceUID, user);
+		return wdto;
+		
+	}
 }

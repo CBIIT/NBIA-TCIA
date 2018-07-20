@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -569,6 +570,34 @@ public class GeneralSeriesDAOImpl extends AbstractDAO
 
 		return series;
 	}
+	
+	public List<String> getSeriesFromPatientStudySeriesUIDs(List<String> patientIDs,
+           List<String> studyIDs,
+           List<String> seriesIDs) throws DataAccessException	{
+        List<String> seriesList = new ArrayList<String>();
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
+        
+        Disjunction myQueryDisjunc = Restrictions.disjunction();
+        if (patientIDs!=null) {
+        	myQueryDisjunc.add(Restrictions.in("patientId", patientIDs));
+ 	    }
+        if (studyIDs!=null) {
+        	myQueryDisjunc.add(Restrictions.in("studyInstanceUID", studyIDs));
+ 	    }
+        if (seriesIDs!=null) {
+        	myQueryDisjunc.add(Restrictions.in("seriesInstanceUID", seriesIDs));
+	    }
+        criteria.add(myQueryDisjunc);
+        List<GeneralSeries> results = getHibernateTemplate().findByCriteria(criteria);
+        for (GeneralSeries series : results) {
+            seriesList.add(series.getSeriesInstanceUID());
+        }
+
+         return seriesList;
+      }
+	
+	
 
 	//////////////////////////////////////////////////////////PROTECTED//////////////////////////////////////////////////////////////
 

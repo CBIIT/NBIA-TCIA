@@ -203,6 +203,95 @@ public WADOSupportDTO getWADOSupportForSingleImageDTO(String series, String imag
 	}
 	return returnValue;
 }
+@Transactional(propagation=Propagation.REQUIRED)
+public WADOSupportDTO getThumbnailDTO(String series, String image, String user){
+	WADOSupportDTO returnValue = new WADOSupportDTO();
+	System.out.println("series-"+series+" image-"+image);
+	try {
+		List <Object[]>images= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(WADO_SINGLE_QUERY)
+		  .setParameter("series", series)
+		  .setParameter("image", image).list();
+		if (images.size()==0) {
+			   log.info("image not found");
+			   return null; //nothing to do
+		}
+		List<SiteData> authorizedSites;
+		UserObject uo = userTable.get(user);
+		if (uo!=null)
+		{
+			authorizedSites = uo.getAuthorizedSites();
+			if (authorizedSites==null)
+			{
+				   AuthorizationManager manager = new AuthorizationManager(user);
+				   authorizedSites = manager.getAuthorizedSites();
+				   uo.setAuthorizedSites(authorizedSites);
+			}
+		} else
+		{
+		   AuthorizationManager manager = new AuthorizationManager(user);
+		   authorizedSites = manager.getAuthorizedSites();
+		   uo = new UserObject();
+		   uo.setAuthorizedSites(authorizedSites);
+		   userTable.put(user, uo);
+		}
+		returnValue.setCollection((String)images.get(0)[0]);
+		returnValue.setSite((String)images.get(0)[1]);
+		boolean isAuthorized = false;
+		for (SiteData siteData : authorizedSites)
+		{
+			if (siteData.getCollection().equals(returnValue.getCollection()))
+			{
+				if (siteData.getSiteName().equals(returnValue.getSite()))
+				{
+					isAuthorized = true;
+					break;
+				}
+			}
+		}
+		if (!isAuthorized)
+		{
+			System.out.println("User: "+user+" not authorized");
+			return null; //not authorized
+		}
+		String filePath = (String)images.get(0)[2];
+		System.out.println("Image found:"+filePath);
+		String mircThumbnailFilePath = filePath.substring(0,
+				filePath.lastIndexOf(".dcm")) + "_base.jpeg";
+        //this isn't necessarily the thumbanil string
+        //512, 512, and -1 can be configured in CTP's config.xml
+        String ctpThumbnailFilePath = mircThumbnailFilePath.substring(0,
+			mircThumbnailFilePath.indexOf("_base"))+
+			".dcm[512;512;-1].jpeg";
+         //this isn't necessarily the thumbanil string
+         //512, 512, and -1 can be configured in CTP's config.xml
+        String ctpNewThumbnailFilePath = mircThumbnailFilePath.substring(0,
+			mircThumbnailFilePath.indexOf("_base"))+
+			".dcm[512;512;-1][0].jpeg";
+
+        File mircThumbnailFile = new File(mircThumbnailFilePath);
+        File ctpThumbnailFile = new File (ctpThumbnailFilePath);
+        File ctpNewThumbnailFile = new File (ctpNewThumbnailFilePath);
+		File imageFile = new File(filePath);
+        if (mircThumbnailFile.exists()) {
+        	returnValue.setImage(FileUtils.readFileToByteArray(mircThumbnailFile));
+        	return returnValue;
+		}
+		else if (ctpThumbnailFile.exists())
+		{
+        	returnValue.setImage(FileUtils.readFileToByteArray(ctpThumbnailFile));
+        	return returnValue;
+		}
+		else {
+        	returnValue.setImage(FileUtils.readFileToByteArray(ctpNewThumbnailFile));
+        	return returnValue;
+		}
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return null;
+	}
+}
 
 
 @Transactional(propagation=Propagation.REQUIRED)
