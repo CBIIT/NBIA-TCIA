@@ -29,7 +29,7 @@ L-->
     <property name="executeTime" type="timestamp"
       column="QUERY_EXECUTE_TIMESTAMP" not-null="true" length="10" />
     <property name="userId" column="USER_ID" insert="false" update="false" />
-
+    <property name="tool" type="string" column="tool"/>
     <!-- Associations -->
 
 

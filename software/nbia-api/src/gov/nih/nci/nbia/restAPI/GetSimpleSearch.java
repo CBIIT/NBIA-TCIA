@@ -170,7 +170,7 @@ public class GetSimpleSearch extends getData{
 
             QueryStorageManager qManager = (QueryStorageManager)SpringApplicationContext.getBean("queryStorageManager");
 
-            qManager.addQueryToHistory(query);
+            qManager.addQueryToHistory(query, inFormParams.get("tool").get(0));
         }
 		return Response.ok(JSONUtil.getJSONforPatients(patients)).type("application/json")
 				.build();
