@@ -172,7 +172,7 @@ public class StandaloneDMDispatcher {
 			String linuxOs = getLinuxPlatform();
 			if (linuxOs.equals("other")) {
 				JOptionPane.showMessageDialog(null,
-						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Ubuntu are supported currently.");
+						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
 //				return;
 				//check the os properties of installed software to determined the installer type  	
 				StandaloneDMDispatcher.os = DownloaderProperties.getInstallerType();
@@ -557,7 +557,7 @@ public class StandaloneDMDispatcher {
 					if (line.contains("Ubuntu")) {
 						linuxOS = "Ubuntu";
 						break;
-					} else if (line.contains("CentOS")) {
+					} else if (line.contains("CentOS") || line.contains("Red Hat")) {
 						linuxOS = "CentOS";
 						break;
 					}
