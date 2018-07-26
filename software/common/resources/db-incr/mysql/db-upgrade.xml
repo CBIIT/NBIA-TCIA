@@ -1920,5 +1920,14 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
          </sql>
   </changeSet> 
 
+  <changeSet id="6.5.4.add.fixColum.for.tool" author="gustafss" dbms="mysql">
+         <comment>
+           adds tool to query history
+         </comment>          
+         <sql>          
+			ALTER TABLE query_history  
+			ADD COLUMN tool varchar(100);				
+         </sql>
+  </changeSet> 
 
 </databaseChangeLog>

@@ -49,6 +49,7 @@ public interface QueryStorageManager {
      * @throws Exception
      */
     public long addQueryToHistory(DICOMQuery query) throws DataAccessException;
+    public long addQueryToHistory(DICOMQuery query, String tool) throws DataAccessException;
 
 
     /**
