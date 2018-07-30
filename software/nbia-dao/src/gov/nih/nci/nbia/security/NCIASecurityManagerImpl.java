@@ -39,6 +39,7 @@ package gov.nih.nci.nbia.security;
 
 import gov.nih.nci.nbia.dao.AbstractDAO;
 import gov.nih.nci.nbia.ldapService.UserLdapService;
+import gov.nih.nci.nbia.security.NCIASecurityManager.RoleType;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.security.AuthenticationManager;
@@ -501,6 +502,27 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Returns true if the user has the QA Tool role
+	 */
+	public boolean hasQaRole(String userName) {
+		String userId = this.getUserId(userName);
+		Set<TableProtectionElement> securityRights;
+		try {
+			securityRights = getSecurityMap(userId);
+			for (TableProtectionElement tpe : securityRights) {
+	            if (tpe.hasRole(RoleType.MANAGE_VISIBILITY_STATUS)) {
+	                return true;
+	            }
+	        }
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+       return false;
 	}
      
 }

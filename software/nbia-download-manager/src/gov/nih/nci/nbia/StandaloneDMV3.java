@@ -84,7 +84,7 @@ import org.apache.http.params.HttpParams;
  *
  */
 public class StandaloneDMV3 extends StandaloneDM {
-	private final static String serverVersionMsg = "The Download server version is not compatible with this TCIA Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
+	private final static String serverVersionMsg = "The Download server version is not compatible with this Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
 	private static final String GuestBtnLbl = "Guest Login";
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;

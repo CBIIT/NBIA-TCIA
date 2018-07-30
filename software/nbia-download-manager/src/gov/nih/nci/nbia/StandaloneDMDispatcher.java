@@ -76,9 +76,9 @@ import gov.nih.nci.nbia.util.PropertyLoader;
  *
  */
 public class StandaloneDMDispatcher {
-	public static final String launchMsg = "To run TCIA Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the file with TCIA Downloader app.";
-	private final static String newVersionMsg = "There is a new version of the TCIA Downloader available.";
-	private final static String manifestVersionMsg = "The manifest file version is not suported by this TCIA Downloader.  Please generate a new manifest file compatible with TCIA Downloader version ";
+	public static final String launchMsg = "To run Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and open the file with Downloader app.";
+	private final static String newVersionMsg = "There is a new version of Downloader available.";
+	private final static String manifestVersionMsg = "The manifest file version is not suported by this Downloader.  Please generate a new manifest file compatible with the Downloader version ";
 	private final static String manifestVersionNewMsg = "The version of manifest file is higher than the version of this app.  Please upgrade your app.";
 	private static final String supportedVersion = null; // for future when
 															// certain version
@@ -355,7 +355,7 @@ public class StandaloneDMDispatcher {
 			int length = -1;
 			ProgressMonitorInputStream pmis;
 			pmis = new ProgressMonitorInputStream(null,
-					"Downloading new version of installer for TCIA Downloader App...", in);
+					"Downloading new version of installer for Downloader App...", in);
 
 			ProgressMonitor monitor = pmis.getProgressMonitor();
 			monitor.setMillisToPopup(0);
@@ -434,7 +434,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status + ".");
+								"Installation of new version of Downloader is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -460,7 +460,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status + ".");
+								"Installation of new version of Downloader is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

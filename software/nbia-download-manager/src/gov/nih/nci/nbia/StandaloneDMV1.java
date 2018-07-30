@@ -53,7 +53,7 @@ import org.apache.http.params.HttpParams;
  *
  */
 public class StandaloneDMV1 extends StandaloneDM {
-	private final static String serverVersionMsg = "The Download server version is not compatible with this TCIA Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
+	private final static String serverVersionMsg = "The Download server version is not compatible with this Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
 	protected String fileLoc;
 	protected String basketId;
 

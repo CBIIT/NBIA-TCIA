@@ -73,6 +73,9 @@ public interface GeneralSeriesDAO  {
 	public List<SeriesDTO> findSeriesBySeriesInstanceUID(List<String> seriesIds,
 			                                             List<SiteData> authorizedSites,
 			                                             List<String> authorizedSeriesSecurityGroups) throws DataAccessException;
+	public List<SeriesDTO> findSeriesBySeriesInstanceUID112(List<String> seriesIds,
+            List<SiteData> authorizedSites,
+            List<String> authorizedSeriesSecurityGroups) throws DataAccessException;
 
 	public SeriesDTO getGeneralSeriesByPKid(Integer seriesPkId) throws DataAccessException;
 
@@ -88,4 +91,5 @@ public interface GeneralSeriesDAO  {
 	public List<String> getSeriesFromPatientStudySeriesUIDs(List<String> patientIDs,
 	           List<String> studyIDs,
 	           List<String> seriesIDs) throws DataAccessException;
+	public List<SeriesDTO> findSeriesBySeriesInstanceUIDAllVisibilities(List<String> seriesIds, List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException;
 }
