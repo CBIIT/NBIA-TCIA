@@ -769,7 +769,14 @@ public class NCIAConfig {
     } 
     public static String getButtonText() {
         String propertyValue = properties.getProperty("gui.text");
-        //checkProperty("gui.text", propertyValue);
+        return propertyValue;   	
+    } 
+    public static String getBannerText() {
+        String propertyValue = properties.getProperty("banner.text");
+        return propertyValue;   	
+    } 
+    public static String getBannerColor() {
+        String propertyValue = properties.getProperty("banner.color");
         return propertyValue;   	
     } 
     public static String getButtonAction() {

@@ -51,6 +51,8 @@ public class SecurityBean {
 	private String newPassword2="";
 	private static final String LOGIN_FAIL = "loginFail";
 	private DefaultOAuth2AccessToken token;
+	private boolean bannerSeen=false;
+	private int bannerCounter=0;
 	private static final String PASSWORD_FIELD_JSF_ID = null;//"MAINbody:sideBarView:loginForm:pass";
 	                                                    //MAINbody:sideBarViewAsGuest:loginFormGuestEnabled:loginGuestEnabled:pass
 
@@ -545,6 +547,23 @@ public class SecurityBean {
 	
 	public boolean getButtonRendered() {
 		if (getButtonText()==null||getButtonText().length()<1)
+		{
+			return false;
+		}
+		return true;
+	}
+	public String getBannerText() {
+		return NCIAConfig.getBannerText();
+	}
+	public String getBannerColor() {
+		return NCIAConfig.getBannerColor();
+	}
+	public boolean getBannerRendered() {
+		if (bannerCounter>0) {
+			  bannerSeen=true;
+			}
+		bannerCounter++;
+		if (getBannerText()==null||getBannerText().length()<1||bannerSeen)
 		{
 			return false;
 		}

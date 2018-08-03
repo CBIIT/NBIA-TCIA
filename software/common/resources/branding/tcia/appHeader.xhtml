@@ -12,9 +12,17 @@ L-->
                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
 
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
- 		xmlns:h="http://java.sun.com/jsf/html">
+ 		xmlns:h="http://java.sun.com/jsf/html"
+ 		xmlns:f="http://java.sun.com/jsf/core">
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="subhdrBG" align="center">
+    <f:subview id="bannerSubview" rendered="#{securityBean.bannerRendered}">
+      <tr height="20" align="left">
+      <td colspan="2" bgcolor="#{securityBean.bannerColor}" height="40" align="middle" valign="middle">
+         <h:outputText id="bannerVal" value="#{securityBean.bannerText}"/>  
+      </td>
+      </tr>
+ </f:subview> 
   <tr>
     <td bgcolor="#4C5D87" height="40" align="left" valign="middle">
    </td>
