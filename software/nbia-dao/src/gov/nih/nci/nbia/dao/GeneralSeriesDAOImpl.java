@@ -51,7 +51,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Collection<EquipmentDTO> findEquipmentOfVisibleSeries() throws DataAccessException {
 		String hql = "select distinct e.manufacturer, e.manufacturerModelName, e.softwareVersions "
-				+ "from GeneralantSeries s join s.generalEquipment e "
+				+ "from GeneralSeries s join s.generalEquipment e "
 				+ "where s.visibility in ('1') and e.manufacturer is not null " + "order by e.manufacturer";
 
 		System.out.println(
