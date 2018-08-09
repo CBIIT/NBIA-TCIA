@@ -41,7 +41,6 @@ import gov.nih.nci.nbia.ui.DownloadManagerFrame;
 import gov.nih.nci.nbia.util.BrowserLauncher;
 import gov.nih.nci.nbia.util.DownloaderProperties;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
-import sun.swing.DefaultLookup;
 
 import java.io.File;
 import java.io.IOException;
