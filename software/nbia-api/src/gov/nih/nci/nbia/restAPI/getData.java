@@ -40,7 +40,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.sun.jersey.api.client.ClientResponse.Status;
+import javax.ws.rs.core.Response.*;
 
 public class getData {
 	String applicationName = NCIAConfig.getCsmApplicationName();
