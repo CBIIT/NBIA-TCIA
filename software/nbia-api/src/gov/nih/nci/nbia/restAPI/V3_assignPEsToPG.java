@@ -6,6 +6,7 @@ import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
+import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.exceptions.CSException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +55,13 @@ public class V3_assignPEsToPG extends getData{
 			createNewProtectionElems(projAndSite);
 			UserProvisioningManager upm = getUpm();
 			upm = SecurityServiceProvider.getUserProvisioningManager(applicationName);
-			upm.assignProtectionElement(pgName, "NCIA."+projName, "NCIA.PROJECT");
+			try {
+				upm.assignProtectionElement(pgName, "NCIA."+projName, "NCIA.PROJECT");
+			}
+			catch (CSTransactionException e) {
+				//project with multisites might be treated as duplicate records and it is OK to go on.
+				e.printStackTrace();
+			}
 			upm.assignProtectionElement(pgName, "NCIA."+projAndSite, "NCIA.PROJECT//DP_SITE_NAME");
 		} catch (CSConfigurationException e) {
 			// TODO Auto-generated catch block
