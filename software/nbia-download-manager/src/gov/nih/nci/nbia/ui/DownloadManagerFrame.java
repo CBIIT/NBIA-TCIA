@@ -428,6 +428,9 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	/* start the download. */
 	private void actionStart() {
 		startButton.setEnabled(false);
+		String path = this.directoryBrowserPanel.getDirectory();
+		if (!(this.directoryBrowserPanel.isDirWritable(path)))
+			return;
 		setSeriesDownloadersOutputDirectory(this.directoryBrowserPanel.getDirectory(),
 				this.radioButtonPanel.isClassicDir());
 
