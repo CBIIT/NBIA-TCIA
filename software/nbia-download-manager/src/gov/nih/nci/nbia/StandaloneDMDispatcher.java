@@ -76,9 +76,15 @@ import gov.nih.nci.nbia.util.PropertyLoader;
  *
  */
 public class StandaloneDMDispatcher {
+<<<<<<< HEAD
+	public static final String launchMsg = "To run Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the file with Downloader app.";
+	private final static String newVersionMsg = "There is a new version of the Downloader available.";
+	private final static String manifestVersionMsg = "The manifest file version is not suported by this Downloader.  Please generate a new manifest file compatible with Downloader version ";
+=======
 	public static final String launchMsg = "To run Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and open the file with Downloader app.";
 	private final static String newVersionMsg = "There is a new version of Downloader available.";
 	private final static String manifestVersionMsg = "The manifest file version is not suported by this Downloader.  Please generate a new manifest file compatible with the Downloader version ";
+>>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 	private final static String manifestVersionNewMsg = "The version of manifest file is higher than the version of this app.  Please upgrade your app.";
 	private static final String supportedVersion = null; // for future when
 															// certain version
@@ -172,10 +178,15 @@ public class StandaloneDMDispatcher {
 			String linuxOs = getLinuxPlatform();
 			if (linuxOs.equals("other")) {
 				JOptionPane.showMessageDialog(null,
+<<<<<<< HEAD
+						"This app has not been tested on the OS platform of your system. Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
+//				return;
+=======
 						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
 //				return;
 				//check the os properties of installed software to determined the installer type  	
 				StandaloneDMDispatcher.os = DownloaderProperties.getInstallerType();
+>>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 			}
 		}
 		
@@ -184,6 +195,7 @@ public class StandaloneDMDispatcher {
 					.concat("/DownloadServletVersion");
 			resp = connectAndReadFromURL(new URL(versionServerUrl));
 		} catch (MalformedURLException e1) {
+			JOptionPane.showMessageDialog(null, "Connection error 8: " + e1.getMessage());
 			e1.printStackTrace();
 		}
 		if ((resp != null) && (resp.size() >= 3)) {
@@ -241,6 +253,17 @@ public class StandaloneDMDispatcher {
 		String nVMsg = newVersionMsg;
 		if (os.equalsIgnoreCase("CentOS") || os.equalsIgnoreCase("Ubuntu")) {
 			nVMsg = nVMsg + "\nIf choosing Update automatically, you need to enter a sudo password later.";
+		}
+		
+		if (os.startsWith("mac")) {
+			JOptionPane.showMessageDialog(null, "New version is available on App Store. Please upgrade.");
+			if (options.length ==2) { // forced upgrade needed
+				System.exit(1);
+			}
+			else {
+				nogo = false;
+				return;
+			}
 		}
 
 		int n = JOptionPane.showOptionDialog(null, nVMsg, "New Version Notification", JOptionPane.YES_NO_CANCEL_OPTION,
@@ -434,7 +457,11 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
+<<<<<<< HEAD
+								"Installation of new version of Downloader App is completed " + status + ".");
+=======
 								"Installation of new version of Downloader is completed " + status + ".");
+>>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -460,7 +487,11 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
+<<<<<<< HEAD
+								"Installation of new version of Downloader App is completed " + status + ".");
+=======
 								"Installation of new version of Downloader is completed " + status + ".");
+>>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -519,23 +550,29 @@ public class StandaloneDMDispatcher {
 			}
 
 		} catch (java.net.ConnectException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			JOptionPane.showMessageDialog(null, "Connection error 1: " + e.getMessage());
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
+			JOptionPane.showMessageDialog(null, "Connection error 2: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Connection error 3: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyManagementException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Connection error 4: " + e.getMessage());
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Connection error 5: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyStoreException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Connection error 6: " + e.getMessage());
 			e.printStackTrace();
 		} catch (UnrecoverableKeyException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Connection error 7: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (httpClient != null) {

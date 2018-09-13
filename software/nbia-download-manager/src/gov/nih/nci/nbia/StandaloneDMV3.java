@@ -84,7 +84,11 @@ import org.apache.http.params.HttpParams;
  *
  */
 public class StandaloneDMV3 extends StandaloneDM {
+<<<<<<< HEAD
+	private final static String serverVersionMsg = "The Download server version is not compatible with this Downloader App.  Please check if downloadServerUrl is pointing to the correct server.";
+=======
 	private final static String serverVersionMsg = "The Download server version is not compatible with this Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
+>>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 	private static final String GuestBtnLbl = "Guest Login";
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
@@ -292,7 +296,12 @@ public class StandaloneDMV3 extends StandaloneDM {
 			DownloadManagerFrame manager = new DownloadManagerFrame(true, userId, password, includeAnnotation,
 					seriesData, serverUrl, noOfRetry);
 			manager.setTitle(winTitle);
-			manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
+			
+			String os = System.getProperty("os.name").toLowerCase();			
+			if (os.startsWith("mac")) {
+				//manager.setDefaultDownloadDir("Please select a directory for downloading images.");
+			}
+			else manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
 			manager.setVisible(true);
 
 			if (frame != null)
