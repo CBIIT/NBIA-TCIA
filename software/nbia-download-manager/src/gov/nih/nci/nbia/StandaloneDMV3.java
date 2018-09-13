@@ -84,11 +84,7 @@ import org.apache.http.params.HttpParams;
  *
  */
 public class StandaloneDMV3 extends StandaloneDM {
-<<<<<<< HEAD
-	private final static String serverVersionMsg = "The Download server version is not compatible with this Downloader App.  Please check if downloadServerUrl is pointing to the correct server.";
-=======
 	private final static String serverVersionMsg = "The Download server version is not compatible with this Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
->>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 	private static final String GuestBtnLbl = "Guest Login";
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;

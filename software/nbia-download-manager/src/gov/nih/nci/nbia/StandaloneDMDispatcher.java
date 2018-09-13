@@ -76,15 +76,9 @@ import gov.nih.nci.nbia.util.PropertyLoader;
  *
  */
 public class StandaloneDMDispatcher {
-<<<<<<< HEAD
-	public static final String launchMsg = "To run Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the file with Downloader app.";
-	private final static String newVersionMsg = "There is a new version of the Downloader available.";
-	private final static String manifestVersionMsg = "The manifest file version is not suported by this Downloader.  Please generate a new manifest file compatible with Downloader version ";
-=======
 	public static final String launchMsg = "To run Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and open the file with Downloader app.";
 	private final static String newVersionMsg = "There is a new version of Downloader available.";
 	private final static String manifestVersionMsg = "The manifest file version is not suported by this Downloader.  Please generate a new manifest file compatible with the Downloader version ";
->>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 	private final static String manifestVersionNewMsg = "The version of manifest file is higher than the version of this app.  Please upgrade your app.";
 	private static final String supportedVersion = null; // for future when
 															// certain version
@@ -178,15 +172,10 @@ public class StandaloneDMDispatcher {
 			String linuxOs = getLinuxPlatform();
 			if (linuxOs.equals("other")) {
 				JOptionPane.showMessageDialog(null,
-<<<<<<< HEAD
-						"This app has not been tested on the OS platform of your system. Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
-//				return;
-=======
 						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
 //				return;
 				//check the os properties of installed software to determined the installer type  	
 				StandaloneDMDispatcher.os = DownloaderProperties.getInstallerType();
->>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 			}
 		}
 		
@@ -457,11 +446,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-<<<<<<< HEAD
-								"Installation of new version of Downloader App is completed " + status + ".");
-=======
 								"Installation of new version of Downloader is completed " + status + ".");
->>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -487,11 +472,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-<<<<<<< HEAD
-								"Installation of new version of Downloader App is completed " + status + ".");
-=======
 								"Installation of new version of Downloader is completed " + status + ".");
->>>>>>> branch 'master' of https://github.com/CBIIT/NBIA-TCIA.git
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
