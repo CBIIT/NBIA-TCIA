@@ -9,13 +9,11 @@
 package gov.nih.nci.nbia.ui;
 
 import gov.nih.nci.nbia.Application;
-import gov.nih.nci.nbia.StandaloneDMDispatcher;
 import gov.nih.nci.nbia.download.SeriesDownloaderFactory;
 import gov.nih.nci.nbia.download.AbstractSeriesDownloader;
 import gov.nih.nci.nbia.download.SeriesData;
 import gov.nih.nci.nbia.util.ThreadPool;
 import gov.nih.nci.nbia.util.DownloaderProperties;
-import gov.nih.nci.nbia.util.PropertyLoader;
 import gov.nih.nci.nbia.util.StringUtil;
 import gov.nih.nci.nbia.util.SeriesComparitor;
 import java.awt.BorderLayout;
@@ -36,10 +34,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -152,6 +150,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 				actionExit();
 			}
 		});
+		
 
 		/* Set up file menu. */
 		createMenuBar();
@@ -187,12 +186,15 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		} else {
 			setTitle(appName+" Download Manager");
 		}
-		setSize(800, 480);
+		//setSize(800, 480);
+		setSize(1400, 980);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				actionExit();
 			}
 		});
+		ImageIcon icon = new ImageIcon(this.getClass().getClassLoader().getResource("TCIADownloader.png"));
+		this.setIconImage(icon.getImage());
 
 		/* Set up file menu. */
 		createMenuBar(version, helpDeskUrl);
@@ -442,7 +444,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 					pool.assign(tableModel.getDownload(i));
 					tableModel.getDownload(i).addPropertyChangeListener(propertyChangeListener);
 				}
-				pool.addThreadPoolListener(new ButtonUpdater(pauseButton, resumeButton, errorLabel)); // lrt
+				pool.addThreadPoolListener(new ButtonUpdater(pauseButton, resumeButton, errorLabel, table)); // lrt
 																										// -
 																										// changed
 																										// to

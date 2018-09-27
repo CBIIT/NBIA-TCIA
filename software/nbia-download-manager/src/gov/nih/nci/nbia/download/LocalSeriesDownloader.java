@@ -8,6 +8,7 @@
 
 package gov.nih.nci.nbia.download;
 
+import gov.nih.nci.nbia.ui.DownloadsTableModel;
 import gov.nih.nci.nbia.util.NBIAIOUtils;
 import gov.nih.nci.nbia.util.StringUtil;
 import java.io.File;
@@ -191,7 +192,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		postParams.add(new BasicNameValuePair("hasAnnotation", Boolean.toString(this.hasAnnotation)));
 		// this is ignored
 		postParams.add(new BasicNameValuePair("Range", "bytes=" + downloaded + "-"));
-		postParams.add(new BasicNameValuePair("password", password));
+		postParams.add(new BasicNameValuePair("password", password));		
 		//postParams.add(new BasicNameValuePair("dirType", Boolean.toString(this.dirType)));		
 		httpPostMethod.addHeader("password", password);
 		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
@@ -241,8 +242,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		try {
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-//			System.out.println(getTimeStamp() +" response code: " + responseCode + "for the seriers " + this.seriesInstanceUid + "--attempt--"+ attempt);
-			
+//			System.out.println(getTimeStamp() +" response code: " + responseCode + "for the seriers " + this.seriesInstanceUid + "--attempt--"+ attempt);		
 			/* Make sure response code is in the 200 range. */
 			if (responseCode / 100 != 2) {
 				if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -471,5 +471,17 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				return str + "-";
 		} else
 			return "";
-	}	
+	}
+	public void clearSopUidsList() {
+		if (sopUidsList != null)
+			sopUidsList.clear();
+	}
+	
+    public void resetDownloadProgress() {
+    	downloaded = 0;
+    	status = NOT_STARTED;
+    	sopUids = null;
+    	clearSopUidsList();
+    	stateChanged();
+    }	
 }

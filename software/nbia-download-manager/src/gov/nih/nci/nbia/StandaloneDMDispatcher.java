@@ -84,7 +84,7 @@ public class StandaloneDMDispatcher {
 															// certain version
 															// is no longer
 															// supported
-//	private final static String appVersion = "3.0";
+//	private final static String appVersion = "3.2";
 	private static String appVersion = null;
 	private static final String osParam = "os";
 	private static final String installBtnLbl = "Update automatically";

@@ -36,7 +36,7 @@ public class DownloadsTableModel extends AbstractTableModel
 	/*pkg*/ static final int STUDY_ID_COLUMN = 2;
 	/*pkg*/ static final int SERIES_ID_COLUMN = 3;
 	/*pkg*/ static final int PROGRESS_COLUMN = SERIES_ID_COLUMN+3; // 6
-
+	/*pkg*/ static final int STATUS_COLUMN = SERIES_ID_COLUMN+4; // 7
 	
 //	These are the names for the table's columns.
 	private static final String[] columnNames = {
@@ -78,6 +78,11 @@ public class DownloadsTableModel extends AbstractTableModel
 //	Get a download for the specified row.
 	public AbstractSeriesDownloader getDownload(int row) {
 		return downloadList.get(row);
+	}
+	
+// get downloadList 
+	public List<AbstractSeriesDownloader> getDownloadList() {
+		return downloadList;
 	}
 
 //	Remove a download from the list.

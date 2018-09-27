@@ -8,6 +8,7 @@
 
 package gov.nih.nci.nbia.download;
 
+import gov.nih.nci.nbia.ui.DownloadsTableModel;
 import gov.nih.nci.nbia.util.NBIAIOUtils;
 
 import java.beans.PropertyChangeListener;
@@ -293,7 +294,7 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     protected void updateDownloadProgress(int bytesReceived) {
         downloaded = bytesReceived;
         stateChanged();
-    }
+    }    
 
 	/**
 	 * @return the additionalInfo
