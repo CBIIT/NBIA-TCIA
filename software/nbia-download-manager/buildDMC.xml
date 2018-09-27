@@ -6,6 +6,7 @@ ant -f buildDMC.xml
 	<description>
 		Create a executable jar for Standalond Download Manager with Ant build script
 	</description>
+	<property name="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home"/>
 	<property file="../build/defaultAHP3.properties"/>
 	<property name="projectName" value="StandaloneDM" />
 	<property name="common.dir" value="${basedir}/../" />
@@ -24,7 +25,7 @@ ant -f buildDMC.xml
 	<property name="javafx.run.width" value="800"/>
 	<property name="javafx.run.height" value="600"/>
 	<property name="package.dir" location="packages"/>
-	<property name="application.title" value="TCIA Downloader" />
+	<property name="application.title" value="Downloader App" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
 	<property name="package.version" value="3.2" />
@@ -39,22 +40,32 @@ ant -f buildDMC.xml
 		<os family="mac"/>
 	</condition>
 
-	<condition property="javafx.main.class" value="gov.nih.nci.nbia.StandaloneDMForMac" else="gov.nih.nci.nbia.StandaloneDMDispatcher">
+	<condition property="javafx.main.class" value="gov.nih.nci.nbia.DownloaderApp" else="gov.nih.nci.nbia.StandaloneDMDispatcher">
 		<os family="mac"/>
 	</condition>
 	
-	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
+	<condition property="excludes" value="gov/nih/nci/nbia/DownloaderApp.java">
 		<not>
 			<os family="mac"/>
 		</not>
 	</condition>
-	
-	<condition property="native.bundles" value="all" else="rpm">
+
+		
 	<!--condition property="native.bundles" value="all" else="deb"-->
+	<!--condition property="native.bundles" value="all" else="rpm">
+
 		<or>
 			<os family="mac"/>
 			<os family="windows"/>
 		</or>	
+	</condition-->
+	
+	<condition property="native.bundles" value="msi">
+			<os family="windows"/>
+	</condition>		
+	
+	<condition property="native.bundles" value="mac.appStore">
+			<os family="mac"/>
 	</condition>
 	
 	<condition property="native.bundles" value="msi" else="rpm">
@@ -65,7 +76,7 @@ ant -f buildDMC.xml
 			<os family="windows"/>
 	</condition>
 	
-	<condition property="icon.file.name" value="TCIA Downloader.icns">
+	<condition property="icon.file.name" value="Downloader App.icns">
 			<os family="mac"/>
 	</condition>
 	
@@ -182,7 +193,7 @@ ant -f buildDMC.xml
 	<!-- jar it, extract above dependency-all.jar and zip it with project files -->
 	<target name="jar" depends="compile, copy-dependencies"
                 description="package, output to JAR">
-		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDMDispatcher" else="gov.nih.nci.nbia.StandaloneDMForMac">
+		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDMDispatcher" else="gov.nih.nci.nbia.DownloaderApp">
 			<not>
 				<os family="mac"/>
 			</not>
@@ -233,7 +244,7 @@ ant -f buildDMC.xml
 			<fx:resources>
 				<fx:fileset dir="${dist.dir}" includes="*.jar" />
 				<fx:fileset dir="${package.resource.dir}" type="license" includes="${license.file.name}" />
-				
+				<fx:fileset dir="${package.resource.dir}/package/macosx" os="mac" type="icon" includes="${icon.file.name}" />
 				<!--fx:fileset dir="${package.resource.dir}" os="unix" type="icon" includes="${icon.file.name}.png" />
 				<fx:fileset dir="${package.resource.dir}" os="unix" type="icon" includes="${icon.file.name}.icns" /-->
 			</fx:resources>
@@ -248,7 +259,7 @@ ant -f buildDMC.xml
 
             <fx:bundleArgument arg="linux.bundleName" value="TCIADownloader"/>
             <fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
-            <fx:bundleArgument arg="mac.CFBundleName" value="TCIADownloader"/>
+            <fx:bundleArgument arg="mac.CFBundleName" value="DownloaderApp"/>
             <fx:bundleArgument arg="win.menuGroup" value="TCIADownloader"/>
 
 		</fx:deploy>
