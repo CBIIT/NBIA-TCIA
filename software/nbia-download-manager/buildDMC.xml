@@ -6,7 +6,7 @@ ant -f buildDMC.xml
 	<description>
 		Create a executable jar for Standalond Download Manager with Ant build script
 	</description>
-	<property name="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home"/>
+	<!--property name="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home"/-->
 	<property file="../build/defaultAHP3.properties"/>
 	<property name="projectName" value="StandaloneDM" />
 	<property name="common.dir" value="${basedir}/../" />
