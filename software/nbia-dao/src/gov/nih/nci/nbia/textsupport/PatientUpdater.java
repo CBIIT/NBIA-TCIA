@@ -39,6 +39,7 @@ public class PatientUpdater {
     		  stillRunning=true;
     		  updateSubmittedPatients();
     		  updateCollections();
+    		  SolrFieldBuilder.getTerms();
     		  stillRunning = false;
     		}
     	} catch (Exception e)
@@ -87,12 +88,16 @@ public class PatientUpdater {
 		  Set<String> patientSet = getUpdatedPatients(maxTimeStamp, lastRan);
 		   int i = 0;
 		   int x = 0;
+		   int num=0;
+		   if (patientSet!=null) {
+			   num=patientSet.size();
+		   }
 		   SolrStorage solrStorage = new SolrStorage();
 			for (String result : patientSet)
 			  {
 				  PatientAccessDAO patientAccess = (PatientAccessDAO)SpringApplicationContext.getBean("patientAccessDAO");
 				  String patientId = result;
-				  log.info("Updated patient-"+patientId+" Solr Update request made, this is the " + x++ + " patient updated");
+				  log.info("Updated patient-"+patientId+" Solr Update request made, this is the " + x++ + " patient updated out of "+num);
 			      PatientDocument doc = patientAccess.getPatientDocument(patientId);
 			      if (doc!=null){
 			    	 i++;

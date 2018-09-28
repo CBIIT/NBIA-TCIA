@@ -12,6 +12,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.client.solrj.util.ClientUtils;
 public class SolrAccess {
 	static Logger log = Logger.getLogger(SolrAccess.class);
 	private static String getHitText(String hitContext, int index){
@@ -34,18 +35,34 @@ public class SolrAccess {
 			  }
 			  SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
 			  SolrServer server = serverAccess.GetServer();
-			  queryTerm=queryTerm.replaceAll(":", "");
+			  String term;
+			  if (queryTerm.contains(":")) {
+				  try {
+					String tempterm = queryTerm.substring(0, queryTerm.indexOf(":"));
+					tempterm = SolrFieldBuilder.getTerms().get(tempterm);
+					term=ClientUtils.escapeQueryChars(tempterm);
+					term=term+queryTerm.substring(queryTerm.indexOf(":"));
+					System.out.println("Fielded Search");
+				} catch (Exception e) {
+					e.printStackTrace();
+					return returnValue;
+				}
+			  } else {
+				   queryTerm=queryTerm.replaceAll(":", "");
+				   term = "text:"+queryTerm;
+				   System.out.println("Classic Search");
+			  }
 			   if (queryTerm==null || queryTerm.length()<2)
 			   {
 			       return returnValue;
 			   }
-			   String term = "text:"+queryTerm;
+			   System.out.println("Searching for after processing-"+term+"-");
 			   SolrQuery query = new SolrQuery(term);
 			   query.setHighlight(true).setHighlightSnippets(1);
 			   query.addHighlightField("text");
 			   query.setHighlightSimplePre("<strong>");
 			   query.setHighlightSimplePost("</strong>");
-			   query.setFields("id,patientId,f*");
+			   query.setFields("id,patientId,f*,d*");
 			   // hold to 3000 values for performance
 			   query.setRows(3000);
 			   query.setParam(GroupParams.GROUP, Boolean.TRUE);
