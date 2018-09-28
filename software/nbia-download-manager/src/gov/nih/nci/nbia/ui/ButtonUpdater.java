@@ -8,6 +8,8 @@
 
 package gov.nih.nci.nbia.ui;
 
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -90,29 +92,57 @@ public class ButtonUpdater implements ThreadPoolListener {
 	private String getCSVNameFromUser() {
 		String defaultFileName = "downloadErrRpt.csv";
 		String userDir = System.getProperty("user.home");
+		String os = System.getProperty("os.name").toLowerCase();
+		String path = null;//userDir + File.separator + "Desktop" + File.separator + defaultFileName;
+		if (os.startsWith("mac")) {
+			path = getFilePathOnMac(defaultFileName);
+		}
+		else {
+			JFileChooser chooser;
+			chooser = new JFileChooser();
+			chooser.setDialogTitle("Select Directory and File Name");
+			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			chooser.setSelectedFile(new File(userDir + File.separator + "Desktop" + File.separator + defaultFileName));
+			chooser.setFileFilter(new FileNameExtensionFilter("csv", "csv"));
 
-		JFileChooser chooser;
-		chooser = new JFileChooser();
-		chooser.setDialogTitle("Select Directory and File Name");
-		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		chooser.setSelectedFile(new File(userDir + File.separator + "Desktop" + File.separator + defaultFileName));
-		chooser.setFileFilter(new FileNameExtensionFilter("csv", "csv"));
+			/* disable the "All files" option. */
+			chooser.setAcceptAllFileFilterUsed(false);
+			chooser.showSaveDialog(table);
+			path = chooser.getSelectedFile().getAbsolutePath();
+			File f = new File(path);
 
-		/* disable the "All files" option. */
-		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.showSaveDialog(table);
-		String path = chooser.getSelectedFile().getAbsolutePath();
-		File f = new File(path);
-		
-		if (f.isDirectory()) {
-	        path = path + File.separator + defaultFileName;
-	    }
+			if (f.isDirectory()) {
+				path = path + File.separator + defaultFileName;
+			}
 
-		if (!path.endsWith(".csv"))
-			path += ".csv";
-
+			if (!path.endsWith(".csv"))
+				path += ".csv";
+		}
 		return path;
 	}
+	
+	private String getFilePathOnMac(String defaultFileName) {
+		FileDialog fileDialog= new FileDialog(new Frame(), "Select Directory and File Name", FileDialog.SAVE);
+		fileDialog.setFile(defaultFileName);
+		fileDialog.setVisible(true);
+		
+		String selectedDir = fileDialog.getDirectory();
+		String name = fileDialog.getFile();
+
+	    if( selectedDir != null && name!= null ) {
+	    		File dir= new File(selectedDir);
+	    		if (!dir.canWrite()) {
+	    			JOptionPane.showMessageDialog(null,
+	    					"The directory you selected " + selectedDir + " is not writable.  Please select another one.");
+	    			return getFilePathOnMac(defaultFileName);
+	    		}
+	    		else {
+	    			return (selectedDir + name);
+	    		}
+	    }
+	    else return null;
+	}
+	
 
 	private void optionsForErrCondiction() {
 		if (table != null) {
@@ -127,7 +157,6 @@ public class ButtonUpdater implements ThreadPoolListener {
 				retry = false;
 				String csvName = getCSVNameFromUser();
 				writeErrRpt(csvName, table);
-
 			} else if (n == 0) {
 				retry = true;
 				resetAndRetry();
