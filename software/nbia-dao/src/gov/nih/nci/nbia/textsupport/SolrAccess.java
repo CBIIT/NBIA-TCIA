@@ -28,6 +28,7 @@ public class SolrAccess {
 	public static List<SolrAllDocumentMetaData> querySolr(String queryTerm)
 	{
 		  List <SolrAllDocumentMetaData> returnValue = new ArrayList<SolrAllDocumentMetaData> ();
+		  boolean classicSearch=true;
 		  try {			   
 			  if (queryTerm==null || queryTerm.length()<2)
 			  {
@@ -36,13 +37,16 @@ public class SolrAccess {
 			  SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
 			  SolrServer server = serverAccess.GetServer();
 			  String term;
+			  String tempterm="";
+			  String orginalTerm="";
 			  if (queryTerm.contains(":")) {
 				  try {
-					String tempterm = queryTerm.substring(0, queryTerm.indexOf(":"));
-					tempterm = SolrFieldBuilder.getTerms().get(tempterm);
+					orginalTerm = queryTerm.substring(0, queryTerm.indexOf(":"));
+					tempterm = SolrFieldBuilder.getTerms().get(orginalTerm);
 					term=ClientUtils.escapeQueryChars(tempterm);
 					term=term+queryTerm.substring(queryTerm.indexOf(":"));
 					System.out.println("Fielded Search");
+					classicSearch=false;
 				} catch (Exception e) {
 					e.printStackTrace();
 					return returnValue;
@@ -59,7 +63,12 @@ public class SolrAccess {
 			   System.out.println("Searching for after processing-"+term+"-");
 			   SolrQuery query = new SolrQuery(term);
 			   query.setHighlight(true).setHighlightSnippets(1);
-			   query.addHighlightField("text");
+			   if (classicSearch) {
+				   query.addHighlightField("text");
+			   } else {
+				   query.addHighlightField(tempterm);
+				   query.addHighlightField("text");
+			   }
 			   query.setHighlightSimplePre("<strong>");
 			   query.setHighlightSimplePost("</strong>");
 			   query.setFields("id,patientId,f*,d*");
@@ -74,16 +83,35 @@ public class SolrAccess {
 			   SolrDocumentList docs = rsp.getResults();
 			   for (SolrDocument doc : docs){
 				   String highlightedHit = "";
-				   if (rsp.getHighlighting().get(doc.get("id").toString()) != null) {
+				   if (classicSearch) {
+				       if (rsp.getHighlighting().get(doc.get("id").toString()) != null) {
 				          List<String> highlightSnippets = rsp.getHighlighting().get(doc.get("id").toString()).get("text");
 				          if (highlightSnippets!=null&&highlightSnippets.size()>0)
 				          {
 				        	  log.debug("Found highlight"+(String)highlightSnippets.get(0));
 				        	  highlightedHit=(String)highlightSnippets.get(0);
 				          }
+				       }
+				   } else  {
+					   
+					      Map<String,List<String>> highlightMap=rsp.getHighlighting().get(doc.get("id").toString());
+					      Set<String> topKeySet=highlightMap.keySet();
+					      System.out.println("Setsize is-"+topKeySet.size());
+					      for (String key: topKeySet) {
+					    	  List<String> highlightSnippets =highlightMap.get(key);
+					    	  for (String snip:highlightSnippets)
+					    		  highlightedHit=snip;
+					    	  
+					      }
 				   }
-				   SolrAllDocumentMetaData hits = findIndexes(queryTerm, doc, doc.get("id").toString(),
+				   SolrAllDocumentMetaData hits=null;
+				   if (classicSearch) { 
+				       hits = findIndexes(queryTerm, doc, doc.get("id").toString(),
 						   highlightedHit);
+				   } else {
+				       hits = findHits(queryTerm, doc, doc.get("id").toString(),
+						   highlightedHit, orginalTerm);
+				   }
 				   returnValue.add(hits);
 			   }
 			   
@@ -149,6 +177,17 @@ public class SolrAccess {
     			  documentId, (String)solrDoc.getFieldValue("patientId"));
 	}
 	 
+	public static SolrAllDocumentMetaData findHits(String term, SolrDocument solrDoc, String documentId,  String highlightedHit, String field)
+	{
+	    String fieldValue;
+	    SolrAllDocumentMetaData found=null;
+        found=new SolrAllDocumentMetaData(term, "<em>"+field+"</em>"+": "+
+        		              highlightedHit, 
+			    			  documentId, (String)solrDoc.getFieldValue("patientId"));
+
+			          
+        return found;
+	}
 	public static void main(String[] args)
 	{
 
