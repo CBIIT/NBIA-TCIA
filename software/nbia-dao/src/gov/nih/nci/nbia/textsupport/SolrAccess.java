@@ -174,7 +174,7 @@ public class SolrAccess {
 		  }
 		  // unable to locate where the hit is
           return new SolrAllDocumentMetaData(term, highlightedHit,
-    			  documentId, (String)solrDoc.getFieldValue("patientId"));
+    			 documentId, (String)solrDoc.getFieldValue("patientId"));
 	}
 	 
 	public static SolrAllDocumentMetaData findHits(String term, SolrDocument solrDoc, String documentId,  String highlightedHit, String field)
