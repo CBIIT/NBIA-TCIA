@@ -97,7 +97,7 @@ public class PatientUpdater {
 			  {
 				  PatientAccessDAO patientAccess = (PatientAccessDAO)SpringApplicationContext.getBean("patientAccessDAO");
 				  String patientId = result;
-				  log.info("Updated patient-"+patientId+" Solr Update request made, this is the " + x++ + " patient updated out of "+num);
+				  log.info("Updated patient-"+patientId+" Solr Update request made, this is the " + x + " patient updated out of "+num);
 				  System.out.println("Updated patient-"+patientId+" Solr Update request made, this is the " + x++ + " patient updated out of "+num);
 			      PatientDocument doc = patientAccess.getPatientDocument(patientId);
 			      if (doc!=null){
