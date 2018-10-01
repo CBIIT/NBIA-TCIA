@@ -16,15 +16,17 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
+import java.util.concurrent.TimeUnit;
 public class SolrFieldBuilder {
 	private static Logger log = Logger.getLogger(SolrFieldBuilder.class);
 	private static HashMap<String,String> dicomFieldMap=null; 
+	private static long now=1L;
 	public static Map<String,String> getTerms()
 	{
       try {
-    	      if (dicomFieldMap==null) {
+    	      if (dicomFieldMap==null&&System.currentTimeMillis()>now) {
     	    	  refeshMap();
-
+    	    	  now = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1);
     	      }
 		} catch (Exception e) {
 

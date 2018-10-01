@@ -96,7 +96,6 @@ public class SolrAccess {
 					   
 					      Map<String,List<String>> highlightMap=rsp.getHighlighting().get(doc.get("id").toString());
 					      Set<String> topKeySet=highlightMap.keySet();
-					      System.out.println("Setsize is-"+topKeySet.size());
 					      for (String key: topKeySet) {
 					    	  List<String> highlightSnippets =highlightMap.get(key);
 					    	  for (String snip:highlightSnippets)
