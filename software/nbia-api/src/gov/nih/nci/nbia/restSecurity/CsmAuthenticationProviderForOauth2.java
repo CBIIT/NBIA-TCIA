@@ -40,6 +40,10 @@ public class CsmAuthenticationProviderForOauth2 implements AuthenticationProvide
 	            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 	            //Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
 	            Authentication auth = new UsernamePasswordAuthenticationToken(name, null, grantedAuths);
+	            if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+	            	mgr.syncDBWithLDAP(name);
+					System.out.println("Sync performed");
+	            }
 	            return auth;
 	        } else {
 	        	throw new BadCredentialsException("Bad User Credentials.");
