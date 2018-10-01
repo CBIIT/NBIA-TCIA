@@ -784,6 +784,10 @@ public class NCIAConfig {
         checkProperty("gui.link", propertyValue);
         return propertyValue;   	
     } 
+    public static String getTomcatPort() {
+        String propertyValue = properties.getProperty("tomcat.server.port");
+        return propertyValue;   	
+    } 
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer
