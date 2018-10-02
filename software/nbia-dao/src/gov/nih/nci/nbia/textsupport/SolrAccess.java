@@ -93,14 +93,17 @@ public class SolrAccess {
 				          }
 				       }
 				   } else  {
-					   
+					      System.out.println("--------------looking for highlights---------");
 					      Map<String,List<String>> highlightMap=rsp.getHighlighting().get(doc.get("id").toString());
 					      Set<String> topKeySet=highlightMap.keySet();
+					      System.out.println("--------------found set----"+topKeySet.size());
 					      for (String key: topKeySet) {
 					    	  List<String> highlightSnippets =highlightMap.get(key);
-					    	  for (String snip:highlightSnippets)
+					    	  System.out.println("--------------found list----"+highlightSnippets.size());
+					    	  for (String snip:highlightSnippets) {
+					    		  System.out.println("--------------found hit----"+snip);
 					    		  highlightedHit=snip;
-					    	  
+					    	  }
 					      }
 				   }
 				   SolrAllDocumentMetaData hits=null;
@@ -179,6 +182,9 @@ public class SolrAccess {
 	public static SolrAllDocumentMetaData findHits(String term, SolrDocument solrDoc, String documentId,  String highlightedHit, String field)
 	{
 	    String fieldValue;
+	    System.out.println(term+ "-"+field+"-"+": "+
+        		              highlightedHit+"-" +
+			    			  documentId+"-" +(String)solrDoc.getFieldValue("patientId"));
 	    SolrAllDocumentMetaData found=null;
         found=new SolrAllDocumentMetaData(term, "<em>"+field+"</em>"+": "+
         		              highlightedHit, 
