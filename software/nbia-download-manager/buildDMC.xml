@@ -77,8 +77,8 @@ ant -f buildDMC.xml
 			<os family="mac"/>
 	</condition>
 	
-	<condition property="native.bundles" value="deb">
-	<!--condition property="native.bundles" value="rpm"-->
+	<!--condition property="native.bundles" value="deb"-->
+	<condition property="native.bundles" value="rpm">
 		<os family="unix"/>
 	</condition>	
 	
@@ -261,7 +261,7 @@ ant -f buildDMC.xml
 			<fx:info title="${application.title}" vendor="${application.vendor}" category="Research" copyright="${copyright}" license="3 Clause BSD">
 				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for Downloader App" icon="${icon.file.name}">
 				</fx:association>
-				<fx:icon href="${package.resource.dir}/package/linux/${icon.file.name}"  kind="default" width="32" height="32" depth="8"/>
+				<!--fx:icon href="${package.resource.dir}/package/linux/${icon.file.name}"  kind="default" width="32" height="32" depth="8"/-->
 			</fx:info>
 			
             <fx:bundleArgument arg="win.exe.systemWide" value="true"/>

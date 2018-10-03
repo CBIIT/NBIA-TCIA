@@ -134,7 +134,7 @@ public class StandaloneDMDispatcher {
 			this.serverUrl = System.getProperty("downloadServerUrl");
 			manifestVersion = System.getProperty("manifestVersion");
 			checkManifestVersion(manifestVersion);
-			if (manifestVersion.equals("3.0")) {
+			if (manifestVersion.startsWith("3.")) {
 				seriesList = getSeriesList(fileName);
 			}
 
@@ -212,7 +212,7 @@ public class StandaloneDMDispatcher {
 			StandaloneDMV2 sdm = new StandaloneDMV2();
 			sdm.setKey(key);
 			sdm.launch();
-		} else if (manifestVersion.equals("3.0")) {
+		} else if (manifestVersion.startsWith("3.")) {
 			StandaloneDMV3 sdm = new StandaloneDMV3();
 			sdm.setKey(key);
 			sdm.launch(seriesList);

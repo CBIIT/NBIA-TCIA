@@ -152,7 +152,7 @@ public class GetManifestText extends getData {
 			}
 
 			// Manifest file will be versioned too
-			outSB.append("manifestVersion=" + NCIAConfig.getLatestDownloaderVersion().trim() + "\n");
+			outSB.append("manifestVersion=" + NCIAConfig.getLatestManifestVersion().trim() + "\n");
 
 			return Response.ok(outSB.toString()).type("application/x-nbia-manifest-file").build();
 		} catch (Exception e) {

@@ -756,6 +756,12 @@ public class NCIAConfig {
         return propertyValue;   	
     }
     
+    public static String getLatestManifestVersion() {
+        String propertyValue = properties.getProperty("latest.manifest.version");
+        checkProperty("latest.manifest.version", propertyValue);
+        return propertyValue;   	
+    }
+    
     public static String getDownloaderAppForcedUpgrade() {
         String propertyValue = properties.getProperty("force.downloader.upgrade");
         checkProperty("force.downloader.upgrade", propertyValue);
