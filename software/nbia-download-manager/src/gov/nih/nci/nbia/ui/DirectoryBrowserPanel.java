@@ -13,12 +13,14 @@ import java.awt.Dimension;
 import java.awt.FileDialog;
 
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -26,7 +28,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.event.DocumentEvent;
 
 public class DirectoryBrowserPanel extends JPanel {
@@ -153,7 +154,8 @@ class HintTextField extends JTextField implements FocusListener {
 	    super(hint);
 	    this.hint = hint;
 	    this.showingHint = true;
-	    this.setPreferredSize(new Dimension(400, 24));
+	    this.setPreferredSize(new Dimension(400, 30));
+	    this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 	    this.setForeground(Color.LIGHT_GRAY);
 	    super.addFocusListener(this);
 	  }
