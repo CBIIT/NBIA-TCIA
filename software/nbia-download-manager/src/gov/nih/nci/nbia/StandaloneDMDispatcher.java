@@ -412,6 +412,10 @@ public class StandaloneDMDispatcher {
 				e.printStackTrace();
 			}
 		} else {
+			Double vNum = 0.0;
+			if (appVersion != null) {
+				vNum = Double.parseDouble(appVersion);
+			}
 			JLabel pwLabel = new JLabel("Sudo Password");
 			JTextField password = new JPasswordField();
 			Object[] objs = { pwLabel, password };
@@ -426,9 +430,11 @@ public class StandaloneDMDispatcher {
 				if (os.equals("CentOS")) {
 					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
 					try {
-						String[] cmd = { "/bin/bash", "-c",
-								"/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install "
-										+ installerPath };
+						String irCmd = "/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
+						if (vNum >= 3.2) {
+							irCmd = "/usr/bin/sudo -S yum -q -y remove downloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
+						}
+						String[] cmd = { "/bin/bash", "-c", irCmd+ installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;
@@ -454,7 +460,8 @@ public class StandaloneDMDispatcher {
 				} else if (os.equals("Ubuntu")) {
 					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
 					try {
-						String[] cmd = { "/bin/bash", "-c", "/usr/bin/sudo -S dpkg -i " + installerPath };
+						String irCmd = "/usr/bin/sudo -S dpkg -i ";						
+						String[] cmd = { "/bin/bash", irCmd + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;

@@ -77,8 +77,8 @@ ant -f buildDMC.xml
 			<os family="mac"/>
 	</condition>
 	
-	<!--condition property="native.bundles" value="deb"-->
-	<condition property="native.bundles" value="rpm">
+	<condition property="native.bundles" value="deb">
+	<!--condition property="native.bundles" value="rpm"-->
 		<os family="unix"/>
 	</condition>	
 	
