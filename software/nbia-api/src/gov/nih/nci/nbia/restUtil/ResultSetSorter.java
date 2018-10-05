@@ -25,7 +25,7 @@ public class ResultSetSorter {
         if (sortField.equalsIgnoreCase("series")) {
         	comp=new PSRMBSeriesCompare();
         }
-        if (sortDirection.equalsIgnoreCase("accending")) {
+        if (sortDirection.equalsIgnoreCase("ascending")) {
         	Collections.sort(input, comp);
         } else {
         	Collections.sort(input, comp.reversed());
