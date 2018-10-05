@@ -146,7 +146,9 @@ L-->
 				name="spring-ldap-core"
 				rev="1.3.2.RELEASE"
 				conf="compile->master;runtime->master"/>
-                
+          <dependency org="org.apache.commons" name="commons-jcs-core" rev="2.2" conf="compile->master;runtime->master"/>   
+          <dependency org="org.apache.commons" name="commons-jcs-jcache" rev="2.2" conf="compile->master;runtime->master"/>
+             
   
 		<!-- end of dicom -->
 	</dependencies>
