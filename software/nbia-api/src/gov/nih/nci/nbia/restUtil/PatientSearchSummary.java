@@ -5,8 +5,9 @@ import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
 public class PatientSearchSummary {
 	private List <PatientSearchResultWithModilityAndBodyPart> resultSet;
 	private int totalPatients;
-	private Set<String> bodyParts;
-	private Set<String> modalities;
+	private List<ValueAndCount> bodyParts;
+	private List<ValueAndCount> modalities;
+	private List<ValueAndCount> collections;
 	private String sort;
 	public List<PatientSearchResultWithModilityAndBodyPart> getResultSet() {
 		return resultSet;
@@ -20,17 +21,24 @@ public class PatientSearchSummary {
 	public void setTotalPatients(int totalPatients) {
 		this.totalPatients = totalPatients;
 	}
-	public Set<String> getBodyParts() {
+
+	public List<ValueAndCount> getBodyParts() {
 		return bodyParts;
 	}
-	public void setBodyParts(Set<String> bodyParts) {
+	public void setBodyParts(List<ValueAndCount> bodyParts) {
 		this.bodyParts = bodyParts;
 	}
-	public Set<String> getModalities() {
+	public List<ValueAndCount> getModalities() {
 		return modalities;
 	}
-	public void setModalities(Set<String> modalities) {
+	public void setModalities(List<ValueAndCount> modalities) {
 		this.modalities = modalities;
+	}
+	public List<ValueAndCount> getCollections() {
+		return collections;
+	}
+	public void setCollections(List<ValueAndCount> collections) {
+		this.collections = collections;
 	}
 	public String getSort() {
 		return sort;
