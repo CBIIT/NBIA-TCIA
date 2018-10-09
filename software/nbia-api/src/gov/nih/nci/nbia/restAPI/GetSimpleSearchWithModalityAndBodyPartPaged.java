@@ -39,6 +39,7 @@ import gov.nih.nci.nbia.restUtil.ResultSetCache;
 import gov.nih.nci.nbia.restUtil.ResultSetSorter;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
 import gov.nih.nci.nbia.restUtil.PatientSummaryFactory;
+import gov.nih.nci.nbia.restUtil.SizeOf;
 
 import java.text.SimpleDateFormat;
 import org.springframework.dao.DataAccessException;
@@ -210,6 +211,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
             PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true);
+            //System.out.println("Size is "+SizeOf.getObjectSize(cacheValue));
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
 		}  else {

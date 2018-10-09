@@ -10,8 +10,11 @@ public class ResultSetSorter {
 	
 
 	public List<PatientSearchResultWithModilityAndBodyPart> sort2(List<PatientSearchResultWithModilityAndBodyPart> input, String sortField, String sortDirection){
-		List<PatientSearchResultWithModilityAndBodyPart> copy = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
-        copy.addAll(input);
+		List<PatientSearchResultWithModilityAndBodyPart> 
+		
+		copy = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
+       
+		copy.addAll(input);
         Comparator comp= null;
         if (sortField.equalsIgnoreCase("collection")) {
         	comp=new PSRMBCollectionCompare();
@@ -26,9 +29,9 @@ public class ResultSetSorter {
         	comp=new PSRMBSeriesCompare();
         }
         if (sortDirection.equalsIgnoreCase("ascending")) {
-        	Collections.sort(input, comp);
+            Collections.sort(copy, comp);
         } else {
-        	Collections.sort(input, comp.reversed());
+        	Collections.sort(copy, comp.reversed());
         }
         return copy;
 	}
