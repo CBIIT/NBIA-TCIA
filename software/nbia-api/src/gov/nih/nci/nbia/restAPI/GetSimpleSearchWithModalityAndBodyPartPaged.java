@@ -39,7 +39,7 @@ import gov.nih.nci.nbia.restUtil.ResultSetCache;
 import gov.nih.nci.nbia.restUtil.ResultSetSorter;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
 import gov.nih.nci.nbia.restUtil.PatientSummaryFactory;
-import gov.nih.nci.nbia.restUtil.SizeOf;
+
 
 import java.text.SimpleDateFormat;
 import org.springframework.dao.DataAccessException;
