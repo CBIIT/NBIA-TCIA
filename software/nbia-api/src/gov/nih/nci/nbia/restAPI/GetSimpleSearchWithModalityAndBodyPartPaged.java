@@ -210,15 +210,19 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
-            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true);
+            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null);
             //System.out.println("Size is "+SizeOf.getObjectSize(cacheValue));
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
 		}  else {
 			System.out.println("Found in cache");
+			System.out.println("Sort-"+sort);
+			System.out.println("GetSort-"+patientSearchSummary.getSort());
 			if (!patientSearchSummary.getSort().equalsIgnoreCase(sort)) {
+				System.out.println("Doing sort");
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
-				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false), start, size);
+				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
+						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections()), start, size);
 			} else {
 				returnValue = PatientSummaryFactory.getReturnValue(patientSearchSummary, start, size);
 			}

@@ -5,13 +5,18 @@ import java.util.*;
 
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
 public class PatientSummaryFactory {
-	public static PatientSearchSummary getNewPatientSearchSummary(List<PatientSearchResultWithModilityAndBodyPart> input, String sort, boolean compute) {
+	public static PatientSearchSummary getNewPatientSearchSummary(List<PatientSearchResultWithModilityAndBodyPart> input, String sort, boolean compute,
+			List <ValueAndCount> bodyCounts, List <ValueAndCount> modalityCounts, List <ValueAndCount> collectionCounts) {
 		PatientSearchSummary returnValue = new PatientSearchSummary();
 		returnValue.setResultSet(input);
 		returnValue.setSort(sort);
 		returnValue.setTotalPatients(input.size());
 		if (compute) {
 		    returnValue=computeBodyPartsAndModalities(returnValue);
+		} else {
+			returnValue.setBodyParts(bodyCounts);
+			returnValue.setModalities(modalityCounts);
+			returnValue.setCollections(collectionCounts);
 		}
 		return returnValue;
 	}
