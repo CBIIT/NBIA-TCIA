@@ -23,7 +23,7 @@ public class PatientSummaryFactory {
 	public static PatientSearchSummary getReturnValue(PatientSearchSummary input, int start, int size) {
 		PatientSearchSummary returnValue = new PatientSearchSummary();
 	   	if (size+start>input.getResultSet().size()) {
-			size=input.getResultSet().size();
+			size=input.getResultSet().size()-start;
 		} 
 		returnValue.setResultSet(input.getResultSet().subList(start, start+size));
 		returnValue.setBodyParts(input.getBodyParts());
