@@ -143,6 +143,11 @@ L-->
 				<include name="NCIA.csm.new.hibernate.cfg.xml"/>
 			</fileset>
 		</copy>
+		<copy todir="${webapp.dir}/WEB-INF/classes">
+			<fileset dir="${tomcat.dir}">
+				<include name="cache.ccf"/>
+			</fileset>
+		</copy>
 	    <!--if>
 	     <available file="${tomcat.dir}/ahp_nbia.properties"/>
 	      <then>

@@ -49,9 +49,29 @@ public class StudyDAOImpl extends AbstractDAO
         String whereStmt = SQL_QUERY_WHERE;
 
         // Add the series PK IDs to the where clause
-        whereStmt += "and series.id IN (";
+        
 
-        whereStmt += constructSeriesIdList(seriesPkIds);
+        int listSize = seriesPkIds.size();
+		if (listSize > PARAMETER_LIMIT) {
+			Collection<Collection<Integer>> seriesPkIdsBatches = split(
+					seriesPkIds, PARAMETER_LIMIT);
+			whereStmt = new String() + SQL_QUERY_WHERE+" and (";
+			int i = 0;
+			for (Collection<Integer> seriesPkIdBatch : seriesPkIdsBatches) {
+				if (i==0) {
+					whereStmt += "series.id IN (";
+				} else {
+				    whereStmt += "or series.id IN (";
+				}
+				i++;
+				whereStmt += constructSeriesIdList(seriesPkIdBatch);
+				whereStmt += ")";
+			}
+			whereStmt += ")";
+		} else {
+			  whereStmt += "and series.id IN (";
+              whereStmt += constructSeriesIdList(seriesPkIds);
+		}
 
         whereStmt += ")";
 
@@ -394,7 +414,7 @@ public class StudyDAOImpl extends AbstractDAO
        }
    	return theWhereStmt;
    }
-    private static int PARAMETER_LIMIT = 700;
+    private static int PARAMETER_LIMIT = 5000;
 
 	private <T> Collection<Collection<T>> split(Collection<T> bigCollection, int maxBatchSize) {
 		Collection<Collection<T>> result = new ArrayList<Collection<T>>();
