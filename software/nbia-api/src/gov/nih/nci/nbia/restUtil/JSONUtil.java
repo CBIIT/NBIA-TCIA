@@ -47,6 +47,18 @@ public class JSONUtil {
 		return jsonInString;
 	}
 	
+	public static String getJSONforPatientSearchSummary(TextSearchSummary patients){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(patients);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
 	
 	public static String getJSONforPatientsWithModalityAndBodyPart(List<PatientSearchResultWithModilityAndBodyPart> patients){
 		String jsonInString = null;

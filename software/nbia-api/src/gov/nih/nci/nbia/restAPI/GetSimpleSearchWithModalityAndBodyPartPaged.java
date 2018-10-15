@@ -35,7 +35,7 @@ import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
-import gov.nih.nci.nbia.restUtil.ResultSetCache;
+import gov.nih.nci.nbia.restUtil.PatientResultSetCache;
 import gov.nih.nci.nbia.restUtil.ResultSetSorter;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
 import gov.nih.nci.nbia.restUtil.PatientSummaryFactory;
@@ -190,7 +190,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 		int size = Integer.parseInt(sizeString);
 		String sort = sortField+"-"+sortDirection;
 		List<PatientSearchResultWithModilityAndBodyPart> patients = null;
-		ResultSetCache cache = new ResultSetCache();
+		PatientResultSetCache cache = new PatientResultSetCache();
 		PatientSearchSummary  patientSearchSummary=cache.getPatientSearchSummary(queryKey);
 		PatientSearchSummary  returnValue=null;
 		if (patientSearchSummary==null) {
