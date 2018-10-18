@@ -43,6 +43,10 @@ public class SolrAccess {
 				  try {
 					orginalTerm = queryTerm.substring(0, queryTerm.indexOf(":"));
 					tempterm = SolrFieldBuilder.getTerms().get(orginalTerm);
+					if (tempterm==null || tempterm.length()<2)
+					{
+						  return returnValue;
+					}
 					term=ClientUtils.escapeQueryChars(tempterm);
 					term=term+queryTerm.substring(queryTerm.indexOf(":"));
 					System.out.println("Fielded Search");
@@ -93,15 +97,15 @@ public class SolrAccess {
 				          }
 				       }
 				   } else  {
-					      System.out.println("--------------looking for highlights---------");
+					      //System.out.println("--------------looking for highlights---------");
 					      Map<String,List<String>> highlightMap=rsp.getHighlighting().get(doc.get("id").toString());
 					      Set<String> topKeySet=highlightMap.keySet();
-					      System.out.println("--------------found set----"+topKeySet.size());
+					      //System.out.println("--------------found set----"+topKeySet.size());
 					      for (String key: topKeySet) {
 					    	  List<String> highlightSnippets =highlightMap.get(key);
-					    	  System.out.println("--------------found list----"+highlightSnippets.size());
+					    	  //System.out.println("--------------found list----"+highlightSnippets.size());
 					    	  for (String snip:highlightSnippets) {
-					    		  System.out.println("--------------found hit----"+snip);
+					    		  //System.out.println("--------------found hit----"+snip);
 					    		  highlightedHit=snip;
 					    	  }
 					      }
@@ -182,9 +186,9 @@ public class SolrAccess {
 	public static SolrAllDocumentMetaData findHits(String term, SolrDocument solrDoc, String documentId,  String highlightedHit, String field)
 	{
 	    String fieldValue;
-	    System.out.println(term+ "-"+field+"-"+": "+
-        		              highlightedHit+"-" +
-			    			  documentId+"-" +(String)solrDoc.getFieldValue("patientId"));
+	    //System.out.println(term+ "-"+field+"-"+": "+
+        		//              highlightedHit+"-" +
+			    //			  documentId+"-" +(String)solrDoc.getFieldValue("patientId"));
 	    SolrAllDocumentMetaData found=null;
         found=new SolrAllDocumentMetaData(term, "<em>"+field+"</em>"+": "+
         		              highlightedHit, 
