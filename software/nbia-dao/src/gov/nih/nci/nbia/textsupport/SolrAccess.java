@@ -159,7 +159,7 @@ public class SolrAccess {
 			    		  foundField=foundField.substring(foundField.indexOf("^")+1);
 			    	  }
 			    	//fields we want to check for text start with f-
-			    	  if (foundField.startsWith("f-"))
+			    	  if (foundField.startsWith("f_"))
 			    	  {
 			    		  foundField=foundField.substring(2);
 			    	  }
