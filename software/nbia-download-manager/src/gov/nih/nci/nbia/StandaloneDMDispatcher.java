@@ -12,6 +12,7 @@
  */
 package gov.nih.nci.nbia;
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -45,6 +46,8 @@ import javax.net.ssl.X509TrustManager;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
@@ -538,29 +541,39 @@ public class StandaloneDMDispatcher {
 			}
 
 		} catch (java.net.ConnectException e) {
-			JOptionPane.showMessageDialog(null, "Connection error 1: " + e.getMessage());
+			String note = "Connection error 1 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 1: " + e.getMessage());
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			JOptionPane.showMessageDialog(null, "Connection error 2: " + e.getMessage());
+			String note = "Connection error 2 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 2: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Connection error 3: " + e.getMessage());
+			String note = "Connection error 3 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 3: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Connection error 4: " + e.getMessage());
+			String note = "Connection error 4 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 4: " + e.getMessage());
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Connection error 5: " + e.getMessage());
+			String note = "Connection error 5 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 5: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyStoreException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Connection error 6: " + e.getMessage());
+			String note = "Connection error 6 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 6: " + e.getMessage());
 			e.printStackTrace();
 		} catch (UnrecoverableKeyException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Connection error 7: " + e.getMessage());
+			String note = "Connection error 7 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 7: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (httpClient != null) {
@@ -629,5 +642,24 @@ public class StandaloneDMDispatcher {
 			}
 		}
 		return seriesList;
+	}
+	
+	static void printStackTraceToDialog(String note, Exception e) {
+		StringBuilder sb = new StringBuilder(note);
+        sb.append(e.getMessage());
+        sb.append("\n");
+        for (StackTraceElement ste : e.getStackTrace()) {
+            sb.append(ste.toString());
+            sb.append("\n");
+        }
+        JTextArea jta = new JTextArea(sb.toString());
+        JScrollPane jsp = new JScrollPane(jta){
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(480, 320);
+            }
+        };
+        JOptionPane.showMessageDialog(
+                null, jsp, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }
