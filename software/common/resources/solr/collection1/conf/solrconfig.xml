@@ -379,7 +379,7 @@
       -->
 
      <autoSoftCommit> 
-       <maxTime>600000</maxTime> 
+       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime> 
      </autoSoftCommit>
 
     <!-- Update Related Event Listeners
