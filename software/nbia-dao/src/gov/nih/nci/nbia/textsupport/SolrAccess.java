@@ -69,13 +69,15 @@ public class SolrAccess {
 			   query.setHighlight(true).setHighlightSnippets(1);
 			   if (classicSearch) {
 				   query.addHighlightField("text");
+				   query.setFields("id,patientId,f*");
 			   } else {
 				   query.addHighlightField(tempterm);
 				   query.addHighlightField("text");
+				   query.setFields("id,patientId,tempterm");
 			   }
 			   query.setHighlightSimplePre("<strong>");
 			   query.setHighlightSimplePost("</strong>");
-			   query.setFields("id,patientId,f*,d*");
+			   
 			   // hold to 3000 values for performance
 			   query.setRows(3000);
 			   query.setParam(GroupParams.GROUP, Boolean.TRUE);
