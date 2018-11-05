@@ -182,8 +182,9 @@ public class StandaloneDMDispatcher {
 						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
 //				return;
 				//check the os properties of installed software to determined the installer type  	
-				StandaloneDMDispatcher.os = DownloaderProperties.getInstallerType();
+				os = DownloaderProperties.getInstallerType();
 			}
+			else os = linuxOs;
 		}
 		
 		try {

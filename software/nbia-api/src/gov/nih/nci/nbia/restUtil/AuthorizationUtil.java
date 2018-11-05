@@ -32,7 +32,7 @@ public class AuthorizationUtil {
 		}
 	}
 	public static void setUserSites(String user, List<SiteData> authorizedSites){
-		long now = System.currentTimeMillis() + 600000L;
+		long now = System.currentTimeMillis() + 6000000L;
 		SiteUtil util = new SiteUtil();
         util.setCreated(now);
         util.setAuthorizedSites(authorizedSites);

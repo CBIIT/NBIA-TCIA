@@ -35,10 +35,11 @@ import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
-import gov.nih.nci.nbia.restUtil.ResultSetCache;
+import gov.nih.nci.nbia.restUtil.PatientResultSetCache;
 import gov.nih.nci.nbia.restUtil.ResultSetSorter;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
 import gov.nih.nci.nbia.restUtil.PatientSummaryFactory;
+
 
 import java.text.SimpleDateFormat;
 import org.springframework.dao.DataAccessException;
@@ -189,7 +190,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 		int size = Integer.parseInt(sizeString);
 		String sort = sortField+"-"+sortDirection;
 		List<PatientSearchResultWithModilityAndBodyPart> patients = null;
-		ResultSetCache cache = new ResultSetCache();
+		PatientResultSetCache cache = new PatientResultSetCache();
 		PatientSearchSummary  patientSearchSummary=cache.getPatientSearchSummary(queryKey);
 		PatientSearchSummary  returnValue=null;
 		if (patientSearchSummary==null) {
@@ -209,14 +210,19 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
-            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true);
+            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null);
+            //System.out.println("Size is "+SizeOf.getObjectSize(cacheValue));
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
 		}  else {
 			System.out.println("Found in cache");
+			System.out.println("Sort-"+sort);
+			System.out.println("GetSort-"+patientSearchSummary.getSort());
 			if (!patientSearchSummary.getSort().equalsIgnoreCase(sort)) {
+				System.out.println("Doing sort");
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
-				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false), start, size);
+				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
+						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections()), start, size);
 			} else {
 				returnValue = PatientSummaryFactory.getReturnValue(patientSearchSummary, start, size);
 			}

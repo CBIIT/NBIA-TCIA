@@ -74,9 +74,9 @@ public class SolrFieldBuilder {
 	      }
 
 	    }
-        for (Map.Entry<String, String> entry : dicomFieldMap.entrySet()) {
+       /** for (Map.Entry<String, String> entry : dicomFieldMap.entrySet()) {
             System.out.println("dicom : " + entry.getKey() + " solr : " + entry.getValue());
-        }
+        } */
     }
 	
 }

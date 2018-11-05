@@ -4,11 +4,11 @@ import org.apache.commons.jcs.JCS;
 import org.apache.commons.jcs.access.CacheAccess;
 import org.apache.commons.jcs.access.exception.CacheException;
 
-public class ResultSetCache {
+public class TextResultSetCache {
 	
-	private CacheAccess<String, PatientSearchSummary> cache;
+	private CacheAccess<String, TextSearchSummary> cache;
 	
-	public ResultSetCache() {
+	public TextResultSetCache() {
 		try {
 			cache = JCS.getInstance( "default" );
 		} catch (Exception e) {
@@ -16,7 +16,7 @@ public class ResultSetCache {
 		}
 	}
 
-	public PatientSearchSummary getPatientSearchSummary(String key) {
+	public TextSearchSummary getPatientSearchSummary(String key) {
 		try {
 
 		return cache.get(key);
@@ -28,7 +28,7 @@ public class ResultSetCache {
 		return null;
 	}
 
-	public void putPatientPatientSearchSummary(String key, PatientSearchSummary value) {
+	public void putPatientPatientSearchSummary(String key, TextSearchSummary value) {
           cache.put(key, value);
 	}
 }

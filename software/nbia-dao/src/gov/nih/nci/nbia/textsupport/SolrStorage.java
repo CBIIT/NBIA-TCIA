@@ -231,7 +231,7 @@ public class SolrStorage {
 						{
 							for (DicomTagDTO tag : tags)
 							{
-								if (tag.getData()!=null&&(tag.getData().length()>2))
+								if (tag.getData()!=null&&(tag.getData().length()>1))
 								{
 								   int position = tag.getElement().indexOf("(");
 								   String element="0000,0000";
