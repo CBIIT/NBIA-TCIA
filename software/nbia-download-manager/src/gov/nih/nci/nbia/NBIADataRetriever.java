@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
  * @author Q. Pan
  *
  */
-public class DownloaderApp extends StandaloneDMDispatcher {
+public class NBIADataRetriever extends StandaloneDMDispatcher {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {

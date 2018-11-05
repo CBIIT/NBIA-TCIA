@@ -33,7 +33,7 @@ import org.apache.commons.lang.math.NumberUtils;
  *
  */
 public abstract class StandaloneDM {
-	protected final String winTitle = "Downloader App";
+	protected final String winTitle = "NBIA Data Retriever";
 	protected static final String SubmitBtnLbl = "Submit";	
 	protected JFrame frame;
 	protected JLabel statusLbl;
