@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.ProxySelector;
+import java.net.Socket;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -36,6 +37,10 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URI;
+import java.util.Iterator;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -72,17 +77,16 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import gov.nih.nci.nbia.util.DownloaderProperties;
-import gov.nih.nci.nbia.util.PropertyLoader;
 
 /**
  * @author Q. Pan
  *
  */
 public class StandaloneDMDispatcher {
-	public static final String launchMsg = "To run Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and open the file with Downloader app.";
-	private final static String newVersionMsg = "There is a new version of Downloader available.";
-	private final static String manifestVersionMsg = "The manifest file version is not suported by this Downloader.  Please generate a new manifest file compatible with the Downloader version ";
-	private final static String manifestVersionNewMsg = "The version of manifest file is higher than the version of this app.  Please upgrade your app.";
+	public static final String launchMsg = "To run NBIA Data Retriever, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and click the file to launch the app.";
+	private final static String newVersionMsg = "A newer version of this app is available.";
+	private final static String manifestVersionMsg = "The manifest file version is not suported by this version of app.  Please generate a new manifest file compatible with this version of app.";
+	private final static String manifestVersionNewMsg = "The version of manifest file is higher than this app version.  Please upgrade your app.";
 	private static final String supportedVersion = null; // for future when
 															// certain version
 															// is no longer
@@ -370,7 +374,7 @@ public class StandaloneDMDispatcher {
 			int length = -1;
 			ProgressMonitorInputStream pmis;
 			pmis = new ProgressMonitorInputStream(null,
-					"Downloading new version of installer for Downloader App...", in);
+					"Downloading new version of installer for NBIA Data Retriever...", in);
 
 			ProgressMonitor monitor = pmis.getProgressMonitor();
 			monitor.setMillisToPopup(0);
@@ -435,7 +439,7 @@ public class StandaloneDMDispatcher {
 					try {
 						String irCmd = "/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
 						if (vNum >= 3.2) {
-							irCmd = "/usr/bin/sudo -S yum -q -y remove downloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
+							irCmd = "/usr/bin/sudo -S yum -q -y remove NBIADataRetriever.x86_64;/usr/bin/sudo -S yum -y -q install ";
 						}
 						String[] cmd = { "/bin/bash", "-c", irCmd+ installerPath };
 
@@ -455,7 +459,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-								"Installation of new version of Downloader is completed " + status + ".");
+								"Installation of new version of NBIA Data Retriever is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -463,7 +467,13 @@ public class StandaloneDMDispatcher {
 				} else if (os.equals("Ubuntu")) {
 					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
 					try {
-						String irCmd = "/usr/bin/sudo -S dpkg -i ";						
+						String irCmd = "/usr/bin/sudo -S dpkg -r tciadownloader; /usr/bin/sudo -S dpkg -i ";
+
+						if (vNum >= 3.2) {
+							
+							irCmd = "/usr/bin/sudo -S dpkg -i ";	
+						}
+											
 						String[] cmd = { "/bin/bash", irCmd + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
@@ -482,7 +492,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-								"Installation of new version of Downloader is completed " + status + ".");
+								"Installation of new version of NBIA Data Retriever is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -541,7 +551,8 @@ public class StandaloneDMDispatcher {
 			}
 
 		} catch (java.net.ConnectException e) {
-			String note = "Connection error 1 while connecting to "+ url.toString() + ":\n";
+			String note = "Connection error 1 while connecting to "+ url.toString() + ":\n" + getProxyInfo(); 
+			//+ checkListeningPort("127.0.0.1", 8888);
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 1: " + e.getMessage());
 			e.printStackTrace();
@@ -661,5 +672,51 @@ public class StandaloneDMDispatcher {
         };
         JOptionPane.showMessageDialog(
                 null, jsp, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	static String getProxyInfo() {
+		StringBuffer sb = new StringBuffer("Get proxy info: ");
+	      try {
+	         System.setProperty("java.net.useSystemProxies", "true");
+	         List<Proxy> l = ProxySelector.getDefault().select(
+	            new URI("https://www.google.com/"));
+	         
+	         for (Iterator<Proxy> iter = l.iterator(); iter.hasNext();) {
+	            Proxy proxy = iter.next();
+	            sb.append("proxy type : " + proxy.type() +"\n");
+	            InetSocketAddress addr = (InetSocketAddress) proxy.address();
+	            
+	            if (addr == null) {
+	            		sb.append("No Proxy\n");
+	            } else {
+	            		sb.append("proxy hostname : " + addr.getHostName()+"\n");
+	            		sb.append("proxy port : " + addr.getPort()+"\n");
+	            } 
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         sb.append(e.getMessage());
+	      }
+	      return sb.toString();
+	   }	
+	
+	static String checkListeningPort(String host, int port) {	
+		Socket s = null;
+	    try
+	    {
+	        s = new Socket(host, port);
+	        return host+":"+port +"is listening;\n";
+	    }
+	    catch (Exception e)
+	    {
+	    		return "checking listening port for "+host+":"+port + " result false for reason "+e.getMessage();
+	    }
+	    finally
+	    {
+	        if(s != null)
+	            try {s.close();}
+	            catch(Exception e){}
+	    }
+	
 	}
 }
