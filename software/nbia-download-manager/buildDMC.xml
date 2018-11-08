@@ -64,8 +64,8 @@ ant -f buildDMC.xml
 		<os family="mac"/>
 	</condition>
 
-	<condition property="native.bundles" value="deb">
-		<!--condition property="native.bundles" value="rpm"-->
+	<!--condition property="native.bundles" value="deb"-->
+	<condition property="native.bundles" value="rpm">
 		<os family="unix"/>
 	</condition>
 
@@ -77,7 +77,7 @@ ant -f buildDMC.xml
 		<os family="mac"/>
 	</condition>
 
-	<condition property="icon.file.name" value="downloader.png">
+	<condition property="icon.file.name" value="NBIADataRetriever.png">
 		<os family="unix"/>
 	</condition>
 
@@ -237,7 +237,7 @@ ant -f buildDMC.xml
 
 			<fx:bundleArgument arg="win.exe.systemWide" value="true"/>
 			<fx:bundleArgument arg="mac.CFBundleName" value="NBIA Data Retriever"/>
-			<fx:bundleArgument arg="linux.bundleName" value="NBIA Data Retriever"/>
+			<fx:bundleArgument arg="linux.bundleName" value="NBIADataRetriever"/>
 			<fx:bundleArgument arg="win.menuGroup" value="NBIA"/>
 			<fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
 
