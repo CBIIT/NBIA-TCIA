@@ -128,7 +128,7 @@ L-->
   </target>
   
   <target name="compile" depends="ivy-compile, getMacLib">
-	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
+	<condition property="excludes" value="gov/nih/nci/nbia/NBIADataRetriever.java">
 	<not>
 		<os family="mac"/>
 	</not>

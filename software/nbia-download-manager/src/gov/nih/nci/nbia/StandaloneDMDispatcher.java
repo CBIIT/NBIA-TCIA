@@ -405,8 +405,16 @@ public class StandaloneDMDispatcher {
 	}
 
 	private void install(String downloadUrl) {
+		Double vNum = 0.0;
+		if (appVersion != null) {
+			vNum = Double.parseDouble(appVersion);
+		}
 		String installerPath = getInstallerName(downloadUrl);
 		if (os.contains("windows")) {
+//			if (vNum == 3.0) {
+//			int result = JOptionPane.showConfirmDialog(null, "After the app installation, please uninstall TCIA Downloader and restart your computer.", "Reminder",
+//					JOptionPane.OK_CANCEL_OPTION);
+//			}
 			try {
 				Runtime.getRuntime().exec("msiexec /i \"" + installerPath + "\"");
 			} catch (Exception e) {
@@ -420,10 +428,6 @@ public class StandaloneDMDispatcher {
 				e.printStackTrace();
 			}
 		} else {
-			Double vNum = 0.0;
-			if (appVersion != null) {
-				vNum = Double.parseDouble(appVersion);
-			}
 			JLabel pwLabel = new JLabel("Sudo Password");
 			JTextField password = new JPasswordField();
 			Object[] objs = { pwLabel, password };
