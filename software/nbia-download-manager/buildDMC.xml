@@ -23,12 +23,13 @@ ant -f buildDMC.xml
 	<property name="javafx.run.width" value="800"/>
 	<property name="javafx.run.height" value="600"/>
 	<property name="package.dir" location="packages"/>
-	<property name="application.title" value="NBIA Data Retriever" />
+	<property name="application.title" value="nbia-data-retriever" />
+	<!--property name="application.title" value="downloader" /-->
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
 	<property name="package.version" value="3.2" />
 	<property name="copyright" value="(c) 2018 NCI, Leidos, Ellumen" />
-	<property name="icon.file.name" value="downloader.png" />
+	<property name="icon.file.name" value="nbia-data-retriever.png" />
 
 	<condition property="IS_MAC" value="true" else="false">
 		<os family="mac"/>
@@ -64,8 +65,8 @@ ant -f buildDMC.xml
 		<os family="mac"/>
 	</condition>
 
-	<!--condition property="native.bundles" value="deb"-->
-	<condition property="native.bundles" value="rpm">
+	<condition property="native.bundles" value="deb">
+	<!--condition property="native.bundles" value="rpm"-->
 		<os family="unix"/>
 	</condition>
 
@@ -77,7 +78,8 @@ ant -f buildDMC.xml
 		<os family="mac"/>
 	</condition>
 
-	<condition property="icon.file.name" value="NBIADataRetriever.png">
+	<condition property="icon.file.name" value="nbia-data-retriever">
+	<!--condition property="icon.file.name" value="downloader.png"-->	
 		<os family="unix"/>
 	</condition>
 
@@ -237,7 +239,8 @@ ant -f buildDMC.xml
 
 			<fx:bundleArgument arg="win.exe.systemWide" value="true"/>
 			<fx:bundleArgument arg="mac.CFBundleName" value="NBIA Data Retriever"/>
-			<fx:bundleArgument arg="linux.bundleName" value="NBIADataRetriever"/>
+			<!--fx:bundleArgument arg="linux.bundleName" value="downloader"/-->
+			<fx:bundleArgument arg="linux.bundleName" value="nbia-data-retriever"/>
 			<fx:bundleArgument arg="win.menuGroup" value="NBIA"/>
 			<fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
 

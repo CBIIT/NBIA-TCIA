@@ -411,10 +411,6 @@ public class StandaloneDMDispatcher {
 		}
 		String installerPath = getInstallerName(downloadUrl);
 		if (os.contains("windows")) {
-//			if (vNum == 3.0) {
-//			int result = JOptionPane.showConfirmDialog(null, "After the app installation, please uninstall TCIA Downloader and restart your computer.", "Reminder",
-//					JOptionPane.OK_CANCEL_OPTION);
-//			}
 			try {
 				Runtime.getRuntime().exec("msiexec /i \"" + installerPath + "\"");
 			} catch (Exception e) {
@@ -442,11 +438,11 @@ public class StandaloneDMDispatcher {
 				if (os.equals("CentOS")) {
 					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
 					try {
-						String irCmd = "/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
-						if (vNum >= 3.2) {
-							irCmd = "/usr/bin/sudo -S yum -q -y remove NBIADataRetriever.x86_64;/usr/bin/sudo -S yum -y -q install ";
-						}
-						String[] cmd = { "/bin/bash", "-c", irCmd+ installerPath };
+						String upgradCmd="/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
+						if (vNum>=3.2)
+							upgradCmd="/usr/bin/sudo -S yum -q -y remove NBIADataRetriever.x86_64;/usr/bin/sudo -S yum -y -q install ";
+							
+						String[] cmd = { "/bin/bash", "-c", upgradCmd + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;
@@ -471,15 +467,11 @@ public class StandaloneDMDispatcher {
 					}
 				} else if (os.equals("Ubuntu")) {
 					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
+					String upgradCmd="/usr/bin/sudo -S dpkg -i ";
+					if (vNum>=3.2)
+						upgradCmd="/usr/bin/sudo -S dpkg -i nbia-data-retriever; /usr/bin/sudo -S dpkg -i ";
 					try {
-						String irCmd = "/usr/bin/sudo -S dpkg -r tciadownloader; /usr/bin/sudo -S dpkg -i ";
-
-						if (vNum >= 3.2) {
-							
-							irCmd = "/usr/bin/sudo -S dpkg -i ";	
-						}
-											
-						String[] cmd = { "/bin/bash", irCmd + installerPath };
+						String[] cmd = { "/bin/bash", "-c", upgradCmd + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;
