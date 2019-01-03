@@ -198,6 +198,12 @@ public class StandaloneDMDispatcher {
 		if ((resp != null) && (resp.size() >= 3)) {
 			key = resp.get(2);
 		}
+		
+		
+		if ((resp != null) && (resp.size() >= 6)) {
+			System.setProperty("help.desk.url", resp.get(4));
+			System.setProperty("online.help.url", resp.get(5));
+		}		
 
 		if ((resp != null) && (Double.parseDouble(resp.get(0)) > Double.parseDouble(appVersion))) {
 			if (resp.size() >= 4) {

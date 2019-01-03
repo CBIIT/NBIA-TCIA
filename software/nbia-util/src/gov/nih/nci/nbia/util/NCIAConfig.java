@@ -766,7 +766,19 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("force.downloader.upgrade");
         checkProperty("force.downloader.upgrade", propertyValue);
         return propertyValue;   	
-    }       
+    } 
+    
+    public static String getDownloaderAppHelpDeskLink() {
+        String propertyValue = properties.getProperty("help.desk.url");
+        checkProperty("help.desk.url", propertyValue);
+        return propertyValue;   	
+    } 
+    
+    public static String getDownloaderAppOnlineHelpUrl() {
+        String propertyValue = properties.getProperty("online.help.url");
+        checkProperty("online.help.url", propertyValue);
+        return propertyValue;   	
+    }           
     
     public static String getAppName() {
         String propertyValue = properties.getProperty("branding.appname");
