@@ -116,7 +116,7 @@ public class StandaloneDMDispatcher {
 			sdmp.launch();
 		} else {
 			JOptionPane.showMessageDialog(null, launchMsg);
-			System.exit(0);
+			//System.exit(0);
 		}
 	}
 
