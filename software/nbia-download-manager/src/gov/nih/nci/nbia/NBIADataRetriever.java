@@ -11,26 +11,46 @@ import javax.swing.SwingUtilities;
  *
  */
 public class NBIADataRetriever extends StandaloneDMDispatcher {
+	private static List<File> files;
+	static{
+		Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
+		files = ofe.getFiles();
+		});
+    };
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			StandaloneDMDispatcher app = new StandaloneDMDispatcher();
-			Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
-				List<File> files = ofe.getFiles();
-				if (files != null && files.size() > 0) {
-					try {
-						app.loadManifestFile(files.get(0).getAbsolutePath());
-						app.launch();
-					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, StandaloneDMDispatcher.launchMsg);
-						e.printStackTrace();
-					}
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"It should never reach here! Mac OS is not sending the correct signal.");
+//			Application.getApplication().setOpenFileHandler((AppEvent.OpenFilesEvent ofe) -> {
+//				List<File> files = ofe.getFiles();
+//				if (files != null && files.size() > 0) {
+//					try {
+//						app.loadManifestFile(files.get(0).getAbsolutePath());
+//						app.launch();
+//					} catch (Exception e) {
+//						JOptionPane.showMessageDialog(null, "try to see where 1"+StandaloneDMDispatcher.launchMsg);
+//						e.printStackTrace();
+//					}
+//				} else {
+//					JOptionPane.showMessageDialog(null,
+//							"It should never reach here! Mac OS is not sending the correct signal.");
+//				}
+//			});
+			
+			if (files != null && files.size() > 0) {
+				try {
+					app.loadManifestFile(files.get(0).getAbsolutePath());
+					app.launch();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, StandaloneDMDispatcher.launchMsg);
+					e.printStackTrace();
 				}
-			});
-
+			} 
+//			else {
+//				JOptionPane.showMessageDialog(null,
+//						"It should never reach here! Mac OS is not sending the correct signal.");
+//			}
+			else
 			if  (args.length > 0) {
 				File f = new File(args[0]);
 			
