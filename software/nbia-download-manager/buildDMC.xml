@@ -231,7 +231,7 @@ ant -f buildDMC.xml
 			</fx:resources>
 
 			<fx:info title="${application.title}" vendor="${application.vendor}" category="public.app-category.medical" copyright="${copyright}" license="3 Clause BSD">
-				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for Downloader App" icon="${icon.file.name}">
+				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for NBIA Data Retriever" icon="${icon.file.name}">
 				</fx:association>
 				<!--fx:icon href="${package.resource.dir}/package/linux/${icon.file.name}"  kind="default" width="32" height="32" depth="8"/-->
 			</fx:info>
