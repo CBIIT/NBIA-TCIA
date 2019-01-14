@@ -6,7 +6,7 @@ ant -f buildDMC.xml
 	<description>
 		Create a executable jar for Standalond Download Manager with Ant build script
 	</description>
-	<!--property name="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home"/-->
+	<property name="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home"/>
 	<property file="../build/defaultAHP3.properties"/>
 	<property name="projectName" value="StandaloneDM" />
 	<property name="common.dir" value="${basedir}/../" />
@@ -15,23 +15,21 @@ ant -f buildDMC.xml
 	<property name="dist.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager" />
 	<property name="dist.lib.dir" location="${common.dir}/target/dist/exploded/nbia-download-manager/lib" />
 	<property name="resources.dir" location="resources" />
-	<property name="images.dir" location="images" />	
+	<property name="images.dir" location="images" />
 	<property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
 	<property name="lib.dir" value="${project.lib.dir}/compile" />
 	<property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
-	<property name="common.lib.dir" location="${common.dir}/common/resources/lib"/>
-	<!--property name="main-class" value="gov.nih.nci.nbia.StandaloneDM" /-->
 	<property name="javac.compilerargs" value="-XDignore.symbol.file=true"/>
 	<property name="javafx.run.width" value="800"/>
 	<property name="javafx.run.height" value="600"/>
 	<property name="package.dir" location="packages"/>
-	<!--property name="application.title" value="Downloader App" /-->
-	<property name="application.title" value="downloader" />
+	<!--property name="application.title" value="nbia-data-retriever" /-->
+	<property name="application.title" value="NBIA Data Retriever" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
-	<property name="package.version" value="3.2" />
+	<property name="package.version" value="3.3" />
 	<property name="copyright" value="(c) 2018 NCI, Leidos, Ellumen" />
-	<property name="icon.file.name" value="downloader.png" />
+	<property name="icon.file.name" value="nbia-data-retriever.png" />
 
 	<condition property="IS_MAC" value="true" else="false">
 		<os family="mac"/>
@@ -49,71 +47,53 @@ ant -f buildDMC.xml
 		<os family="unix"/>
 	</condition>
 
-	<condition property="javafx.main.class" value="gov.nih.nci.nbia.DownloaderApp" else="gov.nih.nci.nbia.StandaloneDMDispatcher">
+	<condition property="javafx.main.class" value="gov.nih.nci.nbia.NBIADataRetriever" else="gov.nih.nci.nbia.StandaloneDMDispatcher">
 		<os family="mac"/>
 	</condition>
-	
-	<condition property="excludes" value="gov/nih/nci/nbia/DownloaderApp.java">
+
+	<condition property="excludes" value="gov/nih/nci/nbia/NBIADataRetriever.java">
 		<not>
 			<os family="mac"/>
 		</not>
 	</condition>
 
-		
-	<!--condition property="native.bundles" value="all" else="deb"-->
-	<!--condition property="native.bundles" value="all" else="rpm">
-
-		<or>
-			<os family="mac"/>
-			<os family="windows"/>
-		</or>	
-	</condition-->
-	
 	<condition property="native.bundles" value="msi">
-			<os family="windows"/>
-	</condition>		
-	
-	<condition property="native.bundles" value="mac.appStore">
-			<os family="mac"/>
+		<os family="windows"/>
 	</condition>
-	
+
+	<condition property="native.bundles" value="mac.appStore">
+		<os family="mac"/>
+	</condition>
+
 	<condition property="native.bundles" value="deb">
 	<!--condition property="native.bundles" value="rpm"-->
 		<os family="unix"/>
-	</condition>	
-	
-	<condition property="icon.file.name" value="TCIA Downloader.ico">
-			<os family="windows"/>
 	</condition>
-	
-	<condition property="icon.file.name" value="Downloader App.icns">
-			<os family="mac"/>
+
+	<condition property="icon.file.name" value="NBIA Data Retriever.ico">
+		<os family="windows"/>
 	</condition>
-	
-	<condition property="icon.file.name" value="downloader.png">
-			<os family="unix"/>
-	</condition>	
+
+	<condition property="icon.file.name" value="NBIA Data Retriever.icns">
+		<os family="mac"/>
+	</condition>
+
+	<condition property="icon.file.name" value="nbia-data-retriever">
+		<os family="unix"/>
+	</condition>
 
 	<path id="common.classpath">
 		<fileset dir="${common.dir}/target/lib">
 			<include name="ivy-*.jar" />
 		</fileset>
 	</path>
-	<path id="common.lib.classpath">
-		<fileset dir="${common.lib.dir}">
-			<include name="**/*.jar"/>
-		</fileset>
-	</path>
+
 	<!-- Task definitions -->
 	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="common.classpath" />
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath refid="common.lib.classpath"/>
-	</taskdef>
-	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask" classpathref="common.lib.classpath"/>
 
-	  <tstamp>
-	     <format property="time.stamp" pattern="yyyy-MM-dd_HH"/>
-	  </tstamp>	
+	<tstamp>
+		<format property="time.stamp" pattern="yyyy-MM-dd_HH-mm"/>
+	</tstamp>
 
 	<!-- Targets -->
 	<target name="ivy-settings">
@@ -154,19 +134,11 @@ ant -f buildDMC.xml
 	</target>
 
 	<target name="getMacLib" if="IS_MAC">
- 		<if>
- 		    <equals arg1="${ant.java.version}" arg2="1.8"/>
- 		    <then>
- 		    	<echo>"---- building for 1.8----"</echo>
- 				<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
- 				<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/runtime"/>
- 		    </then>
- 		    <else>
- 				<copy file="${common.dir}/common/resources/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
- 				<copy file="${common.dir}/common/resources/lib/rt.jar" toDir="${project.lib.dir}/runtime"/> 
- 		    </else>
- 		</if>
-	</target> 
+		<echo>"---- building for 1.8----"</echo>
+		<echo>"!!!!!!!!!!!!!!!! ${java.home}$$$$$$$$$$$$$$$$$$${project.lib.dir}"</echo>
+		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
+		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/runtime"/>
+	</target>
 
 	<target name="init">
 		<mkdir dir="${build.dir}" />
@@ -203,21 +175,21 @@ ant -f buildDMC.xml
 	<!-- jar it, extract above dependency-all.jar and zip it with project files -->
 	<target name="jar" depends="compile, copy-dependencies"
                 description="package, output to JAR">
-		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDMDispatcher" else="gov.nih.nci.nbia.DownloaderApp">
+		<condition property="main-class" value="gov.nih.nci.nbia.StandaloneDMDispatcher" else="gov.nih.nci.nbia.NBIADataRetriever">
 			<not>
 				<os family="mac"/>
 			</not>
 		</condition>
-	    <filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
-	    <filter token="time.stamp" value="${time.stamp}"/>
-	  	<filter token="APPNAME" value="${branding.appname}"/>
+		<filter token="NBIA_WIKI_CSH_URL" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+		<filter token="time.stamp" value="${time.stamp}"/>
+		<filter token="APPNAME" value="${branding.appname}"/>
 		<filter token="help.desk.url" value="${help.desk.url}"/>
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
 		</copy>
-	    <copy todir="${build.dir}" filtering="false">
-	     	<fileset dir="${images.dir}" includes="**/*.png" />
-	    </copy> 
+		<copy todir="${build.dir}" filtering="false">
+			<fileset dir="${images.dir}" includes="**/*.png" />
+		</copy>
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${dist.lib.dir}" />
 
@@ -248,7 +220,7 @@ ant -f buildDMC.xml
 		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="${native.bundles}" outdir="${package.dir}" outfile="${application.title}" verbose="true">
 
 			<fx:application id="standaloneDMApp" name="${application.title}" mainClass="${javafx.main.class}" version="${package.version}">
-				<fx:argument>sample.tcia</fx:argument>
+				<!--fx:argument>sample.tcia</fx:argument-->
 			</fx:application>
 
 			<fx:resources>
@@ -257,20 +229,18 @@ ant -f buildDMC.xml
 				<fx:fileset dir="${package.resource.dir}/package/macosx" os="mac" type="icon" includes="${icon.file.name}" />
 				<fx:fileset dir="${package.resource.dir}/package/linux" os="unix" type="icon" includes="${icon.file.name}" />
 			</fx:resources>
-			
-			<fx:info title="${application.title}" vendor="${application.vendor}" category="Research" copyright="${copyright}" license="3 Clause BSD">
-				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for Downloader App" icon="${icon.file.name}">
+
+			<fx:info title="${application.title}" vendor="${application.vendor}" category="public.app-category.medical" copyright="${copyright}" license="3 Clause BSD">
+				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for NBIA Data Retriever" icon="${icon.file.name}">
 				</fx:association>
 				<!--fx:icon href="${package.resource.dir}/package/linux/${icon.file.name}"  kind="default" width="32" height="32" depth="8"/-->
 			</fx:info>
-			
-            <fx:bundleArgument arg="win.exe.systemWide" value="true"/>
 
-            <!--fx:bundleArgument arg="linux.bundleName" value="TCIADownloader"/-->
-	    	<fx:bundleArgument arg="linux.bundleName" value="downloader"/>
-            <fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
-            <fx:bundleArgument arg="mac.CFBundleName" value="DownloaderApp"/>
-            <fx:bundleArgument arg="win.menuGroup" value="TCIADownloader"/>
+			<fx:bundleArgument arg="win.exe.systemWide" value="true"/>
+			<fx:bundleArgument arg="mac.CFBundleName" value="NBIA Data Retriever"/>
+			<fx:bundleArgument arg="linux.bundleName" value="nbia-data-retriever"/>
+			<fx:bundleArgument arg="win.menuGroup" value="NBIA"/>
+			<fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
 
 		</fx:deploy>
 	</target>
