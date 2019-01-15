@@ -1,0 +1,130 @@
+<!-- ----------  Save a shred list. This is no longer being used.  ---------- -->
+
+<div
+    class="panel panel-info save-shared-list-div alert-box-div alert-box-shadow"
+    [ngClass]="{
+        'hide-item': ! showSaveListNameInputBox,
+        'save-shared-list-subject-id-list': sharedListInputType === menuItems.SAVE_SHARED_LIST_SUBJECT_ID_INPUT_MENU_ITEM,
+        'save-shared-list-from-cart': sharedListInputType === menuItems.SAVE_SHARED_LIST_CART_MENU_ITEM
+    }"
+>
+
+    <div class="panel-heading">
+        <div class="panel-title alert-panel-title">
+            Save Shared List
+        </div>
+    </div>
+
+    <div style="padding-top:20px" class="panel-body">
+
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+            <!--  Name  -->
+            <div class="input-group shared-list-input-div form-group">
+
+                <label class="input-group-addon shared-list-input-label" for="name">Name:</label>
+                <input
+                    type="text"
+                    ngModel
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    (input)="onNameChange(f)"
+                    required
+                >
+            </div>
+
+            <!--  Description  -->
+            <div class="input-group shared-list-input-div  form-group">
+
+                <label class="input-group-addon shared-list-input-label" for="description">
+                    Description (optional):
+                </label>
+                <input
+                    type="text"
+                    ngModel
+                    class="form-control"
+                    id="description"
+                    name="description"
+                >
+            </div>
+
+            <!--  URL  -->
+            <div class="input-group shared-list-input-div form-group">
+
+                <label class="input-group-addon shared-list-input-label" for="url">URL (optional):</label>
+                <input
+                    type="text"
+                    ngModel
+                    class="form-control"
+                    id="url"
+                    name="url"
+                >
+            </div>
+
+            <!-- Text input for Subject ID list -->
+            <div
+                *ngIf="sharedListInputType === menuItems.SAVE_SHARED_LIST_SUBJECT_ID_INPUT_MENU_ITEM"
+                class="input-group shared-list-input-div form-group"
+            >
+
+                <label class="input-group-addon shared-list-input-label text-input-label" for="subjectIdList">Subject
+                    IDs:<br>
+                    <small>comma separated</small>
+                </label>
+                <textarea
+                    ngModel
+                    class="form-control text-input"
+                    id="subjectIdList"
+                    name="subjectIdList"
+                ></textarea>
+            </div>
+
+
+            <!-- Buttons -->
+            <span class="form-group">
+                    <!--  "Cancel" button  -->
+                    <button
+                        [disabled]="status === WAITING"
+                        class="btn btn-danger alert-box-button"
+                        (click)="onCancelClick(f)"
+                        type="button"
+                    >
+                        Cancel
+                    </button>&nbsp;
+
+                <!-- "Save" button  -->
+                    <button
+                        *ngIf="status !== DUPE" class="btn  btn-default nbia-button alert-box-button"
+                        [disabled]="!f.valid || status === WAITING"
+                        [ngClass]="{
+                            'disabled-button':!f.valid || status === WAITING
+                        }"
+                        type="submit"
+                    >
+                        <span class="glyphicon glyphicon-export"></span>Save
+                    </button>
+
+                <!-- "Replace" button  -->
+                    <button
+                        *ngIf="status === DUPE"
+                        [disabled]="!f.valid || status === WAITING"
+                        class="btn  btn-default nbia-button "
+                        [ngClass]="{
+                            'disabled-button':!f.valid || status === WAITING
+                        }"
+                        type="submit"
+                    >
+                        <span class="glyphicon glyphicon-export"></span>Replace
+                    </button>
+
+                <!--  Status label  -->
+                    <label *ngIf="status === WAITING">Saving...</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<label *ngIf="status === DUPE" class="label label-danger dupe-warning">{{sharedListName}} already exists.</label>
+
+                </span>
+
+        </form>
+
+    </div>
+</div>

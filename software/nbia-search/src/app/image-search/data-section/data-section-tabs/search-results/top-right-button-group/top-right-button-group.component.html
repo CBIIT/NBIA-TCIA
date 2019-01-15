@@ -1,0 +1,33 @@
+<!-- ----------  Top right button bar in the search results tab  ---------- -->
+<div
+    class="btn-group"
+    role="group"
+    aria-label="..."
+>
+
+    <!-- -----  Toggle the scrolling for the search results table  ----- -->
+    <button
+        *ngIf="SHOW_SCROLL_STYLE_BUTTON"
+        type="button"
+        class="btn btn-default"
+        (click)="onToggleScrollClick()"
+    >
+        <span *ngIf="!scroll" class="glyphicon glyphicon-option-horizontal"></span>
+        <span *ngIf="scroll" class="glyphicon glyphicon-option-vertical"></span>
+    </button>
+
+    <!-- -----  Pop up the checkbox list of columns to show in the search results table  ----- -->
+    <button
+        type="button"
+        class="btn btn-default"
+        title="Select Display Columns"
+        id="selectDisplayColumnsButton"
+        [ngClass]="{
+            'button-down': showSearchResultsColumnClickSelected
+        }"
+        (click)="onShowSearchResultsColumnClick()"
+    >
+        <span class="glyphicon glyphicon-menu-hamburger" (click)="onShowSearchResultsColumnClick()"></span>
+    </button>
+
+</div>

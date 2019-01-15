@@ -1,0 +1,32 @@
+@import '../../../../../../app.component.scss';
+
+$descriptionPopupMaxHeight: 400px;
+$rightOfCenter: 20px;
+
+.descriptionPopup {
+    position: absolute;
+    margin-left: calc(50% + #{$rightOfCenter});
+    background-color: #f2f2f2;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    max-height: $descriptionPopupMaxHeight;
+}
+
+// Fade in
+.showDescription {
+    opacity: 0.95 !important;
+    z-index: $pie-char-description-popup-z-index !important;
+}
+
+// Fade
+.step {
+    opacity: 0;
+    transition: .6s;
+    z-index: -1;
+}
+
+// If we want a vertical scroll bar on the right.
+.descriptionTextDiv {
+    max-height: $descriptionPopupMaxHeight - 60px;
+    overflow-y: scroll;
+}

@@ -1,0 +1,18 @@
+<!-- ----------  This is the Cart button in the Study level Search results.  ---------- -->
+
+<span class="cart-span">
+    <span class="btn-group">
+        <label
+            class="btn btn-default cart-button"
+            [ngClass]="{
+               'cart-selected': selected,
+               'cart-child-selected': childSelected
+            }"
+            (click)="onStudiesCartClick()"
+        >
+
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+        </label>
+    </span>
+    <span *ngIf="selectedSeriesCount > 0" class="search-results-cart-count">{{selectedSeriesCount}}</span>
+</span>

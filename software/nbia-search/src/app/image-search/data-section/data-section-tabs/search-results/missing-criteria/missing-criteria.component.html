@@ -1,0 +1,46 @@
+<!-- ----------  If a query has been provided as search parameters in the Url,                        ---------- -->
+<!-- ----------  and there are some search criteria which can not be found in our lists of criteria.  ---------- -->
+<!-- ----------  This "popup" will list the missing criteria, and suggest that the user log in.       ---------- -->
+<!-- ----------  @TODO Change message if the user is already logged in.                               ---------- -->
+
+<div *ngIf="displayText.length > 0" class="panel panel-info missing-criteria">
+
+    <div class="panel-heading">
+        <div class="panel-title missing-criteria-panel-title">
+            Inaccessible search criteria
+        </div>
+    </div>
+
+    <div style="padding-top:20px" class="panel-body ">
+
+        <div *ngFor="let t of displayText" class="missing-criteria-list-text">
+            {{t}}
+        </div>
+        <br>
+        <!--
+                <div class="message-text">
+                    There are criteria in your search string that cannot be found.
+                </div>
+        -->
+
+        <div *ngIf="suggestLoggingIn" class="message-text">
+            Try logging in to access restricted collections.
+        </div>
+
+        <button
+            class="btn btn-danger missing-criteria-button"
+            (click)="onCloseClick()"
+            type="button"
+        >
+            Close
+        </button>
+
+       <button
+            class="btn btn-success missing-criteria-button"
+            (click)="onLoginClick()"
+            type="button"
+        >
+            Login
+        </button>
+    </div>
+</div>

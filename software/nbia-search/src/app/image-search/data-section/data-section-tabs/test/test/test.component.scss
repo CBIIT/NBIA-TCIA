@@ -1,0 +1,55 @@
+
+.test-main-panel {
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    height: 100%;
+}
+
+.test-top-panel-heading {
+    background-color: #fff;
+    border-left: solid 1px #c4c4c4;
+    border-right: solid 1px #c4c4c4;
+    border-bottom: solid 1px #c4c4c4;
+    padding-left: 8px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+}
+
+
+.test-panel-heading {
+    background-color: #fff;
+    border-top: solid 1px #c4c4c4;
+    border-left: solid 1px #c4c4c4;
+    border-right: solid 1px #c4c4c4;
+    padding-left: 8px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+}
+
+.test-panel-row {
+    background-color: #fff;
+    border-bottom: solid 1px #c4c4c4;
+    border-left: solid 1px #c4c4c4;
+    border-right: solid 1px #c4c4c4;
+    padding-left: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 12pt;
+}
+
+
+.test-button{
+    position:relative;
+    left: 247px;
+    top:14px;
+}
+
+.test-label{
+    font-size:12pt;
+}
+
+.textInput{
+    width:525px;
+}

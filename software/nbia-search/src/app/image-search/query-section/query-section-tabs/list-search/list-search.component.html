@@ -1,0 +1,15 @@
+<!-- ----------  It was decided not to use this.  ---------- -->
+<div class="list-search-input-panel">
+    <div class="query-panel-heading">Shared List Search</div>
+    <textarea class="list-search-input " [(ngModel)]="sharedListQueryInput"></textarea>
+
+    <span class="label label-default list-search-button  nbia-button"
+          (click)="onSearchClick()">
+        Search
+    </span>
+
+    <span class="label label-default list-search-clear-button  nbia-button"
+          (click)="onClearClick()">
+        Clear
+    </span>
+</div>

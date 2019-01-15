@@ -1,0 +1,93 @@
+<div *ngIf="showIntro" class="intro-div"
+     [ngClass]="{
+    'hide-item': ! showIntro
+    }"
+>
+
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- -------------------------------- Header -------------------------------- -->
+    <div class="intro-header">
+        <span class="heading-image">
+<!--
+            <img src="assets/images/tcia_logo_dark_sml_BW.png" alt="">
+-->
+            <img src={{logoImage}} alt={{logoImage}} class="top-logo">
+        </span>
+
+        <span class="intro-page-number">
+            {{pageIndex + 1}} of {{pageCount}}
+        </span>
+    </div>
+    <!-- ------------------------------------------------------------------------ -->
+
+
+    <span *ngIf="pageIndex === 0">
+        <img src="assets/images/Slide1.png" class="introduction-screenshot" >
+    </span>
+
+    <span *ngIf="pageIndex === 1">
+         <img src="assets/images/Slide2.png" class="introduction-screenshot">
+    </span>
+
+    <span *ngIf="pageIndex === 2">
+        <img src="assets/images/Slide3.png" class="introduction-screenshot">
+    </span>
+
+    <span *ngIf="pageIndex === 3">
+        <img src="assets/images/Slide4.png" class="introduction-screenshot">
+    </span>
+
+    <span *ngIf="pageIndex === 4">
+        <img src="assets/images/Slide5.png" class="introduction-screenshot">
+    </span>
+
+    <span *ngIf="pageIndex === 5">
+        <img src="assets/images/Slide6.png" class="introduction-screenshot">
+    </span>
+
+    <span *ngIf="pageIndex === 6">
+        <img src="assets/images/Slide7.png" class="introduction-screenshot">
+    </span>
+
+    <span *ngIf="pageIndex === 7">
+        <img src="assets/images/Slide8.png" class="introduction-screenshot">
+    </span>
+
+
+
+    <!-- ------------------------------------------------------------------------ -->
+    <div class="intro-button-bar">
+
+        <!--  Checkbox for "Do not show this message again"  -->
+
+        <span class="intro-button-span">
+
+            <div class="intro-checkbox-span">
+                <input type="checkbox" id='checkboxDontShowIntro'
+                       [(checked)]="doNotShowIntroChecked"
+                       (click)="onDontShowAgainCheckboxClick($event.target.checked )">
+                <label class="intro-checkbox" for='checkboxDontShowIntro'>&nbsp;Do not show this again.</label>
+            </div>
+
+            <div>
+                <button class="btn intro-button"
+                        (click)="onPreviousClick()"
+                        type="button">
+                    Previous
+                </button>
+                <button class="btn intro-button"
+                        (click)="onNextClick()"
+                        type="button">
+                    Next
+                </button>
+                <button class="btn intro-button"
+                        (click)="onCloseClick()"
+                        type="button">
+                Close
+                </button>
+            </div>
+        </span>
+
+    </div>
+
+</div>

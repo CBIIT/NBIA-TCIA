@@ -1,0 +1,142 @@
+/*TODO unify parts of this with the Search results main panel (if it works out well) */
+@import '../../../../app.component.scss';
+
+
+.summary-main-panel {
+    background-color: #f4f4f4;
+    height: 100%;
+    /* Put summary-main-panel just under top tab  */
+    top: 42px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.main-panel-heading {
+    background-color: #fff;
+    border-bottom: solid 1px #c4c4c4;
+    border-left: solid 1px #c4c4c4;
+    border-right: solid 1px #c4c4c4;
+    padding-left: 8px;
+    padding-top: 8px;
+
+    /*Push the charts down a little*/
+    margin-bottom: 20px;
+    height: 62px;
+    font-size: 18pt;
+}
+
+.chart-row {
+    padding: 0 0 0 0;
+}
+
+.chart-col-left{
+    padding-left: 0;
+}
+
+.chart-col-center{
+}
+
+.chart-col-right{
+    padding-right: 0;
+}
+
+/* Each chart */
+.chart00 {
+    background-color: #fff;
+    border-left: solid 1px #c4c4c4;
+    border-right: solid 1px #c4c4c4;
+    height: 266px;
+}
+
+.chart-header {
+    @extend %panel-heading-text-color;
+    font-size: 11pt;
+
+    border-top: solid 1px #c4c4c4;
+    border-bottom: solid 1px #c4c4c4;
+    padding-top: 6px;
+    padding-left: 15px;
+    height: 42px;
+}
+
+.chart-footer {
+    color: #3a3a3a;
+    border-top: solid 1px #c4c4c4;
+    border-bottom: solid 1px #c4c4c4;
+    padding-top: 6px;
+    padding-left: 15px;
+    height: 42px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 11pt;
+}
+
+.chart-svg-div {
+    padding-top:0;
+    padding-bottom: 0;
+    height: 182px;
+
+}
+
+.pie-svg {
+    // To prevent Chrome from putting a blue outline around it.
+    outline: none;
+// background-color: #761c19;
+    margin-top: 1px;
+    margin-left: calc(50% - 80px);
+    /*box-shadow: 0 0 6px 3px #d5e9f9;*/
+
+    stroke: white;
+    stroke-width: 1px;
+}
+
+.container {
+    background-color: #f4f4f4;
+}
+
+.hide {
+    display: none;
+}
+
+.stack-chart-svg-div {
+    padding-top:0;
+    padding-bottom: 0;
+    height: 182px;
+    background-color: #0f65a1;
+    /*background-color: #fff;*/
+}
+
+.bar-vertical-svg {
+    margin-top: 1px;
+    margin-left: calc(50% - 80px);
+}
+
+.bar-svg-horizontal {
+    margin-top: 1px;
+    margin-left: 5px;
+    width: 100%;
+}
+
+.floating-count-box {
+    color: #fff;
+    background-color: #5b5151;
+    border-radius: 3px;
+    padding: 1px 5px 1px 5px;
+    float: right;
+    font-size: 9pt;
+}
+
+
+
+.bar-chart-horizontal-svg-div {
+    /*background-color: #fff;*/
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.bar-chart-vertical-svg-div {
+    /*background-color: #fff;*/
+    overflow-y: hidden;
+    overflow-x: scroll;
+}

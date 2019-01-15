@@ -1,0 +1,67 @@
+<!-- ----------  Parent container for three Pie charts  ---------- -->
+
+<div class="container-fluid summary-main-panel ">
+
+    <!-- -----  Results count at the top  ----- -->
+    <div class="row">
+        <div class="main-panel-heading">
+            <span
+                *ngIf="searchResultsCount > -1"
+                class="label label-default"
+                style=" background-color: #0d95a1;"
+            >
+                Search results count:
+
+                <!-- -1 is no search, 0 is no results -->
+                <span>{{searchResultsCount}}</span>
+            </span>
+        </div>
+    </div>
+
+
+    <!-- -----  The Pie charts  ----- -->
+    <div class="row chart-row">
+
+        <!-- Collections -->
+        <div class="col-sm-4 chart-col-left">
+            <nbia-pie-chart-collections>
+            </nbia-pie-chart-collections>
+        </div>
+
+        <!-- Image Modality -->
+        <div class="col-sm-4 chart-col-center">
+            <nbia-pie-chart-image-modality>
+            </nbia-pie-chart-image-modality>
+        </div>
+
+        <!-- Image Anatomical Site -->
+        <div class="col-sm-4 chart-col-right">
+            <nbia-pie-chart-anatomical-site>
+            </nbia-pie-chart-anatomical-site>
+        </div>
+    </div>
+
+
+    <!--
+        Testing other types of charts.
+
+        <div class="row chart-row">
+            <div class="col-sm-4 chart-col-left">
+                <nbia-bar-vertical-chart-collections>
+                </nbia-bar-vertical-chart-collections>
+            </div>
+
+            <div class="col-sm-4 chart-col-center">
+                <nbia-stack-vertical-chart-image-modality>
+                </nbia-stack-vertical-chart-image-modality>
+            </div>
+
+            <div class="col-sm-4 chart-col-right">
+                <nbia-bar-horizontal-chart-anatomical-site>
+                </nbia-bar-horizontal-chart-anatomical-site>
+            </div>
+        </div>
+
+    -->
+
+</div>

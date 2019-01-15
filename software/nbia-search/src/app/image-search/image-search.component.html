@@ -1,0 +1,15 @@
+<div class="image-search">
+    <div
+        class="query-section"
+        [ngClass]="{
+            'query-section-show': showQuerySection,
+            'query-section-hide': ! showQuerySection
+        }"
+    >
+        <nbia-query-section></nbia-query-section>
+    </div>
+
+    <div class="data-section" >
+        <nbia-data-section></nbia-data-section>
+    </div>
+</div>

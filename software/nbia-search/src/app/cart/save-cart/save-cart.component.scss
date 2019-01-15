@@ -1,0 +1,43 @@
+@import '../../app.component.scss';
+
+.save-cart-url-parent-div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    margin: $alert-top 0 0 0;
+    padding-left: 10px;
+    width: 100%;
+
+    position: absolute;
+}
+
+.save-cart-url-div {
+    z-index: $popup-z-index;
+    background-color: #fff;
+    margin-right: 10px;
+    min-width: 600px
+}
+
+.save-cart-panel-body{
+    padding-top: 0;
+}
+.note-text {
+    border: solid 1px #bce8f1;
+    padding: 4px;
+    margin-top: 0;
+}
+
+.foot-note {
+    margin-bottom: 4px;
+    font-size: 9pt;
+}
+
+.display-url-text {
+    color: #333;
+    margin-bottom: 11px;
+    font-weight: bold;
+}
+

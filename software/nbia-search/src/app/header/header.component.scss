@@ -1,0 +1,77 @@
+@import '../app.component.scss';
+
+.menu-header-navbar{
+    // Distance from the bottom
+    top: $heading-height - 44px;
+}
+
+.navbar{
+    border-radius: 0;
+}
+
+.logo {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.background-image{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+  //  width: 137px;
+    height: $top-logo-height;
+
+
+}
+
+.menu-header {
+    border: 0;
+    color: #3c3c3c;
+
+    background-color: $header-background-color;
+    margin-top: 0;
+    padding-top: 0;
+    left: 0;
+
+    // width: calc(100% - 14px);
+    width: 100%;
+
+    /* Space between menu bar and top of content */
+    margin-bottom: $heading-margin-bottom;
+
+    height: $heading-height;
+}
+
+.nav-item {
+    padding: 13px 12px 17px 12px;
+}
+
+.mouse-over {
+    color: #000;
+    background: #dde8eb;
+    cursor: pointer;
+}
+
+.disabled-button {
+    color: $disabled-text;
+    cursor: default;
+}
+
+.current-menu-item {
+    color: #000;
+    background-color: #dedddd;
+}
+
+// Data size of current Cart contents
+.data-size {
+    font-size: 10pt;
+
+    /* To keep the data size display from expanding the menu button down.  There is enough room for the data size with existing button height. */
+    height: 0px;
+}
+
+
+.dark {
+   background: #f00;
+}
+

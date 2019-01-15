@@ -1,0 +1,120 @@
+[
+    {
+        "entryTitle": "Home",
+        "menuData": {
+            "target": "http://www.cancerimagingarchive.net"
+        }
+    },
+    {
+        "entryTitle": "News",
+        "menuData": {
+            "target": "http://www.cancerimagingarchive.net/news/"
+        }
+    },
+    {
+        "entryTitle": "About Us",
+        "menuDataDropdown": [
+            {
+                "menuText": "About The Cancer Imaging Archive (TCIA)",
+                "target": "http://www.cancerimagingarchive.net/about-the-cancer-imaging-archive-tcia"
+            },
+            {
+                "menuText": "About the Cancer Imaging Program (CIP)",
+                "target": "http://www.cancerimagingarchive.net/about-the-cancer-imaging-program-cip/"
+            },
+            {
+                "menuText": "About the University of Arkansas for Medical Sciences (UAMS)",
+                "target": "http://www.cancerimagingarchive.net/about-the-university-of-arkansas-for-medical-sciences-uams/"
+            }
+        ]
+    },
+    {
+        "entryTitle": "Publish Your Data",
+        "menuDataDropdown": [
+            {
+                "menuText": "New TCIA Dataset",
+                "target": "http://www.cancerimagingarchive.net/primary-data/"
+            },
+            {
+                "menuText": "Analysis of Existing TCIA Datasets",
+                "target": "http://www.cancerimagingarchive.net/analysis-results/"
+            }
+        ]
+    },
+    {
+        "entryTitle": "Access The Data",
+        "menuDataDropdown": [
+            {
+                "menuText": "Data Usage Policies And Restrictions",
+                "target": "https://wiki.cancerimagingarchive.net/x/c4hF"
+            },
+            {
+                "menuText": "Browse Data",
+                "target": "https://www.cancerimagingarchive.net/#collection-list"
+            },
+            {
+                "menuText": "Search Data Portal",
+                "target": "https://public.cancerimagingarchive.net/ncia"
+            },
+            {
+                "menuText": "Rest API",
+                "target": "https://wiki.cancerimagingarchive.net/x/NIIiAQ"
+            },
+            {
+                "menuText": "Data Analysis Centers",
+                "target": "https://wiki.cancerimagingarchive.net/x/x49XAQ"
+            },
+            {
+                "menuText": "Analysis Results Directory",
+                "target": "https://wiki.cancerimagingarchive.net/x/sgH1"
+            },
+            {
+                "menuText": "Data Usage Statistics",
+                "target": "https://cancerimagingarchive.net/dashboard2"
+            }
+        ]
+    },
+    {
+        "entryTitle": "Research Activities",
+        "menuDataDropdown": [
+            {
+                "menuText": "Publications Based on TCIA",
+                "target": "http://www.cancerimagingarchive.net/related-publications/"
+            },
+            {
+                "menuText": "Imaging Proteogenomics",
+                "target": "https://wiki.cancerimagingarchive.net/x/CQHDAg"
+            },
+            {
+                "menuText": "Imaging Clinical Trials",
+                "target": "https://wiki.cancerimagingarchive.net/x/BQHDAg"
+            },
+            {
+                "menuText": "Challenge Competitions",
+                "target": "https://wiki.cancerimagingarchive.net/x/nYIaAQ"
+            },
+            {
+                "menuText": "De-Identification Knowledge Base",
+                "target": "https://wiki.cancerimagingarchive.net/x/ZwA2"
+            }
+        ]
+    },
+    {
+        "entryTitle": "Help",
+        "menuDataDropdown": [
+            {
+                "menuText": "Help Desk",
+                "target": "http://www.cancerimagingarchive.net/support"
+            },
+            {
+                "menuText": "User Guides",
+                "target": "https://wiki.cancerimagingarchive.net/display/Public/User+Guides"
+
+            },
+            {
+                "menuText": "FAQs",
+                "target": "https://wiki.cancerimagingarchive.net/display/Public/Challenge+competitions"
+            }
+        ]
+    }
+]

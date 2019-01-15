@@ -1,0 +1,14 @@
+<!-- ----------  This is the Cart button in the Series level Search results.  ---------- -->
+<div class="btn-group cart-div">
+
+    <label
+        class="btn btn-default cart-button"
+        [ngClass]="{
+            'cart-selected': selected
+        }"
+        (click)="onCartClick()"
+    >
+        <span class="glyphicon glyphicon-shopping-cart"></span>
+    </label>
+
+</div>

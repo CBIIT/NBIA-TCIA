@@ -1,0 +1,20 @@
+<!-- ----------  The full screen, slightly transparent, "Pleas Wait etc..." screen.  ---------- -->
+
+<div
+    class="loading-div"
+    [ngClass]="{
+        'hide-item': ! showBusy
+    }"
+>
+
+    <img
+        class="loading-img"
+        src="assets/images/loading-gears-animation-13.gif"
+        alt="Loading"
+    >
+    <span class="loading-message">
+        <h2>{{message}}</h2>
+        <h2>{{subMessage}}</h2>
+    </span>
+
+</div>

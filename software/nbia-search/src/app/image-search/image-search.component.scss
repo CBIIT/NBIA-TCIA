@@ -1,0 +1,34 @@
+@import '../app.component.scss';
+
+.image-search {
+    /* keep the Query section and the Display section side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}
+
+.data-section {
+    -webkit-flex: 1;
+    flex: 1;
+    padding-right: 15px;
+    width: 100%;
+}
+
+.query-section {
+    padding-left: 30px;
+    padding-right: 15px;
+}
+
+.query-section-show {
+    @extend %left-section;
+}
+
+.query-section-hide {
+    width: 0px;
+}
+
+.tab-div {
+    background-color: #f4f4f4;
+    padding: 0;
+}
+

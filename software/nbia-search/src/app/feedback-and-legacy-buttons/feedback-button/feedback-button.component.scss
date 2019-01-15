@@ -1,0 +1,8 @@
+@import '../../app.component.scss';
+
+.feedbackButton{
+    z-index: 1;
+    position: absolute;
+    top: 8px;
+    left: $legacy-feedback-left;
+}

@@ -1,0 +1,23 @@
+<div class="alert alert-info display-query">
+
+    <!--Clear button-->
+    <button
+        class="btn btn-default"
+        title="Clear query"
+        (click)="onClickClearQuery()">
+        <img src="assets/images/clear-icon1.png">
+        Clear
+    </button>
+
+
+    <span *ngFor="let query of data; let i = index">
+        <span *ngIf="(i > 0) && (anyOrAll === 0)" class="label label-default criteria-and-or">AND</span>
+        <span *ngIf="(i > 0) && (anyOrAll === 1)" class="label label-default criteria-and-or">OR</span>
+
+        <span class="label label-default criteria-display criteria-display-name">
+            <span *ngFor="let queryElement of query">
+                {{cleanQuery(queryElement)}}
+            </span>
+        </span>
+    </span>
+</div>

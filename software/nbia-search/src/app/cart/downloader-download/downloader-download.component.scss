@@ -1,0 +1,27 @@
+.downloader-download-div {
+
+    height: 210px;
+    width: 500px;
+    left: calc(50% - 250px);
+    background-color: #fff;
+}
+
+.download-text {
+    margin: 50px 10px 10px 10px;
+
+    position: relative;
+    top: 10px;
+
+    color: #000;
+    background-color: #dedddd;
+
+    /* T  R  B  L*/
+    padding: 10px 12px 12px 11px;
+
+    font-size: 12pt;
+    font-weight: 400;
+}
+
+.download-checkbox {
+    margin: 14px 0px 0px 10px;
+}

@@ -1,0 +1,28 @@
+<!-- ----------  Top right button(s) on the Cart page.  ---------- -->
+
+<div class="btn-group cart-button-div" role="group">
+
+    <!-- -----  Download button top right above cart contents list. For "Downloader" ----- -->
+    <button
+        type="button"
+        class="btn btn-default nbia-button exportSpreadsheetButton"
+        (click)="onDownloadCsvClick()"
+    >
+        <span class="glyphicon glyphicon-download-alt"></span>
+        <span>
+            Export spreadsheet
+        </span>
+    </button>
+
+    <button
+        type="button"
+        class="btn btn-default nbia-button"
+        (click)="onDownloadClick()"
+    >
+        <span class="glyphicon glyphicon-download-alt"></span>
+        <span>
+            Download
+        </span>
+    </button>
+
+</div>

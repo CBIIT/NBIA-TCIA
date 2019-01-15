@@ -1,0 +1,74 @@
+<!-- ----------  A row of study data that is displayed within a row of Subject data on the Search results screen  ---------- -->
+
+<div class="child-data-display">
+    <span class="clicker glyphicon glyphicon-remove close-x" (click)="onCloseSubjecStudyDetailsClick()"></span>
+    &nbsp;<b><i>{{subjectDetailData.subjectId}}</i></b>
+
+    <div *ngFor="let study of resultsArray; let i = index">
+        <div class="series-results-set">
+
+            <div class="container subject-details-header">
+
+                <div class="row">
+                    <div class="col-xs-2">
+
+                        <!-- Show/Collapse Series table  -->
+                        <span
+                            *ngIf="toggleSeriesVisibleArray[i]"
+                            class="clicker arrow-span"
+                            (click)="onShowSeriesClick(i, false)"
+                        >
+                             <img src="assets/images/down_V01.png">
+                        </span>
+
+                        <span
+                            *ngIf="!toggleSeriesVisibleArray[i]"
+                            class="clicker arrow-span"
+                            (click)="onShowSeriesClick(i, true)"
+                        >
+                             <img src="assets/images/right_V01.png">
+                        </span>
+
+                        <!-- Select/unselect all Series for this Subject  -->
+                        <nbia-studies-cart-selector [subjectDetails]="subjectDetailData" [study]="study">
+                        </nbia-studies-cart-selector>
+
+                    </div>
+
+
+                    <div class="col-xs-2">
+                        <!-- Format the date from Epoch -->
+                        {{study.date | date: 'MMM dd, yyyy'}}<span class="glyphicon glyphicon-asterisk date-asterisk "
+                                                                   title={{SUBJECT_DATE_TOOLTIP}}></span>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <b>{{study.description}}</b>
+                    </div>
+
+                    <div class="col-xs-2">
+                        {{study.seriesList.length}} Series
+                    </div>
+
+                    <div
+                        class="col-xs-3"
+                        title={{study.studyId}}>
+                        Study UID: ...{{ study.studyId | shortenRight }}
+                    </div>
+                </div>
+            </div>
+
+            <span
+                [ngClass]="{
+                    'hide': ! toggleSeriesVisibleArray[i]
+                }"
+            >
+                <nbia-series-details
+                    [study]="study"
+                    [currentSubjectDetailRow]="subjectDetailData"
+                    [id]="i"
+                ></nbia-series-details>
+            </span>
+        </div>
+    </div>
+</div>
