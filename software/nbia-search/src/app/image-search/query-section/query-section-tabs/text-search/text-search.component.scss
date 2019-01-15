@@ -1,0 +1,45 @@
+@import '../../../../app.component.scss';
+
+.text-search-input-panel {
+    background-color: #fff;
+    border-left: solid 1px #cfcfcf;
+    border-bottom: solid 1px #cfcfcf;
+    border-right: solid 1px #cfcfcf;
+    height: 140px;
+}
+
+.query-panel-heading {
+    @extend %panel-heading;
+    margin-left: 15pt;
+    margin-bottom: 7pt;
+    position: relative;
+    top: 8px;
+}
+
+.text-search-input {
+    /* Trying to clean this up for Chrome */
+    outline: none;
+    
+    border: solid 1px #cfcfcf;
+    border-radius: 4px;
+    margin-left: 15pt;
+    margin-right: 15pt;
+    overflow-y: scroll;
+
+    width: calc(100% - 40px);
+    height: calc(100% - 90px);
+    resize: none;
+}
+
+.text-search-button {
+    position: relative;
+    right: ($left-section-width * -1) + 137px;
+    top: 6px;
+}
+
+.text-search-clear-button {
+    position: relative;
+    right: ($left-section-width * -1) + 277px;
+
+    top: 6px;
+}

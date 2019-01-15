@@ -1,0 +1,90 @@
+@import '../../../../../app.component.scss';
+
+.main-date-range-div {
+    color: #000;
+    background-color: #fff;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    padding: 0 0 0 0;
+    margin-left: 15px;
+    margin-top: 8px;
+    //width: 295px;
+    width: $left-section-width - 93px;
+    height: 32px;
+    font-size: 12px;
+}
+
+.available-checkbox {
+    margin-top: 15px;
+    margin-bottom: 12px;
+}
+
+.date-box-label {
+    /* Label text color  */
+    color: #000;
+    background-color: #eee;
+    border-right: solid 1px #ccc;
+    margin-left: 0pt;
+    position: relative;
+}
+
+.date-box-label-from {
+    padding: 7px 6px 7px 11px;
+    height: 200px;
+}
+
+.date-box-label-to {
+    padding: 7px 20px 7px 11px;
+}
+
+.date-box-label-box {
+    /* label background color   */
+    background-color: #eee;
+    border-right: solid 1px #ccc;
+    padding: 0;
+    margin: 0;
+    width: 48px;
+    display: inline-block;
+}
+
+.date-box-button-box {
+    background-color: #fff;
+    border-right: solid 1px #ccc;
+    height: 100%;
+    width: 32px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.date-box-button {
+    /* Glyph color  */
+    color: #000;
+    position: relative;
+    top: 6pt;
+    left: 6pt;
+    display: inline-block;
+}
+
+/*  Box around theTex input  */
+.date-box-text-box {
+    /* Trying to clean this up for Chrome */
+    outline: none;
+
+    border: none;
+    width: 240px;
+    // width: $left-section-width - 150px;
+
+    height: 100%;
+    display: inline-block;
+    float: none;
+    padding-left:4px;
+}
+
+.apply-is-set {
+    color: crimson;
+    font-weight: bold;
+}
+
+.disabled-text {
+    color: $disabled-text;
+}

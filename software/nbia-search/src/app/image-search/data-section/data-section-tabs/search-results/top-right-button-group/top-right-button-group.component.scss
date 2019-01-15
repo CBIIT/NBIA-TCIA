@@ -1,0 +1,11 @@
+@import '../../../../../app.component';
+
+/* for the small lower part of the the buttons that over lap the popup,
+   keep the buttons under the popup if you mouse over the buttons */
+div {
+    z-index: 0;
+}
+
+.button-down{
+    background-color: $button-down-background;
+}

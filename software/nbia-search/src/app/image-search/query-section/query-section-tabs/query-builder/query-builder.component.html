@@ -1,0 +1,257 @@
+<div class="query-builder-panel">
+
+    <div class="query-builder-panel-heading">
+
+        <!-- Any or All radio buttons  -->
+        Match:
+        <label class="btn btn-default"
+               [ngClass]="{
+                    'selected-button': allOrAnyDefault === 0
+                }"
+               (click)="onAnyOrAllChange(0)">
+            All
+        </label>
+        &nbsp;or&nbsp;
+        <label class="btn btn-default"
+
+               [ngClass]="{
+                    'selected-button': allOrAnyDefault === 1
+                }"
+               (click)="onAnyOrAllChange(1)">
+            Any
+        </label>
+        &nbsp;criteria&nbsp;
+    </div>
+    <div>
+        <hr>
+
+
+        <!-- ------------------------------------------------------------- -->
+        <!-- -------------------- Menu  ---------------------------------- -->
+        <!-- ------------------------------------------------------------- -->
+
+        <!-- Collections -->
+        <ul class="nav site-nav ">
+            <li class="flyout-alt criteria-li"
+                [ngClass]="{
+        'collapseAll': doCollapseAll
+        }"
+                (mouseenter)="onSelected('Collection', 0 ) "
+                (mouseleave)="onUnSelected('Collection', 0 )"
+            >
+                <a class="criteria-name">Collection</a>
+                <ul class="flyout-content nav stacked clickable-color">
+                    <li *ngFor=" let criteria of collectionArray; let i = index" class="clickable-color"
+                        (click)="onClick( criteria, 0 , i )"
+                        (mouseenter)="onSelected( criteria, 0, i )"
+                        (mouseleave)="onUnSelected( criteria, 0, i )"
+                    >
+                        <a class="clickable-color">{{criteria}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- ------------------------------------------------------------- -->
+        <!-- Patient -->
+        <ul class="nav site-nav ">
+            <li class="flyout-alt criteria-li"
+                (mouseenter)="onSelected( 'Patient',1 )"
+                (mouseleave)="onUnSelected('Patient', 1 )"
+            >
+                <a class="criteria-name">Patient</a>
+                <ul class="flyout-content nav stacked">
+                    <li *ngFor=" let criteria of patientArray0; let i0 = index" class="flyout-alt"
+                        (mouseenter)="onSelected( criteria.name, 1, i0 )"
+                        (mouseleave)="onUnSelected( criteria.name, 1, i0 )"
+                    >
+
+                        <a>{{criteria.name}}</a>
+                        <ul class="flyout-content nav stacked clickable-color">
+                            <li *ngFor=" let item of criteria.subMenu; let i1 = index" class="clickable-color"
+                                (click)="onClick( item,  1, i0, i1 )"
+                                (mouseover)="onSelected( item,  1, i0, i1 )"
+                                (mouseleave)="onUnSelected( item,  1, i0, i1 )"
+                            >
+                                <a class="clickable-color">{{item}}</a>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- ------------------------------------------------------------- -->
+        <!-- Study -->
+        <ul class="nav site-nav ">
+            <li class="flyout-alt criteria-li"
+                (mouseenter)="onSelected( 'Study',2 )"
+                (mouseleave)="onUnSelected('Study', 2 )"
+            >
+                <a class="criteria-name">Study</a>
+                <ul class="flyout-content nav stacked">
+                    <li *ngFor=" let criteria of studyArray; let i0 = index" class="flyout-alt"
+                        (mouseenter)="onSelected( criteria.name, 2, i0 )"
+                        (mouseleave)="onUnSelected( criteria.name, 2, i0 )"
+                    >
+
+                        <a>{{criteria.name}}</a>
+                        <ul class="flyout-content nav stacked clickable-color">
+                            <li *ngFor=" let item of criteria.subMenu; let i1 = index" class="clickable-color"
+                                (click)="onClick( item,  2, i0, i1 )"
+                                (mouseover)="onSelected( item,  2, i0, i1 )"
+                                (mouseleave)="onUnSelected( item,  2, i0, i1 )"
+                            >
+                                <a class="clickable-color">{{item}}</a>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- ------------------------------------------------------------- -->
+
+        <!-- Series -->
+        <ul class="nav site-nav ">
+            <li class="flyout-alt criteria-li"
+                (mouseenter)="onSelected( 'Series', 3 )"
+                (mouseleave)="onUnSelected( 'Series', 3 )"
+            >
+                <a class="criteria-name">Series</a>
+                <ul class="flyout-content nav stacked">
+                    <li class="flyout-alt" *ngFor=" let criteria of seriesArray; let i0 = index"
+                        (mouseenter)="onSelected( criteria.name, 3, i0 )"
+                        (mouseleave)="onUnSelected( criteria.name, 3, i0 )"
+                    >
+
+                        <a>{{criteria.name}}</a>
+                        <ul class="flyout-content nav stacked clickable-color">
+                            <li *ngFor=" let item of criteria.subMenu; let i1 = index" class="clickable-color"
+                                (click)="onClick( item,  3, i0, i1 )"
+                                (mouseenter)="onSelected( item,  3, i0, i1 )"
+                                (mouseleave)="onUnSelected( item,  3, i0, i1 )"
+                            >
+                                <a class="clickable-color">{{item}}</a>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- ------------------------------------------------------------- -->
+
+        <!-- Image -->
+        <ul class="nav site-nav ">
+            <li class="flyout-alt criteria-li"
+                (mouseenter)="onSelected( 'Image',4 )"
+                (mouseleave)="onUnSelected( 'Image',4 )"
+            >
+                <a class="criteria-name">Image</a>
+                <ul class="flyout-content nav stacked">
+                    <li *ngFor=" let criteria of imageArray; let i0 = index" class="flyout-alt"
+                        (mouseenter)="onSelected( criteria.name, 4, i0 )"
+                        (mouseleave)="onUnSelected( criteria.name, 4, i0 )"
+                    >
+                        <a>{{criteria.name}}</a>
+                        <ul class="flyout-content nav stacked clickable-color ">
+                            <li *ngFor=" let item of criteria.subMenu; let i1 = index" class="clickable-color"
+                                (click)="onClick( item,  4, i0, i1 )"
+                                (mouseenter)="onSelected( item,  4, i0, i1 )"
+                                (mouseleave)="onUnSelected( item,  4, i0, i1 )"
+                            >
+
+                                <a class="clickable-color">{{item}}</a>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+
+        <!-- ------------------------------------------------------------- -->
+
+        <div *ngIf="userInputType > 0"
+             class="panel panel-info"
+        >
+            <div class="panel-heading">
+                <span class="panel-title">Current Input</span>
+                <span *ngIf="currentMenuCriteria.trim().length < 1"> - none</span>
+            </div>
+            <div class="panel-body">
+
+                <div class="current-menu-criteria-display">
+                    <table width="100%"
+                    >
+                        <tr>
+                            <td>{{cleanQuery(currentMenuCriteria)}}</td>
+                            <td align="right" rowspan="2">
+                                <span *ngIf="currentMenuCriteria.trim().length > 0"
+                                      class="glyphicon glyphicon-plus user-input-add-button clicker "
+                                      (click)="onPlusClick()">
+                                </span>
+                                <span *ngIf="currentMenuCriteria.trim().length > 0"
+                                      class="glyphicon glyphicon-remove query-delete-button clicker "
+                                      (click)="onClearUserInputsClick()">
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <textarea *ngIf="userInputType > 0"
+                                          type="text"
+                                          id="userInput"
+                                          name="userInput"
+                                          class="user-input"
+                                          [(ngModel)]="userInput"
+                                >
+                                </textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Current list of query parts -->
+        <span *ngIf="!menuActive">
+            <span *ngFor="let query of queryArray; let i = index">
+
+                <div class="panel panel-info">
+                    <div class="panel-body display-query-panel-body">
+                        <table class="display-query-table" width="100%">
+
+                            <tr *ngFor="let queryData of query[0].split(DELIMITER); let n = index"
+                                class="display-query-menu-choice-list">
+
+                                <td *ngIf="n=== 0" class="display-query-td">
+                                    <span class="  display-query-part display-query-menu-choice">
+                                        {{queryData}}
+                                    </span>
+                                </td>
+                                <td colspan="2" *ngIf="n > 0" class="display-query-td">
+                                    <span class="  display-query-part display-query-menu-choice">
+                                        {{queryData}}
+                                    </span>
+                                </td>
+
+                                <td *ngIf="n=== 0" align="center" class="display-query-td">
+                                    <span class="glyphicon glyphicon-remove query-delete-button clicker "
+                                        (click)="onDeleteQueryClick(i)">
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="query[1].length > 0">
+                                <td class="display-query-td" colspan="2">
+                                    <div class="display-query-menu-choice-list">
+                                        <span class="display-query-part display-query-user-input">
+                                            {{query[1]}}
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </span>
+        </span>
+    </div>
+</div>

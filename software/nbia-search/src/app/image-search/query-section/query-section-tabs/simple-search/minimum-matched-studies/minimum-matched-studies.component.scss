@@ -1,0 +1,13 @@
+@import '../../../../../app.component.scss';
+
+.minimum-matched-studies-div {
+    padding-bottom: 6px;
+}
+
+.disabled{
+    color: $disabled-text;
+}
+
+.disabled-spinner{
+    background-color: #eee;
+}

@@ -1,0 +1,124 @@
+<!-- ----------  Displays Series data within the Study data in the Search results when the little red arrow on the left is clicked  ---------- -->
+
+<!--  Don't *ngIf here, we want to hide, not remove  -->
+<table class="series-results-table">
+    <tr class="series-header-tr">
+        <th>
+            Cart
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Modality
+        </th>
+        <th>
+            Manufacturer
+        </th>
+        <th>
+            Images
+        </th>
+        <th>
+            Series
+        </th>
+        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_CINE_MODE">s</span></th>
+
+        <th
+            *ngIf="properties.SHOW_IMAGE_VIEWER"
+            class="image-viewer-th"
+        >
+            Image viewer
+        </th>
+
+
+        <th>
+            DICOM
+        </th>
+    </tr>
+
+
+    <!-- -----  Each Series row  ----- -->
+    <tr *ngFor="let series of seriesListForDisplay; let i=index; let even = even; let odd = odd"
+        [ngClass]="{
+            'dark': i%4 !== 0
+        }"
+    >
+
+        <!-- ----- DICOM Tag data (odd rows )  ----- -->
+        <td
+            *ngIf="odd && dicomDataShowQ[i]"
+            [colSpan]=columnCount+1
+            class="child-data-display-parent-background"
+        >
+            <nbia-dicom-data
+                [(dicomDataShow)]="dicomDataShowQ[i]"
+                [dicomData]="parentDicomData[i]"
+                [seriesId]="imageUidArray[i]"
+            ></nbia-dicom-data>
+        </td>
+
+
+        <!-- ----- Cart button on the left side of each individual series row  ----- -->
+        <td *ngIf="even" class="series-table-td cart-td">
+            <nbia-series-cart-selector
+                [seriesId]="series['seriesUID']"
+                [subjectId]="currentSubjectDetailRow['subjectId']"
+                [studyId]="study['studyId']"
+                [exactSize]="series['exactSize']"
+                [seriesPkId]="series['seriesPkId']"
+            ></nbia-series-cart-selector>
+        </td>
+
+        <td *ngIf="even" class="series-table-td">
+            {{series['description']}}
+        </td>
+        <td *ngIf="even" class="series-table-td">
+            {{series['modality']}}
+        </td>
+        <td *ngIf="even" class="series-table-td">
+            {{series['manufacturer']}}
+        </td>
+        <td *ngIf="even" class="series-table-td">
+            {{series['numberImages']}}
+        </td>
+
+
+        <td *ngIf="even" class="series-table-td" [title]="series['seriesId']">
+            ...{{series['seriesId']|shortenRight}}
+        </td>
+
+
+        <!-- -----  The CineMode viewer button, doesn't do anything yet  ----- -->
+        <td *ngIf="even" class="series-table-td">
+            <label
+                *ngIf="! properties.NO_THUMBNAIL"
+                class="btn btn-default series-data-button"
+                title="Thumbnail Viewer"
+                (click)="onThumbnailClick(series)"
+            >
+                <span class="glyphicon glyphicon-search" title="Thumbnail Viewer" ></span>
+            </label>
+            <label *ngIf="properties.SHOW_CINE_MODE"
+                class="btn btn-default series-data-button"
+                title="Cine Mode"
+                (click)="onCineModeClick()">
+                <span class="glyphicon glyphicon-facetime-video"></span>
+            </label>
+        </td>
+
+        <!-- -----  The Image viewer (cine mode) button, doesn't do anything yet  ----- -->
+        <td *ngIf="even && properties.SHOW_IMAGE_VIEWER" class="series-table-td">
+            <label class="btn btn-default series-data-button" (click)="onCineModeClick()">
+                <span class="glyphicon glyphicon-facetime-video"></span>
+            </label>
+        </td>
+
+        <!-- -----  Show DICOM button  ----- -->
+        <td *ngIf="even" class="series-table-td  cine-mode-td series-table-dicom-button-column">
+            <label class="btn btn-default series-data-button" (click)="onDicomClick(i + 1)">
+                <span class="glyphicon glyphicon-th-list"></span>
+            </label>
+        </td>
+    </tr>
+</table>
+

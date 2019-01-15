@@ -1,0 +1,33 @@
+@import '../../../../../app.component.scss';
+
+.missing-criteria {
+    z-index: $missing-criteria-z-index;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: relative;
+    top: 100px;
+
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.missing-criteria-button {
+    float: right;
+    margin-left: 4px;
+}
+
+.missing-criteria-panel-title {
+    font-weight: bold;
+}
+
+.message-text {
+    color: #700;
+    font-weight: bold;
+}
+
+.missing-criteria-list-text {
+    color: #000;
+    // font-weight: bold;
+}

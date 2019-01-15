@@ -1,0 +1,39 @@
+.date-asterisk {
+    font-size: 8pt;
+    color: #700;
+    cursor: default;
+}
+
+.series-results-set {
+    border: solid 1px #f4f4f4;
+    border-radius: 5px;
+    margin: 3px 0 2px 0;
+    /*padding-bottom: 5px;*/
+}
+
+.subject-details-header {
+    background: #f4f4f4;
+    border: solid  1px #f4f4f4;
+    width: 100%;
+}
+
+.study-table-header {
+    background-color: #dedddd;
+    height: 50px;
+    font-weight: bold;
+}
+
+.study-header-tr {
+    background-color: #dedddd;
+    border: solid 10px #dedddd;
+    height: 30px;
+    font-weight: bold;
+}
+
+.arrow-span{
+  padding-right: 6px;
+}
+
+.hide {
+    display: none;
+}

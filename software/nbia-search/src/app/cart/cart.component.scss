@@ -1,0 +1,137 @@
+@import '../app.component.scss';
+
+
+.line-through {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.cart-list-div {
+    background-color: #FFF;
+    border: solid 1px #cfcfcf;
+    padding-left: 0px;
+    padding-bottom: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.sort-pointer {
+    margin-left: 1px;
+}
+
+.cart-footer {
+    padding-left: 16px;
+    margin-top: 11px;
+    margin-bottom: 1px;
+}
+
+.cart-list-table {
+    background-color: #fff;
+    border-bottom: solid 1px #c4c4c4;
+    border-right: solid 1px #c4c4c4;
+    border-left: solid 1px #c4c4c4;
+    margin: 0;
+    width: 100%;
+}
+
+/*
+   When the alternate style of scrolling is selected.  The button to the left of the "Select Display Columns" button.
+   Still a work in progress.
+ */
+.cart-list-table-div-scroll {
+    padding: 0;
+    position: fixed;
+    right: 10px;
+    left: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    /* CHECKME  We will need to get this right, if we add pager and rows per page at the bottom */
+    height: calc(100% - 200px);
+}
+
+.cart-date {
+    max-width: 128px;
+}
+
+.cart-number-of-images {
+    max-width: 170px;
+}
+
+.cart-series-file-size {
+    max-width: 100px;
+}
+
+.cart-pager {
+    position: absolute;
+    right: 26px;
+}
+
+.cart-per-page {
+}
+
+.cart-page-rows {
+    padding-left: 15px;
+    position: relative;
+    top: 8px;
+}
+
+td {
+    border: solid 1px #e7e7e7;
+    /* T  R  B  L*/
+    padding: 2px 16px 2px 8px;
+    margin: 2px 1px 2px 8px;
+}
+
+.tcia-downloader-button {
+    padding-right: 4px;
+    padding-left: 4px;
+    /*
+
+    padding-top:4px;
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    position: relative;
+    top: 0px;
+    */
+
+}
+
+.cart-button-group {
+    margin-top: 4px;
+    margin-right: 4px;
+    float: right;
+}
+
+.collectionID {
+}
+
+.cart-check {
+    cursor: pointer;
+}
+
+.subjectId-link {
+    cursor: pointer;
+    /* Don't want the underline of a link */
+    text-decoration: none;
+}
+
+.matchedStudies {
+}
+
+.totalStudies {
+}
+
+.matchedSeries {
+}
+
+.totalSeries {
+}
+
+.diskSpace {
+}
+
+.imageCount {
+}

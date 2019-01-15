@@ -1,0 +1,62 @@
+@import '../app.component.scss';
+
+.intro-div {
+    z-index: $intro-z-index;
+    opacity: 0.95;
+    position: absolute;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: 100%;
+    background-color: #16161d;
+    color: #fff;
+}
+
+.intro-header{
+    margin: 8px 0 8px 12px;
+}
+
+.heading-image {
+    height: 59px;
+}
+
+.intro-page-number {
+    margin-left: 200px;
+    font-style: normal;
+    font-size: 18pt;
+}
+
+.intro-button-bar {
+    z-index:  $intro-z-index;
+    position: fixed;
+    bottom: 10px;
+    margin: 3px;
+    width: calc(100% - 10px);
+}
+
+.intro-button-span {
+    float: right;
+    margin: 0;
+    padding: 10px;
+}
+
+.intro-checkbox-span {
+    float: left;
+}
+
+.intro-checkbox {
+    font-style: normal;
+}
+
+.intro-button {
+    background-color: #000;
+  margin: 1px;
+}
+
+.introduction-screenshot{
+    margin-left: 25px;
+}
+
+.top-logo {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}

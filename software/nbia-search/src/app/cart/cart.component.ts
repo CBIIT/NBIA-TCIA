@@ -1,0 +1,441 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CartService } from '@app/common/services/cart.service';
+import { MenuService } from '@app/common/services/menu.service';
+import { ApiServerService } from '@app/image-search/services/api-server.service';
+import { CommonService } from '@app/image-search/services/common.service';
+import { Consts, MenuItems } from '@app/consts';
+import { CartSortService } from '@app/cart/cart-sort.service';
+import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import { UtilService } from '@app/common/services/util.service';
+import { AlertBoxService } from '@app/common/components/alert-box/alert-box.service';
+import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-box/alert-box-consts';
+import { ParameterService } from '@app/common/services/parameter.service';
+import { HistoryLogService } from '@app/common/services/history-log.service';
+
+import { Subject } from 'rxjs';
+
+@Component( {
+    selector: 'nbia-cart',
+    templateUrl: './cart.component.html',
+    styleUrls: ['../app.component.scss', './cart.component.scss']
+} )
+
+/**
+ * The cart list screen, launched when the top main menu "Cart" button is clicked. The "Cart" menu button is only enabled if there is anything in the cart.
+ */
+export class CartComponent implements OnInit, OnDestroy{
+    /**
+     * The list used to do the download, not the display. It can have disabled entries, which will not be used in the download.
+     * @type {Array}
+     */
+    cart = [];
+
+    /**
+     * The list (with the disabled ones), this is used to make the Rest call for all the series data for the Cart screen.
+     * @type {string}
+     */
+    seriesListForQuery = '';
+
+    /**
+     * The list without the disabled ones, this is used to make the Rest call for the download.
+     * @type {string}
+     */
+    seriesListForDownloadQuery = '';
+
+    /**
+     * Used to collect list of series for the display.
+     * @type {Array}
+     */
+    cartList = [];
+
+    /**
+     * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
+     * @type {[string , string , string , string , string , string , string , string , string , string]}
+     */
+    columnHeadings = ['X', 'Subject ID', 'Study UID', 'Study Date', 'Study Description', 'Series ID', 'Series Description', 'Images', 'File Size', 'Annotation File Size'];
+
+
+    columns = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    // Rows to display, combine pager and perPage
+    firstRow: number;
+    lastRow: number;
+    rowsPerPage: number;
+    currentPage: number;
+
+    /**
+     * For the busy/working/loading warning.  @TODO still a work in progress.
+     * @type {boolean}
+     */
+    busy = false;
+
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+
+    constructor( private cartService: CartService, private menuService: MenuService,
+                 private apiServerService: ApiServerService, private commonService: CommonService,
+                 private sortService: CartSortService, private loadingDisplayService: LoadingDisplayService,
+                 private alertBoxService: AlertBoxService, private parameterService: ParameterService,
+                 private historyLogService: HistoryLogService, private utilService: UtilService ) {
+    }
+
+
+    ngOnInit() {
+
+        // Called when a Series is added to the cart or disabled/enabled
+        // Called by
+        //     CartService.cartAdd
+        //     CartService.cartDelete
+        //     CartService.clearCart
+        this.cartService.cartChangeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                this.cart = <any>data;
+                this.updateCartList();
+            }
+        );
+
+        this.cartService.cartClearEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            () => {
+                this.cartList = [];
+            }
+        );
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // When the cart menu is clicked in the top right of the nav bar or a shared list was passed in the URL
+        this.menuService.currentMenuItemEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                if( data === MenuItems.CART_MENU_ITEM ){
+
+                    this.cartList = [];
+
+                    // If this was run due to a Shared list in the URL, we need to get the list of services from the API service.
+                    if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
+                        this.loadingDisplayService.setLoading( true, 'Retrieving data' );
+
+                        // Get the data for this list of series
+                        this.apiServerService.doSearch( Consts.GET_SHARED_LIST, 'nameValue=' + this.parameterService.getSharedListName() );
+                    }
+
+
+                    else{
+                        this.loadingDisplayService.setLoading( true, 'Updating Cart' );
+                        this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
+                    }
+                }
+            }
+        );
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        this.apiServerService.getSharedListResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                // We now have the list of series
+                let seriesList = '';
+                if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isNullOrUndefined( data['seriesInstanceUIDs'] )) ){
+                    for( let series of data['seriesInstanceUIDs'] ){
+                        seriesList += '&list=' + series;
+                    }
+                    // Remove leading &
+                    seriesList = seriesList.substr( 1 );
+                    this.apiServerService.doSearch( Consts.DRILL_DOWN_CART_FROM_SERIES, seriesList );
+                }
+                else{
+                    console.error( 'getSharedListResultsEmitter.subscribe data: ', data );
+                }
+
+                this.loadingDisplayService.setLoading( false );
+
+            }
+        );
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        // Gets subjects, adds their series to cartList.
+        //
+        // Adds to the series:
+        //   studyDate
+        //   studyDescription
+        this.apiServerService.seriesForCartResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                for( let item of <any>data ){
+                    for( let series of item.seriesList ){
+                        series['studyDate'] = item.date;
+                        series['studyDescription'] = item.description;
+                        this.addSeriesToCartList( series );
+                    }
+                }
+
+                this.commonService.updateCartCount( this.cartList.length );
+                this.sortService.doSort( this.cartList );
+                this.busy = false;
+
+                this.loadingDisplayService.setLoading( false );
+            }
+        );
+
+
+        this.apiServerService.seriesForCartResultsErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            err => {
+                console.error( 'CartComponent seriesForCartResultsErrorEmitter.subscribe: ', err );
+                this.loadingDisplayService.setLoading( false );
+            }
+        );
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        // Gets subjects, adds their series to cartList.
+        //
+        // Adds to the series:
+        //   formattedStudyDate - This date is for display.
+        //   studyDate - This date is for sorting.
+        //   studyDescription
+        this.apiServerService.seriesForCartFromSeriesIdResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                for( let item of <any>data ){
+                    for( let series of item.seriesList ){
+                        // This date is for display
+                        series['formattedStudyDate'] = new Date( item.date );
+
+                        // This date is for sorting
+                        series['studyDate'] = item.date;
+                        series['studyDescription'] = item.description;
+
+                        this.addSeriesToCartList( series );
+
+
+                        if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
+                            this.cartService.cartAdd( series.seriesUID, series.studyId, series.subjectId, series.seriesPkId, '', series.exactSize );
+                        }
+
+                    }
+                }
+
+                // FIXME - is there a better place to set this
+                // Set this so we don't reload the URL shared list each time user clicks the top menu Cart button.
+                if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
+                    this.parameterService.seenUrlSharedList();
+                }
+
+                this.sortService.doSort( this.cartList );
+                this.commonService.updateCartCount( this.cartList.length );
+
+                this.busy = false;
+                this.loadingDisplayService.setLoading( false );
+            }
+        );
+        this.apiServerService.seriesForCartFromSeriesIdErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            err => {
+                console.error( 'CartComponent seriesForCartResultsErrorEmitter.subscribe: ', err );
+                this.loadingDisplayService.setLoading( false );
+            }
+        );
+
+
+        // Get number of rows to display  (per page)
+        this.commonService.cartsPerPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                this.rowsPerPage = <number>data;
+                this.lastRow = Number( this.firstRow ) + Number( this.rowsPerPage ) - 1;
+            } );
+
+
+        // Get current page number
+        this.commonService.cartPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                this.currentPage = <number>data;
+                this.firstRow = this.rowsPerPage * this.currentPage;
+                this.lastRow = this.firstRow + (+this.rowsPerPage - 1);
+            } );
+
+
+        // Save the cart as a shared list
+        // called by commonService.sharedListDoSave
+        this.commonService.sharedListSaveFromCartEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                this.buildSeriesList();
+
+                let query = this.seriesListForDownloadQuery + '&name=' + data['name'];
+
+                if( !this.utilService.isNullOrUndefined( data['description'] ) ){
+                    query += '&description=' + data['description'];
+
+                }
+                if( !this.utilService.isNullOrUndefined( data['url'] ) ){
+                    query += '&url=' + data['url'];
+
+                }
+                this.apiServerService.doSearch( Consts.CREATE_SHARED_LIST, query );
+
+            }
+        );
+
+
+        this.commonService.downloadCartAsCsvEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            data => {
+                let csvData = this.utilService.csvFormatCart( data );
+
+                let csvFile = new Blob( [csvData], { type: 'text/csv' } );
+                // @TODO add log csvFile
+                let objectUrl = (<any>window).URL.createObjectURL( csvFile );
+                let a = (<any>window).document.createElement( 'a' );
+                a.href = objectUrl;
+                // Use epoch for unique file name
+                a.download = 'NBIA-series-data-' + new Date().getTime() + '.csv';
+                (<any>window).document.body.appendChild( a );
+                a.click();
+                (<any>window).document.body.removeChild( a );
+            }
+        );
+
+
+        // Called by CartButtonGroupComponent.onDownloadClick() -> CommonService.cartListDownLoadButton()
+        // Creates and downloads a manifest file named NBIA-manifest-<EPOCH>.tcia
+        this.commonService.cartListDownLoadEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            () => {
+
+                this.buildSeriesList();
+/*
+                this.cartList = [];
+                console.log( 'MHL cartListDownLoadEmitter.subscribe  CALLING apiServerService.doSearch' );
+                this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
+                while( this.cartList.length < 1 ){
+                    await this.commonService.sleep( Consts.waitTime );
+                }
+*/
+
+                // Send to log
+                let logData = this.historyLogService.doLog( Consts.DOWNLOAD_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), this.cartList );
+                this.apiServerService.log( logData );
+
+
+                // Call Rest service to generate the '.tcia download manifest file.
+                this.apiServerService.downloadSeriesList( this.seriesListForDownloadQuery ).subscribe(
+                    data => {
+                        let tciaManifestFile = new Blob( [data], { type: 'application/x-nbia-manifest-file' } );
+
+                        //  This worked, but I could not figure out how to set the file name.
+                        // let url= (<any>window).URL.createObjectURL(tciaManifestFile);
+                        // (<any>window).open(url);
+
+                        // This works
+                        // TODO in the manifest download popup, it says 'from: blob:'  see if we can change this.
+                        let objectUrl = (<any>window).URL.createObjectURL( tciaManifestFile );
+                        let a = (<any>window).document.createElement( 'a' );
+                        a.href = objectUrl;
+                        // Use epoch for unique file name
+                        a.download = 'NBIA-manifest-' + new Date().getTime() + '.tcia';
+                        (<any>window).document.body.appendChild( a );
+                        a.click();
+                        (<any>window).document.body.removeChild( a );
+
+
+                    },
+                    err => {
+                        console.error( 'Error downloading cart/manifest: ', err );
+
+                        let text = [];
+                        text.push( err['statusText'] + ' - ' + err['status'] );
+                        text.push( err['_body'] );
+                        // text.push( err['url'] );
+                        this.alertBoxService.alertBoxDisplay( 0,
+                            AlertBoxType.ERROR,
+                            'Error downloading Series data!',
+                            text,
+                            AlertBoxButtonType.OKAY
+                        );
+                    }
+                );
+
+
+            }
+        );
+
+
+        this.sortService.initSortState( this.columns );
+
+    }
+
+
+    buildSeriesList() {
+        this.seriesListForDownloadQuery = '';
+        let len = this.cart.length;
+        // Loop through list of Cart entries.
+        for( let f = 0; f < len; f++ ){
+            if( !this.cart[f].disabled ){
+                this.seriesListForDownloadQuery += '&list=' + this.cart[f].id;
+            }
+        }
+
+        // Remove leading &
+        this.seriesListForDownloadQuery = this.seriesListForDownloadQuery.substr( 1 );
+
+    }
+
+    done() {
+        this.loadingDisplayService.setLoadingOff();
+    }
+
+
+    /**
+     * Update the sort state for column i then (Re)sort cart contents.
+     * @param i
+     */
+    onHeadingClick( i ) {
+        this.loadingDisplayService.setLoading( true, 'Sorting Cart' );
+
+        this.sortService.updateCartSortState( i );
+        this.sortService.doSort( this.cartList );
+        this.loadingDisplayService.setLoading( false );
+
+    }
+
+    addSeriesToCartList( series ) {
+        // See if it is already in the list
+        let len = this.cartList.length;
+        for( let f = 0; f < len; f++ ){
+            if( this.cartList[f].seriesUID === series.seriesUID ){
+                return;
+            }
+        }
+        this.cartList.push( series );
+    }
+
+
+    /**
+     * Updates this.seriesListForQuery and this.seriesListForDownloadQuery Series list formatted for the Rest call.
+     * @CHECKME
+     */
+    updateCartList() {
+        // Query used for download
+        this.seriesListForQuery = '';
+        this.seriesListForDownloadQuery = '';
+        let len = this.cart.length;
+        for( let f = 0; f < len; f++ ){
+            if( !this.cart[f].disabled ){
+                this.seriesListForDownloadQuery += '&list=' + this.cart[f].seriesPkId;
+            }
+            this.seriesListForQuery += '&list=' + this.cart[f].seriesPkId;
+        }
+        // Remove leading &
+        this.seriesListForQuery = this.seriesListForQuery.substr( 1 );
+        this.seriesListForDownloadQuery = this.seriesListForDownloadQuery.substr( 1 );
+    }
+
+
+    /**
+     * Called when a Cart button is clicked.
+     *
+     * @param i The index number for this Cart item.
+     */
+    onCartCheckClick( i ) {
+        this.cartList[i].disabled = !this.cartList[i].disabled;
+        this.cart[i].disabled = this.cartList[i].disabled;
+
+        this.updateCartList();
+        this.cartService.setCartEnableCartById( this.cart[i].id, !this.cart[i].disabled );
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+}

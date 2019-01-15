@@ -1,0 +1,139 @@
+<!-- ----------  This is the left side Anatomical Site list of check boxes.  ---------- -->
+<div class="query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+
+        <!-- Hide the Anatomical Site list.  Still show the heading (with this img to its left) -->
+        <span
+            *ngIf="showCriteriaList"
+            class="clicker"
+            (click)="onShowCriteriaListClick(false)"
+        >
+            <img src="assets/images/down_V01.png">
+            Anatomical Site
+        </span>
+
+        <!-- Show the Anatomical Site list -->
+        <span
+            *ngIf="!showCriteriaList"
+            class="clicker"
+            (click)="onShowCriteriaListClick(true)"
+        >
+            <img src="assets/images/right_V01.png">
+            Anatomical Site
+        </span>
+
+        <!-- Search in the list of Anatomical Site criteria  (The red magnifying glass)  -->
+        <!--
+        <label [ngClass]="{
+           'search-glass': checkedCount == 0,
+           'search-glass-with-clear': checkedCount > 0
+           }"
+               for="anatomicalSiteSearchText"
+               title="{{searchToolTip}}">
+
+            <img class="clicker"
+                 src="assets/images/search.png"
+                 alt="Search"
+                 (click)="onSearchGlassClick()">
+        </label>
+        -->
+
+        <!-- Uncheck all the Anatomical Site criteria and restore their counts back to the full count in the database. -->
+        <label
+            *ngIf="checkedCount > 0"
+            class="red-clear"
+        >
+            <img
+                class=" clicker"
+                src="assets/images/redClear.png"
+                alt="Search"
+                (click)="onAnatomicalSiteClearAllClick(false)"
+            >
+        </label>
+    </div>
+
+    <!-- ----------  Search input  ---------- -->
+    <div
+        [ngClass]="{
+            'hide-div': !showCriteriaList
+        }"
+    >
+
+        <!-- -----  Criteria list search input (Red magnifying glass) only used in Collections (so far)  ----- -->
+        <div
+            *ngIf="showSearch"
+            class="search-box"
+            [ngClass]="{
+                'box-with-focus':searchHasFocus
+             }"
+        >
+
+            <input
+                type="text"
+                class="search-text-area"
+                id="anatomicalSiteSearchText"
+                placeholder="search"
+                [(ngModel)]="searchInput"
+                (blur)="onSearchTextOutFocus(0)"
+                (focus)="onSearchTextFocus(0)"
+                (ngModelChange)="onSearchChange($event)"
+            >
+
+            <!-- This needs to be "for", "not ngFor", it needs to be hidden, not removed from the DOM -->
+            <label for="anatomicalSiteSearchText">
+                <!-- The "X" to clear the search text -->
+                <span
+                    *ngIf="searchInput.length > 0"
+                    class="glyphicon glyphicon-remove search-text-area-x close-x"
+                    (blur)="onSearchTextOutFocus(1)"
+                    (focus)="onSearchTextFocus(1)"
+                    (click)="onClearAnatomicalSearchInputClick()"
+                ></span>
+            </label>
+        </div>
+        <!-- -----  End Search input  ----- -->
+
+        <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
+        <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
+            <span *ngIf="( criteria['seq']  < (  properties.CRITERIA_SHOW_COUNT + checkedCount) ) || showAll">
+                <input type="checkbox"
+                       class="check-box"
+                       id="checkbox-anatomical-site{{i}}"
+                       [(ngModel)]="cBox[i]"
+                       (click)="onCheckboxClick(i, $event.target.checked)">
+
+                <label [attr.for]="'checkbox-anatomical-site'+i">
+                    {{criteria['criteria']}}
+                </label>
+
+                <span
+                    [ngClass]="{
+                          'count-box': criteria['count'] > 0,
+                          'count-box_zero': criteria['count'] <= 0
+                      }"
+                >
+                    {{criteria['count']}}
+                </span>
+            </span>
+        </div>
+
+
+        <!-- ----------  The Less/More... clickers at the bottom  ---------- -->
+        <div *ngIf="unCheckedCount > properties.CRITERIA_SHOW_COUNT">
+            <a
+                *ngIf="!showAll"
+                class="moreOrLess"
+                (click)="onMoreClick()"
+            >
+                {{unCheckedCount - properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a
+                *ngIf="showAll"
+                class="moreOrLess"
+                (click)="onLessClick()"
+            >&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
+    </div>
+</div>

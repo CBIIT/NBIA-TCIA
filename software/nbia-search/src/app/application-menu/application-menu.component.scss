@@ -1,0 +1,172 @@
+@import '../app.component.scss';
+
+$application-menu-height: 38px;
+$application-menu-right-margin: 5px;
+
+
+$application-menu-disabled-text: #b4b4b4;
+$application-menu-disabled-background: #6b6b6b;
+
+$application-menu-selected-text: #000;
+$application-menu-selected-background: #fff;
+//$application-menu-selected-border: #5db4e0;
+$application-menu-selected-border: #000;
+$application-menu-border: #000;
+
+$application-menu-mouse-over-background: #dedddd;
+$application-menu-mouse-over-text: #000;
+
+$application-menu-background: #ccc;
+$application-menu-text: #222;
+
+$application-menu-button-section-height: 30px;
+
+$application-menu-button-border-width: 1px;
+
+$application-menu-spacing: 1px; // These are times 2
+
+.application-menu-span{
+    position: absolute;
+    right: 10px;
+
+    // Distance from the bottom
+   top: $heading-height - $application-menu-button-section-height;
+   height: $application-menu-button-section-height;
+   background-color: $header-background-color;
+ // background-color: #9108ff;
+    /*
+    padding-bottom: 0;
+    margin-bottom: 0;
+    */
+    padding-top: $application-menu-button-section-height - (24px + $application-menu-button-border-width);
+/*
+padding-bottom: 0;
+*/
+}
+
+
+.item-wrapper{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: solid #014d6f 1px;
+    border-left: solid #014d6f 1px;
+    border-right: solid #014d6f 1px;
+     padding-top: 6px;
+     padding-bottom: 6px;
+    // padding: 0;
+    margin-right: $application-menu-spacing;
+    margin-left: $application-menu-spacing;
+    height: 34px;
+}
+
+
+.application-menu-item{
+    /*
+    padding-right: 5px;
+    padding-left: 5px;
+    */
+    /*
+    background-color: $application-menu-background;
+    */
+    background-color: #ddd;
+    color: $application-menu-text;
+    padding: 5px;
+    margin-left: $application-menu-spacing;
+    margin-right: $application-menu-spacing;
+
+
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    // border-top: 3px ;
+    border: solid $application-menu-border $application-menu-button-border-width;
+    border-bottom: solid $header-background-color $application-menu-button-border-width;
+
+ //   border-bottom: 0 ;
+
+
+    /*
+
+
+      cursor: pointer;
+      margin-right: 2px;
+      margin-left: 2px;
+      margin-bottom: 0;
+
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border-top: 3px ;
+      border-bottom: 0 ;
+      */
+}
+
+
+
+.application-menu-mouse-over {
+    color: #000;
+    background: #dde8eb;
+    cursor: pointer;
+}
+
+
+.application-menu-current-item {
+    color: $application-menu-selected-text;
+    background-color: $application-menu-selected-background;
+   // border: solid $application-menu-selected-border 1px;
+    border-bottom: solid #FFF 2px;
+   // padding: 4px;
+}
+
+.application-menu-disabled-item {
+    color: $application-menu-disabled-text;
+    background-color: $application-menu-disabled-background;
+    cursor: not-allowed;
+}
+
+
+.application-menu-dropdown-menu{
+    color: #fff;
+    margin-left: 248px;
+    padding: 0;
+}
+.application-menu-dropdown-menu-item {
+    color: #fff;
+    padding: 1px 0px 4px 14px;
+    background-color: #337ab7;
+    border: solid 1px #828282;
+}
+
+.application-menu-dropdown-menu-item:hover {
+    color: #fff;
+    background-color: #286090;
+}
+
+
+.application-menu-with-cart-count{
+    margin-right: 5px;
+}
+
+.application-menu-with-no-cart-count{
+    margin-right: 20px;
+}
+
+
+.cart-count-zero {
+    background-color: #888888;
+    color: #aaa;
+}
+
+.cart-count-non-zero {
+    background-color: #514747;
+    color: #fff;
+}
+
+
+.cart-count {
+     border-radius: 3px;
+
+    padding: 3px 6px 3px 6px;
+    // margin-right: 15px;
+    margin-left: 6px;
+    top: 0;
+    font-size: 8pt;
+}

@@ -1,0 +1,34 @@
+[
+    {
+        "entryTitle": "Access The Data",
+        "menuDataDropdown": [
+            {
+                "menuText": "Search Data Portal",
+                "target": "https://public.cancerimagingarchive.net/ncia"
+            },
+            {
+                "menuText": "Rest API",
+                "target": "https://wiki.nci.nih.gov/display/NBIA/NBIA+REST+API+User+Guide"
+            }
+        ]
+    },
+    {
+        "entryTitle": "Help",
+        "menuDataDropdown": [
+            {
+                "menuText": "Help Desk",
+                "target": "http://cbiit.cancer.gov/application-support"
+            },
+            {
+                "menuText": "User Guides",
+                "target": "https://wiki.nci.nih.gov/display/NBIA/NBIA+7.0+Help+Topics"
+
+            },
+            {
+                "menuText": "Dicom Viewers",
+                "target": "https://wiki.nci.nih.gov/display/NBIA/DICOM+Viewer+Links"
+
+            }
+        ]
+    }
+]
