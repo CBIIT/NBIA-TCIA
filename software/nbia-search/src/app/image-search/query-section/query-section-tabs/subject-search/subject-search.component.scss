@@ -1,0 +1,45 @@
+@import '../../../../app.component.scss';
+
+.subject-search-input-panel{
+  background-color: #fff;
+  border-left: solid 1px #cfcfcf;
+  border-bottom: solid 1px #cfcfcf;
+  border-right: solid 1px #cfcfcf;
+  height: 140px;
+}
+
+
+.query-panel-heading{
+  @extend %panel-heading;
+  margin-left:15pt;
+  margin-bottom:7pt;
+  position:relative;
+  top: 8px;
+}
+
+
+.subject-search-input{
+  border: solid 1px #cfcfcf;
+  border-radius: 4px;
+  margin-left:15pt;
+  margin-right:15pt;
+  overflow-y: scroll;
+
+  width: calc(100% - 40px);
+  height: calc(100% - 90px);
+  resize: none;
+}
+
+
+.subject-search-button{
+  position:relative;
+  left: 247px;
+  top:14px;
+}
+
+
+.subject-search-clear-button{
+  position:relative;
+  left: 126px;
+  top:14px;
+}

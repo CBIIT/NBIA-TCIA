@@ -144,7 +144,7 @@ public class DownloadServletV2 extends HttpServlet {
 			// compute the size for this series
 			long size = computeContentLength(imageResults, annoResults);
 			try {
-				processor.recordDownload(seriesUid, userId, size);
+				processor.recordAppDownload(seriesUid, userId, size, "v2");
 			} catch (Exception e) {
 				logger.error("Exception recording download " + e.getMessage());
 			}

@@ -41,7 +41,6 @@ import gov.nih.nci.nbia.ui.DownloadManagerFrame;
 import gov.nih.nci.nbia.util.BrowserLauncher;
 import gov.nih.nci.nbia.util.DownloaderProperties;
 import gov.nih.nci.nbia.util.JnlpArgumentsParser;
-import sun.swing.DefaultLookup;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,12 +78,13 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+
 /**
  * @author Q. Pan
  *
  */
 public class StandaloneDMV3 extends StandaloneDM {
-	private final static String serverVersionMsg = "The Download server version is not compatible with this TCIA Downloader.  Please check if downloadServerUrl is pointing to the correct server.";
+	private final static String serverVersionMsg = "The Download server version is not compatible with this app.  Please check if downloadServerUrl is pointing to the correct server.";
 	private static final String GuestBtnLbl = "Guest Login";
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
@@ -292,7 +292,12 @@ public class StandaloneDMV3 extends StandaloneDM {
 			DownloadManagerFrame manager = new DownloadManagerFrame(true, userId, password, includeAnnotation,
 					seriesData, serverUrl, noOfRetry);
 			manager.setTitle(winTitle);
-			manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
+			
+			String os = System.getProperty("os.name").toLowerCase();			
+			if (os.startsWith("mac")) {
+				//manager.setDefaultDownloadDir("Please select a directory for downloading images.");
+			}
+			else manager.setDefaultDownloadDir(System.getProperty("user.home") + File.separator + "Desktop");
 			manager.setVisible(true);
 
 			if (frame != null)

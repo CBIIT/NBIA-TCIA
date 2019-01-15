@@ -25,21 +25,44 @@ L-->
 		<dependency org="org.owasp.esapi" name="esapi" rev="2.1.0" conf="compile->master;runtime->master"/>
 		<dependency org="asm" name="asm" rev="3.1" conf="compile->master;runtime->master"/>
 		<dependency org="cglib" name="cglib" rev="2.2" conf="compile->master;runtime->master"/>
-		<dependency org="gov.nih.nci.csm" name="csmapi" rev="5.2.0.1" conf="compile->master;runtime->default">
+		<dependency org="gov.nih.nci.csm" name="csmapi" rev="5.2.0.1" conf="compile->master;runtime->master">
 			<exclude module="jdom"/>
 		</dependency>
-		<dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
+<!--		<dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
 		<dependency org="org.codehaus.jackson" name="jackson-jaxrs" rev="1.9.2" conf="compile->master;runtime->master"/>
 		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
 		<dependency org="org.codehaus.jackson" name="jackson-xc" rev="1.9.2" conf="compile->master;runtime->master"/>
+		-->
+		<dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
+		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.media" name="jersey-media-json-jackson" rev="2.9.1" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-json-provider" rev="2.9.1" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-base" rev="2.9.1" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.1" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.9.1" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.9.1" conf="compile->master;runtime->master"/>
 		<dependency org="jdom" name="jdom" rev="1.0" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-client" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-core" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-json" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-server" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-servlet" rev="1.17.1" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet" rev="2.27" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet-core" rev="2.27" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.core" name="jersey-client" rev="2.27" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.core" name="jersey-server" rev="2.27" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.core" name="jersey-common" rev="2.27" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.bundles.repackaged" name="jersey-guava" rev="2.9" conf="compile->master;runtime->master"/>
+		<dependency org="org.javassist" name="javassist" rev="3.20.0-GA" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.hk2" name="hk2-locator" rev="2.5.0-b62" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.hk2" name="hk2-api" rev="2.5.0-b62" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.hk2" name="hk2-utils" rev="2.5.0-b62" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.inject" name="jersey-hk2" rev="2.27" conf="compile->master;runtime->master"/>	
+		<dependency org="javax.inject" name="javax.inject" rev="1.0-PFD-1" conf="compile->master;runtime->master"/>	
+		<dependency org="javax.annotation" name="javax.annotation-api" rev="1.2-b02" conf="compile->master;runtime->master"/>	
+		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master;runtime->master"/>	
+		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.0.Final" conf="compile->master;runtime->master"/>	
+		<dependency org="org.jboss.logging" name="jboss-logging" rev="3.2.1.Final" conf="compile->master;runtime->master"/>	
+		<dependency org="com.fasterxml" name="classmate" rev="1.3.0" conf="compile->master;runtime->master"/>	
 		<dependency org="org.codehaus.jettison" name="jettison" rev="1.1" conf="compile->master;runtime->master"/>
-		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.1.1" conf="compile->master;runtime->master"/>
+	    <dependency org="javax.ws.rs" name="javax.ws.rs-api" rev="2.1" conf="compile->master;runtime->master"> 
+	    <artifact name="javax.ws.rs-api" type="jar" />
+	    </dependency>
 		<dependency org="ncicb" name="nbia-dao" rev="latest.integration" conf="compile->master;runtime"/>
 		<dependency org="ncicb" name="nbia-domain" rev="latest.integration" conf="compile->master;runtime"/>
 		<dependency org="ncicb" name="nbia-util" rev="latest.integration" conf="compile->master;runtime"/>
@@ -49,8 +72,8 @@ L-->
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master;runtime->master"/>
 		<dependency org="commons-io" name="commons-io" rev="2.1" conf="compile->master;runtime->master"/> 
 		<dependency org="commons-lang" name="commons-lang" rev="2.4" conf="compile->master;runtime->master"/>
-		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.1.1" conf="compile->master;runtime->master"/>
-		<dependency org="org.apache.httpcomponents" name="httpcore" rev="4.1" conf="compile->master;runtime->master"/>
+		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.1" conf="compile->master;runtime->master"/>
+		<dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.9" conf="compile->master;runtime->master"/>
 		<dependency org="jstl" name="jstl" rev="1.2" conf="compile->master;runtime->master"/>
 		<dependency org="org.hibernate" name="hibernate" rev="3.1.3" conf="compile->master;runtime->master,runtime;"/>
 		
@@ -58,6 +81,7 @@ L-->
         	<dependency org="org.springframework" name="spring-beans" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework" name="spring-orm" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>			
 		<dependency org="org.springframework" name="spring-context" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>
+		<dependency org="org.springframework" name="spring-context-support" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework" name="spring-core" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework" name="spring-expression" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework" name="spring-jdbc" rev="3.2.8.RELEASE" conf="compile->master;runtime->master"/>
@@ -102,9 +126,30 @@ L-->
                 name="slf4j-nop"
                 rev="1.7.5"
                 conf="compile->master;runtime->master"/>
-
-
-
+        <dependency org="javax.xml.bind"
+                name="jaxb-api"
+                rev="2.2.11"
+                conf="compile->master;runtime->master"/>
+        <dependency org="com.sun.xml.bind"
+                name="jaxb-impl"
+                rev="2.2.11"
+                conf="compile->master;runtime->master"/>
+        <dependency org="com.sun.xml.bind"
+                name="jaxb-core"
+                rev="2.2.11"
+                conf="compile->master;runtime->master"/>
+        <dependency org="com.sun.activation"
+                name="javax.activation"
+                rev="1.2.0"
+                conf="compile->master;runtime->master"/>
+        <dependency org="org.springframework.ldap" 
+				name="spring-ldap-core"
+				rev="1.3.2.RELEASE"
+				conf="compile->master;runtime->master"/>
+          <dependency org="org.apache.commons" name="commons-jcs-core" rev="2.2" conf="compile->master;runtime->master"/>   
+          <dependency org="org.apache.commons" name="commons-jcs-jcache" rev="2.2" conf="compile->master;runtime->master"/>
+             
+  
 		<!-- end of dicom -->
 	</dependencies>
 </ivy-module>

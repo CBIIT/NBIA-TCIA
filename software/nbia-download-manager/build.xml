@@ -28,7 +28,7 @@ L-->
 	<property name="common.dir" value="${basedir}/../" />
 	<property name="target.dir" value="${common.dir}/target/dist/exploded/nbia-download-manager" />
 	<property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
-  
+	<!--property name="common.lib.dir" location="${common.dir}/common/resources/lib"/-->
   <!-- define this for unittesting.xml import -->
 	<property name="classes.to.test.dir" value="${build}"/>
 	<property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download-manager"/>
@@ -49,11 +49,18 @@ L-->
       <include name="ivy-*.jar" />
     </fileset>
   </path>
-
+	<!--path id="common.lib.classpath">
+		<fileset dir="${common.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path-->
   <!-- Task definitions -->
   <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="common.classpath" />
   <import file="../common/unittesting.xml"/>
-  
+	<!--taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath refid="common.lib.classpath"/>
+	</taskdef>
+	<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask" classpathref="common.lib.classpath"/-->
   <tstamp>
      <format property="time.stamp" pattern="yyyy-MM-dd_HH"/>
   </tstamp>
@@ -98,6 +105,18 @@ L-->
   </target>
 
  	<target name="getMacLib" if="IS_MAC">
+ 		<!--if>
+ 		    <equals arg1="${ant.java.version}" arg2="1.8"/>
+ 		    <then-->
+ 		    	<echo>"---- building for 1.8----"</echo>
+ 				<!--copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
+ 				<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/runtime"/>
+ 		    </then>
+ 		    <else>
+ 				<copy file="${common.dir}/common/resources/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
+ 				<copy file="${common.dir}/common/resources/lib/rt.jar" toDir="${project.lib.dir}/runtime"/> 
+ 		    </else>
+ 		</if-->
 		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/compile"/>
 		<copy file="${java.home}/lib/rt.jar" toDir="${project.lib.dir}/runtime"/>
 	</target> 
@@ -109,7 +128,7 @@ L-->
   </target>
   
   <target name="compile" depends="ivy-compile, getMacLib">
-	<condition property="excludes" value="gov/nih/nci/nbia/StandaloneDMForMac.java">
+	<condition property="excludes" value="gov/nih/nci/nbia/NBIADataRetriever.java">
 	<not>
 		<os family="mac"/>
 	</not>

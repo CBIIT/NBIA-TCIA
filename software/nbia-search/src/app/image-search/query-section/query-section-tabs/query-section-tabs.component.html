@@ -1,0 +1,48 @@
+<div class="tab-div">
+    <tabset (onSelect)="onTabClick($event)">
+        <tab [active]='tabIsActive[SIMPLE_SEARCH]'>
+            <span *tabHeading class="tab-text-span">
+                Simple Search
+            </span>
+            <nbia-simple-search></nbia-simple-search>
+        </tab>
+
+        <tab  [active]='tabIsActive[TEXT_SEARCH]'>
+            <span *tabHeading  class="tab-text-span">
+                 Text Search
+            </span>
+
+            <nbia-text-search></nbia-text-search>
+        </tab>
+
+
+
+
+        <!--  This is/was a replacement for Advanced search.  The UI is a good start...  -->
+        <tab [active]='tabIsActive[QUERY_BUILDER]'  *ngIf="showQueryBuilder">
+            <span *tabHeading class="tab-text-span">
+                 Query Builder
+            </span>
+            <nbia-query-builder></nbia-query-builder>
+        </tab>
+
+
+        <!--  This is/was a start of Shared list search.  Was decided this would not be part of new UI.  -->
+        <tab [active]='tabIsActive[SHARED_LISTS]'  *ngIf="showSearchSharedListSearch">
+            <span *tabHeading class="tab-text-span">
+                 Lists
+            </span>
+            <nbia-list-search></nbia-list-search>
+        </tab>
+
+
+        <!--  This was going to be search by Study abandoned.  -->
+        <tab [active]='tabIsActive[STUDY]'  *ngIf="showSearchStudySearch">
+            <span *tabHeading class="tab-text-span">
+                 Study
+            </span>
+            <nbia-study-search></nbia-study-search>
+        </tab>
+
+    </tabset>
+</div>

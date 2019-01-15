@@ -25,12 +25,17 @@ public class DownloaderProperties {
 	}
 
 	public static String getOnlineHelpUrl() {
-		return NBIA_PROPERTIES.getProperty("online_help_url");
+		if (System.getProperty("online.help.url") == null)
+			return NBIA_PROPERTIES.getProperty("online_help_url");
+		else return System.getProperty("online.help.url");
 	}
-
+	
 	public static String getHelpDeskUrl() {
-		return NBIA_PROPERTIES.getProperty("help_desk_url");
+		if (System.getProperty("help.desk.url") == null)
+			return NBIA_PROPERTIES.getProperty("help_desk_url");
+		else return System.getProperty("help.desk.url");
 	}
+	
 
 	public static String getBuildTime() {
 		return NBIA_PROPERTIES.getProperty("time_stamp");
@@ -42,6 +47,10 @@ public class DownloaderProperties {
 
 	public static boolean getMajorityPublic() {
 		return Boolean.parseBoolean(NBIA_PROPERTIES.getProperty("majority_public"));
+	}
+	
+	public static String getInstallerType() {
+		return NBIA_PROPERTIES.getProperty("linux_installer_type");
 	}
 
 }

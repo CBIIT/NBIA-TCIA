@@ -1,0 +1,75 @@
+<!-- ----------  The page changer used by Search results & Cart screen.  ---------- -->
+
+
+<!-- If more than one, add s for plural. -->
+{{pageCount}} Page<span *ngIf="pageCount > 1">s</span> &nbsp;
+<div class="btn-group pager-parent-div" role="group" aria-label="...">
+
+    <!-- Go to first page -->
+    <button
+        type="button"
+        class="btn btn-default  pager-font pager-button "
+        title="First"
+        (click)="onGoFirstClickClick()"
+    >
+        <span>&lt;&lt;</span>
+    </button>
+
+
+    <!-- Go to previous page -->
+    <button
+        type="button"
+        class="btn btn-default  pager-font pager-button"
+        title="Previous"
+        (click)="onGoPreviousClick()"
+    >
+        <span>&lt;</span>
+    </button>
+
+
+    <!-- Go to a specific page -->
+    <button
+        *ngFor="let i of buttons"
+        type="button"
+        class="btn btn-default  pager-font pager-button"
+        [ngClass]="{
+                'selected': currentPage == i,
+                'hide-button':( (i < buttonShowOffset) || (i - buttonShowOffset >=  maxButtonsToShow) )
+            }"
+        (click)="onClick(i)"
+    >
+        {{i + 1}}
+    </button>
+
+    <!-- Display page number -->
+<!--
+    <span
+        class="btn btn-default  pager-font pager-number"
+    >
+        {{currentPage + 1}}
+    </span>
+-->
+
+
+    <!-- Go to next page -->
+    <button
+        type="button"
+        class="btn btn-default  pager-font  pager-button"
+        title="Next"
+        (click)="onGoNextClick()"
+    >
+        <span>&gt;</span>
+    </button>
+
+
+    <!-- Go to last page -->
+    <button
+        type="button"
+        class="btn btn-default  pager-font pager-button"
+        title="Last"
+        (click)="onGoLastClick()"
+    >
+        <span>&gt;&gt;</span>
+    </button>
+
+</div>

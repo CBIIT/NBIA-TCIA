@@ -173,9 +173,9 @@ L-->
     <dependency org="gov.nih.nci.csm"
                 name="csmapi"
                 rev="5.2.0.1"
-                conf="compile->master;runtime->default">
+                conf="compile->master;runtime->master">
       <exclude module="jdom"/>
-    </dependency>
+    </dependency> 
 
     <!-- csm ivy will hit blank conf in maven repo, while is compile, which apparentl pulls source -->
     <dependency org="jdom"
@@ -351,9 +351,6 @@ L-->
 		<dependency org="jdom" name="jdom" rev="1.0" conf="compile->master;runtime->master"/>
 		<dependency org="com.sun.jersey" name="jersey-client" rev="1.17.1" conf="compile->master;runtime->master"/>
 		<dependency org="com.sun.jersey" name="jersey-core" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-json" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-server" rev="1.17.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.sun.jersey" name="jersey-servlet" rev="1.17.1" conf="compile->master;runtime->master"/>
 		<dependency org="org.codehaus.jettison" name="jettison" rev="1.1" conf="compile->master;runtime->master"/>
 		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.1.1" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework.security.oauth" name="spring-security-oauth2" rev="1.0.5.RELEASE" conf="compile->master;runtime->master"/>

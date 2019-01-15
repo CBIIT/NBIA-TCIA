@@ -14,7 +14,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.apache.solr.client.solrj.request.CoreAdminRequest;
 
 @Transactional 
 public class PatientUpdater {
@@ -39,6 +39,7 @@ public class PatientUpdater {
     		  stillRunning=true;
     		  updateSubmittedPatients();
     		  updateCollections();
+    		  SolrFieldBuilder.getTerms();
     		  stillRunning = false;
     		}
     	} catch (Exception e)
@@ -87,12 +88,17 @@ public class PatientUpdater {
 		  Set<String> patientSet = getUpdatedPatients(maxTimeStamp, lastRan);
 		   int i = 0;
 		   int x = 0;
+		   int num=0;
+		   if (patientSet!=null) {
+			   num=patientSet.size();
+		   }
 		   SolrStorage solrStorage = new SolrStorage();
 			for (String result : patientSet)
 			  {
 				  PatientAccessDAO patientAccess = (PatientAccessDAO)SpringApplicationContext.getBean("patientAccessDAO");
 				  String patientId = result;
-				  log.info("Updated patient-"+patientId+" Solr Update request made, this is the " + x++ + " patient updated");
+				  log.info("Updated patient-"+patientId+" Solr Update request made, this is the " + x + " patient updated out of "+num);
+				  System.out.println("Updated patient-"+patientId+" Solr Update request made, this is the " + x++ + " patient updated out of "+num);
 			      PatientDocument doc = patientAccess.getPatientDocument(patientId);
 			      if (doc!=null){
 			    	 i++;
@@ -106,6 +112,7 @@ public class PatientUpdater {
 		   log.info("Last ran = "+solrDoc.toString());
 		   server.add(solrDoc);
 		   server.commit();
+		   CoreAdminRequest.reloadCore("collection1", server);
 		   //server.optimize();
 	  
 

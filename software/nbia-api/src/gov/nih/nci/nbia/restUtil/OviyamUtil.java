@@ -2,6 +2,7 @@ package gov.nih.nci.nbia.restUtil;
 
 
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -12,6 +13,7 @@ public class OviyamUtil {
 	
     private static Map<String, String> userMap = new HashMap<String, String>();
     private static Map<String, CollectionUtil> userCollections = new HashMap<String, CollectionUtil>();
+    
     
 	public static String getUser(String oviyamId, String wadoUrl)
 	{
@@ -24,7 +26,15 @@ public class OviyamUtil {
 		String fullURL = wadoUrl+"?requestType=oviyamLookup&oviyamId="+oviyamId;
 		System.out.println("User request: "+fullURL);
 		HttpGet httpGet = new HttpGet(fullURL);
-		DefaultHttpClient httpclient = new DefaultHttpClient();
+		HttpClient httpclient=new DefaultHttpClient();
+		if (fullURL.startsWith("https")||fullURL.startsWith("HTTPS")){
+		   try {
+			   httpclient= HttpsClientFactory.getHttpsClient();
+		   } catch (Exception e1) {
+			// TODO Auto-generated catch block
+			    e1.printStackTrace();
+		   }
+		}
 		try {
 			HttpResponse response1 = httpclient.execute(httpGet);
 			returnValue = EntityUtils.toString(response1.getEntity());

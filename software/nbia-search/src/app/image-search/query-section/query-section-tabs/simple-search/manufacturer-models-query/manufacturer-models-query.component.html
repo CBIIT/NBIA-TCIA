@@ -1,0 +1,41 @@
+<div class="query-panel">
+    <div class="query-panel-heading">
+        <span *ngIf="showCriteriaList" class="clicker" (click)="onShowTreeClick(false)">
+            <img src="assets/images/down_V01.png">
+            Manufacturer Model
+        </span>
+
+        <span *ngIf="!showCriteriaList" class="clicker" (click)="onShowTreeClick(true)">
+            <img src="assets/images/right_V01.png">
+            Manufacturer Model
+        </span>
+
+        <label *ngIf="checkedCount > 0" class="red-clear">
+            <img class=" clicker" src="assets/images/redClear.png" alt="Search" (click)="clearAll(false)">
+        </label>
+    </div>
+
+
+    <div [ngClass]="{
+                    'hide-div': !showCriteriaList
+                }">
+        <div class="query-panel-checkboxes">
+
+            <tree-root [nodes]="nodes">
+                <ng-template #treeNodeTemplate let-node="node" let-index="index">
+                    <label unselectable="on" class="unselectable">
+
+                        <input type="checkbox" name="checkbox"
+                               [(ngModel)]="cBox[node.data.id]"
+                               value="value"
+                               (click)="onCheckBoxClick($event,  node.data.id, node.data.type)">
+
+                       {{ node.data.name }}
+
+                    </label>
+                </ng-template>
+            </tree-root>
+
+        </div>
+    </div>
+</div>

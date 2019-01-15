@@ -49,9 +49,29 @@ public class StudyDAOImpl extends AbstractDAO
         String whereStmt = SQL_QUERY_WHERE;
 
         // Add the series PK IDs to the where clause
-        whereStmt += "and series.id IN (";
+        
 
-        whereStmt += constructSeriesIdList(seriesPkIds);
+        int listSize = seriesPkIds.size();
+		if (listSize > PARAMETER_LIMIT) {
+			Collection<Collection<Integer>> seriesPkIdsBatches = split(
+					seriesPkIds, PARAMETER_LIMIT);
+			whereStmt = new String() + SQL_QUERY_WHERE+" and (";
+			int i = 0;
+			for (Collection<Integer> seriesPkIdBatch : seriesPkIdsBatches) {
+				if (i==0) {
+					whereStmt += "series.id IN (";
+				} else {
+				    whereStmt += "or series.id IN (";
+				}
+				i++;
+				whereStmt += constructSeriesIdList(seriesPkIdBatch);
+				whereStmt += ")";
+			}
+			whereStmt += ")";
+		} else {
+			  whereStmt += "and series.id IN (";
+              whereStmt += constructSeriesIdList(seriesPkIds);
+		}
 
         whereStmt += ")";
 
@@ -246,7 +266,7 @@ public class StudyDAOImpl extends AbstractDAO
 				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
 				"s.patient.ethnicGroup, s.patient.dataProvenance.project, " +
 				"(select count(*) from GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID) "  +
-				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1', '12') ";
+				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		List<String> paramList = new ArrayList<String>();
@@ -287,7 +307,7 @@ public class StudyDAOImpl extends AbstractDAO
 				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
 				"s.patient.ethnicGroup, s.patient.dataProvenance.project, " +
 				"(select count(*) from GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID) "  +
-				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1', '12') ";
+				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		Date date1=null;
@@ -356,7 +376,7 @@ public class StudyDAOImpl extends AbstractDAO
 	/////////////////////////////////////PRIVATE/////////////////////////////////////////
     private static final String SQL_QUERY_SELECT = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, study.patient.dataProvenance.project, series.annotationTotalSize, series.maxFrameCount, series.patientPkId, study.studyId, series.bodyPartExamined  ";
     private static final String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join series.generalEquipment ge ";
-    private static final String SQL_QUERY_WHERE = "WHERE series.visibility in ('1', '12') ";
+    private static final String SQL_QUERY_WHERE = "WHERE series.visibility in ('1') ";
 
 	private static Logger logger = Logger.getLogger(ImageDAO.class);
 
@@ -394,7 +414,7 @@ public class StudyDAOImpl extends AbstractDAO
        }
    	return theWhereStmt;
    }
-    private static int PARAMETER_LIMIT = 700;
+    private static int PARAMETER_LIMIT = 5000;
 
 	private <T> Collection<Collection<T>> split(Collection<T> bigCollection, int maxBatchSize) {
 		Collection<Collection<T>> result = new ArrayList<Collection<T>>();

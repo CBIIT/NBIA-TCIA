@@ -126,6 +126,22 @@ public class NCIAConfig {
 		}
      }
 
+     public static void update() {
+	   ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	   InputStream input = classLoader.getResourceAsStream("nbia.properties");
+	   // ...
+	   properties = new Properties();
+	     	 
+	   try {
+		  properties.load(input);
+	
+		
+	   } catch (IOException e) {
+		// TODO Auto-generated catch block
+		  e.printStackTrace();
+	   }
+     }
+     
      public static boolean getShowCollectionSearchCriteria() {
          String propertyValue = properties.getProperty("show.collection.search.criteria");
          checkProperty("show.collection.search.criteria", propertyValue);
@@ -740,25 +756,54 @@ public class NCIAConfig {
         return propertyValue;   	
     }
     
+    public static String getLatestManifestVersion() {
+        String propertyValue = properties.getProperty("latest.manifest.version");
+        checkProperty("latest.manifest.version", propertyValue);
+        return propertyValue;   	
+    }
+    
     public static String getDownloaderAppForcedUpgrade() {
         String propertyValue = properties.getProperty("force.downloader.upgrade");
         checkProperty("force.downloader.upgrade", propertyValue);
         return propertyValue;   	
-    }       
+    } 
+    
+    public static String getDownloaderAppHelpDeskLink() {
+        String propertyValue = properties.getProperty("help.desk.url");
+        checkProperty("help.desk.url", propertyValue);
+        return propertyValue;   	
+    } 
+    
+    public static String getDownloaderAppOnlineHelpUrl() {
+        String propertyValue = properties.getProperty("online.help.url");
+        checkProperty("online.help.url", propertyValue);
+        return propertyValue;   	
+    }           
     
     public static String getAppName() {
         String propertyValue = properties.getProperty("branding.appname");
-        checkProperty("branding.appname", propertyValue);
+        //checkProperty("branding.appname", propertyValue);
         return propertyValue;   	
     } 
     public static String getButtonText() {
         String propertyValue = properties.getProperty("gui.text");
-        //checkProperty("gui.text", propertyValue);
+        return propertyValue;   	
+    } 
+    public static String getBannerText() {
+        String propertyValue = properties.getProperty("banner.text");
+        return propertyValue;   	
+    } 
+    public static String getBannerColor() {
+        String propertyValue = properties.getProperty("banner.color");
         return propertyValue;   	
     } 
     public static String getButtonAction() {
         String propertyValue = properties.getProperty("gui.link");
         //checkProperty("gui.link", propertyValue);
+        return propertyValue;   	
+    } 
+    public static String getTomcatPort() {
+        String propertyValue = properties.getProperty("tomcat.server.port");
         return propertyValue;   	
     } 
     /**

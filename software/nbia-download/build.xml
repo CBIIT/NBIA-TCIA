@@ -145,6 +145,15 @@ L-->
          webxml="config/web.xml"
          basedir="tmp.webapp"
          compress="false"/>
+
+    <jar destfile="${target.dir}/${war.name}.tmp">
+        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar"/>
+    </jar>
+     <delete file="${target.dir}/${war.name}" />
+     <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />
+    <war destfile="${target.dir}/${war.name}" update="true">
+        <zipfileset file="${common.dir}/common/resources/lib/csmapi-5.2.0.1.jar"  prefix="WEB-INF/lib"/>
+    </war>
   	<echo>copying ${target.dir}/${war.name} to ${dist.dir}</echo>
     <copy todir="${dist.dir}"
           file="${target.dir}/${war.name}"/>

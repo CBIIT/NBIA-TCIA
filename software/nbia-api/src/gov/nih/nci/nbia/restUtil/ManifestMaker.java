@@ -24,7 +24,7 @@ public class ManifestMaker {
 
 
 		// Manifest file will be versioned too
-		outSB.append("manifestVersion=" + NCIAConfig.getLatestDownloaderVersion().trim() + "\n");
+		outSB.append("manifestVersion=" + NCIAConfig.getLatestManifestVersion().trim() + "\n");
 		outSB.append("ListOfSeriesToDownload=\n");
 
 		for (String seriesId: seriesIds) {

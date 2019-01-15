@@ -1,0 +1,156 @@
+<!-- ----------  Testing and diagnostic things.  This is never shown in a Production build.  ---------- -->
+
+<div class="test-main-panel container-fluid">
+    <div class="row test-top-panel-heading">
+        <!--
+                <span class="label nbia-button" (click)="onUpdateApiServerUrl()">Update</span>
+        -->
+        API_SERVER_URL
+        <input
+            class="textInput"
+            type="text"
+            [(ngModel)]="API_SERVER_URL"
+        >
+        <span class="btn nbia-button" (click)="onUpdateApiServerUrl()">
+            Set
+        </span>
+
+        <label class="checkbox-inline" for="debugCheckbox">
+            <input
+                type="checkbox"
+                id="debugCheckbox"
+                (click)="onDebugCheckboxClick($event.target.checked)"
+            >
+            Debug</label>
+
+        <label class="checkbox-inline">
+            <input
+                type="checkbox"
+                id="apiCallsCheckbox"
+                [(ngModel)]="DEBUG_CURL"
+                (click)="onDebugApiCheckboxClick($event.target.checked)"
+            >
+            API calls</label>
+        <hr>
+        <b>Search criteria sort</b>
+        <br>
+        <span>
+            Count
+                <input
+                    type="radio"
+                    name="radiogroup"
+                    value="Count"
+                    [checked]="sortByCount"
+                    (change)="onSortRadio(true)"
+                >
+        </span>
+
+        <span>
+            Name
+                <input
+                    type="radio"
+                    name="radiogroup"
+                    value="Name"
+                    [checked]="sortByName"
+                    (change)="onSortRadio(false)"
+                >
+        </span>
+    </div>
+
+</div>
+
+<br>
+<div class="test-main-panel container-fluid">
+    <div class="row test-top-panel-heading">
+        <span class="btn nbia-button" (click)="onLoadingDisplay()">Test loading display</span>
+    </div>
+</div>
+<br>
+
+<div class="test-main-panel container-fluid">
+    <div class="row test-panel-heading">
+        <span class="btn nbia-button" (click)="onUpdateClick()">Update</span>
+
+    </div>
+
+    <div class="row test-panel-row">
+        <input class="textInput" type="text" [(ngModel)]="token">
+        <span class="btn nbia-button" (click)="onOkayClick()">Set</span>
+    </div>
+</div>
+<br>
+
+<!--
+
+<div class="test-main-panel container-fluid">
+    <div class="row test-panel-heading">
+        <span class="label label-primary test-label">To Do</span>
+    </div>
+
+    <div class="row test-panel-row">
+        <ul>
+            <li><i><b>Clear Cart</b></i> causes each Subject to look up his Studies, then Series.  Go straight from the Series if we can.</li>
+            <li>Wait/busy screen/message</li>
+            <li>Client side error handling</li>
+            <li>Select all for cart Checkbox is wrong. Test w/query from 2 categories. <b>Fixed needs more testing</b></li>
+            <li>Selecting Manufacturer Model parents and children repeatedly does not always work</li>
+            <li><del>Charts are broken</del></li>
+            <li>New Cart downloader</li>
+            <li>
+                <del>Convert Disk space to mb/gb</del>
+            </li>
+            <li>
+                <del>Connect <i>Manufacturer Model</i> UI</del>
+            </li>
+            <li>
+                <del>Add <i>Manufacturer Model</i> to query and query display (may need tweak on the API side)</del>
+            </li>
+            <li>
+                <del>Add sorting to Cart</del>
+            </li>
+            <li>
+                <del>Clear Query button at top does not work right (on the first click)</del>
+            </li>
+            <li>
+                <del>Display <i>Text</i> search query at top</del>
+            </li>
+            <li>
+                <del>Clear query and search results on Logout</del>
+            </li>
+        </ul>
+    </div>
+</div>
+-->
+
+<div class="test-main-panel container-fluid">
+    <div class="row test-panel-heading">
+        <span class="btn label-primary test-label">Wish List - Future version</span>
+    </div>
+
+    <div class="row test-panel-row">
+        <ul>
+            <li>Progress bars</li>
+            <li>Any/All functionality for Anatomical Site</li>
+        </ul>
+    </div>
+</div>
+
+
+<h2>
+<span *ngFor="let colorX of colors0">
+      <span [ngStyle]="{'background-color': colorX}">&nbsp;&nbsp;{{colorX}}&nbsp;&nbsp;</span>
+</span>
+</h2>
+
+<h2>
+<span *ngFor="let colorX of colors1">
+      <span [ngStyle]="{'background-color': colorX}">&nbsp;&nbsp;{{colorX}}&nbsp;&nbsp;</span>
+</span>
+</h2>
+
+
+<h2>
+<span *ngFor="let colorX of colors2">
+      <span [ngStyle]="{'background-color': colorX}">&nbsp;&nbsp;{{colorX}}&nbsp;&nbsp;</span>
+</span>
+</h2>

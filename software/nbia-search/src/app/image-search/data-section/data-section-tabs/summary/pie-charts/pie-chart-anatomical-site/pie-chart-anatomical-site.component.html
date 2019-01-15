@@ -1,0 +1,30 @@
+<!-- ----------  Pie Chart for Anatomical Sites  ---------- -->
+
+<div class="chart00">
+
+    <!-- -----  Heading  ----- -->
+    <div class="chart-header">
+        Count by {{chartName}}
+    </div>
+
+    <!-- -----  The Pie chart  ----- -->
+    <div class="chart-svg-div">
+        <svg
+            class="pie-svg"
+            [ngClass]="{
+                'hide' : (! showAnatomicalSiteChart)
+            }"
+            id="pie-anatomical-site"
+            [attr.width]="dispWidth"
+            [attr.height]="dispHeight"
+        >
+
+        </svg>
+    </div>
+
+    <!-- -----  The footer, which shows the name and count of the slice under the mouse.  ----- -->
+    <div class="chart-footer">
+        {{footerText}}
+    </div>
+
+</div>

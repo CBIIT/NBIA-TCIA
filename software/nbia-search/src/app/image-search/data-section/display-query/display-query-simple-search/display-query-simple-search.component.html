@@ -1,0 +1,40 @@
+<!-- ----------  This is the Query that is displayed above the Search Results or Summary screen.  ---------- -->
+<!-- ----------  The Clear the complete query button on the left.                                 ---------- -->
+
+<div class="alert alert-info display-query display-wrap">
+    <button
+        class="btn btn-default no-outline"
+        title="Clear query"
+        (click)="onClearSimpleSearchQueryClick()"
+    >
+        <img src="assets/images/clear-icon1.png">
+        Clear
+    </button>
+
+    <span class="display-on-top">
+        <!-- Minimum matched studies -->
+        <span *ngIf="( comService.getMinimumMatchedStudiesValue() > 1 )&&( allCriteriaList.length > 0 ) ">
+            <span class="label label-default criteria-display criteria-display-title">
+                Min studies {{commonService.getMinimumMatchedStudiesValue()}}
+            </span>&nbsp;-</span>
+
+        <span *ngFor="let critRow of allCriteriaList; let n = index">
+            <!-- Do not split up the following line.  -->
+            <span *ngIf="( n > 0 ) && ( n < allCriteriaList.length )">&nbsp;<span
+                class="label label-default criteria-and">AND</span>
+            </span>
+
+                <span *ngFor="let critRowElements of critRow; let i = index">
+
+                    <span *ngIf="i==0" class="label label-default criteria-display criteria-display-title display-wrap">{{critRowElements | displayFormat}}</span>
+                    <span class="display-wrap" *ngIf="i==1">(&nbsp;</span>
+                    <span class="display-wrap" *ngIf="( (i > 1) && (i < critRow.length))">,&nbsp;</span>
+                    <span *ngIf="( i > 0 )"
+                          class="label label-default criteria-display criteria-display-name display-wrap">{{cleanQuery(critRowElements)}}
+                    </span>
+                <span class="display-wrap" *ngIf="i==critRow.length - 1 ">&nbsp;)</span>
+            </span>
+        </span>
+    </span>
+
+</div>

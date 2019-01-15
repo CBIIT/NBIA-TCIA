@@ -1,0 +1,35 @@
+<!-- ----------  This is the main/parent html file.  We get here via the router-outlet tag in app.component.html  ---------- -->
+
+<!-- The Welcoming introduction/tutorial -->
+<nbia-introduction></nbia-introduction>
+
+<div
+    [ngClass]="{
+        'hide-item':currentMenuItem === menuItems.HIDE_ALL
+    }"
+    #parentSpan
+    class="main-parent-span"
+>
+
+
+        <!-- The wait, we are busy screen -->
+        <nbia-loading-display></nbia-loading-display>
+
+<!--
+        <nbia-feedback-button></nbia-feedback-button>
+        <nbia-legacy-app></nbia-legacy-app>
+-->
+
+        <!-- The top logo, custom menu, and application menu. -->
+        <nbia-header></nbia-header>
+
+        <nbia-image-search
+            [ngClass]="{'hide-item':currentMenuItem != menuItems.IMAGE_SEARCH_MENU_ITEM }"></nbia-image-search>
+
+        <!--  If a user other than the default user is logged in, don't switch to the login screen, instead just log them out, and login the default user.  -->
+        <nbia-login [ngClass]="{ 'hide-item':( (currentMenuItem !=  menuItems.LOGIN_MENU_ITEM) || (currentUser != defaultUser))}"></nbia-login>
+
+        <!-- The Cart managment screen.  -->
+        <nbia-cart [ngClass]="{'hide-item':currentMenuItem !=  menuItems.CART_MENU_ITEM}"></nbia-cart>
+</div>
+

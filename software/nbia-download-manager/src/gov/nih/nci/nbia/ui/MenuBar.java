@@ -65,7 +65,7 @@ public class MenuBar extends JMenuBar{
                 KeyEvent.VK_O);
         helpMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                BrowserLauncher.openUrl();
+                BrowserLauncher.openUrlForApp();
             }
         });
         helpMenu.add(helpMenuItem); 

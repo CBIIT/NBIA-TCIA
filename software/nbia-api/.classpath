@@ -377,5 +377,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

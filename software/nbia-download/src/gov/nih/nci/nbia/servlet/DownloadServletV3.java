@@ -167,7 +167,7 @@ public class DownloadServletV3 extends HttpServlet {
 			// compute the size for this series
 			long size = computeContentLength(imageResults, annoResults);
 			try {
-				processor.recordDownload(seriesUid, userId, size);
+				processor.recordAppDownload(seriesUid, userId, size, "v3");
 			} catch (Exception e) {
 				logger.error("Exception recording download " + e.getMessage());
 			}
@@ -312,15 +312,27 @@ public class DownloadServletV3 extends HttpServlet {
 		AuthorizationManager am;
 		try {
 			am = new AuthorizationManager(loginName);
+			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
+
+
+
 			List<SiteData> authorizedSiteData = am.getAuthorizedSites();
 			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-			List<SeriesDTO> seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID(seriesUids,
+			List<SeriesDTO> seriesDTOsFound = null;
+			if (mgr.hasQaRole(loginName)) {
+				seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUIDAllVisibilities(seriesUids,
+						authorizedSiteData, null);
+			}
+			else 
+				seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID112(seriesUids,
 					authorizedSiteData, null);
 
-			if  (seriesDTOsFound.size() < seriesUids.size() ) {
+			if  ((seriesDTOsFound != null) && (seriesDTOsFound.size() < seriesUids.size() )) {
 				//Has some unauthorized data
 				return null;
 			}
+			else if (seriesDTOsFound == null)
+				return null;
 			List<String> seriesDownloadData = new ArrayList<String>();
 			for (SeriesDTO series : seriesDTOsFound) {
 				String collection = series.getProject();

@@ -1,0 +1,29 @@
+<img class="background-image"  src={{properties.LOGO_FILE}} alt="Logo">
+
+
+<nav class=" menu-header">
+    <div class="container-fluid">
+
+        <nbia-custom-menu *ngIf="properties.SHOW_CUSTOM_MENU"></nbia-custom-menu>
+
+        <nbia-application-menu></nbia-application-menu>
+
+        <!--  This will sit on top of everything else, if the Downloader-download is popped up.  -->
+        <nbia-downloader-download></nbia-downloader-download>
+
+        <!--  This is no longer used
+                <nbia-save-shared-list></nbia-save-shared-list>
+        -->
+
+        <!-- Popup for telling user, one or more search criteria in the URL parameters was not here.  -->
+        <nbia-missing-criteria></nbia-missing-criteria>
+
+    </div>
+</nav>
+
+
+<!-- -----  Components that need to "popup" at this level when they are visible.  ----- -->
+<nbia-query-url></nbia-query-url>
+<nbia-save-cart></nbia-save-cart>
+<nbia-alert-box></nbia-alert-box>
+

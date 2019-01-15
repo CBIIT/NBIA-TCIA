@@ -1,0 +1,40 @@
+<!-- ----------  A generic Dialog box used by several components.  ---------- -->
+
+<div
+    *ngIf="showAlertBox"
+    class="panel panel-danger box-div alert-box-div alert-box-shadow"
+    [style.width.px]="boxWidth"
+>
+    <div class="panel-heading">
+        <span *ngIf="type === AlertBoxT.INFO" class="alert-box-icon glyphicon glyphicon-info-sign"></span>
+        <span *ngIf="type === AlertBoxT.WARN" class="alert-box-icon glyphicon glyphicon-exclamation-sign"></span>
+        <span *ngIf="type === AlertBoxT.CONFIRM" class="alert-box-icon glyphicon glyphicon-question-sign"></span>
+        <span *ngIf="type === AlertBoxT.ERROR" class="alert-box-icon glyphicon glyphicon-exclamation-sign"></span>
+        &nbsp;
+        <span class="panel-title  alert-panel-title">
+            {{title}}
+        </span>
+    </div>
+
+    <div style="padding-top:20px" class="panel-body">
+        <!-- Use <span> with <br> instead of <div> so we can include blank lines.  -->
+        <span *ngFor="let textLine of text">
+            {{textLine}}
+            <br>
+        </span>
+        <br>
+        <span *ngFor="let button of buttonArray">
+            <button
+                class="btn alert-box-button"
+                [ngClass]="{
+                    'btn-primary': (button === AlertBoxButtonT.OKAY) || (button === AlertBoxButtonT.SAVE) || (button === AlertBoxButtonT.CANCEL),
+                    'btn-danger': (button === AlertBoxButtonT.DELETE) || (button === AlertBoxButtonT.CONTINUE)
+                }"
+                (click)="onButtonClick(button)"
+                type="button"
+            >
+                {{AlertBoxButtonTex[button]}}
+            </button>
+         </span>
+    </div>
+</div>

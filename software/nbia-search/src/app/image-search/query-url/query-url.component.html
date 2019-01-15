@@ -1,0 +1,38 @@
+<div *ngIf="showQueryUrl" class="query-url-parent-div ">
+    <div class="panel panel-info query-url-div alert-box-shadow">
+
+        <div class="panel-heading">
+            <div class="panel-title alert-panel-title">Query URL</div>
+        </div>
+        <br>
+        <div class="panel-body">
+            <div class="note-text">
+                Want to save your query for later use or share it with a colleague?<br>
+                You can do it using the following URL.
+            </div>
+            <br>
+            <div class="display-url-text">
+                {{displayUrl}}
+            </div>
+            <div class="foot-note">
+                <b>Note</b>: if new data are added to TCIA at a later date which match your query your search results will be updated to reflect these additions.<br>
+                If you want to share a static set of data use the 'Share my cart' option instead.
+            </div>
+            <div>
+                <button class="btn btn-danger alert-box-button"
+                        (click)="onCloseClick()"
+                        type="button">
+                    Close
+                </button>
+
+                <button class="btn btn-primary alert-box-button"
+                        type="button"
+                        ngxClipboard [cbContent]="displayUrl"
+                        (click)="onCloseClick()">
+                    Copy URL
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

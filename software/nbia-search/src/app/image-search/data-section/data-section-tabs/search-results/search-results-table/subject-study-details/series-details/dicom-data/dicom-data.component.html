@@ -1,0 +1,38 @@
+<!-- ---------- Displayed when the Dicom button within a Series row is clicked.  ---------- -->
+
+<div class="child-data-display">
+
+    <!-- ----- Title with image ID  ----- -->
+    <span class="clicker glyphicon glyphicon-remove close-x" (click)="onDicomDataCloseClick()"></span>
+    &nbsp;&nbsp;<b>&nbsp;&nbsp;DICOM Tags for Image: &nbsp;&nbsp;<i>{{seriesId}}</i></b>
+
+    <div class="dicom-scroll-area">
+        <table class="dicom-data-table">
+
+            <!-- ----- Header  ----- -->
+            <tr class="series-header-tr">
+                <th>
+                    Element
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Data
+                </th>
+            </tr>
+
+            <!-- ----- Data  ----- -->
+            <tr
+                *ngFor="let row of dicomData; let i=index; let even = even; let odd = odd"
+                [ngClass]="{
+                'dark': i%4 !== 0
+            }"
+            >
+                <td class="dicom-element-column">{{row.element}}</td>
+                <td class="dicom-name-column">{{row.name}}</td>
+                <td class="dicom-data-column">{{row.data}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

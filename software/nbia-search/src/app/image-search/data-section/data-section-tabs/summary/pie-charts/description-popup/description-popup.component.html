@@ -1,0 +1,27 @@
+<!-- ----------  This is the popup with the descriptions displayed when a user clicks on a Piechart slice for Image Modality & Collections.  ---------- -->
+
+<span
+    [ngStyle]="{'top':descriptionPopupY + 'px'}"
+    class="descriptionPopup step"
+    [ngClass]="{
+        'showDescription': showModalityDescription
+    }"
+>
+
+    <div>
+        <b>{{descriptionPopupHeading}}</b>
+
+        <span class="glyphicon glyphicon-remove close-x clicker" (click)="onHideShowAnimationClick()">
+        </span>
+
+        <div
+            [innerHTML]=descriptionPopupText
+            [ngStyle]="{'width':(width) + 'px' }"
+            [ngClass]="{
+                'descriptionTextDiv': descriptionScroll
+            }"
+            class="descriptionTextDiv1"
+        ></div>
+
+    </div>
+ </span>

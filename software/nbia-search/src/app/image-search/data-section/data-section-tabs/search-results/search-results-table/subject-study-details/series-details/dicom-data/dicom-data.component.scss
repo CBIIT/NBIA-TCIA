@@ -1,0 +1,30 @@
+@import '../../../../../../../../app.component.scss';
+
+.dicom-scroll-area{
+    max-height: 256px;
+    overflow-y: auto;
+}
+
+.dicom-data-table{
+    width: 100%;
+}
+
+.dicom-data-column{
+    border: solid 1px #bbb;
+    width: calc(75% - 140px);
+}
+
+.dicom-element-column{
+    border: solid 1px #bbb;
+    width: 140px;
+}
+
+.dicom-name-column{
+    border: solid 1px #bbb;
+    width: 25%;
+}
+
+
+th, td {
+    padding: 2px 16px 2px 8px;
+}

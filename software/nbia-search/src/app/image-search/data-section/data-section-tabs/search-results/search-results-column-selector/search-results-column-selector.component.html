@@ -1,0 +1,57 @@
+<!-- ---------- Popup/Dropdown that pops up when user clicks top right button in Results.                               --------- -->
+<!-- ---------- It is a list of Search Results columns do be displayed (or not).                                        --------- -->
+<!-- ---------- Some items are considered required, and are selected, and disabled, so the user can not unselect them.  --------- -->
+
+<div
+    *ngIf="showSelector"
+    class="panel panel-default column-selector"
+    (clickOutside)="onClickedOutside($event)"
+>
+    <div class="panel-heading">
+        Pick columns
+    </div>
+    <div class="panel-body">
+        <div *ngFor="let colName of colNames; let i = index">
+            <span
+                *ngIf="(
+                             (
+                                 (colName['textSearch'] && (currentSearchMode === TEXT_SEARCH)) ||
+                                 (colName['criteriaSearch'] && (currentSearchMode === SIMPLE_SEARCH))
+                             )
+                         &&
+                             (
+                                 ( ! DISABLE_COUNTS_AND_SIZE) ||
+                                 ( colName['name'] !== 'Disk Space' && colName['name'] !== 'Image Count' )
+                             )
+                         )"
+            >
+
+                <!-- User selectable optional items -->
+                <input
+                    *ngIf="!colName.required"
+                    type="checkbox"
+                    id="checkboxSearchResultsColumnSelectorOptional{{i}}"
+                    [(ngModel)]="colNames[i].selected"
+                    (click)="onClick(i)"
+                >
+                <label *ngIf="!colName.required" [attr.for]="'checkboxSearchResultsColumnSelectorOptional'+i">
+                    &nbsp;{{colName['name']}}
+                </label>
+
+
+                <!-- Required items are not user selectable, they are set selected and disabled -->
+                <input
+                    *ngIf="colName['required']"
+                    id="checkboxSearchResultsColumnSelectorRequired{{i}}" type="checkbox"
+                    checked="true"
+                    disabled
+                >
+                <label *ngIf="colName['required']" class="disabled">
+                    &nbsp;{{colName['name']}}
+                </label>
+
+            </span>
+        </div>
+
+    </div>
+</div>

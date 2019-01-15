@@ -8,9 +8,11 @@ package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
@@ -22,6 +24,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import gov.nih.nci.ncia.criteria.*;
 import gov.nih.nci.nbia.query.DICOMQuery;
+import gov.nih.nci.nbia.querystorage.QueryStorageManager;
 import gov.nih.nci.nbia.dynamicsearch.DynamicSearchCriteria;
 import gov.nih.nci.nbia.dynamicsearch.Operator;
 import gov.nih.nci.nbia.dynamicsearch.QueryHandler;
@@ -160,7 +163,15 @@ public class GetSimpleSearch extends getData{
 		}
         PatientSearcher patientSearcher = new PatientSearcher();
         List<PatientSearchResult> patients = patientSearcher.searchForPatients(query);
-		
+        if (inFormParams.get("tool")!=null&&!inFormParams.get("tool").get(0).equalsIgnoreCase("portal"))
+        {
+            query.setUserID(userName);
+            query.setExecuteTime(Calendar.getInstance().getTime());
+
+            QueryStorageManager qManager = (QueryStorageManager)SpringApplicationContext.getBean("queryStorageManager");
+
+            qManager.addQueryToHistory(query, inFormParams.get("tool").get(0));
+        }
 		return Response.ok(JSONUtil.getJSONforPatients(patients)).type("application/json")
 				.build();
 		} catch (Exception e) {
@@ -170,4 +181,5 @@ public class GetSimpleSearch extends getData{
 		return Response.status(500)
 				.entity("Server was not able to process your request").build();
 	}
+
 }

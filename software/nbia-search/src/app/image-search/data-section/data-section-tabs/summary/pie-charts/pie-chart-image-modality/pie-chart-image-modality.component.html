@@ -1,0 +1,41 @@
+<!-- ----------  Pie Chart for Image Modality  ---------- -->
+
+<!-- -----  The popup description box.  ----- -->
+<nbia-description-popup
+    [(showModalityDescription)]=showModalityDescription
+    [chartType]=chartType
+    [descriptionPopupY]=descriptionPopupY
+    [descriptionPopupText]=descriptionPopupText
+    [descriptionPopupHeading]=descriptionPopupHeading
+    [descriptionScroll]=false
+></nbia-description-popup>
+
+<div class="chart00">
+
+    <!-- -----  Heading  ----- -->
+    <div class="chart-header">
+        Count by {{chartName}}
+    </div>
+
+    <!-- -----  The Pie chart  ----- -->
+    <div
+        class="chart-svg-div"
+    >
+        <svg
+            class="pie-svg"
+            [ngClass]="{
+                 'hide' : (! showImageModalityChart)
+             }"
+             id="pie-image-modality"
+             [attr.width]="dispWidth"
+             [attr.height]="dispHeight"
+             ngDefaultControl
+        >
+        </svg>
+    </div>
+
+    <!-- -----  The footer, which shows the name and count of the slice under the mouse.  ----- -->
+    <div class="chart-footer">
+        {{footerText}}
+    </div>
+</div>

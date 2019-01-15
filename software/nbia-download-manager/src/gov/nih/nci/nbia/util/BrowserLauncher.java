@@ -40,6 +40,18 @@ public class BrowserLauncher {
         }
     }
     
+    public static void openUrlForApp(){
+        String url = DownloaderProperties.getOnlineHelpUrl();
+        
+        if (isMac){
+            openUrlForMac(url);
+        }else if(isWin){
+            openUrlForWindows(url);
+        }else{
+            openUrlForOthers(url);
+        }
+    }   
+    
     public static void openUrlForHelpDesk(){
       String url = DownloaderProperties.getHelpDeskUrl();
 

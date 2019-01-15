@@ -1,0 +1,59 @@
+@import '../../app.component.scss';
+
+.save-shared-list-div {
+    width: 600px;
+    left: calc(50% - 300px);
+    top: 16px;
+    background-color: #fff;
+}
+
+.save-shared-list-subject-id-list{
+    height: 486px;
+}
+
+.save-shared-list-from-cart{
+    height: 290px;
+}
+
+
+.shared-list-input-div {
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+
+.shared-list-input-label{
+    width: 170px;
+    text-align : right;
+}
+
+
+.button-div {
+    position: relative;
+    left: 10px;
+    margin-top: 12px;
+}
+
+.save-shared-list-panel{
+    height: calc(100% - 10px);
+}
+
+.disabled-button {
+    color: $disabled-text;
+    cursor: not-allowed;
+}
+
+.dupe-warning{
+    font-size: 16px;
+    padding: 8px;
+}
+
+.text-input{
+    height: 128px;
+    resize: none;
+
+}
+
+.text-input-label{
+    vertical-align: top;
+}

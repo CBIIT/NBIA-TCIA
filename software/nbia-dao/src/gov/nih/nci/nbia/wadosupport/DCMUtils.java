@@ -1,25 +1,28 @@
 package gov.nih.nci.nbia.wadosupport;
-import java.awt.image.*;
-import java.awt.Image;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.io.*;
-import java.util.Iterator;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.*;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+
 
 import org.apache.log4j.Logger;
 import org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam;
 import org.dcm4che2.imageioimpl.plugins.dcm.DicomImageReader;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+
 public class DCMUtils {
 private static boolean scanned =false;
 private static ImageReader reader;
@@ -125,16 +128,15 @@ public synchronized static  JPEGResult getJPGFromFile(File file, WADOParameters 
 
         }	
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
-		
+		final ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+		JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
+		jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 		if (params!=null&&params.getQualityFloat()!=-1)
 		{
-			JPEGEncodeParam enParam=JPEGCodec.getDefaultJPEGEncodeParam(myJpegImage);
-			enParam.setQuality(params.getQualityFloat(), true);
-			encoder.setJPEGEncodeParam(enParam);
+			jpegParams.setCompressionQuality(params.getQualityFloat());
 		}
-		
-		encoder.encode(myJpegImage);
+		writer.setOutput(output);
+		writer.write(null, new IIOImage(myJpegImage, null, null), jpegParams);
 		output.close();
 		returnValue.setImages(output.toByteArray());
 		return returnValue;

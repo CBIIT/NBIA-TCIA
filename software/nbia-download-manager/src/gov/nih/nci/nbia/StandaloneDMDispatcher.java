@@ -12,6 +12,7 @@
  */
 package gov.nih.nci.nbia;
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.ProxySelector;
+import java.net.Socket;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -35,6 +37,10 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URI;
+import java.util.Iterator;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -45,6 +51,8 @@ import javax.net.ssl.X509TrustManager;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
@@ -69,22 +77,21 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import gov.nih.nci.nbia.util.DownloaderProperties;
-import gov.nih.nci.nbia.util.PropertyLoader;
 
 /**
  * @author Q. Pan
  *
  */
 public class StandaloneDMDispatcher {
-	public static final String launchMsg = "To run TCIA Downloader app, please provide a manifest file as an argument. Download a manifest file from TCIA portal and open the file with TCIA Downloader app.";
-	private final static String newVersionMsg = "There is a new version of the TCIA Downloader available.";
-	private final static String manifestVersionMsg = "The manifest file version is not suported by this TCIA Downloader.  Please generate a new manifest file compatible with TCIA Downloader version ";
-	private final static String manifestVersionNewMsg = "The version of manifest file is higher than the version of this app.  Please upgrade your app.";
+	public static final String launchMsg = "To run NBIA Data Retriever, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and click the file to launch the app.";
+	private final static String newVersionMsg = "A newer version of this app is available.";
+	private final static String manifestVersionMsg = "The manifest file version is not suported by this version of app.  Please generate a new manifest file compatible with this version of app.";
+	private final static String manifestVersionNewMsg = "The version of manifest file is higher than this app version.  Please upgrade your app.";
 	private static final String supportedVersion = null; // for future when
 															// certain version
 															// is no longer
 															// supported
-//	private final static String appVersion = "3.0";
+//	private final static String appVersion = "3.2";
 	private static String appVersion = null;
 	private static final String osParam = "os";
 	private static final String installBtnLbl = "Update automatically";
@@ -109,7 +116,7 @@ public class StandaloneDMDispatcher {
 			sdmp.launch();
 		} else {
 			JOptionPane.showMessageDialog(null, launchMsg);
-			System.exit(0);
+			//System.exit(0);
 		}
 	}
 
@@ -134,7 +141,7 @@ public class StandaloneDMDispatcher {
 			this.serverUrl = System.getProperty("downloadServerUrl");
 			manifestVersion = System.getProperty("manifestVersion");
 			checkManifestVersion(manifestVersion);
-			if (manifestVersion.equals("3.0")) {
+			if (manifestVersion.startsWith("3.")) {
 				seriesList = getSeriesList(fileName);
 			}
 
@@ -169,23 +176,34 @@ public class StandaloneDMDispatcher {
 	private void getNewVersionInfo() {
 		List<String> resp = null;
 		if (!(os.contains("windows") || os.startsWith("mac"))) {
-			StandaloneDMDispatcher.os = getLinuxPlatform();
-			if (StandaloneDMDispatcher.os.equals("other")) {
+			String linuxOs = getLinuxPlatform();
+			if (linuxOs.equals("other")) {
 				JOptionPane.showMessageDialog(null,
-						"New version of TCIA Downloader is released but the OS platform of your system is not supported currently.");
-				return;
+						"This app has not been tested on the OS platform of your system.  Only Windows/MacOS/CentOS/Red Hat/Ubuntu are supported currently.");
+//				return;
+				//check the os properties of installed software to determined the installer type  	
+				os = DownloaderProperties.getInstallerType();
 			}
+			else os = linuxOs;
 		}
+		
 		try {
 			String versionServerUrl = serverUrl.substring(0, serverUrl.lastIndexOf('/'))
 					.concat("/DownloadServletVersion");
 			resp = connectAndReadFromURL(new URL(versionServerUrl));
 		} catch (MalformedURLException e1) {
+			JOptionPane.showMessageDialog(null, "Connection error 8: " + e1.getMessage());
 			e1.printStackTrace();
 		}
 		if ((resp != null) && (resp.size() >= 3)) {
 			key = resp.get(2);
 		}
+		
+		
+		if ((resp != null) && (resp.size() >= 6)) {
+			System.setProperty("help.desk.url", resp.get(4));
+			System.setProperty("online.help.url", resp.get(5));
+		}		
 
 		if ((resp != null) && (Double.parseDouble(resp.get(0)) > Double.parseDouble(appVersion))) {
 			if (resp.size() >= 4) {
@@ -208,7 +226,7 @@ public class StandaloneDMDispatcher {
 			StandaloneDMV2 sdm = new StandaloneDMV2();
 			sdm.setKey(key);
 			sdm.launch();
-		} else if (manifestVersion.equals("3.0")) {
+		} else if (manifestVersion.startsWith("3.")) {
 			StandaloneDMV3 sdm = new StandaloneDMV3();
 			sdm.setKey(key);
 			sdm.launch(seriesList);
@@ -238,6 +256,17 @@ public class StandaloneDMDispatcher {
 		String nVMsg = newVersionMsg;
 		if (os.equalsIgnoreCase("CentOS") || os.equalsIgnoreCase("Ubuntu")) {
 			nVMsg = nVMsg + "\nIf choosing Update automatically, you need to enter a sudo password later.";
+		}
+		
+		if (os.startsWith("mac")) {
+			JOptionPane.showMessageDialog(null, "New version is available on App Store. Please upgrade.");
+			if (options.length ==2) { // forced upgrade needed
+				System.exit(1);
+			}
+			else {
+				nogo = false;
+				return;
+			}
 		}
 
 		int n = JOptionPane.showOptionDialog(null, nVMsg, "New Version Notification", JOptionPane.YES_NO_CANCEL_OPTION,
@@ -352,7 +381,7 @@ public class StandaloneDMDispatcher {
 			int length = -1;
 			ProgressMonitorInputStream pmis;
 			pmis = new ProgressMonitorInputStream(null,
-					"Downloading new version of installer for TCIA Downloader App...", in);
+					"Downloading new version of installer for NBIA Data Retriever...", in);
 
 			ProgressMonitor monitor = pmis.getProgressMonitor();
 			monitor.setMillisToPopup(0);
@@ -382,6 +411,10 @@ public class StandaloneDMDispatcher {
 	}
 
 	private void install(String downloadUrl) {
+		Double vNum = 0.0;
+		if (appVersion != null) {
+			vNum = Double.parseDouble(appVersion);
+		}
 		String installerPath = getInstallerName(downloadUrl);
 		if (os.contains("windows")) {
 			try {
@@ -411,9 +444,11 @@ public class StandaloneDMDispatcher {
 				if (os.equals("CentOS")) {
 					// sudo yum install TCIADownloader-1.0-1.x86_64.rpm
 					try {
-						String[] cmd = { "/bin/bash", "-c",
-								"/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install "
-										+ installerPath };
+						String upgradCmd="/usr/bin/sudo -S yum -q -y remove TCIADownloader.x86_64;/usr/bin/sudo -S yum -y -q install ";
+						if (vNum>=3.2)
+							upgradCmd="/usr/bin/sudo -S yum -q -y remove NBIADataRetriever.x86_64;/usr/bin/sudo -S yum -y -q install ";
+							
+						String[] cmd = { "/bin/bash", "-c", upgradCmd + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;
@@ -431,15 +466,18 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status + ".");
+								"Installation of new version of NBIA Data Retriever is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else if (os.equals("Ubuntu")) {
 					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
+					String upgradCmd="/usr/bin/sudo -S dpkg -i ";
+					if (vNum>=3.2)
+						upgradCmd="/usr/bin/sudo -S dpkg -i nbia-data-retriever; /usr/bin/sudo -S dpkg -i ";
 					try {
-						String[] cmd = { "/bin/bash", "-c", "/usr/bin/sudo -S dpkg -i " + installerPath };
+						String[] cmd = { "/bin/bash", "-c", upgradCmd + installerPath };
 
 						Process pb = Runtime.getRuntime().exec(cmd);
 						BufferedWriter writer = null;
@@ -457,7 +495,7 @@ public class StandaloneDMDispatcher {
 						}
 
 						JOptionPane.showMessageDialog(null,
-								"Installation of new version of TCIA Downloader is completed " + status + ".");
+								"Installation of new version of NBIA Data Retriever is completed " + status + ".");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -516,23 +554,40 @@ public class StandaloneDMDispatcher {
 			}
 
 		} catch (java.net.ConnectException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			String note = "Connection error 1 while connecting to "+ url.toString() + ":\n" + getProxyInfo(); 
+			//+ checkListeningPort("127.0.0.1", 8888);
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 1: " + e.getMessage());
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
+			String note = "Connection error 2 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 2: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
+			String note = "Connection error 3 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 3: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
+			String note = "Connection error 4 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 4: " + e.getMessage());
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
+			String note = "Connection error 5 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 5: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyStoreException e) {
-			// TODO Auto-generated catch block
+			String note = "Connection error 6 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 6: " + e.getMessage());
 			e.printStackTrace();
 		} catch (UnrecoverableKeyException e) {
-			// TODO Auto-generated catch block
+			String note = "Connection error 7 while connecting to "+ url.toString() + ":\n";
+			printStackTraceToDialog(note, e);
+			//JOptionPane.showMessageDialog(null, "Connection error 7: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (httpClient != null) {
@@ -554,7 +609,7 @@ public class StandaloneDMDispatcher {
 					if (line.contains("Ubuntu")) {
 						linuxOS = "Ubuntu";
 						break;
-					} else if (line.contains("CentOS")) {
+					} else if (line.contains("CentOS") || line.contains("Red Hat")) {
 						linuxOS = "CentOS";
 						break;
 					}
@@ -601,5 +656,70 @@ public class StandaloneDMDispatcher {
 			}
 		}
 		return seriesList;
+	}
+	
+	static void printStackTraceToDialog(String note, Exception e) {
+		StringBuilder sb = new StringBuilder(note);
+        sb.append(e.getMessage());
+        sb.append("\n");
+        for (StackTraceElement ste : e.getStackTrace()) {
+            sb.append(ste.toString());
+            sb.append("\n");
+        }
+        JTextArea jta = new JTextArea(sb.toString());
+        JScrollPane jsp = new JScrollPane(jta){
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(480, 320);
+            }
+        };
+        JOptionPane.showMessageDialog(
+                null, jsp, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	static String getProxyInfo() {
+		StringBuffer sb = new StringBuffer("Get proxy info: ");
+	      try {
+	         System.setProperty("java.net.useSystemProxies", "true");
+	         List<Proxy> l = ProxySelector.getDefault().select(
+	            new URI("https://www.google.com/"));
+	         
+	         for (Iterator<Proxy> iter = l.iterator(); iter.hasNext();) {
+	            Proxy proxy = iter.next();
+	            sb.append("proxy type : " + proxy.type() +"\n");
+	            InetSocketAddress addr = (InetSocketAddress) proxy.address();
+	            
+	            if (addr == null) {
+	            		sb.append("No Proxy\n");
+	            } else {
+	            		sb.append("proxy hostname : " + addr.getHostName()+"\n");
+	            		sb.append("proxy port : " + addr.getPort()+"\n");
+	            } 
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         sb.append(e.getMessage());
+	      }
+	      return sb.toString();
+	   }	
+	
+	static String checkListeningPort(String host, int port) {	
+		Socket s = null;
+	    try
+	    {
+	        s = new Socket(host, port);
+	        return host+":"+port +"is listening;\n";
+	    }
+	    catch (Exception e)
+	    {
+	    		return "checking listening port for "+host+":"+port + " result false for reason "+e.getMessage();
+	    }
+	    finally
+	    {
+	        if(s != null)
+	            try {s.close();}
+	            catch(Exception e){}
+	    }
+	
 	}
 }

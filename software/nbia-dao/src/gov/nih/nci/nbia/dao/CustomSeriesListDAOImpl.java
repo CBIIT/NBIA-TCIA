@@ -109,9 +109,9 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 		DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
 		criteria.add(Restrictions.in("seriesInstanceUID", seriesUids));
 		//criteria.add(Restrictions.eq("visibility", "1"));
-		criteria.add(Restrictions.in("visibility", new String[] {"1","12"}));
+		criteria.add(Restrictions.in("visibility", new String[] {"1"}));
 		
- System.out.println("===== In nbia-dao, CustomSeriesListDAOImpl:getSeriesList(..) -  criteria.add(Restrictions.in('visibility', new String[] {'1','12'})) "); 
+ System.out.println("===== In nbia-dao, CustomSeriesListDAOImpl:getSeriesList(..) -  criteria.add(Restrictions.in('visibility', new String[] {'1'})) "); 
 		
 		criteria = criteria.createCriteria("study");
 		criteria = criteria.createCriteria("patient");

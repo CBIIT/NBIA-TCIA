@@ -1,13 +1,15 @@
 package gov.nih.nci.nbia.searchresult;
 import java.util.*;
+import gov.nih.nci.nbia.util.NCIAConfig;
 public class APIURLHolder {
 	private static String url;
 	private static String wadoUrl;
 	private static Map<String, String> userMap=new HashMap<String, String>();
+	// the api calls are just to localhost now
 	public static String getUrl()
 	{
-		return url;
-		//return "http://localhost:45210";
+		System.out.println("The url-http://localhost:"+NCIAConfig.getTomcatPort());
+		return "http://localhost:"+NCIAConfig.getTomcatPort();
 	}
 	public static String getExternalUrl()
 	{
@@ -38,7 +40,6 @@ public class APIURLHolder {
 	public static void setUrl(String urlIn){
 		url=urlIn;
 		wadoUrl=urlIn+"/ncia/wado";
-		System.out.println("-------> api url is "+url);
 	}
 	public static String getWadoUrl()
 	{

@@ -1,0 +1,48 @@
+<!-- ----------  When the user clicks "Share" -> "Share my Cart" in the header at the top.  ---------- -->
+
+<div *ngIf="showSaveCartUrl" class="save-cart-url-parent-div ">
+    <div class="panel panel-info save-cart-url-div alert-box-shadow">
+
+        <div class="panel-heading">
+            <div class="panel-title alert-panel-title">
+                Cart data URL
+            </div>
+        </div>
+
+        <br>
+        <div class="panel-body save-cart-panel-body">
+            <div class="note-text">
+                Want to save your Cart data for later use or share it with a colleague?<br>
+                You can do it using the following URL.
+            </div>
+            <br>
+            <div class="display-url-text">
+                {{displayUrl}}
+            </div>
+
+            <!-- Two buttons -->
+            <div>
+
+                <!--  "Close" button  -->
+                <button
+                    class="btn btn-danger alert-box-button"
+                    (click)="onCloseClick()"
+                    type="button"
+                >
+                    Close
+                </button>
+
+                <!--  "Copy URL" button  -->
+                <button
+                    class="btn btn-primary alert-box-button"
+                    type="button"
+                    ngxClipboard [cbContent]="displayUrl"
+                    (click)="onCloseClick()"
+                >
+                    Copy URL
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

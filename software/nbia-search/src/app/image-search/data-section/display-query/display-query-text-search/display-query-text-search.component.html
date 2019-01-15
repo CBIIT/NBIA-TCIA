@@ -1,0 +1,13 @@
+<!-- ----------  This is the Query that is displayed above the Text Search Results or Summary screen.  ---------- -->
+<!-- ----------  The Clear the complete query button on the left.                                      ---------- -->
+<div class="alert alert-info display-query">
+    <!--Clear button-->
+    <button class="btn btn-default no-outline" title="Clear query"
+        (click)="onClearTextQueryClick()">
+        <img src="assets/images/clear-icon1.png">
+        Clear
+    </button>
+
+    {{displayText}}
+
+</div>

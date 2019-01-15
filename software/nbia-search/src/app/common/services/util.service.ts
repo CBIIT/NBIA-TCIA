@@ -1,0 +1,115 @@
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Properties } from '@assets/properties';
+import { Observable } from 'rxjs';
+import { CommonService } from '@app/image-search/services/common.service';
+import { HttpClient } from '../../../../node_modules/@angular/common/http';
+import { Consts } from '@app/consts';
+
+@Injectable( {
+    providedIn: 'root'
+} )
+export class UtilService{
+
+
+    constructor( @Inject( LOCALE_ID ) private locale: string ) {
+    }
+
+    isNullOrUndefined( v ): boolean {
+        let res = false;
+        if( v == null ){
+            res = true;
+        }
+        if( v === null ){
+            res = true;
+        }
+        if( typeof v === 'undefined' ){
+            res = true;
+        }
+        return res;
+    }
+
+    isEmpty( obj ) {
+        for( let key in obj ){
+            if( obj.hasOwnProperty( key ) ){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    isNullOrUndefinedOrEmpty( v ): boolean {
+        if( this.isNullOrUndefined( v ) ){
+            return true;
+        }
+
+        if( this.isEmpty( v ) ){
+            return true;
+        }
+        return false;
+    }
+
+
+    copyCriteriaObjectArray( origObject ) {
+        if( origObject === null ){
+            return origObject;
+        }
+        let copyObj = [];
+        for( let criteria of origObject ){
+            copyObj.push( this.copyCriteriaObject( criteria ) );
+        }
+        return copyObj;
+    }
+
+    copyCriteriaObject( origCrit ) {
+        let copyCrit = {};
+        copyCrit['criteria'] = origCrit['criteria'];
+        copyCrit['count'] = origCrit['count'];
+        if( !this.isNullOrUndefined( origCrit['seq'] ) ){
+            copyCrit['seq'] = origCrit['seq'];
+
+        }
+        return copyCrit;
+    }
+
+    /**
+     * Build a csv formatted string from a cart list, with a header row
+     *
+     * @param s  The same data that is displayed on the Cart screen.
+     * @returns {string}  The complete csv formatted data.
+     */
+    csvFormatCart( s ) {
+        // The heading
+        let csvRow = 'Subject ID,Study UID,Study Date,Study Description,Series ID,Series Description,Number of images,File Size,Annotation File Size\n';
+        for( let row of s ){
+            if( (this.isNullOrUndefined( row.disabled )) || (!row.disabled) ){
+                csvRow += this.csvFormatOneField( row.patientId ) + ',' +
+                    this.csvFormatOneField( row.studyId ) + ',' +
+                    // this.csvFormatOneField( row.studyDate ) + ',' +
+                    this.csvFormatOneField( formatDate( row.studyDate, 'MM/dd/yyyy', this.locale ) ) + ',' +
+                    this.csvFormatOneField( row.studyDescription ) + ',' +
+                    this.csvFormatOneField( row.seriesId ) + ',' +
+                    this.csvFormatOneField( row.description ) + ',' +
+                    this.csvFormatOneField( row.numberImages ) + ',' +
+                    this.csvFormatOneField( row.totalSizeForAllImagesInSeries ) + ',' +
+                    this.csvFormatOneField( row.annotationsSize ) + // Make sure there is no comma on the last one.
+                    '\n';
+            }
+        }
+        return csvRow;
+    }
+
+    csvFormatOneField( s: string ) {
+        // If it has a double quote or a comma we need to change it.
+        let expr = /(,|")/;  // no quotes here
+        if( expr.test( s ) ){
+            s = s.replace( new RegExp( '"', 'g' ), '""' );
+            s = '"' + s + '"';
+        }
+        return s;
+    }
+
+
+
+}

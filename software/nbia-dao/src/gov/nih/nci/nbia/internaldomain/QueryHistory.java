@@ -60,6 +60,8 @@ public class QueryHistory implements Serializable, PersistentQuery {
 
     // User ID of the user associated with this query history record
     private long userId;
+    
+    private String tool;
 
     // The criteria of the query
     private Set<QueryHistoryAttribute> queryHistoryAttributes;
@@ -197,4 +199,12 @@ public class QueryHistory implements Serializable, PersistentQuery {
     public void setUserId(long userId) {
         this.userId = userId;
     }
+
+	public String getTool() {
+		return tool;
+	}
+
+	public void setTool(String tool) {
+		this.tool = tool;
+	}
 }

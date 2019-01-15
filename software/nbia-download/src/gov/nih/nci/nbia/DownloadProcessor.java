@@ -47,6 +47,12 @@ public class DownloadProcessor {
 		DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");
 		downloadDAO.record(seriesInstanceUid, loginName, "DM", size);
 	}
+	
+	public void recordAppDownload(String seriesInstanceUid, String loginName, Long size, String version) throws Exception {
+
+		DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");
+		downloadDAO.record(seriesInstanceUid, loginName, "App"+version, size);
+	}	
 
 	/**
 	 * check to see if user has authorized to see data. Return true if yes,

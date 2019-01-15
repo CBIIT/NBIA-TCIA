@@ -1,0 +1,159 @@
+<!-- The top menu
+     The logo on the left comes from a background image set in the scss: assets/images/logo_04b.png"
+
+     Image Search - shows all the searching functions "Simple Search", "Free Text", and "Query Builder"(not yet)
+     Login - Lets you log in as a user other than the default user. If the login is successful, we switch back to the "Image Search"
+     Download - Download the cart contents as a manifest file (.tcia)
+     Share:
+         Share my cart - save cart contents as a Shared List
+         Share my query - Display a URL with parameters which will reproduce the current search.
+     Cart - Shows a list of "Series" which have been selected, and download options.  The Cart is disabled if it has no contents.
+-->
+
+<span class="application-menu-span">
+<!--
+        <span class="item-wrapper">
+            XX
+        </span>
+        -->
+<!--
+    <span class="item-wrapper">
+-->
+    <span
+        class="application-menu-item"
+        [ngClass]="{
+            'application-menu-mouse-over':menuMouseOver[menuItem.IMAGE_SEARCH_MENU_ITEM] && (! disabled ),
+            'application-menu-current-item': currentMenuItem === menuItem.IMAGE_SEARCH_MENU_ITEM,
+            'application-menu-disabled-item': disabled
+        }"
+        (click)="onMenuItemClick(menuItem.IMAGE_SEARCH_MENU_ITEM)"
+        (mouseover)="onMouseOver(menuItem.IMAGE_SEARCH_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.IMAGE_SEARCH_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-search"></span> Search
+
+    </span>
+<!--
+</span>
+-->
+
+
+    <span
+        class="application-menu-item"
+        [ngClass]="{
+            'application-menu-mouse-over':menuMouseOver[menuItem.LOGIN_MENU_ITEM] && (! disabled ),
+            'application-menu-current-item': currentMenuItem === menuItem.LOGIN_MENU_ITEM,
+            'application-menu-disabled-item': disabled
+        }"
+        (click)="onMenuItemClick(menuItem.LOGIN_MENU_ITEM)"
+        (mouseover)="onMouseOver(menuItem.LOGIN_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.LOGIN_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-log-in"></span>
+        {{loginButtonText}}
+    </span>
+
+    <span
+        class="application-menu-item"
+        [ngClass]="{
+            'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled ),
+            'application-menu-disabled-item':( cartCount === 0 || disabled )
+        }"
+        (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
+        (mouseover)="onMouseOver(menuItem.DOWNLOAD_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.DOWNLOAD_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-download-alt"></span> Download
+    </span>
+
+    <span
+        class="application-menu-item"
+        [ngClass]="{
+            'application-menu-mouse-over':menuMouseOver[menuItem.SAVE_SHARED_LIST_MENU_ITEM] && (! disabled ) && (! shareDisabled),
+            'application-menu-disabled-item':disabled || shareDisabled
+        }"
+        dropdown [dropdownToggle]="true"
+        dropdown-open
+        (mouseover)="onMouseOver(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-export"></span>
+        &nbsp;Share
+        <ul
+            *ngIf="( ( ! disabled ) && (! shareDisabled) && ( ! menuLock ))"
+            class="dropdown-menu application-menu-dropdown-menu"
+            role="menu"
+        >
+            <li
+                class="application-menu-dropdown-menu-item"
+                [ngClass]="{
+                    'hide-item':cartCount === 0,
+                    'application-menu-mouse-over':menuMouseOver[menuItem.SAVE_CART_MENU_ITEM]
+                }"
+                (mouseover)="onMouseOver(menuItem.SAVE_CART_MENU_ITEM);onMouseOut(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
+                (mouseout)="onMouseOut(menuItem.SAVE_CART_MENU_ITEM)"
+                (click)="onMenuItemClick(menuItem.SAVE_CART_MENU_ITEM)"
+            >
+                Share my Cart
+            </li>
+
+            <!-- Share my query - Display a URL with parameters which will reproduce the current search.  -->
+            <li
+                class="application-menu-dropdown-menu-item"
+                [ngClass]="{
+                    'hide-item': ( (! haveSimpleSearchQuery ) && ( ! haveTextSearchQuery)),
+                    'application-menu-mouse-over':menuMouseOver[menuItem.DISPLAY_QUERY_URL]
+                }"
+                (click)="onMenuItemClick(menuItem.DISPLAY_QUERY_URL)"
+                (mouseover)="onMouseOver(menuItem.DISPLAY_QUERY_URL)"
+                (mouseout)="onMouseOut(menuItem.DISPLAY_QUERY_URL)"
+            >
+                Share my query
+            </li>
+        </ul>
+    </span>
+<!--
+    <span
+        class="application-menu-item"
+        [ngClass]="{
+            'application-menu-mouse-over':( menuMouseOver[menuItem.CART_MENU_ITEM] && (cartCount > 0)  && (! disabled )),
+            'application-menu-disabled-item':(cartCount === 0) || disabled,
+            'application-menu-current-item': currentMenuItem === menuItem.CART_MENU_ITEM,
+            'application-menu-with-cart-count': cartTotalFileSize > 0,
+            'application-menu-with-no-cart-count': cartTotalFileSize < 1
+         } "
+        title="{{cartCount}} Series"
+        (click)="onMenuItemClick(menuItem.CART_MENU_ITEM)"
+        (mouseover)="onMouseOver(menuItem.CART_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.CART_MENU_ITEM)"
+    >
+
+ -->
+    <span
+        class="application-menu-item"
+        [ngClass]="{
+            'application-menu-mouse-over':( menuMouseOver[menuItem.CART_MENU_ITEM] && (cartCount > 0)  && (! disabled )),
+            'application-menu-disabled-item':(cartCount === 0) || disabled,
+            'application-menu-current-item': currentMenuItem === menuItem.CART_MENU_ITEM
+         } "
+        title="{{cartCount}} Series"
+        (click)="onMenuItemClick(menuItem.CART_MENU_ITEM)"
+        (mouseover)="onMouseOver(menuItem.CART_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.CART_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-shopping-cart"> </span>
+        Cart
+        <span
+            class="cart-count"
+            [ngClass]="{
+                'cart-count-non-zero': cartCount > 0,
+                'cart-count-zero': cartCount <1
+            }"
+        >
+            <!-- Cart data size displayed in the bottom of the button if it's not zero.  -->
+            <span *ngIf="cartTotalFileSize > 0 " class="data-size">{{cartTotalFileSize | toMbGb}}</span>
+            <span *ngIf="cartTotalFileSize <1 " class="data-size">0 MB</span>
+        </span>
+    </span>
+
+</span>

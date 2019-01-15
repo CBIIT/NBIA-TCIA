@@ -1,0 +1,14 @@
+<!-- ----------  The numeric selector used by Search results and Cart screen to choose the number of rows to display at once.  ---------- -->
+
+<span class="footer-colors">
+    Show
+    <span class="btn-group clicker">
+        <input
+            type="number"
+            class="number-spinner rows-per-page-spinner" min="1"
+            [(ngModel)]="rowsPerPage"
+            (change)="onChangeResultsPerPage()"
+        >
+    </span>
+    entries
+</span>

@@ -1,0 +1,20 @@
+<div class="text-search-input-panel">
+    <div class="query-panel-heading">Text Search</div>
+    <form (ngSubmit)="onSearchClick()" (keydown.enter)="onSearchClick()" (keyup.enter)="onKeyupEnter()">
+        <textarea class="text-search-input " [(ngModel)]="textQueryInput" name="textQueryInput"></textarea>
+    </form>
+
+
+    <button class="btn text-search-button  nbia-button"
+            type="button"
+            (click)="onSearchClick()">
+        Search
+    </button>
+
+    <button class="btn  text-search-clear-button  nbia-button"
+            type="button"
+            (click)="onClearClick()">
+        Clear
+    </button>
+
+</div>

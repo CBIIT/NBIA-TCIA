@@ -1,0 +1,22 @@
+@import '../../../app.component.scss';
+
+.toolTip{
+    position: absolute;
+    max-width: 350px;
+    left: $left-section-width - 110px;
+    background-color: #f2f2f2;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+
+.show{
+    opacity: 0.95 !important;
+    z-index: $tool-tip-z-index !important;
+}
+.step{
+    opacity: 0;
+    transition:  .6s ;
+    z-index: -1;
+}

@@ -1,0 +1,270 @@
+$left-section-width: 390px;
+
+$query-criteria-heading-text-color: #bb0e3d;
+$disabled-text: #747474;
+$button-down-background: #dedddd;
+
+$dark-row-color: #f4f4f4;
+
+$alert-top: 100px;
+
+$close-x-red: #700;
+
+// $heading-height: 122px;
+$heading-height: 127px;
+
+$heading-margin-bottom: 8px;   /* Space between menu bar and top of content */
+
+$header-background-color: #013856;
+
+$legacy-feedback-left: 182px;
+
+$top-logo-height: 41px;
+
+$popup-z-index: 21;
+$loading-screen-z-index: 10;
+$tool-tip-z-index: 2;
+$display-query-z-index: 0;  // @TODO explain
+$pie-char-description-popup-z-index: 2;
+$missing-criteria-z-index: 2;
+$search-results-column-selector-z-index: 2;
+$intro-z-index: 20;
+
+%panel-heading-text-color {
+    color: $query-criteria-heading-text-color;
+}
+
+%panel-heading {
+    @extend %panel-heading-text-color;
+    background-color: #fff;
+    font-size: 12pt;
+}
+
+%left-section {
+    width: $left-section-width;
+}
+
+
+
+.dark-row{
+    background-color: $dark-row-color;
+}
+
+.cart-child-selected {
+    background-color: #ff7;
+}
+
+.redCart {
+    background-color: lightcoral;
+}
+
+.greenCart, .cart-selected{
+    background-color: aquamarine;
+}
+
+/* Cart button on Cart screen */
+.cart-button {
+    padding: 2px 7px 1px 7px;
+    margin: 0 7px 0 7px;
+}
+
+
+
+/* Trying to clean this up for Chrome */
+.no-outline {
+    outline: none;
+}
+
+.child-data-display {
+    background-color: #fff;
+    border: solid 1px #e7e7e7;
+
+    /*  Show some parent background */
+    margin: 8px 8px 16px 8px;
+
+    /* Child display */
+    padding: 6px;
+
+    /*           h-offset   v-offset   blur    spread   color          */
+    box-shadow: 6px 6px 12px 0 rgba(0, 0, 0, 0.2),
+    0 10px 24px 0 rgba(0, 0, 0, 0.15);
+
+    border-radius: 5px;
+}
+
+.child-data-display-parent-background {
+    background-color: #edf8fb;
+}
+
+/*  TODO  explain  */
+.alert-box-div {
+    z-index: $popup-z-index;
+    position: absolute;
+
+    /* Set the vertical location of all the Alert/Message boxes.  */
+    margin-top: $alert-top;
+}
+
+.alert-box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.alert-box-button {
+    float: right;
+    margin-left: 4px;
+}
+
+.alert-panel-title {
+    /* Looks better without this.
+    font-weight: bold;
+    */
+}
+
+.alert-box-icon {
+    font-size: x-large;
+}
+
+.hide-item {
+    display: none;
+}
+
+.nbia-loading-label {
+    color: #fff;
+    /*background-color: #00f8f8;*/
+    font-size: 12pt;
+}
+
+/*Odd and even, but skipping the top row (Heading)*/
+tr:nth-child(even) {
+    background: #fff
+}
+
+tr:nth-child(2n+3) {
+    background: #f4f4f4
+}
+
+.nbia-drop-down > li:nth-child(even) {
+    background: #f4f4f4;
+}
+
+.nbia-drop-down > li:nth-child(2n+3) {
+    background: #fff;
+}
+
+.nbia-drop-down {
+    min-width: 60px;
+}
+
+.nbia-drop-down > li > a:hover {
+    /*background: #baffff;*/
+    background: #dde8eb;
+}
+
+.busy-pointer {
+    cursor: wait;
+}
+
+.disabled-busy-check {
+    color: #999;
+    cursor: wait;
+}
+
+.disabled-check {
+    color: #aaa;
+    cursor: default;
+}
+
+.cart-td {
+    width: 94px;
+
+//    border-color: #ff00dd;
+    border-left: none;
+
+
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+
+}
+
+/* ********* Buttons ******** */
+.nbia-button {
+    @extend .no-outline;
+    color: #fff;
+    background-color: #0b7983;
+    cursor: pointer;
+    /*
+    font-size: 10pt;
+    */
+}
+
+.nbia-button:hover {
+    background-color: #277599;
+}
+
+.nbia-button:active {
+    background-color: #1e5975;
+}
+
+.clicker {
+    cursor: pointer;
+}
+
+.search-results-cart-count {
+    background-color: #5b5151;
+    color: #fff;
+    border-radius: 3px;
+
+    padding: 3px 6px 3px 6px;
+    /*margin-left: 2px;*/
+    margin-left: -5px;
+  //  margin-right: -25px;
+
+    margin-bottom: 2px;
+
+    font-size: 8pt;
+}
+
+.thead-td {
+    background-color: #dedddd;
+    border: solid 1px #dedddd;
+    height: 50px;
+    font-weight: bold;
+}
+
+/* For first column headers that would otherwise but up against the left edge and look crowded  */
+.thead-td1 {
+    padding-left: 3px;
+}
+
+.footer-colors {
+    color: #686868;
+}
+
+.number-spinner {
+    border: solid 1px #686868;
+    border-radius: 3px;
+
+    position: relative;
+    top: 0px;
+    padding: 0 4px 0 4px;
+    margin: 10px 2px 0 4px;
+    width: 48px;
+    height: 28px;
+}
+
+.rows-per-page-spinner {
+    color: #686868;
+    margin-bottom: 12px;
+}
+
+.popup-heading-text {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.close-x {
+   color: $close-x-red;
+   float: right;
+}

@@ -832,7 +832,7 @@ public class QcToolUpdateBean {
 		outSB.append("databasketId=" + manifestFileName + "\n");
 
 		// Manifest file will be versioned too
-		outSB.append("manifestVersion=" + NCIAConfig.getLatestDownloaderVersion().trim() + "\n");
+		outSB.append("manifestVersion=" + NCIAConfig.getLatestManifestVersion().trim() + "\n");
 		outSB.append("ListOfSeriesToDownload=\n");
 	
 		for (String bs : seriesList) {

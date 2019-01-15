@@ -36,7 +36,13 @@ L-->
   -->
   <!-- JNDI DataSource for JEE environments -->
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="location" value="classpath:hibernate.properties"/>
+  	<property name="locations">
+            <list>
+                <value>classpath:hibernate.properties</value>
+                <value>classpath:nbia.properties</value>
+            </list>
+        </property> 
+    <property name="ignoreUnresolvablePlaceholders" value="true"/>
   </bean>
 
   <bean id="hProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -194,6 +200,26 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
    </bean>
+   <bean id="queryStorageManager" class="gov.nih.nci.nbia.querystorage.QueryStorageManagerImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  	<bean id="contextSource"
+		class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="${ldap.url}" />
+		<property name="base" value="${ldap.basedn}" />
+		<property name="userDn" value="${ldap.user}" />
+		<property name="password" value="${ldap.pass}" />
+		<property name="pooled" value="false"/>	
+	</bean>
+	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<constructor-arg ref="contextSource" />
+	</bean>
+	<bean id="userLdapService"
+		class="gov.nih.nci.nbia.ldapService.UserLdapService">
+		<property name="ldapTemplate" ref="ldapTemplate" />
+	</bean>  
   <!--
     Activates various annotations to be detected in bean classes:
     Spring's @Required and @Autowired, as well as JSR 250's @Resource.

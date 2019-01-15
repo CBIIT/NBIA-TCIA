@@ -1,0 +1,55 @@
+@import '../../../app.component.scss';
+
+.display-on-top{
+  position: relative;
+  left: 0px;
+  top: 0px;
+  z-index: $display-query-z-index;
+
+}
+
+.display-wrap{
+    display: inline-block;
+    // word-wrap: break-word;
+}
+
+
+.display-query {
+  background-color: #edf8fb;
+  border: solid 1px #c9dce0;
+  border-radius: 4px;
+  width: 100%;
+  min-height: 66px;
+  /* Font for commas and Ellipses*/
+  font-size: 15pt;
+  font-weight: normal;
+}
+
+/*  Each query element/label  */
+.criteria-display {
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 6px 5px 5px;
+  font-size: 11pt;
+  font-weight: normal;
+}
+
+.criteria-display-title {
+  background-color: #5b5151;
+  margin-left: 5px;
+}
+
+.criteria-display-name {
+  background-color: #255425;
+}
+
+.criteria-and {
+  background-color: #955c0d;
+  font-weight: normal;
+}
+
+.criteria-and-or {
+  background-color: #955c0d;
+  margin-left: 5px;
+  font-weight: normal;
+}

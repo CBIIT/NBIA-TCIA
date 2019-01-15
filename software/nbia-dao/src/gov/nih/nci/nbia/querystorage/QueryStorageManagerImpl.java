@@ -74,13 +74,14 @@ public class QueryStorageManagerImpl extends AbstractDAO
      * @throws Exception
      */
 	@Transactional(propagation=Propagation.REQUIRED)
-    public long addQueryToHistory(DICOMQuery query) throws DataAccessException {
+    public long addQueryToHistory(DICOMQuery query, String tool) throws DataAccessException {
         long queryHistoryId = 0;
 
         // Create a query history object
         QueryHistory queryHistory = new QueryHistory();
         queryHistory.setElapsedTime(query.getElapsedTimeInMillis());
         queryHistory.setExecuteTime(query.getExecuteTime());
+        queryHistory.setTool(tool);
 
         // Associate with the user that ran the query
         queryHistory.setUser(getUser(query.getUserID()));
@@ -107,7 +108,10 @@ public class QueryStorageManagerImpl extends AbstractDAO
         return queryHistoryId;
     }
 
-
+	@Transactional(propagation=Propagation.REQUIRED)
+    public long addQueryToHistory(DICOMQuery query) throws DataAccessException {
+		return addQueryToHistory(query,"portal");
+	}
 
 
     /**

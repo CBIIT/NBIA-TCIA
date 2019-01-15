@@ -1,0 +1,43 @@
+<!-- ----------  Pie Chart for Collections  ---------- -->
+
+<!-- -----  The popup description box.  ----- -->
+<nbia-description-popup
+    [showModalityDescription]=showCollectionsDescription
+    [width]=descriptionPopupWidth
+    [chartType]=chartType
+    [descriptionPopupY]=descriptionPopupY
+    [descriptionPopupText]=descriptionPopupText
+    [descriptionPopupHeading]=descriptionPopupHeading
+    [descriptionScroll]=true
+></nbia-description-popup>
+
+
+<div class="chart00">
+
+    <!-- -----  Heading  ----- -->
+    <div class="chart-header">
+        Count by {{chartName}}
+    </div>
+
+    <!-- -----  The Pie chart  ----- -->
+    <div
+        class="chart-svg-div">
+        <svg
+            class="pie-svg"
+            [ngClass]="{
+                 'hide' : (! showCollectionChart)
+             }"
+            id="pie-collections"
+            [attr.width]="dispWidth"
+            [attr.height]="dispHeight"
+            ngDefaultControl
+        >
+        </svg>
+    </div>
+
+
+    <!-- -----  The footer, which shows the name and count of the slice under the mouse.  ----- -->
+    <div class="chart-footer">
+        {{footerText}}
+    </div>
+</div>

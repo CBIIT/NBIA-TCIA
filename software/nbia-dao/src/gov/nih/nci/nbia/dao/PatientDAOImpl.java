@@ -93,7 +93,7 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
 		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
-				" where gs.visibility in ('1', '12') and p.patientId = gs.patientId "+ whereCondition;
+				" where gs.visibility in ('1') and p.patientId = gs.patientId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection.toUpperCase()); // protect against sql injection
@@ -118,7 +118,7 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
 		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
-				" where gs.visibility in ('1', '12') and p.patientId = gs.patientId "+ whereCondition;
+				" where gs.visibility in ('1') and p.patientId = gs.patientId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection.toUpperCase(), date1); // protect against sql injection
@@ -137,7 +137,7 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
 		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
-				" where gs.visibility in ('1', '12') and p.patientId = gs.patientId "+ whereCondition;
+				" where gs.visibility in ('1') and p.patientId = gs.patientId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection, modality); // protect against sql injection

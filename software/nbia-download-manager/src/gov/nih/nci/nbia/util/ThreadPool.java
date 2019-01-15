@@ -123,7 +123,6 @@ public class ThreadPool {
         for (int i=0;i<threads.length;i++) {
             threads[i].interrupt();
             done.workerBegin();
-            threads[i].destroy();
         }
         done.waitDone();
     }

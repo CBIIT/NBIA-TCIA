@@ -1,0 +1,176 @@
+<!-- ----------  The scrolling grid of images  ---------- -->
+
+
+<!-- -----  Error display.  TODO need useful user friendly messages here.  ----- -->
+<h2 *ngIf="haveError">
+    <div *ngIf="errorMessage0.length > 0 " class="label label-danger">
+        {{errorMessage0}}
+        <br>
+    </div>
+    <div *ngIf="errorMessage1.length > 0 " class="label label-danger">
+        {{errorMessage1}}
+        <br>
+    </div>
+    <div *ngIf="errorMessage2.length > 0 " class="label label-danger">
+        {{errorMessage2}}
+    </div>
+</h2>
+
+
+<!-- -----  Heading row with Series Description, Image count, Plus and Minus button.  ----- -->
+<div *ngIf="! haveError" class="container-fluid"
+     [ngClass]="{
+                  'busy': ! haveData
+                  }"
+>
+
+    <div class="row">
+
+        <div class="panel-heading col-md-8  heading-cell">
+            <span
+                *ngIf="( description.length > 0) && haveData"
+                class="heading-label"
+            >
+                {{description}}
+            </span>
+
+<!--
+
+            <span class="heading-label">
+                <label for="r0">&nbsp;All&nbsp;</label>
+                <input type="radio" name="imageLoadPick" id="r0" (click)="onRadioClick(0)">
+                <label for="r1">&nbsp;&nbsp;One page&nbsp;</label>
+                <input type="radio" name="imageLoadPick" id="r1" (click)="onRadioClick(1)">
+                <label for="r2">&nbsp;&nbsp;One image&nbsp;</label>
+                <input type="radio" name="imageLoadPick" id="r2" (click)="onRadioClick(2)">
+                &nbsp;{{properties.IMAGE_LOAD_MODE}}
+            </span>
+
+-->
+
+            <span
+                *ngIf="! haveData"
+                class="loading-label"
+            >
+                Loading Images
+            </span>
+        </div>
+
+        <!-- Image count -->
+        <div class="panel-heading heading-cell col-md-2">
+            <span class="heading-label">
+                Images: {{commonService.getImageCount()}}
+            </span>
+        </div>
+
+
+        <!-- Plus & Minus buttons -->
+        <div class="panel-heading col-md-2 heading-cell">
+            <span class="plus-minus">
+
+                <button
+                    (mouseover)="onZoomOutMouseOver()"
+                    (mouseout)="onZoomOutMouseOut()"
+                    class="btn btn-default zoom-button"
+                    [disabled]="columns >= currentMaxColumns"
+                    (click)="onMinusClick()"
+                >
+                    <img [src]="zoomOutImgSrc" class="grid-button-icon"/>
+                </button>
+
+                <button
+                    (mouseover)="onZoomInMouseOver()"
+                    (mouseout)="onZoomInMouseOut()"
+                    class="btn btn-default zoom-button"
+                    [disabled]="columns < 2"
+                    (click)="onPlusClick()"
+                >
+                    <img [src]="zoomInImgSrc" class="grid-button-icon"/>
+
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+<!-- -----  Scrolling grid of images  ----- -->
+<div *ngIf="! haveError" class="container-fluid image-grid"
+     [style.height]="innerHeight"
+>
+
+    <!-- -----  Images  ----- -->
+    <div class="row image-grid-row">
+
+        <!-- Loop through images for just this page. -->
+        <span
+            *ngFor="let image of images.slice(firstImage, firstImage + imagesPerPage); let i=index"
+            class="topImage"
+            [ngClass]="{
+                  'col-1': columns === 1,
+                  'col-2': columns === 2,
+                  'col-3': columns === 3,
+                  'col-4': columns === 4,
+                  'col-5': columns === 5,
+                  'col-6': columns === 6,
+                  'col-7': columns === 7,
+                  'col-8': columns === 8,
+                  'col-9': columns === 9,
+                  'col-10': columns === 10,
+                  'col-11': columns === 11,
+                  'col-12': columns === 12
+             }"
+        >
+
+            <div class="parent-image-div"
+                 [ngClass]="{
+                    'parentImageMouseOver': mouseOver[i + firstImage]
+                }"
+                 (mouseover)="onMouseOver(i + firstImage)"
+                 (mouseleave)="onMouseOut(i  + firstImage)"
+                 (mouseout)="onMouseOut(i + firstImage)"
+                 (click)="onOpenImageClick(i + firstImage)"
+            >
+
+                    <!-- The Image -->
+                    <img
+                        class="image "
+                        [ngClass]="{
+                            'image-mouseover': mouseOver[i + firstImage]
+                        }"
+                        [src]=image.thumbnailImage
+                    >
+
+                    <span class="image-number-span">
+                        <span
+                            class="image-number"
+                            [ngClass]="{
+                                    'image-numberMouseOver': mouseOver[i + firstImage]
+                            }"
+                        >
+
+                            <span *ngIf="properties.IMAGE_LOAD_MODE === properties.LOAD_ALL && haveData">
+                                {{i + 1  + firstImage}}
+                            </span>
+                            <span *ngIf="properties.IMAGE_LOAD_MODE !== properties.LOAD_ALL && haveData">
+                                {{i + 1 + currentPage * imagesPerPage}}
+                            </span>
+                        </span>
+                    </span>
+
+
+                <!-- The transparent "Open Image" Image -->
+                    <img
+                        [ngClass]="{
+                                    'hide-element':! mouseOver[i + firstImage]
+                            }"
+                        class="image open-image-img"
+                        src="assets/images/open_image_02.png"
+                    >
+            </div>
+        </span>
+    </div>
+</div>
+<div *ngIf="! haveError">
+    <nbia-footer></nbia-footer>
+</div>

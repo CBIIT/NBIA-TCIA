@@ -1,0 +1,136 @@
+<nbia-tool-tip
+    [showToolTip]=showToolTip
+    [toolTipY]=toolTipY
+    [toolTipText]=toolTipText
+    [toolTipHeading]=toolTipHeading
+></nbia-tool-tip>
+
+
+<div class="query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+
+        <!-- Hide the Image Modality list.  Still show the heading (with this img to its left) -->
+        <span *ngIf="showCriteriaList" class="clicker" (click)="onShowCriteriaListClick(false)">
+            <img src="assets/images/down_V01.png">
+            Image Modality
+        </span>
+
+        <!-- Show the Image Modality list -->
+        <span *ngIf="!showCriteriaList" class="clicker" (click)="onShowCriteriaListClick(true)">
+            <img src="assets/images/right_V01.png">
+            Image Modality
+        </span>
+
+        <!-- Any or All radio buttons  -->
+        <label *ngFor="let label of allOrAnyLabels; let i = index" class="any-or-all">
+            {{label}}
+                <input type="radio" name="radioGroupImageModality"
+                       [value]="label"
+                       [checked]="i === allOrAnyDefault"
+                       (change)="onAnyOrAllChange(label)">
+        </label>
+
+        <!-- Search in the list of Image modality criteria  (The red magnifying glass)  -->
+        <!--
+               <label [ngClass]="{
+                      'search-glass': checkedCount == 0,
+                      'search-glass-with-clear': checkedCount > 0
+                      }"
+                      for="imageModalitySearchText"
+                      title="{{searchToolTip}}">
+
+                   <img class="clicker"
+                        src="assets/images/search.png"
+                        alt="Search"
+                        (click)="onSearchGlassClick()">
+               </label>
+
+       -->
+
+        <!-- Uncheck all the Image Modality criteria and restore their counts back to the full count in the database. -->
+        <label *ngIf="checkedCount > 0" class="red-clear">
+            <img class=" clicker" src="assets/images/redClear.png" alt="Search" (click)="imageModalityQueryClearAllClick(false)">
+        </label>
+    </div>
+
+    <!-- ----------  Search input  ---------- -->
+    <div [ngClass]="{
+                    'hide-div': !showCriteriaList
+                }">
+
+        <!-- -----  Criteria list search input (Red magnifying glass) only used in Collections (so far)  ----- -->
+        <div *ngIf="showSearch"
+             [ngClass]="{
+                 'box-with-focus':searchHasFocus
+             }"
+             class="search-box">
+
+            <input type="text" class="search-text-area" id="imageModalitySearchText" placeholder="search"
+                   [(ngModel)]="searchInput"
+                   (blur)="onSearchTextOutFocus(0)"
+                   (focus)="onSearchTextFocus(0)"
+                   (ngModelChange)="onSearchChange($event)"
+            >
+
+            <!-- This needs to be "for", "not ngFor", it needs to be hidden, not removed from the DOM -->
+            <label for="imageModalitySearchText">
+                <!-- The "X" to clear the search text -->
+                <span *ngIf="searchInput.length > 0"
+                      class="glyphicon glyphicon-remove search-text-area-x close-x"
+                      (blur)="onSearchTextOutFocus(1)"
+                      (focus)="onSearchTextFocus(1)"
+                      (click)="onClearSearchInputClick()"
+
+                >
+                </span>
+            </label>
+        </div>
+        <!-- -----  End Search input  ----- -->
+
+        <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
+        <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
+
+            <span *ngIf="( criteria['seq']  < ( properties.CRITERIA_SHOW_COUNT + checkedCount) ) || showAll">
+
+                <span
+                    (mouseover)="getPos($event, criteria['criteria'])"
+                    (mouseout)="hideToolTip()"
+                    (mouseleave)="hideToolTip()"
+                >
+
+
+                    <input type="checkbox"
+                        class="check-box"
+                        id="checkbox-image-modality{{i}}"
+                        [(ngModel)]="cBox[i]"
+                        (click)="onCheckboxClick(i, $event.target.checked)"
+                    >
+
+                    <label [attr.for]="'checkbox-image-modality'+i">
+                        {{criteria['criteria']}}
+                    </label>
+                </span>
+
+                 <span [ngClass]="{
+                           'count-box': criteria['count'] > 0,
+                            'count-box_zero': criteria['count'] <= 0
+                       }"
+                 >
+                     {{criteria['count']}}
+                 </span>
+
+            </span>
+        </div>
+
+
+        <!-- ----------  The Less/More... clickers at the bottom  ---------- -->
+        <div *ngIf="unCheckedCount > properties.CRITERIA_SHOW_COUNT">
+            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll">
+                {{unCheckedCount - properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
+    </div>
+</div>

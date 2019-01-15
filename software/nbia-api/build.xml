@@ -131,9 +131,8 @@ L-->
 		
 		<copy todir="${webapp.dir}/WEB-INF/lib">
 			<fileset dir="${project.lib.dir}/runtime">
-				<include name="*.*" />
-			</fileset>
-
+				<exclude name="*1.17.1.*" />
+		   </fileset> 
 		</copy>
 		<copy todir="${webapp.dir}/WEB-INF/classes">
 			<fileset dir="${resources.dir}">
@@ -142,6 +141,11 @@ L-->
 				<include name="hibernate.properties"/>
 		        <include name="jnlpTemplate.jnlp"/>
 				<include name="NCIA.csm.new.hibernate.cfg.xml"/>
+			</fileset>
+		</copy>
+		<copy todir="${webapp.dir}/WEB-INF/classes">
+			<fileset dir="${tomcat.dir}">
+				<include name="cache.ccf"/>
 			</fileset>
 		</copy>
 	    <!--if>
@@ -178,11 +182,21 @@ L-->
            webxml="${webapp.dir}/WEB-INF/web.xml"
            basedir="${webapp.dir}"
            compress="false"
-           excludes="*.war" />
+           excludes="*.war">
+		</war>
+	    <jar destfile="${target.dir}/${war.name}.tmp">
+	        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar"/>
+	    </jar>
+	     <delete file="${target.dir}/${war.name}" />
+	     <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />
+	
+	    <war destfile="${target.dir}/${war.name}" update="true">
+	        <zipfileset file="${common.dir}/common/resources/lib/csmapi-5.2.0.1.jar"  prefix="WEB-INF/lib"/>
+	    </war>
 	</target>
 
 	<target name="post-clean">
-		<delete dir="${classes.dir}" quiet="false" />
+		 <delete dir="${classes.dir}" quiet="false" /> 
 	</target>
 
 	<!-- throw the ivy-test-selenium in here to make Eclipse happy -->

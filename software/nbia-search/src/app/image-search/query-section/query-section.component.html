@@ -1,0 +1,16 @@
+
+<span *ngIf="show" class="glyphicon glyphicon-backward search-query-closer"
+      title="Hide Query section"
+      (click)="onCloserClick( false )"></span>
+
+<span *ngIf="!show" class="glyphicon glyphicon-forward search-query-opener"
+      title="Show Query section"
+      (click)="onCloserClick( true )"></span>
+
+
+<div class="query-section" [ngClass]="{
+      'hide': !show
+}"
+>
+    <nbia-query-section-tabs></nbia-query-section-tabs>
+</div>

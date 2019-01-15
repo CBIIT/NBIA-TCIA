@@ -1868,7 +1868,7 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
           group by  g.patient_pk_id,p.patient_id,dp.project;
     </createView>
 </changeSet>
-  <changeSet id="6.5.3.collation.indexes" author="gustafss" dbms="mysql">
+  <!--changeSet id="6.5.3.collation.indexes" author="gustafss" dbms="mysql">
          <comment>
            nonbinary collation and indexs
          </comment>          
@@ -1902,7 +1902,7 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
 			create index usFrameNumindx on general_image(US_FRAME_NUMBER);
 			create index usColorDataPresentindx on general_image(US_COLOR_DATA_PRESENT);			
          </sql>
-  </changeSet> 
+  </changeSet--> 
     
     
     
@@ -1920,5 +1920,14 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
          </sql>
   </changeSet> 
 
+  <changeSet id="6.5.4.add.fixColum.for.tool" author="gustafss" dbms="mysql">
+         <comment>
+           adds tool to query history
+         </comment>          
+         <sql>          
+			ALTER TABLE query_history  
+			ADD COLUMN tool varchar(100);				
+         </sql>
+  </changeSet> 
 
 </databaseChangeLog>

@@ -1,0 +1,33 @@
+@import '../../../../../app.component.scss';
+
+.query-panel-long{
+    background-color: #fff;
+    /* Space for buttons at the bottom */
+    padding-bottom:30px;
+}
+
+.text-input-div
+{
+    height:250px;
+}
+
+.subject-id-text{
+    border: solid 1px #cfcfcf;
+    border-radius: 4px;
+    margin-left:15pt;
+    margin-right:15pt;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    overflow-y: scroll;
+    resize: none;
+}
+
+.subject-id-query-button{
+    position:relative;
+    right: ($left-section-width * -1) + 206px;
+    top: 4px;
+}
+
+.subject-id-prompt{
+    margin-left:15pt;
+}

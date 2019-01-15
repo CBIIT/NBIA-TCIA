@@ -1,0 +1,60 @@
+@import '../../../../../../../app.component.scss';
+
+.series-header-tr {
+  background-color: #dedddd;
+  border: solid 1px #dedddd;
+  height: 30px;
+  font-weight: bold;
+}
+
+/* Center the table with the list of Series with a 5px margin.  */
+.series-results-table {
+  width: calc(100% - 10px);
+  margin: 5px 0 5px 5px;
+
+}
+
+.series-table-dicom-button-column {
+  width: 50px;
+}
+
+.thumbnail-th {
+  width: 96px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+.image-viewer-th {
+  width: 38px;
+  padding-left: 8px;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+/* A little space for the Subject details table.
+ We don't use "td" because all the odd TDs are DICOM data displays. */
+.series-table-td {
+  border: solid 1px #bbb;
+  padding: 2px 16px 2px 8px;
+}
+
+th {
+  padding: 2px 16px 2px 8px;
+}
+
+.series-data-button {
+  /* T R B L */
+  padding: 2px 7px 1px 7px;
+  margin: 0 4px 0 0;
+}
+/*
+
+.cine-mode-td {
+  width: 100px;
+}
+*/

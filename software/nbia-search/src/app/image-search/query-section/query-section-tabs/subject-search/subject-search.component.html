@@ -1,0 +1,15 @@
+<div class="subject-search-input-panel">
+  <div class="query-panel-heading">Subject Search</div>
+  <textarea class="subject-search-input " [(ngModel)]="subjectQueryInput"></textarea>
+
+  <span class="label label-default subject-search-button  nbia-button"
+        (click)="onSearchClick()">
+        Search
+    </span>
+
+  <span class="label label-default subject-search-clear-button  nbia-button"
+        (click)="onClearClick()">
+        Clear
+    </span>
+
+</div>
