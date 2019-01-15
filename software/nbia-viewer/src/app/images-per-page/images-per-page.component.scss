@@ -1,0 +1,26 @@
+@import '../app.component.scss';
+
+.number-spinner{
+    color: $button_foreground;
+    background-color: $button_background;
+
+    padding-left: 10px;
+    margin-top: 3px;
+    height: 24px;
+    width: 60px;
+}
+
+.images-per-page-span{
+    color: $button_foreground;
+    background-color: $button_background;
+    border: solid #8c8c8c 1px;
+    border-radius: 4px;
+
+    padding: 7px 7px 8px;
+    margin-top: 0;
+    height: 44px;
+
+    font-size: 12pt;
+    font-style: normal;
+    font-weight: normal;
+}
