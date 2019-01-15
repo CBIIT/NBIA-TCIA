@@ -799,7 +799,7 @@ public class NCIAConfig {
     } 
     public static String getButtonAction() {
         String propertyValue = properties.getProperty("gui.link");
-        //checkProperty("gui.link", propertyValue);
+        checkProperty("gui.link", propertyValue);
         return propertyValue;   	
     } 
     public static String getTomcatPort() {
