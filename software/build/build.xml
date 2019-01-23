@@ -37,6 +37,8 @@ L-->
 	<property name="nbia-uat.dist.dir" value="${nbia-uat.base.dir}/dist"/>
 	<property name="nbia-search.base.dir" value="${software.dir}/nbia-search"/>
 	<property name="nbia-search.dist.dir" value="${nbia-search.base.dir}/dist"/>
+	<property name="nbia-viewer.base.dir" value="${software.dir}/nbia-viewer"/>
+	<property name="nbia-viewer.dist.dir" value="${nbia-viewer.base.dir}/dist"/>	
 	<property name="nbia-download-manager.base.dir" value="${software.dir}/nbia-download-manager"/>
 	<property name="nbia-download.base.dir" value="${software.dir}/nbia-download"/>
 	<property name="nbia-remote-search.base.dir" value="${software.dir}/nbia-remote-search"/>
@@ -1019,6 +1021,7 @@ L-->
 	<target name="dist" description="Makes all distributions and installer" depends="
         build:all,
 		build:nbia-uat,
+		build:nbia-search,
         dist:installer,
         dist:solr"/>
 	<!-- Copies install time resources into distribution tree -->
@@ -1105,6 +1108,12 @@ L-->
 		<copy todir="${dist.exploded.dir}/nbia-uat" overwrite="true">
 			<fileset dir="${nbia-uat.dist.dir}"/>
 		</copy>
+		<copy todir="${dist.exploded.dir}/nbia-search" overwrite="true">
+			<fileset dir="${nbia-search.dist.dir}"/>
+		</copy>
+		<copy todir="${dist.exploded.dir}/nbia-viewer" overwrite="true">
+			<fileset dir="${nbia-viewer.dist.dir}"/>
+		</copy>		
 		<zip destfile="${dist.dir}/nbia-install_${nbia.version}.zip" basedir="${dist.exploded.dir}" excludes="nbia-services-commons/**,/nbia-domain/*,nbia-download/*,nbia-download-manager/*"/>
 		<copy todir="${dist.dir}" overwrite="true">
 			<fileset dir="${nbia-ctp.dist.dir}">
@@ -1149,7 +1158,8 @@ L-->
 		</if>			
 	</target>
 
-	<target name="build:nbia-search" description="This target is created for Jenkins build workflow">
+	<target name="build:nbia-search" description="This target is created for Jenkins build workflow"
+			depends="build:nbia-viewer">
 		<delete dir="${nbia-search.dist.dir}" quiet="true"/>
 		<!--delete dir="${nbia-search.base.dir}/node_modules" quiet="true"/-->
 
@@ -1188,5 +1198,46 @@ L-->
 			</if>
 		</else>
 		</if>			
-	</target>		
+	</target>
+
+	<target name="build:nbia-viewer" description="This target is created for Jenkins build workflow">
+		<delete dir="${nbia-viewer.dist.dir}" quiet="true"/>
+		<!--delete dir="${nbia-search.base.dir}/node_modules" quiet="true"/-->
+
+		<if>
+			<os family="unix"/>
+		<then>
+			<sequential>
+				<echo message="Linux build environment"/>
+				<exec executable="npm" dir="${nbia-uat.base.dir}">
+					<arg value="install" />
+				</exec>
+				<exec executable="gulp" dir="${nbia-uat.base.dir}">
+					<arg value="compile" />
+				</exec>
+			</sequential>
+		</then>
+		<else>
+			<if>
+				<os family="windows"/>
+			<then>
+				<echo message="Windows build environment"/>
+				<sequential>
+					<exec dir="${nbia-viewer.base.dir}" executable="cmd" >
+						<arg line="/c npm 'install'"/>
+					</exec>	
+					
+					<exec dir="${nbia-viewer.base.dir}" executable="cmd" >
+						<arg value="/c"/>
+						<arg value="ng"/>
+						<arg value="build"/>  
+						<arg value="--base-href"/>
+						<arg value="."/>					
+					</exec>
+				</sequential>
+			</then>	
+			</if>
+		</else>
+		</if>			
+	</target>			
 </project>
