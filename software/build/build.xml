@@ -1168,11 +1168,13 @@ L-->
 		<then>
 			<sequential>
 				<echo message="Linux build environment"/>
-				<exec executable="npm" dir="${nbia-uat.base.dir}">
+				<exec executable="npm" dir="${nbia-search.base.dir}">
 					<arg value="install" />
 				</exec>
-				<exec executable="gulp" dir="${nbia-uat.base.dir}">
-					<arg value="compile" />
+				<exec executable="ng" dir="${nbia-search.base.dir}">
+					<arg value="build" />
+					<arg value="--base-href" />
+					<arg value="." />
 				</exec>
 			</sequential>
 		</then>
@@ -1209,11 +1211,13 @@ L-->
 		<then>
 			<sequential>
 				<echo message="Linux build environment"/>
-				<exec executable="npm" dir="${nbia-uat.base.dir}">
+				<exec executable="npm" dir="${nbia-viewer.base.dir}">
 					<arg value="install" />
 				</exec>
-				<exec executable="gulp" dir="${nbia-uat.base.dir}">
-					<arg value="compile" />
+				<exec executable="ng" dir="${nbia-viewer.base.dir}">
+					<arg value="build" />
+					<arg value="--base-href" />
+					<arg value="." />
 				</exec>
 			</sequential>
 		</then>
