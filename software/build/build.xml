@@ -886,6 +886,9 @@ L-->
 				<filter token="gov.nih.nci.ncia.download.no.retry" value="${gov.nih.nci.ncia.download.no.retry}"/>
 				<filter token="gov.nih.nci.ncia.encrypt.key" value="${gov.nih.nci.ncia.encrypt.key}"/>
 				<filter token="gov.nih.nci.ncia.wiki.context.sensitive.help.url" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+				<filter token="nbia.wiki.user.guide.url" value="${nbia.wiki.user.guide.url}"/>
+				<filter token="help.desk.url" value="${help.desk.url}"/>
+				<filter token="online.help.url" value="${online.help.url}"/>
 			 	<filter token="qctool.visibility.stage1" value="${qctool.visibility.stage1}"/>
 			 	<filter token="qctool.visibility.stage2" value="${qctool.visibility.stage2}"/>
 			 	<filter token="qctool.visibility.stage3" value="${qctool.visibility.stage3}"/>
