@@ -904,8 +904,11 @@ L-->
 			 	<filter token="centos.downloader.installer.path" value="${centos.downloader.installer.path}"/>
 			 	<filter token="ubuntu.downloader.installer.path" value="${ubuntu.downloader.installer.path}"/>
 			 	<filter token="latest.TCIA.downloader.version" value="${latest.TCIA.downloader.version}"/>
+				<filter token="latest.manifest.version" value="${latest.manifest.version}"/>
 			 	<filter token="force.downloader.upgrade" value="${force.downloader.upgrade}"/>
 			 	<filter token="help.desk.url" value="${help.desk.url}"/>
+				<filter token="online.help.url" value="${online.help.url}"/>
+				<filter token="tomcat.server.port" value="${tomcat.server.port}"/>
 			</filterset>
 		</copy>
 		<copy file="${common.resources.dir}/tomcat/ahp_nbia.properties" tofile="${dist.exploded.dir}/tomcat-files/nbia.properties" overwrite="true">
