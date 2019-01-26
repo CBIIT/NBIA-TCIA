@@ -897,7 +897,16 @@ L-->
 			 	<filter token="qctool.visibility.stage6" value="${qctool.visibility.stage6}"/>
 			 	<filter token="qctool.visibility.stage7" value="${qctool.visibility.stage7}"/>
 			 	<filter token="qctool.batchNumberSelect.size" value="${qctool.batchNumberSelect.size}"/>
+				<filter token="win.downloader.installer.path" value="${win.downloader.installer.path}"/>
+			 	<filter token="mac.downloader.installer.path" value="${mac.downloader.installer.path}"/>
+			 	<filter token="centos.downloader.installer.path" value="${centos.downloader.installer.path}"/>
+			 	<filter token="ubuntu.downloader.installer.path" value="${ubuntu.downloader.installer.path}"/>
+			 	<filter token="latest.TCIA.downloader.version" value="${latest.TCIA.downloader.version}"/>
+			 	<filter token="force.downloader.upgrade" value="${force.downloader.upgrade}"/>
+			 	<filter token="help.desk.url" value="${help.desk.url}"/>
 			</filterset>
+		</copy>
+		<copy file="${common.resources.dir}/tomcat/ahp_nbia.properties" tofile="${dist.exploded.dir}/tomcat-files/nbia.properties" overwrite="true">
 		</copy>
 		<antcall target="build:all"/>
 		<antcall target="ahp:tomcat:config"/>
@@ -945,7 +954,7 @@ L-->
 		</copy>
 		<copy file="${common.resources.dir}/tomcat/log4j.properties" tofile="${dist.exploded.dir}/tomcat-files/log4j.properties" overwrite="true">
 		</copy>
-		
+
 		<copy file="${common.resources.dir}/tomcat/server.xml" tofile="${dist.exploded.dir}/tomcat-files/server.xml" overwrite="true">
 			<filterset>
 				<filter token="database.type" value="${database.type}"/>
