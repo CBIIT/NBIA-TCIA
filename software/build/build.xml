@@ -855,6 +855,8 @@ L-->
 
 	
 	<target name="build:config:all">
+		<antcall target="build:all"/>
+		<antcall target="ahp:tomcat:config"/>
 		<copy overwrite="true" file="${common.resources.dir}/tomcat/nbia.properties" tofile="${common.resources.dir}/tomcat/ahp_nbia.properties">
 			<filterset>
 				<filter token="gov.nih.nci.ncia.imaging.server.url" value="${gov.nih.nci.ncia.imaging.server.url}"/>
@@ -908,8 +910,6 @@ L-->
 		</copy>
 		<copy file="${common.resources.dir}/tomcat/ahp_nbia.properties" tofile="${dist.exploded.dir}/tomcat-files/nbia.properties" overwrite="true">
 		</copy>
-		<antcall target="build:all"/>
-		<antcall target="ahp:tomcat:config"/>
 		<delete file="${common.resources.dir}/tomcat/ahp_nbia.properties"/>
 	</target>
 	<target name="ahp:tomcat:config" depends="init">
