@@ -799,6 +799,7 @@ L-->
 		<property name="database.changelog.file" value="${db-upgrade.dist.dir}/db-upgrade.xml"/>
 		<!--basename property="changelog.file" file="${database.changelog.file}"/>
 <echo message="changelog.file=${changelog.file} database.changelog.file=${database.changelog.file}"/-->
+		<echoproperties prefix="database"/>
 		<updateDatabase driver="${database.driver}" url="${database.url}" username="${database.user}" password="${database.password}" classpathref="liquibase_stuff" promptOnNonLocalDatabase="${prompt.user.if.not.local.database}" defaultSchemaName="${database.schema}" dropFirst="false" changeLogFile="${database.changelog.file}"/>
 	</target>
 	
