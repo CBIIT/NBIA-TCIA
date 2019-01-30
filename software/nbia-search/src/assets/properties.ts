@@ -1,6 +1,6 @@
 export let Properties = {
-    // 03_JAN_2019
-    VERSION: '1.0.38',
+    // 30_JAN_2019
+    VERSION: '1.0.39',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"

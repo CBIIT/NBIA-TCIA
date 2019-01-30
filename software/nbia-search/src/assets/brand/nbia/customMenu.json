@@ -19,6 +19,19 @@
         ]
     },
     {
+        "entryTitle": "Tools",
+        "menuDataDropdown": [
+            {
+                "menuText": "Dicom Viewers",
+                "target": "https://wiki.nci.nih.gov/display/NBIA/DICOM+Viewer+Links"
+            },
+            {
+                "menuText": "NBIA",
+                "target": "/ncia"
+            }
+        ]
+    },
+    {
         "entryTitle": "Help",
         "menuDataDropdown": [
             {
@@ -28,11 +41,7 @@
             {
                 "menuText": "User Guides",
                 "target": "https://wiki.nci.nih.gov/display/NBIA/NBIA+7.0+Help+Topics"
-            },
-            {
-                "menuText": "Dicom Viewers",
-                "target": "https://wiki.nci.nih.gov/display/NBIA/DICOM+Viewer+Links"
             }
-        ]
+         ]
     }
 ]

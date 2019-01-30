@@ -2,6 +2,10 @@
 
 <!-- -----  Tool top that shows the Collection description  ----- -->
 <nbia-tool-tip
+
+        (mouseover)="mouseOverToolTip()"
+        (mouseleave)="mouseleaveToolTip()"
+
     [showToolTip]=showToolTip
     [toolTipY]=toolTipY
     [toolTipText]=toolTipText
