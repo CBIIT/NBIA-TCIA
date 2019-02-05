@@ -87,9 +87,14 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         );
 
         // If we don't have an API Url, set it to the same server as the client.
+        console.log('MHL A Properties.API_SERVER_URL: ', Properties.API_SERVER_URL);
+
         if( (this.utilService.isNullOrUndefined( Properties.API_SERVER_URL )) || (Properties.API_SERVER_URL.length < 1) ){
             Properties.API_SERVER_URL = location.origin.toString();
         }
+        console.log('MHL B Properties.API_SERVER_URL: ', Properties.API_SERVER_URL);
+
+
     }  // End constructor
 
     ngOnInit() {

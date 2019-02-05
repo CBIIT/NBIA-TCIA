@@ -1281,12 +1281,22 @@ export class ApiServerService implements OnDestroy{
      */
     getAccessToken( user, password, secret ): Observable<any> {
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
-        let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
+        console.log( 'Properties.API_SERVER_URL: ' + Properties.API_SERVER_URL );
+        console.log( 'Consts.API_ACCESS_TOKEN_URL: ' + Consts.API_ACCESS_TOKEN_URL );
+        console.log( 'post_url: ' + post_url );
+        console.log( 'location.origin.toString(): ' + location.origin.toString() );
 
-        let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
+        let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+            'Access-Control-Allow-Origin': Properties.API_SERVER_URL
+        } );
+        console.log('headers: ', headers);
+
+        // let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
+        let data = 'username=' + user + '&password=&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
 
         if( Properties.DEBUG_CURL ){
-            let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + location.origin.toString() + post_url + '\'';
+            let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' +  post_url + '\'';
             console.log( 'getAccessToken: ' + curl );
         }
 
@@ -1295,6 +1305,12 @@ export class ApiServerService implements OnDestroy{
                 headers: headers,
                 method: 'post'
             };
+
+        console.log('post_url: ', post_url);
+        console.log('data: ', data);
+        console.log('options: ', JSON.stringify( options));
+        console.log('httpClient.post( ' + post_url + ', ' + data + ', ' , JSON.stringify( options) + ');');
+
         return this.httpClient.post( post_url, data, options );
     }
 
