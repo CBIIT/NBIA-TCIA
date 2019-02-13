@@ -1,6 +1,6 @@
 export let Properties = {
-    // 03_JAN_2019
-    VERSION: '1.0.38',
+    // 13_FEB_2019
+    VERSION: '1.0.40',
     TITLE: 'Image Viewer',
 
     VIEWER_COLUMNS_DEFAULT: 5,
