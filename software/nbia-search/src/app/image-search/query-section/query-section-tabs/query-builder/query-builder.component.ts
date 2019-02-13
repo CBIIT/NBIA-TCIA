@@ -3,6 +3,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { CommonService } from '@app/image-search/services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Consts } from '@app/consts';
 
 @Component( {
@@ -268,7 +269,7 @@ export class QueryBuilderComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.commonService.clearAllQueryBuilderEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.clearAllQueryBuilderEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.deleteAll();
             }

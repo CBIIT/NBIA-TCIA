@@ -10,6 +10,7 @@ import { PersistenceService } from '@app/common/services/persistence.service';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { InitMonitorService } from '@app/common/services/init-monitor.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 
 /*
@@ -79,14 +80,14 @@ export class LoginComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // When the current user logs out, quietly log in the default user.
-        this.apiServerService.logOutCurrentUserEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.logOutCurrentUserEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.loginAsDefaultUser( MenuItems.IMAGE_SEARCH_MENU_ITEM );
             }
         );
 
         // this.onLoginSelected() doesn't do anything yet, and currentMenuItem isn't used yet, so this subscribe doesn't accomplish anything yet.
-        this.menuService.currentMenuItemEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.menuService.currentMenuItemEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 this.currentMenuItem = <MenuItems>data;

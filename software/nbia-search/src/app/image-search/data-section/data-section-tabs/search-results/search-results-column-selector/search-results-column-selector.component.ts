@@ -6,6 +6,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { Properties } from '@assets/properties';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CollectionDescriptionsService } from '@app/common/services/collection-descriptions.service';
 
 @Component( {
@@ -81,14 +82,14 @@ export class SearchResultsColumnSelectorComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // Tells us when the 'Select Display Columns' button (which launches/shows this popup, goes up or down
-        this.commonService.showSearchResultsColumnEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.showSearchResultsColumnEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.setShowSelector( <boolean>data );
             }
         );
 
         // Updates the Search type, so we know if the "Simple search" or the "Free text" column names are shown.
-        this.commonService.resultsDisplayModeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resultsDisplayModeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentSearchMode = data;
             }

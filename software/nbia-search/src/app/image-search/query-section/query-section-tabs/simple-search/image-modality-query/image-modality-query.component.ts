@@ -9,6 +9,7 @@ import { InitMonitorService } from '@app/common/services/init-monitor.service';
 import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { ModalityDescriptionsService } from '@app/common/services/modality-descriptions.service';
 
@@ -161,7 +162,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
         // ------------------------------------------------------------------------------------------
-        this.apiServerService.getModalityValuesAndCountsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getModalityValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
              data => {
                 this.completeCriteriaList = data;
 
@@ -180,7 +181,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
 
         // React to errors when getting the full complete criteria list.
-        this.apiServerService.getModalityValuesAndCountsErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getModalityValuesAndCountsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             ( err ) => {
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
@@ -201,7 +202,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // If data equals -1 there is no search, so no results.
         // If data equals 0 there is a search, but no search results.
         // If there is a search, but no search results, all counts are zeroed
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( this.commonService.getResultsDisplayMode() === Consts.SIMPLE_SEARCH ){
                     // data  0 = No results from a search,  -1 = No search
@@ -223,7 +224,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
 
         // When counts of occurrences in the search results changes
-        this.apiServerService.criteriaCountUpdateEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.onCriteriaCountsChange( data );
             }
@@ -232,7 +233,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         // Reload the list of search criteria because a user has logged in,
         // they may have different access to available search criteria.
-        this.commonService.resetAllSimpleSearchForLoginEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async () => {
                 // This is used when a query included in the URL is to be rerun when a user logs in,
                 // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
@@ -264,14 +265,14 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
             }
         );
 
         // Called when a query included in the URL contained one or more Image Modalities.
-        this.parameterService.parameterModalityEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.parameterService.parameterModalityEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 if( data['modalityAll'] ){

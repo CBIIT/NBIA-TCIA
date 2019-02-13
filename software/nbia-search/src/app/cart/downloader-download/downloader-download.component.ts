@@ -5,6 +5,7 @@ import { Properties } from '@assets/properties';
 import { MenuService } from '@app/common/services/menu.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-downloader-download',
@@ -41,7 +42,7 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // The cart download button has been clicked
-        this.commonService.downloaderDownLoadEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.downloaderDownLoadEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.showDownloaderDownload = true;
                 this.menuService.lockMenu();

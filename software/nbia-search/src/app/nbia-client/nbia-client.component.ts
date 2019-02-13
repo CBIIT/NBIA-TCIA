@@ -1,6 +1,3 @@
-// This import is enough for the whole project   @TODO learn exactly why.
-import 'rxjs/add/operator/takeUntil'
-
 import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MenuService } from '../common/services/menu.service';
 import { ApiServerService } from '../image-search/services/api-server.service';
@@ -14,6 +11,7 @@ import { Consts, MenuItems } from '@app/consts';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { BrandingService } from '@app/common/services/branding.service';
 
 
@@ -74,25 +72,22 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         this.currentUser = Properties.API_SERVER_USER_DEFAULT;
 
 
-        this.menuService.currentMenuItemEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.menuService.currentMenuItemEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentMenuItem = <MenuItems>data;
             }
         );
 
-        this.apiServerService.userSetEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentUser = data;
             }
         );
 
         // If we don't have an API Url, set it to the same server as the client.
-        console.log('MHL A Properties.API_SERVER_URL: ', Properties.API_SERVER_URL);
-
         if( (this.utilService.isNullOrUndefined( Properties.API_SERVER_URL )) || (Properties.API_SERVER_URL.length < 1) ){
             Properties.API_SERVER_URL = location.origin.toString();
         }
-        console.log('MHL B Properties.API_SERVER_URL: ', Properties.API_SERVER_URL);
 
 
     }  // End constructor

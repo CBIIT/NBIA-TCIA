@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Consts } from '@app/consts';
 import { Properties } from '@assets/properties';
 
@@ -36,7 +37,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         // Get number of rows to display  (per page)
-        this.commonService.searchResultsPerPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsPerPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.rowsPerPage = <number>data;
 
@@ -50,7 +51,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
         );
 
         // Get current page number
-        this.commonService.searchResultsPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentPage = <number>data;
                 if(this.currentPage < 0){    // -1 means go to first bag, but if searching by page don't search again.
@@ -65,14 +66,14 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
         );
 
         // Toggle scroll style, 2nd scroll style is still a work in progress.
-        this.commonService.searchResultsToggleScrollEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsToggleScrollEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.scroll = <boolean>data;
             }
         );
 
         // Get the total number of rows
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.totalCount = <number>data;
             }

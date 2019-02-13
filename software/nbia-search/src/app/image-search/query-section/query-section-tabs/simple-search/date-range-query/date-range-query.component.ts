@@ -10,6 +10,7 @@ import { Properties } from '@assets/properties';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-date-range-query',
@@ -104,14 +105,14 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         }
 
         // Used when the Clear button is clicked in the Display Query
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.totalQueryClear();
             }
         );
 
         // Just set the dates, not the 'Apply "Available" date range'
-        this.parameterService.parameterDateRangeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.parameterService.parameterDateRangeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 // Make sure the "No future dates" is update.

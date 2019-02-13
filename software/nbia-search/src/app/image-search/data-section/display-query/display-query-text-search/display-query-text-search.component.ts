@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Properties } from '@assets/properties';
 
@@ -20,7 +21,7 @@ export class DisplayQueryTextSearchComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.commonService.updateTextSearchQueryForDisplayEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateTextSearchQueryForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.displayText = <string>data;
             } );

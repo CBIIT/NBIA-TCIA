@@ -38,14 +38,13 @@
     "ngx-mydatepicker": "^2.1.5",
     "ngx-tabs": "0.0.13",
     "rxjs": "6.1.0",
-    "rxjs-compat": "6.1.0",
     "typedoc": "^0.9.0",
     "util": "^0.10.3",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.12.3",
+    "@angular-devkit/build-angular": "^0.13.1",
     "@angular/cli": "^6.1.0",
     "@angular/compiler-cli": "6.0.2",
     "@angular/language-service": "6.0.2",

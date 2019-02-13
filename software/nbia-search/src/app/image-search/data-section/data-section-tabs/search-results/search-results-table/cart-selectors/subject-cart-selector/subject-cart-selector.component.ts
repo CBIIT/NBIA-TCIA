@@ -6,6 +6,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-subject-cart-selector',
@@ -41,7 +42,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         // TODO rewrite this comment, no Check anymore
         // Called when the select all check to the right of the word 'Cart' in the table header is clicked.
         // data is true if this Subject is now selected, false if it is not.
-        this.commonService.searchResultsCartCheckEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCartCheckEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.selected = <boolean>data;
                 this.setCartSelect();
@@ -50,7 +51,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
 
 
         // Called when the "select these" to the right of the word 'Cart' in the table header is clicked.
-        this.commonService.searchResultsCartCheckSubsetEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCartCheckSubsetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 // Is the subject in the subset?
                 for( let f = 0; f < data['subjects'].length; f++ ){
@@ -67,7 +68,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         // A child will emit this, we need to see if it is our child, if so, update.
         // Gives us the ID of the Subject, that just searched for children/Series
         // This is a result of cartGetSeriesForSubject
-        this.apiServerService.seriesForSubjectResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 // Is it this Subject?
                 if( data['id'] === this.subjectId ){
@@ -75,7 +76,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
                 }
             }
         );
-        this.apiServerService.seriesForSubjectErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'SubjectCartSelectorComponent seriesForSubjectErrorEmitter.subscribe: ', err );
             }
@@ -83,7 +84,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
 
 
         // Listen for changing Cart buttons in the children, that should change the parent
-        this.commonService.seriesCartChangeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.seriesCartChangeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 // Is it me?
                 if( data['subjectId'] === this.subjectId ){
@@ -93,7 +94,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         );
 
 
-        this.cartService.cartClearEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartClearEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.childSelected = false;
                 this.selected = false;

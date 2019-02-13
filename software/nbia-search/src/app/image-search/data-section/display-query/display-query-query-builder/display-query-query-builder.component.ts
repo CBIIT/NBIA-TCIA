@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-display-query-criteria-search',
@@ -19,13 +20,13 @@ export class DisplayQueryQueryBuilderComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.commonService.updateQueryBuilderForDisplayEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateQueryBuilderForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.data = <any>data;
             }
         );
 
-        this.commonService.queryBuilderAnyOrAllEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.queryBuilderAnyOrAllEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.anyOrAll = data;
             }

@@ -5,6 +5,7 @@ import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-data-section',
@@ -38,7 +39,7 @@ export class DataSectionComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
 
-        this.commonService.showDataSectionEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.showDataSectionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.showDataSection = <boolean>data;
             }
@@ -48,7 +49,7 @@ export class DataSectionComponent implements OnInit, OnDestroy{
         // Consts.SIMPLE_SEARCH
         // Consts.TEXT_SEARCH
         // Consts.CRITERIA_SEARCH
-        this.commonService.resultsDisplayModeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resultsDisplayModeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.displayMode = <string>data;
             }

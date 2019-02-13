@@ -13,6 +13,7 @@ import { ParameterService } from '@app/common/services/parameter.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-cart',
@@ -86,14 +87,14 @@ export class CartComponent implements OnInit, OnDestroy{
         //     CartService.cartAdd
         //     CartService.cartDelete
         //     CartService.clearCart
-        this.cartService.cartChangeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.cart = <any>data;
                 this.updateCartList();
             }
         );
 
-        this.cartService.cartClearEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.cartList = [];
             }
@@ -102,7 +103,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // When the cart menu is clicked in the top right of the nav bar or a shared list was passed in the URL
-        this.menuService.currentMenuItemEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.menuService.currentMenuItemEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( data === MenuItems.CART_MENU_ITEM ){
 
@@ -114,10 +115,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
                         // Get the data for this list of series
                         this.apiServerService.doSearch( Consts.GET_SHARED_LIST, 'nameValue=' + this.parameterService.getSharedListName() );
-                    }
-
-
-                    else{
+                    }else{
                         this.loadingDisplayService.setLoading( true, 'Updating Cart' );
                         this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
                     }
@@ -126,7 +124,7 @@ export class CartComponent implements OnInit, OnDestroy{
         );
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        this.apiServerService.getSharedListResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getSharedListResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 // We now have the list of series
                 let seriesList = '';
@@ -137,8 +135,7 @@ export class CartComponent implements OnInit, OnDestroy{
                     // Remove leading &
                     seriesList = seriesList.substr( 1 );
                     this.apiServerService.doSearch( Consts.DRILL_DOWN_CART_FROM_SERIES, seriesList );
-                }
-                else{
+                }else{
                     console.error( 'getSharedListResultsEmitter.subscribe data: ', data );
                 }
 
@@ -154,7 +151,7 @@ export class CartComponent implements OnInit, OnDestroy{
         // Adds to the series:
         //   studyDate
         //   studyDescription
-        this.apiServerService.seriesForCartResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForCartResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 for( let item of <any>data ){
                     for( let series of item.seriesList ){
@@ -173,7 +170,7 @@ export class CartComponent implements OnInit, OnDestroy{
         );
 
 
-        this.apiServerService.seriesForCartResultsErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForCartResultsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'CartComponent seriesForCartResultsErrorEmitter.subscribe: ', err );
                 this.loadingDisplayService.setLoading( false );
@@ -188,7 +185,7 @@ export class CartComponent implements OnInit, OnDestroy{
         //   formattedStudyDate - This date is for display.
         //   studyDate - This date is for sorting.
         //   studyDescription
-        this.apiServerService.seriesForCartFromSeriesIdResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForCartFromSeriesIdResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 for( let item of <any>data ){
                     for( let series of item.seriesList ){
@@ -222,7 +219,7 @@ export class CartComponent implements OnInit, OnDestroy{
                 this.loadingDisplayService.setLoading( false );
             }
         );
-        this.apiServerService.seriesForCartFromSeriesIdErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForCartFromSeriesIdErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'CartComponent seriesForCartResultsErrorEmitter.subscribe: ', err );
                 this.loadingDisplayService.setLoading( false );
@@ -231,7 +228,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
 
         // Get number of rows to display  (per page)
-        this.commonService.cartsPerPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.cartsPerPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.rowsPerPage = <number>data;
                 this.lastRow = Number( this.firstRow ) + Number( this.rowsPerPage ) - 1;
@@ -239,7 +236,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
 
         // Get current page number
-        this.commonService.cartPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.cartPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentPage = <number>data;
                 this.firstRow = this.rowsPerPage * this.currentPage;
@@ -249,7 +246,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
         // Save the cart as a shared list
         // called by commonService.sharedListDoSave
-        this.commonService.sharedListSaveFromCartEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.sharedListSaveFromCartEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.buildSeriesList();
 
@@ -269,7 +266,7 @@ export class CartComponent implements OnInit, OnDestroy{
         );
 
 
-        this.commonService.downloadCartAsCsvEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.downloadCartAsCsvEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 let csvData = this.utilService.csvFormatCart( data );
 
@@ -289,18 +286,10 @@ export class CartComponent implements OnInit, OnDestroy{
 
         // Called by CartButtonGroupComponent.onDownloadClick() -> CommonService.cartListDownLoadButton()
         // Creates and downloads a manifest file named NBIA-manifest-<EPOCH>.tcia
-        this.commonService.cartListDownLoadEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.cartListDownLoadEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
 
                 this.buildSeriesList();
-/*
-                this.cartList = [];
-                console.log( 'MHL cartListDownLoadEmitter.subscribe  CALLING apiServerService.doSearch' );
-                this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
-                while( this.cartList.length < 1 ){
-                    await this.commonService.sleep( Consts.waitTime );
-                }
-*/
 
                 // Send to log
                 let logData = this.historyLogService.doLog( Consts.DOWNLOAD_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), this.cartList );

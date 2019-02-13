@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Consts } from '@app/consts';
 import { CommonService } from '@app/image-search/services/common.service';
@@ -7,6 +7,7 @@ import { LoadingDisplayService } from '@app/common/components/loading-display/lo
 import { ParameterService } from '@app/common/services/parameter.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-text-search',
@@ -16,6 +17,7 @@ import { Subject } from 'rxjs';
 
 export class TextQueryComponent implements OnInit, OnDestroy{
     textQueryInput;
+    showExplanation = false;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -27,7 +29,7 @@ export class TextQueryComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // Called when the "Clear" button on the left side of the Query display at the top is clicked.
-        this.commonService.resetAllTextSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllTextSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 this.resetAll();
@@ -35,14 +37,21 @@ export class TextQueryComponent implements OnInit, OnDestroy{
         );
 
         // If there is Text search sent as a URL parameter
-        this.parameterService.parameterTextSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.parameterService.parameterTextSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.textQueryInput = data;
                 this.onSearchClick();
                 this.apiServerService.setTextSearchQueryHold( data );
 
             }
-        )
+        );
+
+        this.commonService.showTextExplanationEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.showExplanation = <boolean>data;
+            }
+        );
+
     }
 
     /**
@@ -100,6 +109,15 @@ export class TextQueryComponent implements OnInit, OnDestroy{
     onKeyupEnter() {
         this.textQueryInput = this.textQueryInput.replace( /(\r\n|\r|\n)/g, '' );
     }
+
+    onExplanationClick(){
+        this.showExplanation = true;
+    }
+
+    updateShowTextExplanation( e ){
+        this.showExplanation = e;
+    }
+
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

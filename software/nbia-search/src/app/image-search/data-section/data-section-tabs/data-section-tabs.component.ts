@@ -7,6 +7,7 @@ import { Consts } from '../../../consts';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-data-section-tabs',
@@ -42,7 +43,7 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // For when we need to change the tab without the user clicking on it.
-        this.commonService.selectDataTabEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.selectDataTabEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.setTab( data );
                 // this.searchType = data;
@@ -50,19 +51,19 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
         );
 
         // If Simple Search Results are emitted, we know the search type is Simple Search.
-        this.apiServerService.simpleSearchResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.simpleSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.updateSearchType();
             }
         );
-        this.apiServerService.simpleSearchErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.simpleSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'DataSectionTabsComponent simpleSearchErrorEmitter.subscribe: ', err );
             }
         );
 
         // If we are doing a text search, make sure we are not showing the charts 'Summary' tab.
-        this.apiServerService.textSearchResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.textSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.updateSearchType();
 
@@ -71,7 +72,7 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
                 }
             }
         );
-        this.apiServerService.textSearchErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.textSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'DataSectionTabsComponent textSearchErrorEmitter.subscribe: ', err );
             }

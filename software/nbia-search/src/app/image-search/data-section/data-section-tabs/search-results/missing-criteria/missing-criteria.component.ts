@@ -4,6 +4,7 @@ import { ApiServerService } from '@app/image-search/services/api-server.service'
 import { Properties } from '@assets/properties';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MenuService } from '@app/common/services/menu.service';
 
 @Component( {
@@ -26,7 +27,7 @@ export class MissingCriteriaComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
 
-        this.commonService.missingCriteriaEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.missingCriteriaEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 this.displayText = <any>data;

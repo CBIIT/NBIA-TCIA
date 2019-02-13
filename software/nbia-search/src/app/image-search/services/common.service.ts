@@ -96,6 +96,8 @@ export class CommonService{
      */
     updateTextSearchQueryForDisplayEmitter = new EventEmitter();
     currentTextSearchQuery = '';
+    showTextExplanationEmitter = new EventEmitter();
+    showTextExplanation = false;
 
     /**
      * Called when something in the query section changes<br>
@@ -432,6 +434,11 @@ export class CommonService{
 
     getTextSearchResults() {
         return this.textSearchResults;
+    }
+
+    setShowTextExplanation(e){
+        this.showTextExplanation = e;
+        this.showTextExplanationEmitter.emit( this.showTextExplanation);
     }
 
     clearSimpleSearchResults() {

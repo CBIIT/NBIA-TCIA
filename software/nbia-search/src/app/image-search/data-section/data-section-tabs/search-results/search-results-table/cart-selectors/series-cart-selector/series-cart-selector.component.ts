@@ -3,6 +3,7 @@ import { CommonService } from '@app/image-search/services/common.service';
 import { CartService } from '@app/common/services/cart.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-series-cart-selector',
@@ -34,7 +35,7 @@ export class SeriesCartSelectorComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // Called when the select all check to the right of the word 'Cart' in the table header is clicked.
-        this.commonService.searchResultsCartCheckEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCartCheckEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.selected = <boolean>data;
                 this.setCartSelect();
@@ -43,21 +44,21 @@ export class SeriesCartSelectorComponent implements OnInit, OnDestroy{
 
 
         // Is this one part of new search results?
-        this.apiServerService.seriesForSubjectResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data['id'] === this.subjectId ){
                     this.updateCartButtonClass();
                 }
             }
         );
-        this.apiServerService.seriesForSubjectErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'SeriesCartSelectorComponent seriesForSubjectErrorEmitter.subscribe: ', err );
             }
         );
 
         // When the cart button for the Study is clicked.
-        this.commonService.checkSeriesByStudyEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.checkSeriesByStudyEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data['studyId'] === this.studyId ){
                     this.selected = data['state'];
@@ -66,7 +67,7 @@ export class SeriesCartSelectorComponent implements OnInit, OnDestroy{
             }
         );
 
-        this.cartService.cartClearEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartClearEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.cartService.cartDelete( this.seriesId );
                 this.commonService.updateSeriesCartStatus( this.subjectId, this.seriesId, this.selected );
