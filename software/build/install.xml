@@ -207,14 +207,17 @@ L-->
 		<fileset dir="${basedir}/nbia-wars"/>
 		</copy>
 		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-uat">
-		<fileset dir="${basedir}/nbia-uat"/>
+			<fileset dir="${basedir}/nbia-uat"/>
 		</copy>
 		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-search">
-		<fileset dir="${basedir}/nbia-search"/>
+			<fileset dir="${basedir}/nbia-search"/>
 		</copy>
 		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-viewer">
-		<fileset dir="${basedir}/nbia-viewer"/>
-		</copy>		  
+			<fileset dir="${basedir}/nbia-viewer"/>
+		</copy>
+		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-search-cover">
+			<fileset dir="${basedir}/nbia-search-cover"/>
+		</copy>		  	
 		<echo message="Creating solr home = ${gov.nih.nci.ncia.solr.home}"/>
 		<mkdir dir="${gov.nih.nci.ncia.solr.home}"/>
 		<copy todir="${gov.nih.nci.ncia.solr.home}">
