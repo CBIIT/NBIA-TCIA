@@ -1,117 +1,118 @@
 @import '../../../../app.component.scss';
 
 label {
-    font: 15px arial, sans-serif;
+  font: 15px arial, sans-serif;
 }
 
 .query-input-main-panel-div {
-    background-color: #fff;
-    width: 100%;
+  background-color: #fff;
+  width: 100%;
 }
 
 /*For the individual query entry panels */
 .query-panel-heading {
-    @extend %panel-heading;
-    padding: 7px 0 0 0;
-    margin-left: 15pt;
-    margin-bottom: 7pt;
-    font-size: 12pt;
+  @extend %panel-heading;
+  padding: 7px 0 0 0;
+  margin-left: 15pt;
+  margin-bottom: 7pt;
+  font-size: 12pt;
 }
 
 .query-panel-checkboxes {
-    color: #3a3a3a;
-    margin-left: 15pt;
+  color: #3a3a3a;
+  margin-left: 15pt;
 }
 
 .query-panel {
-    background-color: #fff;
-    border-bottom: solid 1px #cfcfcf;
-    border-left: solid 1px #cfcfcf;
-    border-right: solid 1px #cfcfcf;
+  background-color: #fff;
+  border-bottom: solid 1px #cfcfcf;
+  border-left: solid 1px #cfcfcf;
+  border-right: solid 1px #cfcfcf;
 }
 
 .moreOrLess {
-     margin-left: 266px;
-    /*  It's a link, but we want no underline */
-    text-decoration: none;
-    cursor: pointer;
+  margin-left: 266px;
+  /*  It's a link, but we want no underline */
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .hide-div {
-    display: none;
+  display: none;
 }
 
 .count-box {
-    color: #fff;
-    background-color: #5b5151;
-    border-radius: 3px;
-    padding: 1px 5px 1px 5px;
-    margin-right: 15px;
-    float: right;
-    font-size: 8pt;
+  color: #fff;
+  background-color: #5b5151;
+  border-radius: 3px;
+  padding: 1px 5px 1px 5px;
+  margin-right: 15px;
+  float: right;
+  font-size: 8pt;
 }
 
-.check-box{
-    margin-right: 4px;
+.check-box {
+  margin-right: 4px;
 }
 
 .count-box_zero {
-    color: #fff;
-    background-color: #a39999;
-    border-radius: 3px;
-    padding: 1px 5px 1px 5px;
-    margin-right: 15px;
-    float: right;
-    font-size: 8pt;
+  color: #fff;
+  background-color: #a39999;
+  border-radius: 3px;
+  padding: 1px 5px 1px 5px;
+  margin-right: 15px;
+  float: right;
+  font-size: 8pt;
 
 }
 
 .search-glass {
-    position: absolute;
-    left: $left-section-width - 50px;
+  position: absolute;
+  left: $left-section-width - 50px;
 }
 
 .red-clear {
-    position: absolute;
-    left: $left-section-width - 47px;
+  position: absolute;
+  left: $left-section-width - 47px;
 }
 
 .search-glass-with-clear {
-    position: absolute;
-    left: $left-section-width - 69px;
+  position: absolute;
+  left: $left-section-width - 69px;
 }
 
 .search-box {
-    border: solid 1px #cfcfcf;
-    border-radius: 4px;
-    padding: 0 0 0 12px;
-    margin-left: 15pt;
-    margin-bottom: 10pt;
-    height: 34px;
-    width: calc(100% - 35px);
+  border: solid 1px #cfcfcf;
+  border-radius: 4px;
+  padding: 0 0 0 12px;
+  margin-left: 15pt;
+  margin-bottom: 10pt;
+  height: 34px;
+  width: calc(100% - 35px);
 }
 
 /* Trying to clean this up for Chrome */
 .box-with-focus {
-    outline: none;
+  outline: none;
 }
 
 .search-text-area {
-    border-style: none;
-    height: 30px;
-    width: calc(100% - 25px);
+  border-style: none;
+  height: 30px;
+  width: calc(100% - 25px);
 }
 
 .search-text-area-x {
-    margin: 6px 6px 0 0;
-    cursor: pointer;
-}
-.any-or-all{
-    color: #3a3a3a;
-    margin-left: 5pt;
+  margin: 6px 6px 0px 0px;
+  cursor: pointer;
 }
 
-.sort-text{
-    color: #3a3a3a;
-    font-size: 9pt;
+.any-or-all {
+  color: #3a3a3a;
+  margin-left: 5pt;
+}
+
+.sort-text {
+  color: #3a3a3a;
+  font-size: 9pt;
 }

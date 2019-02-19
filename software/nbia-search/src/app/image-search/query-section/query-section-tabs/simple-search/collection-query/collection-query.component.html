@@ -115,10 +115,10 @@
             <!-- This needs to be "for", not "ngFor", it needs to be hidden, not removed from the DOM -->
                 <!-- The "X" to clear the search text -->
                 <span *ngIf="searchInput.length > 0"
-                      class="glyphicon glyphicon-remove search-text-area-x close-x"
-                      (blur)="onSearchTextOutFocus(1)"
-                      (focus)="onSearchTextFocus(1)"
-                      (click)="onClearSearchInputClick()">
+                    class="glyphicon glyphicon-remove search-text-area-x close-x"
+                    (blur)="onSearchTextOutFocus(1)"
+                    (focus)="onSearchTextFocus(1)"
+                    (click)="onClearSearchInputClick()">
                 </span>
         </div>
         <!-- -----  End Search input  ----- -->
