@@ -113,7 +113,6 @@
                    (ngModelChange)="onSearchChange($event)">
 
             <!-- This needs to be "for", not "ngFor", it needs to be hidden, not removed from the DOM -->
-            <label for="collectionsSearchText">
                 <!-- The "X" to clear the search text -->
                 <span *ngIf="searchInput.length > 0"
                       class="glyphicon glyphicon-remove search-text-area-x close-x"
@@ -121,7 +120,6 @@
                       (focus)="onSearchTextFocus(1)"
                       (click)="onClearSearchInputClick()">
                 </span>
-            </label>
         </div>
         <!-- -----  End Search input  ----- -->
 
