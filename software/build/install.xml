@@ -203,19 +203,25 @@ L-->
 	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
 			<zipfileset dir="${basedir}"  prefix="WEB-INF/classes"/>
 	    </war-->				
-		  <copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps">
-		    <fileset dir="${basedir}/nbia-wars"/>
-		  </copy>
-		  <copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-uat">
-		    <fileset dir="${basedir}/nbia-uat"/>
-		  </copy>
-			<echo message="Creating solr home = ${gov.nih.nci.ncia.solr.home}"/>
-			<mkdir dir="${gov.nih.nci.ncia.solr.home}"/>
-			<copy todir="${gov.nih.nci.ncia.solr.home}">
-				<fileset dir="${basedir}/common/resources/solr/">
-					<include name="**/*"/>
-				</fileset>
-			</copy>
+		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps">
+		<fileset dir="${basedir}/nbia-wars"/>
+		</copy>
+		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-uat">
+		<fileset dir="${basedir}/nbia-uat"/>
+		</copy>
+		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-search">
+		<fileset dir="${basedir}/nbia-search"/>
+		</copy>
+		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-viewer">
+		<fileset dir="${basedir}/nbia-viewer"/>
+		</copy>		  
+		<echo message="Creating solr home = ${gov.nih.nci.ncia.solr.home}"/>
+		<mkdir dir="${gov.nih.nci.ncia.solr.home}"/>
+		<copy todir="${gov.nih.nci.ncia.solr.home}">
+			<fileset dir="${basedir}/common/resources/solr/">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
 
 	</target>
 	<target name="install:all:post" depends="common:common:init,

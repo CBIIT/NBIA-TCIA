@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/angular2/typings/browser.d.ts" />
+
 import {Component, Input} from 'angular2/core';
 import {UserComponent} from "./user.component"
 import {PgComponent} from "./pg.component"

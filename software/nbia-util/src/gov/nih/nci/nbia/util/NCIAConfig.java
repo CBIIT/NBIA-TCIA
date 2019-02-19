@@ -804,6 +804,7 @@ public class NCIAConfig {
     } 
     public static String getTomcatPort() {
         String propertyValue = properties.getProperty("tomcat.server.port");
+		checkProperty("tomcat.server.port", propertyValue);
         return propertyValue;   	
     } 
     /**
