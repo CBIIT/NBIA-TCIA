@@ -1,8 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
-import { Properties } from '@assets/properties';
 
 
 @Injectable()
@@ -97,6 +96,8 @@ export class CommonService{
      */
     updateTextSearchQueryForDisplayEmitter = new EventEmitter();
     currentTextSearchQuery = '';
+    showTextExplanationEmitter = new EventEmitter();
+    showTextExplanation = false;
 
     /**
      * Called when something in the query section changes<br>
@@ -249,12 +250,12 @@ export class CommonService{
         this.initCriteriaQueryShow();
     }
 
-    setOffsetHeight(h){
+    setOffsetHeight( h ) {
         this.offsetHeight = h;
-        this.offsetHeightEmitter.emit(h);
+        this.offsetHeightEmitter.emit( h );
     }
 
-    getOffsetHeight(){
+    getOffsetHeight() {
         return this.offsetHeight;
     }
 
@@ -262,11 +263,11 @@ export class CommonService{
         this.showIntroEmitter.emit();
     }
 
-    getIsSearchable(){
+    getIsSearchable() {
         return this.isSearchable;
     }
 
-    setIsSearchable(is){
+    setIsSearchable( is ) {
         this.isSearchable = is;
     }
 
@@ -433,6 +434,11 @@ export class CommonService{
 
     getTextSearchResults() {
         return this.textSearchResults;
+    }
+
+    setShowTextExplanation(e){
+        this.showTextExplanation = e;
+        this.showTextExplanationEmitter.emit( this.showTextExplanation);
     }
 
     clearSimpleSearchResults() {
@@ -650,7 +656,7 @@ export class CommonService{
         // DATE_RANGE_CRITERIA
         if( !this.utilService.isNullOrUndefined( allData[Consts.DATE_RANGE_CRITERIA] ) ){
             for( let item of allData[Consts.DATE_RANGE_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name': this.swapMonthDay(item) } );
             }
         }
 
@@ -712,7 +718,7 @@ export class CommonService{
         this.searchResultsPerPageEmitter.emit( count );
     }
 
-    getResultsPerPage(){
+    getResultsPerPage() {
         return this.resultsPerPage;
     }
 
@@ -803,7 +809,6 @@ export class CommonService{
      * Tell cartComponent that save shared list button has been clicked
      */
     cartListDownLoadButton() {
-        console.log('MHL cartListDownLoadButton() ');
         this.cartListDownLoadEmitter.emit();
     }
 
@@ -864,5 +869,14 @@ export class CommonService{
         return separator + str;
     }
 
+    /**
+     * For the Display query we need to swap month and day in the string.
+     * @param dateString
+     */
+    swapMonthDay( dateString ) {
+       let m = dateString.substr( 3, 2 );
+       let d = dateString.substr( 0, 2 );
+        return( m + '/' + d + dateString.substr( 5, 5 ));
+    }
 
 }

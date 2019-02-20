@@ -7,6 +7,7 @@ import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { Consts } from '@app/consts';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-minimum-matched-studies',
@@ -44,7 +45,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         this.onChangeMinimumMatchedStudies(); // Default: minNumberOfPoints = 1
 
         // Used when the Clear button is clicked in the Display Query
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.minNumberOfPoints = 1;
                 this.onChangeMinimumMatchedStudies( false );
@@ -53,7 +54,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         );
 
 
-        this.parameterService.parameterMinimumStudiesEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.parameterService.parameterMinimumStudiesEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.minNumberOfPoints = +data;
                 this.commonService.setMinimumMatchedStudiesValue( this.minNumberOfPoints );
@@ -63,7 +64,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         );
 
 
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data === -1 ){ // disable
                     this.noQuery = true;

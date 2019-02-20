@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { PieChartService } from '@app/image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart.service';
 
 @Component( {
@@ -26,7 +27,7 @@ export class SummaryComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // Get the total number of rows for the "Search results count:" display at the top
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.searchResultsCount = <number>data;
             }

@@ -4,6 +4,7 @@ import { ApiServerService } from '../../../../../services/api-server.service';
 import { LoadingDisplayService } from '../../../../../../common/components/loading-display/loading-display.service';
 import { CommonService } from '../../../../../services/common.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-subject-study-details',
@@ -64,7 +65,7 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
         // Receives the data when this.getSubjectDetails( subjectRowData ) calls apiServerService.doSearch( Consts.DRILL_DOWN, query ) to get
         // the Study and Series data for one Subject.
         // If there is an error, it will be received by subjectDetailsErrorEmitter.subscribe below.
-        this.apiServerService.subjectDetailsResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.subjectDetailsResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 // Is it one of ours?
@@ -94,7 +95,7 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
         // the error information will be received here.
         //
         // TODO React to this error
-        this.apiServerService.subjectDetailsErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.subjectDetailsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'SubjectStudyDetailsComponent subjectDetailsErrorEmitter.subscribe: ', err );
                 this.loadingDisplayService.setLoading( false );

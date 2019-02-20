@@ -3,6 +3,7 @@ import { CommonService } from '../../../services/common.service';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Properties } from '@assets/properties';
 
@@ -46,7 +47,7 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
      * All the Simple Search categories Ex.: Anatomical Site, Image Modality, etc.
      */
     ngOnInit() {
-        this.commonService.updateSimpleSearchQueryForDisplayEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateSimpleSearchQueryForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.criteriaList = <any>data;
                 this.populateCriteriaLists();

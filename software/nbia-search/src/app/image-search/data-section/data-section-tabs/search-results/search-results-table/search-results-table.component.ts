@@ -12,6 +12,7 @@ import { ParameterService } from '@app/common/services/parameter.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-search-results-table',
@@ -166,7 +167,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // When a user changes a search criteria in the left side of the UI,
         // that category (referred to as "type" in this function) and any of its selected criteria are sent here (updateQueryEmitter.subscribe).
         // "allData" accumulates all the query criteria data for the search, broken out by types.
-        this.commonService.updateQueryEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateQueryEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.queryData = (<any>data).slice();
 
@@ -209,14 +210,14 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     async ngOnInit() {
 
         // Used in busyCartCheck to determine if the cart has finished updating, there is no easy way with things being updated asynchronous.
-        this.cartService.cartCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.cartCount = data['count'];
             }
         );
 
 
-        this.cartService.cartChangeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartChangeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.cartList = <any>data;
             }
@@ -224,13 +225,13 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // Updates the current search type, "Simple search", "Free text", etc.
-        this.commonService.resultsDisplayModeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resultsDisplayModeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentSearchMode = data;
             }
         );
 
-        this.commonService.resetAllSimpleSearchForLoginEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.allData = [];
             }
@@ -238,7 +239,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // List of column names/headers
-        this.commonService.searchResultsColumnListEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsColumnListEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.columns = data;
                 this.sortService.initSortState( this.columns );
@@ -271,7 +272,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         this.steColumnCount();
 
         // Get number of rows to display  (per page)
-        this.commonService.searchResultsPerPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsPerPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.rowsPerPage = <number>data;
                 this.lastRow = Number( this.firstRow ) + (+this.rowsPerPage - 1);
@@ -280,7 +281,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             } );
 
         // Get current page number
-        this.commonService.searchResultsPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentPage = <number>data;
                 if( this.currentPage < 0 ){    // -1 means go to first bag, but if searching by page don't search again.
@@ -297,19 +298,19 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             } );
 
         // Set table scroll style
-        this.commonService.searchResultsToggleScrollEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsToggleScrollEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.scroll = <boolean>data;
             } );
 
         // Called by the 'Clear' button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.clearQuery();
             } );
 
         // Called when there are new Simple search results.
-        this.apiServerService.simpleSearchResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.simpleSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectDataShow = [];
 
@@ -344,7 +345,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         );
 
         // If there was an error rather than results from the search, the error message will arrive here.
-        this.apiServerService.simpleSearchErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.simpleSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.error = data;
                 console.error( 'error: ', data );
@@ -353,7 +354,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // Called when there are new Text search results.
-        this.apiServerService.textSearchResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.textSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectDataShow = [];
                 if( (!this.utilService.isNullOrUndefined( data )) && ((<any>data).length > 0) ){
@@ -381,7 +382,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             } );
 
         // If there was an error rather than results from the search, the error message will arrive here.
-        this.apiServerService.textSearchErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.textSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'SearchResultsTableComponent textSearchErrorEmitter.subscribe: ', err );
                 this.loadingDisplayService.setLoading( false );
@@ -393,7 +394,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 // When a user changes a search criteria in the left side of the UI,
                 // that category (referred to as "type" in this function) and any of its selected criteria are sent here (updateQueryEmitter.subscribe).
                 // "allData" accumulates all the query criteria data for the search, broken out by types.
-                this.commonService.updateQueryEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+                this.commonService.updateQueryEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
                     data => {
                         this.queryData = (<any>data).slice();
 
@@ -433,14 +434,14 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         */
 
 
-        this.commonService.rerunQueryEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.rerunQueryEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.runSearch();
             }
         );
 
 
-        this.commonService.runSearchForUrlParametersEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.runSearchForUrlParametersEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 // FIXME Rename this, have same name in commonService.
                 this.runSearchForUrlParameters();
@@ -449,13 +450,13 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // Get the total number of rows
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.totalCount = data;
             }
         );
 
-        this.commonService.closeSubjectDetailsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.closeSubjectDetailsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectDataShow[<number>data] = false;
             } );

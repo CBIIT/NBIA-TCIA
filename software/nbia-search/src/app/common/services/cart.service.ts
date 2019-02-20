@@ -6,6 +6,7 @@ import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 
@@ -27,7 +28,7 @@ export class CartService implements OnDestroy{
         // When clicking on a "Cart" in the search results this.cartGetSeriesForSubject is called
         // A list of all the Studies (each having a list of all its series) for one subject is sent to this emitter.
         // Each series is then added to or deleted from the cart.
-        this.apiServerService.seriesForSubjectResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 for( let row of data['res'] ){
                     for( let series of row.seriesList ){
@@ -42,7 +43,7 @@ export class CartService implements OnDestroy{
             }
         );
 
-        this.apiServerService.seriesForSubjectErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'CartService seriesForSubjectErrorEmitter.subscribe: ', err );
             }

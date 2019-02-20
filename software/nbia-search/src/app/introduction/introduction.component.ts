@@ -5,6 +5,7 @@ import { Properties } from '@assets/properties';
 import { CommonService } from '@app/image-search/services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MenuService } from '@app/common/services/menu.service';
 import { MenuItems } from '@app/consts';
 
@@ -50,7 +51,7 @@ export class IntroductionComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.commonService.showIntroEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.showIntroEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.displayIntroduction();
                 this.logoImage = 'assets/' + Properties.BRAND_DIR + '/' + Properties.BRAND + '/logo.png';

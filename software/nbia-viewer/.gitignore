@@ -3,7 +3,8 @@
 # Added by martin
 *.iml
 *.idea
-*.editorconfig 
+*.editorconfig
+package-lock.json
 
 # compiled output
 /dist

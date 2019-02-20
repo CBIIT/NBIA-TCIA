@@ -8,6 +8,7 @@ import { Properties } from '@assets/properties';
 import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-save-cart',
@@ -33,7 +34,7 @@ export class SaveCartComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.commonService.saveMyCartPopupEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.saveMyCartPopupEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.menuService.lockMenu();
                 this.saveSharedListFromCart( this.createName() );
@@ -42,13 +43,13 @@ export class SaveCartComponent implements OnInit, OnDestroy{
         );
 
 
-        this.apiServerService.saveSharedListResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.saveSharedListResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.status = this.GOOD;
             }
         );
 
-        this.apiServerService.saveSharedListErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.saveSharedListErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
 
                 // Is it an error because this List name is already being used?

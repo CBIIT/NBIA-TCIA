@@ -3,9 +3,9 @@ import { CartService } from '@app/common/services/cart.service';
 import { CommonService } from '@app/image-search/services/common.service';
 import { AlertBoxService } from '@app/common/components/alert-box/alert-box.service';
 import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-box/alert-box-consts';
-import 'rxjs/add/operator/takeUntil'
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 /**
@@ -30,7 +30,7 @@ export class CartDeleteComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // The answer back from the "Are you sure" alertBox.
-        this.alertBoxService.alertBoxReturnEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.alertBoxService.alertBoxReturnEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data['id'] === this.alertId ){
                     if( data['button'] === AlertBoxButtonType.DELETE ){

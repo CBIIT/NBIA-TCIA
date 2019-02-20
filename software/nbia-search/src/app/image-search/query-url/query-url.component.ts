@@ -9,6 +9,7 @@ import { MenuService } from '@app/common/services/menu.service';
 import { Properties } from '@assets/properties';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component( {
@@ -43,14 +44,14 @@ export class QueryUrlComponent implements OnInit, OnDestroy{
 
         // To know what the Text query is we can subscribe to updateTextSearchQueryForDisplayEmitter,
         // it will update each time the Text search "Search" button is clicke.
-        this.commonService.updateTextSearchQueryForDisplayEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateTextSearchQueryForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.texSearchText = <string>data;
             }
         );
 
         // Tells us when the Header components "Share" -> "Share my query" menu item has been selected
-        this.commonService.showQueryUrlEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.showQueryUrlEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.menuService.lockMenu();
 

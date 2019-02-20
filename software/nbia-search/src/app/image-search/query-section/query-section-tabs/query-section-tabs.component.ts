@@ -7,6 +7,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { Properties } from '@assets/properties';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-query-section-tabs',
@@ -64,7 +65,7 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // This allows other components to switch the Search type tabs.
-        this.commonService.resultsDisplayModeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resultsDisplayModeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 this.displayMode = data;

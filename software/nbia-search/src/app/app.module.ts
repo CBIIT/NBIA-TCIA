@@ -96,6 +96,7 @@ import { FeedbackAndLegacyButtonsComponent } from './feedback-and-legacy-buttons
 import { ApplicationMenuComponent } from './application-menu/application-menu.component';
 import { CustomMenuComponent } from './custom-menu/custom-menu.component';
 import { CookieOptionsArgs } from 'angular2-cookie/core';
+import { TextSearchExplanationComponent } from './image-search/query-section/query-section-tabs/text-search/text-search-explanation/text-search-explanation.component';
 
 
 const appRoutes: Routes = [
@@ -178,7 +179,8 @@ const appRoutes: Routes = [
         FooterComponent,
         FeedbackAndLegacyButtonsComponent,
         ApplicationMenuComponent,
-        CustomMenuComponent
+        CustomMenuComponent,
+        TextSearchExplanationComponent
     ],
     imports: [
         BrowserModule,

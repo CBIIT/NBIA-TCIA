@@ -7,6 +7,7 @@ import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-subject-id-query',
@@ -32,7 +33,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
                  private queryUrlService: QueryUrlService, private apiServerService: ApiServerService,
                  private utilService: UtilService ) {
 
-        this.parameterService.parameterSubjectIdEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.parameterService.parameterSubjectIdEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectText = <string>data;
                 this.onSearchClick();
@@ -53,7 +54,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
 
 
         // Used when the Clear button is clicked in the Display Query.
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectText = '';
             }

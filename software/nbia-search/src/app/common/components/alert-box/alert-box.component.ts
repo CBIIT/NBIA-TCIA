@@ -9,6 +9,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { Consts } from '@app/consts';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-alert-box',
@@ -38,7 +39,7 @@ export class AlertBoxComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.alertBoxService.alertBoxEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.alertBoxService.alertBoxEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.id = data['id'];
                 this.type = data['type'];

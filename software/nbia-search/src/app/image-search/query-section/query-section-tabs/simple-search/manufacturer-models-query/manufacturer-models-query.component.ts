@@ -5,6 +5,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { Consts } from '@app/consts';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-manufacturer-models-query',
@@ -42,7 +43,7 @@ export class ManufacturerModelsQueryComponent implements OnInit, OnDestroy{
 
         let errorFlag = false;
         // Get the full complete criteria list.
-        this.apiServerService.getManufacturerTreeEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getManufacturerTreeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             ( data ) => {
                 this.completeCriteriaList = data;
                 this.treeNodes = this.completeCriteriaList;
@@ -55,14 +56,14 @@ export class ManufacturerModelsQueryComponent implements OnInit, OnDestroy{
             } );
 
         // React to errors when getting the full complete criteria list.
-        this.apiServerService.getManufacturerTreeErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getManufacturerTreeErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             ( err ) => {
                 errorFlag = true;
                 alert( 'error: ' + err );
             } );
 
         // Used when the Clear button is clicked in the Display Query.
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.totalQueryClear();
             }

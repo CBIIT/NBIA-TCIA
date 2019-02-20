@@ -40,8 +40,6 @@ export class CartButtonGroupComponent implements OnInit{
 */
         // Just launch the cart download.
         if( !this.showDownloaderDownload ){
-            console.log('MHL showDownloaderDownload CALLING commonService.cartListDownLoadButton()');
-
             this.commonService.cartListDownLoadButton();
         }
         else{

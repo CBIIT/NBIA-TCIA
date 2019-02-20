@@ -6,6 +6,7 @@ import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-search-results-pager',
@@ -105,7 +106,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
 
         if( this.displayDataType === Consts.DISPLAY_DATA_TYPE_SEARCH_RESULTS ){
             // When the total number of rows changes.
-            this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
                 data => {
                     this.totalCount = data;
 
@@ -121,7 +122,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
             );
 
             // When the number of rows per page changes.
-            this.commonService.searchResultsPerPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            this.commonService.searchResultsPerPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
                 data => {
                     this.countPerPage = data;
                     this.pageCount = Math.ceil( this.totalCount / this.countPerPage );
@@ -136,7 +137,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
 
 
             // If the other pager changed the page.
-            this.commonService.searchResultsPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            this.commonService.searchResultsPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
                 data => {
                     if( this.currentPage !== data ){
                         this.direction = this.currentPage - <number>data;
@@ -164,7 +165,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
         }
         else if( this.displayDataType === Consts.DISPLAY_DATA_TYPE_CART_LIST ){
             // When the total number of rows changes.
-            this.commonService.cartCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            this.commonService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
                 data => {
                     this.totalCount = data;
                     this.pageCount = Math.ceil( this.totalCount / this.countPerPage );
@@ -175,7 +176,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
             );
 
             // When the number of rows per page changes.
-            this.commonService.cartsPerPageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+            this.commonService.cartsPerPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
                 data => {
                     this.countPerPage = data;
                     this.pageCount = Math.ceil( this.totalCount / this.countPerPage );

@@ -6,6 +6,7 @@ import { AlertBoxService } from '@app/common/components/alert-box/alert-box.serv
 import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-box/alert-box-consts';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Properties } from '@assets/properties';
 
 @Component( {
@@ -48,7 +49,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
             this.haveDicomData[f] = false;
         }
 
-        this.apiServerService.getDicomTagsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getDicomTagsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data['id'] === this.seriesId ){
                     this.parentDicomData[this.currentDicom] = data['res'];
@@ -57,7 +58,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
                 }
             }
         );
-        this.apiServerService.getDicomTagsErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getDicomTagsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 if( err['id'] === this.seriesId ){
                     this.loadingDisplayService.setLoading( false );

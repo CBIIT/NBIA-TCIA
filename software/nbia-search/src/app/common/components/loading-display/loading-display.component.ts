@@ -3,6 +3,7 @@ import { LoadingDisplayService } from './loading-display.service';
 import { CommonService } from '@app/image-search/services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-loading-display',
@@ -29,7 +30,7 @@ export class LoadingDisplayComponent implements OnInit, OnDestroy{
         }
 
 
-        this.loadingDisplayService.isLoadingEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.loadingDisplayService.isLoadingEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
 
                 // This small wait will keep showBusy from getting out of sync between parent and child which caused the following error:
@@ -43,7 +44,7 @@ export class LoadingDisplayComponent implements OnInit, OnDestroy{
         );
 
 
-        this.loadingDisplayService.isLoadingSubMessageEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.loadingDisplayService.isLoadingSubMessageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
                 // This small wait will keep showBusy from getting out of sync between parent and child which caused the following error:
                 // "Error: Expression has changed after it was checked. Previous value: 'hide-item: true'. Current value: 'hide-item: false'."

@@ -5,6 +5,7 @@ import { Consts } from '@app/consts';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { UtilService } from '@app/common/services/util.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ModalityDescriptionsService } from '@app/common/services/modality-descriptions.service';
 import { DescriptionPopupComponent } from '@app/image-search/data-section/data-section-tabs/summary/pie-charts/description-popup/description-popup.component';
 import { PieChartService } from '@app/image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart.service';
@@ -116,7 +117,7 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
 
     async ngOnInit() {
 
-        this.pieChartService.showDescriptionEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.pieChartService.showDescriptionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data['descriptionType'] === Consts.MODALITY ){
                     this.showModalityDescription = data['show'];
@@ -125,7 +126,7 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
         );
 
         // Get the full complete criteria list.
-        this.apiServerService.getModalityValuesAndCountsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getModalityValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( data );
 
@@ -136,7 +137,7 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
         );
 
 
-        this.apiServerService.criteriaCountUpdateEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( (this.utilService.isNullOrUndefined( data )) || (this.utilService.isNullOrUndefined( data['res'] )) || (data['res'].length < 1) ){
                     return;
@@ -156,21 +157,21 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
             }
         );
 
-        this.commonService.updateChartEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateChartEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.updateChart();
             }
         );
 
 
-        this.commonService.reInitChartEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.reInitChartEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.reInit();
             }
         );
 
 
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data === -1 ){
                     // Initialize criteriaList with completeCriteriaList here at the start, before there is any searching

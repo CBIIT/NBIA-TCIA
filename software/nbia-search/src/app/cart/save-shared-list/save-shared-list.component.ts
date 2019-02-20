@@ -7,6 +7,7 @@ import { Consts, MenuItems } from '@app/consts';
 import { MenuService } from '@app/common/services/menu.service';
 import { InitMonitorService } from '@app/common/services/init-monitor.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-save-shared-list',
@@ -46,7 +47,7 @@ export class SaveSharedListComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.commonService.sharedListSavePopupEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.sharedListSavePopupEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.sharedListInputType = data;
                 this.showSaveListNameInputBox = true;
@@ -55,13 +56,13 @@ export class SaveSharedListComponent implements OnInit, OnDestroy{
         );
 
 
-        this.apiServerService.deleteSharedListResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.deleteSharedListResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 // We will only receive this emit if there was no error.
                 this.deleteStatus = this.GOOD;
             }
         );
-        this.apiServerService.deleteSharedListErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.deleteSharedListErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'Delete shared list ERROR: ', err['status'] );
                 console.error( 'Delete shared list ERROR: ', err['_body'] );
@@ -69,12 +70,12 @@ export class SaveSharedListComponent implements OnInit, OnDestroy{
             }
         );
 
-        this.apiServerService.saveSharedListResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.saveSharedListResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.status = this.GOOD;
             }
         );
-        this.apiServerService.saveSharedListErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.saveSharedListErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 // Is it an error because this List name is already being used?
                 if( err['_body'] === 'Duplicate list name' ){
@@ -89,25 +90,25 @@ export class SaveSharedListComponent implements OnInit, OnDestroy{
         );
 
 
-        this.apiServerService.idForSharedListSubjectResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.idForSharedListSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectData = data;
                 this.status = this.GOOD;
             }
         );
-        this.apiServerService.idForSharedListSubjectErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.idForSharedListSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'SaveSharedListComponent idForSharedListSubjectErrorEmitter.subscribe: ', err );
             }
         );
 
-        this.apiServerService.seriesForSharedListSubjectResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSharedListSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.seriesData = data;
                 this.status = this.GOOD;
             }
         );
-        this.apiServerService.seriesForSharedListSubjectErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.seriesForSharedListSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'SaveSharedListComponent seriesForSharedListSubjectErrorEmitter.subscribe: ', err );
             }

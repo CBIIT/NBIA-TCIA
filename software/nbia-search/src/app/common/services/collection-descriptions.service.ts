@@ -5,6 +5,7 @@ import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class CollectionDescriptionsService implements OnDestroy{
@@ -17,7 +18,7 @@ export class CollectionDescriptionsService implements OnDestroy{
                  private utilService: UtilService ) {
         this.initDescriptionList();
 
-        this.commonService.updateCollectionDescriptionsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateCollectionDescriptionsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.initDescriptionList();
             }
@@ -30,7 +31,7 @@ export class CollectionDescriptionsService implements OnDestroy{
         // ------------------------------------------------------------------------------------------
         // Get the description list.
         // ------------------------------------------------------------------------------------------
-        this.apiServerService.collectionDescriptionsResultsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.collectionDescriptionsResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             ( data ) => {
                 this.descriptions = data;
             } );

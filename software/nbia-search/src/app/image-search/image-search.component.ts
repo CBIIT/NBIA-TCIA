@@ -3,6 +3,7 @@ import { ApiServerService } from './services/api-server.service';
 import { CommonService } from './services/common.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-image-search',
@@ -21,7 +22,7 @@ export class ImageSearchComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
 
-        this.commonService.showQuerySectionEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.showQuerySectionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.showQuerySection = <boolean>data;
             }

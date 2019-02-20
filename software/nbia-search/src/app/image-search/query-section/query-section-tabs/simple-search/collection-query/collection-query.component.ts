@@ -10,6 +10,7 @@ import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { CollectionDescriptionsService } from '@app/common/services/collection-descriptions.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 
 
@@ -94,7 +95,9 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
     showToolTipTrailer = false;
     toolTipText = '';
     toolTipY = 0;
-    toolTipDelay = 900; // in 1/1000 of a second
+    toolTipShowDelay: number = 500; // in 1/1000 of a second  How long after mouse over does Tool tip display.
+    toolTipHideDelay: number = 2000; // in 1/1000 of a second  How long after mouse leaves does Tool tip fade out.
+    toolTipStayOn = false;
     toolTipHeading = '';
 
     /**
@@ -173,7 +176,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
         // ------------------------------------------------------------------------------------------
-        this.apiServerService.getCollectionValuesAndCountsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getCollectionValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.completeCriteriaList = data;
 
@@ -192,7 +195,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // React to errors when getting the full complete criteria list.
-        this.apiServerService.getCollectionValuesAndCountsErrorEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getCollectionValuesAndCountsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             ( err ) => {
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless and shouldn't interrupt the UI flow
@@ -213,7 +216,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // If data equals -1 there is no search, so no results.
         // If data equals 0 there is a search, but no search results.
         // If there is a search, but no search results, all counts are zeroed
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( this.commonService.getResultsDisplayMode() === Consts.SIMPLE_SEARCH ){
                     // data  0 = No results from a search,  -1 = No search
@@ -235,7 +238,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // When counts of occurrences in the search results changes
-        this.apiServerService.criteriaCountUpdateEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.onCriteriaCountsChange( data );
             }
@@ -244,7 +247,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
         // Reload the list of search criteria because a user has logged in,
         // they may have different access to available search criteria.
-        this.commonService.resetAllSimpleSearchForLoginEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async() => {
                 // This is used when a query included in the URL is to be rerun when a user logs in,
                 // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
@@ -266,8 +269,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.setInitialCriteriaList();
                     this.updateCheckboxCount();
-                }
-                else{
+                }else{
                     this.resetAll();
                 }
                 this.initMonitorService.setCollectionsRunning( false );
@@ -276,7 +278,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
             }
@@ -284,7 +286,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when a query included in the URL contained one or more Collections.
-        this.parameterService.parameterCollectionEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.parameterService.parameterCollectionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 // Remove any trailing (wrong) comma
                 data = (<any>data).replace( /,$/, '' );
@@ -333,8 +335,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
         if( !this.utilService.isNullOrUndefined( this.criteriaList ) ){
             this.unCheckedCount = this.criteriaList.length;
-        }
-        else{
+        }else{
             this.unCheckedCount = 0;
         }
 
@@ -400,8 +401,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
             this.criteriaList = this.criteriaListHold;
             this.setInitialCriteriaList();
-        }
-        else if( !this.utilService.isNullOrUndefined( collectionCriteriaObj ) ){
+        }else if( !this.utilService.isNullOrUndefined( collectionCriteriaObj ) ){
 
             while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
                 await this.commonService.sleep( Consts.waitTime );
@@ -485,8 +485,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         if( this.resetFlag ){
             this.criteriaList = this.completeCriteriaList;
 
-        }
-        else{
+        }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
 
@@ -569,8 +568,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // Update the query URL
         if( this.checkedCount === 0 ){
             this.queryUrlService.clear( this.queryUrlService.COLLECTIONS );
-        }
-        else{
+        }else{
             this.sendSelectedCriteriaString();
         }
     }
@@ -616,8 +614,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         if( this.searchInput.length === 0 ){
             this.searchToolTip = 'Search';
             this.showAllForSearch = false;
-        }
-        else{
+        }else{
             this.searchToolTip = this.searchInput;
             this.showAllForSearch = true;
         }
@@ -670,8 +667,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         for( let f = 0; f < len; f++ ){
             if( this.cBox[f] ){
                 this.checkedCount++;
-            }
-            else{
+            }else{
                 this.unCheckedCount++;
             }
         }
@@ -741,20 +737,36 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
             if( this.showToolTipTrailer ){
                 this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
                 this.showToolTip = true;
-            }
-            else{
+            }else{
                 this.showToolTip = false;
             }
 
-        }, this.toolTipDelay );
+        }, this.toolTipShowDelay );
     }
 
-
-    hideToolTip() {
-        this.showToolTip = false;
-        this.showToolTipTrailer = false;
+    /**
+     * If the user has their mouse over the tool tip don't let it fade out.
+     */
+    mouseOverToolTip() {
+        this.toolTipStayOn = true;
     }
 
+    /**
+     * If the user moved the mouse over the tool tip, fade out as soon as the mouse leaves.
+     */
+    mouseleaveToolTip() {
+        this.toolTipStayOn = false;
+        this.hideToolTip( 0 );
+    }
+
+    hideToolTip( delay =  this.toolTipHideDelay) {
+            setTimeout( () => {
+                if( !this.toolTipStayOn ){
+                    this.showToolTip = false;
+                    this.showToolTipTrailer = false;
+                }
+            },  delay );
+        }
 
     onSetSort( sortCriteria ) {
         // (Re)sort the list because a checked criteria is higher than unchecked.

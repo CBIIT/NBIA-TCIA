@@ -1,18 +1,12 @@
-import { Injectable, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import {
-    HttpClientModule,
-    HttpClient,
-    HttpRequest,
-    HttpEvent,
-    HttpEventType,
-    HttpHeaders
-} from '@angular/common/http'
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 
 import { Consts, NumberHash } from '@app/consts';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { Properties } from '@assets/properties';
 import { CommonService } from './common.service';
 import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
@@ -231,24 +225,23 @@ export class ApiServerService implements OnDestroy{
     constructor( private httpClient: HttpClient, private persistenceService: PersistenceService,
                  private commonService: CommonService, private parameterService: ParameterService,
                  private historyLogService: HistoryLogService, private utilService: UtilService,
-                 private loadingDisplayService: LoadingDisplayService) {
+                 private loadingDisplayService: LoadingDisplayService ) {
 
         // Until the user logs in, we do everything as the default/guest user.
         if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ||
-            this.utilService.isNullOrUndefined(   this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN )  )
+            this.utilService.isNullOrUndefined( this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) )
         ){
             this.setCurrentUser( Properties.API_SERVER_USER_DEFAULT );
             this.setCurrentPassword( Properties.API_SERVER_PASSWORD_DEFAULT );
-        }
-        else{
-            this.setToken( {'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) } );
+        }else{
+            this.setToken( { 'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) } );
             this.setCurrentUser( this.persistenceService.get( this.persistenceService.Field.USER ) );
             this.setCurrentPassword( '' );
 
         }
 
         // Called when the 'Clear' button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async() => {
                 this.setSimpleSearchQueryHold( null );
                 this.getCriteriaCounts();
@@ -291,8 +284,7 @@ export class ApiServerService implements OnDestroy{
         for( let name of criteriaStr ){
             if( (!this.utilService.isNullOrUndefined( allData[name] )) && (allData[name].length > 0) ){
                 console.log( 'allQueryData[' + name + ']: ', allData[name] );
-            }
-            else{
+            }else{
                 console.log( 'allQueryData[' + name + ']: -' );
             }
         }
@@ -420,8 +412,7 @@ export class ApiServerService implements OnDestroy{
     setToken( t ) {
         if( t === null ){
             this.accessToken = null;
-        }
-        else{
+        }else{
             this.accessToken = t['access_token'];
         }
         this.persistenceService.put( this.persistenceService.Field.ACCESS_TOKEN, this.accessToken );
@@ -455,8 +446,7 @@ export class ApiServerService implements OnDestroy{
         this.userSetEmitter.emit( this.currentUser );
         if( user === Properties.API_SERVER_USER_DEFAULT ){
             this.persistenceService.put( this.persistenceService.Field.IS_GUEST, true );
-        }
-        else{
+        }else{
             this.persistenceService.put( this.persistenceService.Field.IS_GUEST, false );
         }
     }
@@ -577,58 +567,34 @@ export class ApiServerService implements OnDestroy{
 
             this.getCriteriaCounts();
             this.simpleSearchResultsEmitter.emit( res );
-        }
-
-
-        else if( searchType === Consts.DRILL_DOWN_CART ){
+        }else if( searchType === Consts.DRILL_DOWN_CART ){
             this.seriesForCartResultsEmitter.emit( res );
-        }
-
-        else if( searchType === Consts.DRILL_DOWN_IMAGE ){
+        }else if( searchType === Consts.DRILL_DOWN_IMAGE ){
             this.imageDataResultsEmitter.emit( res );
-        }
-
-        else if( searchType === Consts.DRILL_DOWN_CART_FROM_SERIES ){
+        }else if( searchType === Consts.DRILL_DOWN_CART_FROM_SERIES ){
             this.seriesForCartFromSeriesIdResultsEmitter.emit( res );
-        }
-
-        else if( searchType === Consts.DRILL_DOWN ){
+        }else if( searchType === Consts.DRILL_DOWN ){
             this.subjectDetailsResultsEmitter.emit( res );
         }
         // Results of Subject level cart is clicked.
         else if( searchType === Consts.SERIES_FOR_SUBJECT ){
             this.seriesForSubjectResultsEmitter.emit( { res, id, selected } );
-        }
-
-
-        else if( searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT ){
+        }else if( searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT ){
             this.seriesForSharedListSubjectResultsEmitter.emit( { res } );
         }
 
         // To get all the studies for the subject(s)  // @TODO rename things to say Study - MAKE SURE THAT IS CORRECT!
         else if( searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH ){
             this.idForSharedListSubjectResultsEmitter.emit( { res } );
-        }
-
-
-        else if( searchType === Consts.CREATE_SHARED_LIST ){
+        }else if( searchType === Consts.CREATE_SHARED_LIST ){
             this.saveSharedListResultsEmitter.emit( res );
-        }
-
-        else if( searchType === Consts.DELETE_SHARED_LIST ){
+        }else if( searchType === Consts.DELETE_SHARED_LIST ){
             this.deleteSharedListResultsEmitter.emit( res );
-        }
-
-
-        else if( searchType === Consts.GET_SHARED_LIST ){
+        }else if( searchType === Consts.GET_SHARED_LIST ){
             this.getSharedListResultsEmitter.emit( res );
-        }
-
-        else if( searchType === Consts.LOG_ENTRY ){
+        }else if( searchType === Consts.LOG_ENTRY ){
             this.logEntryResultsEmitter.emit( res );
-        }
-
-        else if( searchType === Consts.TEXT_SEARCH ){
+        }else if( searchType === Consts.TEXT_SEARCH ){
             // TESTING ONLY
             /*
 
@@ -689,46 +655,29 @@ export class ApiServerService implements OnDestroy{
         // console.error( 'PostError  searchType:', searchType, '  err:', err['_body']  + '  ' + this.temp);
         if( searchType === Consts.SIMPLE_SEARCH ){
             this.simpleSearchErrorEmitter.emit( err );
-        }
-        else if( searchType === Consts.DRILL_DOWN_CART ){
+        }else if( searchType === Consts.DRILL_DOWN_CART ){
             this.seriesForCartResultsErrorEmitter.emit( err );
-        }
-
-        else if( searchType === Consts.DRILL_DOWN_IMAGE ){
+        }else if( searchType === Consts.DRILL_DOWN_IMAGE ){
             this.imageDataErrorEmitter.emit( err );
-        }
-
-        else if( searchType === Consts.DRILL_DOWN_CART_FROM_SERIES ){
+        }else if( searchType === Consts.DRILL_DOWN_CART_FROM_SERIES ){
             this.seriesForCartFromSeriesIdErrorEmitter.emit( err );
-        }
-
-        else if( searchType === Consts.DRILL_DOWN ){
+        }else if( searchType === Consts.DRILL_DOWN ){
             this.subjectDetailsErrorEmitter.emit( err );
-        }
-        else if( searchType === Consts.SERIES_FOR_SUBJECT ){
+        }else if( searchType === Consts.SERIES_FOR_SUBJECT ){
             this.seriesForSubjectErrorEmitter.emit( err );
-        }
-        else if( searchType === Consts.TEXT_SEARCH ){
+        }else if( searchType === Consts.TEXT_SEARCH ){
             this.textSearchErrorEmitter.emit( err );
-        }
-
-        else if( searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT ){
+        }else if( searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT ){
             this.seriesForSharedListSubjectErrorEmitter.emit( { err } );
-        }
-
-        else if( searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH ){
+        }else if( searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH ){
             this.idForSharedListSubjectErrorEmitter.emit( { err } );
-        }
-        else if( searchType === Consts.CREATE_SHARED_LIST ){
+        }else if( searchType === Consts.CREATE_SHARED_LIST ){
             this.saveSharedListErrorEmitter.emit( err );
-        }
-        else if( searchType === Consts.DELETE_SHARED_LIST ){
+        }else if( searchType === Consts.DELETE_SHARED_LIST ){
             this.deleteSharedListErrorEmitter.emit( err );
-        }
-        else if( searchType === Consts.GET_SHARED_LIST ){
+        }else if( searchType === Consts.GET_SHARED_LIST ){
             this.getSharedListErrorEmitter.emit( err );
-        }
-        else if( searchType === Consts.LOG_ENTRY ){
+        }else if( searchType === Consts.LOG_ENTRY ){
             this.logEntryErrorEmitter.emit( err );
         }
 
@@ -819,7 +768,6 @@ export class ApiServerService implements OnDestroy{
 
         // Run the query
         this.doPost( searchService, query ).subscribe(
-
             // Good results, emit the search results.
             ( res ) => {
                 // id and selected are just passed along from the 'doSearch' parameters.
@@ -926,8 +874,7 @@ export class ApiServerService implements OnDestroy{
                 headers: headers,
                 responseType: 'text' as 'text'
             };
-        }
-        else{
+        }else{
             options = {
                 headers: headers
             };
@@ -952,24 +899,15 @@ export class ApiServerService implements OnDestroy{
     emitGetResults( queryType, res, id ? ) {
         if( queryType === 'getCollectionValuesAndCounts' ){
             this.getCollectionValuesAndCountsEmitter.emit( res );
-        }
-        else if( queryType === 'getModalityValuesAndCounts' ){
+        }else if( queryType === 'getModalityValuesAndCounts' ){
             this.getModalityValuesAndCountsEmitter.emit( res );
-        }
-
-        else if( queryType === 'getBodyPartValuesAndCounts' ){
+        }else if( queryType === 'getBodyPartValuesAndCounts' ){
             this.getBodyPartValuesAndCountsEmitter.emit( res );
-        }
-
-        else if( queryType === 'getManufacturerTree' ){
+        }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeEmitter.emit( res );
-        }
-
-        else if( queryType === Consts.DICOM_TAGS ){
+        }else if( queryType === Consts.DICOM_TAGS ){
             this.getDicomTagsEmitter.emit( { 'id': id, 'res': res } );
-        }
-
-        else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
+        }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
             this.collectionDescriptionsResultsEmitter.emit( res );
         }
 
@@ -979,25 +917,15 @@ export class ApiServerService implements OnDestroy{
     emitGetError( queryType, err, id ? ) {
         if( queryType === 'getCollectionValuesAndCounts' ){
             this.getCollectionValuesAndCountsErrorEmitter.emit( err );
-        }
-
-        else if( queryType === 'getModalityValuesAndCounts' ){
+        }else if( queryType === 'getModalityValuesAndCounts' ){
             this.getModalityValuesAndCountsErrorEmitter.emit( err );
-        }
-
-        else if( queryType === 'getBodyPartValuesAndCounts' ){
+        }else if( queryType === 'getBodyPartValuesAndCounts' ){
             this.getBodyPartValuesAndCountsErrorEmitter.emit( err );
-        }
-
-        else if( queryType === 'getManufacturerTree' ){
+        }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeErrorEmitter.emit( err );
-        }
-
-        else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS ){
+        }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS ){
             this.getDicomTagsErrorEmitter.emit( { err, id } );
-        }
-
-        else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
+        }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
             this.collectionDescriptionsErrorEmitter.emit( err );
         }
 
@@ -1117,15 +1045,15 @@ export class ApiServerService implements OnDestroy{
                     case 401:
 
                         // If the user is not guest and the password field is empty - Switch to default (guest) user.
-                        if( !  this.persistenceService.get( this.persistenceService.Field.IS_GUEST) &&  this.utilService.isEmpty( this.getCurrentPassword() ) ){
-                           /*
-                               console.log('We can\'t reuse queryType: [' + queryType + ']' );
-                               console.log('We can\'t reuse query: [' + query + ']' );
-                               console.log('We can\'t reuse accessToken: [' + accessToken + ']' );
-                           */
+                        if( !this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) && this.utilService.isEmpty( this.getCurrentPassword() ) ){
+                            /*
+                                console.log('We can\'t reuse queryType: [' + queryType + ']' );
+                                console.log('We can\'t reuse query: [' + query + ']' );
+                                console.log('We can\'t reuse accessToken: [' + accessToken + ']' );
+                            */
 
-                            this.setCurrentUser(Properties.API_SERVER_USER_DEFAULT);
-                            this.setCurrentPassword(Properties.API_SERVER_PASSWORD_DEFAULT);
+                            this.setCurrentUser( Properties.API_SERVER_USER_DEFAULT );
+                            this.setCurrentPassword( Properties.API_SERVER_PASSWORD_DEFAULT );
                             this.loadingDisplayService.setLoadingOff();
                         }
 
@@ -1281,12 +1209,12 @@ export class ApiServerService implements OnDestroy{
      */
     getAccessToken( user, password, secret ): Observable<any> {
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
-        let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
 
-        let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
+        let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
+        let data = 'username=' + user + '&password=&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
 
         if( Properties.DEBUG_CURL ){
-            let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + location.origin.toString() + post_url + '\'';
+            let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
             console.log( 'getAccessToken: ' + curl );
         }
 
@@ -1442,12 +1370,12 @@ export class ApiServerService implements OnDestroy{
             return;
         }
         let resObj = [];
-        let collectionObj_mhl = { 'criteria': 'Collections', 'values': [] };
+        let collectionObjPaged = { 'criteria': 'Collections', 'values': [] };
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
         if( this.currentSearchResultsData['collections'] !== 'null' ){
             for( let collection of this.currentSearchResultsData['collections'] ){
 
-                collectionObj_mhl.values.push(
+                collectionObjPaged.values.push(
                     {
                         'criteria': collection.value,
                         'count': collection.count
@@ -1456,11 +1384,11 @@ export class ApiServerService implements OnDestroy{
             }
         }
 
-        let modalityObj_mhl = { 'criteria': 'Image Modality', 'values': [] };
+        let modalityObjPaged = { 'criteria': 'Image Modality', 'values': [] };
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
         if( this.currentSearchResultsData['modalities'] !== 'null' ){
             for( let modality of this.currentSearchResultsData['modalities'] ){
-                modalityObj_mhl.values.push(
+                modalityObjPaged.values.push(
                     {
                         'criteria': modality.value,
                         'count': modality.count
@@ -1468,11 +1396,11 @@ export class ApiServerService implements OnDestroy{
                 );
             }
         }
-        let anatomicalSiteObj_mhl = { 'criteria': 'Anatomical Site', 'values': [] };
+        let anatomicalSiteObjPaged = { 'criteria': 'Anatomical Site', 'values': [] };
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
         if( this.currentSearchResultsData['bodyParts'] !== 'null' ){
             for( let bodyPart of this.currentSearchResultsData['bodyParts'] ){
-                anatomicalSiteObj_mhl.values.push(
+                anatomicalSiteObjPaged.values.push(
                     {
                         'criteria': bodyPart.value,
                         'count': bodyPart.count
@@ -1480,9 +1408,9 @@ export class ApiServerService implements OnDestroy{
                 );
             }
         }
-        resObj.push( collectionObj_mhl );
-        resObj.push( anatomicalSiteObj_mhl );
-        resObj.push( modalityObj_mhl );
+        resObj.push(  collectionObjPaged );
+        resObj.push( anatomicalSiteObjPaged );
+        resObj.push( modalityObjPaged );
 
         this.criteriaCountUpdateEmitter.emit( { 'res': resObj } );
     }

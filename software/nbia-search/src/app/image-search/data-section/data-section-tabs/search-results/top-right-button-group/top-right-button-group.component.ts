@@ -3,6 +3,7 @@ import { CommonService } from '@app/image-search/services/common.service';
 import { Properties } from '@assets/properties';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component( {
@@ -38,7 +39,7 @@ export class TopRightButtonGroupComponent implements OnInit, OnDestroy{
 
         // True if "Select Display Columns" button is down, false if it is up.
         // Used to change the HTML class of the button to look dark/selected when true.
-        this.commonService.showSearchResultsColumnEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.showSearchResultsColumnEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.showSearchResultsColumnClickSelected = data;
             }

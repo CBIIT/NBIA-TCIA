@@ -11,6 +11,7 @@ import { AlertBoxService } from '@app/common/components/alert-box/alert-box.serv
 import { HistoryLogService } from '@app/common/services/history-log.service';
 import { UtilService } from '@app/common/services/util.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-application-menu',
@@ -119,13 +120,13 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         this.updateUser();
 
         // Lock the menu when popups are visible
-        this.menuService.menuLockEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.menuService.menuLockEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.menuLock = <boolean>data;
             }
         );
 
-        this.apiServerService.simpleSearchQueryHoldEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.simpleSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isEmpty( data )) ){
                     this.haveSimpleSearchQuery = true;
@@ -136,7 +137,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
                 this.checkShareEnabled();
             } );
 
-        this.apiServerService.textSearchQueryHoldEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.textSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isEmpty( data )) ){
                     this.haveTextSearchQuery = true;
@@ -149,7 +150,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
 
         // We need this for, when the menu selection is changed programmatically elsewhere
-        this.menuService.currentMenuItemEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.menuService.currentMenuItemEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.currentMenuItem = <MenuItems>data;
             }
@@ -157,7 +158,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
 
         // When the (logged in) user changes.
-        this.apiServerService.userSetEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.updateUser();
                 this.currentUser = data;
@@ -166,7 +167,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         );
 
         // Receive the Cart contents count, and the total size of all its files.
-        this.cartService.cartCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.cartCount = data['count'];
                 this.cartTotalFileSize = data['fileSize'];
@@ -176,7 +177,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         );
 
         // If an alert box is up some things will need to be disabled.
-        this.alertBoxService.alertBoxEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.alertBoxService.alertBoxEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.disabled = true;
             }
@@ -184,7 +185,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
 
         // When the alert box has closed (and returned results) store the results, and enable the menu.
-        this.alertBoxService.alertBoxReturnEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.alertBoxService.alertBoxReturnEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 if( data['id'] === this.alertId00 ){
                     this.alertBoxResults = data['button'];

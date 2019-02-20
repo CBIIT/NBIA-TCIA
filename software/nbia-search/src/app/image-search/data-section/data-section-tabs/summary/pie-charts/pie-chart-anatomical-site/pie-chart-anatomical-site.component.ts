@@ -6,6 +6,7 @@ import { ApiServerService } from '@app/image-search/services/api-server.service'
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-pie-chart-anatomical-site',
@@ -105,7 +106,7 @@ export class PieChartAnatomicalSiteComponent implements OnInit, OnDestroy{
     async ngOnInit() {
 
         // Get the full complete criteria list.
-        this.apiServerService.getBodyPartValuesAndCountsEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.getBodyPartValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( data );
 
@@ -116,7 +117,7 @@ export class PieChartAnatomicalSiteComponent implements OnInit, OnDestroy{
             } );
 
 
-        this.apiServerService.criteriaCountUpdateEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
                 if( (this.utilService.isNullOrUndefined( data )) || (this.utilService.isNullOrUndefined( data['res'] )) || (data['res'].length < 1) ){
                     return;
@@ -136,20 +137,20 @@ export class PieChartAnatomicalSiteComponent implements OnInit, OnDestroy{
             }
         );
 
-        this.commonService.updateChartEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.updateChartEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.updateChart();
             }
         );
 
-        this.commonService.reInitChartEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.reInitChartEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.reInit();
             }
         );
 
 
-        this.commonService.searchResultsCountEmitter.takeUntil( this.ngUnsubscribe ).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
 
                 if( data === -1 ){
