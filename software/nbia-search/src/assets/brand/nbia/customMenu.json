@@ -26,7 +26,7 @@
                 "target": "https://wiki.nci.nih.gov/display/NBIA/DICOM+Viewer+Links"
             },
             {
-                "menuText": "NBIA",
+                "menuText": "Admin",
                 "target": "/ncia"
             }
         ]

@@ -1211,7 +1211,8 @@ export class ApiServerService implements OnDestroy{
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
 
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-        let data = 'username=' + user + '&password=&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
+
+        let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
