@@ -54,50 +54,24 @@ L-->
                   </f:subview-->
                  	<br/>
 					<h:panelGroup rendered="#{not empty basketBean.seriesItems}">
-							<div style="font-family: Arial; font-size: 15px; display: table; margin-right: auto; margin-left: auto;">
-								<div style="margin: 0; display: inline-block; float: left;">
-								Before clicking Start Download, you must install the <h:outputText value=" "/> 
-								<h:outputText value="#{basketBean.appName}"/> 
-								Downloader app. Download the app for&#160;</div>
-								<div style="margin: 0; display: inline-block; float: left;">
-							    <h:outputLink value="#{basketBean.winInstallerLink}"> 
-	       								<h:outputText value="Windows" />	
-	  								</h:outputLink></div>
-	  								<div style="margin: 0; display: inline-block; float: left;">,&#160;</div>
-	  								<div style="margin: 0; display: inline-block; float: left;">
-	  								<h:outputLink value="#{basketBean.macInstallerLink}"> 
-	       								<h:outputText value="Mac"/>	
-	  								</h:outputLink></div>
-	  								<div style="margin: 0; display: inline-block; float: left;">, or Linux (</div>
-	  								<div style="margin: 0; display: inline-block; float: left;">
-	  								<h:outputLink value="#{basketBean.centOSInstallerLink}"> 
-	       								<h:outputText value="RPM"/>	
-	  								</h:outputLink> </div>
-	  								<div style="margin: 0; display: inline-block; float: left;">&#160;or&#160;</div>
-								<div style="margin: 0; display: inline-block; float: left;">
-									<h:outputLink value="#{basketBean.ubuntuInstallerLink}"> 
-	       								<h:outputText value="DEB"/>	
-	  							</h:outputLink></div>
-	  							<div style="margin: 0; display: inline-block; float: left;">). </div>
-	  							<br/>
-	  							<div style="margin: 0; display: inline-block; float: left;">Click&#160;</div>
-	  							<div style="margin: 0; display: inline-block; float: left;">
-	  							<a href="https://wiki.nci.nih.gov/display/NBIA/NBIA+Help+Topics#NBIAHelpTopics-DownloadingNBIAImages"
-									target="_blank">here</a></div>
-								<div style="margin: 0; display: inline-block; float: left;">&#160;for more detailed instruction on how to install the app. If you cannot install the app, run the&#160;</div> 
-								<div style="margin: 0; display: inline-block;float: left;"><ice:outputResource id="launchDownload"
-										label=" temporary #{basketBean.appName} Downloader "
+							
+								<div style="font-family: Arial; font-size: 15px; margin: 0; display: inline-block; float: left;">
+								Before clicking Start Download, you must install the NBIA Data Retriever. 
+	  							Click&#160;<a href="https://wiki.nci.nih.gov/display/NBIA/NBIA+Help+Topics#NBIAHelpTopics-DownloadingNBIAImages"
+									target="_blank">here</a>	  							
+								for instruction on how to download and install the app. 
+								<div style="font-family: Arial; font-size: 15px; margin: 0; display: inline-block; float: left;">If you cannot install the app, run the&#160;</div>
+								<div style="margin: 0; display: inline-block; float: left;"><ice:outputResource id="launchDownload"
+										label=" temporary NBIA Downloader "
 										resource="#{basketBean.launchDownloadManager}"
 										fileName="#{basketBean.jnlpFileName}"
 										mimeType="application/x-java-jnlp-file" rendered="true"
-										attachment="false" /></div>
-								<div style="margin: 0; display: inline-block;float: left;">&#160;instead.</div>		
-							</div>
-							<div style="font-family: Arial; font-size: 15px; display: table; margin-right: auto; margin-left: auto;color:red;">
-								<h:outputText value="#{basketBean.appName}"/> now requires version 3 of the Downloader app.  Please upgrade to make sure that you have the latest version. 
-							</div>
+										attachment="false"/></div>
+								<div style="margin: 0; display: inline-block; float: left;">&#160;instead.</div></div>
+
+
 					</h:panelGroup>
-                            
+                            <br/>
                   <!--  only relevant when done zipping... but harmless to "show" -->
                   <!--  updates the server state that downloading is done
                         and shows popup to actually get the zipped file -->
