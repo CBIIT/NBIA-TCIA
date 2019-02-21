@@ -23,8 +23,8 @@ ant -f buildDMC.xml
 	<property name="javafx.run.width" value="800"/>
 	<property name="javafx.run.height" value="600"/>
 	<property name="package.dir" location="packages"/>
-	<property name="application.title" value="nbia-data-retriever" />
-	<!--property name="application.title" value="NBIA Data Retriever" /-->
+	<!--property name="application.title" value="nbia-data-retriever" /-->
+	<property name="application.title" value="NBIA Data Retriever" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
 	<property name="package.version" value="3.3" />

@@ -83,7 +83,7 @@ import gov.nih.nci.nbia.util.DownloaderProperties;
  *
  */
 public class StandaloneDMDispatcher {
-	public static final String launchMsg = "To run NBIA Data Retriever, please provide a manifest file as an argument. Download a manifest file from TCIA/NBIA portal and click the file to launch the app.";
+	public static final String launchMsg = "NBIA Data Retriever requires a manifest file to run. Download a manifest file from TCIA/NBIA first. When you double-click a manifest file, NBIA Data Retriever will launch.";
 	private final static String newVersionMsg = "A newer version of this app is available.";
 	private final static String manifestVersionMsg = "The manifest file version is not suported by this version of app.  Please generate a new manifest file compatible with this version of app.";
 	private final static String manifestVersionNewMsg = "The version of manifest file is higher than this app version.  Please upgrade your app.";
