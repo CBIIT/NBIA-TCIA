@@ -1,11 +1,12 @@
 export let Properties = {
-    // 21_FEB_2019
-    VERSION: '1.0.41',
+    // 01_MAR_2019
+    VERSION: '1.0.42',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"
     NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
     ACCOUNT_HELP: 'https://public.cancerimagingarchive.net/ncia/accountSupport.jsf',
+    TEXT_SEARCH_DOCUMENTATION: 'https://wiki.nci.nih.gov/display/NBIA/Performing+a+Text+Search+7.0',
     CUSTOM_MENU_DATA: [],
     LOGO_FILE: '',
     FOOTER_HTML: '',
@@ -128,8 +129,7 @@ export let Properties = {
     SHOW_INTRO_DEFAULT: true,
 
     // TCIA_DOWNLOADER_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics-DownloadingTCIAImages',
-    TCIA_DOWNLOADER_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA/Downloading+TCIA+Images',
-
+    TCIA_DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
     FEEDBACK_SITE: 'http://tciaguiv2.idea.informer.com',
     LEGACY_APP_SITE: 'ncia',
     HELP_SITE: 'https://wiki.cancerimagingarchive.net/x/2QLUAQ',
