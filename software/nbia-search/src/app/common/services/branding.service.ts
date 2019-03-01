@@ -31,6 +31,7 @@ export class BrandingService{
     ACCOUNT_HELP = 2;
     NEW_ACCOUNT_REGISTRATION = 4;
     FOOTER_HTML = 5;
+    TEXT_SEARCH_DOCUMENTATION = 6;
 
 
     constructor( private httpClient: HttpClient ) {
@@ -65,6 +66,7 @@ export class BrandingService{
         this.initBrandItem( this.ACCOUNT_HELP, '/accountHelpUrl.txt' );
         this.initBrandItem( this.NEW_ACCOUNT_REGISTRATION, '/newAccountUrl.txt' );
         this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
+        this.initBrandItem( this.TEXT_SEARCH_DOCUMENTATION, '/textSearchDocumentationUrl.txt' );
     }
 
 
@@ -87,6 +89,9 @@ export class BrandingService{
                 break;
             case this.NEW_ACCOUNT_REGISTRATION:
                 Properties.NEW_ACCOUNT_REGISTRATION = value;
+                break;
+            case this.TEXT_SEARCH_DOCUMENTATION:
+                Properties.TEXT_SEARCH_DOCUMENTATION = value;
                 break;
             case this.FOOTER_HTML:
                 Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION );

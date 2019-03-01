@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
+import { Properties } from '@assets/properties';
 
 @Component({
   selector: 'nbia-text-search-explanation',
@@ -8,8 +9,10 @@ import { CommonService } from '@app/image-search/services/common.service';
 })
 export class TextSearchExplanationComponent implements OnInit {
 
+    properties = Properties;
 
     constructor( private commonService: CommonService ) { }
+
 
   ngOnInit() {
   }
