@@ -1,1 +1,1 @@
-https://public.cancerimagingarchive.net/ncia/accountSupport.jsf
+https://imaging.nci.nih.gov/ncia/accountSupport.jsf
