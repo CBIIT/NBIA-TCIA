@@ -36,7 +36,7 @@
         "menuDataDropdown": [
             {
                 "menuText": "Help Desk",
-                "target": "http://cbiit.cancer.gov/application-support"
+                "target": "https://datascience.cancer.gov/about/application-support"
             },
             {
                 "menuText": "User Guides",
