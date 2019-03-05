@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { ModalityDescriptionsService } from '@app/common/services/modality-descriptions.service';
+import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 
 /**
  * The list of selectable criteria that make up the Image Modality part of the search query.
@@ -142,7 +143,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                  private sortService: SearchResultsSortService, private  persistenceService: PersistenceService,
                  private parameterService: ParameterService, private initMonitorService: InitMonitorService,
                  private queryUrlService: QueryUrlService, private utilService: UtilService,
-                 private modalityDescriptionsService: ModalityDescriptionsService ) {
+                 private modalityDescriptionsService: ModalityDescriptionsService, private loadingDisplayService: LoadingDisplayService ) {
 
         this.apiServerService.setImageModalityAllOrAny( this.allOrAnyLabels[this.allOrAnyDefault] );
 
@@ -191,11 +192,13 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
+        this.loadingDisplayService.setLoading( true, 'Loading query data' );
         this.apiServerService.dataGet( 'getModalityValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
-        // ------------------------------------------------------------------------------------------
+        this.loadingDisplayService.setLoading( false, 'Loading query data' );
+// ------------------------------------------------------------------------------------------
 
 
         // When the number of search results changes. data is the search results count

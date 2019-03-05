@@ -119,7 +119,7 @@ export class BrandingService{
                     );
                 }
                 else{
-                    console.error( 'Error initCustomMenu: ', err0.status );
+                    console.error( 'Error initBrandItem: ', err0 );
                 }
             }
         );

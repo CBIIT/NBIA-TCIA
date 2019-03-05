@@ -12,6 +12,7 @@ import { PersistenceService } from '@app/common/services/persistence.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
+import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 
 
 /**
@@ -151,7 +152,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                  private sortService: SearchResultsSortService, private parameterService: ParameterService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
                  private collectionDescriptionsService: CollectionDescriptionsService, private persistenceService: PersistenceService,
-                 private utilService: UtilService ) {
+                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService ) {
     }
 
     async ngOnInit() {
@@ -178,6 +179,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
+
                 this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -205,10 +207,14 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
+        this.loadingDisplayService.setLoading( true, 'Loading query data' );
         this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
-        while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
+        let tempCount = 0;
+        while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) &&  (tempCount < 500)  ){
             await this.commonService.sleep( Consts.waitTime );
         }
+        this.loadingDisplayService.setLoading( false, 'Done updateCriteriaList' );
+
         // ------------------------------------------------------------------------------------------
 
 
@@ -516,6 +522,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.criteriaListHold = this.criteriaList;
 
         this.setSequenceValue();
+
     }
 
 

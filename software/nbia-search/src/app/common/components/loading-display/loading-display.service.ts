@@ -12,8 +12,7 @@ export class LoadingDisplayService{
     constructor( private commonService: CommonService ) {
     }
 
-     setLoading( loading, message = '', subMessage = '' ) {
-
+     setLoading( loading: boolean, message = '', subMessage = '' ) {
         if( loading ){
             this.isLoading++;
         }
@@ -30,7 +29,8 @@ export class LoadingDisplayService{
         else{
             this.isLoadingEmitter.emit( { value: false, message: '' , subMessage: '' } );
         }
-    }
+
+     }
 
     setLoadingOn( message = '' ) {
         this.isLoading = 1;

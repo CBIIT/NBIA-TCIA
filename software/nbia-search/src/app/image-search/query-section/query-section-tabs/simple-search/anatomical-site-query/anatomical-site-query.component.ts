@@ -10,6 +10,7 @@ import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
+import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 
 
 /**
@@ -116,7 +117,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,
                  private sortService: SearchResultsSortService, private parameterService: ParameterService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
-                 private utilService: UtilService ) {
+                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService ) {
     }
 
     async ngOnInit() {
@@ -161,10 +162,13 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
+        this.loadingDisplayService.setLoading( true, 'Loading query data' );
         this.apiServerService.dataGet( 'getBodyPartValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
+        this.loadingDisplayService.setLoading( false, 'Done Loading query data' );
+
         // ------------------------------------------------------------------------------------------
 
 

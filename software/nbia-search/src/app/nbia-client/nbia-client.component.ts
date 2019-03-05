@@ -132,7 +132,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
         */
 
-        this.loadingDisplayService.setLoading( false );
+        this.loadingDisplayService.setLoading( false, 'A Standby...' );
     }
 
 
@@ -259,7 +259,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         this.apiServerService.gotToken();
         // TODO send word to everything else that we have the token - can we access apiService.gettingAccessToken?
 
-        this.loadingDisplayService.setLoading( false );
+        this.loadingDisplayService.setLoading( false, 'B Standby...' );
 
     }
 
