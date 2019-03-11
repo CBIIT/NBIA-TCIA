@@ -120,6 +120,10 @@ public class DownloadServletV3 extends HttpServlet {
 			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
 
 			if (mgr.login(userId, password)) {
+	            if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+	            	mgr.syncDBWithLDAP(userId);
+					System.out.println("Sync performed");
+	            }
 				return true;
 			} else {
 				return false;
