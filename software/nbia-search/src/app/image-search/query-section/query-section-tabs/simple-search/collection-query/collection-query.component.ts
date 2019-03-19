@@ -179,7 +179,6 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-
                 this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -192,7 +191,9 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
                     this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 }
+
             }
+
         );
 
 
@@ -247,6 +248,9 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.onCriteriaCountsChange( data );
+
+                // If there is a search string in the search within Collections reset the search effect.
+                this.onSearchChange();
             }
         );
 
@@ -294,7 +298,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // Called when a query included in the URL contained one or more Collections.
         this.parameterService.parameterCollectionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-                // Remove any trailing (wrong) comma
+               // Remove any trailing (wrong) comma
                 data = (<any>data).replace( /,$/, '' );
 
                 // Data can be multiple values, comma separated

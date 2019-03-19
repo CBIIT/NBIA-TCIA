@@ -1,6 +1,6 @@
 export let Properties = {
-    // 05_MAR_2019
-    VERSION: '1.0.43',
+    // 19_MAR_2019
+    VERSION: '1.0.44',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"
@@ -12,6 +12,9 @@ export let Properties = {
     FOOTER_HTML: '',
     BRAND_DIR: 'brand',
     DEFAULT_BRAND: 'nbia',
+    DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
+
+    VERSION_SUFFIX: '',
     BRAND: '%BRAND%',
 
     /*
@@ -128,15 +131,13 @@ export let Properties = {
 
     SHOW_INTRO_DEFAULT: true,
 
-    // TCIA_DOWNLOADER_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics-DownloadingTCIAImages',
-    TCIA_DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
     FEEDBACK_SITE: 'http://tciaguiv2.idea.informer.com',
     LEGACY_APP_SITE: 'ncia',
     HELP_SITE: 'https://wiki.cancerimagingarchive.net/x/2QLUAQ',
     HELP_SITE_HUMAN: 'http://www.cancerimagingarchive.net/support',
 
 
-    // FIXME - This is not a Property, we need a config type component
+    // TODO - This is not a Property, we need a config type component
     LAST_ACCESS: '',
 
     ROWS_PER_PAGE_LIMIT: 500,
