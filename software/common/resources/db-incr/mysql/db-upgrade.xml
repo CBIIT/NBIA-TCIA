@@ -1929,5 +1929,15 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
 			ADD COLUMN tool varchar(100);				
          </sql>
   </changeSet> 
+    <changeSet id="7.1.add.species" author="gustafss" dbms="mysql">
+         <comment>
+           adds species columns to patient
+         </comment>          
+         <sql>          
+			ALTER TABLE patient  
+			ADD COLUMN species_code varchar(100),
+			ADD COLUMN species_description varchar(100);				
+         </sql>
+   </changeSet> 
 
 </databaseChangeLog>
