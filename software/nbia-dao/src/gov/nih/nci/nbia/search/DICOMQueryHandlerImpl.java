@@ -57,6 +57,7 @@ import gov.nih.nci.ncia.criteria.AnatomicalSiteCriteria;
 import gov.nih.nci.ncia.criteria.AnnotationOptionCriteria;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.CollectionCriteria;
+import gov.nih.nci.ncia.criteria.SpeciesCriteria;
 import gov.nih.nci.ncia.criteria.ColorModeOptionCriteria;
 import gov.nih.nci.ncia.criteria.ContrastAgentCriteria;
 import gov.nih.nci.ncia.criteria.ConvolutionKernelCriteria;
@@ -143,6 +144,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
     /* Constants for fields */
     private static final String COLLECTION_FIELD = "dp.project ";
+    private static final String SPECIES_FIELD = "p.species ";
     private static final String SITE_FIELD = "dp.dpSiteName ";
     private static final String IMAGE_MODALITY_FIELD = "series.modality ";
     private static final String SLICE_THICKNESS_FIELD = "gi.sliceThickness ";
@@ -358,6 +360,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
         whereStmt += processCollectionCriteria(query, handlerFac);
 
+        whereStmt += processSpeciesCriteria(query, handlerFac);
+        
         whereStmt += processPatientCriteria(query, handlerFac);
 
         whereStmt += processMinimumStudiesCriteria(query);
@@ -451,6 +455,20 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             collectionWhereStmt += (AND + handler.handle(COLLECTION_FIELD, cc));
         }
         return collectionWhereStmt;
+    }
+    
+    private static String processSpeciesCriteria(DICOMQuery theQuery,
+            CriteriaHandlerFactory theHandlerFac) throws Exception {
+        SpeciesCriteria sc = theQuery.getSpeciesCriteria();
+        CriteriaHandler handler = null;
+
+        String speciesWhereStmt = "";
+        if (sc != null) {
+           handler = theHandlerFac.createSpeciesCriteria();
+           speciesWhereStmt += (AND + handler.handle(SPECIES_FIELD, sc));
+           System.out.println("speciesWhereStmt===="+speciesWhereStmt);
+        }
+        return speciesWhereStmt;
     }
 
     private static String processPatientCriteria(DICOMQuery theQuery,

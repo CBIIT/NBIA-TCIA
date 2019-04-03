@@ -61,6 +61,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     public static final String PATIENT_ID = "p.patientId ";
 	private final static String COLLECTION_QUERY="select dp.project, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs "
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
+	private final static String SPECIES_QUERY="select p.species_description, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs "
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String BODYPART_QUERY="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
@@ -249,6 +251,44 @@ public class ValueAndCountDAOImpl extends AbstractDAO
            item.setValues(values);
            returnValue.add(item);
         }  
+        
+    	// Species
+        SQLQuery = SPECIES_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+whereStatement+" group by p.species_description ";
+		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();	
+        item=new CriteriaValuesForPatientDTO();
+        item.setCriteria("Species");
+        values=new ArrayList<CriteriaValuesDTO>();
+        for(Object[] row : data)
+        {
+           String criteriaValue;
+           if (row[0]==null||row[0].toString().equals("")) {
+        	   criteriaValue="Human";
+           } else {
+        	   criteriaValue= row[0].toString();
+           }
+           boolean found = false;
+           for (CriteriaValuesDTO dto:values) {
+        	   if (dto.getCriteria().equalsIgnoreCase(criteriaValue)) {
+        		   int countValue=Integer.parseInt(dto.getCount())+Integer.parseInt(row[1].toString());
+        		   dto.setCount(Integer.toString(countValue));
+        		   found=true;
+        		   break;
+        	   }
+           }
+           if (!found) {
+               CriteriaValuesDTO value=new CriteriaValuesDTO();
+               value.setCriteria(criteriaValue);
+               value.setCount(row[1].toString());
+               values.add(value);
+           }
+        }
+        if (values.size()>0)
+        {
+           item.setValues(values);
+           returnValue.add(item);
+        } 
         
         //Modality        
         SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth());
