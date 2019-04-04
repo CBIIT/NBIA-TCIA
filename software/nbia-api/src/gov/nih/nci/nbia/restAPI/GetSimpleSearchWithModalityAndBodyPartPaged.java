@@ -98,8 +98,10 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 					SpeciesCriteria criteria=new SpeciesCriteria();
 				   criteria.setSpeciesValue(inFormParams.get("value"+i).get(0));
 				   query.setCriteria(criteria);
+				   queryKey+="SpeciesCriteria"+inFormParams.get("value"+i).get(0);
 				} else {
 					query.getSpeciesCriteria().setSpeciesValue(inFormParams.get("value"+i).get(0));
+					queryKey+="SpeciesCriteria"+inFormParams.get("value"+i).get(0);
 				}
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ImageModalityCriteria")){
