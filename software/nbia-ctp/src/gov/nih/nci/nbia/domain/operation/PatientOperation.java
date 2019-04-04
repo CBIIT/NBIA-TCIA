@@ -150,7 +150,20 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 	        patient.setPatientId(patientId.trim());
 	    }
 	}
-
+	private static void setPatientSpeciesDescription(Patient patient, Map numbers) {
+    	String patientSpecies = (String) numbers.get(DicomConstants.SPECIES_DESCRIPTION);
+        
+	    if (patientSpecies != null) {
+	        patient.setSpecies(patientSpecies.trim());
+	    }
+	}
+	private static void setPatientSpeciesCode(Patient patient, Map numbers) {
+    	String patientSpeciesCode = (String) numbers.get(DicomConstants.SPECIES_CODE);
+        
+	    if (patientSpeciesCode != null) {
+	        patient.setSpecies(patientSpeciesCode.trim());
+	    }
+	}
 	private static String buildQueryToFindExistingPatient(Map numbers, TrialDataProvenance tdp) throws Exception {
 	    StringBuilder hql = new StringBuilder("from Patient as patient where ");
 
