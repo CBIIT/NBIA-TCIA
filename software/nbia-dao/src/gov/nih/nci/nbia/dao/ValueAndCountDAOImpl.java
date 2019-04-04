@@ -85,6 +85,10 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         {
         	return collectionQuery(criteria);
         }
+        if (criteria.getObjectType().equalsIgnoreCase("SPECIES"))
+        {
+        	return speciesQuery(criteria);
+        }
         if (criteria.getObjectType().equalsIgnoreCase("MODALITY"))
         {
         	return modalityQuery(criteria);
@@ -117,6 +121,39 @@ public class ValueAndCountDAOImpl extends AbstractDAO
            item.setCriteria(row[0].toString());
            item.setCount(row[1].toString());
            returnValue.add(item);
+        }
+		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+    private List<ValuesAndCountsDTO> speciesQuery(ValuesAndCountsCriteria criteria){
+    	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
+        String SQLQuery = SPECIES_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_description ";
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();		
+        for(Object[] row : data)
+        {
+           String criteriaValue;
+           if (row[0]==null||row[0].toString().equals("")) {
+        	   criteriaValue="Human";
+           } else {
+        	   criteriaValue= row[0].toString();
+           }
+           boolean found = false;
+           for (ValuesAndCountsDTO dto:returnValue) {
+        	   if (dto.getCriteria().equalsIgnoreCase(criteriaValue)) {
+        		   int countValue=Integer.parseInt(dto.getCount())+Integer.parseInt(row[1].toString());
+        		   dto.setCount(Integer.toString(countValue));
+        		   found=true;
+        		   break;
+        	   }
+           }
+           if (!found) {
+        	   ValuesAndCountsDTO value=new ValuesAndCountsDTO();
+               value.setCriteria(criteriaValue);
+               value.setCount(row[1].toString());
+               returnValue.add(value);
+           }
         }
 		return returnValue;
     }
