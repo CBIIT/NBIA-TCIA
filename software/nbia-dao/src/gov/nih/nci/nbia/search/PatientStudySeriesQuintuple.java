@@ -39,7 +39,7 @@ public class PatientStudySeriesQuintuple {
     private int patientPkId;
     private String modality;
     private String bodyPart;
-
+    private String species;
     public PatientStudySeriesQuintuple() {
     }
 
@@ -92,6 +92,16 @@ public class PatientStudySeriesQuintuple {
 
 	public void setBodyPart(String bodyPart) {
 		this.bodyPart = bodyPart;
+	}
+
+
+	public String getSpecies() {
+		return species;
+	}
+
+
+	public void setSpecies(String species) {
+		this.species = species;
 	}
     
 }

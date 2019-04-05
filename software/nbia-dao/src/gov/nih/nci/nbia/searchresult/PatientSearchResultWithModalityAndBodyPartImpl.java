@@ -168,6 +168,15 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
 	public void setBodyParts(Set<String> bodyParts) {
 		this.bodyParts = bodyParts;
 	}
+	
+	public Set<String> getSpecies() {
+		return species;
+	}
+
+	public void setSpecies(Set<String> species) {
+		this.species = species;
+	}
+
 	public void addModalities(String modality) {
 		if (modality!=null) {
 		   this.modalities.add(modality);
@@ -176,6 +185,11 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
 	public void addBodyParts(String bodyPart) {
 		if (bodyPart!=null) {
 			   this.bodyParts.add(bodyPart);
+		}
+	}
+	public void addSpecies(String species) {
+		if (species!=null) {
+			   this.species.add(species);
 		}
 	}
 
@@ -258,6 +272,7 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
     private List<StudyIdentifiers> arr = new ArrayList<StudyIdentifiers>();
     private Set<String> modalities = new HashSet<String>();
     private Set<String> bodyParts = new HashSet<String>();
+    private Set<String> species = new HashSet<String>();
 
     private Integer totalNumberOfStudies;
     private Integer totalNumberOfSeries;

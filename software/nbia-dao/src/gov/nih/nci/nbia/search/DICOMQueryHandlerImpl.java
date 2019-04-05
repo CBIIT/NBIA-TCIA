@@ -119,7 +119,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
-    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.species,'Human')  ";
     
 
     //switch query to include aim criteria conditionally
@@ -312,6 +312,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	                } if (ids.length>4) {
 	                   if (ids[4]!=null) {
 	                      prs.setBodyPart(ids[4].toUpperCase());
+	                   } if (ids.length>5) {
+	                	   prs.setSpecies(ids[5]);
 	                   }
 	                }
 	                patientList.add(prs);
