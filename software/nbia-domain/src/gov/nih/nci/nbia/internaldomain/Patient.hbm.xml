@@ -24,6 +24,8 @@ L-->
 		<property name="patientId" type="string" column="PATIENT_ID"/>
 		<property name="patientName" type="string" column="PATIENT_NAME"/>
 		<property name="patientSex" type="string" column="PATIENT_SEX"/>
+		<property name="species" type="string" column="SPECIES_DESCRIPTION"/>
+		<property name="speciesCode" type="string" column="SPECIES_CODE"/>
 		<property name="trialSubjectId" type="string" column="TRIAL_SUBJECT_ID"/>
 		<property name="trialSubjectReadingId" type="string" column="TRIAL_SUBJECT_READING_ID"/>
 

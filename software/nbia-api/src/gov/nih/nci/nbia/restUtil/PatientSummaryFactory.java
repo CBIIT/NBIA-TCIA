@@ -6,7 +6,7 @@ import java.util.*;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
 public class PatientSummaryFactory {
 	public static PatientSearchSummary getNewPatientSearchSummary(List<PatientSearchResultWithModilityAndBodyPart> input, String sort, boolean compute,
-			List <ValueAndCount> bodyCounts, List <ValueAndCount> modalityCounts, List <ValueAndCount> collectionCounts) {
+			List <ValueAndCount> bodyCounts, List <ValueAndCount> modalityCounts, List <ValueAndCount> collectionCounts, List <ValueAndCount> speciesCounts) {
 		PatientSearchSummary returnValue = new PatientSearchSummary();
 		returnValue.setResultSet(input);
 		returnValue.setSort(sort);
@@ -17,6 +17,7 @@ public class PatientSummaryFactory {
 			returnValue.setBodyParts(bodyCounts);
 			returnValue.setModalities(modalityCounts);
 			returnValue.setCollections(collectionCounts);
+			returnValue.setCollections(speciesCounts);
 		}
 		return returnValue;
 	}
@@ -29,6 +30,7 @@ public class PatientSummaryFactory {
 		returnValue.setBodyParts(input.getBodyParts());
 		returnValue.setModalities(input.getModalities());
 		returnValue.setCollections(input.getCollections());
+		returnValue.setSpecies(input.getSpecies());
 		returnValue.setSort(input.getSort());
 		returnValue.setTotalPatients(input.getTotalPatients());
 
@@ -38,6 +40,7 @@ public class PatientSummaryFactory {
     	Map<String, Integer> bodyParts=new HashMap<String, Integer>();
     	Map<String, Integer> modalities=new HashMap<String, Integer>();
     	Map<String, Integer> collections=new HashMap<String, Integer>();
+    	Map<String, Integer> species=new HashMap<String, Integer>();
     	for (PatientSearchResultWithModilityAndBodyPart item:input.getResultSet()) {
     		try {
 				if (item.getBodyParts()!=null) {
@@ -62,6 +65,17 @@ public class PatientSummaryFactory {
 					     }
 					}
 				}
+				if (item.getSpecies()!=null) {
+					for (String specie: item.getSpecies()) {
+					     if (species.get(specie)!=null){
+					    	 Integer count = species.get(specie);
+					    	 count++;
+					    	 species.put(specie, count);
+					     }else {
+					    	 species.put(specie, new Integer(1));
+					     }
+					}
+				}
 				if (item.getProject()!=null) {
 				   if (collections.get(item.getProject())!=null){
 					 Integer count = collections.get(item.getProject());
@@ -78,6 +92,7 @@ public class PatientSummaryFactory {
        List <ValueAndCount> bodyCounts = new ArrayList<ValueAndCount>();
        List <ValueAndCount> modalityCounts = new ArrayList<ValueAndCount>();
        List <ValueAndCount> collectionCounts = new ArrayList<ValueAndCount>();
+       List <ValueAndCount> speciesCounts = new ArrayList<ValueAndCount>();
       
        for (Map.Entry<String, Integer> entry : bodyParts.entrySet()) {
           String key = entry.getKey();
@@ -95,6 +110,14 @@ public class PatientSummaryFactory {
            item.setCount(value.intValue());
            modalityCounts.add(item);
          }
+       for (Map.Entry<String, Integer> entry : species.entrySet()) {
+           String key = entry.getKey();
+           Integer value = entry.getValue();
+           ValueAndCount item = new ValueAndCount();
+           item.setValue(key);
+           item.setCount(value.intValue());
+           speciesCounts.add(item);
+         }
        for (Map.Entry<String, Integer> entry : collections.entrySet()) {
            String key = entry.getKey();
            Integer value = entry.getValue();
@@ -105,6 +128,7 @@ public class PatientSummaryFactory {
          }
     	input.setBodyParts(bodyCounts);
     	input.setModalities(modalityCounts);
+    	input.setSpecies(speciesCounts);
     	input.setCollections(collectionCounts);
     	return input;
     }

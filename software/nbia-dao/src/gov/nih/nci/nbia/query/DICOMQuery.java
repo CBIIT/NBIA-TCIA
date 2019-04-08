@@ -78,6 +78,7 @@ import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.UrlParamCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
+import gov.nih.nci.ncia.criteria.SpeciesCriteria;
 import gov.nih.nci.nbia.util.CriteriaComparator;
 
 import java.util.ArrayList;
@@ -123,6 +124,7 @@ public class DICOMQuery extends Query {
     private List<UrlParamCriteria> urlParamCriteria;
     private ModalityAndedSearchCriteria modalityAndedSearchCriteria;
     private DateRangeCriteria dateRangeCriteria;
+    private SpeciesCriteria speciesCriteria;
     private boolean queryFromUrl = false;
     private ImagingObservationCharacteristicCodeMeaningCriteria imagingObservationCharacteristicCodeMeaningCriteria;
     private ImagingObservationCharacteristicCodeValuePairCriteria imagingObservationCharacteristicCodeValuePairCriteria;
@@ -271,6 +273,13 @@ public class DICOMQuery extends Query {
     }
 
     /**
+     * @return Returns the speciesCriteria.
+     */
+    public SpeciesCriteria getSpeciesCriteria() {
+        return speciesCriteria;
+    }
+    
+    /**
      * @return Returns the patientCriteria.
      */
     public PatientCriteria getPatientCriteria() {
@@ -288,6 +297,18 @@ public class DICOMQuery extends Query {
         }
     }
 
+    
+    /**
+     * @param collectionCriteria The speciesCriteria to set.
+     */
+    public void setCriteria(SpeciesCriteria speciesCriteria) {
+        if (speciesCriteria != null) {
+            criteriaList.add(speciesCriteria);
+            this.speciesCriteria = speciesCriteria;
+        }
+    }
+    
+    
     /**
      * @param patientCriteria The patientCriteria to set.
      */

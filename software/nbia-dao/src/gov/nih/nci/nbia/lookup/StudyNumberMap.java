@@ -48,7 +48,7 @@ public class StudyNumberMap {
             temp = studyNumberMap.get(patientPkId);
 
             if (temp == null) {
-            	throw new Exception("Patient PK ID does not exist.");
+            	throw new Exception("Patient PK ID does not exist.--".concat(patientPkId.toString()));
             }
         }
 
