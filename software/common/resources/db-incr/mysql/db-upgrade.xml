@@ -1931,13 +1931,73 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
   </changeSet> 
     <changeSet id="7.1.add.species" author="gustafss" dbms="mysql">
          <comment>
-           adds species columns to patient
+           adds species column to patient
          </comment>          
          <sql>          
 			ALTER TABLE patient  
 			ADD COLUMN species_code varchar(100),
-			ADD COLUMN species_description varchar(100);				
          </sql>
    </changeSet> 
+       <changeSet id="7.1.add.species.tabke" author="gustafss" dbms="mysql">
+         <comment>
+           adds species table
+         </comment>          
+         <sql>          
+         create table species (
+             species_code varchar(64),
+             species_description varchar(500),
+             PRIMARY KEY  (`species_code`)) ;
+         </sql>
+   </changeSet> 
+      </changeSet> 
+       <changeSet id="7.1.add.species.table" author="gustafss" dbms="mysql">
+         <comment>
+           adds species columns to patient
+         </comment>          
+         <sql>          
+         create table species (
+             species_code varchar(64),
+             species_description varchar(500),
+             PRIMARY KEY  (`species_code`)) ;
+         </sql>
+   </changeSet> 
+      </changeSet> 
+      </changeSet> 
+       <changeSet id="7.1.add.species.data" author="gustafss" dbms="mysql">
+         <comment>
+           adds species columns to patient
+         </comment>          
+         <sql>          
+           insert into species(species_code, species_description) values ('L-85003','homo sapiens');
+           insert into species(species_code, species_description) values ('L-000F9','Felis');
+           insert into species(species_code, species_description) values ('L-00376','Felis catus (domestic cat)');
+           insert into species(species_code, species_description) values ('L-000A9','Equus')
+           insert into species(species_code, species_description) values ('L-8A102','Equus caballus (domestic horse)');
+           insert into species(species_code, species_description) values ('L-8C3FD','Ovis');
+           insert into species(species_code, species_description) values ('L-8C336','Ovis aries (domestic sheep)');
+           insert into species(species_code, species_description) values ('L-8B1FB','Sus');
+           insert into species(species_code, species_description) values ('L-8B100','Sus scrofa');
+           insert into species(species_code, species_description) values ('L-8C3FB','Capra');
+           insert into species(species_code, species_description) values ('L-8C306','Capra hircus (domestic goat)');
+           insert into species(species_code, species_description) values ('L-881FC','Canis');
+           insert into species(species_code, species_description) values ('L-88121','Canis lupus');
+           insert into species(species_code, species_description) values ('L-88124','Canis lupus familiaris (domestic dog)');
+           insert into species(species_code, species_description) values ('L-8BA18','Bos');
+           insert into species(species_code, species_description) values ('L-8B9F9','Bovinae');
+           insert into species(species_code, species_description) values ('L-8B941','Bos taurus (domestic cow)');
+           insert into species(species_code, species_description) values ('L-87830','Mus genus');
+           insert into species(species_code, species_description) values ('L-87831','Mus musculus (House mouse)');
+           insert into species(species_code, species_description) values ('180278','Peromyscus leucopus (American white-footed mouse)');
+           insert into species(species_code, species_description) values ('180276','Peromyscus maniculatus (Deer mouse)');
+           insert into species(species_code, species_description) values ('L-877FB','Rattus');
+           insert into species(species_code, species_description) values ('L-877FC','Rattus norvegicus (common rat)');
+           insert into species(species_code, species_description) values ('180346','Sigmodon genus (cotton rat)');
+           insert into species(species_code, species_description) values ('L-87A02','Cavia porcellus (domestic guinea pig)');
+           insert into species(species_code, species_description) values ('L-88423','Mustela putorius furo (ferret)');
+           insert into species(species_code, species_description) values ('L-86B02','Oryctolagus cuniculus (European rabbit)');
+           insert into species(species_code, species_description) values ('L-001DE','Callithrix jacchus (common marmoset)');
+         </sql>
+   </changeSet> 
+   
 
 </databaseChangeLog>
