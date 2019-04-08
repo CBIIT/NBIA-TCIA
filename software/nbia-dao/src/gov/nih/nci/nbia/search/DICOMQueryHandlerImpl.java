@@ -91,7 +91,7 @@ import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Ultrasound_Util;
 import gov.nih.nci.nbia.util.Util;
-
+import gov.nih.nci.nbia.util.NCIAConfig;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,7 +119,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
-    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.species,'Human')  ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.species,'"+NCIAConfig.getSpeciesDescription()+"')  ";
     
 
     //switch query to include aim criteria conditionally

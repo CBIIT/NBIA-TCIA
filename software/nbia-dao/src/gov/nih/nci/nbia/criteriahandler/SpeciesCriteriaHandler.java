@@ -34,7 +34,7 @@ import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 import gov.nih.nci.ncia.criteria.SpeciesCriteria;
-
+import gov.nih.nci.nbia.util.NCIAConfig;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -63,14 +63,13 @@ public class SpeciesCriteriaHandler implements CriteriaHandler {
         boolean isHumanQuery=false;
         while (tempIterator.hasNext()) {
             String tempString = null;
-            Integer tempInteger = null;
             Object tempObject = null;
 
             tempObject = tempIterator.next();
 
             if (tempObject instanceof String) {
                 tempString = tempObject.toString();
-                if (tempString.equalsIgnoreCase("human")) {
+                if (tempString.equalsIgnoreCase(NCIAConfig.getSpeciesDescription())) {
                 	isHumanQuery=true;
                 }
             } else {

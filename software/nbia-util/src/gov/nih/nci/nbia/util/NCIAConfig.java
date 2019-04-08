@@ -807,6 +807,21 @@ public class NCIAConfig {
 		checkProperty("tomcat.server.port", propertyValue);
         return propertyValue;   	
     } 
+    
+    public static String getSpeciesDescription() {
+        String propertyValue = properties.getProperty("species.description");
+        if (propertyValue==null) {
+        	propertyValue = "Human (Homo sapiens)";
+        }
+        return propertyValue;   	
+    } 
+    public static String getSpeciesCode() {
+        String propertyValue = properties.getProperty("species.code");
+        if (propertyValue==null) {
+        	propertyValue = "L-85003";
+        }
+        return propertyValue;   	
+    } 
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer

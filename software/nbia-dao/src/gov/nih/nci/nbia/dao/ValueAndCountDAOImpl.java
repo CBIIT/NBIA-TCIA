@@ -27,7 +27,7 @@ import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.ExtendedSearchResultCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
-
+import gov.nih.nci.nbia.util.NCIAConfig;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -135,7 +135,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         {
            String criteriaValue;
            if (row[0]==null||row[0].toString().equals("")) {
-        	   criteriaValue="Human";
+        	   criteriaValue=NCIAConfig.getSpeciesDescription();
            } else {
         	   criteriaValue= row[0].toString();
            }
@@ -301,7 +301,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         {
            String criteriaValue;
            if (row[0]==null||row[0].toString().equals("")) {
-        	   criteriaValue="Human";
+        	   criteriaValue=NCIAConfig.getSpeciesDescription();
            } else {
         	   criteriaValue= row[0].toString();
            }
