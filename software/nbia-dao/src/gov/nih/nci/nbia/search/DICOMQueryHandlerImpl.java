@@ -119,7 +119,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
-    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.species,'"+NCIAConfig.getSpeciesCode()+"')  ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.speciesCode,'"+NCIAConfig.getSpeciesCode()+"')  ";
     
 
     //switch query to include aim criteria conditionally
@@ -144,7 +144,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
     /* Constants for fields */
     private static final String COLLECTION_FIELD = "dp.project ";
-    private static final String SPECIES_FIELD = "p.species ";
+    private static final String SPECIES_FIELD = "p.speciesCode ";
     private static final String SITE_FIELD = "dp.dpSiteName ";
     private static final String IMAGE_MODALITY_FIELD = "series.modality ";
     private static final String SLICE_THICKNESS_FIELD = "gi.sliceThickness ";
