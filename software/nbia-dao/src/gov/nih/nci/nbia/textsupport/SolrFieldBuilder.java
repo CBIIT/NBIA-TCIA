@@ -43,10 +43,8 @@ public class SolrFieldBuilder {
 	    try {
 			CoreAdminRequest.reloadCore("collection1", server);
 		} catch (SolrServerException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	    LukeRequest lukeRequest = new LukeRequest();
