@@ -69,7 +69,7 @@ public class SpeciesCriteriaHandler implements CriteriaHandler {
 
             if (tempObject instanceof String) {
                 tempString = tempObject.toString();
-                if (tempString.equalsIgnoreCase(NCIAConfig.getSpeciesDescription())) {
+                if (tempString.equalsIgnoreCase(NCIAConfig.getSpeciesCode())) {
                 	isHumanQuery=true;
                 }
             } else {
