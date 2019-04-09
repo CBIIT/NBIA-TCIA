@@ -1939,17 +1939,6 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
 			ADD COLUMN species_description varchar(500);                       
          </sql>
    </changeSet> 
-       <changeSet id="7.1.add.species.tabke" author="gustafss" dbms="mysql">
-         <comment>
-           adds species table
-         </comment>          
-         <sql>          
-         create table species (
-             species_code varchar(64),
-             species_description varchar(500),
-             PRIMARY KEY  (`species_code`)) ;
-         </sql>
-   </changeSet> 
    <changeSet id="7.1.add.species.table" author="gustafss" dbms="mysql">
          <comment>
            adds species columns to patient
@@ -1996,6 +1985,13 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
            insert into species(species_code, species_description) values ('L-001DE','Callithrix jacchus (common marmoset)');
          </sql>
    </changeSet> 
-   
+      <changeSet id="7.1.add.species.index" author="gustafss" dbms="mysql">
+         <comment>
+           adds species columns to patient
+         </comment>          
+         <sql>       
+         create index species_codeindx on patient(species_code);   
+         </sql>
+   </changeSet> 
 
 </databaseChangeLog>
