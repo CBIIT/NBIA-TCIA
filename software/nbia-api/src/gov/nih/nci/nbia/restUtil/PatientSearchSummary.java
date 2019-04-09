@@ -8,6 +8,7 @@ public class PatientSearchSummary {
 	private List<ValueAndCount> bodyParts;
 	private List<ValueAndCount> modalities;
 	private List<ValueAndCount> collections;
+	private List<ValueAndCount> species;
 	private String sort;
 	public List<PatientSearchResultWithModilityAndBodyPart> getResultSet() {
 		return resultSet;
@@ -45,6 +46,12 @@ public class PatientSearchSummary {
 	}
 	public void setSort(String sort) {
 		this.sort = sort;
+	}
+	public List<ValueAndCount> getSpecies() {
+		return species;
+	}
+	public void setSpecies(List<ValueAndCount> species) {
+		this.species = species;
 	}
 	
 

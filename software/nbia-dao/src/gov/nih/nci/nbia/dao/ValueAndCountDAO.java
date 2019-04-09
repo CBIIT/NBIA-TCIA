@@ -14,6 +14,7 @@ import gov.nih.nci.nbia.searchresult.*;
 import gov.nih.nci.nbia.util.TreeNode;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
+import gov.nih.nci.nbia.dto.SpeciesDTO;
 import gov.nih.nci.ncia.criteria.*;
 
 import org.springframework.dao.DataAccessException;
@@ -25,4 +26,5 @@ public interface ValueAndCountDAO {
 	public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException;
 	public Map<String, ExtendedPatientSearchResult> extendedQuery(ExtendedSearchResultCriteria criteria) throws DataAccessException;
 	public TreeNode manufacturerTreeQuery(ValuesAndCountsCriteria criteria);
+	public List<SpeciesDTO> speciesTax(ValuesAndCountsCriteria criteria);
 }

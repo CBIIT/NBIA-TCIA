@@ -57,7 +57,8 @@
                 <a
                     *ngIf="showTciaDownloaderButton"
                     class="btn btn-success alert-box-button"
-                    [href]=tciaDownloaderUrl
+                    [href]=properties.DOWNLOADER_URL
+
                     TARGET="_blank"
                     (click)="onTciaDownloaderClick()"
                 >

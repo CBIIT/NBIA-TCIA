@@ -158,6 +158,7 @@ public class PatientSearcher {
             Integer seriesId = prs.getSeriesPkId();
             String modality = prs.getModality();
             String bodyPart = prs.getBodyPart();
+            String species =prs.getSpecies();
 
             // Look to see if patient has already been encountered
             PatientSearchResultWithModalityAndBodyPartImpl patient = patients.get(patientId);
@@ -167,6 +168,7 @@ public class PatientSearcher {
                 patient.addSeriesForStudy(studyId, seriesId);
                 patient.addModalities(modality);
                 patient.addBodyParts(bodyPart);
+                patient.addSpecies(species);
             } else {
                 // Need to add the patient to the list
             	PatientSearchResultWithModalityAndBodyPartImpl patientDTO = new PatientSearchResultWithModalityAndBodyPartImpl();
@@ -183,6 +185,7 @@ public class PatientSearcher {
                 patientDTO.setProject(cachedPatientData.getProject());
                 patientDTO.addModalities(modality);
                 patientDTO.addBodyParts(bodyPart);
+                patientDTO.addSpecies(species);
                 patients.put(patientId, patientDTO);
             }
         }

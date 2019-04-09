@@ -92,4 +92,5 @@ public interface GeneralSeriesDAO  {
 	           List<String> studyIDs,
 	           List<String> seriesIDs) throws DataAccessException;
 	public List<SeriesDTO> findSeriesBySeriesInstanceUIDAllVisibilities(List<String> seriesIds, List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException;
+	public List<String> findSeriesByCollectionAndVisibility(String collection, String visibility) throws DataAccessException;
 }

@@ -25,7 +25,7 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
      * tciaDownloaderUrl = 'https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics-DownloadingTCIAImages'
      * @type {string}
      */
-    tciaDownloaderUrl = Properties.TCIA_DOWNLOADER_URL;
+    tciaDownloaderUrl;
 
     /**
      * If true, popup this popup.
@@ -33,6 +33,7 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
      */
     showTciaDownloaderButton = true;
 
+    properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private persistenceService: PersistenceService,
@@ -49,6 +50,7 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
 
             }
         );
+
     }
 
     /**

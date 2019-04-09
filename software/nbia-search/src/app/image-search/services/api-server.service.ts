@@ -1149,7 +1149,7 @@ export class ApiServerService implements OnDestroy{
     }
 
     downloadSeriesList( seriesList ) {
-        let query = seriesList + '&password=' + this.currentApiPassword + '&includeAnnotation=false';
+        let query = seriesList + '&password=' + this.currentApiPassword + '&includeAnnotation=true';
         let downloadManifestUrl = this.commonService.buildPath( Properties.API_SERVER_URL, Consts.API_MANIFEST_URL );
 
         if( Properties.DEBUG_CURL ){

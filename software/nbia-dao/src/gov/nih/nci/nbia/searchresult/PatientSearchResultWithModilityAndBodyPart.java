@@ -89,4 +89,5 @@ public interface PatientSearchResultWithModilityAndBodyPart extends Comparable<P
     public Set<Integer> computeListOfSeriesIds();
     public Set<String> getModalities();
     public Set<String> getBodyParts();
+    public Set<String> getSpecies();
 }

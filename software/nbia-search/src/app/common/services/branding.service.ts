@@ -32,7 +32,8 @@ export class BrandingService{
     NEW_ACCOUNT_REGISTRATION = 4;
     FOOTER_HTML = 5;
     TEXT_SEARCH_DOCUMENTATION = 6;
-
+    VERSION_SUFFIX = 7;
+    DOWNLOADER_URL = 8;
 
     constructor( private httpClient: HttpClient ) {
     }
@@ -63,10 +64,14 @@ export class BrandingService{
     initBrandSettings() {
         this.initLogo();
         this.initBrandItem( this.CUSTOM_MENU_DATA, '/customMenu.json' );
+        this.initBrandItem( this.DOWNLOADER_URL, '/downloaderUrl.txt' );
         this.initBrandItem( this.ACCOUNT_HELP, '/accountHelpUrl.txt' );
         this.initBrandItem( this.NEW_ACCOUNT_REGISTRATION, '/newAccountUrl.txt' );
-        this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
         this.initBrandItem( this.TEXT_SEARCH_DOCUMENTATION, '/textSearchDocumentationUrl.txt' );
+        this.initBrandItem( this.VERSION_SUFFIX, '/versionSuffix.txt' );
+        // MAKE SURE FOOTER_HTML COMES AFTER VERSION_SUFFIX!!!  FOOTER_HTML uses VERSION_SUFFIX!!!
+        this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
+
     }
 
 
@@ -93,8 +98,14 @@ export class BrandingService{
             case this.TEXT_SEARCH_DOCUMENTATION:
                 Properties.TEXT_SEARCH_DOCUMENTATION = value;
                 break;
+            case this.DOWNLOADER_URL:
+                Properties.DOWNLOADER_URL = value;
+                break;
+           case this.VERSION_SUFFIX:
+                Properties.VERSION_SUFFIX = value;
+                break;
             case this.FOOTER_HTML:
-                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION );
+                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX);
                 break;
         }
     }

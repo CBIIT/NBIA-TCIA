@@ -73,6 +73,9 @@ public class CriteriaHandlerFactory {
     public CriteriaHandler createModelSoftwareCriteria() {
         return new ModelSoftwareCriteriaHandler();
     }
+    public CriteriaHandler createSpeciesCriteria() {
+        return new SpeciesCriteriaHandler();
+    }
     
 
     public CriteriaHandler createUrlParamCriteria() {
