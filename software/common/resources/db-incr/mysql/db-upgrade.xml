@@ -1958,7 +1958,7 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
            insert into species(species_code, species_description) values ('L-85003','homo sapiens');
            insert into species(species_code, species_description) values ('L-000F9','Felis');
            insert into species(species_code, species_description) values ('L-00376','Felis catus (domestic cat)');
-           insert into species(species_code, species_description) values ('L-000A9','Equus')
+           insert into species(species_code, species_description) values ('L-000A9','Equus');
            insert into species(species_code, species_description) values ('L-8A102','Equus caballus (domestic horse)');
            insert into species(species_code, species_description) values ('L-8C3FD','Ovis');
            insert into species(species_code, species_description) values ('L-8C336','Ovis aries (domestic sheep)');
