@@ -93,7 +93,7 @@ public class SpeciesCriteriaHandler implements CriteriaHandler {
     		tempQueryString += (" or (" + field + " is null)");
         } 
 
-        tempQueryString = "("+tempQueryString+")) ";
+        tempQueryString = "("+tempQueryString+") ";
         return tempQueryString;
     }
 
