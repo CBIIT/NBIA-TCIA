@@ -868,4 +868,36 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		return returnList;
 	}
+	
+	
+	/**
+	 * Fetch the list series instance uid by giving collection name and visibility.
+	 *
+	 * This method is used for NBIA Rest API.
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<String> findSeriesByCollectionAndVisibility(String collection, String visibility)
+			throws DataAccessException {
+		String visiblityClause = "";
+		if (!visibility.isEmpty() && !visibility.contains("13")) {
+			String[] vList = visibility.split(",");
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < vList.length; ++i) {
+				sb.append("'");
+				sb.append(vList[i].trim());
+				sb.append("'");
+				if (i < vList.length-1)
+					sb.append(",");
+			}
+			visibility = sb.toString();
+			visiblityClause = " and gs.visibility in (" + visibility + ")";
+		}
+		String hql = "select gs.seriesInstanceUID from GeneralSeries gs where gs.project = '" + collection + "' "
+				+ visiblityClause + " order by gs.seriesInstanceUID";
+
+//		System.out.println(
+//				"===== In nbia-dao, GeneralSeriesDAOImpl:findSeriesByCollectionAndVisibility() - hql is: " + hql);
+
+		return (List<String>) getHibernateTemplate().find(hql);
+	}
 }

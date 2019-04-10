@@ -15,6 +15,7 @@ import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
 import gov.nih.nci.nbia.dto.EquipmentDTO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesDTO;
+import gov.nih.nci.nbia.dto.SpeciesDTO;
 import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.searchresult.ExtendedPatientSearchResult;
 import gov.nih.nci.nbia.util.HqlUtils;
@@ -27,7 +28,7 @@ import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.ExtendedSearchResultCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
-
+import gov.nih.nci.nbia.util.NCIAConfig;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -61,6 +62,10 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     public static final String PATIENT_ID = "p.patientId ";
 	private final static String COLLECTION_QUERY="select dp.project, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs "
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
+	private final static String SPECIES_QUERY="select p.species_code, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs "
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
+	private final static String SPECIES_TABLE_QUERY="select distinct sp.species_description, sp.species_code from patient p, trial_data_provenance dp, general_series gs, species sp "
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id and p.species_code=sp.species_code ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String BODYPART_QUERY="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
@@ -82,6 +87,10 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         if (criteria.getObjectType().equalsIgnoreCase("COLLECTION"))
         {
         	return collectionQuery(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("SPECIES"))
+        {
+        	return speciesQuery(criteria);
         }
         if (criteria.getObjectType().equalsIgnoreCase("MODALITY"))
         {
@@ -115,6 +124,67 @@ public class ValueAndCountDAOImpl extends AbstractDAO
            item.setCriteria(row[0].toString());
            item.setCount(row[1].toString());
            returnValue.add(item);
+        }
+		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+    public List<SpeciesDTO> speciesTax(ValuesAndCountsCriteria criteria){
+    	List<SpeciesDTO> returnValue=new ArrayList<SpeciesDTO>();
+        String SQLQuery = SPECIES_TABLE_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+" and VISIBILITY in ('1')";
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();		
+		String defaultCode=NCIAConfig.getSpeciesCode();
+		String defaultDescription=NCIAConfig.getSpeciesDescription();
+		boolean found = false;
+        for(Object[] row : data)
+        {
+        	SpeciesDTO newSpeciesValue=new SpeciesDTO();
+        	newSpeciesValue.setSpeciesDescription(row[0].toString());
+        	newSpeciesValue.setSpeciesCode(row[1].toString());
+        	if (defaultCode.equalsIgnoreCase(row[1].toString())){
+        		found=true;
+        	}
+        	returnValue.add(newSpeciesValue);
+        }
+        if(!found) {
+        	SpeciesDTO newSpeciesValue=new SpeciesDTO();
+        	newSpeciesValue.setSpeciesDescription(defaultDescription);
+        	newSpeciesValue.setSpeciesCode(defaultCode);
+        	returnValue.add(newSpeciesValue);
+        }
+		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+    private List<ValuesAndCountsDTO> speciesQuery(ValuesAndCountsCriteria criteria){
+    	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
+        String SQLQuery = SPECIES_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_code ";
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();		
+        for(Object[] row : data)
+        {
+           String criteriaValue;
+           if (row[0]==null||row[0].toString().equals("")) {
+        	   criteriaValue=NCIAConfig.getSpeciesCode();
+           } else {
+        	   criteriaValue= row[0].toString();
+           }
+           boolean found = false;
+           for (ValuesAndCountsDTO dto:returnValue) {
+        	   if (dto.getCriteria().equalsIgnoreCase(criteriaValue)) {
+        		   int countValue=Integer.parseInt(dto.getCount())+Integer.parseInt(row[1].toString());
+        		   dto.setCount(Integer.toString(countValue));
+        		   found=true;
+        		   break;
+        	   }
+           }
+           if (!found) {
+        	   ValuesAndCountsDTO value=new ValuesAndCountsDTO();
+               value.setCriteria(criteriaValue);
+               value.setCount(row[1].toString());
+               returnValue.add(value);
+           }
         }
 		return returnValue;
     }
@@ -249,6 +319,44 @@ public class ValueAndCountDAOImpl extends AbstractDAO
            item.setValues(values);
            returnValue.add(item);
         }  
+        
+    	// Species
+        SQLQuery = SPECIES_QUERY+processAuthorizationSites(criteria.getAuth());
+        SQLQuery=SQLQuery+whereStatement+" group by p.species_code ";
+		data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();	
+        item=new CriteriaValuesForPatientDTO();
+        item.setCriteria("Species");
+        values=new ArrayList<CriteriaValuesDTO>();
+        for(Object[] row : data)
+        {
+           String criteriaValue;
+           if (row[0]==null||row[0].toString().equals("")) {
+        	   criteriaValue=NCIAConfig.getSpeciesCode();
+           } else {
+        	   criteriaValue= row[0].toString();
+           }
+           boolean found = false;
+           for (CriteriaValuesDTO dto:values) {
+        	   if (dto.getCriteria().equalsIgnoreCase(criteriaValue)) {
+        		   int countValue=Integer.parseInt(dto.getCount())+Integer.parseInt(row[1].toString());
+        		   dto.setCount(Integer.toString(countValue));
+        		   found=true;
+        		   break;
+        	   }
+           }
+           if (!found) {
+               CriteriaValuesDTO value=new CriteriaValuesDTO();
+               value.setCriteria(criteriaValue);
+               value.setCount(row[1].toString());
+               values.add(value);
+           }
+        }
+        if (values.size()>0)
+        {
+           item.setValues(values);
+           returnValue.add(item);
+        } 
         
         //Modality        
         SQLQuery = MODALITY_QUERY+processAuthorizationSites(criteria.getAuth());

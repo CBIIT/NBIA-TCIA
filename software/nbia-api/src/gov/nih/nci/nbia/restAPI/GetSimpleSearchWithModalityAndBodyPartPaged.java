@@ -93,6 +93,17 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 					queryKey+="CollectionCriteria"+inFormParams.get("value"+i).get(0);
 				}
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("SpeciesCriteria")){
+				if (query.getSpeciesCriteria()==null){
+					SpeciesCriteria criteria=new SpeciesCriteria();
+				   criteria.setSpeciesValue(inFormParams.get("value"+i).get(0));
+				   query.setCriteria(criteria);
+				   queryKey+="SpeciesCriteria"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getSpeciesCriteria().setSpeciesValue(inFormParams.get("value"+i).get(0));
+					queryKey+="SpeciesCriteria"+inFormParams.get("value"+i).get(0);
+				}
+			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ImageModalityCriteria")){
 				if (query.getImageModalityCriteria()==null){
 					ImageModalityCriteria criteria=new ImageModalityCriteria();
@@ -210,7 +221,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
-            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null);
+            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null);
             //System.out.println("Size is "+SizeOf.getObjectSize(cacheValue));
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
@@ -222,7 +233,8 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 				System.out.println("Doing sort");
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
 				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
-						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections()), start, size);
+						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies()),
+						start, size);
 			} else {
 				returnValue = PatientSummaryFactory.getReturnValue(patientSearchSummary, start, size);
 			}

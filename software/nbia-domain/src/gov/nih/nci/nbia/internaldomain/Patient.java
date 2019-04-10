@@ -60,6 +60,30 @@ public class Patient  implements Serializable
 		this.id = id;
 	}
 	
+	// dicom species
+	private String species;
+	
+	
+	public String getSpecies() {
+		return species;
+	}
+
+	public void setSpecies(String species) {
+		this.species = species;
+	}
+
+	// dicom species code
+	private String speciesCode;
+	
+	
+	public String getSpeciesCode() {
+		return speciesCode;
+	}
+
+	public void setSpeciesCode(String speciesCode) {
+		this.speciesCode = speciesCode;
+	}
+
 		/**
 	* the month, day and year on which the patient/participant was born.	**/
 	private java.util.Date patientBirthDate;

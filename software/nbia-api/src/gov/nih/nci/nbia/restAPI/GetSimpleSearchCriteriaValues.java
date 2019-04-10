@@ -74,16 +74,25 @@ public class GetSimpleSearchCriteriaValues extends getData{
 		auth.setSeriesSecurityGroups(seriesSecurityGroups);
 		auth.setSites(authorizedSiteData);
 		query.setCriteria(auth);
-
 		while (inFormParams.get("criteriaType"+i)!=null)
 		{
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("CollectionCriteria")){
+				System.out.println("Adding Collection Criteria");
 				if (query.getCollectionCriteria()==null){
 				   CollectionCriteria criteria=new CollectionCriteria();
 				   criteria.setCollectionValue(inFormParams.get("value"+i).get(0));
 				   query.setCriteria(criteria);
 				} else {
 					query.getCollectionCriteria().setCollectionValue(inFormParams.get("value"+i).get(0));
+				}
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("SpeciesCriteria")){
+				if (query.getSpeciesCriteria()==null){
+					SpeciesCriteria criteria=new SpeciesCriteria();
+				   criteria.setSpeciesValue(inFormParams.get("value"+i).get(0));
+				   query.setCriteria(criteria);
+				} else {
+					query.getSpeciesCriteria().setSpeciesValue(inFormParams.get("value"+i).get(0));
 				}
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ImageModalityCriteria")){
@@ -159,8 +168,10 @@ public class GetSimpleSearchCriteriaValues extends getData{
 		criteria.setPatientCriteria(pcriteria);
         ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
         List<CriteriaValuesForPatientDTO>  cpat=valueAndCountDAO.patientQuery(criteria);
+        System.out.println("new class");
 		return Response.ok(JSONUtil.getJSONforPatientCounts(cpat)).type("application/json")
 				.build();
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

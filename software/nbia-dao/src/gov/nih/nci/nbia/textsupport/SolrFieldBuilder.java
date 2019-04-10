@@ -14,6 +14,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,13 @@ public class SolrFieldBuilder {
     	dicomFieldMap=new HashMap<String,String>();
     	SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
 	    SolrServer server = serverAccess.GetServer();
+	    try {
+			CoreAdminRequest.reloadCore("collection1", server);
+		} catch (SolrServerException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	    LukeRequest lukeRequest = new LukeRequest();
 	    lukeRequest.setNumTerms(0);
 
