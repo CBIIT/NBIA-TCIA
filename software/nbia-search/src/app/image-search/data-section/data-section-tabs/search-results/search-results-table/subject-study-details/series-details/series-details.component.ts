@@ -134,8 +134,8 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     }
 
 
-    onCineModeClick() {
-        alert( 'This feature has not yet been implemented.' );
+    onSeriesOhifViewerClick() {
+        alert( 'This feature (onSeriesOhifViewerClick) has not yet been implemented.' );
     }
 
 

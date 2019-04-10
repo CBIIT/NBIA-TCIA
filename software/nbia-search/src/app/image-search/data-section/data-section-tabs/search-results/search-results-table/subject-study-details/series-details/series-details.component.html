@@ -21,16 +21,7 @@
         <th>
             Series
         </th>
-        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_CINE_MODE">s</span></th>
-
-        <th
-            *ngIf="properties.SHOW_IMAGE_VIEWER"
-            class="image-viewer-th"
-        >
-            Image viewer
-        </th>
-
-
+        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_OHIF_VIEWER">s</span></th>
         <th>
             DICOM
         </th>
@@ -88,7 +79,7 @@
         </td>
 
 
-        <!-- -----  The CineMode viewer button, doesn't do anything yet  ----- -->
+        <!-- -----  The OHIF viewer button doesn't do anything yet  ----- -->
         <td *ngIf="even" class="series-table-td">
             <label
                 *ngIf="! properties.NO_THUMBNAIL"
@@ -98,17 +89,10 @@
             >
                 <span class="glyphicon glyphicon-search" title="Thumbnail Viewer" ></span>
             </label>
-            <label *ngIf="properties.SHOW_CINE_MODE"
+            <label *ngIf="properties.SHOW_OHIF_VIEWER" style="margin-left: 3px"
                 class="btn btn-default series-data-button"
-                title="Cine Mode"
-                (click)="onCineModeClick()">
-                <span class="glyphicon glyphicon-facetime-video"></span>
-            </label>
-        </td>
-
-        <!-- -----  The Image viewer (cine mode) button, doesn't do anything yet  ----- -->
-        <td *ngIf="even && properties.SHOW_IMAGE_VIEWER" class="series-table-td">
-            <label class="btn btn-default series-data-button" (click)="onCineModeClick()">
+                title="OHIF Vewer"
+                (click)="onSeriesOhifViewerClick()">
                 <span class="glyphicon glyphicon-facetime-video"></span>
             </label>
         </td>

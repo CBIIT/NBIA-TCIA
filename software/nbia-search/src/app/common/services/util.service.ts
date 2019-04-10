@@ -1,10 +1,5 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
-import { Properties } from '@assets/properties';
-import { Observable } from 'rxjs';
-import { CommonService } from '@app/image-search/services/common.service';
-import { HttpClient } from '../../../../node_modules/@angular/common/http';
-import { Consts } from '@app/consts';
 
 @Injectable( {
     providedIn: 'root'
@@ -65,10 +60,10 @@ export class UtilService{
     copyCriteriaObject( origCrit ) {
         let copyCrit = {};
         copyCrit['criteria'] = origCrit['criteria'];
+        copyCrit['description'] = origCrit['description'];
         copyCrit['count'] = origCrit['count'];
         if( !this.isNullOrUndefined( origCrit['seq'] ) ){
             copyCrit['seq'] = origCrit['seq'];
-
         }
         return copyCrit;
     }
@@ -109,7 +104,6 @@ export class UtilService{
         }
         return s;
     }
-
 
 
 }

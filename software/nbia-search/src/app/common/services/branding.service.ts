@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Properties } from '@assets/properties';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Consts } from '@app/consts';
+import { CommonService } from '@app/image-search/services/common.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -35,7 +37,7 @@ export class BrandingService{
     VERSION_SUFFIX = 7;
     DOWNLOADER_URL = 8;
 
-    constructor( private httpClient: HttpClient ) {
+    constructor( private httpClient: HttpClient, private commonService: CommonService ) {
     }
 
 
@@ -61,7 +63,7 @@ export class BrandingService{
 
     }
 
-    initBrandSettings() {
+    async initBrandSettings() {
         this.initLogo();
         this.initBrandItem( this.CUSTOM_MENU_DATA, '/customMenu.json' );
         this.initBrandItem( this.DOWNLOADER_URL, '/downloaderUrl.txt' );
@@ -69,8 +71,14 @@ export class BrandingService{
         this.initBrandItem( this.NEW_ACCOUNT_REGISTRATION, '/newAccountUrl.txt' );
         this.initBrandItem( this.TEXT_SEARCH_DOCUMENTATION, '/textSearchDocumentationUrl.txt' );
         this.initBrandItem( this.VERSION_SUFFIX, '/versionSuffix.txt' );
-        // MAKE SURE FOOTER_HTML COMES AFTER VERSION_SUFFIX!!!  FOOTER_HTML uses VERSION_SUFFIX!!!
-        this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
+
+       // MAKE SURE FOOTER_HTML COMES AFTER VERSION_SUFFIX!!!  FOOTER_HTML uses VERSION_SUFFIX!!!
+       let runaway = 100; // Just in case.
+       while( (Properties.VERSION_SUFFIX === 'PLACE_HOLDER' ) && ( runaway > 0)){
+           await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
+           runaway--;
+       }
+       this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
 
     }
 
@@ -102,9 +110,9 @@ export class BrandingService{
                 Properties.DOWNLOADER_URL = value;
                 break;
            case this.VERSION_SUFFIX:
-                Properties.VERSION_SUFFIX = value;
-                break;
-            case this.FOOTER_HTML:
+               Properties.VERSION_SUFFIX = value;
+               break;
+           case this.FOOTER_HTML:
                 Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX);
                 break;
         }

@@ -154,6 +154,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         let modality = this.route.snapshot.queryParams[Properties.URL_KEY_MODALITY];
         let modalityAll = this.route.snapshot.queryParams[Properties.URL_KEY_MODALITY_ALL];
         let anatomicalSite = this.route.snapshot.queryParams[Properties.URL_KEY_ANATOMICAL_SITE];
+        let species = this.route.snapshot.queryParams[Properties.URL_KEY_SPECIES];
         let minimumStudies = this.route.snapshot.queryParams[Properties.URL_KEY_MINIMUM_STUDIES];
         let dateRange = this.route.snapshot.queryParams[Properties.URL_KEY_DATE_RANGE];
         let sharedList = this.route.snapshot.queryParams[Properties.URL_KEY_SHARED_LIST];
@@ -207,6 +208,10 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
         if( !this.utilService.isNullOrUndefined( anatomicalSite ) ){
             this.parameterService.setAnatomicalSite( anatomicalSite );
+        }
+
+        if( !this.utilService.isNullOrUndefined( species ) ){
+            this.parameterService.setSpecies( species );
         }
 
         if( !this.utilService.isNullOrUndefined( showTest ) ){

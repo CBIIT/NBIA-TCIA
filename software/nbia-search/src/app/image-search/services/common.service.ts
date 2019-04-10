@@ -363,7 +363,6 @@ export class CommonService{
      */
     setCriteriaQueryShow( name, value ) {
         this.criteriaQueryShow[name] = value;
-        // FIXME should be a constant
         this.persistenceService.put( this.persistenceService.Field.CRITERIA_QUERY_SHOW, JSON.stringify( this.criteriaQueryShow ) );
     }
 
@@ -602,6 +601,13 @@ export class CommonService{
         if( !this.utilService.isNullOrUndefined( allData[Consts.COLLECTION_CRITERIA] ) ){
             for( let item of allData[Consts.COLLECTION_CRITERIA] ){
                 displayQuery.push( { [Consts.CRITERIA]: 'collections', 'name': item } );
+            }
+        }
+
+        // Species
+        if( !this.utilService.isNullOrUndefined( allData[Consts.SPECIES_CRITERIA] ) ){
+            for( let item of allData[Consts.SPECIES_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'species', 'name': item } );
             }
         }
 

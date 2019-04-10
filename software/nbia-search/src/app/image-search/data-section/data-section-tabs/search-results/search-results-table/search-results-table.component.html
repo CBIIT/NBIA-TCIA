@@ -128,6 +128,9 @@
 
 
             </td>
+            <td *ngIf="properties.SHOW_OHIF_VIEWER"
+                class="thead-td "
+            >OHIF Viewer</td>
         </tr>
         <!-- End of heading row  -->
 
@@ -300,6 +303,19 @@
                 class="imageCount search-results-td"
             >
                 {{row['imageCount']}}
+            </td>
+
+            <td *ngIf="properties.SHOW_OHIF_VIEWER && even"
+                [ngClass]="{
+                    'dark': i%4 !== 0
+                }"
+            >
+                <label
+                        class="btn btn-default col-xs-1 ohif-subject-button"
+                        title="OHIF Vewer"
+                       (click)="onSubjectOhifViewerClick()">
+                    <span class="glyphicon glyphicon-facetime-video"></span>
+                </label>
             </td>
         </tr>
 

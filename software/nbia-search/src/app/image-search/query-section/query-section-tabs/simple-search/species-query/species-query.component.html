@@ -1,0 +1,72 @@
+<!-- ----------  This is the left side Anatomical Site list of check boxes.  ---------- -->
+<div class="query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+
+        <!-- Hide the Anatomical Site list.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(false)"
+        >
+            <img src="assets/images/down_V01.png">
+            Species
+        </span>
+
+        <!-- Show the Anatomical Site list -->
+        <span
+                *ngIf="!showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(true)"
+        >
+            <img src="assets/images/right_V01.png">
+            Species
+        </span>
+
+        <label
+                *ngIf="checkedCount > 0"
+                class="red-clear"
+        >
+            <img
+                    class=" clicker"
+                    src="assets/images/redClear.png"
+                    alt="Search"
+                    (click)="onSpeciesClearAllClick(false)"
+            >
+        </label>
+
+    </div>
+
+    <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
+    <div
+            [ngClass]="{
+            'hide-div': !showCriteriaList
+        }"
+    >
+
+        <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
+            <span *ngIf="( criteria['seq']  < (  properties.CRITERIA_SHOW_COUNT + checkedCount) ) || showAll">
+                <input type="checkbox"
+                       class="check-box"
+                       id="checkbox-species{{i}}"
+                       [(ngModel)]="cBox[i]"
+                       (click)="onCheckboxClick(i, $event.target.checked)">
+
+                <label [attr.for]="'checkbox-species'+i">
+                    {{criteria['description']}}
+                </label>
+
+                <span
+                        [ngClass]="{
+                          'count-box': criteria['count'] > 0,
+                          'count-box_zero': criteria['count'] <= 0
+                      }"
+                >
+                    {{criteria['count']}}
+                </span>
+            </span>
+        </div>
+    </div>
+
+</div>

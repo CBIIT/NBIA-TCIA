@@ -62,15 +62,18 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
      */
     populateCriteriaLists() {
         this.allCriteriaList = [];
-
         // Populate populateCriteriaLists
         for( let criteria of this.criteriaList ){
+
+            // If it's a species, we need to replace the name with the Description
+            if( criteria['criteria'] === 'species'){
+                criteria.name = this.getSpeciesDescriptionByCode(criteria.name);
+            }
 
             // The first element of each array is the category name.
             // Do we have this category of criteria one yet?
             let haveIt = false;
             for( let f = 0; f < this.allCriteriaList.length; f++ ){
-
                 // If we already have this category, "f" is now the index of that (category) row, just add the criteria.
                 if( this.allCriteriaList[f][0] === criteria['criteria'] ){
                     haveIt = true;
@@ -86,6 +89,16 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
                 this.allCriteriaList[this.allCriteriaList.length - 1].push( criteria.name );
             }
         }
+    }
+
+    getSpeciesDescriptionByCode( code ) {
+        let speciesTaxList = this.apiServerService.getSpeciesTax();
+        for( let tax of speciesTaxList ){
+            if( tax['speciesCode'].trim() === code.trim() ){
+                return tax['speciesDescription'];
+            }
+        }
+        return 'Description \"' + code + '\" not found';
     }
 
 

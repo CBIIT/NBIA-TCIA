@@ -5,6 +5,7 @@ import { LoadingDisplayService } from '../../../../../../common/components/loadi
 import { CommonService } from '../../../../../services/common.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Properties } from '@assets/properties';
 
 @Component( {
     selector: 'nbia-subject-study-details',
@@ -54,6 +55,8 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
      * @type {Array}
      */
     toggleSeriesVisibleArray: boolean[] = [];
+
+    properties = Properties;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -175,6 +178,11 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
         this.commonService.showSeries( i, show );
 
     }
+
+    onStudyOhifViewerClick(){
+        alert( 'This feature (onStudyOhifViewerClick) has not yet been implemented.' );
+    }
+
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

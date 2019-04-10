@@ -33,6 +33,13 @@ export const Consts = {
         // The query type used in the client code to identify the type.
         COLLECTION: 'Collection',
 
+        // The actual value to use when building the Rest call
+        SPECIES_CRITERIA: 'SpeciesCriteria',
+
+        // The query type used in the client code to identify the type.
+        SPECIES: 'Species',
+
+
         ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
         ANATOMICAL_SITE: 'AnatomicalSite',
         MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
@@ -118,6 +125,7 @@ export const Consts = {
         SERIES_FOR_SHARED_LIST_SUBJECT: 'seriesForSharedListSubject',
         DICOM_TAGS: 'getDicomTags',
 
+        SHOW_CRITERIA_QUERY_SPECIES: 'showQuerySpecies',
         SHOW_CRITERIA_QUERY_COLLECTIONS: 'showQueryCollections',
         SHOW_CRITERIA_QUERY_ANATOMICAL_SITE: 'showQueryAnatomicalSite',
         SHOW_CRITERIA_QUERY_IMAGE_MODALITY: 'showQueryImageModality',
@@ -126,10 +134,12 @@ export const Consts = {
         SHOW_CRITERIA_QUERY_SUBJECT_ID: 'showQuerySubjectIds',
         SHOW_CRITERIA_MINIMUM_MATCHED_STUDIES: 'showQueryMinimumMatchedStudies',
 
+        SHOW_CRITERIA_QUERY_SPECIES_DEFAULT: true,
         SHOW_CRITERIA_QUERY_COLLECTIONS_DEFAULT: true,
         SHOW_CRITERIA_QUERY_ANATOMICAL_SITE_DEFAULT: true,
         SHOW_CRITERIA_QUERY_IMAGE_MODALITY_DEFAULT: true,
         SHOW_CRITERIA_QUERY_MANUFACTURER_MODEL_DEFAULT: false,
+
         SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT: false,
         SHOW_CRITERIA_QUERY_SUBJECT_ID_DEFAULT: false,
 

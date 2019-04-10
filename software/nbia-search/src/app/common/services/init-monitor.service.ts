@@ -6,12 +6,14 @@ export class InitMonitorService{
     collectionsInit = false;
     modalityInit = false;
     anatomicalSiteInit = false;
+    speciesInit = false;
     minimumStudiesInit = false;
     dateRangeInit = false;
 
     collectionsRunning = false;
     modalityRunning = false;
     anatomicalSiteRunning = false;
+    speciesRunning = false;
     minimumStudiesRunning = false;
     dateRangeRunning = false;
 
@@ -43,7 +45,7 @@ export class InitMonitorService{
     }
 
 
-    setAtomicalSiteInit( status ) {
+    setAnatomicalSiteInit( status ) {
         this.anatomicalSiteInit = status;
     }
 
@@ -51,6 +53,13 @@ export class InitMonitorService{
         return this.anatomicalSiteInit;
     }
 
+    setSpeciesInit(status) {
+        this.speciesInit = status;
+    }
+
+    getSpeciesInit(){
+        return this.speciesInit;
+    }
 
     setMinimumStudiesInit( status ) {
         this.minimumStudiesInit = status;
@@ -69,6 +78,9 @@ export class InitMonitorService{
             res =  true;
         }
         if( this.anatomicalSiteInit ){
+            res =  true;
+        }
+        if( this.speciesInit ){
             res =  true;
         }
         if( this.minimumStudiesInit ){
@@ -106,7 +118,7 @@ export class InitMonitorService{
     }
 
 
-    setAtomicalSiteRunning( status ) {
+    setAnatomicalSiteRunning( status ) {
         this.anatomicalSiteRunning = status;
     }
 
@@ -114,6 +126,13 @@ export class InitMonitorService{
         return this.anatomicalSiteRunning;
     }
 
+    setSpeciesRunning( status){
+        this.speciesRunning = status;
+    }
+
+    get getSpeciesRunning(){
+        return this.speciesRunning;
+    }
 
     setMinimumStudiesRunning( status ) {
         this.minimumStudiesRunning = status;
@@ -132,6 +151,9 @@ export class InitMonitorService{
             res =  true;
         }
         if( this.anatomicalSiteRunning ){
+            res =  true;
+        }
+         if( this.speciesRunning ){
             res =  true;
         }
         if( this.minimumStudiesRunning ){

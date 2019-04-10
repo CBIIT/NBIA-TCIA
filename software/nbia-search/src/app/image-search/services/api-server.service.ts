@@ -152,6 +152,29 @@ export class ApiServerService implements OnDestroy{
      * Used by emitGetResults when dataGet is called
      * @type {EventEmitter<any>}
      */
+    getSpeciesValuesAndCountsEmitter = new EventEmitter();
+    /**
+     * Used by emitGetError when dataGet is called
+     * @type {EventEmitter<any>}
+     */
+    getSpeciesValuesAndCountsErrorEmitter = new EventEmitter();
+
+    /**
+     * Used by emitGetResults when dataGet is called
+     * @type {EventEmitter<any>}
+     */
+    getSpeciesTaxEmitter = new EventEmitter();
+    /**
+     * Used by emitGetError when dataGet is called
+     * @type {EventEmitter<any>}
+     */
+    getSpeciesTaxErrorEmitter = new EventEmitter();
+    speciesTax;
+
+    /**
+     * Used by emitGetResults when dataGet is called
+     * @type {EventEmitter<any>}
+     */
     getManufacturerTreeEmitter = new EventEmitter();
 
     /**
@@ -217,6 +240,7 @@ export class ApiServerService implements OnDestroy{
     criteriaCountsImageModality: NumberHash = {};
     criteriaCountsAnatomicalSite: NumberHash = {};
     criteriaCountsCollection: NumberHash = {};
+    criteriaCountsSpecies: NumberHash = {};
 
     public gettingAccessToken;
 
@@ -241,7 +265,7 @@ export class ApiServerService implements OnDestroy{
         }
 
         // Called when the 'Clear' button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async() => {
                 this.setSimpleSearchQueryHold( null );
                 this.getCriteriaCounts();
@@ -254,6 +278,10 @@ export class ApiServerService implements OnDestroy{
 
     getLoggingOut() {
         return this.loggingOut;
+    }
+
+    getSpeciesTax(){
+        return this.speciesTax;
     }
 
     getSimpleSearchQueryHold() {
@@ -280,7 +308,7 @@ export class ApiServerService implements OnDestroy{
 
     // Just for testing
     showAllQueryData( allData ) {
-        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria'];
+        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'SpeciesCriteria'];
         for( let name of criteriaStr ){
             if( (!this.utilService.isNullOrUndefined( allData[name] )) && (allData[name].length > 0) ){
                 console.log( 'allQueryData[' + name + ']: ', allData[name] );
@@ -342,6 +370,15 @@ export class ApiServerService implements OnDestroy{
             isSearchable = true;
             for( let item of allData[Consts.ANATOMICAL_SITE_CRITERIA] ){
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.ANATOMICAL_SITE_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Species
+        if( (allData[Consts.SPECIES_CRITERIA] !== undefined) && (allData[Consts.SPECIES_CRITERIA].length > 0) ){
+            isSearchable = true;
+            for( let item of allData[Consts.SPECIES_CRITERIA] ){
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.SPECIES_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
@@ -903,6 +940,11 @@ export class ApiServerService implements OnDestroy{
             this.getModalityValuesAndCountsEmitter.emit( res );
         }else if( queryType === 'getBodyPartValuesAndCounts' ){
             this.getBodyPartValuesAndCountsEmitter.emit( res );
+        }else if( queryType === 'getSpeciesValuesAndCounts' ){
+            this.getSpeciesValuesAndCountsEmitter.emit( res );
+        }else if( queryType === 'getSpeciesTax' ){
+            this.speciesTax = res;
+            this.getSpeciesTaxEmitter.emit( res );
         }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeEmitter.emit( res );
         }else if( queryType === Consts.DICOM_TAGS ){
@@ -921,6 +963,10 @@ export class ApiServerService implements OnDestroy{
             this.getModalityValuesAndCountsErrorEmitter.emit( err );
         }else if( queryType === 'getBodyPartValuesAndCounts' ){
             this.getBodyPartValuesAndCountsErrorEmitter.emit( err );
+        }else if( queryType === 'getSpeciesValuesAndCounts' ){
+            this.getSpeciesValuesAndCountsErrorEmitter.emit( err );
+         }else if( queryType === 'getSpeciesTax' ){
+            this.getSpeciesTaxErrorEmitter.emit( err );
         }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeErrorEmitter.emit( err );
         }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS ){
@@ -1276,6 +1322,7 @@ export class ApiServerService implements OnDestroy{
     }
 
 
+    // @TODO we can probably get rid of this and Properties.PAGED_SEARCH because we will always use Properties.PAGED_SEARCH
     getCriteriaCounts() {
         if( Properties.PAGED_SEARCH ){
             return this.getCriteriaCountsPaged();
@@ -1292,14 +1339,23 @@ export class ApiServerService implements OnDestroy{
         this.criteriaCountsImageModality = {};
         this.criteriaCountsAnatomicalSite = {};
         this.criteriaCountsCollection = {};
+        this.criteriaCountsSpecies = {};
 
         for( let data of this.currentSearchResults ){
             for( let modality of data.modalities ){
-                if( this.utilService.isNullOrUndefined( this.criteriaCountsImageModality [modality] ) ){
-                    this.criteriaCountsImageModality [modality] = 0;
+                if( this.utilService.isNullOrUndefined( this.criteriaCountsImageModality[modality] ) ){
+                    this.criteriaCountsImageModality[modality] = 0;
                 }
-                this.criteriaCountsImageModality [modality]++;
+                this.criteriaCountsImageModality[modality]++;
             }
+
+            for( let sp of data.species ){
+                if( this.utilService.isNullOrUndefined( this.criteriaCountsSpecies[sp] ) ){
+                    this.criteriaCountsSpecies[sp] = 0;
+                }
+                this.criteriaCountsSpecies[sp]++;
+            }
+
             for( let anatomicalSite of data.bodyParts ){
                 if( this.utilService.isNullOrUndefined( this.criteriaCountsAnatomicalSite [anatomicalSite] ) ){
                     this.criteriaCountsAnatomicalSite [anatomicalSite] = 0;
@@ -1340,6 +1396,18 @@ export class ApiServerService implements OnDestroy{
             }
         );
 
+        let speciesObj = { 'criteria': 'Species', 'values': [] };
+        Object.keys( this.criteriaCountsSpecies ).forEach(
+            ( key ) => {
+                speciesObj.values.push(
+                    {
+                        'criteria': key,
+                        'count': this.criteriaCountsSpecies [key]
+                    }
+                );
+            }
+        );
+
         let collectionObj = { 'criteria': 'Collections', 'values': [] };
         Object.keys( this.criteriaCountsCollection ).forEach(
             ( key ) => {
@@ -1355,6 +1423,7 @@ export class ApiServerService implements OnDestroy{
         resObj.push( collectionObj );
         resObj.push( anatomicalSiteObj );
         resObj.push( modalityObj );
+        resObj.push( speciesObj );
 
         this.criteriaCountUpdateEmitter.emit( { 'res': resObj } );
     }
@@ -1409,9 +1478,23 @@ export class ApiServerService implements OnDestroy{
                 );
             }
         }
-        resObj.push(  collectionObjPaged );
+        let speciesObjPaged = { 'criteria': 'Species', 'values': [] };
+       // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
+        if( this.currentSearchResultsData['species'] !== 'null' ){
+            for( let species of this.currentSearchResultsData['species'] ){
+                speciesObjPaged.values.push(
+                    {
+                        'criteria': species.value,
+                        'count': species.count
+                    }
+                );
+            }
+        }
+
+        resObj.push( collectionObjPaged );
         resObj.push( anatomicalSiteObjPaged );
         resObj.push( modalityObjPaged );
+        resObj.push( speciesObjPaged );
 
         this.criteriaCountUpdateEmitter.emit( { 'res': resObj } );
     }

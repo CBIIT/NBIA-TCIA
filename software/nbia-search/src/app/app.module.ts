@@ -97,6 +97,7 @@ import { ApplicationMenuComponent } from './application-menu/application-menu.co
 import { CustomMenuComponent } from './custom-menu/custom-menu.component';
 import { CookieOptionsArgs } from 'angular2-cookie/core';
 import { TextSearchExplanationComponent } from './image-search/query-section/query-section-tabs/text-search/text-search-explanation/text-search-explanation.component';
+import { SpeciesQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/species-query/species-query.component';
 
 
 const appRoutes: Routes = [
@@ -180,7 +181,8 @@ const appRoutes: Routes = [
         FeedbackAndLegacyButtonsComponent,
         ApplicationMenuComponent,
         CustomMenuComponent,
-        TextSearchExplanationComponent
+        TextSearchExplanationComponent,
+        SpeciesQueryComponent
     ],
     imports: [
         BrowserModule,

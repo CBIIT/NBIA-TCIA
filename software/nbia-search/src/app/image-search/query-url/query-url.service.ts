@@ -13,6 +13,7 @@ export class QueryUrlService{
     MIN_STUDIES = 4;
     DATE_RANGE = 5;
     SUBJECT_ID = 6;
+    SPECIES = 8;
     API_URL = 0;
 
     queryUrlString = '';
@@ -76,6 +77,13 @@ export class QueryUrlService{
                         queryForLoggingObject[Consts.ANATOMICAL_SITE].push(this.queryData[f]);
                         break;
 
+                    case this.SPECIES:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Consts.SPECIES])){
+                            queryForLoggingObject[Consts.SPECIES] = [];
+                        }
+                        queryForLoggingObject[Consts.SPECIES].push(this.queryData[f]);
+                        break;
+
                     case this.MIN_STUDIES:
                         if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_MINIMUM_STUDIES])){
                             queryForLoggingObject[Properties.URL_KEY_MINIMUM_STUDIES] = [];
@@ -133,6 +141,10 @@ export class QueryUrlService{
 
                     case this.ANATOMICAL_SITE:
                         this.queryUrlString += '&' + Properties.URL_KEY_ANATOMICAL_SITE + '=' + this.queryData[f];
+                        break;
+
+                    case this.SPECIES:
+                        this.queryUrlString += '&' + Properties.URL_KEY_SPECIES + '=' + this.queryData[f];
                         break;
 
                     case this.MIN_STUDIES:

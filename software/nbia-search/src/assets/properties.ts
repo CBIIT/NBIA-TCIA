@@ -1,6 +1,6 @@
 export let Properties = {
-    // 19_MAR_2019
-    VERSION: '1.0.44',
+    // 03_APR_2019
+    VERSION: '1.0.45',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"
@@ -14,7 +14,7 @@ export let Properties = {
     DEFAULT_BRAND: 'nbia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
 
-    VERSION_SUFFIX: '',
+    VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts, to know if it is initialized before appending to the version.
     BRAND: '%BRAND%',
 
     /*
@@ -52,7 +52,9 @@ export let Properties = {
     ACTION_LOGGING: true,
     SHORT_LOG: true,
 
-    SHOW_CINE_MODE: false,
+    SHOW_OHIF_VIEWER: false,
+
+    SHOW_SPECIES: true,
 
     SHOW_QUERY_BUILDER: false,
     SHOW_SEARCH_SHARED_LIST_TAB: false,
@@ -74,8 +76,6 @@ export let Properties = {
     SORT_BY_COUNT: true,
 
     SHOW_COLLECTIONS_SORT_OPTIONS: true,
-
-    SHOW_IMAGE_VIEWER: false,
 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -99,6 +99,7 @@ export let Properties = {
 
     URL_KEY_MODALITY: 'ImageModalityCriteria',
     URL_KEY_MODALITY_ALL: 'ModalityAll',
+    URL_KEY_SPECIES: 'SpeciesCriteria',
     URL_KEY_ANATOMICAL_SITE: 'AnatomicalSiteCriteria',
     URL_KEY_MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
     URL_KEY_DATE_RANGE: 'DateRange',
@@ -110,10 +111,11 @@ export let Properties = {
 
     /////////////////////////////////////////////////////////////////////////////////
 
-/*
+
+    /*
         API_SERVER_PASSWORD_DEFAULT: 'changeme',
         API_SERVER_USER_DEFAULT: 'mlerner',
-*/
+    */
 
     API_SERVER_USER_DEFAULT: 'nbia_guest',
     API_SERVER_PASSWORD_DEFAULT: 'test',

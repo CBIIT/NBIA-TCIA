@@ -801,7 +801,9 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 this.columnCount++;
             }
         }
-
+        if( Properties.SHOW_OHIF_VIEWER ){
+            this.columnCount++;
+        }
     }
 
     /**
@@ -840,6 +842,10 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
     onArrowMouseOut( i ) {
         this.arrowMouseOver[i] = false;
+    }
+
+    onSubjectOhifViewerClick(){
+        alert( 'This feature (onSubjectOhifViewerClick) has not yet been implemented.' );
     }
 
     ngOnDestroy() {

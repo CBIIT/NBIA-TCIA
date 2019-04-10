@@ -50,11 +50,26 @@
                         {{study.seriesList.length}} Series
                     </div>
 
-                    <div
+                    <div  *ngIf="properties.SHOW_OHIF_VIEWER"
+                        class="col-xs-2"
+                        title={{study.studyId}}>
+                        Study UID: ...{{ study.studyId | shortenRight }}
+                    </div>
+
+                    <!-- TODO Remove this when OHIF Viewer is working.  -->
+                     <div  *ngIf="! properties.SHOW_OHIF_VIEWER"
                         class="col-xs-3"
                         title={{study.studyId}}>
                         Study UID: ...{{ study.studyId | shortenRight }}
                     </div>
+
+                    <label *ngIf="properties.SHOW_OHIF_VIEWER"
+                           class="btn btn-default col-xs-1 ohif-study-button"
+                           title="OHIF Vewer"
+                           (click)="onStudyOhifViewerClick()">
+                           <span class="glyphicon glyphicon-facetime-video"></span>
+                    </label>
+
                 </div>
             </div>
 

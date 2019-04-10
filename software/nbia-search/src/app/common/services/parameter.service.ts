@@ -19,6 +19,7 @@ export class ParameterService{
     parameterAnatomicalSiteEmitter = new EventEmitter();
     parameterMinimumStudiesEmitter = new EventEmitter();
     parameterDateRangeEmitter = new EventEmitter();
+    parameterSpeciesEmitter = new EventEmitter();
     parameterTextSearchEmitter = new EventEmitter();
 
     // Used for determining if cart from URL should be (re)loaded
@@ -33,6 +34,7 @@ export class ParameterService{
     anatomicalSite = '';
     minimumStudies = 1;
     dateRange = '';
+    species = '';
     showTest = false;
     apiUrl = '';
 
@@ -170,6 +172,10 @@ export class ParameterService{
             this.parameterAnatomicalSiteEmitter.emit( this.anatomicalSite );
         }
 
+        if( this.species.length > 0 ){
+            this.parameterSpeciesEmitter.emit( this.species );
+        }
+
         if( this.dateRange.length > 0 ){
             let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
             if( regexp.test( this.dateRange ) ){
@@ -216,6 +222,25 @@ export class ParameterService{
 
     getModalityAll() {
         return this.modalityAll;
+    }
+
+    async setSpecies( species ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.species = species;
+
+        // Wait for the species query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getSpeciesInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterSpeciesEmitter.emit( species );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getSpecies() {
+        return this.species;
     }
 
     async setAnatomicalSite( anatomicalSite ) {
