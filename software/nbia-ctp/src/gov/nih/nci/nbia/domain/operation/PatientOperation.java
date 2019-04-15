@@ -71,6 +71,10 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 		    setClinicalTrialSubjectId(patient, numbers);
 	
 		    setClinicalTrialSubjectReadingId(patient, numbers);
+		    
+		    setPatientSpeciesDescription(patient, numbers);
+		    setPatientSpeciesCode(patient, numbers);
+		    
 	    }
 	    catch(Exception e) {
 	    	//log.error("Exception in PatientOperation " + e);
