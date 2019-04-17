@@ -86,6 +86,11 @@ L-->
 
         <ivy pattern="${nbia.basedir}/nbia-dao/ivy.xml" />
       </filesystem>
+      <filesystem name="nbia-ctp-resolver" local="true">
+        <artifact pattern="${nbia.basedir}/target/dist/exploded/ctp-jar/nbia.jar" />
+
+        <ivy pattern="${nbia.basedir}/nbia-ctp/ivy.xml" />
+      </filesystem>
       <!-- end ncia specific stuff -->
 
     </chain>
@@ -112,6 +117,10 @@ L-->
      <module organisation="ncicb"
              name="nbia-dao"
              resolver="nbia-dao-resolver"/>
+
+     <module organisation="ncicb"
+             name="nbia-ctp"
+             resolver="nbia-ctp-resolver"/>
    </modules>
    <!-- end ncia specific stuff -->
 

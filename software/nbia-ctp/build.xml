@@ -214,6 +214,30 @@ L-->
                          hibernate.properties,
                          applicationContext.xml"/>
     </jar>
+ 	<mkdir dir="${basedir}/../target/dist/exploded/ctp-jar"/>
+  	<mkdir dir="${basedir}/../target/dist/exploded/ctp-jar/exploded"/>
+  	<unjar src="${output.dir}/nbia.jar" dest="${basedir}/../target/dist/exploded/ctp-jar/exploded"/>
+    <replaceregexp file="${basedir}/../target/dist/exploded/ctp-jar/exploded/applicationContext.xml"
+                   byline="true"
+                   match="\$\{hibernate.connection.url}"
+                   replace="${database.url}"/>
+    <replaceregexp file="${basedir}/../target/dist/exploded/ctp-jar/exploded/applicationContext.xml"
+                   byline="true"
+                   match="\$\{hibernate.connection.username}"
+                   replace="${database.user}"/>
+    <replaceregexp file="${basedir}/../target/dist/exploded/ctp-jar/exploded/applicationContext.xml"
+                   byline="true"
+                   match="\$\{hibernate.connection.password}"
+                   replace="${database.password}"/>
+    <replaceregexp file="${basedir}/../target/dist/exploded/ctp-jar/exploded/applicationContext.xml"
+                   byline="true"
+                   match="\$\{hibernate.connection.driver_class}"
+                   replace="${database.driver}"/>
+    <replaceregexp file="${basedir}/../target/dist/exploded/ctp-jar/exploded/applicationContext.xml"
+                   byline="true"
+                   match="\$\{hibernate.dialect}"
+                   replace="${database.dialect}"/>
+  	<jar destfile="${basedir}/../target/dist/exploded/ctp-jar/nbia.jar" basedir="${basedir}/../target/dist/exploded/ctp-jar/exploded"/>
 
     <!-- if the nbia.jar had any extra runtime depedencies over and above what
          is already in ctp... copy here too so its wrapped up in the ctp installer -->

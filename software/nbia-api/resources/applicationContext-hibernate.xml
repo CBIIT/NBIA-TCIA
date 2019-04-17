@@ -220,6 +220,63 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		class="gov.nih.nci.nbia.ldapService.UserLdapService">
 		<property name="ldapTemplate" ref="ldapTemplate" />
 	</bean>  
+	
+	
+	
+	   <bean id="adapterUtil" class="gov.nih.nci.nbia.util.AdapterUtil">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="imageStorage" class="gov.nih.nci.nbia.dbadapter.NonCTPImageStorage">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+
+
+
+
+
+   <bean id="tdpo" class="gov.nih.nci.nbia.domain.operation.TrialDataProvenanceOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="po" class="gov.nih.nci.nbia.domain.operation.PatientOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="so" class="gov.nih.nci.nbia.domain.operation.StudyOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="geo" class="gov.nih.nci.nbia.domain.operation.GeneralEquipmentOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="serieso" class="gov.nih.nci.nbia.domain.operation.SeriesOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="gio" class="gov.nih.nci.nbia.domain.operation.GeneralImageOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="ctio" class="gov.nih.nci.nbia.domain.operation.CTImageOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="mrio" class="gov.nih.nci.nbia.domain.operation.MRImageOperation">
+       <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+   <bean id="imageSubmissionHistoryOperation" class="gov.nih.nci.nbia.domain.operation.ImageSubmissionHistoryOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
+  <bean id="processDicomObject" class="gov.nih.nci.nbia.util.ProcessDicomObject">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+  </bean>
+    <bean id="series" class="gov.nih.nci.nbia.internaldomain.GeneralSeries" scope="prototype" />
+   <bean id="nciaDelegator" class="gov.nih.nci.nbia.dbadapter.NonCTPDatabaseDelegator" scope="prototype"/>
+   <bean id="submissionHistory" class="gov.nih.nci.nbia.internaldomain.SubmissionHistory" scope="prototype"/>
+   <bean id="ctimage" class="gov.nih.nci.nbia.internaldomain.CTImage" scope="prototype"/>
+   <bean id="mrimage" class="gov.nih.nci.nbia.internaldomain.MRImage" scope="prototype"/>
+   <bean id="generalEquipment" class="gov.nih.nci.nbia.internaldomain.GeneralEquipment" scope="prototype"/>
+   <bean id="generalImage" class="gov.nih.nci.nbia.internaldomain.GeneralImage" scope="prototype"/>
+   <bean id="patient" class="gov.nih.nci.nbia.internaldomain.Patient" scope="prototype"/>
+   <bean id="study" class="gov.nih.nci.nbia.internaldomain.Study" scope="prototype"/>
+   <bean id="trialSite" class="gov.nih.nci.nbia.internaldomain.TrialSite" scope="prototype"/>
+   <bean id="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" scope="prototype"/>
+	
+	
   <!--
     Activates various annotations to be detected in bean classes:
     Spring's @Required and @Autowired, as well as JSR 250's @Resource.

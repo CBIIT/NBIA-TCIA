@@ -12,9 +12,12 @@ L-->
 <hibernate-mapping package="gov.nih.nci.nbia.internaldomain">
 	<class name="GeneralImage" table="GENERAL_IMAGE" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="integer" column="IMAGE_PK_ID">
-			<generator class="assigned" />
-		</id>
+    <id name="id" type="integer" column="IMAGE_PK_ID">
+       <generator class="org.hibernate.id.TableHiLoGenerator">
+            <param name="table">hibernate_unique_key</param>
+        <param name="column">next_hi</param>
+      </generator>
+    </id>
 		<!-- Attributes mapping for the GeneralImage class -->
 		<property name="acquisitionDate" type="java.util.Date" column="ACQUISITION_DATE"/>
 		<property name="acquisitionDatetime" type="string" column="ACQUISITION_DATETIME"/>
