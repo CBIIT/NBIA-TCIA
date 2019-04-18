@@ -43,6 +43,8 @@ import gov.nih.nci.nbia.dto.SpeciesDTO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.nih.nci.nbia.security.NCIASecurityManager;
+
 @Path("/submitDICOM")
 public class DICOMSubmission extends getData{
 	private static final String column="Species";
@@ -67,14 +69,14 @@ public class DICOMSubmission extends getData{
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				String user = (String) authentication.getPrincipal();
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+
+				NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+				if (!sm.hasQaRole(user)) {
+					return Response.status(401)
+							.entity("Insufficiant Privileges").build();
 				}
                 FileSubmitter.submit(file, project, siteName, siteID, batch);
-				return Response.ok("ok").type("application/json")
+				return Response.ok("ok").type("application/text")
 						.build();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
