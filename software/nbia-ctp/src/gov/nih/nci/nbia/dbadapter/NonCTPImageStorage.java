@@ -27,6 +27,8 @@ import gov.nih.nci.nbia.internaldomain.Study;
 import gov.nih.nci.nbia.internaldomain.SubmissionHistory;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 import gov.nih.nci.nbia.util.DicomConstants;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +106,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
         }catch(Exception e) {
             log.error("Exception in TrialDataProvenanceOperation " + e);
             errors.put("TrialDataProvenance", e.getMessage());
-            return FAIL;
+            return errorMessage(e, "TrialDataProvenanceOperation");
         }
 
         Patient patient=null;
@@ -115,7 +117,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			getHibernateTemplate().saveOrUpdate(patient);
         }catch(Exception e) {
             log.error("Exception in PatientOperation " + e);
-            return FAIL;
+            return errorMessage(e, "PatientOperation");
         }
         Study study=null;
         try {
@@ -124,7 +126,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			getHibernateTemplate().saveOrUpdate(study);
         }catch(Exception e) {
             log.error("Exception in StudyOperation " + e);
-            return FAIL;
+            return errorMessage(e,"StudyOperation");
         }
         GeneralEquipment equip=null;
         try {
@@ -132,7 +134,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			getHibernateTemplate().saveOrUpdate(equip);
         }catch(Exception e) {
             log.error("Exception in GeneralEquipmentOperation " + e);
-            return FAIL;
+            return errorMessage(e, "GeneralEquipmentOperation");
         }
         GeneralSeries series=null;
         try {
@@ -144,7 +146,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			//ao.updateAnnotation(series);
         }catch(Exception e) {
             log.error("Exception in SeriesOperation " + e);
-            return FAIL;
+            return errorMessage(e, "SeriesOperation");
         }
         GeneralImage gi=null;
         try {
@@ -163,7 +165,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
         }catch(Exception e) {
             log.error("File " + gi.getFilename()+ " " + e);
             e.printStackTrace();
-            return FAIL;
+            return errorMessage(e, "ImageOperation");
         }
         
         if (numbers.get(DicomConstants.SOP_CLASS_UID).toString().equals("1.2.840.10008.5.1.4.1.1.4")) {        
@@ -176,7 +178,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			}catch(Exception e) {
 				log.error("Exception in MRImageOperation " + e);
 	            errors.put("MRImage", e.getMessage());
-	            return FAIL;
+	            return errorMessage(e,  "ImageOperation");
 			}
         }
         else //Modality is anything except "MR"
@@ -189,7 +191,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			}catch(Exception e) {
 				log.error("Exception in CTImageOperation " + e);
 	            errors.put("CTImage", e.getMessage());
-	            return FAIL;
+	            return errorMessage(e,  "ImageOperation");
 			}
         }
 
@@ -209,16 +211,23 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
             //it is my belief that this is totally useless but will follow pattern till overall analysis is done
             errors.put("ImageSubmissionHistory", e.getMessage());
             //getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().rollback();
-            return FAIL;
+            return errorMessage(e,  "ImageHistorySubmission");
         }
 
         if(errors.size()> 0) {
             System.out.println("Total numbers of errors: " + errors.size());
             return FAIL;
         }
-        return "OK";
+        return "ok";
     }
 
+	private String errorMessage(Exception e, String component) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        e.printStackTrace(pw);
+        return "Error in "+ component + " --- "+e.getMessage()+" --- "+sw.toString();
+	}
     private Map<String,String> errors = new HashMap<String,String>();
 
     private Logger log = Logger.getLogger(NonCTPImageStorage.class);

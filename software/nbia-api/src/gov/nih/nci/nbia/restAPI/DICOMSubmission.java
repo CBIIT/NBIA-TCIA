@@ -75,13 +75,19 @@ public class DICOMSubmission extends getData{
 					return Response.status(401)
 							.entity("Insufficiant Privileges").build();
 				}
-                FileSubmitter.submit(file, project, siteName, siteID, batch);
-				return Response.ok("ok").type("application/text")
+                String status = FileSubmitter.submit(file, project, siteName, siteID, batch);
+                if (status.equals("ok")) {
+				   return Response.ok("ok").type("application/text")
 						.build();
-				} catch (Exception e) {
+                } else {
+ 				   return Response.status(400)
+ 							.entity(status).build();
+                }
+
+		    } catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+			}
 				return Response.status(500)
 						.entity("Server was not able to process your request").build();
 	}

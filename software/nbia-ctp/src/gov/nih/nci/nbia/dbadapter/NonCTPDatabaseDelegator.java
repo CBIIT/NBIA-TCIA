@@ -14,6 +14,8 @@ import gov.nih.nci.nbia.util.DicomConstants;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,8 +37,9 @@ public class NonCTPDatabaseDelegator {
 
 	private static String FAIL="fail";
     @Transactional (propagation=Propagation.REQUIRED)
-    public void process(File storedFile, String url, String project, String siteName, 
+    public String process(File storedFile, String url, String project, String siteName, 
     		String siteID, String trialName, String batch) throws RuntimeException {
+    	String status=null;
         if (storedFile == null)
         {
             log.error("Unable to obtain the stored DICOM file");
@@ -63,17 +66,18 @@ public class NonCTPDatabaseDelegator {
             visibility = false;
 
 
-            String status = imageStorage.storeDicomObject(numbers,filename,visibility, project, siteName, 
+            status = imageStorage.storeDicomObject(numbers,filename,visibility, project, siteName, 
     	    		siteID, trialName, batch);
-            if(status.equals(FAIL)) {
-                //log.error("Rollback in process(DicomObject,String) for file " + file.getFile().getAbsolutePath());
-                //failedSubmission("Rollback in process(DicomObject,String) for file " + file.getFile().getAbsolutePath());
-            }
 
         }
         catch (Exception e) {
-            //failedSubmission("Rollback in process(DicomObject,String) for file " + file.getFile().getAbsolutePath());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            e.printStackTrace(pw);
+            return e.getMessage()+"---"+sw.toString();
         }
+        return status;
     }
 
 
