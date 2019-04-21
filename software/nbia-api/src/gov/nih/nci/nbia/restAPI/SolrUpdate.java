@@ -53,6 +53,7 @@ public class SolrUpdate extends getData{
 	public Response constructResponse(@FormParam("action") String action) {
 
 		try {	
+			    System.out.println("Running Solr Update from API");
 			    PatientUpdater updater=new PatientUpdater();
 	        	updater.runUpdates();
 	    		return Response.ok().type("text/plain")
