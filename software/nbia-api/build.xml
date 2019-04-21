@@ -185,7 +185,7 @@ L-->
            excludes="*.war">
 		</war>
 	    <jar destfile="${target.dir}/${war.name}.tmp">
-	        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar"/>
+	        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar, **/ctp*, **/mysql-connector-java-5.1.34.jar, **/ojdbc14-10.2.0.3.0.jar"/>
 	    </jar>
 	     <delete file="${target.dir}/${war.name}" />
 	     <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />
