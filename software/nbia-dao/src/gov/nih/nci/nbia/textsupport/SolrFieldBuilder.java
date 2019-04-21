@@ -40,13 +40,13 @@ public class SolrFieldBuilder {
     	dicomFieldMap=new HashMap<String,String>();
     	SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
 	    SolrServer server = serverAccess.GetServer();
-	    try {
+/*	    try {
 			CoreAdminRequest.reloadCore("collection1", server);
 		} catch (SolrServerException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
+		} */
 	    LukeRequest lukeRequest = new LukeRequest();
 	    lukeRequest.setNumTerms(0);
 

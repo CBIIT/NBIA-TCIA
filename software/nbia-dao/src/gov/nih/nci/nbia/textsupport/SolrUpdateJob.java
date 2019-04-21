@@ -12,7 +12,7 @@ package gov.nih.nci.nbia.textsupport;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-
+import gov.nih.nci.nbia.lookup.RESTUtil;
 
 public class SolrUpdateJob implements Job {
 	static Logger log = Logger.getLogger(SolrUpdateJob.class);
@@ -23,9 +23,8 @@ public class SolrUpdateJob implements Job {
 
         try {   
         	// 	Cache the latest date
-        	log.warn("Patient updater job called by Quartz");
-        	PatientUpdater updater=new PatientUpdater();
-        	updater.runUpdates();
+        	log.warn("Patient updater job called by Quartz, calling the API");
+        	RESTUtil.runSolrUpdates();
         	log.warn("Patient updater job complete");
         }
         catch(Exception ex) {

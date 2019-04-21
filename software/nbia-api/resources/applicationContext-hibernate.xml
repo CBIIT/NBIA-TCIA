@@ -275,8 +275,16 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
    <bean id="study" class="gov.nih.nci.nbia.internaldomain.Study" scope="prototype"/>
    <bean id="trialSite" class="gov.nih.nci.nbia.internaldomain.TrialSite" scope="prototype"/>
    <bean id="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" scope="prototype"/>
-	
-	
+   <bean id="textSupportDAO" class="gov.nih.nci.nbia.textsupport.TextSupportDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <bean id="patientAccessDAO" class="gov.nih.nci.nbia.textsupport.PatientAccessDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
   <!--
     Activates various annotations to be detected in bean classes:
     Spring's @Required and @Autowired, as well as JSR 250's @Resource.

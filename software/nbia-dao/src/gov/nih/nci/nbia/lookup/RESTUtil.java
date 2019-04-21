@@ -525,6 +525,29 @@ public class RESTUtil {
         }
       return returnValue;
 }
+	public static void runSolrUpdates()
+   {
+
+		Form form = new Form(); 
+
+
+	     ClientConfig cc = new DefaultClientConfig();
+	     cc.getClasses().add(JacksonJsonProvider.class);
+	     Client client = Client.create(); 
+	     WebResource resource = client.resource(APIURLHolder.getUrl()
+	    	     +"/nbia-api/services/solrUpdate"); 
+	     ClientResponse response = resource.accept(MediaType.TEXT_PLAIN)
+	    	     .type(MediaType.APPLICATION_FORM_URLENCODED)
+                 .post(ClientResponse.class, form);
+         // check response status code
+        if (response.getStatus() != 200) {
+             throw new RuntimeException("Failed : HTTP error code : "
+             + response.getStatus());
+        }
+
+
+      return;
+}
 	
 	
 }
