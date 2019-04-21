@@ -23,7 +23,7 @@ public class SolrUpdateJob implements Job {
 
         try {   
         	// 	Cache the latest date
-        	log.warn("Patient updater job called by Quartz, calling the API");
+        	System.out.println("Patient updater job called by Quartz, calling the API");
         	RESTUtil.runSolrUpdates();
         	log.warn("Patient updater job complete");
         }

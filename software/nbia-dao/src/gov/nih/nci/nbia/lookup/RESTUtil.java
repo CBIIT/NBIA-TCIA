@@ -530,7 +530,7 @@ public class RESTUtil {
 
 		Form form = new Form(); 
 
-
+		System.out.println("RESTUtil calling the API");
 	     ClientConfig cc = new DefaultClientConfig();
 	     cc.getClasses().add(JacksonJsonProvider.class);
 	     Client client = Client.create(); 
