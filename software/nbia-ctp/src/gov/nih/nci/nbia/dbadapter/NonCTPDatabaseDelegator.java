@@ -132,7 +132,7 @@ public class NonCTPDatabaseDelegator {
             }
             elementHeader = elementHeader.substring(0,elementHeader.lastIndexOf('/'));
            }
-        return elementHeader;
+         return elementHeader;
     }
 
     /////////////////////////////////////////PRIVATE///////////////////////////////////////////
@@ -265,7 +265,6 @@ public class NonCTPDatabaseDelegator {
     	long fileSize = file.length();
         imageStorage.setFileSize(fileSize);
         String digestString = digest(file);
-        System.out.println("!!!!!!"+digestString);
         imageStorage.setMd5(digestString);
         }
     	catch (Exception ex) {

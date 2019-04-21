@@ -156,16 +156,18 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 	}
 	private static void setPatientSpeciesDescription(Patient patient, Map numbers) {
     	String patientSpecies = (String) numbers.get(DicomConstants.SPECIES_DESCRIPTION);
-        
 	    if (patientSpecies != null) {
 	        patient.setSpecies(patientSpecies.trim());
 	    }
 	}
 	private static void setPatientSpeciesCode(Patient patient, Map numbers) {
     	String patientSpeciesCode = (String) numbers.get(DicomConstants.SPECIES_CODE);
-        
 	    if (patientSpeciesCode != null) {
-	        patient.setSpecies(patientSpeciesCode.trim());
+	    	int location = patientSpeciesCode.indexOf("(0008,0100)=");
+	    	if (location>=0) {
+	    		String actualCode=patientSpeciesCode.substring(location+12);
+	            patient.setSpeciesCode(actualCode.trim());
+	        }
 	    }
 	}
 	private static String buildQueryToFindExistingPatient(Map numbers, TrialDataProvenance tdp) throws Exception {
