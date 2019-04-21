@@ -1955,34 +1955,31 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
            adds species columns to patient
          </comment>          
          <sql>          
-           insert into species(species_code, species_description) values ('L-85003','homo sapiens');
-           insert into species(species_code, species_description) values ('L-000F9','Felis');
-           insert into species(species_code, species_description) values ('L-00376','Felis catus (domestic cat)');
-           insert into species(species_code, species_description) values ('L-000A9','Equus');
-           insert into species(species_code, species_description) values ('L-8A102','Equus caballus (domestic horse)');
-           insert into species(species_code, species_description) values ('L-8C3FD','Ovis');
-           insert into species(species_code, species_description) values ('L-8C336','Ovis aries (domestic sheep)');
-           insert into species(species_code, species_description) values ('L-8B1FB','Sus');
-           insert into species(species_code, species_description) values ('L-8B100','Sus scrofa');
-           insert into species(species_code, species_description) values ('L-8C3FB','Capra');
-           insert into species(species_code, species_description) values ('L-8C306','Capra hircus (domestic goat)');
-           insert into species(species_code, species_description) values ('L-881FC','Canis');
-           insert into species(species_code, species_description) values ('L-88121','Canis lupus');
-           insert into species(species_code, species_description) values ('L-88124','Canis lupus familiaris (domestic dog)');
-           insert into species(species_code, species_description) values ('L-8BA18','Bos');
-           insert into species(species_code, species_description) values ('L-8B9F9','Bovinae');
-           insert into species(species_code, species_description) values ('L-8B941','Bos taurus (domestic cow)');
-           insert into species(species_code, species_description) values ('L-87830','Mus genus');
-           insert into species(species_code, species_description) values ('L-87831','Mus musculus (House mouse)');
-           insert into species(species_code, species_description) values ('180278','Peromyscus leucopus (American white-footed mouse)');
-           insert into species(species_code, species_description) values ('180276','Peromyscus maniculatus (Deer mouse)');
-           insert into species(species_code, species_description) values ('L-877FB','Rattus');
-           insert into species(species_code, species_description) values ('L-877FC','Rattus norvegicus (common rat)');
-           insert into species(species_code, species_description) values ('180346','Sigmodon genus (cotton rat)');
-           insert into species(species_code, species_description) values ('L-87A02','Cavia porcellus (domestic guinea pig)');
-           insert into species(species_code, species_description) values ('L-88423','Mustela putorius furo (ferret)');
-           insert into species(species_code, species_description) values ('L-86B02','Oryctolagus cuniculus (European rabbit)');
-           insert into species(species_code, species_description) values ('L-001DE','Callithrix jacchus (common marmoset)');
+           insert into species(species_code, species_description) values ('337915000','homo sapiens');
+           insert into species(species_code, species_description) values ('388626009','Felis');
+           insert into species(species_code, species_description) values ('448169003','Felis catus (domestic cat)');
+           insert into species(species_code, species_description) values ('388445009','Equus');
+           insert into species(species_code, species_description) values ('35354009','Equus caballus (domestic horse)');
+           insert into species(species_code, species_description) values ('388254009','Ovis');
+           insert into species(species_code, species_description) values ('125099002','Ovis aries (domestic sheep)');
+           insert into species(species_code, species_description) values ('388393002','Sus');
+           insert into species(species_code, species_description) values ('78678003','Sus scrofa');
+           insert into species(species_code, species_description) values ('388249000','Capra');
+           insert into species(species_code, species_description) values ('125097000','Capra hircus (domestic goat)');
+           insert into species(species_code, species_description) values ('388490000','Canis');
+           insert into species(species_code, species_description) values ('36855005','Canis lupus');
+           insert into species(species_code, species_description) values ('448771007','Canis lupus familiaris (domestic dog)');
+           insert into species(species_code, species_description) values ('388168008','Bos');
+           insert into species(species_code, species_description) values ('107007004','Bovinae');
+           insert into species(species_code, species_description) values ('34618005','Bos taurus (domestic cow)');
+           insert into species(species_code, species_description) values ('447482001','Mus genus');
+           insert into species(species_code, species_description) values ('447612001','Mus musculus (House mouse)');
+           insert into species(species_code, species_description) values ('371564000','Rattus');
+           insert into species(species_code, species_description) values ('371565004','Rattus norvegicus (common rat)');
+           insert into species(species_code, species_description) values ('125076001','Cavia porcellus (domestic guinea pig)');
+           insert into species(species_code, species_description) values ('449310008','Mustela putorius furo (ferret)');
+           insert into species(species_code, species_description) values ('36571002','Oryctolagus cuniculus (European rabbit)');
+           insert into species(species_code, species_description) values ('406733009','Callithrix jacchus (common marmoset)');
          </sql>
    </changeSet> 
       <changeSet id="7.1.add.species.index" author="gustafss" dbms="mysql">

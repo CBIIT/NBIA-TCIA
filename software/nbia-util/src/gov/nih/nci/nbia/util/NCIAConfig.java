@@ -818,7 +818,7 @@ public class NCIAConfig {
     public static String getSpeciesCode() {
         String propertyValue = properties.getProperty("species.code");
         if (propertyValue==null) {
-        	propertyValue = "L-85003";
+        	propertyValue = "337915000";
         }
         return propertyValue;   	
     } 
