@@ -37,14 +37,14 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		        "' and ");
 		        tdp.setProject(temp.trim());
 		    } else {
-		        hql += "tdp.project is null and ";
+		    	throw new Exception("Exception in TrialDataProvenanceOperation: Collection is null");
 		    }
 		
 		    if ((temp = (String) numbers.get(DicomConstants.SITE_ID)) != null) {
 		        hql += ("tdp.dpSiteId = '" + temp.trim() + "' and ");
 		        tdp.setDpSiteId(temp.trim());
 		    } else {
-		        hql += "tdp.dpSiteId is null and ";
+		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site id is null");
 		    }
 		
 		    if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
@@ -52,7 +52,7 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		        "' ");
 		        tdp.setDpSiteName(temp.trim());
 		    } else {
-		        hql += "tdp.dpSiteName is null ";
+		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site name is null");
 		    }
 		
 		    List ret = getHibernateTemplate().find(hql);

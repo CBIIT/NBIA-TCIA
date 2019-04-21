@@ -38,12 +38,12 @@ public class NonCTPDatabaseDelegator {
 	private static String FAIL="fail";
     @Transactional (propagation=Propagation.REQUIRED)
     public String process(File storedFile, String url, String project, String siteName, 
-    		String siteID, String trialName, String batch) throws RuntimeException {
+    		String siteID, String trialName, String batch)  {
     	String status=null;
         if (storedFile == null)
         {
             log.error("Unable to obtain the stored DICOM file");
-            failedSubmission("Unable to obtain the stored DICOM file");
+            return "Unable to obtain the stored DICOM file";
         }
         String filename = storedFile.getAbsolutePath();
         
@@ -252,10 +252,7 @@ public class NonCTPDatabaseDelegator {
     }
 
 
-    private void failedSubmission(String message) throws RuntimeException
-    {
-        throw new RuntimeException(message);
-    }
+
 
     public void setCorrectFileSize(File file) {
     	 // Temporary fix until new CTP release provides a better solution

@@ -12,7 +12,7 @@ public static String submit(String file, String project, String siteName,
 	File dfile=new File(file);
 	NonCTPDatabaseDelegator delegator = (NonCTPDatabaseDelegator)SpringApplicationContext.getBean("nciaDelegator");
 	delegator.setCorrectFileSize(dfile);
-	delegator.process(dfile, null, project, siteName, siteID, null, batch);
-	return "OK";
+	return delegator.process(dfile, null, project, siteName, siteID, null, batch);
+	 
 }
 }
