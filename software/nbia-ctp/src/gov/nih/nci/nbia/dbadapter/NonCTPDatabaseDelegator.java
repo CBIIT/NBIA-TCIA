@@ -22,6 +22,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.math.BigInteger;
 import org.apache.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.dcm4che.data.DcmElement;
@@ -32,7 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.security.MessageDigest;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 public class NonCTPDatabaseDelegator {
 
 	private static String FAIL="fail";
@@ -255,20 +261,35 @@ public class NonCTPDatabaseDelegator {
 
 
     public void setCorrectFileSize(File file) {
-    	 // Temporary fix until new CTP release provides a better solution
+    	try {
     	long fileSize = file.length();
         imageStorage.setFileSize(fileSize);
-        /*JP needs the digest with file not being anonymized for DB Verifier to work
-    	try {
-        DicomObject tempFile = new DicomObject(file);
-        String md5 = tempFile.getDigest()== null? " " : tempFile.getDigest();
-
-        imageStorage.setMd5(md5);
-        file.delete();
+        String digestString = digest(file);
+        System.out.println("!!!!!!"+digestString);
+        imageStorage.setMd5(digestString);
         }
     	catch (Exception ex) {
     		log.warn("Bad DICOM file:"+file.getAbsolutePath());
     	}
-    	*/
     }
+	private static String digest(File file) {
+		String result;
+		BufferedInputStream bis = null;
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			bis = new BufferedInputStream( new FileInputStream( file ) );
+			byte[] buffer = new byte[8192];
+			int n;
+			while ( (n=bis.read(buffer)) != -1) messageDigest.update(buffer, 0, n);
+			byte[] hashed = messageDigest.digest();
+			BigInteger bi = new BigInteger(1, hashed);
+			result = bi.toString(16);
+		}
+		catch (Exception ex) { result = ""; }
+		finally {
+			try { bis.close(); }
+			catch (Exception ignore) { }
+		}
+		return result;
+}
 }
