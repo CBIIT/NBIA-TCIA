@@ -164,14 +164,14 @@ public class StartupServlet extends HttpServlet {
             Scheduler scheduler = sf.getScheduler();
             // my jobs  first!
             scheduler.scheduleJob(solrUpdateJobDetail, solrTrigger);
-            scheduler.scheduleJob(worflowUpdateJobDetail, workflowTrigger);
+            //scheduler.scheduleJob(worflowUpdateJobDetail, workflowTrigger);
             scheduler.scheduleJob(propertiesUpdateJobDetail, propertiesTrigger);
             //Job 1 - Latest Curation Date
             scheduler.scheduleJob(latestCurationDateJobDetail, latestCurationDateTrigger);
 
             //Job 3 - New Data Flag
             if(NCIAConfig.runNewDataFlagUpdate()) {
-            	scheduler.scheduleJob(runNewDataFlagJobDetail, runNewDataFlagTrigger);
+            	//scheduler.scheduleJob(runNewDataFlagJobDetail, runNewDataFlagTrigger);
             }
 
            // scheduler.scheduleJob(nodeLookupJobDetail, nodeLookupTrigger);
