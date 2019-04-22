@@ -63,7 +63,7 @@ public class DICOMSubmission extends getData{
 			@FormParam("siteName") String siteName,
 			@FormParam("siteID") String siteID,
 			@FormParam("batch") String batch, 
-			@FormParam("file") String file) {
+			@FormParam("url") String file) {
 
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
@@ -74,7 +74,7 @@ public class DICOMSubmission extends getData{
 				if (!sm.hasQaRole(user)) {
 					return Response.status(401)
 							.entity("Insufficiant Privileges").build();
-				}
+				} 
                 String status = FileSubmitter.submit(file, project, siteName, siteID, batch);
                 if (status.equals("ok")) {
 				   return Response.ok("ok").type("application/text")
