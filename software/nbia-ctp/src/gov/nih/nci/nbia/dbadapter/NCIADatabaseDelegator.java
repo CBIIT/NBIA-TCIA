@@ -206,7 +206,7 @@ public class NCIADatabaseDelegator {
     }
 
     private static boolean isSQFieldThatWeCareAbout(String propname) {
-        return propname.equals("00081084") || propname.equals("00082218");
+        return propname.equals("00081084") || propname.equals("00082218") || propname.equals("00102202");
     }
 
     private static boolean isMultiStringFieldThatWeCareAbout(String propname) {
