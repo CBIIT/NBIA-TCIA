@@ -63,7 +63,7 @@ public class DICOMSubmission extends getData{
 			@FormParam("siteName") String siteName,
 			@FormParam("siteID") String siteID,
 			@FormParam("batch") String batch, 
-			@FormParam("url") String file) {
+			@FormParam("uri") String file) {
 
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
