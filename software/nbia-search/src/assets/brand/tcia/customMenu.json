@@ -57,6 +57,10 @@
                 "target": "https://public.cancerimagingarchive.net/ncia"
             },
             {
+                "menuText": "Pathology Imaging",
+                "target": "https://pathology.cancerimagingarchive.net/pathdata"
+            },
+            {
                 "menuText": "Rest API",
                 "target": "https://wiki.cancerimagingarchive.net/x/NIIiAQ"
             },
@@ -79,7 +83,7 @@
         "menuDataDropdown": [
             {
                 "menuText": "Publications Based on TCIA",
-                "target": "http://www.cancerimagingarchive.net/related-publications/"
+                "target": "https://www.cancerimagingarchive.net/publications/"
             },
             {
                 "menuText": "Imaging Proteogenomics",

@@ -102,6 +102,19 @@ export class HistoryLogService{
                 case Consts.SIMPLE_SEARCH_LOG_TEXT:
                     logData = {
                         'action': Consts.SIMPLE_SEARCH_LOG_TEXT,
+                        'user': user,
+                        'API_server': location.origin.toString(),
+                        'query': data
+                    };
+                    this.parametersToObject( logData, data );
+                    logEntry = JSON.stringify( logData );
+                    logEntry = encodeURI( logEntry );
+
+                    break;
+
+               case Consts.TEXT_SEARCH_LOG_TEXT:
+                    logData = {
+                        'action': Consts.TEXT_SEARCH_LOG_TEXT,
                         'user': user
                     };
                     this.parametersToObject( logData, data );
@@ -109,6 +122,7 @@ export class HistoryLogService{
                     logEntry = encodeURI( logEntry );
 
                     break;
+
 
             }
         }

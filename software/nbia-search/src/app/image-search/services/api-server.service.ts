@@ -242,6 +242,8 @@ export class ApiServerService implements OnDestroy{
     criteriaCountsCollection: NumberHash = {};
     criteriaCountsSpecies: NumberHash = {};
 
+    simpleSearchQueryTrailer = '';
+
     public gettingAccessToken;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
@@ -427,10 +429,11 @@ export class ApiServerService implements OnDestroy{
                 this.queryBuilderIndex++;
             }
         }
-
+        if( searchQuery.length > 0){
+            searchQuery += '&tool=nbiaclient';
+        }
         // Remove leading &
         searchQuery = searchQuery.substr( 1 );
-
         this.commonService.setIsSearchable( isSearchable );
 
         return searchQuery;
@@ -738,10 +741,17 @@ export class ApiServerService implements OnDestroy{
     doSearch( searchType, query, id ?, selected ? ) {
         this.temp = query;
         let searchService;
+        let re = /&start=[0-9]+&/;
+
         switch( searchType ){
 
             case Consts.SIMPLE_SEARCH:
-                this.log( this.historyLogService.doLog( Consts.SIMPLE_SEARCH_LOG_TEXT, this.currentUser, query ) );
+                // Only log for the initial search, not each change of the page.
+                // Do not log if the query has not changed other than "start=".
+                if( query.includes( '&start=0' ) && (query.replace( re, '' ) !== this.simpleSearchQueryTrailer.replace( re, '' ) )){
+                    this.log( this.historyLogService.doLog( Consts.SIMPLE_SEARCH_LOG_TEXT, this.currentUser, query ) );
+                }
+                this.simpleSearchQueryTrailer = query;
 
                 // We are doing a simple search, so we need to update the criteria counts.
                 this.setSimpleSearchQueryHold( query );
@@ -780,6 +790,8 @@ export class ApiServerService implements OnDestroy{
 
             case Consts.TEXT_SEARCH:
                 searchService = Consts.TEXT_SEARCH;
+                this.log( this.historyLogService.doLog( Consts.TEXT_SEARCH_LOG_TEXT, this.currentUser, query ) );
+
                 break;
 
             case Consts.SEARCH_CRITERIA_VALUES:
@@ -896,6 +908,8 @@ export class ApiServerService implements OnDestroy{
         }
 
         let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+
+
         let headers = new HttpHeaders( {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + accessToken
@@ -922,7 +936,6 @@ export class ApiServerService implements OnDestroy{
                 console.log( 'doPost query: ', query );
                 console.log( 'doPost options: ', options );
         */
-
 
         return this.httpClient.post( simpleSearchUrl, query, options );
     }

@@ -13,6 +13,8 @@ import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-box/alert-box-consts';
+import { AlertBoxService } from '@app/common/components/alert-box/alert-box.service';
 
 @Component( {
     selector: 'nbia-search-results-table',
@@ -136,6 +138,8 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
     myIsNullOrUndefined = this.utilService.isNullOrUndefined;
 
+    alertId01 = 'nbia-cart-max-warning-01';
+
     properties = Properties;
     urlQuery = '';
 
@@ -150,7 +154,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                  private cartService: CartService, private sortService: SearchResultsSortService,
                  private persistenceService: PersistenceService, private loadingDisplayService: LoadingDisplayService,
                  private parameterService: ParameterService, private historyLogService: HistoryLogService,
-                 private utilService: UtilService ) {
+                 private utilService: UtilService, private alertBoxService: AlertBoxService ) {
 
         // currentSearchMode tells us if the "Simple search" or the "Free text" column names are shown.
         // We need the Consts.SEARCH_TYPES array, because persistenceService.Field.QUERY_TYPE_TAB is a number and currentSearchMode needs the string
@@ -212,7 +216,18 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Used in busyCartCheck to determine if the cart has finished updating, there is no easy way with things being updated asynchronous.
         this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
+
                 this.cartCount = data['count'];
+
+                if( this.cartCount > Consts.CART_COUNT_MAX){
+                    this.alertBoxService.alertBoxDisplay( this.alertId01,
+                        AlertBoxType.ERROR,
+                        'Exceeding max cart size ( ' + Consts.CART_COUNT_MAX + ' )',
+                        ['Current cart count: ' + this.cartCount],
+                        AlertBoxButtonType.OKAY,
+                        350
+                    );
+                }
             }
         );
 
@@ -312,6 +327,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Called when there are new Simple search results.
         this.apiServerService.simpleSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
+
                 this.subjectDataShow = [];
 
                 if( (!this.utilService.isNullOrUndefined( data )) && ((<any>data).length > 0) ){
@@ -621,7 +637,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 query += '&start=' + this.currentPage * this.rowsPerPage;
                 query += '&size=' + this.rowsPerPage;
             }
-
             this.apiServerService.doSearch( Consts.SIMPLE_SEARCH, query );
             this.loadingDisplayService.setLoading( true, 'Searching...' );
         }

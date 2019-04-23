@@ -23,6 +23,12 @@ export class LoadingDisplayService{
             }
         }
 
+        // FIXME I think I need to remove the ability to include a message for false.
+         if( ! loading){
+             message = '';
+             subMessage = '';
+         }
+
         if( this.isLoading > 0 ){
             this.isLoadingEmitter.emit( { value: true, message: message, subMessage:  subMessage} );
         }

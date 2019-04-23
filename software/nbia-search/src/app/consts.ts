@@ -24,7 +24,7 @@ export const Consts = {
         // API_SAVE_SHARED_LIST_URL: 'nbia-api/services/createSharedList',
 
         waitTime: 50,
-
+        CART_COUNT_MAX: 10000,
         CRITERIA: 'criteria',
 
         // The actual value to use when building the Rest call
@@ -58,6 +58,7 @@ export const Consts = {
         ALERT_BOX_WIDTH_DEFAULT: 400,
 
         SIMPLE_SEARCH_LOG_TEXT: 'SIMPLE_SEARCH',
+        TEXT_SEARCH_LOG_TEXT: 'TEXT_SEARCH',
         DOWNLOAD_CART_LOG_TEXT: 'DOWNLOAD_CART',
         SHARE_QUERY_LOG_TEXT: 'SHARE_QUERY',
         SAVE_CART_LOG_TEXT: 'SAVE_CART',

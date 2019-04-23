@@ -41,6 +41,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
+
         // CHECKME  Make sure study is populated by now.
         this.upDataSearchResultsForDisplay();
 
