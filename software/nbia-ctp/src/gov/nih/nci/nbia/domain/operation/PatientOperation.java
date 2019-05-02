@@ -162,10 +162,16 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 	}
 	private static void setPatientSpeciesCode(Patient patient, Map numbers) {
     	String patientSpeciesCode = (String) numbers.get(DicomConstants.SPECIES_CODE);
+    	String actualCode;
 	    if (patientSpeciesCode != null) {
 	    	int location = patientSpeciesCode.indexOf("(0008,0100)=");
 	    	if (location>=0) {
-	    		String actualCode=patientSpeciesCode.substring(location+12);
+	    		int slashLocation=patientSpeciesCode.indexOf("/", location);
+	    		if (slashLocation>12) {
+	    			actualCode=patientSpeciesCode.substring(location+12,slashLocation);
+	    		} else {
+	    		    actualCode=patientSpeciesCode.substring(location+12);
+	    		}
 	            patient.setSpeciesCode(actualCode.trim());
 	        }
 	    }
