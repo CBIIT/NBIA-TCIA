@@ -55,9 +55,10 @@
 
     <span
         class="application-menu-item"
+        title={{downloadButtonToolTip}}
         [ngClass]="{
             'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled ),
-            'application-menu-disabled-item':( cartCount === 0 || disabled )
+            'application-menu-disabled-item':( cartCount === 0 || disabled || downloadDisabled )
         }"
         (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
         (mouseover)="onMouseOver(menuItem.DOWNLOAD_MENU_ITEM)"

@@ -1,3 +1,7 @@
+@import '../../app.component.scss';
+$cart-button-disabled-text: #b4b4b4;
+$cart-button-disabled-background: #6b6b6b;
+
 //  A little space below the button, above the cart contents list.
 .cart-button-div {
     padding-bottom: 4px;
@@ -6,3 +10,10 @@
 .exportSpreadsheetButton{
     margin-right: 6px;
 }
+
+.cart-button-disabled-item {
+  color: $cart-button-disabled-text;
+  background-color: $cart-button-disabled-background;
+  cursor: not-allowed;
+}
+

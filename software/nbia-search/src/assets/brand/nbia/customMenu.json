@@ -13,7 +13,7 @@
                 "target": "https://public.cancerimagingarchive.net/ncia"
             },
             {
-                "menuText": "Rest API",
+                "menuText": "REST API",
                 "target": "https://wiki.nci.nih.gov/display/NBIA/NBIA+REST+API+User+Guide"
             }
         ]

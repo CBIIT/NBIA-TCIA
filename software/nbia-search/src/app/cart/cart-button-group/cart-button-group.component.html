@@ -16,7 +16,11 @@
 
     <button
         type="button"
+        title={{downloadButtonToolTip}}
         class="btn btn-default nbia-button"
+        [ngClass]="{
+            'cart-button-disabled-item': downloadDisabled
+        }"
         (click)="onDownloadClick()"
     >
         <span class="glyphicon glyphicon-download-alt"></span>

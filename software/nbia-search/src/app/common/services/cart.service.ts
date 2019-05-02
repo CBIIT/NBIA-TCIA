@@ -17,6 +17,7 @@ export class CartService implements OnDestroy{
     cartChangeEmitter = new EventEmitter();
     cartCountEmitter = new EventEmitter();
     cartClearEmitter = new EventEmitter();
+    cartCount = 0;
 
     private cart = [];
 
@@ -64,9 +65,14 @@ export class CartService implements OnDestroy{
                 fileSize += (+this.cart[f].size);
             }
         }
+        this.cartCount = count;
         this.cartCountEmitter.emit( { count, fileSize } );
     }
 
+
+    getCartCount(){
+        return this.cartCount;
+    }
 
     /**
      *
@@ -190,6 +196,7 @@ export class CartService implements OnDestroy{
 
         // Subscribed to by HeaderComponent for the little counter on top menu.
         this.cartCountEmitter.emit( { 'count': 0, 'fileSize': 0 } );
+        this.cartCount = 0;
 
         // Let the Search results & Subject details screens know to clear all Carts.
         this.cartClearEmitter.emit( true ); // This value is not used
