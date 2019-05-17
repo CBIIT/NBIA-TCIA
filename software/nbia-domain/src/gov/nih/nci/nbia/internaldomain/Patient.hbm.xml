@@ -28,6 +28,7 @@ L-->
 		<property name="speciesCode" type="string" column="SPECIES_CODE"/>
 		<property name="trialSubjectId" type="string" column="TRIAL_SUBJECT_ID"/>
 		<property name="trialSubjectReadingId" type="string" column="TRIAL_SUBJECT_READING_ID"/>
+		<property name="qcSubject" type="string" column="QC_SUBJECT"/>
 
 		<!-- Associations mapping for the Patient class -->
 		<set name="generalImageCollection" lazy="true">

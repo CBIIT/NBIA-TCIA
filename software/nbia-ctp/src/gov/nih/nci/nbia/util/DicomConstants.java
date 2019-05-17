@@ -143,5 +143,5 @@ public class DicomConstants {
     public static final String BATCH_NUMBER = "130";
     public static final String SPECIES_DESCRIPTION = "131";
     public static final String SPECIES_CODE = "132";
-    
+    public static final String QUALTITY_CONTROL_SUBJECT = "133";
 }

@@ -74,6 +74,7 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 		    
 		    setPatientSpeciesDescription(patient, numbers);
 		    setPatientSpeciesCode(patient, numbers);
+		    setPatientPhantomStatus(patient, numbers);
 		    
 	    }
 	    catch(Exception e) {
@@ -168,6 +169,14 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 	    		String actualCode=patientSpeciesCode.substring(location+12);
 	            patient.setSpeciesCode(actualCode.trim());
 	        }
+	    }
+	}
+	
+	private static void setPatientPhantomStatus(Patient patient, Map numbers){
+    	String patientStatus = (String) numbers.get(DicomConstants.QUALTITY_CONTROL_SUBJECT);
+
+	    if (patientStatus != null) {
+	        patient.setQcSubject(patientStatus.trim());
 	    }
 	}
 	private static String buildQueryToFindExistingPatient(Map numbers, TrialDataProvenance tdp) throws Exception {

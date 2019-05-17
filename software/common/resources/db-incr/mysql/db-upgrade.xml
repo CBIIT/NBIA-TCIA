@@ -248,7 +248,7 @@ L-->
         
   </changeSet>
   
-  <changeSet id="group9.cleanup" author="kascice" dbms="mysql">          
+  <!--changeSet id="group9.cleanup" author="kascice" dbms="mysql">          
     <comment>
       The db adapter code in 4.1 that inserted the group9 tags.... was totally
       broken for the "update" use case.  The group9 stuff is replaced by
@@ -269,7 +269,7 @@ L-->
       drop table group9Temp;                         
     </sql>    
         
-  </changeSet>  
+  </changeSet-->  
   
   <changeSet id="doc_location.cleanup" author="kascice">          
     <comment>
@@ -1989,6 +1989,15 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
          <sql>       
          create index species_codeindx on patient(species_code);   
          </sql>
+   </changeSet>
+   
+   <changeSet id="7.2.add.phantom.data" author="panq" dbms="mysql">
+         <comment>
+           adds phantom columns to patient
+         </comment>          
+         <sql>       
+			ALTER TABLE patient  
+			ADD COLUMN qc_subject varchar(4);    
+         </sql>
    </changeSet> 
-
 </databaseChangeLog>

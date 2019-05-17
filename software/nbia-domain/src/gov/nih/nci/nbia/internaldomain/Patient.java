@@ -83,6 +83,17 @@ public class Patient  implements Serializable
 	public void setSpeciesCode(String speciesCode) {
 		this.speciesCode = speciesCode;
 	}
+	
+	// DICOM Quality Control Subject (0010, 0200)
+	private String qcSubject;
+	
+	public String getQcSubject() {
+		return qcSubject;
+	}
+
+	public void setQcSubject(String qcSubject) {
+		this.qcSubject = qcSubject;
+	}
 
 		/**
 	* the month, day and year on which the patient/participant was born.	**/
