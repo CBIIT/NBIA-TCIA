@@ -579,13 +579,8 @@ export class ApiServerService implements OnDestroy{
 
             }
 
-            ///////////////////////////////////////////
-            ///////////////////////////////////////////
-            ///////////////////////////////////////////
-            ///////////////////////////////////////////
 
             this.getCriteriaCounts();
-
             this.simpleSearchResultsEmitter.emit( this.currentSearchResults );
         }
 
@@ -673,6 +668,17 @@ export class ApiServerService implements OnDestroy{
                                 }
                               ];
             */
+
+
+            // We need to add matchedStudies to the data.
+            for( let row of res ){
+                let matchedSeriesCount = 0;
+                for( let sId of row['studyIdentifiers'] ){
+                    matchedSeriesCount += sId['seriesIdentifiers'].length;
+                }
+                row['matchedSeries'] = matchedSeriesCount;
+                row['matchedStudies'] = row['studyIdentifiers'].length;
+            }
 
             this.textSearchResultsEmitter.emit( res );
         }
@@ -1493,7 +1499,7 @@ export class ApiServerService implements OnDestroy{
         }
         let speciesObjPaged = { 'criteria': 'Species', 'values': [] };
        // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if( this.currentSearchResultsData['species'] !== 'null' ){
+        if( (this.currentSearchResultsData['species'] !== 'null') &&  (this.currentSearchResultsData['species'] !== null)){
             for( let species of this.currentSearchResultsData['species'] ){
                 speciesObjPaged.values.push(
                     {

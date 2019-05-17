@@ -61,7 +61,7 @@
                 "target": "https://pathology.cancerimagingarchive.net/pathdata"
             },
             {
-                "menuText": "Rest API",
+                "menuText": "REST API",
                 "target": "https://wiki.cancerimagingarchive.net/x/NIIiAQ"
             },
             {

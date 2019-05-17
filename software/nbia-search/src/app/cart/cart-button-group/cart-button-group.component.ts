@@ -2,6 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { UtilService } from '@app/common/services/util.service';
+import { takeUntil } from 'rxjs/operators';
+import { Consts } from '@app/consts';
+import { CartService } from '@app/common/services/cart.service';
+import { Subject } from 'rxjs';
 
 
 @Component( {
@@ -18,12 +22,41 @@ export class CartButtonGroupComponent implements OnInit{
      */
     showDownloaderDownload;
 
-    constructor( private commonService: CommonService, private persistenceService: PersistenceService,
+    cartCount = 0;
+    downloadDisabled = false;
+    downloadButtonToolTip = '';
+
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+
+    constructor( private commonService: CommonService, private cartService: CartService,
                  private utilService: UtilService ) {
     }
 
     ngOnInit() {
+
+        // Receive the Cart contents count, and the total size of all its files.
+        this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.cartCount = data['count'];
+                this.setDownloadButtonToolTip();
+            }
+        );
+
+        this.cartCount = this.cartService.getCartCount();
+        this.setDownloadButtonToolTip();
     }
+
+    setDownloadButtonToolTip(){
+        if( this.cartCount > Consts.CART_COUNT_MAX){
+            this.downloadDisabled = true;
+            this.downloadButtonToolTip = 'Cart has exceeded limit ' + Consts.CART_COUNT_MAX;
+        }
+        else{
+            this.downloadDisabled = false;
+            this.downloadButtonToolTip = '';
+        }
+    }
+
 
     onDownloadClick() {
         // Get the current state of persistenceService.Field.SHOW_DOWNLOADER_DOWNLOAD,

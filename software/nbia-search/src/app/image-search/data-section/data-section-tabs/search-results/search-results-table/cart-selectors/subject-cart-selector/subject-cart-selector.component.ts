@@ -53,6 +53,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         // Called when the "select these" to the right of the word 'Cart' in the table header is clicked.
         this.commonService.searchResultsCartCheckSubsetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
+
                 // Is the subject in the subset?
                 for( let f = 0; f < data['subjects'].length; f++ ){
 
@@ -119,10 +120,11 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
             if( this.selectedChildCount > 0 ){
 
                 // Are all child (series) Cart buttons selected? - Green
-                if( this.selectedChildCount === this.row.matchedSeries ){
+                if( this.selectedChildCount === this.matchedSeries){
                     this.childSelected = false;
                     this.selected = true;
                 }
+
                 // Are less than all child (series) Cart buttons selected? - Yellow
                 else{
                     this.childSelected = true;
@@ -134,11 +136,9 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
                 this.childSelected = false;
                 this.selected = false;
             }
-
-
         }
-
     }
+
 
     /**
      * Toggles the Cart button -  set selected if some but not all are selected

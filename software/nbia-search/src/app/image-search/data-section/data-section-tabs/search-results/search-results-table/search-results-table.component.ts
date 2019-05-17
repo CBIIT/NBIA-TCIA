@@ -223,7 +223,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     this.alertBoxService.alertBoxDisplay( this.alertId01,
                         AlertBoxType.ERROR,
                         'Exceeding max cart size ( ' + Consts.CART_COUNT_MAX + ' )',
-                        ['Current cart count: ' + this.cartCount],
+                        ['Current cart count: ' + this.cartCount + '\\nRemove ' + (this.cartCount - Consts.CART_COUNT_MAX ) + ' to enable download.'],
                         AlertBoxButtonType.OKAY,
                         350
                     );
@@ -488,13 +488,26 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
     updateThisPageRowCount() {
-        if( this.utilService.isNullOrUndefined( this.simpleSearchResults ) || (this.simpleSearchResults.length < 1) ){
+        let simpleSearchType = 0; // TODO this needs to be reworked with constants and a better way of doing "Consts.SEARCH_TYPES"
+        let textSearchType = 1; // TODO this needs to be reworked with constants and a better way of doing "Consts.SEARCH_TYPES"
+        if(
+            (this.currentSearchMode === Consts.SEARCH_TYPES[simpleSearchType]) &&
+            (this.utilService.isNullOrUndefined( this.simpleSearchResults ) || (this.simpleSearchResults.length < 1))
+        ){
             this.thisPageRowCount = -1; // -1 = no results, the HTML uses this to disable the top cart button.
             return;
         }
+
+        if(
+            (this.currentSearchMode === Consts.SEARCH_TYPES[textSearchType]) &&
+            (this.utilService.isNullOrUndefined( this.textSearchResults ) || (this.textSearchResults.length < 1))
+        ){
+            this.thisPageRowCount = -1; // -1 = no results, the HTML uses this to disable the top cart button.
+            return;
+        }
+
         // This is an off set, so plus 1 is the real count,  plus one is only used in the display HTML.
         if( !Properties.PAGED_SEARCH ){
-
             this.thisPageRowCount = this.lastRow > (this.searchResults.length - 1) ?
                 this.searchResults.length -
                 (parseInt( (<any>((this.searchResults.length - 1) / this.rowsPerPage)), 10 ) * this.rowsPerPage) - 1 :
@@ -834,7 +847,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             this.arrowMouseOver[i] = false;
             i++;
         }
-
     }
 
 
