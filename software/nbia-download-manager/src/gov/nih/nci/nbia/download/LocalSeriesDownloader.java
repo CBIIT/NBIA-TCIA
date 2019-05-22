@@ -334,8 +334,8 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		// Begin lrt additions
 		imageCnt = sopUidsList.size(); // needed for pause/resume, and for error
 										// recovery
-		int downloadedImgSize = 0;
-		int downloadedAnnoSize = 0;
+		long downloadedImgSize = 0;
+		long downloadedAnnoSize = 0;
 		
 		// End lrt additions
 		try {
@@ -350,7 +350,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				}
 				// Begin lrt additions
 				long fileSize = tarArchiveEntry.getSize();
-				int startDownloaded = downloaded;
+				long startDownloaded = downloaded;
 				// End lrt additions
 				String sop = tarArchiveEntry.getName();
 				int pos = sop.indexOf(".dcm");
@@ -373,7 +373,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 
 				imageCnt += 1;
 				// Begin lrt additions
-				int bytesDownloaded = downloaded - startDownloaded;
+				long bytesDownloaded = downloaded - startDownloaded;
 				if (bytesDownloaded != fileSize) {
 					additionalInfo.append(" file size mismatch for instance " + sop + "\n");
 					error();

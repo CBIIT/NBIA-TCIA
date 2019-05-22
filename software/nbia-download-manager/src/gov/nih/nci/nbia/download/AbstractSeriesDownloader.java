@@ -156,8 +156,8 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 	                  String numberOfImages,
 	                  String userId,
 	                  String password,
-	                  Integer imagesSize,
-	                  Integer annoSize,
+	                  Long imagesSize,
+	                  Long annoSize,
 	                  String seriesIdentifier, Integer noOfRetry,
 	                  String studyDate, String studyId, String studyDesc,
 	                  String seriesNum, String seriesDesc){
@@ -250,8 +250,8 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     protected String patientId;
     protected String studyInstanceUid;
     protected String seriesInstanceUid;
-    protected int size; // size of download in bytes
-    protected int downloaded; // number of bytes downloaded
+    protected long size; // size of download in bytes
+    protected long downloaded; // number of bytes downloaded
     protected int status; // current status of download
     protected boolean includeAnnotation;
     protected boolean hasAnnotation;
@@ -261,8 +261,8 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     protected String userId;
     protected String numberOfImages;
     protected String password;
-    protected int imagesSize;
-    protected int annoSize;
+    protected long imagesSize;
+    protected long annoSize;
     protected int noOfRetry;
     protected StringBuffer additionalInfo;
     protected boolean dirType;
@@ -286,12 +286,12 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     }
 
     protected class ProgressUpdater implements NBIAIOUtils.ProgressInterface {
-        public void bytesCopied(int n) {
+        public void bytesCopied(long n) {
              updateDownloadProgress(downloaded+n);
         }
     }
 
-    protected void updateDownloadProgress(int bytesReceived) {
+    protected void updateDownloadProgress(long bytesReceived) {
         downloaded = bytesReceived;
         stateChanged();
     }    

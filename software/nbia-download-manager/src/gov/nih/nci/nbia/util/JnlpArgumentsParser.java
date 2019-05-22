@@ -40,8 +40,8 @@ public class JnlpArgumentsParser {
                 }
                 //series.setHasAnnotation(Boolean.valueOf(result[4]));
                 series.setNumberImages(result[5]);
-                series.setImagesSize(Integer.valueOf(result[6]));
-                series.setAnnoSize(Integer.valueOf(result[7]));
+                series.setImagesSize(Long.valueOf(result[6]));
+                series.setAnnoSize(Long.valueOf(result[7]));
 
                 series.setUrl(result[8]);
                 series.setDisplayName(result[9]);

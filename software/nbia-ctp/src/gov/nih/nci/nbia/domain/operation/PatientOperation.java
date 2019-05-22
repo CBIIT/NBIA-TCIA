@@ -182,7 +182,7 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
     	String patientStatus = (String) numbers.get(DicomConstants.QUALTITY_CONTROL_SUBJECT);
 
 	    if (patientStatus != null) {
-	        patient.setQcSubject(patientStatus.trim());
+	        patient.setQcSubject(patientStatus.trim().toUpperCase());
 	    }
 	}
 	private static String buildQueryToFindExistingPatient(Map numbers, TrialDataProvenance tdp) throws Exception {

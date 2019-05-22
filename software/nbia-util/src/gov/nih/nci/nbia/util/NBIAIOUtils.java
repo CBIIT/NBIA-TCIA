@@ -17,10 +17,10 @@ import java.util.UUID;
 //from commons-io with a wrinkle for progress tracking
 public class NBIAIOUtils {
 	public static interface ProgressInterface {
-		public void bytesCopied(int bytes);
+		public void bytesCopied(long bytes);
 	}
 
-	public static int copy(InputStream input,
+	public static long copy(InputStream input,
 			               OutputStream output,
 			               ProgressInterface runnable) throws IOException {
 		long count = copyLarge(input, output, runnable);
@@ -28,7 +28,7 @@ public class NBIAIOUtils {
 			return -1;
 		}
 		else {
-			return (int) count;
+			return count;
 		}
 	}
 

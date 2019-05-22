@@ -13,6 +13,7 @@
 package gov.nih.nci.nbia;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -48,6 +49,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -56,6 +58,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -76,6 +80,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import gov.nih.nci.nbia.util.BrowserLauncher;
 import gov.nih.nci.nbia.util.DownloaderProperties;
 
 /**
@@ -83,7 +88,7 @@ import gov.nih.nci.nbia.util.DownloaderProperties;
  *
  */
 public class StandaloneDMDispatcher {
-	public static final String launchMsg = "NBIA Data Retriever requires a manifest file to run. Download a manifest file from TCIA/NBIA first. When you double-click a manifest file, NBIA Data Retriever will launch.";
+	public static final String launchMsg = "NBIA Data Retriever requires a manifest file to run. Create a manifest file in the data portal first and then click the manifest file to open it in the NBIA Data Retriever.<br/>To learn how to create a manifest file, watch this ";
 	private final static String newVersionMsg = "A newer version of this app is available.";
 	private final static String manifestVersionMsg = "The manifest file version is not suported by this version of app.  Please generate a new manifest file compatible with this version of app.";
 	private final static String manifestVersionNewMsg = "The version of manifest file is higher than this app version.  Please upgrade your app.";
@@ -97,6 +102,7 @@ public class StandaloneDMDispatcher {
 	private static final String installBtnLbl = "Update automatically";
 	private static final String downloadBtnLbl = "Update manually";
 	private static final String remindMeBtnLbl = "Remind me later";
+	private static final String youTubeLink = "https://youtu.be/NO48XtdHTic";
 	protected String serverUrl;
 	protected String manifestVersion = null;
 	protected static String os = null;
@@ -115,8 +121,37 @@ public class StandaloneDMDispatcher {
 			sdmp.loadManifestFile(fileName);
 			sdmp.launch();
 		} else {
-			JOptionPane.showMessageDialog(null, launchMsg);
-			//System.exit(0);
+//			JOptionPane.showMessageDialog(null, launchMsg);
+			
+		    // for copying style
+		    JLabel label = new JLabel();
+		    Font font = label.getFont();
+		    // create some css from the label's font
+		    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+		    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+		    style.append("font-size:" + font.getSize() + "pt;");
+			
+		    // html content
+		    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
+		            + launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
+		            + "</body></html>");
+
+		    // handle link events
+		    ep.addHyperlinkListener(new HyperlinkListener()
+		    {
+		        @Override
+		        public void hyperlinkUpdate(HyperlinkEvent e)
+		        {
+		            if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+		            	BrowserLauncher.openUrl(e.getURL().toString());
+		                //ProcessHandler.launchUrl(e.getURL().toString()); // roll your own link launcher or use Desktop if J6+
+		        }
+		    });
+		    ep.setEditable(false);
+		    ep.setBackground(label.getBackground());
+
+		    // show
+		    JOptionPane.showMessageDialog(null, ep);
 		}
 	}
 

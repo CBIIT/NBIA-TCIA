@@ -191,6 +191,17 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 				query.setCriteria(criteria);
 				queryKey+="ModalityAndedSearchCriteria"+inFormParams.get("value"+i).get(0);
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PhantomCriteria")){
+				if (query.getPhantomCriteria() == null){
+					PhantomCriteria criteria=new PhantomCriteria();
+					criteria.setQcSubjectOption(inFormParams.get("value"+i).get(0));
+					query.setCriteria(criteria);
+					queryKey+="PhantomCriteria"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getPhantomCriteria().setQcSubjectOption(inFormParams.get("value"+i).get(0));
+					queryKey+="PhantomCriteria"+inFormParams.get("value"+i).get(0);
+				}
+			}			
 			i++;
 		}
 		String sortField=inFormParams.get("sortField").get(0);

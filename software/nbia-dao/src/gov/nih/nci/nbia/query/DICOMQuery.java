@@ -73,6 +73,7 @@ import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
 import gov.nih.nci.ncia.criteria.PersistentCriteria;
+import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
@@ -125,6 +126,7 @@ public class DICOMQuery extends Query {
     private ModalityAndedSearchCriteria modalityAndedSearchCriteria;
     private DateRangeCriteria dateRangeCriteria;
     private SpeciesCriteria speciesCriteria;
+    private PhantomCriteria phantomCriteria;   
     private boolean queryFromUrl = false;
     private ImagingObservationCharacteristicCodeMeaningCriteria imagingObservationCharacteristicCodeMeaningCriteria;
     private ImagingObservationCharacteristicCodeValuePairCriteria imagingObservationCharacteristicCodeValuePairCriteria;
@@ -745,5 +747,18 @@ public class DICOMQuery extends Query {
 		}
 		this.dateRangeCriteria = dateRangeCriteria;
 	}
+
+	public PhantomCriteria getPhantomCriteria() {
+		return phantomCriteria;
+	}
+
+	public void setCriteria(PhantomCriteria phantomCriteria) {
+	 	if (phantomCriteria != null){
+    		criteriaList.add(phantomCriteria);
+    		this.phantomCriteria = phantomCriteria;
+    	}
+	}
+	
+	
 
 }

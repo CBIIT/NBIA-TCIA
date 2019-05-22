@@ -77,6 +77,7 @@ import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
@@ -377,7 +378,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         whereStmt += processAnatomicalSiteCriteria(query);
 
         whereStmt += processSeriesDescriptionCriteria(query);
-
+        
+        whereStmt += processPhantomCriteria(query);
         generateGeneralEquipmentJoinHql();
     }
 
@@ -471,6 +473,21 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
            System.out.println("speciesWhereStmt===="+speciesWhereStmt);
         }
         return speciesWhereStmt;
+    }
+    
+    private static String processPhantomCriteria(DICOMQuery theQuery) throws Exception {
+        PhantomCriteria pc = theQuery.getPhantomCriteria();
+
+        String phantomWhereStmt = "";
+        if (pc != null) {
+        	String phantomOption= pc.getQcSubjectOption();
+            if (phantomOption.equals(pc.PhantomOnly))
+            	phantomWhereStmt += AND + PHANTOM_ONLY;
+            else if (phantomOption.equals(pc.ExcludePhantom))
+            	phantomWhereStmt += AND + PHANTOM_EXCLUDED;
+           System.out.println("phantomWhereStmt===="+phantomWhereStmt);
+        }
+        return phantomWhereStmt;
     }
 
     private static String processPatientCriteria(DICOMQuery theQuery,

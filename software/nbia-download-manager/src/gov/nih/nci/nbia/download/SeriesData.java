@@ -16,8 +16,8 @@ public class SeriesData {
 	private String seriesInstanceUid;
 	private boolean hasAnnotation;
 	private String numberImages;
-	private Integer imagesSize;
-	private Integer annoSize;
+	private Long imagesSize;
+	private Long annoSize;
 	private String url;
 	private String displayName;
 	private boolean local;
@@ -69,16 +69,16 @@ public class SeriesData {
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
-	public Integer getImagesSize() {
+	public Long getImagesSize() {
 		return imagesSize;
 	}
-	public void setImagesSize(Integer imagesSize) {
+	public void setImagesSize(Long imagesSize) {
 		this.imagesSize = imagesSize;
 	}
-	public Integer getAnnoSize() {
+	public Long getAnnoSize() {
 		return annoSize;
 	}
-	public void setAnnoSize(Integer annoSize) {
+	public void setAnnoSize(Long annoSize) {
 		this.annoSize = annoSize;
 	}
 	public String getNumberImages() {
