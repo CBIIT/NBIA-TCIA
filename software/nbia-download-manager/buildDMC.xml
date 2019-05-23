@@ -28,7 +28,7 @@ ant -f buildDMC.xml
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
 	<property name="package.version" value="3.4" />
-	<property name="copyright" value="(c) 2018 NCI, Leidos, Ellumen" />
+	<property name="copyright" value="(c) 2019 NCI, Leidos, Ellumen" />
 	<property name="icon.file.name" value="nbia-data-retriever.png" />
 
 	<condition property="IS_MAC" value="true" else="false">
