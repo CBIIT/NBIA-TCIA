@@ -63,7 +63,9 @@ public class DICOMSubmission extends getData{
 			@FormParam("siteName") String siteName,
 			@FormParam("siteID") String siteID,
 			@FormParam("batch") String batch, 
-			@FormParam("uri") String file) {
+			@FormParam("uri") String file,
+			@FormParam("thirdPartyAnalysis") String thirdPartyAnalysis, 
+			@FormParam("descriptionURI") String descriptionURI) {
 
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
@@ -75,7 +77,7 @@ public class DICOMSubmission extends getData{
 					return Response.status(401)
 							.entity("Insufficiant Privileges").build();
 				} 
-                String status = FileSubmitter.submit(file, project, siteName, siteID, batch);
+                String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI);
                 if (status.equals("ok")) {
 				   return Response.ok("ok").type("application/text")
 						.build();

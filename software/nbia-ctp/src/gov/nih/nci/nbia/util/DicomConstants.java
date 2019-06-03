@@ -144,4 +144,6 @@ public class DicomConstants {
     public static final String SPECIES_DESCRIPTION = "131";
     public static final String SPECIES_CODE = "132";
     public static final String QUALTITY_CONTROL_SUBJECT = "133";
+    public static final String THIRD_PARTY_ANALYSIS = "134";
+    public static final String DESCRIPTION_URI = "135";
 }

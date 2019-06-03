@@ -44,7 +44,7 @@ public class NonCTPDatabaseDelegator {
 	private static String FAIL="fail";
     @Transactional (propagation=Propagation.REQUIRED)
     public String process(File storedFile, String url, String project, String siteName, 
-    		String siteID, String trialName, String batch)  {
+    		String siteID, String trialName, String batch, String thirdPartyAnalysis, String descriptionURI)  {
     	String status=null;
         if (storedFile == null)
         {
@@ -73,7 +73,7 @@ public class NonCTPDatabaseDelegator {
 
 
             status = imageStorage.storeDicomObject(numbers,filename,visibility, project, siteName, 
-    	    		siteID, trialName, batch);
+    	    		siteID, trialName, batch, thirdPartyAnalysis, descriptionURI);
 
         }
         catch (Exception e) {
