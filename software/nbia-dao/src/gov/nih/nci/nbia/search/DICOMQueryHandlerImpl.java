@@ -81,6 +81,7 @@ import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
+import gov.nih.nci.ncia.criteria.ThirdPartyAnalysisCriteria;
 import gov.nih.nci.ncia.criteria.UrlParamCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandler;
@@ -146,6 +147,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     /* Constants for fields */
     private static final String COLLECTION_FIELD = "dp.project ";
     private static final String SPECIES_FIELD = "p.speciesCode ";
+    private static final String THIRD_PARTY_FIELD = "series.thirdPartyAnalysis ";
     private static final String SITE_FIELD = "dp.dpSiteName ";
     private static final String IMAGE_MODALITY_FIELD = "series.modality ";
     private static final String SLICE_THICKNESS_FIELD = "gi.sliceThickness ";
@@ -380,6 +382,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         whereStmt += processSeriesDescriptionCriteria(query);
         
         whereStmt += processPhantomCriteria(query);
+        
+        whereStmt += processThirdPartyAnalysisCriteria(query, handlerFac);
+        
         generateGeneralEquipmentJoinHql();
     }
 
@@ -473,6 +478,20 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
            System.out.println("speciesWhereStmt===="+speciesWhereStmt);
         }
         return speciesWhereStmt;
+    }
+    
+    private static String processThirdPartyAnalysisCriteria(DICOMQuery theQuery,
+            CriteriaHandlerFactory theHandlerFac) throws Exception {
+    	ThirdPartyAnalysisCriteria tc = theQuery.getThirdPartyAnalysisCriteria();
+        CriteriaHandler handler = null;
+
+        String thirdWhereStmt = "";
+        if (tc != null) {
+           handler = theHandlerFac.createThirdPartyAnalyisCriteria();
+           thirdWhereStmt += (AND + handler.handle(THIRD_PARTY_FIELD, tc));
+           System.out.println("speciesWhereStmt===="+thirdWhereStmt);
+        }
+        return thirdWhereStmt;
     }
     
     private static String processPhantomCriteria(DICOMQuery theQuery) throws Exception {

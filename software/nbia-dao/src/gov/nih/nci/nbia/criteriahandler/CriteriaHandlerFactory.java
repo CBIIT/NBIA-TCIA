@@ -76,7 +76,9 @@ public class CriteriaHandlerFactory {
     public CriteriaHandler createSpeciesCriteria() {
         return new SpeciesCriteriaHandler();
     }
-    
+    public CriteriaHandler createThirdPartyAnalyisCriteria() {
+        return new ThirdPartyAnalysisCriteriaHandler();
+    }
 
     public CriteriaHandler createUrlParamCriteria() {
         return new UrlParamCriteriaHandler();
