@@ -76,7 +76,7 @@ public class StudyDAOImpl extends AbstractDAO
         whereStmt += ")";
 
         long start = System.currentTimeMillis();
-        logger.info("Issuing query: " + selectStmt + fromStmt + whereStmt);
+        logger.info("Issuing the query: " + selectStmt + fromStmt + whereStmt);
 
         List<Object[]> seriesResults = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
         long end = System.currentTimeMillis();
@@ -92,6 +92,7 @@ public class StudyDAOImpl extends AbstractDAO
         	Object[] row = iter.next();
 
             // Create the seriesDTO
+        	System.out.println("in series dto");
             SeriesDTO seriesDTO = new SeriesDTO();
             //modality should never be null... but currently possible
             seriesDTO.setModality(Util.nullSafeString(row[8]));
@@ -116,6 +117,8 @@ public class StudyDAOImpl extends AbstractDAO
             seriesDTO.setMaxFrameCount((String)row[16]);
             seriesDTO.setPatientPkId(row[17].toString());
             seriesDTO.setBodyPartExamined(Util.nullSafeString(row[19]));
+            seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[20]));
+            seriesDTO.setDescriptionURI(Util.nullSafeString(row[21]));
             // Try to get the study if it already exists
             StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
 
