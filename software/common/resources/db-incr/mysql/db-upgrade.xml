@@ -2000,9 +2000,9 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
 			ADD COLUMN qc_subject varchar(4);    
          </sql>
    </changeSet> 
-      <changeSet id="7.2.add.phantom.data" author="panq" dbms="mysql">
+      <changeSet id="7.2.add.thirdPartyAnalysis" author="gustafss" dbms="mysql">
          <comment>
-           adds phantom columns to patient
+           adds third party analysis columns to series
          </comment>          
          <sql>       
 			ALTER TABLE general_series  
