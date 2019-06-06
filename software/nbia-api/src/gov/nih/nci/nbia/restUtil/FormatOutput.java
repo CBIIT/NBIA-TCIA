@@ -270,16 +270,16 @@ public class FormatOutput {
 			 // table header
 			 for (int i = 0; i < columns.length; i++) {
 				 if (i > 0)
-				   sb.append("\", \"" + columns[i]);
+				   sb.append("\",\"" + columns[i]);
 				 else sb.append("\""+ columns[i]);
 				   }
-				 sb.append("\n");
+				 sb.append("\"\n");
 			for (Object[] objects : data) {
 				for (int i = 0; i < columns.length; i++) {
 					if (objects[i] != null){
 						
 						if (i > 0) {
-							sb.append("\", \"" +  objects[i].toString());
+							sb.append("\",\"" +  objects[i].toString());
 						}
 						else
 							{
@@ -289,7 +289,7 @@ public class FormatOutput {
 					}
 					else /* object is null */
 
-							sb.append("\", \"" );
+							sb.append("\",\"" );
 
 				}
 				sb.append("\"\n");
