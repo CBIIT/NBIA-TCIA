@@ -261,6 +261,45 @@ public class FormatOutput {
 		}
 		return sb.toString(); 
 	}
+	
+	public static String toCsvQuoted(String[] columns, List<Object[]> data) {
+		StringBuffer sb= new StringBuffer();
+		String temp = null;
+
+		try {
+			 // table header
+			 for (int i = 0; i < columns.length; i++) {
+				 if (i > 0)
+				   sb.append("\", \"" + columns[i]);
+				 else sb.append("\""+ columns[i]);
+				   }
+				 sb.append("\n");
+			for (Object[] objects : data) {
+				for (int i = 0; i < columns.length; i++) {
+					if (objects[i] != null){
+						
+						if (i > 0) {
+							sb.append("\", \"" +  objects[i].toString());
+						}
+						else
+							{
+							sb.append("\""+ objects[i].toString());
+							}
+
+					}
+					else /* object is null */
+
+							sb.append("\", \"" );
+
+				}
+				sb.append("\"\n");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sb.toString(); 
+	}
 
 	/**
 	 * This method will format data into HTML table format.

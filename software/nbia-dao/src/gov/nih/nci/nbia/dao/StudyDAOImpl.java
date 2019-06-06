@@ -16,6 +16,7 @@ import gov.nih.nci.nbia.util.Util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -257,6 +258,44 @@ public class StudyDAOImpl extends AbstractDAO
         }
         return returnList;
     }
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getSeriesMetadata(List<String> seriesIDs, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, s.studyDate, gs.seriesInstanceUID, " +
+				"gs.seriesDesc, gs.imageCount, gs.totalSize, gs.project, gs.modality, ge.manufacturer " +
+				"FROM Study s join s.generalSeriesCollection gs join gs.generalEquipment ge where gs.visibility in ('1') ";
+		StringBuffer where = new StringBuffer();
+		List<Object[]> rs = new ArrayList<Object[]>();
+		List<String> paramList = new ArrayList<String>();
+		int i = 0;
+        if (seriesIDs==null||seriesIDs.size()<1) {
+        	return rs;
+        }
+        String seriesString=seriesIDs.get(0);
+        String[] seriesStrings=seriesString.split(",");
+        List<String> seriesList=Arrays.asList(seriesStrings);
+        String queryString=constructSeriesIUdList(seriesList);
+        System.out.println("queryString-"+queryString);
+		if (seriesIDs != null) {
+			where = where.append(" and gs.seriesInstanceUID in("+queryString+")");
+			paramList.add(queryString);
+		}
+
+
+		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+		
+	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
+		
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			rs = getHibernateTemplate().find(hql + where.toString());
+
+
+        return rs;
+	}
+	
+	
+	
 	/**
 	 * Fetch a set of patient/study info filtered by query keys
 	 * This method is used for NBIA Rest API.
@@ -411,6 +450,7 @@ public class StudyDAOImpl extends AbstractDAO
    	String theWhereStmt = "";
    	for (Iterator<String> i = theSeriesPkIds.iterator(); i.hasNext();) {
            String seriesPkId = i.next();
+           System.out.println("seriesPkId-"+seriesPkId);
            theWhereStmt += ("'" + seriesPkId + "'");
 
            if (i.hasNext()) {

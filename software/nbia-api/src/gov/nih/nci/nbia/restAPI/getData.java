@@ -154,7 +154,11 @@ public class getData {
 			if (format.equalsIgnoreCase("CSV")) {
 				returnString = FormatOutput.toCsv(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
-			}		
+			}	
+			if (format.equalsIgnoreCase("CSVQUOTED")) {
+				returnString = FormatOutput.toCsvQuoted(columns, data);
+				return Response.ok(returnString).type("text/csv").build();
+			}
 		}
 		else {
 			return Response.status(500)
