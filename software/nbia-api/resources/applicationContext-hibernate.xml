@@ -205,6 +205,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
+    <bean id="qcStatusDAO" class="gov.nih.nci.nbia.dao.QcStatusDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean> 
   	<bean id="contextSource"
 		class="org.springframework.ldap.core.support.LdapContextSource">
 		<property name="url" value="${ldap.url}" />

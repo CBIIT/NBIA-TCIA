@@ -524,5 +524,28 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		
        return false;
 	}
+	
+	/**
+	 * Returns true if the user has the QA Tool role
+	 */
+	public boolean hasQaRoleForProjSite(String userName, String proj, String site) {
+		String userId = this.getUserId(userName);
+		Set<TableProtectionElement> securityRights;
+		try {
+			securityRights = getSecurityMap(userId);
+			for (TableProtectionElement tpe : securityRights) {
+	            if (tpe.hasRole(RoleType.MANAGE_VISIBILITY_STATUS)) {
+	            	if (tpe.getAttributeValue().equals(this.applicationName +"."+proj+"//"+site)) {
+	            		return true;
+	            	}
+	            }
+	        }
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+       return false;
+	}	
      
 }

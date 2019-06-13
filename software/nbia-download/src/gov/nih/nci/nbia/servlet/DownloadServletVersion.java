@@ -30,8 +30,8 @@ public class DownloadServletVersion extends HttpServlet {
 	private static String macUrl = NCIAConfig.getMacInstallerLink();
 	private static String centOsUrl = NCIAConfig.getCentOSInstallerLink();
 	private static String ubuntuUrl = NCIAConfig.getUbuntuInstallerLink();
-	private static String helpDeskLink = NCIAConfig.getDownloaderAppHelpDeskLink();
-	private static String wikiLink = NCIAConfig.getDownloaderAppOnlineHelpUrl();
+	private static String helpDeskLink = NCIAConfig.getDownloaderAppHelpDeskLink().trim();
+	private static String wikiLink = NCIAConfig.getDownloaderAppOnlineHelpUrl().trim();
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
