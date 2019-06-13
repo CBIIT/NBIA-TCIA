@@ -126,6 +126,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
         setModality(series, numbers);
         
         setAdditionalQcFlags(series, numbers);
+        setThirdPartyAnalysis(series, numbers);
         
         if ((temp = (String) numbers.get(DicomConstants.LATERALITY)) != null) {
             series.setLaterality(temp.trim());
@@ -212,15 +213,21 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	    int batchNum = 0;
 	    
     	if (batchStr != null) {
-    	System.out.println("======== In nbia-ctp, SeriesOperation:setAdditionalQcFlags - numbers got batchNum String: " + batchStr);
     		batchNum = Integer.parseInt(batchStr.trim());    	
     		series.setBatch(batchNum);
-    		System.out.println("======== In nbia-ctp, SeriesOperation:setAdditionalQcFlags - series.setBatch SUCCESS!... batchStr parsedInt as: " + batchNum);		
-    	}
-    	else{
-    		System.out.println("======== In nbia-ctp, SeriesOperation:setAdditionalQcFlags - series.setBatch FAILED!... numbers not able to get batchNum String: " + batchStr);	
-    	}
+     	}
               
 	}   
+	private static void setThirdPartyAnalysis(GeneralSeries series, Map numbers) throws Exception {
+	    
+		String thirdPartyAnalysis = (String) numbers.get(DicomConstants.THIRD_PARTY_ANALYSIS);
+		String descriptionURI = (String) numbers.get(DicomConstants.DESCRIPTION_URI);
+		
+		series.setThirdPartyAnalysis(thirdPartyAnalysis);
+		series.setDescriptionURI(descriptionURI);
+
+
+              
+	} 
 	
 }

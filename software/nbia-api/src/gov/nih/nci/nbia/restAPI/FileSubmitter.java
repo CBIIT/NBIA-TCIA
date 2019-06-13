@@ -8,11 +8,11 @@ import java.io.File;
 public class FileSubmitter {
 	
 public static String submit(String file, String project, String siteName, 
-		String siteID, String batch) {
+		String siteID, String batch, String thirdPartyAnalysis, String descriptionURI) {
 	File dfile=new File(file);
 	NonCTPDatabaseDelegator delegator = (NonCTPDatabaseDelegator)SpringApplicationContext.getBean("nciaDelegator");
 	delegator.setCorrectFileSize(dfile);
-	return delegator.process(dfile, null, project, siteName, siteID, null, batch);
+	return delegator.process(dfile, null, project, siteName, siteID, null, batch, thirdPartyAnalysis, descriptionURI);
 	 
 }
 }

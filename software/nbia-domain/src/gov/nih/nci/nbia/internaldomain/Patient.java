@@ -88,7 +88,10 @@ public class Patient  implements Serializable
 	private String qcSubject;
 	
 	public String getQcSubject() {
-		return qcSubject.toUpperCase();
+		if (qcSubject!=null) {
+		    return qcSubject.toUpperCase();
+		}
+		return null;
 	}
 
 	public void setQcSubject(String qcSubject) {

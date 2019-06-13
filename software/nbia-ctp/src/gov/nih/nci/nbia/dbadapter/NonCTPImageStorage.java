@@ -82,21 +82,23 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 	public String storeDicomObject(Map numbers,
             String fileName,
             boolean visibility, String project, String siteName, 
-    		String siteID, String trialName, String batch) {
+    		String siteID, String trialName, String batch, String thirdPartyAnalysis, String descriptionURI) {
 		return storeDicomObject(numbers, fileName, getFileSize(), visibility, project, siteName, 
-	    		siteID, trialName, batch);
+	    		siteID, trialName, batch, thirdPartyAnalysis, descriptionURI);
 	}
 	public String storeDicomObject(Map numbers,
 			                       String fileName,
 			                       long fileSize,
 			                       boolean visibility, String project, String siteName, 
-			               		String siteID, String trialName, String batch) {
+			               		String siteID, String trialName, String batch, String thirdPartyAnalysis, String descriptionURI) {
 
 		numbers.put(DicomConstants.BATCH_NUMBER, batch);
 		numbers.put(DicomConstants.PROJECT_NAME, project);
 		numbers.put(DicomConstants.TRIAL_NAME, trialName);
 		numbers.put(DicomConstants.SITE_NAME, siteName);
 		numbers.put(DicomConstants.SITE_ID, siteID);
+		numbers.put(DicomConstants.THIRD_PARTY_ANALYSIS, thirdPartyAnalysis);
+		numbers.put(DicomConstants.DESCRIPTION_URI, descriptionURI);
 		
 		TrialDataProvenance tdp=null;
         errors.clear();

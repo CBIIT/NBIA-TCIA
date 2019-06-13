@@ -48,6 +48,8 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String studyDesc;
     private String bodyPartExamined;
     private String study_id; //study_id
+    private String thirdPartyAnalysis;
+    private String descriptionURI;
     
     public Date getStudyDate() {
 		return studyDate;
@@ -294,6 +296,24 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
 	public void setPatientPkId(String patientPkId) {
 		this.patientPkId = patientPkId;
 	}
+
+	public String getThirdPartyAnalysis() {
+		return thirdPartyAnalysis;
+	}
+
+	public void setThirdPartyAnalysis(String thirdPartyAnalysis) {
+		this.thirdPartyAnalysis = thirdPartyAnalysis;
+	}
+
+	public String getDescriptionURI() {
+		return descriptionURI;
+	}
+
+	public void setDescriptionURI(String descriptionURI) {
+		this.descriptionURI = descriptionURI;
+	}
+	
+	
 	
 }
 

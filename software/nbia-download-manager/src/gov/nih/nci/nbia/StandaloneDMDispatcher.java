@@ -102,7 +102,7 @@ public class StandaloneDMDispatcher {
 	private static final String installBtnLbl = "Update automatically";
 	private static final String downloadBtnLbl = "Update manually";
 	private static final String remindMeBtnLbl = "Remind me later";
-	private static final String youTubeLink = "https://youtu.be/NO48XtdHTic";
+	public static final String youTubeLink = "https://youtu.be/NO48XtdHTic";
 	protected String serverUrl;
 	protected String manifestVersion = null;
 	protected static String os = null;
@@ -120,9 +120,7 @@ public class StandaloneDMDispatcher {
 			StandaloneDMDispatcher sdmp = new StandaloneDMDispatcher();
 			sdmp.loadManifestFile(fileName);
 			sdmp.launch();
-		} else {
-//			JOptionPane.showMessageDialog(null, launchMsg);
-			
+		} else {			
 		    // for copying style
 		    JLabel label = new JLabel();
 		    Font font = label.getFont();
@@ -144,7 +142,6 @@ public class StandaloneDMDispatcher {
 		        {
 		            if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
 		            	BrowserLauncher.openUrl(e.getURL().toString());
-		                //ProcessHandler.launchUrl(e.getURL().toString()); // roll your own link launcher or use Desktop if J6+
 		        }
 		    });
 		    ep.setEditable(false);

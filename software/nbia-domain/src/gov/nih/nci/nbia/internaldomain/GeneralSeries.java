@@ -808,4 +808,26 @@ public class GeneralSeries  implements Serializable
 	public void setProjAndSite(String projAndSite) {
 		this.projAndSite = projAndSite;
 	}
+	
+	private String thirdPartyAnalysis;
+	
+	
+	public String getThirdPartyAnalysis() {
+		return thirdPartyAnalysis;
+	}
+
+	public void setThirdPartyAnalysis(String thirdPartyAnalysis) {
+		this.thirdPartyAnalysis = thirdPartyAnalysis;
+	}
+
+	private String descriptionURI;
+	public String getDescriptionURI() {
+		return descriptionURI;
+	}
+
+	public void setDescriptionURI(String descriptionURI) {
+		this.descriptionURI = descriptionURI;
+	}
+	
+	
 }
