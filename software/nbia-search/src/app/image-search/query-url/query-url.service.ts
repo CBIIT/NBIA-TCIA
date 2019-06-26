@@ -14,6 +14,8 @@ export class QueryUrlService{
     DATE_RANGE = 5;
     SUBJECT_ID = 6;
     SPECIES = 8;
+    PHANTOMS = 9;
+    THIRD_PARTY = 10;
     API_URL = 0;
 
     queryUrlString = '';
@@ -84,6 +86,20 @@ export class QueryUrlService{
                         queryForLoggingObject[Consts.SPECIES].push(this.queryData[f]);
                         break;
 
+                    case this.PHANTOMS:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Consts.PHANTOMS_CRITERIA])){
+                            queryForLoggingObject[Consts.PHANTOMS_CRITERIA] = [];
+                        }
+                        queryForLoggingObject[Consts.PHANTOMS_CRITERIA].push(this.queryData[f]);
+                        break;
+
+                    case this.THIRD_PARTY:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Consts.THIRD_PARTY_CRITERIA])){
+                            queryForLoggingObject[Consts.THIRD_PARTY_CRITERIA] = [];
+                        }
+                        queryForLoggingObject[Consts.THIRD_PARTY_CRITERIA].push(this.queryData[f]);
+                        break;
+
                     case this.MIN_STUDIES:
                         if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_MINIMUM_STUDIES])){
                             queryForLoggingObject[Properties.URL_KEY_MINIMUM_STUDIES] = [];
@@ -116,7 +132,6 @@ export class QueryUrlService{
 
     getQueryUrl() {
         this.queryUrlString = '';
-
         for( let f = 0; f < this.queryData.length; f++ ){
             if( !this.utilService.isNullOrUndefined( this.queryData[f] ) ){
                 switch( f ){
@@ -147,6 +162,14 @@ export class QueryUrlService{
                         this.queryUrlString += '&' + Properties.URL_KEY_SPECIES + '=' + this.queryData[f];
                         break;
 
+                    case this.PHANTOMS:
+                        this.queryUrlString += '&' + Properties.URL_KEY_PHANTOMS + '=' + this.queryData[f];
+                        break;
+
+                    case this.THIRD_PARTY:
+                        this.queryUrlString += '&' + Properties.URL_KEY_THIRD_PARTY + '=' + this.queryData[f];
+                        break;
+
                     case this.MIN_STUDIES:
                         this.queryUrlString += '&' + Properties.URL_KEY_MINIMUM_STUDIES + '=' + this.queryData[f];
                         break;
@@ -161,6 +184,7 @@ export class QueryUrlService{
                 }
             }
         }
+
         this.queryUrlString = location.href.toString().replace( /\?.*/, '') + '?' +  this.queryUrlString.substr( 1 );
         return this.queryUrlString;
     }

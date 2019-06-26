@@ -36,6 +36,8 @@ export const Consts = {
         // The actual value to use when building the Rest call
         SPECIES_CRITERIA: 'SpeciesCriteria',
 
+
+
         // The query type used in the client code to identify the type.
         SPECIES: 'Species',
 
@@ -54,6 +56,8 @@ export const Consts = {
         MANUFACTURER_SOFTWARE_VERSION_CRITERIA: 'SoftwareVersionCriteria',
         MANUFACTURER_SOFTWARE_VERSION: 'Software Ver.',
         DATE_RANGE_CRITERIA: 'DateRangeCriteria',
+        PHANTOMS_CRITERIA: 'PhantomCriteria',
+        THIRD_PARTY_CRITERIA: 'ThirdPartyAnalysis',
 
         ALERT_BOX_WIDTH_DEFAULT: 400,
 
@@ -126,6 +130,8 @@ export const Consts = {
         SERIES_FOR_SHARED_LIST_SUBJECT: 'seriesForSharedListSubject',
         DICOM_TAGS: 'getDicomTags',
 
+        SHOW_CRITERIA_QUERY_THIRD_PARTY: 'showQueryThirdParty',
+        SHOW_CRITERIA_QUERY_PHANTOMS: 'showQueryPhantoms',
         SHOW_CRITERIA_QUERY_SPECIES: 'showQuerySpecies',
         SHOW_CRITERIA_QUERY_COLLECTIONS: 'showQueryCollections',
         SHOW_CRITERIA_QUERY_ANATOMICAL_SITE: 'showQueryAnatomicalSite',
@@ -135,6 +141,8 @@ export const Consts = {
         SHOW_CRITERIA_QUERY_SUBJECT_ID: 'showQuerySubjectIds',
         SHOW_CRITERIA_MINIMUM_MATCHED_STUDIES: 'showQueryMinimumMatchedStudies',
 
+        SHOW_CRITERIA_QUERY_THIRD_PARTY_DEFAULT: false,
+        SHOW_CRITERIA_QUERY_PHANTOMS_DEFAULT: false,
         SHOW_CRITERIA_QUERY_SPECIES_DEFAULT: true,
         SHOW_CRITERIA_QUERY_COLLECTIONS_DEFAULT: true,
         SHOW_CRITERIA_QUERY_ANATOMICAL_SITE_DEFAULT: true,

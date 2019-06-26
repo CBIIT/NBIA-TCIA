@@ -26,6 +26,7 @@ export class SeriesCartSelectorComponent implements OnInit, OnDestroy{
     @Input() studyId;
     @Input() seriesPkId = '';
     @Input() exactSize;
+    @Input() collection = '';
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 

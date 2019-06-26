@@ -98,6 +98,10 @@ import { CustomMenuComponent } from './custom-menu/custom-menu.component';
 import { CookieOptionsArgs } from 'angular2-cookie/core';
 import { TextSearchExplanationComponent } from './image-search/query-section/query-section-tabs/text-search/text-search-explanation/text-search-explanation.component';
 import { SpeciesQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/species-query/species-query.component';
+import { PhantomQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query.component';
+import { ThirdPartyQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/third-party-query/third-party-query.component';
+import { ThirdPartyExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/third-party-query/third-party-explanation/third-party-explanation.component';
+import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 
 
 const appRoutes: Routes = [
@@ -182,7 +186,10 @@ const appRoutes: Routes = [
         ApplicationMenuComponent,
         CustomMenuComponent,
         TextSearchExplanationComponent,
-        SpeciesQueryComponent
+        SpeciesQueryComponent,
+        PhantomQueryComponent,
+        ThirdPartyQueryComponent,
+        ThirdPartyExplanationComponent
     ],
     imports: [
         BrowserModule,
@@ -201,7 +208,7 @@ const appRoutes: Routes = [
         CookieService,  SearchResultsSortService, CartSortService, PersistenceService,
         LoadingDisplayService, ParameterService, InitMonitorService, QueryUrlService,
         AlertBoxService, HistoryLogService, CollectionDescriptionsService, UtilService,
-        WindowRefService
+        WindowRefService, OhifViewerService
     ],
     bootstrap: [AppComponent]
 } )

@@ -204,7 +204,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     }
                     this.imageModalityAnyOrAllTrailer = this.apiServerService.getImageModalityAllOrAny();
                 }
-                // this.showAllQueryData();
+                  // this.showAllQueryData();
 
             } );
 
@@ -223,7 +223,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     this.alertBoxService.alertBoxDisplay( this.alertId01,
                         AlertBoxType.ERROR,
                         'Exceeding max cart size ( ' + Consts.CART_COUNT_MAX + ' )',
-                        ['Current cart count: ' + this.cartCount + '\\nRemove ' + (this.cartCount - Consts.CART_COUNT_MAX ) + ' to enable download.'],
+                        ['Current cart count: ' + this.cartCount, 'Remove ' + (this.cartCount - Consts.CART_COUNT_MAX ) + ' to enable download.'],
                         AlertBoxButtonType.OKAY,
                         350
                     );
@@ -852,7 +852,10 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
     // Just for testing
     showAllQueryData() {
-        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria'];
+        console.log( '-------------------------------------------------------------------');
+        console.log( '-------------------------------------------------------------------');
+        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria',
+            'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'PhantomCriteria', 'ThirdPartyAnalysis'];
         for( let name of criteriaStr ){
             if( (!this.utilService.isNullOrUndefined( this.allData[name] )) && (this.allData[name].length > 0) ){
                 console.log( 'allQueryData[' + name + ']: ', this.allData[name] );

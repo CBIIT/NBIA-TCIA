@@ -79,7 +79,7 @@
         </td>
 
 
-        <!-- -----  The OHIF viewer button doesn't do anything yet  ----- -->
+        <!-- -----  The Thumbnail viewer button  ----- -->
         <td *ngIf="even" class="series-table-td">
             <label
                 *ngIf="! properties.NO_THUMBNAIL"
@@ -89,17 +89,22 @@
             >
                 <span class="glyphicon glyphicon-search" title="Thumbnail Viewer" ></span>
             </label>
-            <label *ngIf="properties.SHOW_OHIF_VIEWER" style="margin-left: 3px"
+
+            <!-- -----  The OHIF viewer button  ----- -->
+            <label *ngIf="properties.SHOW_OHIF_SERIES_VIEWER" style="margin-left: 3px"
                 class="btn btn-default series-data-button"
                 title="OHIF Vewer"
-                (click)="onSeriesOhifViewerClick()">
+                (click)="onSeriesOhifViewerClick(i)">
                 <span class="glyphicon glyphicon-facetime-video"></span>
             </label>
         </td>
 
         <!-- -----  Show DICOM button  ----- -->
         <td *ngIf="even" class="series-table-td  cine-mode-td series-table-dicom-button-column">
-            <label class="btn btn-default series-data-button" (click)="onDicomClick(i + 1)">
+            <label class="btn btn-default series-data-button"
+               (click)="onDicomClick(i + 1)"
+               title="DICOM Field data"
+            >
                 <span class="glyphicon glyphicon-th-list"></span>
             </label>
         </td>

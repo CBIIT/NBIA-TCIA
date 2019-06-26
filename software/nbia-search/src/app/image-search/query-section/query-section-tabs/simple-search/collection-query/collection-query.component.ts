@@ -177,7 +177,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
         // ------------------------------------------------------------------------------------------
-        this.apiServerService.getCollectionValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.getCollectionValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.completeCriteriaList = data;
 
@@ -193,12 +193,11 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 }
 
             }
-
         );
 
 
         // React to errors when getting the full complete criteria list.
-        this.apiServerService.getCollectionValuesAndCountsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.getCollectionValuesAndCountsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( err ) => {
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless and shouldn't interrupt the UI flow
@@ -211,7 +210,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.loadingDisplayService.setLoading( true, 'Loading query data' );
         this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
         let tempCount = 0;
-        while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) &&  (tempCount < 500)  ){
+        while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) && (tempCount < 500) ){
             await this.commonService.sleep( Consts.waitTime );
         }
         this.loadingDisplayService.setLoading( false, 'Done updateCriteriaList' );
@@ -223,7 +222,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // If data equals -1 there is no search, so no results.
         // If data equals 0 there is a search, but no search results.
         // If there is a search, but no search results, all counts are zeroed
-        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( this.commonService.getResultsDisplayMode() === Consts.SIMPLE_SEARCH ){
                     // data  0 = No results from a search,  -1 = No search
@@ -245,7 +244,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // When counts of occurrences in the search results changes
-        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.onCriteriaCountsChange( data );
 
@@ -257,7 +256,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
         // Reload the list of search criteria because a user has logged in,
         // they may have different access to available search criteria.
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async() => {
                 // This is used when a query included in the URL is to be rerun when a user logs in,
                 // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
@@ -288,7 +287,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
             }
@@ -296,9 +295,9 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when a query included in the URL contained one or more Collections.
-        this.parameterService.parameterCollectionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.parameterService.parameterCollectionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-               // Remove any trailing (wrong) comma
+                // Remove any trailing (wrong) comma
                 data = (<any>data).replace( /,$/, '' );
 
                 // Data can be multiple values, comma separated
@@ -770,14 +769,14 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.hideToolTip( 0 );
     }
 
-    hideToolTip( delay =  this.toolTipHideDelay) {
-            setTimeout( () => {
-                if( !this.toolTipStayOn ){
-                    this.showToolTip = false;
-                    this.showToolTipTrailer = false;
-                }
-            },  delay );
-        }
+    hideToolTip( delay = this.toolTipHideDelay ) {
+        setTimeout( () => {
+            if( !this.toolTipStayOn ){
+                this.showToolTip = false;
+                this.showToolTipTrailer = false;
+            }
+        }, delay );
+    }
 
     onSetSort( sortCriteria ) {
         // (Re)sort the list because a checked criteria is higher than unchecked.

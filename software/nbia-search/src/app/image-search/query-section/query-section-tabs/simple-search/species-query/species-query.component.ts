@@ -149,7 +149,6 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
 
             }
         );
-
         this.apiServerService.dataGet( 'getSpeciesTax', '' );
         while( (this.utilService.isNullOrUndefined( this.speciesTaxList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
@@ -258,6 +257,7 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
                 // The complete reset we need.
                 this.resetFlag = true;
                 this.completeCriteriaList = null;
+
 
                 // Get the list of all Species in the database and the number of records which contain each Species Site.
                 this.apiServerService.dataGet( 'getSpeciesValuesAndCounts', '' );
@@ -620,50 +620,6 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
         }
     }
 
-    /**
-     * Toggles showing the search input box
-     *
-     * This is no longer used in Species, but they may want it back some day.
-     *
-     * @note Clears the search text input when showSearch is switched to true
-     */
-
-    /*
-        onSearchGlassClick() {
-            this.showSearch = (!this.showSearch);
-            if( !this.showSearch ){
-                this.criteriaList = this.criteriaListHold;
-                this.onClearSpeciesSearchInputClick();
-            }
-        }
-    */
-
-
-    onSearchTextOutFocus( n ) {
-        // Text
-        if( n === 0 ){
-            this.searchTextHasFocus = false;
-        }
-        // X (Clear search text)
-        if( n === 1 ){
-            this.searchXHasFocus = false;
-        }
-
-        this.searchHasFocus = this.searchXHasFocus || this.searchTextHasFocus;
-    }
-
-    onSearchTextFocus( n ) {
-        // Text
-        if( n === 0 ){
-            this.searchTextHasFocus = true;
-        }
-        // X (Clear search text)
-        if( n === 1 ){
-            this.searchXHasFocus = true;
-        }
-        this.searchHasFocus = true;
-    }
-
 
     updateCheckboxCount() {
         let len = this.cBox.length;
@@ -715,6 +671,7 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
             // SearchResultsTableComponent will (re)run the query &
             // send updated query to the Query display at the top of the Search results section.
             this.commonService.updateQuery( criteriaForQuery );
+
         }
 
 

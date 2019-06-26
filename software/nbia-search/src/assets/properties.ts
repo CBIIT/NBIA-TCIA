@@ -1,6 +1,6 @@
 export let Properties = {
-    // 29_APR_2019
-    VERSION: '1.0.47',
+    // 21_JUN_2019
+    VERSION: '1.0.49',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"
@@ -34,9 +34,13 @@ export let Properties = {
     */
 
     // If this is left an empty string, the url used by the browser to reach the site will be used
-     API_SERVER_URL: '',
+     // API_SERVER_URL: '',
+    API_SERVER_URL: '',
 
-    // This can be removed when I get rid of all the old code used to get all the search results rather than just a page at a time.
+    // If this is left an empty string, the API server url will be used .
+    OHIF_SERVER_URL: '',
+
+    // This can be removed when I get rid of all the old code used to get all the search results at once rather than just a page at a time.
     PAGED_SEARCH: true,
 
     /*
@@ -53,8 +57,12 @@ export let Properties = {
     SHORT_LOG: true,
 
     SHOW_OHIF_VIEWER: false,
+    SHOW_OHIF_SERIES_VIEWER: false,
 
+    // @TODO Get rid of these after everything is working. There will no longer be a need to show/hide.
     SHOW_SPECIES: true,
+    SHOW_PHANTOM: true,
+    SHOW_THIRD_PARTY: true,
 
     SHOW_QUERY_BUILDER: false,
     SHOW_SEARCH_SHARED_LIST_TAB: false,
@@ -100,6 +108,8 @@ export let Properties = {
     URL_KEY_MODALITY: 'ImageModalityCriteria',
     URL_KEY_MODALITY_ALL: 'ModalityAll',
     URL_KEY_SPECIES: 'SpeciesCriteria',
+    URL_KEY_PHANTOMS: 'PhantomCriteria',
+    URL_KEY_THIRD_PARTY: 'ThirdPartyCriteria',
     URL_KEY_ANATOMICAL_SITE: 'AnatomicalSiteCriteria',
     URL_KEY_MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
     URL_KEY_DATE_RANGE: 'DateRange',

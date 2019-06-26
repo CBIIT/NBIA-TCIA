@@ -106,8 +106,7 @@ export class CartComponent implements OnInit, OnDestroy{
         this.menuService.currentMenuItemEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( data === MenuItems.CART_MENU_ITEM ){
-
-                    this.cartList = [];
+                    //  @CHECKME this.cartList = [];
 
                     // If this was run due to a Shared list in the URL, we need to get the list of services from the API service.
                     if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
@@ -153,6 +152,7 @@ export class CartComponent implements OnInit, OnDestroy{
         //   studyDescription
         this.apiServerService.seriesForCartResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+
                 for( let item of <any>data ){
                     for( let series of item.seriesList ){
                         series['studyDate'] = item.date;
@@ -416,6 +416,7 @@ export class CartComponent implements OnInit, OnDestroy{
      * @param i The index number for this Cart item.
      */
     onCartCheckClick( i ) {
+
         this.cartList[i].disabled = !this.cartList[i].disabled;
         this.cart[i].disabled = this.cartList[i].disabled;
 
