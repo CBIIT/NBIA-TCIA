@@ -1,0 +1,80 @@
+<!-- ----------  This is the left side ThirdParty Radio buttons  ---------- -->
+<div class="query-panel third-party-query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+        <!-- Hide the ThirdParty Radio buttons.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(false)"
+        >
+            <img src="assets/images/down_V01.png">
+            3<small>rd</small> Party Analyses
+            <span
+                    *ngIf="thirdPartyApply"
+                    class="thirdParty-status"
+            > ({{thirdPartyRadioLabels[thirdPartyApplySelection]}})</span>
+        </span>
+
+        <span class="clicker glyphicon glyphicon-question-sign close-third-party-explanation-x" (click)="onThirdPartyExplanationClick()"></span>
+
+        <!-- Show the ThirdParty Radio buttons -->
+        <span
+                *ngIf="!showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(true)"
+        >
+            <img src="assets/images/right_V01.png">
+            3rd Party Analyses
+            <span
+                    *ngIf="thirdPartyApply"
+                    class="thirdParty-status"
+            > ({{thirdPartyRadioLabels[thirdPartyApplySelection]}})</span>
+         </span>
+    </div>
+
+    <div
+            [ngClass]="{
+            'hide-div': !showCriteriaList
+        }"
+    >
+
+        <!-- Any or All radio buttons  -->
+        <div *ngFor="let thirdPartyRadioLabel of thirdPartyRadioLabels; let i = index">
+            <input type="radio" name="radioGroupThirdParty"
+                   class="thirdParty-radio"
+                   [value]="thirdPartyRadioLabel"
+                   [checked]="i === thirdPartyApplySelection"
+                   (change)="onThirdPartyRadioChange(i)">
+
+            <span
+                    class="thirdParty-radio-label"
+                    (click)="onThirdPartyRadioChange(i)"
+            >
+            {{thirdPartyRadioLabel}}
+            </span>
+<!--
+
+            <span *ngIf="i===0"
+                  class="thirdParty-apply-checkbox"
+                  (click)="onApplyThirdPartyChecked(!thirdPartyApply)"
+            >
+            &lt;!&ndash;
+                <span class="glyphicon glyphicon-remove    thirdParty-apply-glyph" ></span>Apply ThirdPartys filter
+                <span class="glyphicon glyphicon-ok    thirdParty-apply-glyph" ></span>Apply ThirdPartys filter
+            &ndash;&gt;
+                <input
+                        type="checkbox"
+                        [(ngModel)]="thirdPartyApply"
+                /> Apply Third Party filter
+
+            </span>
+-->
+        </div>
+
+    </div>
+</div>
+<nbia-third-party-explanation
+        *ngIf="showThirdPartyExplanation"
+></nbia-third-party-explanation>
