@@ -27,7 +27,7 @@ ant -f buildDMC.xml
 	<property name="application.title" value="NBIA Data Retriever" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
-	<property name="package.version" value="3.4" />
+	<property name="package.version" value="3.48" />
 	<property name="copyright" value="(c) 2019 NCI, Leidos, Ellumen" />
 	<property name="icon.file.name" value="nbia-data-retriever.png" />
 
@@ -196,6 +196,7 @@ ant -f buildDMC.xml
 		<jar jarfile="${dist.dir}/${projectName}.jar" basedir="${build.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="${main-class}" />
+				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 			<zipfileset src="${dist.lib.dir}/dependencies-all.jar"
                                 excludes="META-INF/*.SF" />
@@ -218,6 +219,12 @@ ant -f buildDMC.xml
 	<target xmlns:fx="javafx:com.sun.javafx.tools.ant" name="package" depends="clean, cleanPackage, jar">
 		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${java.home}/../lib/ant-javafx.jar;packageSrc;" />
 		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="${native.bundles}" outdir="${package.dir}" outfile="${application.title}" verbose="true">
+			<fx:platform>
+              <fx:jvmuserarg name="-Djava.net.preferIPv4Stack" value="true" />
+              <fx:jvmuserarg name="-Djava.net.preferIPv6Addresses" value="false" />
+			  <fx:jvmuserarg name="-Djavafx.autoproxy.disable" value="true" />
+			  <fx:jvmuserarg name="-Djavafx.verbose" value="true" />	
+            </fx:platform>
 
 			<fx:application id="standaloneDMApp" name="${application.title}" mainClass="${javafx.main.class}" version="${package.version}">
 				<!--fx:argument>sample.tcia</fx:argument-->
