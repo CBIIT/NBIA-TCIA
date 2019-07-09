@@ -96,7 +96,8 @@ public interface DICOMQueryHandler {
     public static final String CONVOLUTION_KERNEL = " and ci.convolutionKernel in ";
     public static final String SERIES_ID_IN = " series.id in (";
     public static final String PHANTOM_ONLY = "p.qcSubject = 'YES' ";
-    public static final String PHANTOM_EXCLUDED= "p.qcSubject != 'YES' ";    
+    public static final String PHANTOM_EXCLUDED= "(p.qcSubject != 'YES' or p.qcSubject is null) "
+    		+ "";    
 
     /**
      * This will process a provided query in to an HQL statement and pass it to
