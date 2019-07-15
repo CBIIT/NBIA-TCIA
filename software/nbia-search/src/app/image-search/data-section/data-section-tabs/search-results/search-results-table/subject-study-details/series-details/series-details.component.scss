@@ -1,5 +1,8 @@
 @import '../../../../../../../app.component.scss';
 
+th{
+  cursor: default;
+}
 .series-header-tr {
   background-color: #dedddd;
   border: solid 1px #dedddd;
@@ -16,24 +19,17 @@
 
 .series-table-dicom-button-column {
   width: 50px;
+  text-align:center;
 }
 
 .thumbnail-th {
-  width: 96px;
+  width: 74px;
   padding-left: 0;
   padding-right: 0;
   margin-left: 0;
   margin-right: 0;
 }
 
-
-.image-viewer-th {
-  width: 38px;
-  padding-left: 8px;
-  padding-right: 0;
-  margin-left: 0;
-  margin-right: 0;
-}
 
 
 /* A little space for the Subject details table.
@@ -52,9 +48,30 @@ th {
   padding: 2px 7px 1px 7px;
   margin: 0 4px 0 0;
 }
-/*
 
-.cine-mode-td {
-  width: 100px;
+.series-third-party{
+  width: 96px;
+  text-align:center;
 }
-*/
+
+.series--image-count{
+  width: 60px;
+}
+
+.series-viewers{
+  padding-left: 4px;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+
+}
+
+.series-viewer{
+  margin: 0px;
+}
+
+.asterisk {
+  font-size: 8pt;
+  color: #700;
+  cursor: default;
+}

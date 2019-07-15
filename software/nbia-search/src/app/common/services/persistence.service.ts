@@ -62,7 +62,14 @@ export class PersistenceService{
      * @param value  The contents of the added item.
      */
     put( key, value ) {
+
         this.data[key] = value;
+/*
+        if( key === 'searchResultsColumns'){
+            console.log('MHL PersistenceService put: ' , key + ':' , value);
+            console.log('MHL PersistenceService data: ' , this.data);
+        }
+*/
         this.update();
     }
 
@@ -91,14 +98,123 @@ export class PersistenceService{
      *
      * @returns {Promise<void>}
      */
-    async update() {
+     update() {
         let expiresTimestamp: Date = new Date();
-        expiresTimestamp.setFullYear( 2025 );
+        expiresTimestamp.setFullYear( 2035 );
+
+        let testData = '{\n' +
+            '   "guest":true,\n' +
+            '   "lastAccess":{\n' +
+            '      "date":{\n' +
+            '         "day":12,\n' +
+            '         "month":7,\n' +
+            '         "year":2019\n' +
+            '      }\n' +
+            '   },\n' +
+            '   "showIntro":false,\n' +
+            '   "cartSortState":"[0,0,1,0,0,0,0,0,0,0]",\n' +
+            '   "queryTypeTab":0,\n' +
+            '   "criteriaQueryShow":"{\\"showQueryAvailable\\":false,\\"showQuerySubjectIds\\":false,\\"showQueryPhantoms\\":false,\\"showQueryThirdParty\\":false,\\"showQueryCollections\\":true,\\"showQueryImageModality\\":true,\\"showQueryAnatomicalSite\\":true,\\"showQuerySpecies\\":true}",\n' +
+            '   "searchResultSortState":"[0,0,1,0,0,0,0,0,0,0,0]",\n' +
+            '   "search_results_rows_PerPage":10,\n' +
+            '   "carts_PerPage":10,\n' +
+            '   "at":"9bb27702-8cda-41bb-9116-1aab7008e4b2",\n' +
+            '   "dataDisplayTab":1,\n' +
+            '   "searchResultsColumns":[\n' +
+            '      {\n' +
+            '         "name":"Cart",\n' +
+            '         "selected":true,\n' +
+            '         "required":true,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":0\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Collection ID",\n' +
+            '         "selected":true,\n' +
+            '         "required":true,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":1\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"3rd Party",\n' +
+            '         "selected":true,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":false,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":2\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Subject ID",\n' +
+            '         "selected":true,\n' +
+            '         "required":true,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":3\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Hit",\n' +
+            '         "selected":true,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":false,\n' +
+            '         "seq":4\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Studies",\n' +
+            '         "selected":true,\n' +
+            '         "required":true,\n' +
+            '         "textSearch":false,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":5\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Total Studies",\n' +
+            '         "selected":false,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":6\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Series",\n' +
+            '         "selected":true,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":false,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":8\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Total Series",\n' +
+            '         "selected":false,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":9\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Disk Space",\n' +
+            '         "selected":false,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":10\n' +
+            '      },\n' +
+            '      {\n' +
+            '         "name":"Image Count",\n' +
+            '         "selected":false,\n' +
+            '         "required":false,\n' +
+            '         "textSearch":true,\n' +
+            '         "criteriaSearch":true,\n' +
+            '         "seq":11\n' +
+            '      }\n' +
+            '   ]\n' +
+            '}';
 
         let options: CookieOptionsArgs = <CookieOptionsArgs> {
             expires: expiresTimestamp
         };
-
         this.cookieService.put( this.DATA_NAME, JSON.stringify( this.data ), options );
     }
 

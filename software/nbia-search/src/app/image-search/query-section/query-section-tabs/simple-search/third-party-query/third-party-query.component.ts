@@ -15,7 +15,7 @@ import { Consts } from '@app/consts';
 } )
 export class ThirdPartyQueryComponent implements OnInit{
 
-    thirdPartyRadioLabels = ['Only 3rd Party', 'Exclude 3rd Party', 'Include 3rd party'];
+    thirdPartyRadioLabels = ['Only 3rd Party', 'Exclude 3rd Party', 'Include 3rd Party'];
     thirdPartyApply = false;
     thirdPartyApplySelection = 2;
 

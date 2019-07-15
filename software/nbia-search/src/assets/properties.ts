@@ -1,6 +1,6 @@
 export let Properties = {
-    // 21_JUN_2019
-    VERSION: '1.0.49',
+    // 11_JUL_2019
+    VERSION: '1.0.51',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"
@@ -34,7 +34,6 @@ export let Properties = {
     */
 
     // If this is left an empty string, the url used by the browser to reach the site will be used
-     // API_SERVER_URL: '',
     API_SERVER_URL: '',
 
     // If this is left an empty string, the API server url will be used .

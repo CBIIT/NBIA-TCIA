@@ -73,7 +73,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     scroll = false;
 
     /**
-     * This is the list of columns in the search results display. It is populated from persisted user preferances, or Consts.DEFAULT_SEARCH_RESULTS_COLUMNS<br>
+     * This is the list of columns in the search results display. It is populated from persisted user preferences, or Consts.DEFAULT_SEARCH_RESULTS_COLUMNS<br>
      * if there are no persisted values. It can be updated at any time via commonService.searchResultsColumnListEmitter.subscribe, which is<br>
      * called by SearchResultsColumnSelectorComponent.
      */
@@ -263,6 +263,8 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // The initial emit for the above searchResultsColumnListEmitter, may be sent, before we are initialized and listening,
         // so we will get the data here, once at start up, after that any changes will arrive from searchResultsColumnListEmitter.
         this.columns = this.persistenceService.get( this.persistenceService.Field.SEARCH_RESULTS_COLUMNS );
+
+
         // @TODO
         // This work around can be removed in the near future.  "Cart" is changing from not required to required,
         // this data is in the cookie, so we need to give users a little time for this change to get into their cookie.
@@ -274,6 +276,8 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 }
             }
         }
+
+
 
         if( this.utilService.isNullOrUndefined( this.columns ) || this.columns.length < 1 ){
             this.columns = Consts.DEFAULT_SEARCH_RESULTS_COLUMNS;
