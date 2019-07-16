@@ -1,6 +1,6 @@
 export let Properties = {
-    // 11_JUL_2019
-    VERSION: '1.0.51',
+    // 16_JUL_2019
+    VERSION: '1.0.52',
     TITLE: 'Search',
 
     // These values will by set by the "Brand"
@@ -26,10 +26,8 @@ export let Properties = {
         API_SERVER_URL: 'https://ncias-q1730-v.nci.nih.gov',
         API_SERVER_URL: 'https://imaging-qacm.nci.nih.gov',
 
-
-        Public beta
+        Public
         API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
-
         API_SERVER_URL: 'https://public.cancerimagingarchive.net',
     */
 

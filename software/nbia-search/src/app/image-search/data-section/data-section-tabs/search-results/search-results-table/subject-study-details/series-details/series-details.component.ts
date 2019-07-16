@@ -30,6 +30,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     parentDicomData = [];
     currentDicom = -1;
     haveDicomData = [];
+    haveThirdParty = false;
     seriesId;
     imageUidArray = [];
 
@@ -119,7 +120,12 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
      */
     upDataSearchResultsForDisplay() {
         this.seriesListForDisplay = [];
+        this.haveThirdParty = false;
         for( let row of this.study.seriesList ){
+            if( row['thirdPartyAnalysis'] === 'YES')
+            {
+                this.haveThirdParty = true;
+            }
             this.seriesListForDisplay.push( row );
             this.seriesListForDisplay.push( {} );
         }

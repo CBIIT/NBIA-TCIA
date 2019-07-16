@@ -9,8 +9,7 @@
         <th>
             Description
         </th>
-        <th
-        >
+        <th *ngIf="haveThirdParty" >
             3rd Party<span class="asterisk glyphicon glyphicon-asterisk"
                             title="3rd party analysis results are community contributed data which were not created by the original author(s) of the Collection.  Click the link below for more information about its origin."
             ></span>
@@ -70,7 +69,7 @@
             {{series['description']}}
         </td>
 
-        <td *ngIf="even" class="series-table-td series-third-party">
+        <td *ngIf="even && haveThirdParty" class="series-table-td series-third-party">
             <a
                 *ngIf="series['thirdPartyAnalysis'] === 'YES'"
                [href]="series['descriptionURI']" target="_blank"

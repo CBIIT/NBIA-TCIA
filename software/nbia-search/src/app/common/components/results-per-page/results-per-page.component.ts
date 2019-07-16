@@ -77,13 +77,13 @@ export class ResultsPerPageComponent implements OnInit {
 
         // Is it for Search Results?
         if (this.displayDataType === Consts.DISPLAY_DATA_TYPE_SEARCH_RESULTS) {
-            this.commonService.updateSearchResultsPerPage(this.rowsPerPage);
             this.persistenceService.put(this.persistenceService.Field.SEARCH_RESULTS_ROWS_PER_PAGE, this.rowsPerPage);
+            this.commonService.updateSearchResultsPerPage(this.rowsPerPage);
         }
         // Is it for Cart List?
         else if (this.displayDataType === Consts.DISPLAY_DATA_TYPE_CART_LIST) {
-            this.commonService.updateCartsPerPage(this.rowsPerPage);
             this.persistenceService.put(this.persistenceService.Field.CARTS_PER_PAGE, this.rowsPerPage);
+            this.commonService.updateCartsPerPage(this.rowsPerPage);
         }
     }
 }

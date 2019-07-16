@@ -62,14 +62,10 @@ export class PersistenceService{
      * @param value  The contents of the added item.
      */
     put( key, value ) {
-
-        this.data[key] = value;
-/*
-        if( key === 'searchResultsColumns'){
-            console.log('MHL PersistenceService put: ' , key + ':' , value);
-            console.log('MHL PersistenceService data: ' , this.data);
+        // Only update if the value has ganged.
+        if( this.get(key) !== value){
+            this.data[key] = value;
         }
-*/
         this.update();
     }
 
