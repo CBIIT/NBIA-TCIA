@@ -50,7 +50,7 @@ export class ThirdPartyQueryComponent implements OnInit{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.thirdPartyApply = false;
-                this.thirdPartyApplySelection = 1;
+                this.thirdPartyApplySelection = 2;
                 this.initMonitorService.setThirdPartyInit( true );
             }
         );
