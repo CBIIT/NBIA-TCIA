@@ -71,13 +71,13 @@
 
         <td *ngIf="even && haveThirdParty" class="series-table-td series-third-party">
             <a
-                *ngIf="series['thirdPartyAnalysis'] === 'YES'"
+                *ngIf="series['thirdPartyAnalysis'].toLowerCase()=== 'yes'"
                [href]="series['descriptionURI']" target="_blank"
                title="{{series['descriptionURI']}}"
             >
                Yes
             </a>
-            <span  *ngIf="series['thirdPartyAnalysis'] !== 'YES'">
+            <span  *ngIf="series['thirdPartyAnalysis'].toLowerCase() !== 'yes'">
                 No
             </span>
         </td>

@@ -122,7 +122,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
         this.seriesListForDisplay = [];
         this.haveThirdParty = false;
         for( let row of this.study.seriesList ){
-            if( row['thirdPartyAnalysis'] === 'YES')
+            if( row['thirdPartyAnalysis'].toLowerCase() === 'yes')
             {
                 this.haveThirdParty = true;
             }
