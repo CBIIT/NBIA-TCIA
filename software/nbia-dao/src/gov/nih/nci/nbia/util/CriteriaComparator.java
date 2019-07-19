@@ -49,6 +49,10 @@ public class CriteriaComparator implements Comparator<Criteria> {
             return 1;
         }        
         
-        return o1.getDisplayName().compareTo(o2.getDisplayName());
+        try {
+			return o1.getDisplayName().compareTo(o2.getDisplayName());
+		} catch (Exception e) {
+			return 0;
+		}
     }
 }

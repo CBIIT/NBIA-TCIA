@@ -165,7 +165,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 		    gi.setMd5Digest(md5);
 		    getHibernateTemplate().saveOrUpdate(gi);
         }catch(Exception e) {
-            log.error("File " + gi.getFilename()+ " " + e);
+            log.error("File " + fileName + " " + e);
             e.printStackTrace();
             return errorMessage(e, "ImageOperation");
         }
