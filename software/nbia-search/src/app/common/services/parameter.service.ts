@@ -20,6 +20,8 @@ export class ParameterService{
     parameterMinimumStudiesEmitter = new EventEmitter();
     parameterDateRangeEmitter = new EventEmitter();
     parameterSpeciesEmitter = new EventEmitter();
+    parameterPhantomsEmitter = new EventEmitter();
+    parameterThirdPartyEmitter = new EventEmitter();
     parameterTextSearchEmitter = new EventEmitter();
 
     // Used for determining if cart from URL should be (re)loaded
@@ -35,6 +37,8 @@ export class ParameterService{
     minimumStudies = 1;
     dateRange = '';
     species = '';
+    phantoms = '';
+    thirdParty = '';
     showTest = false;
     apiUrl = '';
 
@@ -176,6 +180,14 @@ export class ParameterService{
             this.parameterSpeciesEmitter.emit( this.species );
         }
 
+        if( this.phantoms.length > 0 ){
+            this.parameterPhantomsEmitter.emit( this.phantoms );
+        }
+
+        if( this.thirdParty.length > 0 ){
+            this.parameterThirdPartyEmitter.emit( this.thirdParty );
+        }
+
         if( this.dateRange.length > 0 ){
             let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
             if( regexp.test( this.dateRange ) ){
@@ -222,6 +234,46 @@ export class ParameterService{
 
     getModalityAll() {
         return this.modalityAll;
+    }
+
+    async setPhantoms( phantoms ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.phantoms = phantoms;
+
+        // Wait for the phantom query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPhantomsInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterPhantomsEmitter.emit( phantoms );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+
+    async setThirdParty( thirdParty ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.thirdParty = thirdParty;
+
+        // Wait for the thirdParty query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getThirdPartyInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterThirdPartyEmitter.emit( thirdParty );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+
+    getPhantoms(){
+        return this.phantoms;
+    }
+
+    getThirdParty(){
+        return this.thirdParty;
     }
 
     async setSpecies( species ) {

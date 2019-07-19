@@ -127,4 +127,5 @@ public interface NCIASecurityManager {
     
     public void syncDBWithLDAP(String loginName) throws Exception;
     public boolean hasQaRole(String userName);
+    public boolean hasQaRoleForProjSite(String userName, String proj, String site);
 }

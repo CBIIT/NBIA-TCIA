@@ -7,6 +7,8 @@ export class InitMonitorService{
     modalityInit = false;
     anatomicalSiteInit = false;
     speciesInit = false;
+    phantomsInit = false;
+    thirdPartyInit = false;
     minimumStudiesInit = false;
     dateRangeInit = false;
 
@@ -14,6 +16,8 @@ export class InitMonitorService{
     modalityRunning = false;
     anatomicalSiteRunning = false;
     speciesRunning = false;
+    phantomsRunning = false;
+    thirdPartyRunning = false;
     minimumStudiesRunning = false;
     dateRangeRunning = false;
 
@@ -61,6 +65,22 @@ export class InitMonitorService{
         return this.speciesInit;
     }
 
+    setPhantomsInit(status) {
+        this.phantomsInit = status;
+    }
+
+    getPhantomsInit(){
+        return this.phantomsInit;
+    }
+
+    setThirdPartyInit(status) {
+        this.thirdPartyInit = status;
+    }
+
+    getThirdPartyInit(){
+        return this.thirdPartyInit;
+    }
+
     setMinimumStudiesInit( status ) {
         this.minimumStudiesInit = status;
     }
@@ -81,6 +101,12 @@ export class InitMonitorService{
             res =  true;
         }
         if( this.speciesInit ){
+            res =  true;
+        }
+         if( this.phantomsInit ){
+            res =  true;
+        }
+         if( this.thirdPartyInit ){
             res =  true;
         }
         if( this.minimumStudiesInit ){
@@ -134,6 +160,22 @@ export class InitMonitorService{
         return this.speciesRunning;
     }
 
+    setPhantomsRunning( status){
+        this.phantomsRunning = status;
+    }
+
+    get getPhantomsRunning(){
+        return this.phantomsRunning;
+    }
+
+    setThirdPartyRunning( status){
+        this.thirdPartyRunning = status;
+    }
+
+    get getThirdPartyRunning(){
+        return this.thirdPartyRunning;
+    }
+
     setMinimumStudiesRunning( status ) {
         this.minimumStudiesRunning = status;
     }
@@ -154,6 +196,12 @@ export class InitMonitorService{
             res =  true;
         }
          if( this.speciesRunning ){
+            res =  true;
+        }
+         if( this.phantomsRunning ){
+            res =  true;
+        }
+         if( this.thirdPartyRunning ){
             res =  true;
         }
         if( this.minimumStudiesRunning ){

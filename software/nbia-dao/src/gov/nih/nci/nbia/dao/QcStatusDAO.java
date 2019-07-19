@@ -13,6 +13,7 @@ import gov.nih.nci.nbia.dto.QcStatusHistoryDTO;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
@@ -40,5 +41,6 @@ public interface QcStatusDAO {
 			                   String userName, 
 			                   String comment) throws DataAccessException;
 	
+	public List<Map<String,String>> findExistingStatus(String project, String site, List<String> seriesUids) throws DataAccessException;
 	
 }

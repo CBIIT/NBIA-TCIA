@@ -23,6 +23,14 @@ label {
   margin-left: 15pt;
 }
 
+.third-party-query-panel{
+  padding-bottom: 8px;
+}
+
+.phantom-query-panel{
+  padding-bottom: 8px;
+}
+
 .query-panel {
   background-color: #fff;
   border-bottom: solid 1px #cfcfcf;
@@ -112,7 +120,96 @@ label {
   margin-left: 5pt;
 }
 
+.phantom-radio {
+  color: #3a3a3a;
+  margin-left: 15pt;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.phantom-radio-label {
+  cursor: pointer;
+}
+
+.thirdParty-radio {
+  color: #3a3a3a;
+  margin-left: 15pt;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.thirdParty-radio-label {
+  cursor: pointer;
+}
+
 .sort-text {
   color: #3a3a3a;
   font-size: 9pt;
+}
+
+.phantoms-apply-checkbox{
+  margin-left: 25px;
+  cursor: default;
+
+  padding: 6px;
+  /*           h-offset   v-offset   blur    spread   color          */
+  box-shadow:
+  1px 1px 2px 0 rgba(0, 0, 0, 0.1),
+  0 1px 2px 0 rgba(0, 0, 0, 0.075);
+
+
+  border-radius: 5px;
+  border: solid #cfcfcf 1px;
+}
+
+.thirdParty-apply-checkbox{
+  margin-left: 25px;
+  cursor: default;
+
+  padding: 6px;
+  /*           h-offset   v-offset   blur    spread   color          */
+  box-shadow:
+  1px 1px 2px 0 rgba(0, 0, 0, 0.1),
+  0 1px 2px 0 rgba(0, 0, 0, 0.075);
+
+
+  border-radius: 5px;
+  border: solid #cfcfcf 1px;
+}
+
+.phantoms-apply-glyph{
+  //margin-left: 5pt;
+  cursor: default;
+  color: #00aa00;
+  margin-right: 4px;
+}
+/*
+
+.phantoms-apply-glyph{
+  //margin-left: 5pt;
+  cursor: default;
+  color: $close-x-red;
+  margin-right: 4px;
+}
+*/
+
+.phantoms-status{
+  font-size: 10pt;
+}
+
+.thirdParty-status{
+  font-size: 10pt;
+}
+
+
+.close-third-party-explanation-x {
+  color: $close-x-red;
+  float: right;
+  margin-right: 10px
+}
+
+
+.third-party-explanation-text{
+  font-size: 12pt;
+  margin: 8px;
 }

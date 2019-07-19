@@ -9,6 +9,11 @@
         <th>
             Description
         </th>
+        <th *ngIf="haveThirdParty" >
+            3rd Party<span class="asterisk glyphicon glyphicon-asterisk"
+                            title="3rd party analysis results are community contributed data which were not created by the original author(s) of the Collection.  Click the link below for more information about its origin."
+            ></span>
+        </th>
         <th>
             Modality
         </th>
@@ -21,7 +26,7 @@
         <th>
             Series
         </th>
-        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_OHIF_VIEWER">s</span></th>
+        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_OHIF_SERIES_VIEWER">s</span></th>
         <th>
             DICOM
         </th>
@@ -63,13 +68,26 @@
         <td *ngIf="even" class="series-table-td">
             {{series['description']}}
         </td>
+
+        <td *ngIf="even && haveThirdParty" class="series-table-td series-third-party">
+            <a
+                *ngIf="series['thirdPartyAnalysis'].toLowerCase()=== 'yes'"
+               [href]="series['descriptionURI']" target="_blank"
+               title="{{series['descriptionURI']}}"
+            >
+               Yes
+            </a>
+            <span  *ngIf="series['thirdPartyAnalysis'].toLowerCase() !== 'yes'">
+                No
+            </span>
+        </td>
         <td *ngIf="even" class="series-table-td">
             {{series['modality']}}
         </td>
         <td *ngIf="even" class="series-table-td">
             {{series['manufacturer']}}
         </td>
-        <td *ngIf="even" class="series-table-td">
+        <td *ngIf="even" class="series-table-td series--image-count">
             {{series['numberImages']}}
         </td>
 
@@ -79,27 +97,32 @@
         </td>
 
 
-        <!-- -----  The OHIF viewer button doesn't do anything yet  ----- -->
-        <td *ngIf="even" class="series-table-td">
+        <!-- -----  The Thumbnail viewer button  ----- -->
+        <td *ngIf="even" class="series-table-td series-viewers">
             <label
                 *ngIf="! properties.NO_THUMBNAIL"
-                class="btn btn-default series-data-button"
+                class="btn btn-default series-data-button series-viewer"
                 title="Thumbnail Viewer"
                 (click)="onThumbnailClick(series)"
             >
                 <span class="glyphicon glyphicon-search" title="Thumbnail Viewer" ></span>
             </label>
-            <label *ngIf="properties.SHOW_OHIF_VIEWER" style="margin-left: 3px"
-                class="btn btn-default series-data-button"
+
+            <!-- -----  The OHIF viewer button  ----- -->
+            <label *ngIf="properties.SHOW_OHIF_SERIES_VIEWER" style="margin-left: 5px"
+                class="btn btn-default series-data-button series-viewer"
                 title="OHIF Vewer"
-                (click)="onSeriesOhifViewerClick()">
+                (click)="onSeriesOhifViewerClick(i)">
                 <span class="glyphicon glyphicon-facetime-video"></span>
             </label>
         </td>
 
         <!-- -----  Show DICOM button  ----- -->
         <td *ngIf="even" class="series-table-td  cine-mode-td series-table-dicom-button-column">
-            <label class="btn btn-default series-data-button" (click)="onDicomClick(i + 1)">
+            <label class="btn btn-default series-data-button"
+               (click)="onDicomClick(i + 1)"
+               title="DICOM Field data"
+            >
                 <span class="glyphicon glyphicon-th-list"></span>
             </label>
         </td>

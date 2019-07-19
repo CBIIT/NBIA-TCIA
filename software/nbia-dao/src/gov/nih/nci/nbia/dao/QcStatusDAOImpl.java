@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -252,7 +253,18 @@ public class QcStatusDAOImpl extends AbstractDAO
 		
 		
 	}
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Map<String,String>> findExistingStatus(String project, String site, List<String> seriesUids) throws DataAccessException {
+		String whereStmt = " WHERE gs.project='" + project + "' and gs.site='" + site +"' and gs.seriesInstanceUID in (" + constructSeriesIdList(seriesUids) +")";
+		
+		SessionFactory sf = getHibernateTemplate().getSessionFactory();
+		Session s = sf.getCurrentSession();
 
+		String HQL_QUERY = "select new map(gs.seriesInstanceUID as id, gs.visibility as oldStatus) from GeneralSeries gs " + whereStmt ;  
+		List<Map<String,String>> statusList = s.createQuery(HQL_QUERY).list(); 
+		return statusList;
+	}
 	//////////////////////////////////////PRIVATE//////////////////////////////////////////
 
 	private static String computeSubmissionDateCriteria(Date fromDate, Date toDate) {
@@ -394,22 +406,22 @@ public class QcStatusDAOImpl extends AbstractDAO
 		qsh.setComment(comment);
 	
 	//// Additional QC Flags settings before and after changes ////
-		if(additionalQcFlagList[0] != null && additionalQcFlagList[0].trim().length() > 0){
+		if(additionalQcFlagList!= null && additionalQcFlagList[0] != null && additionalQcFlagList[0].trim().length() > 0){
 			qsh.setOldBatch(additionalQcFlagList[0]);
 		}
-	    if(newAdditionalQcFlagList[0] != null && newAdditionalQcFlagList[0].trim().length() > 0){	
+	    if(additionalQcFlagList!= null && newAdditionalQcFlagList[0] != null && newAdditionalQcFlagList[0].trim().length() > 0){	
 	    	qsh.setNewBatch(newAdditionalQcFlagList[0]);
 	    }
 		
 	    //-------------------------------------------------------------
-	    if(additionalQcFlagList[1] != null && additionalQcFlagList[1].trim().length() > 0){
+	    if(additionalQcFlagList!= null && additionalQcFlagList[1] != null && additionalQcFlagList[1].trim().length() > 0){
 	    	if(additionalQcFlagList[1].toUpperCase().contains("YES"))
 		    	qsh.setOldSubmissionType("Complete");
 		    else if(additionalQcFlagList[1].toUpperCase().contains("NO"))
 		    	qsh.setOldSubmissionType("Ongoing");
 	    }
 	    
-	    if(newAdditionalQcFlagList[1] != null && newAdditionalQcFlagList[1].trim().length() > 0){
+	    if(newAdditionalQcFlagList!= null && newAdditionalQcFlagList[1] != null && newAdditionalQcFlagList[1].trim().length() > 0){
 		    if(newAdditionalQcFlagList[1].toUpperCase().contains("YES"))
 		    	qsh.setNewSubmissionType("Complete");
 		    else if(newAdditionalQcFlagList[1].toUpperCase().contains("NO"))
@@ -417,14 +429,14 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    }		
 	    //---------------------------------------------------------------------
 	    
-	    if(additionalQcFlagList[2] != null && additionalQcFlagList[2].trim().length() > 0){
+	    if(additionalQcFlagList!= null && additionalQcFlagList[2] != null && additionalQcFlagList[2].trim().length() > 0){
 	    	if(additionalQcFlagList[2].toUpperCase().contains("YES"))
 		    	qsh.setOldReleasedStatus("Yes");
 		    else if(additionalQcFlagList[2].toUpperCase().contains("NO"))
 		    	qsh.setOldReleasedStatus("No");
 	    }
 	    
-	    if(newAdditionalQcFlagList[2] != null && newAdditionalQcFlagList[2].trim().length() > 0){
+	    if(newAdditionalQcFlagList!= null && newAdditionalQcFlagList[2] != null && newAdditionalQcFlagList[2].trim().length() > 0){
 		    if(newAdditionalQcFlagList[2].toUpperCase().contains("YES"))
 		    	qsh.setNewReleasedStatus("Yes");
 		    else if(newAdditionalQcFlagList[2].toUpperCase().contains("NO"))
@@ -441,18 +453,18 @@ public class QcStatusDAOImpl extends AbstractDAO
 			
 			gs.setVisibility(newStatus);
 			
-			if(newAdditionalQcFlagList[0] != null && newAdditionalQcFlagList[0].trim().length() > 0){
+			if(newAdditionalQcFlagList!= null && newAdditionalQcFlagList[0] != null && newAdditionalQcFlagList[0].trim().length() > 0){
 				gs.setBatch(Integer.parseInt(newAdditionalQcFlagList[0]));
 			}
 				
-			if(newAdditionalQcFlagList[1] != null && newAdditionalQcFlagList[1].trim().length() > 0){
+			if(newAdditionalQcFlagList!= null && newAdditionalQcFlagList[1] != null && newAdditionalQcFlagList[1].trim().length() > 0){
 			   	if(newAdditionalQcFlagList[1].toUpperCase().contains("YES"))
 			   		gs.setSubmissionType("Complete");
 			    else if(newAdditionalQcFlagList[1].toUpperCase().contains("NO"))
 			    	gs.setSubmissionType("Ongoing");
 			}
 			
-			if(newAdditionalQcFlagList[2] != null && newAdditionalQcFlagList[2].trim().length() > 0){
+			if(newAdditionalQcFlagList!= null && newAdditionalQcFlagList[2] != null && newAdditionalQcFlagList[2].trim().length() > 0){
 			   	if(newAdditionalQcFlagList[2].toUpperCase().contains("YES"))
 			   		gs.setReleasedStatus("Yes");
 			    else if(newAdditionalQcFlagList[2].toUpperCase().contains("NO"))

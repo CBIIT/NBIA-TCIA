@@ -17,7 +17,6 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
     @Input() subjectDetailData;
     @Input() subjectIndex;
 
-
     SUBJECT_DATE_TOOLTIP = Consts.SUBJECT_DATE_TOOLTIP;
 
 

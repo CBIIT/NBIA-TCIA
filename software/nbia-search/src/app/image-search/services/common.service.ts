@@ -99,6 +99,9 @@ export class CommonService{
     showTextExplanationEmitter = new EventEmitter();
     showTextExplanation = false;
 
+    showThirdPartyExplanationEmitter = new EventEmitter();
+    showThirdPartyExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -440,6 +443,11 @@ export class CommonService{
         this.showTextExplanationEmitter.emit( this.showTextExplanation);
     }
 
+    setShowThirdPartyExplanation(e){
+        this.showThirdPartyExplanation = e;
+        this.showThirdPartyExplanationEmitter.emit( this.showThirdPartyExplanation);
+    }
+
     clearSimpleSearchResults() {
         this.simpleSearchResults = '';
         this.updateSearchResultsCount( -1 );
@@ -556,7 +564,7 @@ export class CommonService{
      */
     updateQuery( parameters: string[] ) {
         // Rest page to beginning on a new search.
-        // -1 tells pagers to go to page zero and tells serach by page not to call search service for this page change.
+        // -1 tells pagers to go to page zero and tells search by page not to call search service for this page change.
         this.updateCurrentSearchResultsPage( -1 );
 
         this.updateQueryEmitter.emit( parameters );
@@ -608,6 +616,20 @@ export class CommonService{
         if( !this.utilService.isNullOrUndefined( allData[Consts.SPECIES_CRITERIA] ) ){
             for( let item of allData[Consts.SPECIES_CRITERIA] ){
                 displayQuery.push( { [Consts.CRITERIA]: 'species', 'name': item } );
+            }
+        }
+
+        // Phantoms
+        if( !this.utilService.isNullOrUndefined( allData[Consts.PHANTOMS_CRITERIA] ) ){
+            for( let item of allData[Consts.PHANTOMS_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'phantom', 'name': (item === '0') ? 'Only' : 'Exclude' } );
+            }
+        }
+
+        // Third Party
+        if( !this.utilService.isNullOrUndefined( allData[Consts.THIRD_PARTY_CRITERIA] ) ){
+            for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'thirdParty', 'name': (item.toUpperCase( ) === 'YES') ? 'Only' : 'Exclude' } );
             }
         }
 
@@ -838,9 +860,7 @@ export class CommonService{
         }
     }
 
-    // CHECKME  had problems with Cannot find module 'util'.  24_MAY_2017  Ported project to Angular 4, no longer having problems with Util.
     /**
-     * This is a duplicate of the function provided by the Util package.  For an unknown reason, I could not access the Util package.
      *
      * @param obj
      * @returns {boolean}

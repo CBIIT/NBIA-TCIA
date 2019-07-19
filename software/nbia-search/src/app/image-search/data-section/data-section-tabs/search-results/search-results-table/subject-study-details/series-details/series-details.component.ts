@@ -8,6 +8,7 @@ import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-b
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Properties } from '@assets/properties';
+import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 
 @Component( {
     selector: 'nbia-series-details',
@@ -29,6 +30,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     parentDicomData = [];
     currentDicom = -1;
     haveDicomData = [];
+    haveThirdParty = false;
     seriesId;
     imageUidArray = [];
 
@@ -37,7 +39,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiServerService: ApiServerService, private loadingDisplayService: LoadingDisplayService,
-                 private alertBoxService: AlertBoxService ) {
+                 private alertBoxService: AlertBoxService, private ohifViewerService: OhifViewerService ) {
     }
 
     ngOnInit() {
@@ -50,7 +52,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
             this.haveDicomData[f] = false;
         }
 
-        this.apiServerService.getDicomTagsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.getDicomTagsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( data['id'] === this.seriesId ){
                     this.parentDicomData[this.currentDicom] = data['res'];
@@ -59,7 +61,8 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
                 }
             }
         );
-        this.apiServerService.getDicomTagsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+
+        this.apiServerService.getDicomTagsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 if( err['id'] === this.seriesId ){
                     this.loadingDisplayService.setLoading( false );
@@ -102,7 +105,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
 
             this.seriesId = (this.seriesListForDisplay[i - 1])['seriesUID'];
             let query = 'SeriesUID=' + this.seriesId;
-            this.apiServerService.dataGet2( Consts.DICOM_TAGS, query );
+            this.apiServerService.dataGet( Consts.DICOM_TAGS, query );
 
             this.currentDicom = i;
 
@@ -117,26 +120,33 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
      */
     upDataSearchResultsForDisplay() {
         this.seriesListForDisplay = [];
+        this.haveThirdParty = false;
         for( let row of this.study.seriesList ){
+            if( row['thirdPartyAnalysis'].toLowerCase() === 'yes')
+            {
+                this.haveThirdParty = true;
+            }
             this.seriesListForDisplay.push( row );
             this.seriesListForDisplay.push( {} );
         }
     }
 
     onThumbnailClick( seriesId ) {
+       // console.log( Properties.API_SERVER_URL + '/' + Properties.THUMBNAIL_URL + '?' + Properties.URL_KEY_THUMBNAIL_SERIES + '=' + encodeURI( seriesId.seriesPkId ) + '&' + Properties.URL_KEY_THUMBNAIL_DESCRIPTION + '=' + encodeURI( seriesId.description ), '_blank' );
 
-        window.open( Properties.API_SERVER_URL  +
+        window.open( Properties.API_SERVER_URL +
             '/' + Properties.THUMBNAIL_URL + '?' +
             Properties.URL_KEY_THUMBNAIL_SERIES + '=' +
-            encodeURI(seriesId.seriesPkId) + '&' +
+            encodeURI( seriesId.seriesPkId ) + '&' +
             Properties.URL_KEY_THUMBNAIL_DESCRIPTION + '=' +
-            encodeURI(seriesId.description),
+            encodeURI( seriesId.description ),
             '_blank' );
     }
 
 
-    onSeriesOhifViewerClick() {
-        alert( 'This feature (onSeriesOhifViewerClick) has not yet been implemented.' );
+    onSeriesOhifViewerClick( i ) {
+        // this.ohifViewerService.callOhifViewer( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId']);
+        this.ohifViewerService.launchOhifViewer( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId'] );
     }
 
 

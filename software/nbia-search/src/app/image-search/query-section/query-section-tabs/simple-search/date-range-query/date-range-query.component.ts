@@ -182,6 +182,9 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
         this.setToDateToToday();
         this.setFromDate( Properties.LAST_ACCESS );
+        this.checked = false;
+        this.disableUseDateRange = true;
+
        // this.validateDateRange();
 
 /*

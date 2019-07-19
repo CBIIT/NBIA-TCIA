@@ -232,7 +232,7 @@ export class ApiServerService implements OnDestroy{
     textSearchQueryHold;
     textSearchQueryHoldEmitter = new EventEmitter();
 
-    // Used to determin if we are in the proccess of logging out the current user.
+    // Used to determine if we are in the process of logging out the current user.
     loggingOut = false;
 
     temp = '';
@@ -282,7 +282,7 @@ export class ApiServerService implements OnDestroy{
         return this.loggingOut;
     }
 
-    getSpeciesTax(){
+    getSpeciesTax() {
         return this.speciesTax;
     }
 
@@ -385,6 +385,24 @@ export class ApiServerService implements OnDestroy{
             }
         }
 
+        // Phantoms
+        if( (allData[Consts.PHANTOMS_CRITERIA] !== undefined) && (allData[Consts.PHANTOMS_CRITERIA].length > 0) ){
+            isSearchable = true;
+            for( let item of allData[Consts.PHANTOMS_CRITERIA] ){
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PHANTOMS_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Third Party Analyses
+        if( (allData[Consts.THIRD_PARTY_CRITERIA] !== undefined) && (allData[Consts.THIRD_PARTY_CRITERIA].length > 0) ){
+            isSearchable = true;
+            for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.THIRD_PARTY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
         // Available  -  Date Range
         if( (allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0) ){
             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DATE_RANGE_CRITERIA + '&' +
@@ -429,7 +447,7 @@ export class ApiServerService implements OnDestroy{
                 this.queryBuilderIndex++;
             }
         }
-        if( searchQuery.length > 0){
+        if( searchQuery.length > 0 ){
             searchQuery += '&tool=nbiaclient';
         }
         // Remove leading &
@@ -603,6 +621,7 @@ export class ApiServerService implements OnDestroy{
             this.getCriteriaCounts();
             this.simpleSearchResultsEmitter.emit( res );
         }else if( searchType === Consts.DRILL_DOWN_CART ){
+
             this.seriesForCartResultsEmitter.emit( res );
         }else if( searchType === Consts.DRILL_DOWN_IMAGE ){
             this.imageDataResultsEmitter.emit( res );
@@ -754,7 +773,7 @@ export class ApiServerService implements OnDestroy{
             case Consts.SIMPLE_SEARCH:
                 // Only log for the initial search, not each change of the page.
                 // Do not log if the query has not changed other than "start=".
-                if( query.includes( '&start=0' ) && (query.replace( re, '' ) !== this.simpleSearchQueryTrailer.replace( re, '' ) )){
+                if( query.includes( '&start=0' ) && (query.replace( re, '' ) !== this.simpleSearchQueryTrailer.replace( re, '' )) ){
                     this.log( this.historyLogService.doLog( Consts.SIMPLE_SEARCH_LOG_TEXT, this.currentUser, query ) );
                 }
                 this.simpleSearchQueryTrailer = query;
@@ -984,7 +1003,7 @@ export class ApiServerService implements OnDestroy{
             this.getBodyPartValuesAndCountsErrorEmitter.emit( err );
         }else if( queryType === 'getSpeciesValuesAndCounts' ){
             this.getSpeciesValuesAndCountsErrorEmitter.emit( err );
-         }else if( queryType === 'getSpeciesTax' ){
+        }else if( queryType === 'getSpeciesTax' ){
             this.getSpeciesTaxErrorEmitter.emit( err );
         }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeErrorEmitter.emit( err );
@@ -993,99 +1012,21 @@ export class ApiServerService implements OnDestroy{
         }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
             this.collectionDescriptionsErrorEmitter.emit( err );
         }
-
     }
 
 
-    async dataGet2( queryType, query, accessToken ? ) {
-        let queryTypeOrig = queryType;
-        queryType = queryType + '?' + query;
-
-        // If something else is waiting for an access token, wait here
-        while( this.gettingAccessToken > 0 ){
-            await this.commonService.sleep( 10 );
-        }
-
-        this.doGet( queryType, accessToken ).subscribe(
-            // Good results, return the search results.
-            ( res ) => {
-                // Cleanup query for return.
-                this.emitGetResults( queryTypeOrig, res, query.replace( 'SeriesUID=', '' ) )
-            },
-
-            // An error
-            ( err ) => {
-
-                // What kind of error?
-                switch( err.status ){
-
-                    // Bad authorization - could be a bad Access token
-                    case 401:
-                        // console.error( 'Error [' + queryType + ']  ' + err.statusText + '[' + err.status + '], will try to get a new Access token for: ' + this.currentUser );
-
-                        // Try getting a new Access token
-                        this.getToken().subscribe(
-                            ( res0 ) => {
-                                this.gotToken();
-
-                                this.setToken( res0 );
-                                accessToken = res0['access_token'];
-
-                                // We have a new token, try the query one more time.
-                                this.doGet( queryType, accessToken ).subscribe(
-                                    // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
-                                    ( res1 ) => {
-                                        this.emitGetResults( queryTypeOrig, res1, query.replace( 'SeriesUID=', '' ) )
-                                    },
-
-                                    // Our second attempt with a new Access token has failed, emit the error.
-                                    ( err1 ) => {
-                                        switch( err1.status ){
-                                            case 401:
-                                                console.error( 'Attempt with new Access token: ' + err1.statusText + '[' + err1.status + ']' );
-                                                break;
-
-                                            default:
-                                                console.error( 'ERROR: ' + err1.statusText + '[' + err1.status + '] ' + err1.message );
-                                                break;
-                                        }
-                                        this.emitGetError( queryType, err1 );
-                                    }
-                                );
-                            },
-
-                            // We tried and failed to get a new Access token, emit the error.
-                            ( err1 ) => {
-                                console.error( 'Failed to get a new Access token: ' + err1.statusText + '[' + err1.status + ']' );
-                                this.emitGetError( queryType, err1, query.replace( 'SeriesUID=', '' ) );
-                                this.gotToken();
-
-
-                            }
-                        );
-
-                        break;
-                    // End of case 401
-
-                    default:
-                        console.error( 'nbia-api/services/' + queryType + ' Error: ' + err.statusText + '[' + err.status + '] ' + err.message );
-                        this.emitGetError( queryType, err, query.replace( 'SeriesUID=', '' ) );
-                        break;
-                }
-            }
-        );
-        // this.doGet( queryType, accessToken );
-
-    }
-
-
-    /**
+     /**
      *
      * @param queryType
      * @param query
      * @param accessToken
      */
     async dataGet( queryType, query, accessToken ? ) {
+        let queryTypeOrig = queryType;
+
+        if( (! this.utilService.isNullOrUndefined(query)) && (query.length > 0)){
+            queryType = queryType + '?' + query;
+        }
         let counter = 0; // If something goes wrong, we don't want to be an endless loop
 
         // If something else is waiting for an access token, wait here
@@ -1094,10 +1035,16 @@ export class ApiServerService implements OnDestroy{
             await this.commonService.sleep( 100 );
         }
 
+
         this.doGet( queryType, accessToken ).subscribe(
             // Good results, return the search results.
             ( res ) => {
-                this.emitGetResults( queryType, res )
+                if( (! this.utilService.isNullOrUndefined(query)) && (query.length > 0)){
+                    this.emitGetResults( queryTypeOrig, res,  query.replace( 'SeriesUID=', '' )  );
+                }
+                else{
+                    this.emitGetResults( queryType, res );
+                }
             },
 
             // An error
@@ -1137,7 +1084,13 @@ export class ApiServerService implements OnDestroy{
                                 this.doGet( queryType, accessToken ).subscribe(
                                     // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
                                     ( res1 ) => {
-                                        this.emitGetResults( queryType, res1 )
+                                        if( (! this.utilService.isNullOrUndefined(query)) && (query.length > 0)){
+                                            this.emitGetResults( queryTypeOrig, res1,  query.replace( 'SeriesUID=', '' )  );
+                                        }
+                                        else{
+                                            this.emitGetResults( queryType, res1 );
+                                        }
+
                                     },
 
                                     // Our second attempt with a new Access token has failed, emit the error.
@@ -1498,8 +1451,8 @@ export class ApiServerService implements OnDestroy{
             }
         }
         let speciesObjPaged = { 'criteria': 'Species', 'values': [] };
-       // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if( (this.currentSearchResultsData['species'] !== 'null') &&  (this.currentSearchResultsData['species'] !== null)){
+        // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
+        if( (this.currentSearchResultsData['species'] !== 'null') && (this.currentSearchResultsData['species'] !== null) ){
             for( let species of this.currentSearchResultsData['species'] ){
                 speciesObjPaged.values.push(
                     {

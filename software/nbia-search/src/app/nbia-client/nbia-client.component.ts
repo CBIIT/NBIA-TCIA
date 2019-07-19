@@ -89,6 +89,11 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
             Properties.API_SERVER_URL = location.origin.toString();
         }
 
+        // If we don't have an OHIFViewer Url, set it to the same server as the API Url.
+        if( (this.utilService.isNullOrUndefined( Properties.OHIF_SERVER_URL )) || (Properties.OHIF_SERVER_URL.length < 1) ){
+            Properties.OHIF_SERVER_URL = Properties.API_SERVER_URL;
+        }
+
 
     }  // End constructor
 
@@ -155,6 +160,8 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         let modalityAll = this.route.snapshot.queryParams[Properties.URL_KEY_MODALITY_ALL];
         let anatomicalSite = this.route.snapshot.queryParams[Properties.URL_KEY_ANATOMICAL_SITE];
         let species = this.route.snapshot.queryParams[Properties.URL_KEY_SPECIES];
+        let phantoms = this.route.snapshot.queryParams[Properties.URL_KEY_PHANTOMS];
+        let thirdParty = this.route.snapshot.queryParams[Properties.URL_KEY_THIRD_PARTY];
         let minimumStudies = this.route.snapshot.queryParams[Properties.URL_KEY_MINIMUM_STUDIES];
         let dateRange = this.route.snapshot.queryParams[Properties.URL_KEY_DATE_RANGE];
         let sharedList = this.route.snapshot.queryParams[Properties.URL_KEY_SHARED_LIST];
@@ -212,6 +219,14 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
         if( !this.utilService.isNullOrUndefined( species ) ){
             this.parameterService.setSpecies( species );
+        }
+
+       if( !this.utilService.isNullOrUndefined( phantoms ) ){
+            this.parameterService.setPhantoms( phantoms );
+        }
+
+       if( !this.utilService.isNullOrUndefined( thirdParty ) ){
+            this.parameterService.setThirdParty( thirdParty );
         }
 
         if( !this.utilService.isNullOrUndefined( showTest ) ){

@@ -46,6 +46,7 @@ import java.util.Iterator;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -62,8 +63,12 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NoHttpResponseException;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
@@ -79,6 +84,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
 
 import gov.nih.nci.nbia.util.BrowserLauncher;
 import gov.nih.nci.nbia.util.DownloaderProperties;
@@ -131,7 +138,7 @@ public class StandaloneDMDispatcher {
 			
 		    // html content
 		    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
-		            + launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
+		            +" !!!!test123"+launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
 		            + "</body></html>");
 
 		    // handle link events
@@ -179,9 +186,13 @@ public class StandaloneDMDispatcher {
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
+			String note ="Error in loading manifest file--FileNotFoundException:\n";
+			printStackTraceToDialog(note, e);
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			String note ="Error in loading manifest file--IOException:\n";
+			printStackTraceToDialog(note, e);
 			e.printStackTrace();
 		}
 	}
@@ -538,6 +549,9 @@ public class StandaloneDMDispatcher {
 	}
 
 	private static List<String> connectAndReadFromURL(URL url) {
+		String note1 = "Check local machine's configuration before making connection: "+ ":\n" + getProxyInfo() +"\n"; 
+		StringBuffer sb = new StringBuffer();
+		//printStackTraceToDialog(note1, null);
 		List<String> data = null;
 		DefaultHttpClient httpClient = null;
 		TrustStrategy easyStrategy = new TrustStrategy() {
@@ -546,6 +560,7 @@ public class StandaloneDMDispatcher {
 				return true;
 			}
 		};
+		long start = System.currentTimeMillis();
 		try {
 			SSLSocketFactory sslsf = new SSLSocketFactory(easyStrategy, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 			Scheme httpsScheme = new Scheme("https", 443, sslsf);
@@ -555,14 +570,14 @@ public class StandaloneDMDispatcher {
 			ClientConnectionManager ccm = new ThreadSafeClientConnManager(schemeRegistry);
 
 			HttpParams httpParams = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParams, 50000);
-			HttpConnectionParams.setSoTimeout(httpParams, new Integer(12000));
+			HttpConnectionParams.setConnectionTimeout(httpParams, 500000);
+			HttpConnectionParams.setSoTimeout(httpParams, new Integer(120000));
 			httpClient = new DefaultHttpClient(ccm, httpParams);
 			httpClient.setRoutePlanner(new ProxySelectorRoutePlanner(schemeRegistry, ProxySelector.getDefault()));
 			// // Additions by lrt for tcia -
 			// // attempt to reduce errors going through a Coyote Point
 			// Equalizer load balance switch
-			httpClient.getParams().setParameter("http.socket.timeout", new Integer(12000));
+			httpClient.getParams().setParameter("http.socket.timeout", new Integer(120000));
 			httpClient.getParams().setParameter("http.socket.receivebuffer", new Integer(16384));
 			httpClient.getParams().setParameter("http.tcp.nodelay", true);
 			httpClient.getParams().setParameter("http.connection.stalecheck", false);
@@ -572,8 +587,51 @@ public class StandaloneDMDispatcher {
 
 			List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
 			postParams.add(new BasicNameValuePair(osParam, os));
+			
+			HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
+				@Override
+				public boolean retryRequest(IOException exception,
+						int executionCount, HttpContext context) {
+				
+					if (executionCount >= 5) {
+						// Do not retry if over max retry count
+						sb.append("Reached max retry 5 attempts using Request handler.\n");
+						return false;
+					}
+					if (exception instanceof NoHttpResponseException) {
+						// Retry on when server dropped connection
+						sb.append("NoHttpResponseException:\n");
+						return true;
+					}
+					if (exception instanceof SSLHandshakeException) {
+						// Do not retry on SSL handshake exception
+						sb.append("SSLHandshakeException:\n");
+						return false;
+					}
+					if (exception instanceof java.net.SocketTimeoutException) {
+						// Retry on socket timeout exception
+						sb.append("java.net.SocketTimeoutException" + " Request Handler attempt ").append(executionCount).append(" times for SocketTimeOutException \n");
+						return true;
+					}
+					if (exception instanceof java.net.SocketException) {
+						// Retry on socket timeout exception
+						sb.append("java.net.SocketException " +" Request Handler attempt ").append(executionCount) .append(" time for SocketException \n");
+						return true;
+					}
+					HttpRequest request = (HttpRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
+					boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
+					if (idempotent) {
+						// Retry if the request is considered idempotent
+						return true;
+					}
+					return false;
+				}
+			};
+			httpClient.setHttpRequestRetryHandler(myRetryHandler);
 			UrlEncodedFormEntity query = new UrlEncodedFormEntity(postParams);
 			httpPostMethod.setEntity(query);
+			
+			start = System.currentTimeMillis();	        
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
 
@@ -586,38 +644,39 @@ public class StandaloneDMDispatcher {
 			}
 
 		} catch (java.net.ConnectException e) {
-			String note = "Connection error 1 while connecting to "+ url.toString() + ":\n" + getProxyInfo(); 
+			String note = sb + note1 + "Connection error 1 while connecting to "+ url.toString() + ":\n Stack trace is below: \n";// + getProxyInfo(); 
 			//+ checkListeningPort("127.0.0.1", 8888);
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 1: " + e.getMessage());
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			String note = "Connection error 2 while connecting to "+ url.toString() + ":\n";
+			String note = sb + "Connection error 2 while connecting to "+ url.toString() + ":\n";
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 2: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			String note = "Connection error 3 while connecting to "+ url.toString() + ":\n";
+			long duration = System.currentTimeMillis() - start;
+			String note = sb + "Connection error 3 while connecting to "+ url.toString() + ":\nThe time used:" + duration + "millis\nStack trace is below: \n"; 
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 3: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyManagementException e) {
-			String note = "Connection error 4 while connecting to "+ url.toString() + ":\n";
+			String note = sb + "Connection error 4 while connecting to "+ url.toString() + ":\n";
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 4: " + e.getMessage());
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
-			String note = "Connection error 5 while connecting to "+ url.toString() + ":\n";
+			String note = sb + "Connection error 5 while connecting to "+ url.toString() + ":\n";
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 5: " + e.getMessage());
 			e.printStackTrace();
 		} catch (KeyStoreException e) {
-			String note = "Connection error 6 while connecting to "+ url.toString() + ":\n";
+			String note = sb + "Connection error 6 while connecting to "+ url.toString() + ":\n";
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 6: " + e.getMessage());
 			e.printStackTrace();
 		} catch (UnrecoverableKeyException e) {
-			String note = "Connection error 7 while connecting to "+ url.toString() + ":\n";
+			String note = sb + "Connection error 7 while connecting to "+ url.toString() + ":\n";
 			printStackTraceToDialog(note, e);
 			//JOptionPane.showMessageDialog(null, "Connection error 7: " + e.getMessage());
 			e.printStackTrace();
@@ -692,11 +751,14 @@ public class StandaloneDMDispatcher {
 	
 	static void printStackTraceToDialog(String note, Exception e) {
 		StringBuilder sb = new StringBuilder(note);
-        sb.append(e.getMessage());
-        sb.append("\n");
-        for (StackTraceElement ste : e.getStackTrace()) {
-            sb.append(ste.toString());
-            sb.append("\n");
+	    if (e != null) {		
+	    		sb.append(e.getMessage());
+	    		sb.append("\n");
+ 
+	        for (StackTraceElement ste : e.getStackTrace()) {
+	            sb.append(ste.toString());
+	            sb.append("\n");
+	        }
         }
         JTextArea jta = new JTextArea(sb.toString());
         JScrollPane jsp = new JScrollPane(jta){

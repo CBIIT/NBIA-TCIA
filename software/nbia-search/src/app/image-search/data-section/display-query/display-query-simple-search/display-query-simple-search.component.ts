@@ -64,11 +64,11 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
         this.allCriteriaList = [];
         // Populate populateCriteriaLists
         for( let criteria of this.criteriaList ){
-
             // If it's a species, we need to replace the name with the Description
             if( criteria['criteria'] === 'species'){
                 criteria.name = this.getSpeciesDescriptionByCode(criteria.name);
             }
+
 
             // The first element of each array is the category name.
             // Do we have this category of criteria one yet?
