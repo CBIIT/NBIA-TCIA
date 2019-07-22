@@ -9,6 +9,7 @@ package gov.nih.nci.nbia.restAPI;
 import java.util.List;
 import java.util.ArrayList;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -34,6 +35,7 @@ import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
+import gov.nih.nci.nbia.restUtil.QAUserUtil;
 
 import java.text.SimpleDateFormat;
 import gov.nih.nci.nbia.dao.ValueAndCountDAO;
@@ -67,16 +69,21 @@ public class DICOMSubmission extends getData{
 			@FormParam("thirdPartyAnalysis") String thirdPartyAnalysis, 
 			@FormParam("descriptionURI") String descriptionURI) {
 
+
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				String user = (String) authentication.getPrincipal();
-
-				NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				if (!sm.hasQaRole(user)) {
-					return Response.status(401)
+                if (!QAUserUtil.isUserQA(user)) {
+                	System.out.println("Not QA User!!!!");
+				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+				   if (!sm.hasQaRole(user)) {
+				  	  return Response.status(401)
 							.entity("Insufficiant Privileges").build();
-				} 
+				   } else {
+					   QAUserUtil.setUserQA(user);
+				   }
+                }
                 String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI);
                 if (status.equals("ok")) {
 				   return Response.ok("ok").type("application/text")
