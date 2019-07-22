@@ -48,7 +48,7 @@ export let Properties = {
     DISABLE_COUNTS_AND_SIZE: true,
 
     // Show in console, curl version of post & get calls.
-    DEBUG_CURL: false,
+    DEBUG_CURL: true,
 
     ACTION_LOGGING: true,
     SHORT_LOG: true,
