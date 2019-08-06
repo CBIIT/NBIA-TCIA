@@ -36,9 +36,9 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/slf4j-nop-1.6.1.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/c3p0-0.9.1.2.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/compile/ctp-installer-X67.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/compile/ctp-X67.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/util-X67.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/compile/ctp-installer-X101.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/compile/ctp-X101.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/util-X101.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/compile/spring-core-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/compile/spring-tx-3.2.8.RELEASE.jar"/>
