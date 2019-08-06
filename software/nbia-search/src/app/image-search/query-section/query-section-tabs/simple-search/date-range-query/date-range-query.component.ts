@@ -79,8 +79,8 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
     };
 
     // We need this to access clearDate() within this.onDateRangeClearAllClick
-    @ViewChild( 'dpFrom' ) ngxdpFrom: NgxMyDatePickerDirective;
-    @ViewChild( 'dpTo' ) ngxdpTo: NgxMyDatePickerDirective;
+    @ViewChild( 'dpFrom', {static: true} ) ngxdpFrom: NgxMyDatePickerDirective;
+    @ViewChild( 'dpTo', {static: true} ) ngxdpTo: NgxMyDatePickerDirective;
 
     toDateModel = {};
     fromDateModel = {};

@@ -27,7 +27,7 @@ export class PagerComponent implements OnInit, OnDestroy{
      * This is initialized from a persisted value,<br>
      * If there is no persisted value, then it is initialized from a default - Properties.IMAGES_PER_PAGE_CHOICE_DEFAULT.
      */
-    countPerPage = 0;
+    countPerPage;
 
     /**
      * An array representing each button, this currently just holds the text for the button (which is just the index plus one).
