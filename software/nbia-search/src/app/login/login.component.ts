@@ -57,7 +57,7 @@ import { UtilService } from '@app/common/services/util.service';
 } )
 
 export class LoginComponent implements OnInit, OnDestroy{
-    @ViewChild( 'f' ) loginForm: NgForm;
+    @ViewChild( 'f', {static: true}  ) loginForm: NgForm;
     accessToken;
     username = '';
     statusMessage0 = '';
