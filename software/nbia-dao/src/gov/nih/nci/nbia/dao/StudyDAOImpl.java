@@ -403,17 +403,17 @@ public class StudyDAOImpl extends AbstractDAO
 		StringBuffer where = new StringBuffer();
 
 		if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())){
-			where = where.append(" and gs.projAndSite in ('");
+			where = where.append(" and gs.projAndSite in (");
 
 			for (Iterator<String> projAndSites =  authorizedProjAndSites.iterator(); projAndSites .hasNext();) {
 	    		String str = projAndSites.next();
 	            where.append (str);
 
 	            if (projAndSites.hasNext()) {
-	            	where.append("','");
+	            	where.append(",");
 	            }
 	        }
-			where.append("')");
+			where.append(")");
 		}
 		System.out.println("&&&&&&&&&&&&where clause for project and group=" + where.toString());
 		return where;
