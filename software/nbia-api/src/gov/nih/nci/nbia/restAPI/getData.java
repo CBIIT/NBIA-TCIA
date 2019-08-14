@@ -125,6 +125,10 @@ public class getData {
 				returnString = FormatOutput.toCsv(column, data);
 				return Response.ok(returnString).type("text/csv").build();
 			}
+			if (format.equalsIgnoreCase("CSV-DOWNLOAD")) {
+				returnString = FormatOutput.toCsv(column, data);
+				return Response.ok(returnString).type("application/force-download").header("Content-Disposition","attachment; filename=\"SeriesMetaData.csv\"").build();
+			}
 		} else {
 			return Response.status(500).entity("No data found.").build();
 		}
@@ -158,6 +162,10 @@ public class getData {
 			if (format.equalsIgnoreCase("CSVQUOTED")) {
 				returnString = FormatOutput.toCsvQuoted(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
+			}
+			if (format.equalsIgnoreCase("CSV-DOWNLOAD")) {
+				returnString = FormatOutput.toCsv(columns, data);
+				return Response.ok(returnString).type("application/force-download").header("Content-Disposition","attachment; filename=\"SeriesMetaData.csv\"").build();
 			}
 		}
 		else {
