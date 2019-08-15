@@ -49,7 +49,7 @@ public class GetSeriesMetadata2 extends getData{
 	 * @return String - set of collection names
 	 */
 	@GET
-	@Produces("application/force-download")
+	@Produces(TEXT_CSV)
 
 	public Response constructResponse(@QueryParam("list") List<String> list) {
 

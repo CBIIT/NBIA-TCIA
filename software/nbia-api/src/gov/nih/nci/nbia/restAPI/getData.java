@@ -165,7 +165,7 @@ public class getData {
 			}
 			if (format.equalsIgnoreCase("CSV-DOWNLOAD")) {
 				returnString = FormatOutput.toCsv(columns, data);
-				return Response.ok(returnString).type("application/force-download").header("Content-Disposition","attachment; filename=\"SeriesMetaData.csv\"").build();
+				return Response.ok(returnString).type("text/csv").header("Content-Disposition","attachment; filename=\"SeriesMetaData.csv\"").build();
 			}
 		}
 		else {
