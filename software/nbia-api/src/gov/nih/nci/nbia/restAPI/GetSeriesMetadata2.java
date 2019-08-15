@@ -48,10 +48,10 @@ public class GetSeriesMetadata2 extends getData{
 	 *
 	 * @return String - set of collection names
 	 */
-	@POST
+	@GET
 	@Produces("application/force-download")
 
-	public Response constructResponse(@FormParam("list") List<String> list) {
+	public Response constructResponse(@QueryParam("list") List<String> list) {
 
 		
 		System.out.println("List-"+list);
