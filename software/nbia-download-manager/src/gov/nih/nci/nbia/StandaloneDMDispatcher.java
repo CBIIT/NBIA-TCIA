@@ -321,7 +321,7 @@ public class StandaloneDMDispatcher {
 		} else if (n == 1) {
 			try {
 				saveFile(downloadUrl);
-				nogo = false;
+				nogo = true;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
