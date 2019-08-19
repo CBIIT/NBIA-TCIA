@@ -46,6 +46,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
+import org.springframework.core.NestedRuntimeException;
 
 @Path("/submitDICOM")
 public class DICOMSubmission extends getData{
@@ -93,11 +94,16 @@ public class DICOMSubmission extends getData{
  							.entity(status).build();
                 }
 
-		    } catch (Exception e) {
+	       } catch (NestedRuntimeException e) {
+				e.printStackTrace();
+				return Response.status(500)
+						.entity(e.getMostSpecificCause().getMessage()).build();
+	        } catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return Response.status(500)
+							.entity(e.getMessage()).build();
 			}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+
 	}
 }

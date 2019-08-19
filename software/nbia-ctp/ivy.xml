@@ -67,7 +67,7 @@ L-->
 
     <dependency org="dcm4che"
                 name="dcm4che"
-                rev="1.4.23"
+                rev="1.4.23_X101"
                 conf="compile->master;test->master"/>
     <!-- end of removing lib -->
 
@@ -98,12 +98,12 @@ L-->
                 
    <dependency org="rsna"
                 name="ctp"
-                rev="X67"
+                rev="X101"
                 conf="compile,test->master;"/>
 
     <dependency org="rsna"
                 name="ctp-installer"
-                rev="X67"
+                rev="X101"
                 conf="compile->master;runtime->master"/>
              
     <dependency org="org.springframework"
@@ -178,7 +178,7 @@ L-->
                 
 	<dependency org="rsna"
                 name="util"
-                rev="X67"
+                rev="X101"
                 conf="compile,test->master;"/>
                 
  <!-- garbage from log4j as second order dependency -->
