@@ -28,9 +28,6 @@ import { CommonService } from './image-search/services/common.service';
 import { ResultsPerPageComponent } from './common/components/results-per-page/results-per-page.component';
 import { SearchResultsPagerComponent } from './common/components/search-results-pager/search-results-pager.component';
 import { AnatomicalSiteQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/anatomical-site-query/anatomical-site-query.component';
-import { ManufacturerModelsQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/manufacturer-models-query/manufacturer-models-query.component';
-
-import { TreeModule } from 'angular-tree-component';
 import { DateRangeQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/date-range-query/date-range-query.component';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { PieChartCollectionsComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-collections/pie-chart-collections.component';
@@ -102,8 +99,10 @@ import { PhantomQueryComponent } from './image-search/query-section/query-sectio
 import { ThirdPartyQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/third-party-query/third-party-query.component';
 import { ThirdPartyExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/third-party-query/third-party-explanation/third-party-explanation.component';
 import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
+import { AppRoutingModule } from '@app/app-routing.module';
 
 
+/*
 const appRoutes: Routes = [
     { path: '', component: NbiaClientComponent },
     // The following are for backwards compatibility.
@@ -115,6 +114,7 @@ const appRoutes: Routes = [
     { path: 'externalPatientSearch.jsf', component: NbiaClientComponent },
     { path: 'ncia/externalPatientSearch.jsf', component: NbiaClientComponent }
 ];
+*/
 
 
 @NgModule( {
@@ -143,7 +143,6 @@ const appRoutes: Routes = [
         ResultsPerPageComponent,
         SearchResultsPagerComponent,
         AnatomicalSiteQueryComponent,
-        ManufacturerModelsQueryComponent,
         DateRangeQueryComponent,
         PieChartCollectionsComponent,
         PieChartImageModalityComponent,
@@ -197,10 +196,9 @@ const appRoutes: Routes = [
         HttpClientModule,
         TabsModule,
         DropdownModule,
-        TreeModule,
         ClickOutsideModule,
         NgxMyDatePickerModule.forRoot(),
-        RouterModule.forRoot( appRoutes),
+        AppRoutingModule,
         ClipboardModule
 
     ],

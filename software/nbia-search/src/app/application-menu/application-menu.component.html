@@ -1,4 +1,4 @@
-<!-- The top menu
+<!-- The top menu  TODO update this comment
      The logo on the left comes from a background image set in the scss: assets/images/logo_04b.png"
 
      Image Search - shows all the searching functions "Simple Search", "Free Text", and "Query Builder"(not yet)
@@ -55,10 +55,9 @@
 
     <span
         class="application-menu-item"
-        title={{downloadButtonToolTip}}
         [ngClass]="{
             'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled ),
-            'application-menu-disabled-item':( cartCount === 0 || disabled || downloadDisabled )
+            'application-menu-disabled-item':( cartCount === 0 || disabled )
         }"
         (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
         (mouseover)="onMouseOver(menuItem.DOWNLOAD_MENU_ITEM)"

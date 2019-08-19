@@ -91,8 +91,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
      */
     disabled = false;
     shareDisabled = true;
-    downloadDisabled = false;
-    downloadButtonToolTip = '';
+
     // Get the MenuItems enum from consts.ts
     menuItem = MenuItems;
 
@@ -172,14 +171,6 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             data => {
                 this.cartCount = data['count'];
                 this.cartTotalFileSize = data['fileSize'];
-                if( this.cartCount > Consts.CART_COUNT_MAX){
-                    this.downloadDisabled = true;
-                    this.downloadButtonToolTip = 'Cart has exceeded limit ' + Consts.CART_COUNT_MAX;
-                }
-                else{
-                    this.downloadDisabled = false;
-                    this.downloadButtonToolTip = '';
-                }
                 this.checkShareEnabled();
 
             }

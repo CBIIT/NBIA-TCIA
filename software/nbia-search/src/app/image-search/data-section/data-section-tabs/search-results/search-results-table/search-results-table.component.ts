@@ -216,18 +216,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Used in busyCartCheck to determine if the cart has finished updating, there is no easy way with things being updated asynchronous.
         this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-
                 this.cartCount = data['count'];
-
-                if( this.cartCount > Consts.CART_COUNT_MAX){
-                    this.alertBoxService.alertBoxDisplay( this.alertId01,
-                        AlertBoxType.ERROR,
-                        'Exceeding max cart size ( ' + Consts.CART_COUNT_MAX + ' )',
-                        ['Current cart count: ' + this.cartCount, 'Remove ' + (this.cartCount - Consts.CART_COUNT_MAX ) + ' to enable download.'],
-                        AlertBoxButtonType.OKAY,
-                        350
-                    );
-                }
             }
         );
 
@@ -344,8 +333,19 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     }
 
                     this.searchResults = this.simpleSearchResults;
+                    // this.commonService.updateSearchResultsCount( this.simpleSearchResults.length );
                     this.commonService.setSimpleSearchResults( this.simpleSearchResults );
                     this.upDataSearchResultsForDisplay();
+
+
+
+                    // This is a work around.  Things are becoming too complicated using the same results screen for Simple search & Text Search.  These should be split up when time permits.
+                    if(this.currentSearchMode === Consts.SIMPLE_SEARCH){
+
+                        // this.totalCount = this.commonService.getSimpleSearchResultsCount();
+                        this.commonService.updateSearchResultsCount( this.commonService.getSimpleSearchResultsCount() );
+                    }
+
                 }
                 else{
                     this.commonService.setSimpleSearchResults( {} );
