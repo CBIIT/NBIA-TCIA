@@ -9,7 +9,7 @@ import { Properties } from '@assets/properties';
 } )
 export class CustomMenuComponent implements OnInit{
     properties = Properties;
-    homeUrrl = this.properties.API_SERVER_URL + '/nbia-search';
+    homeUrl = this.properties.API_SERVER_URL + '/nbia-search';
 
     constructor( private commonService: CommonService ) {
     }

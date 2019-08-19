@@ -14,6 +14,8 @@ import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Properties } from '@assets/properties';
 
 @Component( {
     selector: 'nbia-cart',
@@ -76,7 +78,8 @@ export class CartComponent implements OnInit, OnDestroy{
                  private apiServerService: ApiServerService, private commonService: CommonService,
                  private sortService: CartSortService, private loadingDisplayService: LoadingDisplayService,
                  private alertBoxService: AlertBoxService, private parameterService: ParameterService,
-                 private historyLogService: HistoryLogService, private utilService: UtilService ) {
+                 private historyLogService: HistoryLogService, private utilService: UtilService,
+                 private httpClient: HttpClient ) {
     }
 
 
@@ -268,18 +271,53 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.commonService.downloadCartAsCsvEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                let csvData = this.utilService.csvFormatCart( data );
+                let query = 'list=';
 
-                let csvFile = new Blob( [csvData], { type: 'text/csv' } );
-                // @TODO add log csvFile
-                let objectUrl = (<any>window).URL.createObjectURL( csvFile );
-                let a = (<any>window).document.createElement( 'a' );
-                a.href = objectUrl;
-                // Use epoch for unique file name
-                a.download = 'NBIA-series-data-' + new Date().getTime() + '.csv';
-                (<any>window).document.body.appendChild( a );
-                a.click();
-                (<any>window).document.body.removeChild( a );
+                let first = true;
+                for( let series of <any>data ){
+                    if( !series.disabled ){
+                        if( first ){
+                            first = false;
+                        }else{
+                            query += ',';
+                        }
+                        query += series.seriesId;
+                    }
+                }
+
+                if( Properties.DEBUG_CURL ){
+                    let curl = 'curl -O -H \'Authorization:Bearer  ' + this.apiServerService.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/getSeriesMetadata2' + '\' -d \'' + query + '\'';
+                    console.log( 'downloadCartAsCsv: ', curl );
+                }
+
+                let csvDownloadUrl = Properties.API_SERVER_URL + '/nbia-api/services/getSeriesMetadata2';
+
+                let headers = new HttpHeaders( {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Bearer ' + this.apiServerService.showToken()
+                } );
+
+                let options = { headers: headers, responseType: 'text' as 'json' };
+
+                this.httpClient.post( csvDownloadUrl, query, options ).subscribe(
+                    ( res ) => {
+                        let csvFile = new Blob( [<any>res], { type: 'text/csv' } );
+                        // TODO in the manifest download popup, it says 'from: blob:'  see if we can change this.
+                        let objectUrl = (<any>window).URL.createObjectURL( csvFile );
+                        let a = (<any>window).document.createElement( 'a' );
+                        a.href = objectUrl;
+                        // Use epoch for unique file name
+                        a.download = 'series-data' + new Date().getTime() + '.csv';
+                        (<any>window).document.body.appendChild( a );
+                        a.click();
+                        (<any>window).document.body.removeChild( a );
+                    }, error => {
+                        console.error( 'Download csv file error:', error );
+                    }
+                );
+
+                ///////////////////////////////////////////////////////////////////////////////
+
             }
         );
 

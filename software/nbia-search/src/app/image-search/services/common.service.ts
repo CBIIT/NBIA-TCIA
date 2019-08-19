@@ -14,6 +14,11 @@ export class CommonService{
      */
     searchResultsCountEmitter = new EventEmitter();
     searchResultsCount = -1;
+
+    simpleSearchResultsCountEmitter = new EventEmitter();
+    simpleSearchResultsCount = -1;
+
+
     /**
      * Used by CartComponent to know how many pages to use for the Pager.<br>
      * Used by SearchResultsPagerComponent to know how big, and how many pages
@@ -723,6 +728,22 @@ export class CommonService{
 
     getSearchResultsCount() {
         return this.searchResultsCount;
+    }
+
+
+    /**
+     * @TODO Explain why we needed this
+     * @param count
+     */
+   updateSimpleSearchResultsCount( count: number ) {
+        if( this.simpleSearchResultsCount !== count ){
+            this.simpleSearchResultsCount = count;
+            this.simpleSearchResultsCountEmitter.emit( count );
+        }
+    }
+
+    getSimpleSearchResultsCount() {
+        return this.simpleSearchResultsCount;
     }
 
     updateCartCount( count: number ) {

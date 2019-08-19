@@ -584,6 +584,8 @@ export class ApiServerService implements OnDestroy{
             // Tell everyone the the search results count.
             this.commonService.updateSearchResultsCount( this.currentSearchResultsData['totalPatients'] );
 
+            // TODO Explain why we need this ( for now )
+            this.commonService.updateSimpleSearchResultsCount( this.currentSearchResultsData['totalPatients'] );
 
             // We need to add matchedStudies to the data.
             for( let row of this.currentSearchResults ){
@@ -596,7 +598,6 @@ export class ApiServerService implements OnDestroy{
                 row['matchedStudies'] = row['studyIdentifiers'].length;
 
             }
-
 
             this.getCriteriaCounts();
             this.simpleSearchResultsEmitter.emit( this.currentSearchResults );
@@ -649,44 +650,6 @@ export class ApiServerService implements OnDestroy{
         }else if( searchType === Consts.LOG_ENTRY ){
             this.logEntryResultsEmitter.emit( res );
         }else if( searchType === Consts.TEXT_SEARCH ){
-            // TESTING ONLY
-            /*
-
-                              res = [
-                                {
-                                  'subjectId': 'LUNGx-CT001',
-                                  'project': 'SPIE-AAPM Lung CT Challenge',
-                                  'id': 200146944,
-                                  'totalNumberOfStudies': 1,
-                                  'totalNumberOfSeries': 1,
-                                  'hit': '<strong>LUNGx</strong>-<strong>CT001</strong>',
-                                  'studyIdentifiers': [
-                                    {
-                                      'seriesIdentifiers': [
-                                        200212480
-                                      ],
-                                      'studyIdentifier': 200179712
-                                    }
-                                  ]
-                                },
-                                {
-                                  'subjectId': 'LUNGx-CT002',
-                                  'project': 'SPIE-AAPM Lung CT Challenge',
-                                  'id': 200441907,
-                                  'totalNumberOfStudies': 1,
-                                  'totalNumberOfSeries': 1,
-                                  'hit': '<strong>LUNGx</strong>-<strong>CT002</strong>',
-                                  'studyIdentifiers': [
-                                    {
-                                      'seriesIdentifiers': [
-                                        200507443
-                                      ],
-                                      'studyIdentifier': 200474675
-                                    }
-                                  ]
-                                }
-                              ];
-            */
 
 
             // We need to add matchedStudies to the data.

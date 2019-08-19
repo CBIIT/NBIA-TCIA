@@ -20,7 +20,7 @@ import { UtilService } from '@app/common/services/util.service';
 } )
 export class SeriesDetailsComponent implements OnInit, OnDestroy{
 
-    @Input() currentSubjectDetailRow = '';
+    @Input() currentSubjectDetailRow;
     @Input() study;
     @Input() id;
 
@@ -46,7 +46,6 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-
         // CHECKME  Make sure study is populated by now.
         this.upDataSearchResultsForDisplay();
 

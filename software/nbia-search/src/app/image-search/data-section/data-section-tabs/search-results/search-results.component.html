@@ -7,13 +7,14 @@
 
         <!-- When totalCount is -1 than there is no current search, so don't say anything  -->
         <span *ngIf="(totalCount > 0) && ( ! properties.PAGED_SEARCH)">
-            Showing <b>{{firstRow + 1}} - {{( lastRow > totalCount )?  totalCount : lastRow + 1}}</b> of <b>{{totalCount}}</b> Subjects
+           Showing <b>{{firstRow + 1}} - {{( lastRow >= totalCount )?  totalCount : lastRow + 1}}</b> of <b>{{totalCount}}</b> Subjects
         </span>
+
         <span *ngIf="(totalCount > 0) && ( properties.PAGED_SEARCH)">
-            Showing <b>{{(rowsPerPage * currentPage) + 1}} - {{(((rowsPerPage * currentPage) + rowsPerPage) > totalCount )?  totalCount : (rowsPerPage * currentPage) + rowsPerPage}}</b> of <b>{{totalCount}}</b> Subjects
+           Showing <b>{{(rowsPerPage * currentPage) + 1}} - {{(((rowsPerPage * currentPage) + rowsPerPage) > totalCount )?  totalCount : (rowsPerPage * currentPage) + rowsPerPage}}</b> of <b>{{totalCount}}</b> Subjects
         </span>
         <span *ngIf="totalCount == 0">
-            No results found
+          No results found
         </span>
 
         <!-- Popup for selecting which columns to display in the Search results. -->

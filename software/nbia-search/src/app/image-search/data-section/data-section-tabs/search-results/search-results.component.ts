@@ -18,6 +18,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
     firstRow: number = 0;
     currentPage: number = 0;
     totalCount: number = -1;
+    currentSearchMode;
 
     /**
      * scroll style, false = 1st/default, 2nd scroll style is still a work in progress.
@@ -37,27 +38,26 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         // Get number of rows to display  (per page)
-        this.commonService.searchResultsPerPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsPerPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.rowsPerPage = <number>data;
 
-                if( ! Properties.PAGED_SEARCH){
+                if( !Properties.PAGED_SEARCH ){
                     this.lastRow = Number( this.firstRow ) + Number( this.rowsPerPage ) - 1;
-                }
-                else{
+                }else{
                     this.lastRow = Number( this.rowsPerPage ) - 1;
                 }
             }
         );
 
         // Get current page number
-        this.commonService.searchResultsPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentPage = <number>data;
-                if(this.currentPage < 0){    // -1 means go to first bag, but if searching by page don't search again.
+                if( this.currentPage < 0 ){    // -1 means go to first bag, but if searching by page don't search again.
                     this.currentPage = 0;
                 }
-                if( ! Properties.PAGED_SEARCH){
+                if( !Properties.PAGED_SEARCH ){
                     this.firstRow = this.rowsPerPage * this.currentPage;
                     this.lastRow = this.firstRow + this.rowsPerPage - 1;
                 }
@@ -66,14 +66,22 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
         );
 
         // Toggle scroll style, 2nd scroll style is still a work in progress.
-        this.commonService.searchResultsToggleScrollEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsToggleScrollEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.scroll = <boolean>data;
             }
         );
 
+        // Updates the current search type, "Simple search", "Free text", etc.
+        this.commonService.resultsDisplayModeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.currentSearchMode = data;
+            }
+        );
+
+
         // Get the total number of rows
-        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.totalCount = <number>data;
             }

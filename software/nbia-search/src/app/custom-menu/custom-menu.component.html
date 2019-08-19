@@ -24,7 +24,7 @@
 
                     <!-- FIXME this should not be dependant on this specific text. -->
                     <a *ngIf="subMenuElement.menuText !== 'Search Data Portal'" class="btn-primary custom-menu-dropdown-li" [href]=subMenuElement.target TARGET="_blank">{{subMenuElement.menuText}}</a>
-                    <a *ngIf="subMenuElement.menuText === 'Search Data Portal'" class="btn-primary custom-menu-dropdown-li" [href]="homeUrrl" TARGET="_blank">{{subMenuElement.menuText}}</a>
+                    <a *ngIf="subMenuElement.menuText === 'Search Data Portal'" class="btn-primary custom-menu-dropdown-li" [href]="homeUrl" TARGET="_blank">{{subMenuElement.menuText}}</a>
                 </li>
                 <li
                     *ngIf="topMenuEntry.entryTitle.toLowerCase() === 'Help'.toLowerCase()"

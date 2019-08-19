@@ -23,9 +23,6 @@ export class CartButtonGroupComponent implements OnInit{
     showDownloaderDownload;
 
     cartCount = 0;
-    downloadDisabled = false;
-    downloadButtonToolTip = '';
-
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private cartService: CartService,
@@ -34,27 +31,6 @@ export class CartButtonGroupComponent implements OnInit{
 
     ngOnInit() {
 
-        // Receive the Cart contents count, and the total size of all its files.
-        this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            data => {
-                this.cartCount = data['count'];
-                this.setDownloadButtonToolTip();
-            }
-        );
-
-        this.cartCount = this.cartService.getCartCount();
-        this.setDownloadButtonToolTip();
-    }
-
-    setDownloadButtonToolTip(){
-        if( this.cartCount > Consts.CART_COUNT_MAX){
-            this.downloadDisabled = true;
-            this.downloadButtonToolTip = 'Cart has exceeded limit ' + Consts.CART_COUNT_MAX;
-        }
-        else{
-            this.downloadDisabled = false;
-            this.downloadButtonToolTip = '';
-        }
     }
 
 
