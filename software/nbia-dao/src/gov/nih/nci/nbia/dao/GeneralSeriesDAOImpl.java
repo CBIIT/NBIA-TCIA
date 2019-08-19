@@ -17,6 +17,7 @@ import gov.nih.nci.nbia.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
@@ -47,6 +49,30 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		return (Collection<String>) getHibernateTemplate().find(hql);
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<String> findProjectSitesOfSeries(List<String> seriesInstanceUids) throws DataAccessException {		
+		HashSet<String> wholeList = null;
+
+		List<List<String>> breakdownList = Util.breakListIntoChunks(seriesInstanceUids, 900);
+		for (List<String> unitList : breakdownList) {
+
+			DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
+			//criteria = criteria.createCriteria("project");
+			//criteria = criteria.createCriteria("site");
+			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
+			Projection projection = Projections.property("projAndSite"); 
+			criteria.setProjection(projection); 
+
+			Collection<String> results = getHibernateTemplate().findByCriteria(criteria);
+			if (wholeList == null) {
+				wholeList = new HashSet<String>();
+			}
+			wholeList.addAll(results);
+		}
+
+		return new ArrayList<>(wholeList);		
+	}	
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Collection<EquipmentDTO> findEquipmentOfVisibleSeries() throws DataAccessException {
