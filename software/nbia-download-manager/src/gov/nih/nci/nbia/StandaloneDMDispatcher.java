@@ -138,7 +138,7 @@ public class StandaloneDMDispatcher {
 			
 		    // html content
 		    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
-		            +" !!!!test123"+launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
+		            +launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
 		            + "</body></html>");
 
 		    // handle link events
