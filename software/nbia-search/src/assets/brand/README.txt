@@ -1,6 +1,6 @@
-Branding files are in directories with in the assets/brand directory. Each subdirectory represents one brand.
-Which brand directory that is used is determined by the content of the text file  assets/brand/currentBrand, it should contain the name of a directory within assets/brand.
-If there is no  assets/brand/currentBrand file, or it's contents don't point to a valid directory, the default brand "nbia" will be used.
+Branding files are in directories within the assets/brand directory. Each subdirectory represents one brand.
+Which brand directory that is used is determined by the content of the text file assets/brand/currentBrand, it should contain the name of a directory within assets/brand.
+If there is no assets/brand/currentBrand file, or its contents don't point to a valid directory, the default brand "nbia" will be used.
 If there are any files missing from the brand directory named in assets/brand/currentBrand, the file from the default directory will be used.
 If you only want to change one aspect of a brand, only include that file, the default directory versions will be used for the others.
 
