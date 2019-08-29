@@ -21,6 +21,8 @@ import org.springframework.dao.DataAccessException;
 public interface GeneralSeriesDAO  {
 
 	public Collection<String> findProjectsOfVisibleSeries() throws DataAccessException;
+	
+	public List<String> findProjectSitesOfSeries(List<String> seriesInstanceUids) throws DataAccessException;
 
 	public Collection<EquipmentDTO> findEquipmentOfVisibleSeries() throws DataAccessException;
 

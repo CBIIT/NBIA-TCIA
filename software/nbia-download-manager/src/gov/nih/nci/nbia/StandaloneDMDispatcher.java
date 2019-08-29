@@ -138,7 +138,7 @@ public class StandaloneDMDispatcher {
 			
 		    // html content
 		    JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">" //
-		            +" !!!!test123"+launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
+		            +launchMsg + "<a href=\"" + youTubeLink + "\">video tutorial</a>." //
 		            + "</body></html>");
 
 		    // handle link events
@@ -321,7 +321,7 @@ public class StandaloneDMDispatcher {
 		} else if (n == 1) {
 			try {
 				saveFile(downloadUrl);
-				nogo = false;
+				nogo = true;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

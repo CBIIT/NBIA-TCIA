@@ -129,6 +129,18 @@ public class AuthorizationManager {
     public List<SiteData> getAuthorizedSites() {
         return getAuthorizedSites(RoleType.READ);
     }
+    
+    /**
+     * Returns a list of collection//sites that the user is allowed to view.
+     */
+    public List<String> getAuthorizedCollectionSites() {
+    	List<String> returnList = findValuesFromAuthorizationData(
+                PROT_ELEM_TRIAL_DATA_PROVENANCE,
+                PROT_ELEM_PROJECT + SiteData.SITE_DELIMITER + PROT_ELEM_SITE,
+                RoleType.READ);
+        
+            return returnList;
+    }    
 
     /**
      * Returns a list of sites a user can view based upon a certain role

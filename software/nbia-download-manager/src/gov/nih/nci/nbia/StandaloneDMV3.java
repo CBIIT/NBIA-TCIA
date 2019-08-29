@@ -141,13 +141,51 @@ public class StandaloneDMV3 extends StandaloneDM {
 	}
 
 	protected List<String> getSeriesInfo(List seriesList) {
+		int maxInGroup = 5000;
+//		int maxInGroup = 10;		
+		int index = 0;
+		int count = 0;
 		List<String> seriesInfo = null;
-		try {
-			seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesList, null, null);
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
-		}
+		int seriesSize = seriesList.size();
+		
+		do {
+			List<String> seriesSubgroup = null;
+			++count;
+			int last = (maxInGroup * count) >= seriesSize ? seriesSize : (maxInGroup * count);
+//			System.out.println("@@@@@@@@@@@@@@@@@@group count = "+ count + " index = " + index + " last = " + last);
+			seriesSubgroup = seriesList.subList(index, last);
+			for (int i = 0; i < seriesSubgroup.size(); ++i)
+				System.out.println(seriesSubgroup.get(i));
+			index = maxInGroup * count;
+			try {
+				if (count == 1) {
+					seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesSubgroup, null, null);
+				} 
+				else if (count > 1) {
+					List<String> nextGroup = null;
+					nextGroup = connectAndReadFromURL(new URL(serverUrl), seriesSubgroup, null, null);
+					if (nextGroup != null)
+						seriesInfo.addAll(nextGroup);
+				}
+				if (seriesInfo == null) {
+					return null;
+				}
+				else if (seriesInfo.size() != last) {
+					return null;
+				}
 
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+		} while (index < seriesSize);
+						
+//			try {
+//				seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesList, null, null);
+//			} catch (MalformedURLException e1) {
+//				e1.printStackTrace();
+//			}
+			
+		System.out.println("return size = " +seriesInfo.size());
 		return seriesInfo;
 	}
 
@@ -159,16 +197,16 @@ public class StandaloneDMV3 extends StandaloneDM {
 			System.exit(0);
 		} else {
 			this.seriesList = seriesList;
-			if (seriesList.size() > 9999) {
-				int result = JOptionPane.showConfirmDialog(null,
-						"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
-						"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.INFORMATION_MESSAGE);
-
-				if (result != JOptionPane.OK_OPTION) {
-					System.exit(0);
-				}
-			}
+//			if (seriesList.size() > 9999) {
+//				int result = JOptionPane.showConfirmDialog(null,
+//						"The number of series in manifest file exceeds the maximum 9,999 series threshold. Only the first 9,999 series will be downloaded.",
+//						"Threshold Exceeded Notification", JOptionPane.OK_CANCEL_OPTION,
+//						JOptionPane.INFORMATION_MESSAGE);
+//
+//				if (result != JOptionPane.OK_OPTION) {
+//					System.exit(0);
+//				}
+//			}
 			
 			JFrame f; 
 			String os = System.getProperty("os.name").toLowerCase();			
