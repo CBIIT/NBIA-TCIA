@@ -57,10 +57,6 @@
                 "target": "https://public.cancerimagingarchive.net/ncia"
             },
             {
-                "menuText": "Pathology Imaging",
-                "target": "https://pathology.cancerimagingarchive.net/pathdata"
-            },
-            {
                 "menuText": "REST API",
                 "target": "https://wiki.cancerimagingarchive.net/x/NIIiAQ"
             },
