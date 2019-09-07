@@ -55,21 +55,26 @@ public class GetSeriesMetadata2 extends getData{
 
 		
 		System.out.println("List-"+list);
-
+		List<Object[]> results = null;
+		try {	
 		   Authentication authentication = SecurityContextHolder.getContext()
 					.getAuthentication();
-			List<String> authorizedCollections = null;
-			try {
-				authorizedCollections = getAuthorizedCollections();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			List<String> authorizedCollections = new ArrayList<String>();
+			String userName = (String) authentication.getPrincipal();
+			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+			if (authorizedSiteData==null){
+			     AuthorizationManager am = new AuthorizationManager(userName);
+			     authorizedSiteData = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
 			}
-		List<Object[]> results = null;
-     System.out.println("seriesIDS-"+list);
+			for (SiteData siteData:authorizedSiteData) {
+				String protectionElement="'"+siteData.getCollection()+"//"+siteData.getSiteName()+"'";
+				authorizedCollections.add(protectionElement);
+			}
+            
+        
 		StudyDAO studyDAO = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
-		try {
-			results = studyDAO.getSeriesMetadata(list, authorizedCollections);
+		results = studyDAO.getSeriesMetadata(list, authorizedCollections);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
