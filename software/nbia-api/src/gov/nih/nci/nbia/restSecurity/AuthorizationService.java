@@ -5,14 +5,13 @@ package gov.nih.nci.nbia.restSecurity;
 
 
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
+import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import gov.nih.nci.nbia.security.TableProtectionElement;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.util.NCIAConfig;
-import gov.nih.nci.security.AuthenticationManager;
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.SecurityServiceProvider;
+import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
@@ -33,8 +32,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import javax.ws.rs.core.Response.Status;
-import org.glassfish.jersey.internal.util.Base64;
-import org.glassfish.jersey.server.ContainerRequest;
+
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
@@ -72,57 +70,24 @@ public class AuthorizationService {
 
 
 	public static List<String> getAuthorizedCollections(String userName) throws Exception {
-		String applicationName = NCIAConfig.getCsmApplicationName();
-		User usr = null;
-		AuthorizationManager authorizationManager;
-		List<String> authorizedCollections = null;
-
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		System.out.println("!!!!!user name="+authentication.getPrincipal());
-//		String userName = (String)authentication.getPrincipal();
-
-		try {
-			authorizationManager = SecurityServiceProvider.getAuthorizationManager(applicationName);
-			usr = authorizationManager.getUser(userName);
-
-			if (usr != null) {
-				Set<ProtectionElementPrivilegeContext> authorizedCollectionLst = authorizationManager
-						.getProtectionElementPrivilegeContextForUser(usr
-								.getUserId().toString());
-
-				if (authorizedCollectionLst != null) {
-					authorizedCollections = new ArrayList<String>();
-					for (ProtectionElementPrivilegeContext authorizedCollection : authorizedCollectionLst) {
-						String protectionElementName = authorizedCollection
-								.getProtectionElement()
-								.getProtectionElementName();
-						if (protectionElementName.indexOf("//") != -1) {
-							//make it ready to be used in sql
-							protectionElementName = protectionElementName.replaceFirst(applicationName+".", "'");
-							protectionElementName = protectionElementName.concat("'");
-//							protectionElementName = protectionElementName.replaceFirst("NCIA.", "('");
-//							protectionElementName = protectionElementName.replaceFirst("//", "', '");
-//							protectionElementName = protectionElementName.concat("')");
-							authorizedCollections.add(protectionElementName);
-							System.out.println("!!!!!user name="+userName);
-							System.out.println("!!!!protection element name ="+protectionElementName);
-						}
-					}
-				}
-				return authorizedCollections;
-
-			} else {
-				throw new Exception("The user " + userName
-						+ " cannot be found in authorization database");
+		
+		
+		   Authentication authentication = SecurityContextHolder.getContext()
+					.getAuthentication();
+			List<String> authorizedCollections = new ArrayList<String>();
+			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+			if (authorizedSiteData==null){
+			     AuthorizationManager am = new AuthorizationManager(userName);
+			     authorizedSiteData = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
 			}
-		} catch (CSConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+			for (SiteData siteData:authorizedSiteData) {
+				String protectionElement="'"+siteData.getCollection()+"//"+siteData.getSiteName()+"'";
+				authorizedCollections.add(protectionElement);
+			}
+         
+			return authorizedCollections;
+
 	}
 
 	public static boolean isGivenUserHasAccess(String userName, Map<String,String> queryParamsMap) {
