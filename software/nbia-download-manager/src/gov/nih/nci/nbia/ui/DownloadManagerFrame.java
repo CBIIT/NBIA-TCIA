@@ -363,15 +363,15 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	}
 
 	private void addDownload(List<SeriesData> seriesData) throws Exception {
-		Map<String, Integer> studyIdToSeriesCntMap = new HashMap<String, Integer>();
+		Map<String, Long> studyIdToSeriesCntMap = new HashMap<String, Long>();
 
 		for (int i = 0; i < seriesData.size(); i++) {
 			AbstractSeriesDownloader seriesDownloader = SeriesDownloaderFactory
 					.createSeriesDownloader(seriesData.get(i).isLocal());
 
-			Integer seriesCnt = studyIdToSeriesCntMap.get(seriesData.get(i).getStudyInstanceUid());
+			Long seriesCnt = studyIdToSeriesCntMap.get(seriesData.get(i).getStudyInstanceUid());
 			if (seriesCnt == null) {
-				seriesCnt = 0;
+				seriesCnt = 0L;
 			}
 
 			seriesDownloader.start(serverUrl, seriesData.get(i).getCollection(), seriesData.get(i).getPatientId(),

@@ -143,7 +143,7 @@ public class ZipManager extends Thread {
 
             boolean atLeastOneSeriesSuccessfullyRetrieved = false;
            
-            studyIdToSeriesCntMap = new HashMap<String, Integer>();
+            studyIdToSeriesCntMap = new HashMap<String, Long>();
             
             List<AnnotationFileDTO> annotationFilePaths = new ArrayList<AnnotationFileDTO>();
             StringBuffer seriesNotRetrieved = new StringBuffer();
@@ -156,9 +156,9 @@ public class ZipManager extends Thread {
                 for(SeriesSearchResult seriesSearchResult : seriesChunk) {
                     SeriesFileRetriever seriesFileRetriever = SeriesFileRetrieverFactory.getSeriesFileRetriever();
 
-                    Integer seriesCnt = studyIdToSeriesCntMap.get(seriesSearchResult.getStudyInstanceUid());
+                    Long seriesCnt = studyIdToSeriesCntMap.get(seriesSearchResult.getStudyInstanceUid());
                     if(seriesCnt==null) {
-                    	seriesCnt = 0;
+                    	seriesCnt = 0L;
                     }
                     
                     try {
@@ -333,7 +333,7 @@ public class ZipManager extends Thread {
      **/
     private List<ZipManagerListener> listeners = new ArrayList<ZipManagerListener>();
 
-    private Map<String, Integer> studyIdToSeriesCntMap;
+    private Map<String, Long> studyIdToSeriesCntMap;
     
     /**
      * Zips a list of images passed in as a list of BasketImageItemBean
@@ -341,9 +341,9 @@ public class ZipManager extends Thread {
     private void zipListOfImages(SeriesSearchResult bsib,
                                  Collection<ImageFileDTO> imageList,
                                  AbstractFileZipper zipit,
-                                 int seriesCnt)
+                                 long seriesCnt)
         throws Exception {
-    	int imageCnt = 0;
+    	long imageCnt = 0;
         for (ImageFileDTO image : imageList) {
            zipFile(zipit,
                    bsib.getProject(),
@@ -367,7 +367,7 @@ public class ZipManager extends Thread {
     private void zipAnnotations(SeriesSearchResult bsib,
                                 List<AnnotationFileDTO> annotationFilePaths,
                                 AbstractFileZipper zipit,
-                                int seriesCnt) throws Exception {
+                                long seriesCnt) throws Exception {
         if (annotationFilePaths != null) {
             for (AnnotationFileDTO annotationFile : annotationFilePaths) {
                 totalBytesToZip +=annotationFile.getFileSize().longValue();

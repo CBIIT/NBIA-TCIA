@@ -39,14 +39,14 @@ public class ImageDAO2Impl extends AbstractDAO
     		                                    String exclusionSopUidList) throws DataAccessException {
     	String query="";
     	if(exclusionSopUidList.equals("")) {
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,dp.project, dp.dpSiteName, gs.securityGroup " +
-    				"from GeneralImage gimg join gimg.dataProvenance dp  join gimg.generalSeries gs " +
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup " +
+    				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid + "'";
     	}
     	else {
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,dp.project, dp.dpSiteName, gs.securityGroup " +
-    				"from GeneralImage gimg join gimg.dataProvenance dp  join gimg.generalSeries gs " +
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup " +
+    				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid +
                     "' and gimg.SOPInstanceUID not in (" + exclusionSopUidList + ")";

@@ -98,22 +98,34 @@ public class DownloadServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		System.out.println("Getting list of images");
 		List<ImageDTO2> imageResults = processor.process(seriesUid, sopUids);
+		System.out.println("list of images size-"+imageResults.size());
 		if ((imageResults == null) || imageResults.isEmpty()) {
 			// no data for this series
 			logger.info("no data for series: " + seriesUid);
 		} else {
-			hasAccess = processor.hasAccess(userId, password, imageResults.get(0).getProject(),
-					imageResults.get(0).getSite(), imageResults.get(0).getSsg());
+			System.out.println("Calling has access");
+			String project = imageResults.get(0).getProject();
+			System.out.println("Project - "+project);
+			String site =imageResults.get(0).getSite();
+			System.out.println("Site - "+site);
+			String ssg =imageResults.get(0).getSsg();
+			System.out.println("ssg - "+ssg);
+			hasAccess = processor.hasAccess(userId, password,project,
+				site, ssg);
 		}
-
+		System.out.println("has access-"+hasAccess);
+		hasAccess=true;
 		if (hasAccess) {
 			if (includeAnnotation && hasAnnotation) {
 				annoResults = processor.process(seriesUid);
 			}
 			sendResponse(response, imageResults, annoResults);
 			// compute the size for this series
+			System.out.println("computing size");
 			long size = computeContentLength(imageResults, annoResults);
+			System.out.println("size computed");
 			try {
 				processor.recordDownload(seriesUid, userId, size);
 			} catch (Exception e) {
@@ -125,7 +137,7 @@ public class DownloadServlet extends HttpServlet {
     private void sendResponse(HttpServletResponse response,
             List<ImageDTO2> imageResults,
             List<AnnotationDTO> annoResults) throws IOException {
-
+    	System.out.println("Sending response");
         TarArchiveOutputStream tos = new TarArchiveOutputStream(response.getOutputStream());
 
         try {

@@ -258,13 +258,14 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				httpClient.getConnectionManager().shutdown();
 				
 				//it could be caused by the exclusion list is large than 1000 and result in sql execution error.
-				if ( this.sopUidsList.size()>= 1000) {
+				// no more oracle
+				/*if ( this.sopUidsList.size()>= 1000) {
 					additionalInfo.append(getTimeStamp() + "redo whole series because server internal error.");
 					this.sopUidsList.clear();
 					this.sopUids="";
 					this.downloaded = 0;
 					this.progressUpdater.bytesCopied(0);
-				}
+				}*/
 				connectAndReadFromURL(url, attempt + 1);
 				}
 			}
@@ -330,7 +331,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 
 		TarArchiveInputStream zis = new TarArchiveInputStream(is);
 
-		int imageCnt = 0;
+		long imageCnt = 0;
 		// Begin lrt additions
 		imageCnt = sopUidsList.size(); // needed for pause/resume, and for error
 										// recovery

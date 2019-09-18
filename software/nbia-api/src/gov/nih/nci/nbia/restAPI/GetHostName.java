@@ -24,21 +24,29 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import gov.nih.nci.nbia.lookup.*;
+import gov.nih.nci.nbia.basket.DynamicJNLPGenerator;
 import gov.nih.nci.nbia.dynamicsearch.DynamicSearchCriteria;
 import gov.nih.nci.nbia.dynamicsearch.Operator;
 import gov.nih.nci.nbia.dynamicsearch.QueryHandler;
 import gov.nih.nci.nbia.lookup.StudyNumberMap;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
+import gov.nih.nci.nbia.dto.SeriesDTO;
 import gov.nih.nci.nbia.dto.StudyDTO;
+import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
-import org.springframework.dao.DataAccessException;
-@Path("/getSeriesMetadata2")
-public class GetSeriesMetadata2 extends getData{
+import gov.nih.nci.nbia.searchresult.SeriesSearchResult;
+import gov.nih.nci.nbia.util.SeriesDTOConverter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+@Path("/getHostName")
+public class GetHostName extends getData{
 	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
 
@@ -49,39 +57,28 @@ public class GetSeriesMetadata2 extends getData{
 	 * @return String - set of collection names
 	 */
 	@POST
-	@Produces(TEXT_CSV)
+	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@FormParam("list") List<String> list) {
-
-		
-		System.out.println("List-"+list);
-		List<Object[]> results = null;
+	public Response constructResponse() {
+	       String hostname;
+	       InetAddress ip;
 		try {	
-		   Authentication authentication = SecurityContextHolder.getContext()
-					.getAuthentication();
-			List<String> authorizedCollections = new ArrayList<String>();
-			String userName = (String) authentication.getPrincipal();
-			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
-			if (authorizedSiteData==null){
-			     AuthorizationManager am = new AuthorizationManager(userName);
-			     authorizedSiteData = am.getAuthorizedSites();
-			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
-			}
-			for (SiteData siteData:authorizedSiteData) {
-				String protectionElement="'"+siteData.getCollection()+"//"+siteData.getSiteName()+"'";
-				authorizedCollections.add(protectionElement);
-			}
-            
+
+            ip = InetAddress.getLocalHost();
+            hostname = ip.getHostName();
+            if (hostname!=null&&hostname.indexOf(".")>1) {
+                hostname=hostname.substring(0, hostname.indexOf("."));
+            }
         
-		StudyDAO studyDAO = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
-		results = studyDAO.getSeriesMetadata(list, authorizedCollections);
+		return Response.ok(hostname).type("application/text")
+				.build();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			return Response.status(500)
-					.entity("Server was not able to process your request due to exception").build();
-		}
-		String[] columns={"Subject ID","Study UID","Study Description","Study Date","Series ID","Series Description","Number of images","File Size (Bytes)", "Collection Name", "Modality", "Manufacturer"};
-		return formatResponse("CSV-DOWNLOAD", results, columns);
+		return Response.status(500)
+				.entity("Server was not able to process your request").build();
 	}
+	
 }
+	

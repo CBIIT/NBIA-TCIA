@@ -12,7 +12,7 @@ import java.util.List;
 
 public class StringUtil {
 	//if gt then 999,999... who cares i guess....
-	public static String displayAsSixDigitString(int seriesCnt) {
+	public static String displayAsSixDigitString(long seriesCnt) {
         return String.format("%06d", seriesCnt);
     }
 
