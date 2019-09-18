@@ -1,7 +1,10 @@
 export let Properties = {
-    // 19_AUG_2019
-    VERSION: '1.0.57',
+    // 16_SEP_2019
+    VERSION: '1.0.58',
     TITLE: 'Search',
+
+    BANNER_TEXT_NBIA_: 'The Banner Text',
+    BANNER_EXP_NBIA_: '',
 
     // These values will by set by the "Brand"
     NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
@@ -14,7 +17,7 @@ export let Properties = {
     DEFAULT_BRAND: 'nbia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
 
-    VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts, to know if it is initialized before appending to the version.
+    VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts to know if it is initialized before appending to the version.
     BRAND: '%BRAND%',
 
     /*
@@ -36,6 +39,8 @@ export let Properties = {
 
     // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
+
+    HOST_NAME: '',
 
     // This can be removed when I get rid of all the old code used to get all the search results at once rather than just a page at a time.
     PAGED_SEARCH: true,

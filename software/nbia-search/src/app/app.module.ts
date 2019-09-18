@@ -100,6 +100,7 @@ import { ThirdPartyQueryComponent } from './image-search/query-section/query-sec
 import { ThirdPartyExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/third-party-query/third-party-explanation/third-party-explanation.component';
 import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 import { AppRoutingModule } from '@app/app-routing.module';
+import { BannerComponent } from './banner/banner.component';
 
 
 /*
@@ -188,7 +189,8 @@ const appRoutes: Routes = [
         SpeciesQueryComponent,
         PhantomQueryComponent,
         ThirdPartyQueryComponent,
-        ThirdPartyExplanationComponent
+        ThirdPartyExplanationComponent,
+        BannerComponent
     ],
     imports: [
         BrowserModule,

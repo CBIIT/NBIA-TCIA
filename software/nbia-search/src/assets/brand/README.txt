@@ -6,7 +6,7 @@ If you only want to change one aspect of a brand, only include that file, the de
 
 Branding consists of:
 1) logo.png:  A logo (41 pixels high)
-2) footer.html: a snippet of html that is at the bottom. If included, %VERSION% will be replaced with the client version number (see #6).
+2) footer.html: a snippet of html that is at the bottom. If included, %HOST_NAME% will be replaced with the server hostname and %VERSION% will be replaced with the client version number (see #6).
 3) newAccountUrl.txt:  Url for "New account" button on login screen.
 4) accountHelpUrl.txt:  Url for "Account help" button on login screen.
 5) downloaderUrl.txt:  Url for "Get Data Retriever" button in Download popup.

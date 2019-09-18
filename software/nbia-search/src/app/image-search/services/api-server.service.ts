@@ -125,6 +125,11 @@ export class ApiServerService implements OnDestroy{
      */
     getCollectionValuesAndCountsErrorEmitter = new EventEmitter();
 
+    getHostNameEmitter = new EventEmitter();
+    getHostNameErrorEmitter = new EventEmitter();
+
+
+
     /**
      * Used by emitGetResults when dataGet is called
      * @type {EventEmitter<any>}
@@ -530,6 +535,7 @@ export class ApiServerService implements OnDestroy{
         return this.currentApiPassword;
     }
 
+
     /**
      * Called when the Logout button in the HeaderComponent is clicked.<br>
      * Tells LoginComponent to 'quietly' login the default user.
@@ -649,6 +655,8 @@ export class ApiServerService implements OnDestroy{
             this.getSharedListResultsEmitter.emit( res );
         }else if( searchType === Consts.LOG_ENTRY ){
             this.logEntryResultsEmitter.emit( res );
+        }else if( searchType === Consts.GET_HOST_NAME ){
+            this.getHostNameEmitter.emit( res );
         }else if( searchType === Consts.TEXT_SEARCH ){
 
 
@@ -683,6 +691,8 @@ export class ApiServerService implements OnDestroy{
         // console.error( 'PostError  searchType:', searchType, '  err:', err['_body']  + '  ' + this.temp);
         if( searchType === Consts.SIMPLE_SEARCH ){
             this.simpleSearchErrorEmitter.emit( err );
+        }else if( searchType === Consts.GET_HOST_NAME ){
+            this.getHostNameErrorEmitter.emit( err );
         }else if( searchType === Consts.DRILL_DOWN_CART ){
             this.seriesForCartResultsErrorEmitter.emit( err );
         }else if( searchType === Consts.DRILL_DOWN_IMAGE ){
@@ -801,6 +811,10 @@ export class ApiServerService implements OnDestroy{
             case Consts.LOG_ENTRY:
                 searchService = Consts.LOG_ENTRY;
                 break;
+
+            case Consts.GET_HOST_NAME:
+                searchService = Consts.GET_HOST_NAME;
+                break
         }
 
         // Run the query
@@ -905,9 +919,10 @@ export class ApiServerService implements OnDestroy{
 
         let options;
 
-        // These three are returned as text NOT JSON.
+        // These are returned as text NOT JSON.
         if( (queryType === Consts.CREATE_SHARED_LIST) ||
             (queryType === Consts.DELETE_SHARED_LIST) ||
+            (queryType === Consts.GET_HOST_NAME) ||
             (queryType === Consts.LOG_ENTRY) ){
             options = {
                 headers: headers,

@@ -21,14 +21,17 @@ $legacy-feedback-left: 182px;
 
 $top-logo-height: 41px;
 
+$banner-font-size: 20pt;
+
 $popup-z-index: 21;
-$loading-screen-z-index: 10;
+$loading-screen-z-index: 5;
 $tool-tip-z-index: 2;
 $display-query-z-index: 0;  // @TODO explain
 $pie-char-description-popup-z-index: 2;
 $missing-criteria-z-index: 2;
 $search-results-column-selector-z-index: 2;
-$intro-z-index: 20;
+$intro-z-index: 3;
+$banner-z-index: 6;
 
 %panel-heading-text-color {
     color: $query-criteria-heading-text-color;

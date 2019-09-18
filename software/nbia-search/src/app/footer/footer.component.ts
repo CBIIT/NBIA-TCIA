@@ -1,9 +1,12 @@
 import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { Properties } from '@assets/properties';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UtilService } from '@app/common/services/util.service';
+import { takeUntil } from 'rxjs/operators';
+import { Consts } from '@app/consts';
+import { ApiServerService } from '@app/image-search/services/api-server.service';
 
 @Component( {
     selector: 'nbia-footer',
@@ -14,11 +17,24 @@ import { UtilService } from '@app/common/services/util.service';
 export class FooterComponent implements OnInit{
 
     properties = Properties;
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor(  ) {
+    constructor( private apiServerService: ApiServerService  ) {
     }
 
     ngOnInit() {
-     }
+
+
+        this.apiServerService.getHostNameEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                Properties.HOST_NAME = <string>data;
+            },
+            error => {
+                Properties.HOST_NAME = 'Unknown';
+                console.error('Error getting host name: ', error);
+            }
+        );
+        this.apiServerService.doSearch( Consts.GET_HOST_NAME, 'X' );
+    }
 
 }

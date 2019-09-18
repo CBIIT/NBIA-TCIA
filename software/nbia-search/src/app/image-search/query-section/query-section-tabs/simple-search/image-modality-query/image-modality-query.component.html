@@ -89,6 +89,13 @@
         </div>
         <!-- -----  End Search input  ----- -->
 
+        <!-- ----------  The Less/More... clickers at the top  ---------- -->
+        <div *ngIf="unCheckedCount > properties.CRITERIA_SHOW_COUNT">
+            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll">
+                {{unCheckedCount - properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
         <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
         <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
 

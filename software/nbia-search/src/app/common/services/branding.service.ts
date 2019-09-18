@@ -113,7 +113,9 @@ export class BrandingService{
                Properties.VERSION_SUFFIX = value;
                break;
            case this.FOOTER_HTML:
-                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX);
+                Properties.FOOTER_HTML = value.trim().
+                replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX).
+                replace( /%HOST_NAME%/g, Properties.HOST_NAME);
                 break;
         }
     }
