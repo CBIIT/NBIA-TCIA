@@ -26,10 +26,18 @@
 
     <div class="row">
 
-        <div class="panel-heading col-md-8  heading-cell">
+        <div class="panel-heading col-md-8  heading-cell"
+             [ngClass]="{
+             'busy': ! haveData
+         }"
+        >
             <span
                 *ngIf="( description.length > 0) && haveData"
                 class="heading-label"
+                [ngClass]="{
+                    'busy': ! haveData
+                }"
+
             >
                 {{description}}
             </span>
@@ -100,7 +108,11 @@
 >
 
     <!-- -----  Images  ----- -->
-    <div class="row image-grid-row">
+    <div class="row image-grid-row"
+         [ngClass]="{
+             'busy': ! haveData
+         }"
+    >
 
         <!-- Loop through images for just this page. -->
         <span
@@ -118,13 +130,15 @@
                   'col-9': columns === 9,
                   'col-10': columns === 10,
                   'col-11': columns === 11,
-                  'col-12': columns === 12
+                  'col-12': columns === 12,
+                  'busy': ! haveData
              }"
         >
 
             <div class="parent-image-div"
                  [ngClass]="{
-                    'parentImageMouseOver': mouseOver[i + firstImage]
+                    'parentImageMouseOver': mouseOver[i + firstImage],
+                    'busy': ! haveData
                 }"
                  (mouseover)="onMouseOver(i + firstImage)"
                  (mouseleave)="onMouseOut(i  + firstImage)"
@@ -136,7 +150,8 @@
                     <img
                         class="image "
                         [ngClass]="{
-                            'image-mouseover': mouseOver[i + firstImage]
+                            'image-mouseover': mouseOver[i + firstImage],
+                            'busy': ! haveData
                         }"
                         [src]=image.thumbnailImage
                     >
@@ -145,7 +160,8 @@
                         <span
                             class="image-number"
                             [ngClass]="{
-                                    'image-numberMouseOver': mouseOver[i + firstImage]
+                                    'image-numberMouseOver': mouseOver[i + firstImage],
+                                    'busy': ! haveData
                             }"
                         >
 
@@ -162,8 +178,9 @@
                 <!-- The transparent "Open Image" Image -->
                     <img
                         [ngClass]="{
-                                    'hide-element':! mouseOver[i + firstImage]
-                            }"
+                            'hide-element':! mouseOver[i + firstImage],
+                            'busy': ! haveData
+                        }"
                         class="image open-image-img"
                         src="assets/images/open_image_02.png"
                     >
@@ -172,5 +189,9 @@
     </div>
 </div>
 <div *ngIf="! haveError">
-    <nbia-footer></nbia-footer>
+    <nbia-footer
+            [ngClass]="{
+                    'busy': ! haveData
+                }"
+    ></nbia-footer>
 </div>

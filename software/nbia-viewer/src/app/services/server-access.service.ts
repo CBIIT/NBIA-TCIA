@@ -42,15 +42,11 @@ export class ServerAccessService{
         let rightThen;
         let len = -1;
         let rightNow = new Date();
-        console.log( 'rightNow: ', rightNow.getMilliseconds() );
 
         this.getImageDrillDownData().subscribe(
             data => {
                 len = data.length;
                 rightThen = new Date();
-                // console.log( 'rightThen: ', rightThen.getMilliseconds() );
-                console.log( 'total time: ', rightNow.getMilliseconds() - rightThen.getMilliseconds() );
-                console.log( 'total time: ', rightThen.getMilliseconds() - rightNow.getMilliseconds() );
             }
         );
     }
@@ -73,8 +69,6 @@ export class ServerAccessService{
      * @param imageNumber
      */
     async getImages( page?, imageNumber?) {
-        console.log( 'getImages page: ', page );
-        console.log( 'getImages imageNumber: ', imageNumber );
         this.loading = true;
         this.images = [];
         let len = 99999999;
@@ -102,8 +96,6 @@ export class ServerAccessService{
                 }
 
                 for( let i = this.first; i <= this.last; i++ ){
-                    // console.log( 'getThumbnails[' + i + ']');
-
                     this.getThumbnails( data[i]['seriesInstanceUid'], data[i]['sopInstanceUid'], this.getToken() ).subscribe(
                         thumbnailData => {
                             this.images.push(
@@ -135,8 +127,6 @@ export class ServerAccessService{
                                     'seq': i
                                 }
                             );
-
-                            console.log( 'thumbnailError: ', thumbnailError );
                             // this.getThumbnailsEmitter.emit( thumbnailError );
                         }
                     );
@@ -150,31 +140,25 @@ export class ServerAccessService{
 
             }
         );
-        console.log( 'Start waiting this.last - this.first: ', this.last - this.first );
 
         // Wait until we have all the images.
         this.commonService.setHaveAllData( false );
 
         if( Properties.IMAGE_LOAD_MODE === Properties.LOAD_ALL ){
-            console.log( 'LOAD_ALL waiting this.last - this.first: ', this.last - this.first );
             while( (this.images.length + this.getThumbnailErrorCount) < len ){
                 await this.utilService.sleep( Properties.WAIT_TIME );
             }
         }else{
-            console.log( 'NOT LOAD_ALL waiting this.last - this.first: ', this.last - this.first );
             while( this.loading || ((this.images.length + this.getThumbnailErrorCount) < (this.last - this.first)) ){
                 await this.utilService.sleep( Properties.WAIT_TIME );
             }
         }
         this.commonService.setHaveAllData( true );
 
-        // console.log( 'Done waiting: ', this.images.length );
         // Sort by seq here - need to sort, they may not have arrived from the server in the order they where requested.
         this.images.sort( ( row1, row2 ) => (row1.seq - row2.seq) );
 
         this.getImagesResultsEmitter.emit( this.images );
-
-        // console.log( 'Done sorting and sending: ', this.images.length );
 
     }
 
@@ -281,11 +265,12 @@ export class ServerAccessService{
             '&client_id=nbiaRestAPIClient&client_secret=' + Properties.API_CLIENT_SECRET_DEFAULT +
             '&grant_type=password';
 
+ /*
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
             console.log( 'getAccessToken: ' + curl );
         }
-
+*/
         let options =
             {
                 headers: headers,

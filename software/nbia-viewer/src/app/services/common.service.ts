@@ -56,7 +56,6 @@ export class CommonService{
     }
 
     setImageCount( c ) {
-        console.log( 'setImageCount: ', c );
         this.imageCountEmitter.emit( c );
         this.imageCount = c;
     }

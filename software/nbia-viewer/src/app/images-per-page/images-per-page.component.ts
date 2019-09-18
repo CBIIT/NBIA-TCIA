@@ -7,17 +7,25 @@ import { UtilService } from '../services/util.service';
 @Component( {
     selector: 'nbia-images-per-page',
     templateUrl: './images-per-page.component.html',
-    styleUrls: ['./images-per-page.component.scss']
+    styleUrls: ['./images-per-page.component.scss', '../nbia-thumbnail-viewer/nbia-thumbnail-viewer.component.scss']
 } )
 
 export class ImagesPerPageComponent implements OnInit{
 
     imagesPerPage;
+    haveData = false;
 
     constructor( private commonService: CommonService, private utilService: UtilService ) {
     }
 
     ngOnInit() {
+        this.commonService.haveAllDataEmitter.subscribe(
+            data => {
+                this.haveData = data;
+            }
+        );
+
+
         this.initImagesPerPage();
     }
 

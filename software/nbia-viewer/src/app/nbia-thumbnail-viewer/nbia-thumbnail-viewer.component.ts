@@ -291,7 +291,6 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
     }
 
     onRadioClick( i ){
-        console.log('onRadioClick: ', i );
         Properties.IMAGE_LOAD_MODE = i;
     }
 
@@ -363,8 +362,6 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
     }
 
     onOpenImageClick( i ) {
-        // console.log( 'wado images[' + i + ']: ', this.images[i] );
-
         // We keep this value in case the call to get the image fails due to error 401, and the user is guest,
         // we can get a new token and try again.
         this.currentViewImageIndex = i;

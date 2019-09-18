@@ -1,6 +1,6 @@
 export let Properties = {
-    // 02_AUG_2019
-    VERSION: '1.0.56',
+    // 16_SEP_2019
+    VERSION: '1.0.58',
     TITLE: 'Image Viewer',
 
     VIEWER_COLUMNS_DEFAULT: 5,
@@ -12,7 +12,7 @@ export let Properties = {
     LOAD_ALL: 0,
     LOAD_ONE_PAGE: 1,
     LOAD_ONE_IMAGE: 2,
-    IMAGE_LOAD_MODE: 0,
+    IMAGE_LOAD_MODE: 1,
 
     API_SERVER_USER_DEFAULT: 'nbia_guest',
     API_SERVER_PASSWORD_DEFAULT: 'test',

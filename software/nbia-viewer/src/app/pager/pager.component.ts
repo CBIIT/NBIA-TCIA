@@ -8,7 +8,7 @@ import { ServerAccessService } from '../services/server-access.service';
 @Component( {
     selector: 'nbia-pager',
     templateUrl: './pager.component.html',
-    styleUrls: ['./pager.component.scss']
+    styleUrls: ['./pager.component.scss', '../nbia-thumbnail-viewer/nbia-thumbnail-viewer.component.scss']
 } )
 export class PagerComponent implements OnInit, OnDestroy{
     /**
@@ -61,6 +61,8 @@ export class PagerComponent implements OnInit, OnDestroy{
      */
     direction = 0;
 
+    haveData = false;
+
     /**
      * Search results, or a Cart list.
      */
@@ -73,6 +75,11 @@ export class PagerComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
+        this.commonService.haveAllDataEmitter.subscribe(
+            data => {
+                this.haveData = data;
+            }
+        );
 
         this.commonService.imageCountEmitter.subscribe(
             data => {
