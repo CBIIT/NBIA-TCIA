@@ -1,0 +1,26 @@
+@import '../app.component.scss';
+
+.banner-div {
+  z-index: $banner-z-index;
+  position: absolute;
+  // width: calc(100% - 20px);
+  width: 100%;
+  border: solid #000 2px;
+  padding: 4px;
+  border-radius: 2px;
+  background: yellow;
+  text-align: center;
+  margin: 0;
+ // margin: 10px;
+  // box-shadow: 7px 7px 8px 0 rgba(0, 0, 0, 0.5), 10px 10px 11px rgba(255, 255, 255, 0.5);
+ // box-shadow: 5px 5px 8px 0  rgba(255, 255, 255, 0.8);
+}
+
+.banner-text {
+  font-size: $banner-font-size;
+
+}
+
+.banner-close {
+  padding: 8px;
+}
