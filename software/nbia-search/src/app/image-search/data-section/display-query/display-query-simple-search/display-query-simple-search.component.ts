@@ -34,9 +34,11 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
     properties = Properties;
 
     displayQueryElements = this.properties.DISPLAY_QUERY_ELEMENTS_MAX + 1;
+    truncatedOutput = false;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
+    showAllCriteria = false;
 
     // For access in the HTML. The AOT compiler setting can't have any private objects in the HTML
     comService;
@@ -63,6 +65,7 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
      * First element of each row is the category name, the rest are the selected criteria for that category.
      */
     populateCriteriaLists() {
+        let longestCategory = 0;
         this.allCriteriaList = [];
         // Populate populateCriteriaLists
         for( let criteria of this.criteriaList ){
@@ -90,7 +93,15 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
                 // This newly added row will be the last one in the array, so it's index is "this.allCriteriaList.length - 1"
                 this.allCriteriaList[this.allCriteriaList.length - 1].push( criteria.name );
             }
+
+            this.truncatedOutput = false;
+            for (let criteriaCategory of this.allCriteriaList) {
+                if( (criteriaCategory.length ) > this.displayQueryElements  ){
+                    this.truncatedOutput = true;
+                }
+            }
         }
+        this.showAllCriteria = false;
     }
 
     getSpeciesDescriptionByCode( code ) {
