@@ -33,6 +33,8 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
 
     properties = Properties;
 
+    displayQueryElements = this.properties.DISPLAY_QUERY_ELEMENTS_MAX + 1;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
 

@@ -3,9 +3,9 @@
 
 <div class="alert alert-info display-query display-wrap">
     <button
-        class="btn btn-default no-outline"
-        title="Clear query"
-        (click)="onClearSimpleSearchQueryClick()"
+            class="btn btn-default no-outline"
+            title="Clear query"
+            (click)="onClearSimpleSearchQueryClick()"
     >
         <img src="assets/images/clear-icon1.png">
         Clear
@@ -21,18 +21,33 @@
         <span *ngFor="let critRow of allCriteriaList; let n = index">
             <!-- Do not split up the following line.  -->
             <span *ngIf="( n > 0 ) && ( n < allCriteriaList.length )">&nbsp;<span
-                class="label label-default criteria-and">AND</span>
+                    class="label label-default criteria-and">AND</span>
             </span>
 
                 <span *ngFor="let critRowElements of critRow; let i = index">
-
-                    <span *ngIf="i==0" class="label label-default criteria-display criteria-display-title display-wrap">{{critRowElements | displayFormat}}</span>
-                    <span class="display-wrap" *ngIf="i==1">(&nbsp;</span>
-                    <span class="display-wrap" *ngIf="( (i > 1) && (i < critRow.length))">,&nbsp;</span>
-                    <span *ngIf="( i > 0 )"
-                          class="label label-default criteria-display criteria-display-name display-wrap">{{cleanQuery(critRowElements)}}
+                <span *ngIf="i==0"
+                      class="label label-default criteria-display criteria-display-title display-wrap">{{critRowElements | displayFormat}}</span>
+                <span *ngIf="i==1" class="display-wrap">(</span>
+                <span *ngIf="i>1 && i < displayQueryElements">,</span>
+                <span *ngIf="( i > 0 ) && ( i < displayQueryElements )"
+                      class="label label-default criteria-display criteria-display-name display-wrap">{{cleanQuery(critRowElements)}}
+                </span>
+                    <span *ngIf="displayQueryElements === 3">
+                        <span *ngIf="((i==1)&&(critRow.length == 2))||((i==2)&&(critRow.length == 3))" class="display-wrap">&nbsp;)</span>
+                        <span *ngIf="i==3">,&nbsp;...)</span>
                     </span>
-                <span class="display-wrap" *ngIf="i==critRow.length - 1 ">&nbsp;)</span>
+                    <span *ngIf="displayQueryElements === 4">
+                        <span *ngIf="((i==1)&&(critRow.length == 2))||((i==2)&&(critRow.length == 3))||((i==3)&&(critRow.length == 4))" class="display-wrap">&nbsp;)</span>
+                        <span *ngIf="i==4">,&nbsp;...)</span>
+                    </span>
+                    <span *ngIf="displayQueryElements === 5">
+                        <span *ngIf="((i==1)&&(critRow.length == 2))||
+                        ((i==2)&&(critRow.length == 3))||
+                        ((i==3)&&(critRow.length == 4))||
+                        ((i==4)&&(critRow.length == 5))
+                        " class="display-wrap">&nbsp;)</span>
+                        <span *ngIf="i==5">,&nbsp;...)</span>
+                    </span>
             </span>
         </span>
     </span>

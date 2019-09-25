@@ -156,6 +156,9 @@ export let Properties = {
 
     ROWS_PER_PAGE_LIMIT: 500,
 
+    // Number of elements to show per criteria in the display query. If there are more, show ...
+    // Must be 2, 3 or 4 !!!
+    DISPLAY_QUERY_ELEMENTS_MAX: 3
 };
 
 
