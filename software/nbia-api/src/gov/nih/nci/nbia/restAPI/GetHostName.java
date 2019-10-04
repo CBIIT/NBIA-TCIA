@@ -45,7 +45,7 @@ import gov.nih.nci.nbia.searchresult.SeriesSearchResult;
 import gov.nih.nci.nbia.util.SeriesDTOConverter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-@Path("/getHostName")
+@Path("/hostName")
 public class GetHostName extends getData{
 	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
@@ -56,7 +56,7 @@ public class GetHostName extends getData{
 	 *
 	 * @return String - set of collection names
 	 */
-	@POST
+	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 
 	public Response constructResponse() {
