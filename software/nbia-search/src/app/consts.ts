@@ -94,7 +94,7 @@ export const Consts = {
         DRILL_DOWN_IMAGE: 'getImageDrillDown',
         GET_THUMBNAIL: 'getThumbnail\'',
         COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
-        GET_HOST_NAME: 'getHostName',
+        GET_HOST_NAME: 'hostName',
 
         // For getting subject "id" data with the subject "subjectId"  will be a simple search
         SHARED_LIST_SUBJECT_ID_SEARCH: 'sharedListSubjectIdSearch',

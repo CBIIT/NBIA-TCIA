@@ -25,16 +25,14 @@ export class FooterComponent implements OnInit{
     ngOnInit() {
 
 
-        this.apiServerService.getHostNameEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+        this.apiServerService.doGetNoToken( Consts.GET_HOST_NAME ).subscribe(
             data => {
                 Properties.HOST_NAME = <string>data;
             },
             error => {
                 Properties.HOST_NAME = 'Unknown';
                 console.error('Error getting host name: ', error);
-            }
-        );
-        this.apiServerService.doSearch( Consts.GET_HOST_NAME, 'X' );
+            });
     }
 
 }
