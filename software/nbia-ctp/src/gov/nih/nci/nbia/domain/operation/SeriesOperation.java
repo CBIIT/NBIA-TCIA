@@ -203,7 +203,9 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	    String modality = (String) numbers.get(DicomConstants.MODALITY);
     	if (modality != null) {
             series.setModality(modality.trim());
-        }	    
+        } else {
+        	throw new Exception("Modality is null and it is required by DICOM");
+        }
 	}  
 	
 	private static void setAdditionalQcFlags(GeneralSeries series, Map numbers) throws Exception {
