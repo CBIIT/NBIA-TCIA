@@ -145,7 +145,9 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 		String studyDate = (String) numbers.get(DicomConstants.STUDY_DATE);
 	    if (studyDate != null) {
 	        study.setStudyDate(AdapterUtil.stringToDate(studyDate.trim()));
-	    }		
+	    } else {
+	    	throw new Exception("Study date is null and it is required by DICOM");
+	    }
 	}
 	
 	private static void setStudyTime(Study study, Map numbers) {
