@@ -91,10 +91,14 @@ public class MRImageOperation extends DomainOperation implements
 
         if ((temp = (String) numbers.get(DicomConstants.SCANNING_SEQUENCE)) != null) {
             mri.setScanningSequence(temp.trim());
+        } else {
+        	throw new Exception("Scanning Sequence is null and it is required by DICOM");
         }
 
         if ((temp = (String) numbers.get(DicomConstants.SEQUENCE_VARIANT)) != null) {
             mri.setSequenceVariant(temp.trim());
+        } else {
+        	throw new Exception("Scanning Sequence Variant is null and it is required by DICOM");
         }
 
         if ((temp = (String) numbers.get(DicomConstants.REPETITION_TIME)) != null) {
