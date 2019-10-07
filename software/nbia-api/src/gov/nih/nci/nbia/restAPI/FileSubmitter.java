@@ -10,6 +10,9 @@ public class FileSubmitter {
 public static String submit(String file, String project, String siteName, 
 		String siteID, String batch, String thirdPartyAnalysis, String descriptionURI) {
 	File dfile=new File(file);
+	if (!dfile.isFile()) {
+		throw new Exception("File not found "+dfile);
+	}
 	NonCTPDatabaseDelegator delegator = (NonCTPDatabaseDelegator)SpringApplicationContext.getBean("nciaDelegator");
 	delegator.setCorrectFileSize(dfile);
 	return delegator.process(dfile, null, project, siteName, siteID, null, batch, thirdPartyAnalysis, descriptionURI);
