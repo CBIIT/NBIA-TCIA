@@ -30,4 +30,5 @@ public interface TrialDataProvenanceDAO {
 	 */
 	public List<String> getProjSiteValues() throws DataAccessException;	
 	public void setProjSiteValues(String project, String site) throws DataAccessException;
+	public boolean hasExistingProjSite(String project, String site) throws DataAccessException;
 }

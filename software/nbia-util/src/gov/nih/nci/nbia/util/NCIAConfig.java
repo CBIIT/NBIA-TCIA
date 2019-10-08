@@ -828,7 +828,7 @@ public class NCIAConfig {
      *  This property is configured via nbia.properties/defaultAHP3.properties
      *  to contain value for ctp allowing imaging submission to creat new collection and site in DB.
      */
-    public static String getCtpCreationNewProjectSite(){
+    public static String getCtpBlockCreationNewProjectSite(){
         String propertyValue = properties.getProperty("ctp.block.creating.newCollectionSite");
         checkProperty("ctp.block.creating.newCollectionSite", propertyValue);
         return propertyValue;

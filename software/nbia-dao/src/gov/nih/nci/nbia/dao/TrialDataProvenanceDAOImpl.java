@@ -56,6 +56,21 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 }
 	
 	/**
+	 * Check if collection and site exist already.
+	 *
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public boolean hasExistingProjSite(String project, String site) throws DataAccessException {
+	String hql = "select distinct(CONCAT(tdp.project, '//', tdp.dpSiteName)) from TrialDataProvenance tdp ";
+	String where = " where tdp.project = '" + project +"' and tdp.dpSiteName = '" + site +"'";
+	List<String> rs = getHibernateTemplate().find(hql + where);
+	if ((rs != null) && (rs.size() == 1))
+		return true;
+	else return false;
+
+}	
+	
+	/**
 	 * Save a collection (ie. project) and site.
 	 *
 	 * This method is used in User Authorization Tool.
