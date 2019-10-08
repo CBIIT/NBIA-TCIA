@@ -16,6 +16,6 @@ public static String submit(String file, String project, String siteName,
 	NonCTPDatabaseDelegator delegator = (NonCTPDatabaseDelegator)SpringApplicationContext.getBean("nciaDelegator");
 	delegator.setCorrectFileSize(dfile);
 	return delegator.process(dfile, null, project, siteName, siteID, null, batch, thirdPartyAnalysis, descriptionURI);
-	 
+	
 }
 }
