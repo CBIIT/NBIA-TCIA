@@ -29,4 +29,5 @@ public interface TrialDataProvenanceDAO {
 	 * This method is used for NBIA Rest API.
 	 */
 	public List<String> getProjSiteValues() throws DataAccessException;	
+	public void setProjSiteValues(String project, String site) throws DataAccessException;
 }

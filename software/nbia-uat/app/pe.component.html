@@ -1,0 +1,39 @@
+<div style="position:absolute;top: 8px;right: 30px;">
+	<a href="{{wikiLink}}" target="_blank">
+		<img src="app/images/help.png" alt="Help"/>
+	</a>
+</div>		
+<div class="ContentSideSections Implementation">
+	<p-dataTable [value]="pes"  [paginator]="true" [rows]="10" [responsive]="true">
+	
+		<p-column field="collection" header="Collection" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+		<p-column field="site" header="Site" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+
+	<footer>
+	<div class="ui-helper-clearfix" style="width:100%">
+	<button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add Protection Element"></button>
+	</div>
+	</footer>
+	</p-dataTable>
+		
+	<p-messages [value]="statusMessage" [closable]="false" style="height:10px;"></p-messages>
+
+	<p-dialog header="Protection Element Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="600" positionTop="0" positionLeft="0">
+		<div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4"><label for="collection">Collection</label></div>
+				<div class="ui-grid-col-8"><input pInputText id="collection" [(ngModel)]="pe.collection"/></div>
+			</div>
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-4"><label for="site">Site</label></div>
+				<div class="ui-grid-col-8"><input pInputText id="site" [(ngModel)]="pe.site" /></div>
+			</div>
+		</div>
+		<footer>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+			</div>
+		</footer>
+	</p-dialog>
+</div>
+

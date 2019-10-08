@@ -5,12 +5,13 @@ import {Checkbox,Message} from 'primeng/primeng';
 import {User} from './users/user';
 import {UserService} from './users/userservice';
 import myGlobals = require('./conf/globals');
+import {ConfigService,Config} from './configs/configservice';
 
 @Component({
 	templateUrl: 'app/user.component.html',
 	selector: 'user',
     directives: [InputText,Checkbox,DataTable,Messages,Button,Dialog,Column,Header,Footer],
-	providers: [HTTP_PROVIDERS,UserService]
+	providers: [HTTP_PROVIDERS,UserService,ConfigService]
 })
 
 export class UserComponent {
@@ -25,13 +26,13 @@ export class UserComponent {
 	statusMessage: Message[] = [];
 	errorMessage: string;
 
-    constructor(private userService: UserService) { 
-		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.manageUserWiki;
-	}
+    constructor(private userService: UserService, private appservice: ConfigService) {}
 
     ngOnInit() {
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading user data...'});
         this.userService.getUsers().then(users => {this.users = users; this.statusMessage = [];}, 
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
+		this.appservice.getWikiUrlParam().then(data => {this.wikiLink = data + myGlobals.manageUserWiki},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
     }
 

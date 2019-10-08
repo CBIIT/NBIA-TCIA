@@ -186,7 +186,7 @@ public class SecurityBean {
 		loggedIn = false;
 
 		// Check for Special chars in the user name
-		if(!StringUtil.removeIllegitCharacters(username).equalsIgnoreCase(username)){
+		if(!StringUtil.removeIllegitCharactersForUserId(username).equalsIgnoreCase(username)){
 			MessageUtil.addErrorMessage(PASSWORD_FIELD_JSF_ID,
 					                    "securityLogin");
     		loginFailure = true;
