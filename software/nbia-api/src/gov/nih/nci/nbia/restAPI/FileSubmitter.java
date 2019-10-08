@@ -8,7 +8,7 @@ import java.io.File;
 public class FileSubmitter {
 	
 public static String submit(String file, String project, String siteName, 
-		String siteID, String batch, String thirdPartyAnalysis, String descriptionURI) {
+		String siteID, String batch, String thirdPartyAnalysis, String descriptionURI) throws Exception{
 	File dfile=new File(file);
 	if (!dfile.isFile()) {
 		throw new Exception("File not found "+dfile);
