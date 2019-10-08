@@ -17,5 +17,5 @@ public static String submit(String file, String project, String siteName,
 	delegator.setCorrectFileSize(dfile);
 	return delegator.process(dfile, null, project, siteName, siteID, null, batch, thirdPartyAnalysis, descriptionURI);
 	
-}
+	}
 }
