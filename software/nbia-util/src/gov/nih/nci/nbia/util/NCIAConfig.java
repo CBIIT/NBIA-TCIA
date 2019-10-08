@@ -821,7 +821,30 @@ public class NCIAConfig {
         	propertyValue = "337915000";
         }
         return propertyValue;   	
+    }
+    /**
+     * Externalized Property!
+     *  Property: ctp.block.creating.newCollectionSite
+     *  This property is configured via nbia.properties/defaultAHP3.properties
+     *  to contain value for ctp allowing imaging submission to creat new collection and site in DB.
+     */
+    public static String getCtpCreationNewProjectSite(){
+        String propertyValue = properties.getProperty("ctp.block.creating.newCollectionSite");
+        checkProperty("ctp.block.creating.newCollectionSite", propertyValue);
+        return propertyValue;
     } 
+    
+    /**
+     * Externalized Property!
+     *  Property: uat.enable.creating.newCollectionSite
+     *  This property is configured via nbia.properties/defaultAHP3.properties
+     *  to contain value for UAT to creat new collection and site in DB.
+     */
+    public static String getUatCreationNewProjectSite(){
+        String propertyValue = properties.getProperty("uat.enable.creating.newCollectionSite");
+        checkProperty("uat.enable.creating.newCollectionSite", propertyValue);
+        return propertyValue;
+    }        
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer

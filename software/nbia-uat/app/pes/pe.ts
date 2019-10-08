@@ -1,4 +1,6 @@
 export interface Pe {
-  label: string;
-  value: string;
+//  label: string;
+//  value: string;
+	collection: string;
+	site: string
 }

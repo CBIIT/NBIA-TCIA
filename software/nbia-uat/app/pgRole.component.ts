@@ -8,13 +8,14 @@ import {PgRole} from './pgRoles/pgRole';
 import {PgRoleService} from './pgRoles/pgRoleservice';
 import {SelectItem,Message} from 'primeng/primeng';
 import myGlobals = require('./conf/globals');
+import {ConfigService,Config} from './configs/configservice';
 
 @Component({
 	templateUrl: 'app/pgRole.component.html',
 	selector: 'pgRole',
 	styles: ['div {border: none;padding: 0px;margin: 0px;}'],
     directives: [Dropdown,PickList,MultiSelect,InputText,Messages,Checkbox,DataTable,Button,Dialog,Column,Header,Footer],
-	providers: [HTTP_PROVIDERS,PgRoleService]
+	providers: [HTTP_PROVIDERS,PgRoleService,ConfigService]
 })
 
 export class PgRoleComponent {
@@ -38,8 +39,8 @@ export class PgRoleComponent {
 	wikiLink: string;
 	searchInProgress:boolean;
 
-    constructor(private pgRoleService: PgRoleService) { 
-		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.userAuthorizationWiki;	
+    constructor(private pgRoleService: PgRoleService, private appservice: ConfigService) { 
+		//this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.userAuthorizationWiki;	
 	}
 
 		
@@ -66,7 +67,8 @@ export class PgRoleComponent {
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
-		
+		this.appservice.getWikiUrlParam().then(data => {this.wikiLink = data + myGlobals.userAuthorizationWiki},
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
 		this.selectedUserName = null;
 		
 		this.availablePGs = [];

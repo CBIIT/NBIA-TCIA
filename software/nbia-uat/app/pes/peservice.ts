@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
-import {Pg} from '../../app/pgs/pg';
+//import {Pg} from '../../app/pgs/pg';
 import {Pe} from '../../app/pes/pe';
 import myGlobals = require('../../app/conf/globals');
 import 'rxjs/add/operator/map';
@@ -14,24 +14,24 @@ import {SelectItem} from 'primeng/components/api/selectitem';
 export class PeService {
 
     constructor(private http: Http) {}
-
-	getAvailablePes(pgName: string) {
-		var serviceUrl = myGlobals.serviceUrl +'getAvailablePEsForPG';
-		var params = '?PGName='+ pgName + '&format=json';
+	
+	getPes() {
+		//alert(myGlobals.accessToken);
+		var serviceUrl = myGlobals.serviceUrl +'getPEList?format=json';	
 		var headers = new Headers();
 		if(myGlobals.accessToken) {
 			headers.append('Authorization', 'Bearer ' + myGlobals.accessToken);      
 		}
-		
-        return this.http.get(serviceUrl + params, {headers: headers})
+
+        return this.http.get(serviceUrl,{headers: headers})
                     .toPromise()
-                    .then(res => <SelectItem[]> res.json())
+                    .then(res => <Pe[]> res.json())
                     .then(data => { return data; }); 
     }
-
-	addNewPg(pg: Pg) {
-		var serviceUrl = myGlobals.serviceUrl +'createProtecionGroup';
-		var params = '?PGName=' + pg.dataGroup + '&description='+pg.description;
+	
+	addNewPe(pe: Pe) {
+		var serviceUrl = myGlobals.serviceUrl +'createCollectionSite';
+		var params = '?collection=' + pe.collection + '&site='+pe.site;
 		var headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		if(myGlobals.accessToken) {
@@ -41,7 +41,7 @@ export class PeService {
 		return this.http.post(serviceUrl + params,
 			params, {headers: headers}).map(res => res.json());
 	}
-	
+/*	
 	modifyExistingPg(pg: Pg) {
 		var serviceUrl = myGlobals.serviceUrl +'modifyProtecionGroup';
 		var params = '?PGName=' + pg.dataGroup + '&description='+pg.description;
@@ -68,5 +68,6 @@ export class PeService {
 		
 		return this.http.post(serviceUrl + params,
 			params, {headers: headers}).map(res => res.json());
-	}		
+	}
+*/	
 }
