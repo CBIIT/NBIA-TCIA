@@ -33,4 +33,14 @@ do
 	sed -i 's@^\s*SHOW_OHIF_SERIES_VIEWER:.*,@SHOW_OHIF_SERIES_VIEWER:true,@g'  ../${f}
 done
 
+
+sed -i 's@^\s*SHOW_OHIF_VIEWER:.*,@SHOW_OHIF_VIEWER:true,@g'  ${PROP_FILE}
+
+for f in `ls ../ | grep main`
+do
+	sed -i 's@^\s*SHOW_OHIF_VIEWER:.*,@SHOW_OHIF_VIEWER:true,@g'  ../${f}
+done
+
+
+# SHOW_OHIF_VIEWER
 echo "Set OHIFViewer on."
