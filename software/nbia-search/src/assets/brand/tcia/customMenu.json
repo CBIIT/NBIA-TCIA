@@ -29,7 +29,7 @@
         ]
     },
     {
-        "entryTitle": "Publish Your Data",
+        "entryTitle": "Submit Your Data",
         "menuDataDropdown": [
             {
                 "menuText": "New TCIA Dataset",
@@ -38,6 +38,10 @@
             {
                 "menuText": "Analysis of Existing TCIA Datasets",
                 "target": "http://www.cancerimagingarchive.net/analysis-results/"
+            },
+            {
+                "menuText": "Submission and De-identification Overview",
+                "target": "https://wiki.cancerimagingarchive.net/x/ZwA2"
             }
         ]
     },
@@ -92,10 +96,6 @@
             {
                 "menuText": "Challenge Competitions",
                 "target": "https://wiki.cancerimagingarchive.net/x/nYIaAQ"
-            },
-            {
-                "menuText": "De-Identification Knowledge Base",
-                "target": "https://wiki.cancerimagingarchive.net/x/ZwA2"
             }
         ]
     },
