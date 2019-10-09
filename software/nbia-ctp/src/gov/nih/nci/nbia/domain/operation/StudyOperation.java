@@ -43,7 +43,13 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 		    List rs = getHibernateTemplate().find(buildQueryToFindExistingStudy(numbers, patient));
 		    if(rs != null && rs.size() > 0) {
 		    	study = (Study)rs.get(0);
-		    	//db constraints will make 1 the max		    	
+		    	//db constraints will make 1 the max	
+		    	if (study.getPatient().getId()!=patient.getId()) {
+		    		throw new Exception("There is another instance of this patient with a different id,"
+		    				+ " this typically happens when an image is submitted with a different"
+		    				+ " collection, site or site id. Compare these to the patient in the database to"
+		    				+ " resolve the error");
+		    	}
 		    }
 		    else {
 		    	study = (Study)SpringApplicationContext.getBean("study");
@@ -129,8 +135,8 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 	    	log.error(noStudyInstanceUidErrorMsg);
 	        throw new Exception(noStudyInstanceUidErrorMsg);
 	    }
-	
-	    hql += (" and study.patient.id = " + patient.getId());
+	    // we will check later if the patient matches this current patient id.  If not it indicates an error condition
+	    // hql += (" and study.patient.id = " + patient.getId());
 	    //study.setPatient(patient);
 	    return hql;
 	}
@@ -139,7 +145,9 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 		String studyDate = (String) numbers.get(DicomConstants.STUDY_DATE);
 	    if (studyDate != null) {
 	        study.setStudyDate(AdapterUtil.stringToDate(studyDate.trim()));
-	    }		
+	    } else {
+	    	throw new Exception("Study date is null and it is required by DICOM");
+	    }
 	}
 	
 	private static void setStudyTime(Study study, Map numbers) {

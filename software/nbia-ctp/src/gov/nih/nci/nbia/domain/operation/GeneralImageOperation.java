@@ -371,18 +371,21 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
 
     private List queryForExistingImage(Integer seriesInstanceUid,
                                               String sopInstanceUid) throws Exception {
-        String hql = "from GeneralImage as image where ";
-        hql += (" image.generalSeries.id = " + seriesInstanceUid);
-        hql += (" and image.SOPInstanceUID = '" + sopInstanceUid + "' ");
+        String hql = " from GeneralImage as image where ";
+        // we would need to update the existing record to a new series
+        // otherwise there would be a duplicate in the sopInstanceUid index
+        // since it is unique
+        //hql += (" image.generalSeries.id = " + seriesInstanceUid);
+        hql += (" image.SOPInstanceUID = '" + sopInstanceUid + "' ");
 
         List ret = getHibernateTemplate().find(hql);
-        if(ret == null || ret.size()==0) {
+ /**       if(ret == null || ret.size()==0) {
             //it's possible that series is different in database
             hql="from GeneralImage as image where ";
             hql += (" image.SOPInstanceUID = '" + sopInstanceUid + "' ");
 
             ret = getHibernateTemplate().find(hql);
-        }
+        } */
         return ret;
     }
 }

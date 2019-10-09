@@ -32,12 +32,15 @@ import gov.nih.nci.nbia.search.PatientSearcher;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.restUtil.QAUserUtil;
 
 import java.text.SimpleDateFormat;
+
+import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
 import gov.nih.nci.nbia.dao.ValueAndCountDAO;
 import gov.nih.nci.nbia.dao.ValueAndCountDAOImpl;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
@@ -70,8 +73,13 @@ public class DICOMSubmission extends getData{
 			@FormParam("thirdPartyAnalysis") String thirdPartyAnalysis, 
 			@FormParam("descriptionURI") String descriptionURI) {
 
+		if (!allowToGoOn(project, siteName)) {
+			return Response.status(403)
+					.entity("Need to create collection and site (protection element) first using UAT.").build();
+		}
 
-		try {	
+		
+		try {			
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				String user = (String) authentication.getPrincipal();
@@ -85,6 +93,7 @@ public class DICOMSubmission extends getData{
 					   QAUserUtil.setUserQA(user);
 				   }
                 }
+                
                 String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI);
                 if (status.equals("ok")) {
 				   return Response.ok("ok").type("application/text")
@@ -93,7 +102,6 @@ public class DICOMSubmission extends getData{
  				   return Response.status(400)
  							.entity(status).build();
                 }
-
 	       } catch (NestedRuntimeException e) {
 				e.printStackTrace();
 				return Response.status(500)
@@ -105,5 +113,22 @@ public class DICOMSubmission extends getData{
 							.entity(e.getMessage()).build();
 			}
 
+	}
+	
+	private boolean allowToGoOn(String project, String site) {
+		if (NCIAConfig.getCtpBlockCreationNewProjectSite().trim().equals("true")) {
+			TrialDataProvenanceDAO tDao = (TrialDataProvenanceDAO) SpringApplicationContext
+					.getBean("trialDataProvenanceDAO");
+			try {
+			if (tDao.hasExistingProjSite(project, site)) 
+				return true;
+			else return false;
+			}
+			catch (DataAccessException ex) {
+				ex.printStackTrace();
+				return false;
+			}
+		}
+		else return true;
 	}
 }

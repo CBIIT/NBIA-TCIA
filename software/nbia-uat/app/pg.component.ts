@@ -7,13 +7,13 @@ import {Pg} from './pgs/pg';
 import {PgService} from './pgs/pgservice';
 import {Pe} from './pes/pe';
 import myGlobals = require('./conf/globals');
-
+import {ConfigService,Config} from './configs/configservice';
 
 @Component({
 	templateUrl: 'app/pg.component.html',
 	selector: 'pg',
     directives: [InputText,MultiSelect,Messages,Checkbox,DataTable,Button,Dialog,Column,Header,Footer],
-	providers: [HTTP_PROVIDERS,PgService]
+	providers: [HTTP_PROVIDERS,PgService,ConfigService]
 })
 
 export class PgComponent{
@@ -32,13 +32,13 @@ export class PgComponent{
 	wikiLink: string;
 	statusMessage: Message[] = [];	
 	
-    constructor(private pgService: PgService) {
-		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.managePGWiki;
-	}
+    constructor(private pgService: PgService, private appservice: ConfigService) {}
 
     ngOnInit() {
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading user data...'});
         this.pgService.getPgs().then(pgs => {this.pgs = pgs; this.statusMessage = [];},
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
+		this.appservice.getWikiUrlParam().then(data => {this.wikiLink = data + myGlobals.managePGWiki},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
     }
 

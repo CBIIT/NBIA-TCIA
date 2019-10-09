@@ -65,6 +65,20 @@ public class StringUtil {
     	}
     	return buffer.toString();
     }
+    
+    public static String removeIllegitCharactersForUserId(String text) {
+    	StringBuffer buffer = new StringBuffer();
+    	String specialChars = "`~!#$%^*()-+={}[]|;:'<>?,/";
+
+    	for(int i = 0; i < text.length(); i++) {
+    		char ch = text.charAt(i);
+    		if(specialChars.indexOf(ch) == -1) {
+    			buffer.append(ch);
+    		}
+    		//else ignore it
+    	}
+    	return buffer.toString();
+    }    
 
     public static boolean doesContainIllegitCharacters(String text) {
     	boolean spChars = false;

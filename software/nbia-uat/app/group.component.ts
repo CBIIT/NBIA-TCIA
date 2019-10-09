@@ -7,13 +7,13 @@ import {Group} from './groups/group';
 import {PgRole} from './pgRoles/pgRole';
 import {GroupService} from './groups/groupservice';
 import myGlobals = require('./conf/globals');
-
+import {ConfigService,Config} from './configs/configservice';
 
 @Component({
 	templateUrl: 'app/group.component.html',
 	selector: 'group',
     directives: [Dropdown,InputText,MultiSelect,Messages,Checkbox,DataTable,Button,Dialog,Column,Header,Footer],
-	providers: [HTTP_PROVIDERS,GroupService]
+	providers: [HTTP_PROVIDERS,GroupService,ConfigService]
 })
 
 export class GroupComponent{
@@ -35,9 +35,7 @@ export class GroupComponent{
 	selectedGroupName: string;
 	srs: string[] = [];
 	
-    constructor(private groupService: GroupService) {
-		this.wikiLink = myGlobals.wikiContextSensitiveHelpUrl + myGlobals.manageGroupWiki;
-	}
+    constructor(private groupService: GroupService, private appservice: ConfigService) {}
 
     ngOnInit() {
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading group data...'});
@@ -47,7 +45,8 @@ export class GroupComponent{
 		
 		this.availablePgs = [];
 		this.availablePgs.push({label:'Choose', value:''});	
-		
+		this.appservice.getWikiUrlParam().then(data => {this.wikiLink = data + myGlobals.manageGroupWiki},
+		error =>  {this.handleError(error);this.errorMessage = <any>error});		
 		this.allRoles = [];	
     }
 

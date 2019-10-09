@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.nbia.dao;
 
+import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.ArrayList;
@@ -53,6 +54,34 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 
 	return rs;
 }
+	
+	/**
+	 * Check if collection and site exist already.
+	 *
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public boolean hasExistingProjSite(String project, String site) throws DataAccessException {
+	String hql = "select distinct(CONCAT(tdp.project, '//', tdp.dpSiteName)) from TrialDataProvenance tdp ";
+	String where = " where tdp.project = '" + project +"' and tdp.dpSiteName = '" + site +"'";
+	List<String> rs = getHibernateTemplate().find(hql + where);
+	if ((rs != null) && (rs.size() == 1))
+		return true;
+	else return false;
+
+}	
+	
+	/**
+	 * Save a collection (ie. project) and site.
+	 *
+	 * This method is used in User Authorization Tool.
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void setProjSiteValues(String project, String site) throws DataAccessException {
+		TrialDataProvenance tdp = new TrialDataProvenance();
+		tdp.setProject(project.trim());
+		tdp.setDpSiteName(site.trim());
+		getHibernateTemplate().save(tdp);
+}	
 	/**
 	 * Construct the partial where clause which contains checking with authorized project and site combinations.
 	 *
