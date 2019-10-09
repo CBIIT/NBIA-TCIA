@@ -851,7 +851,6 @@ export class ApiServerService implements OnDestroy{
 
                                     // Our second attempt with a new Access token has failed, emit the error.
                                     ( err1 ) => {
-
                                         switch( err1.status ){
                                             case 401:
                                                 console.error( 'Attempt with new Access token: ' + err1.statusText + '[' + err1.status + ']' );
@@ -870,7 +869,6 @@ export class ApiServerService implements OnDestroy{
 
                             // We tried and failed to get a new Access token, emit the error.
                             ( err1 ) => {
-
                                 console.error( 'Failed to get a new Access token: ' + err1.statusText + '[' + err1.status + ']' );
                                 this.emitPostError( searchType, err1, id );
                                 this.gotToken();
@@ -952,6 +950,8 @@ export class ApiServerService implements OnDestroy{
     emitGetResults( queryType, res, id ? ) {
         if( queryType === 'getCollectionValuesAndCounts' ){
             this.getCollectionValuesAndCountsEmitter.emit( res );
+        }else if( queryType === Consts.GET_HOST_NAME ){
+            this.getHostNameEmitter.emit( res );
         }else if( queryType === 'getModalityValuesAndCounts' ){
             this.getModalityValuesAndCountsEmitter.emit( res );
         }else if( queryType === 'getBodyPartValuesAndCounts' ){
@@ -975,6 +975,8 @@ export class ApiServerService implements OnDestroy{
     emitGetError( queryType, err, id ? ) {
         if( queryType === 'getCollectionValuesAndCounts' ){
             this.getCollectionValuesAndCountsErrorEmitter.emit( err );
+        }else if( queryType === Consts.GET_HOST_NAME ){
+            this.getHostNameErrorEmitter.emit( err );
         }else if( queryType === 'getModalityValuesAndCounts' ){
             this.getModalityValuesAndCountsErrorEmitter.emit( err );
         }else if( queryType === 'getBodyPartValuesAndCounts' ){
@@ -1144,6 +1146,36 @@ export class ApiServerService implements OnDestroy{
         return results;
     }
 
+    doGetNoToken( queryType ) {
+        let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl  -k \'' + getUrl + '\'';
+            console.log( 'doGet: ' + curl );
+        }
+
+        let headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        } );
+
+        let options = {
+            headers: headers,
+            method: 'get',
+            responseType: 'text' as 'text'
+        };
+
+        let results;
+        try{
+            results = this.httpClient.get( getUrl, options );
+        }catch( e ){
+            // TODO react to error.
+            console.error( 'doGetNoToken Exception: ' + e );
+        }
+
+        return results;
+    }
+
+
     downloadSeriesList( seriesList ) {
         let query = seriesList + '&password=' + this.currentApiPassword + '&includeAnnotation=true';
         let downloadManifestUrl = this.commonService.buildPath( Properties.API_SERVER_URL, Consts.API_MANIFEST_URL );
@@ -1226,7 +1258,6 @@ export class ApiServerService implements OnDestroy{
 
     logOut() {
         let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
-
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + getUrl + '\'';
             console.log( 'doGet: ' + curl );
