@@ -33,13 +33,13 @@ do
 	sed -i 's@^\s*SHOW_OHIF_SERIES_VIEWER:.*,@SHOW_OHIF_SERIES_VIEWER:true,@g'  ../${f}
 done
 
+## This needs to wait until we have OHIF API call for Study and Subject.
+# sed -i 's@^\s*SHOW_OHIF_VIEWER:.*,@SHOW_OHIF_VIEWER:true,@g'  ${PROP_FILE}
 
-sed -i 's@^\s*SHOW_OHIF_VIEWER:.*,@SHOW_OHIF_VIEWER:true,@g'  ${PROP_FILE}
-
-for f in `ls ../ | grep main`
-do
-	sed -i 's@^\s*SHOW_OHIF_VIEWER:.*,@SHOW_OHIF_VIEWER:true,@g'  ../${f}
-done
+# for f in `ls ../ | grep main`
+# do
+#	sed -i 's@^\s*SHOW_OHIF_VIEWER:.*,@SHOW_OHIF_VIEWER:true,@g'  ../${f}
+# done
 
 
 # SHOW_OHIF_VIEWER

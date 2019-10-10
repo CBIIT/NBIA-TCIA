@@ -1049,9 +1049,9 @@ export class ApiServerService implements OnDestroy{
                             this.loadingDisplayService.setLoadingOff();
                         }
 
-
-                        console.error( 'Error [' + queryType + ']  ' + err.statusText + '[' + err.status +
-                            '], will try to get a new Access token for: ' + this.currentUser + '  gettingAccessToken: ', this.gettingAccessToken );
+                        // There is no need to tell the users this.
+                        // console.error( 'Error [' + queryType + ']  ' + err.statusText + '[' + err.status +
+                        //    '], will try to get a new Access token for: ' + this.currentUser + '  gettingAccessToken: ', this.gettingAccessToken );
 
                         // Try getting a new Access token
                         this.getToken().subscribe(
