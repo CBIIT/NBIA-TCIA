@@ -1,5 +1,4 @@
-import { Injectable, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { PersistenceService } from './persistence.service';
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Consts } from '@app/consts';
@@ -19,6 +18,15 @@ export class CartService implements OnDestroy{
     cartClearEmitter = new EventEmitter();
     cartCount = 0;
 
+
+    /**
+     * To be able to get cart status by Subject
+     * 0 = none selected for cart, 1 some but not all, or 2 all selected for cart
+     *
+     * The index will be <subject>
+     */
+    cartStatus = [];
+
     private cart = [];
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
@@ -29,14 +37,13 @@ export class CartService implements OnDestroy{
         // When clicking on a "Cart" in the search results this.cartGetSeriesForSubject is called
         // A list of all the Studies (each having a list of all its series) for one subject is sent to this emitter.
         // Each series is then added to or deleted from the cart.
-        this.apiServerService.seriesForSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.seriesForSubjectResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 for( let row of data['res'] ){
                     for( let series of row.seriesList ){
                         if( data['selected'] ){
                             this.cartAdd( series.seriesUID, series.studyId, data['id'], series.seriesPkId, '', series.exactSize );
-                        }
-                        else{
+                        }else{
                             this.cartDelete( series.seriesUID );
                         }
                     }
@@ -44,7 +51,7 @@ export class CartService implements OnDestroy{
             }
         );
 
-        this.apiServerService.seriesForSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.seriesForSubjectErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'CartService seriesForSubjectErrorEmitter.subscribe: ', err );
             }
@@ -70,7 +77,7 @@ export class CartService implements OnDestroy{
     }
 
 
-    getCartCount(){
+    getCartCount() {
         return this.cartCount;
     }
 
@@ -177,7 +184,6 @@ export class CartService implements OnDestroy{
                 }
             );
 
-
             // Subscribed to by CartComponent
             this.cartChangeEmitter.emit( this.cart );
 
@@ -200,6 +206,8 @@ export class CartService implements OnDestroy{
 
         // Let the Search results & Subject details screens know to clear all Carts.
         this.cartClearEmitter.emit( true ); // This value is not used
+
+        this.clearCartStatus();
     }
 
     /**
@@ -293,6 +301,20 @@ export class CartService implements OnDestroy{
     cartGetCount() {
         return this.cart.length;
     }
+
+
+    setCartStatus( subject: string, status ){
+        this.cartStatus[subject] = status;
+    }
+
+    getCartStatus( subject: string ){
+        return this.cartStatus[subject];
+    }
+
+    clearCartStatus(){
+        this.cartStatus = [];
+    }
+
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

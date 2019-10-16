@@ -13,7 +13,6 @@ import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-box/alert-box-consts';
 import { AlertBoxService } from '@app/common/components/alert-box/alert-box.service';
 
 @Component( {
@@ -171,7 +170,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // When a user changes a search criteria in the left side of the UI,
         // that category (referred to as "type" in this function) and any of its selected criteria are sent here (updateQueryEmitter.subscribe).
         // "allData" accumulates all the query criteria data for the search, broken out by types.
-        this.commonService.updateQueryEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.updateQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.queryData = (<any>data).slice();
 
@@ -204,7 +203,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     }
                     this.imageModalityAnyOrAllTrailer = this.apiServerService.getImageModalityAllOrAny();
                 }
-                  // this.showAllQueryData();
+                // this.showAllQueryData();
 
             } );
 
@@ -214,14 +213,14 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     async ngOnInit() {
 
         // Used in busyCartCheck to determine if the cart has finished updating, there is no easy way with things being updated asynchronous.
-        this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.cartService.cartCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.cartCount = data['count'];
             }
         );
 
 
-        this.cartService.cartChangeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.cartService.cartChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.cartList = <any>data;
             }
@@ -229,13 +228,13 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // Updates the current search type, "Simple search", "Free text", etc.
-        this.commonService.resultsDisplayModeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resultsDisplayModeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentSearchMode = data;
             }
         );
 
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.allData = [];
             }
@@ -243,7 +242,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // List of column names/headers
-        this.commonService.searchResultsColumnListEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsColumnListEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.columns = data;
                 this.sortService.initSortState( this.columns );
@@ -267,7 +266,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         }
 
 
-
         if( this.utilService.isNullOrUndefined( this.columns ) || this.columns.length < 1 ){
             this.columns = Consts.DEFAULT_SEARCH_RESULTS_COLUMNS;
         }
@@ -280,7 +278,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         this.steColumnCount();
 
         // Get number of rows to display  (per page)
-        this.commonService.searchResultsPerPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsPerPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.rowsPerPage = <number>data;
                 this.lastRow = Number( this.firstRow ) + (+this.rowsPerPage - 1);
@@ -289,7 +287,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             } );
 
         // Get current page number
-        this.commonService.searchResultsPageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentPage = <number>data;
                 if( this.currentPage < 0 ){    // -1 means go to first bag, but if searching by page don't search again.
@@ -306,19 +304,19 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             } );
 
         // Set table scroll style
-        this.commonService.searchResultsToggleScrollEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsToggleScrollEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.scroll = <boolean>data;
             } );
 
         // Called by the 'Clear' button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.clearQuery();
             } );
 
         // Called when there are new Simple search results.
-        this.apiServerService.simpleSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.simpleSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
 
                 this.subjectDataShow = [];
@@ -338,16 +336,14 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     this.upDataSearchResultsForDisplay();
 
 
-
                     // This is a work around.  Things are becoming too complicated using the same results screen for Simple search & Text Search.  These should be split up when time permits.
-                    if(this.currentSearchMode === Consts.SIMPLE_SEARCH){
+                    if( this.currentSearchMode === Consts.SIMPLE_SEARCH ){
 
                         // this.totalCount = this.commonService.getSimpleSearchResultsCount();
                         this.commonService.updateSearchResultsCount( this.commonService.getSimpleSearchResultsCount() );
                     }
 
-                }
-                else{
+                }else{
                     this.commonService.setSimpleSearchResults( {} );
                     this.searchResults = [];
                     this.searchResultsForDisplay = [];
@@ -365,7 +361,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         );
 
         // If there was an error rather than results from the search, the error message will arrive here.
-        this.apiServerService.simpleSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.simpleSearchErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.error = data;
                 console.error( 'error: ', data );
@@ -374,7 +370,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // Called when there are new Text search results.
-        this.apiServerService.textSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.textSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.subjectDataShow = [];
                 if( (!this.utilService.isNullOrUndefined( data )) && ((<any>data).length > 0) ){
@@ -389,8 +385,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     this.commonService.setTextSearchResults( this.textSearchResults );
                     this.upDataSearchResultsForDisplay();
 
-                }
-                else{
+                }else{
 
                     this.commonService.setTextSearchResults( {} );
                     this.searchResults = [];
@@ -402,7 +397,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             } );
 
         // If there was an error rather than results from the search, the error message will arrive here.
-        this.apiServerService.textSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.textSearchErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'SearchResultsTableComponent textSearchErrorEmitter.subscribe: ', err );
                 this.loadingDisplayService.setLoading( false );
@@ -454,14 +449,14 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         */
 
 
-        this.commonService.rerunQueryEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.rerunQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.runSearch();
             }
         );
 
 
-        this.commonService.runSearchForUrlParametersEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.runSearchForUrlParametersEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 // FIXME Rename this, have same name in commonService.
                 this.runSearchForUrlParameters();
@@ -470,13 +465,13 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
         // Get the total number of rows
-        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.totalCount = data;
             }
         );
 
-        this.commonService.closeSubjectDetailsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.closeSubjectDetailsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.subjectDataShow[<number>data] = false;
             } );
@@ -516,8 +511,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 this.searchResults.length -
                 (parseInt( (<any>((this.searchResults.length - 1) / this.rowsPerPage)), 10 ) * this.rowsPerPage) - 1 :
                 this.rowsPerPage - 1;
-        }
-        else{
+        }else{
             this.thisPageRowCount = this.searchResults.length;
         }
 
@@ -583,7 +577,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      */
     onHeadingClick( i ) {
         // If i===0 it is the Cart. We can no longer sort on the cart with results being retrieved one page at a time.
-        if( i === 0){
+        if( i === 0 ){
             return;
         }
         this.loadingDisplayService.setLoading( true, 'Sorting...' );
@@ -594,8 +588,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Paged search will be set to false if this is a Text search.
         if( this.properties.PAGED_SEARCH ){
             this.runSearch();
-        }
-        else{
+        }else{
             this.sortService.doSort( this.searchResults );
             this.upDataSearchResultsForDisplay();
         }
@@ -693,7 +686,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      *
      * @param i  1 = All  0 = Just these
      */
-    // CHECKME  -  i is going to be wrong when we add the Subject details to the table? Check the carts
     // FIXME rename this
     onCartCheckClick( i ) {
 
@@ -709,14 +701,13 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Just what is visible
         if( i === 0 ){
             let rows = [];
-            this.updateThisPageRowCount();
+            // this.updateThisPageRowCount();
 
             if( Properties.PAGED_SEARCH ){
                 for( let f = 0; f < this.searchResults.length; f++ ){
                     rows.push( this.searchResults[f].subjectId );
                 }
-            }
-            else{
+            }else{
                 for( let f = 0; f <= this.thisPageRowCount; f++ ){
                     rows.push( this.searchResults[f + this.firstRow].subjectId );
                 }
@@ -727,7 +718,8 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             this.commonService.toggleCartSubset( rows, (inCart !== 2) );
         }
 
-        // Toggle all
+
+        // Toggle all  We can't do this now that search results come back one page at a time.
         if( i === 1 ){
             this.commonService.toggleCartCheck();
             // getCartCheck  true = Checked  false Unchecked
@@ -742,23 +734,30 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      * @returns {number}
      */
     getSubjectListCartState( rows ) {
-        let inCartCount = 0;
+        let inCartStatus = -1;
+        let currentVal = -1;
+        for( let rowSubjectId of rows ){
+            currentVal = this.cartService.getCartStatus( rowSubjectId );
 
-        for( let row of rows ){
-            for( let cart of this.cartList ){
-                if( row === cart.subjectId ){
-                    inCartCount++;
+            if( currentVal === 1 ){
+                return 1;
+            }
+            if( currentVal === 2 ){
+                if( inCartStatus === 0 ){
+                    return 1;
+                }else{
+                    inCartStatus = 2;
                 }
             }
-        }
 
-        if( inCartCount === 0 ){
-            return 0;
+            if( currentVal === 0 ){
+                if( inCartStatus === 2){
+                    return 1;
+                }
+                inCartStatus = 0;
+            }
         }
-        if( inCartCount >= rows.length ){
-            return 2;
-        }
-        return 1;
+        return inCartStatus;
     }
 
 
@@ -853,18 +852,16 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         }
     }
 
-
     // Just for testing
     showAllQueryData() {
-        console.log( '-------------------------------------------------------------------');
-        console.log( '-------------------------------------------------------------------');
+        console.log( '-------------------------------------------------------------------' );
+        console.log( '-------------------------------------------------------------------' );
         let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria',
             'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'PhantomCriteria', 'ThirdPartyAnalysis'];
         for( let name of criteriaStr ){
             if( (!this.utilService.isNullOrUndefined( this.allData[name] )) && (this.allData[name].length > 0) ){
                 console.log( 'allQueryData[' + name + ']: ', this.allData[name] );
-            }
-            else{
+            }else{
                 console.log( 'allQueryData[' + name + ']: -' );
             }
         }
@@ -878,7 +875,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         this.arrowMouseOver[i] = false;
     }
 
-    onSubjectOhifViewerClick(){
+    onSubjectOhifViewerClick() {
         alert( 'This feature (onSubjectOhifViewerClick) has not yet been implemented.' );
     }
 
