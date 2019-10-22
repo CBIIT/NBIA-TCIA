@@ -55,7 +55,7 @@ export class CartComponent implements OnInit, OnDestroy{
      * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
      * @type {[string , string , string , string , string , string , string , string , string , string]}
      */
-    columnHeadings = ['X', 'Subject ID', 'Study UID', 'Study Date', 'Study Description', 'Series ID', 'Series Description', 'Images', 'File Size', 'Annotation File Size'];
+    columnHeadings = ['X', 'Collection', 'Subject ID', 'Study UID', 'Study Date', 'Study Description', 'Series ID', 'Series Description', 'Images', 'File Size', 'Annotation File Size'];
 
 
     columns = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -198,9 +198,7 @@ export class CartComponent implements OnInit, OnDestroy{
                         // This date is for sorting
                         series['studyDate'] = item.date;
                         series['studyDescription'] = item.description;
-
                         this.addSeriesToCartList( series );
-
 
                         if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
                             this.cartService.cartAdd( series.seriesUID, series.studyId, series.subjectId, series.seriesPkId, '', series.exactSize );

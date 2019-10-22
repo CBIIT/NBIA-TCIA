@@ -669,7 +669,7 @@ export class ApiServerService implements OnDestroy{
                 row['matchedSeries'] = matchedSeriesCount;
                 row['matchedStudies'] = row['studyIdentifiers'].length;
             }
-
+            this.commonService.updateSearchResultsCount( res.length );
             this.textSearchResultsEmitter.emit( res );
         }
     }

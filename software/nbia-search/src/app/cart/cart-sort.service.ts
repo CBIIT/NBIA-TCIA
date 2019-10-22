@@ -30,9 +30,9 @@ export class CartSortService{
         DOWN: 2
     } );
 
-
     constructor( private persistenceService: PersistenceService, private utilService: UtilService ) {
     }
+
 
     /**
      * Called by CartComponent.ngOnInit()
@@ -103,11 +103,9 @@ export class CartSortService{
 
         if( this.cartSortState[i] === this.State.NONE ){
             this.cartSortState[i] = this.State.UP;
-        }
-        else if( this.cartSortState[i] === this.State.UP ){
+        }else if( this.cartSortState[i] === this.State.UP ){
             this.cartSortState[i] = this.State.DOWN;
-        }
-        else if( this.cartSortState[i] === this.State.DOWN ){
+        }else if( this.cartSortState[i] === this.State.DOWN ){
             this.cartSortState[i] = this.State.UP;
         }
 
@@ -118,7 +116,7 @@ export class CartSortService{
     /**
      * Will know sort direction from searchResultSortState[]
      *
-     * @param searchResults
+     * @param cartList
      */
     doSort( cartList ) {
         this.cleanUpList( cartList );
@@ -127,52 +125,56 @@ export class CartSortService{
         if( (this.utilService.isNullOrUndefined( cartList )) || (cartList.length < 1) ){
             return;
         }
-
         switch( field ){
             case 1:
+                this.collectionSort( cartList, this.cartSortState[field] );
+                break;
+            case 2:
                 // Sort by patientId
                 this.subjectIdSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 2:
+            case 3:
                 // Sort by study Uid
                 this.studyUidSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 3:
+            case 4:
                 // Sort by studyDate
                 this.studyDateSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 4:
+            case 5:
                 // Sort by studyDescription
                 this.studyDescriptionSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 5:
+            case 6:
                 // Sort by seriesId
                 this.seriesIdSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 6:
+            case 7:
                 // Sort by seriesDescription
                 this.seriesDescriptionSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 7:
+            case 8:
                 // Sort by seriesNumberOfImages
                 this.seriesNumberOfImagesSort( cartList, this.cartSortState[field] );
                 break;
 
-            case 8:
+            case 9:
                 // Sort by seriesFileSize
                 this.seriesFileSizeSort( cartList, this.cartSortState[field] );
                 break;
+            /*
 
-            case 8:
-                // Sort by file size seriesFileSize
-                this.seriesAnnotationsSizeSort( cartList, this.cartSortState[field] );
-                break;
+                        case 10:
+                            // Sort by file size seriesFileSize
+                            this.seriesAnnotationsSizeSort( cartList, this.cartSortState[field] );
+                            break;
+            */
         }
     }
 
@@ -228,6 +230,16 @@ export class CartSortService{
     studyDescriptionSort( cartList, order ) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
         cartList.sort( ( row1, row2 ) => row1.studyDescription.localeCompare( row2.studyDescription ) * multiplier );
+    }
+
+    /**
+     *
+     * @param cartList
+     * @param order  1=up  2=down  0=do nothing - we should never get 0
+     */
+    collectionSort( cartList, order ) {
+        let multiplier = (order === this.State.DOWN) ? -1 : 1;
+        cartList.sort( ( row1, row2 ) => row1.project.localeCompare( row2.project ) * multiplier );
     }
 
     /**

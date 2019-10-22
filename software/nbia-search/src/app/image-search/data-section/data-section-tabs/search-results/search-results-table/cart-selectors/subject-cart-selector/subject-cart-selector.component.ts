@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { CartService } from '@app/common/services/cart.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
@@ -42,7 +42,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         // TODO rewrite this comment, no Check anymore
         // Called when the select all check to the right of the word 'Cart' in the table header is clicked.
         // data is true if this Subject is now selected, false if it is not.
-        this.commonService.searchResultsCartCheckEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCartCheckEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.selected = <boolean>data;
                 this.setCartSelect();
@@ -51,15 +51,16 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
 
 
         // Called when the "select these" to the right of the word 'Cart' in the table header is clicked.
-        this.commonService.searchResultsCartCheckSubsetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCartCheckSubsetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-
                 // Is the subject in the subset?
                 for( let f = 0; f < data['subjects'].length; f++ ){
 
                     if( data['subjects'][f] === this.subjectId ){
                         this.selected = data['state'];
                         this.setCartSelect();
+                        this.commonService.updateSubjectCartStatus( this.subjectId, this.selected );
+
                     }
                 }
             }
@@ -69,7 +70,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         // A child will emit this, we need to see if it is our child, if so, update.
         // Gives us the ID of the Subject, that just searched for children/Series
         // This is a result of cartGetSeriesForSubject
-        this.apiServerService.seriesForSubjectResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.seriesForSubjectResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 // Is it this Subject?
                 if( data['id'] === this.subjectId ){
@@ -77,7 +78,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
                 }
             }
         );
-        this.apiServerService.seriesForSubjectErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.seriesForSubjectErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'SubjectCartSelectorComponent seriesForSubjectErrorEmitter.subscribe: ', err );
             }
@@ -85,7 +86,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
 
 
         // Listen for changing Cart buttons in the children, that should change the parent
-        this.commonService.seriesCartChangeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.seriesCartChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 // Is it me?
                 if( data['subjectId'] === this.subjectId ){
@@ -95,11 +96,13 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         );
 
 
-        this.cartService.cartClearEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.cartService.cartClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.childSelected = false;
                 this.selected = false;
                 this.selectedChildCount = 0;
+                this.calcColorNumber();
+
             }
         );
 
@@ -120,7 +123,7 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
             if( this.selectedChildCount > 0 ){
 
                 // Are all child (series) Cart buttons selected? - Green
-                if( this.selectedChildCount === this.matchedSeries){
+                if( this.selectedChildCount === this.matchedSeries ){
                     this.childSelected = false;
                     this.selected = true;
                 }
@@ -137,6 +140,8 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
                 this.selected = false;
             }
         }
+
+        this.calcColorNumber();
     }
 
 
@@ -146,12 +151,12 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
     onSubjectCartClick() {
         if( (this.selectedChildCount < this.row.matchedSeries) && (this.selectedChildCount > 0) ){
             this.selected = true;
-        }
-        else{
+        }else{
             this.selected = (!this.selected);
         }
         this.setCartSelect();
         this.commonService.updateSubjectCartStatus( this.subjectId, this.selected );
+        this.calcColorNumber();
     }
 
 
@@ -162,6 +167,19 @@ export class SubjectCartSelectorComponent implements OnInit, OnDestroy{
         // Runs a search   apiServerService.doSearch( Consts.SERIES_FOR_SUBJECT, query, subjectId, selected );
         this.cartService.cartGetSeriesForSubject( this.subjectId, this.studyIdentifiers, this.selected );
         // this.updateCartButtonClass();
+
+        this.calcColorNumber();
+    }
+
+    calcColorNumber() {
+        let colorNumber = 0;
+        if( this.selected ){
+            colorNumber = 2;
+        }else if( this.childSelected ){
+            colorNumber = 1;
+        }
+
+        this.cartService.setCartStatus( this.subjectId ,  colorNumber );
     }
 
     ngOnDestroy() {

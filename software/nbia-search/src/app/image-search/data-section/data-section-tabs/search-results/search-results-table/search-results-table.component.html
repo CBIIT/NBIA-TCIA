@@ -1,7 +1,7 @@
 <!-- ----------  The table which lists the Search results in the "Search Results" tab of the data section.  ---------- -->
 
 <div
-    [ngClass]="{
+        [ngClass]="{
         'search-results-table-div-scroll': scroll,
         'busy-pointer': busy
     }"
@@ -10,8 +10,8 @@
     <!-- Updating cart busy label.  -->
     <!-- We can probably get rid of this now that we have the loading-display component.  -->
     <span
-        class="label label-primary cart-update-label"
-        [ngClass]="{
+            class="label label-primary cart-update-label"
+            [ngClass]="{
             'hide-item' : ! busy
         }"
     >
@@ -29,9 +29,9 @@
             <!-- Column headings. Which columns are shown depends on the type of search (Simple Search or Text),
                  and the users choices made with the search-results-column-selector component.  -->
             <td
-                *ngFor="let colName of columns; let i = index"
-                class="thead-td thead-tr"
-                [ngClass]="{
+                    *ngFor="let colName of columns; let i = index"
+                    class="thead-td thead-tr"
+                    [ngClass]="{
                     'hide-item': !colName.selected ||
                         (! ((colName.textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                             (colName.criteriaSearch && (currentSearchMode === SIMPLE_SEARCH)))
@@ -44,38 +44,40 @@
                     'thead-td1': i === 0
                 }"
 
-                id="heading{{i}}"
+                    id="heading{{i}}"
             >
+
 
                 <!-- Sort buttons for each TD  -->
                 <span
-                    [ngClass]="{
+                        [ngClass]="{
                         'clicker': i > 0
                     }"
-                    title="Click to sort"
-                    (click)="onHeadingClick(i)"
+                        title="Click to sort"
+                        (click)="onHeadingClick(i)"
                 >
                     {{colName['name']}}
                     <!--  Add sorting glyphs -->
                     <img
-                        *ngIf="sortService.getSortState(i) === 1 && colName['name'] !== 'Cart'"
-                        class="sort-pointer"
-                        src="assets/images/upTriangle2.png"
+                            *ngIf="sortService.getSortState(i) === 1 && colName['name'] !== 'Cart'"
+                            class="sort-pointer"
+                            src="assets/images/upTriangle2.png"
                     >
 
                     <img
-                        *ngIf="sortService.getSortState(i) === 2"
-                        class="sort-pointer"
-                        src="assets/images/downTriangle2.png"
+                            *ngIf="sortService.getSortState(i) === 2"
+                            class="sort-pointer"
+                            src="assets/images/downTriangle2.png"
                     >
 
                     <!-- space/place holder  -->
                     <img
-                        *ngIf="sortService.getSortState(i) === 0 && colName['name'] !== 'Cart'"
-                        class="sort-pointer"
-                        src="assets/images/emptyTriangle2.png"
+                            *ngIf="sortService.getSortState(i) === 0 && colName['name'] !== 'Cart'"
+                            class="sort-pointer"
+                            src="assets/images/emptyTriangle2.png"
                     >
                 </span>
+                <!-- End of Sort buttons for each TD  -->
 
 
                 <!-- "Add All or These X" to select for cart -->
@@ -83,54 +85,28 @@
                 <span *ngIf="colName['name'] === 'Cart'" class="dropdown top-cart-select-dropdown">
 
                     <span
-                        class=" clicker top-cart-select-dropdown"
-                        dropdown
-                        [dropdownToggle]="true"
+                            class=" clicker top-cart-select-dropdown"
+                            dropdown
+                            [dropdownToggle]="true"
                     >
                         <button
-                            class="btn btn-default top-cart-select-button"
-                            [disabled]="thisPageRowCount < 0"
-                            dropdown-open
-                            (click)="onCartCheckClick( ((! properties.PAGED_SEARCH) &&(totalCount > rowsPerPage)) ? -1:  0 )"
+                                class="btn btn-default top-cart-select-button"
+                                [disabled]="thisPageRowCount < 0"
+                                dropdown-open
+                                (click)="onCartCheckClick(  0 )"
                         >
                             <span class="glyphicon glyphicon-shopping-cart "></span>
                         </button>
-
-
-
-                        <ul
-                            *ngIf="(! properties.PAGED_SEARCH) && (totalCount > rowsPerPage)"
-                            class="dropdown-menu nbia-drop-down"
-                            role="menu">
-
-                            <!-- More than one (plural) -->
-                            <li *ngIf="thisPageRowCount > 0 " role="menuitem">
-                                <a (click)="onCartCheckClick(0)">
-                                    These {{thisPageRowCount + 1}}
-                                </a>
-                            </li>
-
-                            <!-- Just one -->
-                            <li *ngIf="thisPageRowCount === 0 " role="menuitem">
-                                <a (click)="onCartCheckClick(0)">
-                                    This 1
-                                </a>
-                            </li>
-
-                            <li role="menuitem">
-                                <a (click)="onCartCheckClick(1)">
-                                    All {{totalCount}}
-                                </a>
-                            </li>
-                        </ul>
                     </span>
                 </span>
+                <!-- End of top Cart button in the header  -->
 
 
             </td>
             <td *ngIf="properties.SHOW_OHIF_VIEWER"
                 class="thead-td "
-            >OHIF Viewer</td>
+            >OHIF Viewer
+            </td>
         </tr>
         <!-- End of heading row  -->
 
@@ -139,41 +115,41 @@
              Alternate colors for each row (actually every forth row including the subject-study-details rows)
              getSelectedByIndex is used to determine if a column is selected to be shown from search-results-column-selector component. -->
         <tr
-            *ngFor="let row of searchResultsForDisplay; let i=index; let even = even; let odd = odd"
-            [ngClass]="{
+                *ngFor="let row of searchResultsForDisplay; let i=index; let even = even; let odd = odd"
+                [ngClass]="{
                 'hide-item': (! properties.PAGED_SEARCH ) && ((i/2) >=( lastRow + 1 ) || (i/2)<firstRow),
                 'dark': i%4 !== 0
             }"
         >
-<!--
-<td>First:{{firstRow}} Last:{{lastRow}} pagedSearch:{{properties.PAGED_SEARCH}}</td>
--->
+            <!--
+            <td>First:{{firstRow}} Last:{{lastRow}} pagedSearch:{{properties.PAGED_SEARCH}}</td>
+            -->
             <!-- -------- Show Subject details -------- -->
             <td
-                *ngIf="odd && subjectDataShow[i]"
-                [colSpan]=columnCount+1
-                class="child-data-display-parent-background">
+                    *ngIf="odd && subjectDataShow[i]"
+                    [colSpan]=columnCount+1
+                    class="child-data-display-parent-background">
                 <nbia-subject-study-details
-                    [subjectDetailData]="searchResultsForDisplay[i - 1]"
-                    [subjectIndex]="i"
+                        [subjectDetailData]="searchResultsForDisplay[i - 1]"
+                        [subjectIndex]="i"
                 >
-              </nbia-subject-study-details>
+                </nbia-subject-study-details>
             </td>
 
             <!-- -------------------------------------- -->
             <td
-                *ngIf="even"
-                class="show-subject-details-td"
-                (click)="onSubjectIdClick(i)"
-                (mouseover)="onArrowMouseOver(i)"
-                (mouseleave)="onArrowMouseOut(i)"
-                (mouseOut)="onArrowMouseOut(i)"
+                    *ngIf="even"
+                    class="show-subject-details-td"
+                    (click)="onSubjectIdClick(i)"
+                    (mouseover)="onArrowMouseOver(i)"
+                    (mouseleave)="onArrowMouseOut(i)"
+                    (mouseOut)="onArrowMouseOut(i)"
             >
 
 
 
                 <span
-                    class="show-subject-details"
+                        class="show-subject-details"
                 >
                     <img *ngIf="! subjectDataShow[i + 1] && ! arrowMouseOver[i]" src="assets/images/right_V01.png">
                     <img *ngIf="subjectDataShow[i + 1]  && ! arrowMouseOver[i]" src="assets/images/down_V01.png">
@@ -188,26 +164,26 @@
 
                 <!-- CHECKME soon subjectId and studyIdentifiers will go away (from cart)-->
                 <nbia-subject-cart-selector
-                    [row]="row"
-                    [subjectId]="row['subjectId']"
-                    [studyIdentifiers]="row['studyIdentifiers']"
-                    [matchedSeries]="row['matchedSeries']">
+                        [row]="row"
+                        [subjectId]="row['subjectId']"
+                        [studyIdentifiers]="row['studyIdentifiers']"
+                        [matchedSeries]="row['matchedSeries']">
                 </nbia-subject-cart-selector>
             </td>
 
 
             <!-- Collection ID -->
             <td
-                *ngIf="even && getSelectedByIndex(1)"
-                class="collectionID search-results-td">
+                    *ngIf="even && getSelectedByIndex(1)"
+                    class="collectionID search-results-td">
                 {{row['project']}}
             </td>
 
 
             <!-- Subject ID  -->
             <td
-                *ngIf="even && getSelectedByIndex(2)"
-                class="search-results-td">
+                    *ngIf="even && getSelectedByIndex(2)"
+                    class="search-results-td">
                 <a class="subjectId-heading" (click)="onSubjectIdClick(i)">
                     {{row['subjectId']}}
                 </a>
@@ -216,12 +192,12 @@
 
             <!--  Text Search Hit  -->
             <td
-                *ngIf="even && getSelectedByIndex(3) &&
+                    *ngIf="even && getSelectedByIndex(3) &&
                     (
                         (columns[3].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[3].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     )"
-                class="hit search-results-td"
+                    class="hit search-results-td"
             >
                 <!-- There are HTML tags in the "hit" text returned from the server so we need  'innerHTML' -->
                 <span [innerHTML]="row['hit']"></span>
@@ -230,12 +206,12 @@
 
             <!--  Matched Studies  -->
             <td
-                *ngIf="even && getSelectedByIndex(4) &&
+                    *ngIf="even && getSelectedByIndex(4) &&
                     (
                         (columns[4].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[4].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     )"
-                class="matchedStudies search-results-td"
+                    class="matchedStudies search-results-td"
             >
                 {{row['matchedStudies']}}
             </td>
@@ -243,12 +219,12 @@
 
             <!--  Total Studies  -->
             <td
-                *ngIf="even && getSelectedByIndex(5) &&
+                    *ngIf="even && getSelectedByIndex(5) &&
                     (
                         (columns[5].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[5].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     )"
-                class="totalStudies search-results-td"
+                    class="totalStudies search-results-td"
             >
                 {{row['totalNumberOfStudies']}}
             </td>
@@ -256,12 +232,12 @@
 
             <!--  Matched Series  -->
             <td
-                *ngIf="even && getSelectedByIndex(6) &&
+                    *ngIf="even && getSelectedByIndex(6) &&
                     (
                         (columns[6].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[6].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     )"
-                class="matchedSeries search-results-td"
+                    class="matchedSeries search-results-td"
             >
                 {{row['matchedSeries']}}
             </td>
@@ -269,12 +245,12 @@
 
             <!--  Total Series  -->
             <td
-                *ngIf="even && getSelectedByIndex(7) &&
+                    *ngIf="even && getSelectedByIndex(7) &&
                     (
                         (columns[7].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[7].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     )"
-                class="totalSeries search-results-td"
+                    class="totalSeries search-results-td"
             >
                 {{row['totalNumberOfSeries']}}
             </td>
@@ -282,25 +258,25 @@
 
             <!-- Disk Space -->
             <td
-                *ngIf="even && getSelectedByIndex(8) && !DISABLE_COUNTS_AND_SIZE  &&
+                    *ngIf="even && getSelectedByIndex(8) && !DISABLE_COUNTS_AND_SIZE  &&
                     (
                         (columns[8].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[8].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     ) "
-                class="diskSpace search-results-td"
+                    class="diskSpace search-results-td"
             >
-                {{ ( myIsNullOrUndefined(row['diskSpace']) ? '' : row['diskSpace']|toMbGb ) }}
+                {{ (myIsNullOrUndefined(row['diskSpace']) ? '' : row['diskSpace']|toMbGb) }}
             </td>
 
 
             <!-- Image Count -->
             <td
-                *ngIf="even && getSelectedByIndex(9) && !DISABLE_COUNTS_AND_SIZE &&
+                    *ngIf="even && getSelectedByIndex(9) && !DISABLE_COUNTS_AND_SIZE &&
                     (
                         (columns[9].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
                         (columns[9].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
                     )"
-                class="imageCount search-results-td"
+                    class="imageCount search-results-td"
             >
                 {{row['imageCount']}}
             </td>
@@ -313,7 +289,7 @@
                 <label
                         class="btn btn-default col-xs-1 ohif-subject-button"
                         title="OHIF Vewer"
-                       (click)="onSubjectOhifViewerClick()">
+                        (click)="onSubjectOhifViewerClick()">
                     <span class="glyphicon glyphicon-facetime-video"></span>
                 </label>
             </td>

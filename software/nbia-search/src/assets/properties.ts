@@ -1,6 +1,6 @@
 export let Properties = {
-    // 10_OCT_2019
-    VERSION: '1.0.59',
+    // 16_OCT_2019
+    VERSION: '1.0.60',
     TITLE: 'Search',
 
     BANNER_TEXT_NBIA_: 'The Banner Text',

@@ -29,7 +29,7 @@
                 *ngFor="let colName of columnHeadings; let i = index"
                 class="thead-td"
                 [ngClass]="{
-                    'hide-item': i===2 || i === 5 || i === 8 || i === 9
+                    'hide-item': i===3 || i === 6 || i === 9 || i === 10
                 }"
             >
 
@@ -101,6 +101,10 @@
                          <span class="glyphicon glyphicon-shopping-cart"></span>
                      </label>
                  </span>
+            </td>
+
+            <td class="cart-collection">
+                {{item['project']}}
             </td>
 
             <td> {{item['patientId']}}</td>
