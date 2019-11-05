@@ -9,5 +9,6 @@ export var accessToken;
 export var manageUserWiki = "-ManagingUsers";
 export var managePGWiki = "-ManagingProtectionGroups";
 export var manageGroupWiki = "-ManagingUserGroups";
-export var managePEWiki = "-ManagingPE";
+//export var managePEWiki = "-ManagingPE";
+export var managePEWiki = "-ManagingProtectionElements";
 export var userAuthorizationWiki = "-AddingProtectionGroupsandAssigningRoles";
