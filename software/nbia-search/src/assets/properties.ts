@@ -1,6 +1,6 @@
 export let Properties = {
-    // 22_OCT_2019
-    VERSION: '1.0.61',
+    // 05_NOV_2019
+    VERSION: '1.0.62',
     TITLE: 'Search',
 
     // This value can be changed in the config file.
