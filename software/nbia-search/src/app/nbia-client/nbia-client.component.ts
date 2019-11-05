@@ -13,6 +13,7 @@ import { PersistenceService } from '@app/common/services/persistence.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BrandingService } from '@app/common/services/branding.service';
+import { ConfigurationService } from '@app/common/services/configuration.service';
 
 
 @Component( {
@@ -45,8 +46,10 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
                  private commonService: CommonService, private titleService: Title,
                  private route: ActivatedRoute, private parameterService: ParameterService,
                  private loadingDisplayService: LoadingDisplayService, private persistenceService: PersistenceService,
-                 private utilService: UtilService, private brandingService: BrandingService,  elementRef: ElementRef ) {
+                 private utilService: UtilService, private brandingService: BrandingService,
+                 elementRef: ElementRef, private configurationService: ConfigurationService ) {
 
+        this.configurationService.initConfiguration();
 
         this.brandingService.initCurrentBrand();
 
@@ -110,6 +113,8 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
             this.apiServerService.setCurrentUser(this.persistenceService.get( this.persistenceService.Field.USER ));
             this.apiServerService.setCurrentPassword('');
         }
+
+
 
         // if( this.persistenceService.get( this.persistenceService.Field.USER )  )
 
@@ -177,7 +182,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
         // React to URL parameters
         if( !this.utilService.isNullOrUndefined( modalityAll ) ){
-            modalityAll = this.isTrue( modalityAll );
+            modalityAll = this.utilService.isTrue( modalityAll );
         }
         else{
             modalityAll = null;
@@ -291,16 +296,6 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         today['date']['month'] = now.getMonth() + 1;
         today['date']['year'] = now.getFullYear();
         return today;
-    }
-
-
-    isTrue( value ) {
-        let val = value.toUpperCase();
-        if( (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1') || (val === '') ){
-            return true;
-        }
-
-        return false;
     }
 
     ngOnDestroy() {

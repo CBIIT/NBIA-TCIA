@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Consts } from '@app/consts';
 import { CommonService } from '@app/image-search/services/common.service';
+import { timeout } from 'rxjs/operators';
+import { UtilService } from '@app/common/services/util.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -37,30 +39,45 @@ export class BrandingService{
     VERSION_SUFFIX = 7;
     DOWNLOADER_URL = 8;
 
-    constructor( private httpClient: HttpClient, private commonService: CommonService ) {
+    constructor( private httpClient: HttpClient, private commonService: CommonService,
+                 private utilService: UtilService) {
     }
 
 
     /**
      * currentBrand file is a text file with the brand "name", this is the directory name within the assets/brand directory for this brand.
      */
-    initCurrentBrand() {
-        this.readTextFile( 'assets/' + Properties.BRAND_DIR + '/currentBrand' ).subscribe(
-            data => {
-                Properties.BRAND = data.trim();
-                this.initBrandSettings();
-            },
-            err => {
+   async initCurrentBrand() {
+        // Check for config file which will take precedence
+        let runaway = 100; // Just in case.
+        while( (!Properties.CONFIG_COMPLETE) && (runaway > 0) ){
+            await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
+            runaway--;
+        }
+        if( this.utilService.isNullOrUndefinedOrEmpty(Properties.BRAND) || (  Properties.BRAND === '%BRAND%')){
+            this.readTextFile( 'assets/' + Properties.BRAND_DIR + '/currentBrand' ).subscribe(
+                data => {
 
-                if( err.status === 404 ){
-                    console.error( 'Could not find Brand file "' + 'assets/' + Properties.BRAND_DIR + '/currentBrand' + '", setting Brand to default "' + Properties.DEFAULT_BRAND + '"' );
-                    Properties.BRAND = Properties.DEFAULT_BRAND;
+                    Properties.BRAND = data.trim();
                     this.initBrandSettings();
-                }
-                console.error( 'Could not access Brand file! ', err.status );
-            }
-        );
 
+                },
+                err => {
+
+                    if( err.status === 404 ){
+                        console.error( 'Could not find Brand file "' + 'assets/' + Properties.BRAND_DIR + '/currentBrand' + '", setting Brand to default "' + Properties.DEFAULT_BRAND + '"' );
+                        Properties.BRAND = Properties.DEFAULT_BRAND;
+                        this.initBrandSettings();
+
+                    }
+                    console.error( 'Could not access Brand file! ', err.status );
+                }
+
+            );
+        }
+        else{
+            this.initBrandSettings();
+        }
     }
 
     async initBrandSettings() {
@@ -169,7 +186,7 @@ export class BrandingService{
         return this.httpClient.get( file,
             {
                 responseType: 'text'
-            } );
+            } ).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
     getJSON( file ): Observable<any> {

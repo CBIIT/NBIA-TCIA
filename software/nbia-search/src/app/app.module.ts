@@ -101,6 +101,7 @@ import { ThirdPartyExplanationComponent } from './image-search/query-section/que
 import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { BannerComponent } from './banner/banner.component';
+import { ConfigurationService } from '@app/common/services/configuration.service';
 
 
 /*
@@ -208,7 +209,7 @@ const appRoutes: Routes = [
         CookieService,  SearchResultsSortService, CartSortService, PersistenceService,
         LoadingDisplayService, ParameterService, InitMonitorService, QueryUrlService,
         AlertBoxService, HistoryLogService, CollectionDescriptionsService, UtilService,
-        WindowRefService, OhifViewerService
+        WindowRefService, OhifViewerService, ConfigurationService
     ],
     bootstrap: [AppComponent]
 } )

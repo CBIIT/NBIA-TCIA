@@ -1,10 +1,19 @@
 export let Properties = {
-    // 16_OCT_2019
-    VERSION: '1.0.60',
+    // 22_OCT_2019
+    VERSION: '1.0.61',
     TITLE: 'Search',
 
-    BANNER_TEXT_NBIA_: 'The Banner Text',
-    BANNER_EXP_NBIA_: '',
+    // This value can be changed in the config file.
+    BANNER_TEXT: '',
+    // This value can be changed in the config file.
+    BANNER_EXP: '',
+
+    // This value can be changed in the config file.
+    HTTP_TIMEOUT: 120000,
+
+    CONFIG_COMPLETE: false,
+
+
 
     // These values will by set by the "Brand"
     NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
@@ -14,11 +23,13 @@ export let Properties = {
     LOGO_FILE: '',
     FOOTER_HTML: '',
     BRAND_DIR: 'brand',
+    CONFIG_FILE: 'configuration',
     DEFAULT_BRAND: 'nbia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
 
     VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts to know if it is initialized before appending to the version.
     BRAND: '%BRAND%',
+
 
     /*
         Our Dev server
@@ -35,10 +46,17 @@ export let Properties = {
     */
 
     // If this is left an empty string, the url used by the browser to reach the site will be used
+    // This value can be changed in the config file.
     API_SERVER_URL: '',
+
 
     // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
+    // This value can be changed in the config file.
+    SHOW_OHIF_VIEWER: false,
+    // This value can be changed in the config file.
+    SHOW_OHIF_SERIES_VIEWER: false,
+
 
     HOST_NAME: '',
 
@@ -57,9 +75,6 @@ export let Properties = {
 
     ACTION_LOGGING: true,
     SHORT_LOG: true,
-
-    SHOW_OHIF_VIEWER: false,
-    SHOW_OHIF_SERIES_VIEWER: false,
 
     // @TODO Get rid of these after everything is working. There will no longer be a need to show/hide.
     SHOW_SPECIES: true,

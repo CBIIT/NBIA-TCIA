@@ -45,6 +45,24 @@ export class UtilService{
         return false;
     }
 
+    isTrue( value ) {
+
+        if( typeof value === 'boolean'){
+            if( value){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        let val = value.toUpperCase();
+        if( (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1') || (val === '') ){
+            return true;
+        }
+        return false;
+    }
+
 
     copyCriteriaObjectArray( origObject ) {
         if( origObject === null ){

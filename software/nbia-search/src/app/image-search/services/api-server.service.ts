@@ -6,7 +6,7 @@ import { PersistenceService } from '@app/common/services/persistence.service';
 import { Properties } from '@assets/properties';
 import { CommonService } from './common.service';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, timeout } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
@@ -890,7 +890,6 @@ export class ApiServerService implements OnDestroy{
 
 
     /**
-     * Calls the 'getSimpleSearch', 'getTextSearch' or 'getStudyDrillDown' (at this time 09_AUG_2017) Rest service on the API server.
      *
      * @param queryType  Consts.SIMPLE_SEARCH, Consts.DRILL_DOWN, or Consts.TEXT_SEARCH
      * @param query The query in the format that can be passed on to the Rest service.
@@ -938,7 +937,7 @@ export class ApiServerService implements OnDestroy{
                 console.log( 'doPost options: ', options );
         */
 
-        return this.httpClient.post( simpleSearchUrl, query, options );
+        return this.httpClient.post( simpleSearchUrl, query, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
 
@@ -1137,7 +1136,7 @@ export class ApiServerService implements OnDestroy{
 
         let results;
         try{
-            results = this.httpClient.get( getUrl, options );
+            results = this.httpClient.get( getUrl, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
@@ -1166,7 +1165,7 @@ export class ApiServerService implements OnDestroy{
 
         let results;
         try{
-            results = this.httpClient.get( getUrl, options );
+            results = this.httpClient.get( getUrl, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
         }catch( e ){
             // TODO react to error.
             console.error( 'doGetNoToken Exception: ' + e );
@@ -1196,7 +1195,7 @@ export class ApiServerService implements OnDestroy{
             responseType: 'text' as 'text'
         };
 
-        return this.httpClient.post( downloadManifestUrl, query, options );
+        return this.httpClient.post( downloadManifestUrl, query, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
     setImageModalityAllOrAny( a ) {
@@ -1252,7 +1251,7 @@ export class ApiServerService implements OnDestroy{
                 headers: headers,
                 method: 'post'
             };
-        return this.httpClient.post( post_url, data, options );
+        return this.httpClient.post( post_url, data, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
 
@@ -1274,7 +1273,7 @@ export class ApiServerService implements OnDestroy{
                 responseType: 'text' as 'text'
             };
 
-        return this.httpClient.get( getUrl, options );
+        return this.httpClient.get( getUrl, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
     /**

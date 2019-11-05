@@ -1,6 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
+import { CartService } from '@app/common/services/cart.service';
 
 
 describe( 'UtilService', () => {
@@ -19,6 +20,14 @@ describe( 'UtilService', () => {
         } ) );
 
     */
+
+
+
+    it( 'Test UtilService', inject( [UtilService], ( service: UtilService ) => {
+
+        expect( service.isTrue( true ) ).toBe( true );
+    } ) );
+
 
     /*
 
@@ -49,6 +58,7 @@ describe( 'UtilService', () => {
 
 */
 
+/*
         it( 'format_00', inject( [UtilService], ( service: UtilService ) => {
             console.log( 'IN UtilService: ', service.csvFormatCart( [{
                 'id': 'aaabcd, efg',
@@ -78,6 +88,7 @@ describe( 'UtilService', () => {
             console.log( '-----------------------------------------' );
         } ) );
 
+*/
 
 
 /*
