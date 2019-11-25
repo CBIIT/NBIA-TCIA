@@ -14,9 +14,8 @@ import { CommonService } from '@app/image-search/services/common.service';
 } )
 export class BannerComponent implements OnInit{
     cookieName = 'nbiaMess';
-    expiresTimestamp: Date = new Date( Properties.BANNER_EXP );
+    expiresTimestamp: Date;
     now: Date = new Date();
-    bannerExp = Properties.BANNER_EXP;
     hash;
 
     showBanner;
@@ -33,8 +32,8 @@ export class BannerComponent implements OnInit{
             await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
             runaway--;
         }
+        this.expiresTimestamp = new Date( Properties.BANNER_EXP );
         this.hash = sha224( Properties.BANNER_TEXT + ':' + Properties.BANNER_EXP );
-
         if(
             (!this.utilService.isNullOrUndefinedOrEmpty( Properties.BANNER_TEXT )) &&
             (!this.utilService.isNullOrUndefinedOrEmpty( Properties.BANNER_EXP )) &&

@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Properties } from '../../assets/properties';
 import { UtilService } from './util.service';
 import { CommonService } from './common.service';
@@ -68,7 +68,7 @@ export class ServerAccessService{
      * @param page
      * @param imageNumber
      */
-    async getImages( page?, imageNumber?) {
+    async getImages( page?, imageNumber? ) {
         this.loading = true;
         this.images = [];
         let len = 99999999;
@@ -113,7 +113,7 @@ export class ServerAccessService{
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         thumbnailError => {
-
+                            console.log('MHL 00 thumbnailError: ', thumbnailError);
                             // We need this count when we are waiting for all the images (by count) to arrive before moving on
                             this.getThumbnailErrorCount++;
 
@@ -134,7 +134,7 @@ export class ServerAccessService{
                 this.loading = false;
             },
             err => {
-                // console.log( 'getImageDrillDownData err: ', err );
+                console.log( 'MHL 01 getImageDrillDownData err: ', err );
                 this.loading = false;
                 this.getImageDrillDownDataErrorEmitter.emit( err );
 
@@ -265,12 +265,12 @@ export class ServerAccessService{
             '&client_id=nbiaRestAPIClient&client_secret=' + Properties.API_CLIENT_SECRET_DEFAULT +
             '&grant_type=password';
 
- /*
-        if( Properties.DEBUG_CURL ){
-            let curl = 'curl -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'getAccessToken: ' + curl );
-        }
-*/
+        /*
+               if( Properties.DEBUG_CURL ){
+                   let curl = 'curl -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
+                   console.log( 'getAccessToken: ' + curl );
+               }
+       */
         let options =
             {
                 headers: headers,
