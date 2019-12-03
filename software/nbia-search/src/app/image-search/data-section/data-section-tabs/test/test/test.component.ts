@@ -26,6 +26,8 @@ export class TestComponent implements OnInit{
     sortByCount: boolean = true;
     sortByName: boolean = false;
 
+    properties = Properties;
+
     // sortByLabels = ['Count', 'Name'];
 
     constructor( private apiServerService: ApiServerService, private persistenceService: PersistenceService,

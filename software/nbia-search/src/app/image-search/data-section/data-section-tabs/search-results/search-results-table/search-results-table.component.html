@@ -56,7 +56,7 @@
                         title="Click to sort"
                         (click)="onHeadingClick(i)"
                 >
-                    {{colName['name']}}
+                   {{colName['name']}}
                     <!--  Add sorting glyphs -->
                     <img
                             *ngIf="sortService.getSortState(i) === 1 && colName['name'] !== 'Cart'"

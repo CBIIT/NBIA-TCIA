@@ -318,7 +318,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Called when there are new Simple search results.
         this.apiServerService.simpleSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-
                 this.subjectDataShow = [];
 
                 if( (!this.utilService.isNullOrUndefined( data )) && ((<any>data).length > 0) ){
@@ -834,6 +833,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         }
         if( Properties.SHOW_OHIF_VIEWER ){
             this.columnCount++;
+
         }
     }
 

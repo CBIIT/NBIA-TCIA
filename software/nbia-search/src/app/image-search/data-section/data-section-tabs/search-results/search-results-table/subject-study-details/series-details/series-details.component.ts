@@ -35,7 +35,6 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     haveThirdParty = false;
     seriesId;
     imageUidArray = [];
-
     properties = Properties;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
@@ -46,6 +45,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
+
         // CHECKME  Make sure study is populated by now.
         this.upDataSearchResultsForDisplay();
 
@@ -128,6 +128,13 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
             {
                 this.haveThirdParty = true;
             }
+
+            // toUpperCase for case insensitive.
+            row['showOhif'] = false;
+            if(  ! this.utilService.isNullOrUndefinedOrEmpty(  Properties.OHIF_MODALITIES.find( m => m === row.modality.toUpperCase() ))){
+                row['showOhif'] = true;
+            }
+
             this.seriesListForDisplay.push( row );
             this.seriesListForDisplay.push( {} );
         }
@@ -156,4 +163,5 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }
+
 }

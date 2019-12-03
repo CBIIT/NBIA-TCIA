@@ -109,7 +109,7 @@
             </label>
 
             <!-- -----  The OHIF viewer button  ----- -->
-            <label *ngIf="properties.SHOW_OHIF_SERIES_VIEWER" style="margin-left: 5px"
+            <label *ngIf="properties.SHOW_OHIF_SERIES_VIEWER && series['showOhif'] " style="margin-left: 5px"
                    class="btn btn-default series-data-button series-viewer"
                    title="OHIF Vewer"
                    (click)="onSeriesOhifViewerClick(i)">

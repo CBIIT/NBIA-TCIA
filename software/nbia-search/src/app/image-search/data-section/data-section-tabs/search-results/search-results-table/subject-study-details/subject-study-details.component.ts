@@ -69,7 +69,6 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
         // If there is an error, it will be received by subjectDetailsErrorEmitter.subscribe below.
         this.apiServerService.subjectDetailsResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-
                 // Is it one of ours?
                 if( this.isStudyInThisSubject( data[0] ) ){ // It arrives as a one element array
 

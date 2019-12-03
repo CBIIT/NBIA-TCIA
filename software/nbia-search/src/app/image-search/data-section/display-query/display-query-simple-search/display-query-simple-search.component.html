@@ -1,7 +1,10 @@
 <!-- ----------  This is the Query that is displayed above the Search Results or Summary screen.  ---------- -->
 <!-- ----------  The Clear the complete query button on the left.                                 ---------- -->
 
-<div class="alert alert-info display-query display-wrap">
+<!--
+<div class="alert alert-info display-query display-wrap" [ngStyle]="{'backgroundColor': '#f00', 'width': displayQueryWidth }">
+-->
+<div class="alert alert-info display-query display-wrap" >
     <button
         class="btn btn-default no-outline"
         title="Clear query"
@@ -115,6 +118,4 @@
             </button>
         </span>
     </span>
-
-
 </div>

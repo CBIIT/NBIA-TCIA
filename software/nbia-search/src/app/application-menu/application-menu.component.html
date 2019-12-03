@@ -10,15 +10,9 @@
      Cart - Shows a list of "Series" which have been selected, and download options.  The Cart is disabled if it has no contents.
 -->
 
-<span class="application-menu-span">
-<!--
-        <span class="item-wrapper">
-            XX
-        </span>
-        -->
-<!--
-    <span class="item-wrapper">
--->
+<span id="application-menu-span" class="application-menu-span">
+<span class="left-gradient">&nbsp;&nbsp;&nbsp;</span>
+    <!--  Search  -->
     <span
         class="application-menu-item"
         [ngClass]="{
@@ -33,11 +27,9 @@
         <span class="glyphicon glyphicon-search"></span> Search
 
     </span>
-<!--
-</span>
--->
 
 
+    <!--  Login  -->
     <span
         class="application-menu-item"
         [ngClass]="{
@@ -53,6 +45,8 @@
         {{loginButtonText}}
     </span>
 
+
+    <!-- Download  -->
     <span
         class="application-menu-item"
         [ngClass]="{

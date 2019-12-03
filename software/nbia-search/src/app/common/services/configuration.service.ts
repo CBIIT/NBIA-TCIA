@@ -50,7 +50,7 @@ export class ConfigurationService{
                 if( line.includes( '=' ) ){
                     let value = line.replace( /.*?=\s*/, '' );
                     let key = line.replace( /\s*?=.*$/, '' );
-
+                    key = key.replace(/^\s*/, '');
                     if( key === 'banner' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.BANNER_TEXT = value;
@@ -93,6 +93,18 @@ export class ConfigurationService{
                     if( key === 'http_timeout' ){
                         Properties.HTTP_TIMEOUT = value;
                     }
+                    if( key === 'OHIF_MODALITIES'){
+                        // toUpperCase for case insensitive.
+                        Properties.OHIF_MODALITIES = value.toUpperCase().split(/\s*,\s*/);
+
+                    }
+
+                    if( key === 'OHIF_SERVER_URL' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.OHIF_SERVER_URL = value;
+                        }
+                    }
+
                 }
             }
         }

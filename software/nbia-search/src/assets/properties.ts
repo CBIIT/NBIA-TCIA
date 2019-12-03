@@ -1,6 +1,6 @@
 export let Properties = {
     // 05_NOV_2019
-    VERSION: '1.0.62',
+    VERSION: '1.0.63',
     TITLE: 'Search',
 
     // This value can be changed in the config file.
@@ -10,6 +10,18 @@ export let Properties = {
 
     // This value can be changed in the config file.
     HTTP_TIMEOUT: 120000,
+
+    OHIF_MODALITIES: [ 'MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT', 'XA'],
+
+    // This does not work yet when the value is not an empty string
+    // If this is left an empty string, the API server url will be used .
+    OHIF_SERVER_URL: '',
+
+    // This value can be changed in the config file.
+    SHOW_OHIF_VIEWER: false,
+    // This value can be changed in the config file.
+    SHOW_OHIF_SERIES_VIEWER: true,
+
 
     CONFIG_COMPLETE: false,
 
@@ -49,13 +61,6 @@ export let Properties = {
     // This value can be changed in the config file.
     API_SERVER_URL: '',
 
-
-    // If this is left an empty string, the API server url will be used .
-    OHIF_SERVER_URL: '',
-    // This value can be changed in the config file.
-    SHOW_OHIF_VIEWER: false,
-    // This value can be changed in the config file.
-    SHOW_OHIF_SERIES_VIEWER: false,
 
 
     HOST_NAME: '',

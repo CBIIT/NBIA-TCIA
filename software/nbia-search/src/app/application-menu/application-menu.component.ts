@@ -213,7 +213,6 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
      * @param menuChoice
      */
     async onMenuItemClick( menuChoice ) {
-
         if( this.menuLock ){
             return;
         }

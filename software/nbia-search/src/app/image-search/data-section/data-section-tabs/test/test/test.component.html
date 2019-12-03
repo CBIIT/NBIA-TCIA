@@ -154,3 +154,9 @@
       <span [ngStyle]="{'background-color': colorX}">&nbsp;&nbsp;{{colorX}}&nbsp;&nbsp;</span>
 </span>
 </h2>
+
+<ul>
+    <li *ngFor = "let modality of properties.OHIF_MODALITIES">
+        {{modality}}
+    </li>
+</ul>

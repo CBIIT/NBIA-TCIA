@@ -5,7 +5,6 @@
   left: 0px;
   top: 0px;
   z-index: $display-query-z-index;
-
 }
 
 .display-wrap{
@@ -20,10 +19,15 @@
   border-radius: 4px;
   width: 100%;
   min-height: 66px;
+  margin-top: $display-query-top;
   /* Font for commas and Ellipses*/
   font-size: 15pt;
   font-weight: normal;
+
+  margin-bottom: 10px;
 }
+
+
 
 /*  Each query element/label  */
 .criteria-display {

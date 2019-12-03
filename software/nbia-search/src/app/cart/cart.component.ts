@@ -13,7 +13,7 @@ import { ParameterService } from '@app/common/services/parameter.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, timeout } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Properties } from '@assets/properties';
 
@@ -297,7 +297,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
                 let options = { headers: headers, responseType: 'text' as 'json' };
 
-                this.httpClient.post( csvDownloadUrl, query, options ).subscribe(
+                this.httpClient.post( csvDownloadUrl, query, options ).pipe(timeout(Properties.HTTP_TIMEOUT)).subscribe(
                     ( res ) => {
                         let csvFile = new Blob( [<any>res], { type: 'text/csv' } );
                         // TODO in the manifest download popup, it says 'from: blob:'  see if we can change this.
