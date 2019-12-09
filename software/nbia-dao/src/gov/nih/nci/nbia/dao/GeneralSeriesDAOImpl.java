@@ -612,6 +612,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		if (seriesIds == null || seriesIds.size() <= 0) {
 			return null;
 		}
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}		
 
 		seriesList = getSeriesFromSeriesInstanceUIDsAllVisibilities(seriesIds, authorizedSites,
 				authorizedSeriesSecurityGroups);
