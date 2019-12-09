@@ -270,6 +270,10 @@ public class StudyDAOImpl extends AbstractDAO
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = new ArrayList<Object[]>();
 		List<String> paramList = new ArrayList<String>();
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
 		int i = 0;
         if (seriesIDs==null||seriesIDs.size()<1) {
         	return rs;
@@ -317,6 +321,10 @@ public class StudyDAOImpl extends AbstractDAO
 		List<Object[]> rs = null;
 		List<String> paramList = new ArrayList<String>();
 		int i = 0;
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
 
 		if (collection != null) {
 			where = where.append(" and UPPER(s.patient.dataProvenance.project)=?");
@@ -357,6 +365,10 @@ public class StudyDAOImpl extends AbstractDAO
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		Date date1=null;
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}		
 		try {
 			date1=new SimpleDateFormat("yyyy/MM/dd").parse(fromDate);
 		} catch (ParseException e) {

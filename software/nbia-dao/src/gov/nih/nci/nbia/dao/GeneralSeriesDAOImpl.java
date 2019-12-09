@@ -119,6 +119,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<String> getModalityValues(String collection, String bodyPart, List<String> authorizedProjAndSites)
 			throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}		
 
 		List<String> rs = null;
 		String hql = "select distinct(modality) from GeneralSeries s where visibility in ('1') ";
@@ -171,6 +175,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<String> getBodyPartValues(String collection, String modality, List<String> authorizedProjAndSites)
 			throws DataAccessException {
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}				
 
 		List<String> rs = null;
 		String hql = "select distinct(bodyPartExamined) from GeneralSeries s where visibility in ('1') ";
@@ -223,6 +231,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<String> getManufacturerValues(String collection, String modality, String bodyPart,
 			List<String> authorizedProjAndSites) throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+		
 		StringBuffer where = new StringBuffer();
 		List<String> rs = null;
 		String hql = "select distinct(s.generalEquipment.manufacturer) from GeneralSeries s where s.visibility in ('1') ";
@@ -304,6 +317,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	public List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid,
 			List<String> authorizedProjAndSites, String modality, String bodyPartExamined, String manufacturerModelName,
 			String manufacturer) throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+		
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
@@ -366,6 +384,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<Object[]> getSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites)
 			throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}		
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
@@ -387,6 +409,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 	public List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedProjAndSites)
 			throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}			
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
 		String hql = "select sum(gi.dicomSize), s.imageCount "
@@ -498,6 +524,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<SeriesDTO> findSeriesByPatientId(List<String> patientIDs, List<SiteData> authorizedSites,
 			List<String> authroizedSeriesSecurityGroups) throws DataAccessException {
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}				
 
 		List<GeneralSeries> gsList = getSeriesFromPatients(patientIDs, authorizedSites, authroizedSeriesSecurityGroups);
 		return convertHibernateObjectToSeriesDTO(gsList);
@@ -511,6 +540,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<SeriesDTO> findSeriesByStudyInstanceUid(List<String> studyInstanceUids, List<SiteData> authorizedSites,
 			List<String> authroizedSeriesSecurityGroups) throws DataAccessException {
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}				
 
 		if (studyInstanceUids == null || studyInstanceUids.size() <= 0) {
 			return null;
@@ -534,6 +566,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		if (seriesIds == null || seriesIds.size() <= 0) {
 			return null;
 		}
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}		
 
 		seriesList = getSeriesFromSeriesInstanceUIDs(seriesIds, authorizedSites, authorizedSeriesSecurityGroups);
 		seriesDTOList = convertHibernateObjectToSeriesDTO(seriesList);
@@ -553,6 +589,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		if (seriesIds == null || seriesIds.size() <= 0) {
 			return null;
 		}
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}						
 
 		seriesList = getSeriesFromSeriesInstanceUIDs112(seriesIds, authorizedSites, authorizedSeriesSecurityGroups);
 		seriesDTOList = convertHibernateObjectToSeriesDTO(seriesList);
@@ -660,6 +700,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	protected List<GeneralSeries> getSeriesFromSeriesInstanceUIDs(List<String> seriesIds,
 			List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
 		List<GeneralSeries> seriesList = null;
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}				
 
 		List<List<String>> breakdownList = Util.breakListIntoChunks(seriesIds, 900);
 		for (List<String> unitList : breakdownList) {
@@ -693,6 +737,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	protected List<GeneralSeries> getSeriesFromSeriesInstanceUIDsAllVisibilities(List<String> seriesIds,
 			List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
 		List<GeneralSeries> seriesList = null;
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}						
 
 		List<List<String>> breakdownList = Util.breakListIntoChunks(seriesIds, 900);
 		for (List<String> unitList : breakdownList) {
@@ -726,6 +774,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
 		List<GeneralSeries> seriesList = null;
 
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}				
+		
 		List<List<String>> breakdownList = Util.breakListIntoChunks(seriesIds, 900);
 		for (List<String> unitList : breakdownList) {
 
@@ -767,6 +819,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 	private List<GeneralSeries> getSeriesFromStudys(List<String> studyIDs, List<SiteData> authorizedSites,
 			List<String> authorizedSeriesSecurityGroups) {
+				
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}				
+		
 		List<GeneralSeries> seriesList = null;
 		DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
 		setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);
@@ -786,6 +843,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	private List<GeneralSeries> getSeriesFromPatients(List<String> patientIDs, List<SiteData> authorizedSites,
 			List<String> authorizedSeriesSecurityGroups) {
 		List<GeneralSeries> seriesList = null;
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}				
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
 		setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);

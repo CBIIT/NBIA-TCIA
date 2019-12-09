@@ -40,6 +40,10 @@ public class InstanceDAOImpl extends AbstractDAO
 	public List<Object[]> getImages(String sOPInstanceUID, String patientId, String studyInstanceUid, String seriesInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
 		String hql = "select i.SOPInstanceUID, i.instanceNumber, i.SOPClassUID, i.usFrameNum, i.rows " +
 		" from GeneralImage i where i.SOPInstanceUID is not null ";
 
@@ -81,6 +85,10 @@ public class InstanceDAOImpl extends AbstractDAO
 	public List<String> getImages(String seriesInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
 		StringBuffer where = new StringBuffer();
 		List<String> rs = null;
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}		
 		String hql = "select gi.SOPInstanceUID " +
 		" from GeneralSeries s join s.generalImageCollection gi where "
 		+ " gi.SOPInstanceUID is not null ";

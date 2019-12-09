@@ -140,6 +140,10 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 			                                                    List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
 		List<GeneralSeries> seriesList = null;
 		List<CustomSeriesDTO> seriesDTOList = null;
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}	
 
 		if (seriesUids == null || seriesUids.size() <= 0) {
 			return new ArrayList<CustomSeriesDTO>();
