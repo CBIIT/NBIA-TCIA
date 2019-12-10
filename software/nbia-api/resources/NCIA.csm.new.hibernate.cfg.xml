@@ -26,7 +26,7 @@ L-->
     <!--property name="dialect">org.hibernate.dialect.OracleDialect</property-->
     <property name="dialect">org.hibernate.dialect.MySQLDialect</property> 
     <!--property name="hibernate.show_sql">true</property-->
-    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.show_sql">false</property>
     <!--property name="connection.datasource">java:jdbc/ncia</property-->
     <property name="connection.datasource">java:comp/env/jdbc/csm</property>
       

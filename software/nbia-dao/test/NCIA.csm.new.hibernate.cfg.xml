@@ -17,7 +17,7 @@ L-->
 
     <session-factory>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/nciadb</property>
-    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.show_sql">false</property>
     <property name="hibernate.use_outer_join">true</property>
     <property name="hibernate.connection.username">ncia_user</property>
     <property name="hibernate.connection.password">ncia_user</property>
