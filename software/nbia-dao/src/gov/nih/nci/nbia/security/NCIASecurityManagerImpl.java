@@ -504,6 +504,27 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		}
 	}
 	
+	
+	/**
+	 * Returns unique user roles
+	 */
+	public Set getRoles(String userName) {
+		String userId = this.getUserId(userName);
+		Set<TableProtectionElement> securityRights;
+		Set<String> roles = new HashSet<String>();
+		try {
+			securityRights = getSecurityMap(userId);
+			for (TableProtectionElement tpe : securityRights) {
+					roles.addAll(tpe.getRoles());
+	        }
+		} catch (CSObjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+       return roles;
+	}
+	
 	/**
 	 * Returns true if the user has the QA Tool role
 	 */

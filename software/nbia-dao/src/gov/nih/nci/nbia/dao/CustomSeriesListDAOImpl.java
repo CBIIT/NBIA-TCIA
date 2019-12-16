@@ -87,6 +87,10 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 		if (seriesUids == null || seriesUids.size() <= 0) {
 			return new ArrayList<CustomSeriesDTO>();
 		}
+		
+		if (authorizedPublicSites == null || authorizedPublicSites.size() == 0){
+			return null;
+		}		
 
 		List<List<String>> breakdownList = Util.breakListIntoChunks(seriesUids, 900);
 		for (List<String> unitList : breakdownList)
@@ -105,7 +109,9 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 
 	private List<GeneralSeries> getSeriesList(List<String> seriesUids, List<SiteData> authorizedPublicSites)
 	{
-
+		if (authorizedPublicSites == null || authorizedPublicSites.size() == 0){
+			return null;
+		}
 		DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
 		criteria.add(Restrictions.in("seriesInstanceUID", seriesUids));
 		//criteria.add(Restrictions.eq("visibility", "1"));
@@ -140,6 +146,10 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 			                                                    List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
 		List<GeneralSeries> seriesList = null;
 		List<CustomSeriesDTO> seriesDTOList = null;
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}	
 
 		if (seriesUids == null || seriesUids.size() <= 0) {
 			return new ArrayList<CustomSeriesDTO>();

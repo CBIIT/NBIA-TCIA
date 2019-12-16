@@ -88,6 +88,10 @@ public class PatientDAOImpl extends AbstractDAO
 	public List<Object[]> getPatientByCollection(String collection, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		StringBuffer whereCondition = new StringBuffer();
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
 
 		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
@@ -107,6 +111,10 @@ public class PatientDAOImpl extends AbstractDAO
 	{
 		StringBuffer whereCondition = new StringBuffer();
 		Date date1=null;
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
 		try {
 			date1=new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
 		} catch (ParseException e) {
@@ -131,6 +139,10 @@ public class PatientDAOImpl extends AbstractDAO
 	public List<Object[]> getPatientByCollectionAndModality(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		StringBuffer whereCondition = new StringBuffer();
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
 
 		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
 		whereCondition.append(modality == null ? "":" and gs.modality=?");

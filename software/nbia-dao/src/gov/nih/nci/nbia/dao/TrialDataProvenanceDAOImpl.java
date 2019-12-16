@@ -30,7 +30,9 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	public List<String> getCollectionValues(List<String> authorizedProjAndSites) throws DataAccessException {
 	// Actually the Rest API only need project. Added second project just
 	// for using common util for format transferring.
-
+	if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+	}
 	String hql = "select distinct(tdp.project) from TrialDataProvenance tdp " + addAuthorizedProjAndSites(authorizedProjAndSites);
 	String orderBy = " order by upper(tdp.project)";
 	List<String> rs = getHibernateTemplate().find(hql + orderBy);
