@@ -6,7 +6,7 @@
         }
     },
     {
-        "entryTitle": "Access The Data",
+        "entryTitle": "Access the Data",
         "menuDataDropdown": [
             {
                 "menuText": "Search Data Portal",
@@ -22,7 +22,7 @@
         "entryTitle": "Tools",
         "menuDataDropdown": [
             {
-                "menuText": "Dicom Viewers",
+                "menuText": "DICOM Viewers",
                 "target": "https://wiki.nci.nih.gov/display/NBIA/DICOM+Viewer+Links"
             },
             {
