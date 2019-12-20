@@ -248,6 +248,7 @@ public class ImageDAOImpl extends AbstractDAO
 			GeneralImage image = (GeneralImage)result.get(0);
 			imageDto.setProject(image.getDataProvenance().getProject());
 			imageDto.setSiteName(image.getDataProvenance().getDpSiteName());
+			imageDto.setFileURI(image.getFilename());
 		}
 
 		return imageDto;
