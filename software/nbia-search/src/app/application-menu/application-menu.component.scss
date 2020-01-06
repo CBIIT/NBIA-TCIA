@@ -102,22 +102,55 @@ $application-menu-spacing: 1px; // These are times 2
 }
 
 
-.application-menu-dropdown-menu{
+
+
+
+
+.application-menu-dropdown-menu-share{
     color: #fff;
-    margin-left: 248px;
+    //margin-left: 548px;
+  margin-left:  calc(100% - 200px);
     padding: 0;
 }
-.application-menu-dropdown-menu-item {
+.application-menu-dropdown-menu-item-share {
     color: #fff;
     padding: 1px 0px 4px 14px;
     background-color: #337ab7;
     border: solid 1px #828282;
 }
 
-.application-menu-dropdown-menu-item:hover {
+.application-menu-dropdown-menu-item-share:hover {
     color: #fff;
     background-color: #286090;
 }
+
+
+
+
+
+.application-menu-dropdown-menu-data-admin{
+    color: #fff;
+    margin-top: 0;
+    margin-left: 10px;
+    // margin-left:  calc(100% - 200px);
+    padding: 0;
+}
+.application-menu-dropdown-menu-item-data-admin {
+    color: #fff;
+    padding: 1px 0px 4px 14px;
+    background-color: #337ab7;
+    border: solid 1px #828282;
+}
+
+.application-menu-dropdown-menu-item-data-admin:hover {
+    color: #fff;
+    background-color: #286090;
+}
+
+
+
+
+
 
 
 .application-menu-with-cart-count{

@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiServerService } from '../../../../services/api-server.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
-import { Consts } from '@app/consts';
+import { Consts, MenuItems } from '@app/consts';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 import { Properties } from '@assets/properties';
 import { CommonService } from '@app/image-search/services/common.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component( {
     selector: 'nbia-test',
     templateUrl: './test.component.html',
     styleUrls: ['../../../../../app.component.scss', './test.component.scss']
 } )
-export class TestComponent implements OnInit{
+export class TestComponent implements OnInit, OnDestroy{
     token;
 
     colors0 = Consts.COLOR_ARRAY0;
@@ -28,7 +30,11 @@ export class TestComponent implements OnInit{
 
     properties = Properties;
 
+    currentUser;
+    currentUserRoles;
+
     // sortByLabels = ['Count', 'Name'];
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiServerService: ApiServerService, private persistenceService: PersistenceService,
                  private loadingDisplayService: LoadingDisplayService, private commonService: CommonService ) {
@@ -39,6 +45,22 @@ export class TestComponent implements OnInit{
         this.token = this.persistenceService.get( 'token' );
         this.sortByCount = Properties.SORT_BY_COUNT;
         this.sortByName = !this.sortByCount;
+
+        this.currentUser = this.apiServerService.getCurrentUser();
+        this.currentUserRoles = this.apiServerService.getCurrentUserRoles();
+
+        this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.currentUser = data;
+            }
+        );
+
+       this.apiServerService.currentUserRolesEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.currentUserRoles = data;
+            }
+        );
+
     }
 
     onLoadingDisplay() {
@@ -85,4 +107,10 @@ export class TestComponent implements OnInit{
         this.sortByName = !state;
         Properties.SORT_BY_COUNT = this.sortByCount;
     }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

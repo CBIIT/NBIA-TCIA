@@ -107,7 +107,6 @@ export class ApiServerService implements OnDestroy{
     collectionDescriptionsResultsEmitter = new EventEmitter();
     collectionDescriptionsErrorEmitter = new EventEmitter();
 
-
     // We will use these two when Query Builder is hooked up.
     criteriaSearchResultsEmitter = new EventEmitter();
     criteriaSearchErrorEmitter = new EventEmitter();
@@ -127,7 +126,6 @@ export class ApiServerService implements OnDestroy{
 
     getHostNameEmitter = new EventEmitter();
     getHostNameErrorEmitter = new EventEmitter();
-
 
 
     /**
@@ -192,6 +190,9 @@ export class ApiServerService implements OnDestroy{
     getDicomTagsEmitter = new EventEmitter();
     getDicomTagsErrorEmitter = new EventEmitter();
 
+    getDicomTagsByImageEmitter = new EventEmitter();
+    getDicomTagsByImageErrorEmitter = new EventEmitter();
+
 
     // TODO Explain
     // FIXME make this name Image Modality specific. and getImageModalityAllOrAny & setImageModalityAllOrAny
@@ -210,6 +211,8 @@ export class ApiServerService implements OnDestroy{
      * Outside of this service, this is accessed with this.setCurrentUser and this.getCurrentUser.
      */
     currentUser;
+    currentUserRoles: [];
+    currentUserRolesEmitter = new EventEmitter();
 
     /**
      * Used when getting an access token from the API server.
@@ -287,6 +290,9 @@ export class ApiServerService implements OnDestroy{
         return this.loggingOut;
     }
 
+    getCurrentUserRoles(){
+        return this.currentUserRoles;
+    }
     getSpeciesTax() {
         return this.speciesTax;
     }
@@ -479,8 +485,20 @@ export class ApiServerService implements OnDestroy{
             this.accessToken = t['access_token'];
         }
         this.persistenceService.put( this.persistenceService.Field.ACCESS_TOKEN, this.accessToken );
-
         this.rawAccessToken = t;
+
+        // Get this users role(s)
+        this.doGet( Consts.GET_USER_ROLES, this.accessToken ).subscribe(
+            ( resGetUserRoles ) => {
+                this.currentUserRoles = resGetUserRoles;
+                this.currentUserRolesEmitter.emit(this.currentUserRoles);
+            },
+            ( errGetUserRoles ) => {
+                // If we can't get the users role(s), we will give them none.
+                this.currentUserRoles = [];
+                this.currentUserRolesEmitter.emit(this.currentUserRoles);
+            } );
+
     }
 
     /**
@@ -505,6 +523,7 @@ export class ApiServerService implements OnDestroy{
      */
     setCurrentUser( user ) {
         this.currentUser = user;
+
         // This emit tells the header component to update the Login/Logout button.
         this.userSetEmitter.emit( this.currentUser );
         if( user === Properties.API_SERVER_USER_DEFAULT ){
@@ -785,6 +804,10 @@ export class ApiServerService implements OnDestroy{
                 searchService = Consts.DICOM_TAGS + '?' + query;
                 break;
 
+            case Consts.DICOM_TAGS_BY_IMAGE:
+                searchService = Consts.DICOM_TAGS_BY_IMAGE + '?' + query;
+                break;
+
 
             case Consts.TEXT_SEARCH:
                 searchService = Consts.TEXT_SEARCH;
@@ -840,6 +863,7 @@ export class ApiServerService implements OnDestroy{
                             ( res0 ) => {
 
                                 this.setToken( res0 );
+
 
                                 // We have a new token, try the search one more time.
                                 this.doPost( searchService, query ).subscribe(
@@ -920,6 +944,7 @@ export class ApiServerService implements OnDestroy{
         if( (queryType === Consts.CREATE_SHARED_LIST) ||
             (queryType === Consts.DELETE_SHARED_LIST) ||
             (queryType === Consts.GET_HOST_NAME) ||
+            (queryType === Consts.DICOM_TAGS_BY_IMAGE) ||
             (queryType === Consts.LOG_ENTRY) ){
             options = {
                 headers: headers,
@@ -937,7 +962,7 @@ export class ApiServerService implements OnDestroy{
                 console.log( 'doPost options: ', options );
         */
 
-        return this.httpClient.post( simpleSearchUrl, query, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
+        return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
 
@@ -964,6 +989,8 @@ export class ApiServerService implements OnDestroy{
             this.getManufacturerTreeEmitter.emit( res );
         }else if( queryType === Consts.DICOM_TAGS ){
             this.getDicomTagsEmitter.emit( { 'id': id, 'res': res } );
+        }else if( queryType === Consts.DICOM_TAGS_BY_IMAGE ){
+            this.getDicomTagsByImageEmitter.emit( { 'id': id, 'res': res } );
         }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
             this.collectionDescriptionsResultsEmitter.emit( res );
         }
@@ -988,13 +1015,15 @@ export class ApiServerService implements OnDestroy{
             this.getManufacturerTreeErrorEmitter.emit( err );
         }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS ){
             this.getDicomTagsErrorEmitter.emit( { err, id } );
+        }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS_BY_IMAGE ){
+            this.getDicomTagsByImageErrorEmitter.emit( { err, id } );
         }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
             this.collectionDescriptionsErrorEmitter.emit( err );
         }
     }
 
 
-     /**
+    /**
      *
      * @param queryType
      * @param query
@@ -1003,7 +1032,7 @@ export class ApiServerService implements OnDestroy{
     async dataGet( queryType, query, accessToken ? ) {
         let queryTypeOrig = queryType;
 
-        if( (! this.utilService.isNullOrUndefined(query)) && (query.length > 0)){
+        if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
             queryType = queryType + '?' + query;
         }
         let counter = 0; // If something goes wrong, we don't want to be an endless loop
@@ -1018,10 +1047,9 @@ export class ApiServerService implements OnDestroy{
         this.doGet( queryType, accessToken ).subscribe(
             // Good results, return the search results.
             ( res ) => {
-                if( (! this.utilService.isNullOrUndefined(query)) && (query.length > 0)){
-                    this.emitGetResults( queryTypeOrig, res,  query.replace( 'SeriesUID=', '' )  );
-                }
-                else{
+                if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
+                    this.emitGetResults( queryTypeOrig, res, query.replace( 'SeriesUID=', '' ) );
+                }else{
                     this.emitGetResults( queryType, res );
                 }
             },
@@ -1063,10 +1091,9 @@ export class ApiServerService implements OnDestroy{
                                 this.doGet( queryType, accessToken ).subscribe(
                                     // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
                                     ( res1 ) => {
-                                        if( (! this.utilService.isNullOrUndefined(query)) && (query.length > 0)){
-                                            this.emitGetResults( queryTypeOrig, res1,  query.replace( 'SeriesUID=', '' )  );
-                                        }
-                                        else{
+                                        if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
+                                            this.emitGetResults( queryTypeOrig, res1, query.replace( 'SeriesUID=', '' ) );
+                                        }else{
                                             this.emitGetResults( queryType, res1 );
                                         }
 
@@ -1136,7 +1163,7 @@ export class ApiServerService implements OnDestroy{
 
         let results;
         try{
-            results = this.httpClient.get( getUrl, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
+            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
@@ -1165,7 +1192,7 @@ export class ApiServerService implements OnDestroy{
 
         let results;
         try{
-            results = this.httpClient.get( getUrl, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
+            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
         }catch( e ){
             // TODO react to error.
             console.error( 'doGetNoToken Exception: ' + e );
@@ -1195,7 +1222,7 @@ export class ApiServerService implements OnDestroy{
             responseType: 'text' as 'text'
         };
 
-        return this.httpClient.post( downloadManifestUrl, query, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
+        return this.httpClient.post( downloadManifestUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
     setImageModalityAllOrAny( a ) {
@@ -1251,7 +1278,7 @@ export class ApiServerService implements OnDestroy{
                 headers: headers,
                 method: 'post'
             };
-        return this.httpClient.post( post_url, data, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
+        return this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
 
@@ -1273,7 +1300,7 @@ export class ApiServerService implements OnDestroy{
                 responseType: 'text' as 'text'
             };
 
-        return this.httpClient.get( getUrl, options ).pipe(timeout(Properties.HTTP_TIMEOUT));
+        return this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
     /**

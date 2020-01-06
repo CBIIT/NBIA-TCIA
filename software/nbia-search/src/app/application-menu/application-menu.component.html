@@ -12,9 +12,96 @@
 
 <span id="application-menu-span" class="application-menu-span">
 <span class="left-gradient">&nbsp;&nbsp;&nbsp;</span>
+
+    <!--  Data Admin  -->
+    <span  *ngIf="showDataAdminButton"
+           class="application-menu-item unselectable"
+           [ngClass]="{
+            'application-menu-mouse-over':menuMouseOver[menuItem.DATA_ADMIN_MENU_ITEM] && (! disabled ),
+            'application-menu-current-item': currentMenuItem === menuItem.DATA_ADMIN_MENU_ITEM,
+            'application-menu-disabled-item': disabled
+        }"
+           dropdown [dropdownToggle]="true"
+           dropdown-open
+           (mouseover)="onMouseOver(menuItem.DATA_ADMIN_MENU_ITEM)"
+           (mouseout)="onMouseOut(menuItem.DATA_ADMIN_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-wrench"></span> Data Admin
+
+        <ul
+                *ngIf="(  ! menuLock )"
+                class="dropdown-menu application-menu-dropdown-menu-data-admin"
+                role="menu"
+        >
+
+
+            <li     *ngIf="showDataAdminPerformQcButton"
+                    class="application-menu-dropdown-menu-item-data-admin"
+                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM)"
+            >
+                Perform QC
+            </li>
+
+
+            <li     *ngIf="showDataAdminApproveDeletions"
+                    class="application-menu-dropdown-menu-item-data-admin"
+                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM)"
+            >
+                Approve Deletions
+            </li>
+
+            <li     *ngIf="showDataAdminViewSubmissionReports"
+                    class="application-menu-dropdown-menu-item-data-admin"
+                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM)"
+            >
+                View Submission Reports
+            </li>
+
+            <li     *ngIf="showPerformOnlineDeletions"
+                    class="application-menu-dropdown-menu-item-data-admin"
+                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM)"
+            >
+                Perform Online Deletion
+            </li>
+
+            <li     *ngIf="showEditCollectionDescriptions"
+                    class="application-menu-dropdown-menu-item-data-admin"
+                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM)"
+            >
+                Edit Collection Desc
+            </li>
+
+            <li     *ngIf="showManageWorkflowItems"
+                    class="application-menu-dropdown-menu-item-data-admin"
+                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM)"
+            >
+                Manage Workflow Items
+            </li>
+        </ul>
+    </span>
+
+
+
+
+    <!--    -->
+    <span *ngIf="showUserAdminButton"
+        class="application-menu-item unselectable"
+        [ngClass]="{
+            'application-menu-mouse-over':menuMouseOver[menuItem.USER_ADMIN_MENU_ITEM] && (! disabled ),
+            'application-menu-current-item': currentMenuItem === menuItem.USER_ADMIN_MENU_ITEM,
+            'application-menu-disabled-item': disabled
+        }"
+        (click)="onMenuItemClick(menuItem.USER_ADMIN_MENU_ITEM)"
+        (mouseover)="onMouseOver(menuItem.USER_ADMIN_MENU_ITEM)"
+        (mouseout)="onMouseOut(menuItem.USER_ADMIN_MENU_ITEM)"
+    >
+        <span class="glyphicon glyphicon-wrench"></span> User Admin
+
+    </span>
+
     <!--  Search  -->
     <span
-        class="application-menu-item"
+        class="application-menu-item unselectable"
         [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.IMAGE_SEARCH_MENU_ITEM] && (! disabled ),
             'application-menu-current-item': currentMenuItem === menuItem.IMAGE_SEARCH_MENU_ITEM,
@@ -31,7 +118,7 @@
 
     <!--  Login  -->
     <span
-        class="application-menu-item"
+        class="application-menu-item unselectable"
         [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.LOGIN_MENU_ITEM] && (! disabled ),
             'application-menu-current-item': currentMenuItem === menuItem.LOGIN_MENU_ITEM,
@@ -48,7 +135,7 @@
 
     <!-- Download  -->
     <span
-        class="application-menu-item"
+        class="application-menu-item" unselectable
         [ngClass]="{
             'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled ),
             'application-menu-disabled-item':( cartCount === 0 || disabled )
@@ -61,7 +148,7 @@
     </span>
 
     <span
-        class="application-menu-item"
+        class="application-menu-item unselectable"
         [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.SAVE_SHARED_LIST_MENU_ITEM] && (! disabled ) && (! shareDisabled),
             'application-menu-disabled-item':disabled || shareDisabled
@@ -75,11 +162,11 @@
         &nbsp;Share
         <ul
             *ngIf="( ( ! disabled ) && (! shareDisabled) && ( ! menuLock ))"
-            class="dropdown-menu application-menu-dropdown-menu"
+            class="dropdown-menu application-menu-dropdown-menu-share"
             role="menu"
         >
             <li
-                class="application-menu-dropdown-menu-item"
+                class="application-menu-dropdown-menu-item-share"
                 [ngClass]="{
                     'hide-item':cartCount === 0,
                     'application-menu-mouse-over':menuMouseOver[menuItem.SAVE_CART_MENU_ITEM]
@@ -93,7 +180,7 @@
 
             <!-- Share my query - Display a URL with parameters which will reproduce the current search.  -->
             <li
-                class="application-menu-dropdown-menu-item"
+                class="application-menu-dropdown-menu-item-share"
                 [ngClass]="{
                     'hide-item': ( (! haveSimpleSearchQuery ) && ( ! haveTextSearchQuery)),
                     'application-menu-mouse-over':menuMouseOver[menuItem.DISPLAY_QUERY_URL]
@@ -106,25 +193,9 @@
             </li>
         </ul>
     </span>
-<!--
-    <span
-        class="application-menu-item"
-        [ngClass]="{
-            'application-menu-mouse-over':( menuMouseOver[menuItem.CART_MENU_ITEM] && (cartCount > 0)  && (! disabled )),
-            'application-menu-disabled-item':(cartCount === 0) || disabled,
-            'application-menu-current-item': currentMenuItem === menuItem.CART_MENU_ITEM,
-            'application-menu-with-cart-count': cartTotalFileSize > 0,
-            'application-menu-with-no-cart-count': cartTotalFileSize < 1
-         } "
-        title="{{cartCount}} Series"
-        (click)="onMenuItemClick(menuItem.CART_MENU_ITEM)"
-        (mouseover)="onMouseOver(menuItem.CART_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.CART_MENU_ITEM)"
-    >
 
- -->
     <span
-        class="application-menu-item"
+        class="application-menu-item unselectable"
         [ngClass]="{
             'application-menu-mouse-over':( menuMouseOver[menuItem.CART_MENU_ITEM] && (cartCount > 0)  && (! disabled )),
             'application-menu-disabled-item':(cartCount === 0) || disabled,

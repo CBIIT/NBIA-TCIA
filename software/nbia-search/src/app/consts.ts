@@ -1,4 +1,4 @@
-export enum MenuItems {
+export enum MenuItems{
     IMAGE_SEARCH_MENU_ITEM,
     LOGIN_MENU_ITEM,
     CART_MENU_ITEM,
@@ -13,7 +13,16 @@ export enum MenuItems {
     HELP_MENU_ITEM_SITE,
     HELP_MENU_ITEM_TALK_TO_HUMAN,
     HELP_MENU_SHOW_INTRO,
-    HIDE_ALL
+    HIDE_ALL,
+    USER_ADMIN_MENU_ITEM,
+    DATA_ADMIN_MENU_ITEM,
+    DATA_ADMIN_PERFORM_QC_MENU_ITEM,
+    DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM,
+    DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM,
+    DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM,
+    DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM,
+    DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM,
+
 }
 
 export const Consts = {
@@ -34,7 +43,6 @@ export const Consts = {
 
         // The actual value to use when building the Rest call
         SPECIES_CRITERIA: 'SpeciesCriteria',
-
 
 
         // The query type used in the client code to identify the type.
@@ -67,6 +75,13 @@ export const Consts = {
         SAVE_CART_LOG_TEXT: 'SAVE_CART',
         HELP_SITE_LOG_TEXT: 'HELP_SITE',
         LOAD_SAVED_QUERY_LOG_TEXT: 'LOAD_SAVED_QUERY',
+
+        TOOL_PERFORM_QC: 'perform-qc',
+        TOOL_APPROVE_DELETIONS: 'approve-deletions',
+        TOOL_EDIT_COLLECTION_DESCRIPTIONS: 'edit-collection-descriptions',
+        TOOL_MANAGE_WORKFLOW_ITEMS: 'manage-workflow-items',
+        TOOL_PERFORM_ONLINE_DELETION: 'perform-online-deletion',
+        TOOL_VIEW_SUBMISSION_REPORTS: 'view-submission-reports',
 
 
         // Used by Summary charts.
@@ -104,7 +119,7 @@ export const Consts = {
         // SIMPLE_SEARCH: 'getExtendedSimpleSearch', // This was too slow
 
 
-         SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPartPaged',
+        SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPartPaged',
         // SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPart',
 
         // If you change SIMPLE_SEARCH or TEXT_SEARCH change here too.
@@ -121,6 +136,7 @@ export const Consts = {
         DELETE_SHARED_LIST: 'deleteSharedList',
         GET_SHARED_LIST: 'getSharedList',
         LOG_ENTRY: 'addClientAudit',
+        GET_USER_ROLES: 'getRoles',
 
         SEARCH_TYPE_DEFAULT: 0,  // Simple Search = 0, Free Text = 1, Query Builder = 2
 
@@ -128,6 +144,7 @@ export const Consts = {
         SERIES_FOR_SUBJECT: 'seriesForSubject',
         SERIES_FOR_SHARED_LIST_SUBJECT: 'seriesForSharedListSubject',
         DICOM_TAGS: 'getDicomTags',
+        DICOM_TAGS_BY_IMAGE: 'getDicomTagsByImageID',
 
         SHOW_CRITERIA_QUERY_THIRD_PARTY: 'showQueryThirdParty',
         SHOW_CRITERIA_QUERY_PHANTOMS: 'showQueryPhantoms',
@@ -244,7 +261,6 @@ export const Consts = {
                     'seq': 9
                 }
             ]
-
 
 
     }

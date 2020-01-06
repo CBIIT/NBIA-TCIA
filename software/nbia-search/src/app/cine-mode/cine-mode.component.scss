@@ -1,0 +1,171 @@
+@import '../app.component.scss';
+
+$imageWidth: 512px;
+$imageHeight: 512px;
+$cineModeMinWidth: 350px; // A good width for when we just have the loading progress bar.
+$cineModeMinWidthWithDicom: 1300px;
+$cineModePadding: 6px;
+$cineModeTop: 70px;
+$loading-message-top: 250px;
+
+.cine-mode-div {
+  z-index: 4;
+  position: absolute;
+  top: $cineModeTop;
+  left: calc(50% - #{($imageWidth+$cineModePadding) / 2 });
+  padding: 0;
+  margin: 0;
+}
+
+.cine-mode-loading-00 {
+  min-width: $cineModeMinWidth;
+  left: calc(50% - #{$cineModeMinWidth / 2 });
+  top: $loading-message-top;
+}
+
+.cine-mode-div-with-dicom {
+  z-index: 4;
+  position: absolute;
+  top: $cineModeTop;
+  left: calc(50% - #{($cineModeMinWidthWithDicom+$cineModePadding) / 2 });
+  width: $cineModeMinWidthWithDicom+$cineModePadding;
+  padding: 0;
+  margin: 0;
+}
+
+.data-loading-text{
+  font-size: 12pt;
+}
+
+
+.image {
+  height: $imageHeight;
+  width: $imageWidth;
+  padding: 0;
+  margin: 0;
+}
+
+.cine-mode-content {
+  padding: $cineModePadding;
+}
+
+.cine-mode-scroller {
+  width: $imageWidth;
+}
+
+.cine-mode-image-number-input{
+  width: 40px;
+}
+
+.cine-mode-frame-rate{
+  margin-left: 60px;
+  height: 30px;
+  width: 40px;
+  font-size: 16px;
+}
+
+
+.image-count-display {
+  font-size: 14pt;
+}
+
+.show-dicom-checkbox {
+  font-size: 12pt;
+  float: right;
+}
+
+
+// .cursor-draggable isn't working for me, this is a workaround.
+.cine-panel-heading:hover {
+  cursor: grab;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading:active {
+  cursor: grabbing;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading-moving {
+  cursor: grabbing;
+}
+
+
+.cine-mode-dicom-div {
+  // color: #fff;
+  // background-color: #2aabd2;
+  z-index: 4;
+  position: absolute;
+  top: $cineModeTop;
+  left: calc(50% - #{(($imageWidth+$cineModePadding) / 2)+ 200 });
+  min-width: $cineModeMinWidth;
+}
+
+.cine-mode-buttons{
+  margin: 6px 0 0 0;
+}
+
+.cine-mode-button-icon{
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+
+}
+
+.cine-mode-button-bar{
+  margin-left: 40px;
+  margin-bottom: 20px;
+  width: $imageWidth+$cineModePadding - 50px;
+}
+
+.play-back-image{
+  height: 25px;
+  padding: 3px 0 3px 0;
+}
+
+/*
+
+
+.cine-mode-dicom-col {
+  border: solid #c9302c 5px;
+}
+
+*/
+
+
+//////////////////////////
+.cine-mode-dicom-header-tr {
+  background-color: #dedddd;
+  border: solid 1px #dedddd;
+  height: 30px;
+  font-weight: bold;
+}
+
+.cine-mode-dicom-tr {
+  height: 30px;
+}
+
+
+.dicom-scroll-area {
+  height: $imageHeight;
+  overflow-y: auto;
+}
+
+.dicom-data-table {
+  width: 100%;
+}
+
+.dicom-data-column {
+  border: solid 1px #bbb;
+  width: calc(75% - 140px);
+}
+
+.dicom-element-column {
+  border: solid 1px #bbb;
+  width: 140px;
+}
+
+.dicom-name-column {
+  border: solid 1px #bbb;
+  width: 25%;
+}

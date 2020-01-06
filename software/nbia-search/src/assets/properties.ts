@@ -1,8 +1,14 @@
 export let Properties = {
-    // 05_NOV_2019
-    VERSION: '1.0.63',
+    // 05_DEC_2019
+    VERSION: '1.0.64',
+    // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
 
+
+    // //////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
+    //  The following values can be over ridden in the assets/configuration file
+    // //////////////////////////////////////////////////////////////////////////
     // This value can be changed in the config file.
     BANNER_TEXT: '',
     // This value can be changed in the config file.
@@ -11,36 +17,22 @@ export let Properties = {
     // This value can be changed in the config file.
     HTTP_TIMEOUT: 120000,
 
+    // This value can be changed in the config file.
+    // Only series with these modalities will show the OHIF viewer button
     OHIF_MODALITIES: [ 'MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT', 'XA'],
 
-    // This does not work yet when the value is not an empty string
+    // @TODO
+    // This does not work yet when the value is not an empty string, leave it an empty string!
+    // This value can be changed in the config file.
     // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
 
     // This value can be changed in the config file.
+    // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
     SHOW_OHIF_VIEWER: false,
     // This value can be changed in the config file.
     SHOW_OHIF_SERIES_VIEWER: true,
 
-
-    CONFIG_COMPLETE: false,
-
-
-
-    // These values will by set by the "Brand"
-    NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
-    ACCOUNT_HELP: 'https://public.cancerimagingarchive.net/ncia/accountSupport.jsf',
-    TEXT_SEARCH_DOCUMENTATION: 'https://wiki.nci.nih.gov/display/NBIA/Performing+a+Text+Search+7.0',
-    CUSTOM_MENU_DATA: [],
-    LOGO_FILE: '',
-    FOOTER_HTML: '',
-    BRAND_DIR: 'brand',
-    CONFIG_FILE: 'configuration',
-    DEFAULT_BRAND: 'nbia',
-    DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
-
-    VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts to know if it is initialized before appending to the version.
-    BRAND: '%BRAND%',
 
 
     /*
@@ -57,12 +49,46 @@ export let Properties = {
         API_SERVER_URL: 'https://public.cancerimagingarchive.net',
     */
 
-    // If this is left an empty string, the url used by the browser to reach the site will be used
+    // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
+    // API_SERVER_URL: 'http://192.168.1.20:8080',
     API_SERVER_URL: '',
+    // //////////////////////////////////////////////////////////////////////////
+    //  End of values that can be over ridden in the assets/configuration file
+    // //////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////
 
 
+    CINE_MODE: true,
 
+
+    // This is a flag that is set to true by the ConfigurationService when all the configuration file settings have been set.
+    // It used to determine if it is okay to start using the configured settings yet.
+    CONFIG_COMPLETE: false,
+
+
+    // //////////////////////////////////////////////////////////////////////////
+    //  The following values will by set by the "Brand"
+    // //////////////////////////////////////////////////////////////////////////
+    NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
+    ACCOUNT_HELP: 'https://public.cancerimagingarchive.net/ncia/accountSupport.jsf',
+    TEXT_SEARCH_DOCUMENTATION: 'https://wiki.nci.nih.gov/display/NBIA/Performing+a+Text+Search+7.0',
+    CUSTOM_MENU_DATA: [],
+    LOGO_FILE: '',
+    FOOTER_HTML: '',
+    BRAND_DIR: 'brand',
+    CONFIG_FILE: 'configuration',
+    DEFAULT_BRAND: 'nbia',
+    DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
+
+    VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts to know if it is initialized before appending to the version.
+    BRAND: '%BRAND%',
+    // //////////////////////////////////////////////////////////////////////////
+    //  End of values will by set by the "Brand"
+    // //////////////////////////////////////////////////////////////////////////
+
+
+    // This is set from the server, so far it is only used in the footer (depending on the brand)
     HOST_NAME: '',
 
     // This can be removed when I get rid of all the old code used to get all the search results at once rather than just a page at a time.
@@ -160,7 +186,7 @@ export let Properties = {
     /*  How many criteria to show for each Simple search category, before clicking "More..."   */
     CRITERIA_SHOW_COUNT: 5,
 
-    /*  How many numbed page buttons between the arrow buttons  */
+    /*  How many numbered page buttons between the arrow buttons  */
     MAX_PAGER_BUTTONS: 6,
 
     SHOW_INTRO_DEFAULT: true,
@@ -170,8 +196,6 @@ export let Properties = {
     HELP_SITE: 'https://wiki.cancerimagingarchive.net/x/2QLUAQ',
     HELP_SITE_HUMAN: 'http://www.cancerimagingarchive.net/support',
 
-
-    // TODO - This is not a Property, we need a config type component
     LAST_ACCESS: '',
 
     ROWS_PER_PAGE_LIMIT: 500,
@@ -180,5 +204,4 @@ export let Properties = {
     // Must be 2, 3, 4 or 5 !!!
     DISPLAY_QUERY_ELEMENTS_MAX: 4
 };
-
 

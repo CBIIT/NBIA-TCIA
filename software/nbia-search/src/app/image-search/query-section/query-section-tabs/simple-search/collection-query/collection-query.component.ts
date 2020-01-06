@@ -215,6 +215,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         }
         this.loadingDisplayService.setLoading( false, 'Done updateCriteriaList' );
 
+
         // ------------------------------------------------------------------------------------------
 
 

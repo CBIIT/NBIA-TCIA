@@ -94,9 +94,20 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     // Get the MenuItems enum from consts.ts
     menuItem = MenuItems;
+    // Does the user have the role needed to show User Admin tab?
+    showUserAdminButton = false;
+    showDataAdminButton = false;
+    showDataAdminPerformQcButton = false;
+    showDataAdminApproveDeletions = false;
+    showDataAdminViewSubmissionReports = false;
+    showPerformOnlineDeletions = false;
+    showEditCollectionDescriptions = false;
+    showManageWorkflowItems = false;
 
     haveSimpleSearchQuery = false;
     haveTextSearchQuery = false;
+
+    currentUserRoles;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -110,6 +121,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
 
+
         // Get the currently logged in user.
         this.currentUser = this.apiServerService.getCurrentUser();
 
@@ -120,29 +132,27 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         this.updateUser();
 
         // Lock the menu when popups are visible
-        this.menuService.menuLockEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.menuService.menuLockEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.menuLock = <boolean>data;
             }
         );
 
-        this.apiServerService.simpleSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.simpleSearchQueryHoldEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isEmpty( data )) ){
                     this.haveSimpleSearchQuery = true;
-                }
-                else{
+                }else{
                     this.haveSimpleSearchQuery = false;
                 }
                 this.checkShareEnabled();
             } );
 
-        this.apiServerService.textSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.textSearchQueryHoldEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isEmpty( data )) ){
                     this.haveTextSearchQuery = true;
-                }
-                else{
+                }else{
                     this.haveTextSearchQuery = false;
                 }
                 this.checkShareEnabled();
@@ -150,7 +160,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
 
         // We need this for, when the menu selection is changed programmatically elsewhere
-        this.menuService.currentMenuItemEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.menuService.currentMenuItemEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentMenuItem = <MenuItems>data;
             }
@@ -158,7 +168,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
 
         // When the (logged in) user changes.
-        this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.userSetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.updateUser();
                 this.currentUser = data;
@@ -167,7 +177,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         );
 
         // Receive the Cart contents count, and the total size of all its files.
-        this.cartService.cartCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.cartService.cartCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.cartCount = data['count'];
                 this.cartTotalFileSize = data['fileSize'];
@@ -177,7 +187,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         );
 
         // If an alert box is up some things will need to be disabled.
-        this.alertBoxService.alertBoxEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.alertBoxService.alertBoxEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.disabled = true;
             }
@@ -185,7 +195,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
 
         // When the alert box has closed (and returned results) store the results, and enable the menu.
-        this.alertBoxService.alertBoxReturnEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.alertBoxService.alertBoxReturnEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( data['id'] === this.alertId00 ){
                     this.alertBoxResults = data['button'];
@@ -195,14 +205,60 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             }
         );
 
+
+        // Get the current user's role(s)
+        this.apiServerService.currentUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.currentUserRoles = data;
+                this.showUserAdminButton = (this.currentUserRoles.indexOf( 'NCIA.ADMIN' ) > -1);
+
+                this.showDataAdminButton = false;
+                if( this.currentUserRoles.indexOf( 'NCIA.VIEW_SUBMISSION_REPORT' ) > -1 ){
+                    this.showDataAdminButton = true;
+                    this.showDataAdminViewSubmissionReports = true;
+                }
+                if( this.currentUserRoles.indexOf( 'NCIA.SUPER_CURATOR' ) > -1 ){
+                    this.showDataAdminButton = true;
+                    this.showDataAdminApproveDeletions = true;
+                    this.showManageWorkflowItems = true;
+                }
+                if( this.currentUserRoles.indexOf( 'NCIA.ADMIN' ) > -1 ){
+                    this.showDataAdminButton = true;
+                }
+                if( this.currentUserRoles.indexOf( 'NCIA.DELETE_ADMIN' ) > -1 ){
+                    this.showDataAdminButton = true;
+                    this.showPerformOnlineDeletions = true;
+                }
+                if( this.currentUserRoles.indexOf( 'NCIA.CURATE' ) > -1 ){
+                    this.showDataAdminButton = true;
+                }
+                if( this.currentUserRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1 ){
+                    this.showDataAdminButton = true;
+                    this.showDataAdminPerformQcButton = true;
+                }
+                if( this.currentUserRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+                    this.showDataAdminButton = true;
+                    this.showEditCollectionDescriptions = true;
+                }
+
+                /*              NCIA.VIEW_SUBMISSION_REPORT
+                                NCIA.SUPER_CURATOR
+                                NCIA.ADMIN
+                                NCIA.DELETE_ADMIN
+                                NCIA.MANAGE_COLLECTION_DESCRIPTION
+                                NCIA.CURATE
+                                NCIA.MANAGE_VISIBILITY_STATUS
+                                NCIA.READ
+                 */
+            }
+        );
     }
 
 
     checkShareEnabled() {
         if( this.haveSimpleSearchQuery || this.haveTextSearchQuery || this.cartCount > 0 ){
             this.shareDisabled = false;
-        }
-        else{
+        }else{
             this.shareDisabled = true;
         }
     }
@@ -218,6 +274,63 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         }
         switch( menuChoice ){
 
+            // ------------ User Admin ------------
+            case this.menuItem.USER_ADMIN_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-uat/index.html?accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+             // Perform QC
+            case this.menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_QC + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+             // Approve Deletions
+            case this.menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_APPROVE_DELETIONS + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+            // View Submission reports
+            case this.menuItem.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_VIEW_SUBMISSION_REPORTS + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+
+            // Perform online deletion
+            case this.menuItem.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_ONLINE_DELETION + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+
+            // Edit collection descriptions
+            case this.menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+            // Manage Workflow Items
+            case this.menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_MANAGE_WORKFLOW_ITEMS + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
             // ------------- Search -------------
             case this.menuItem.IMAGE_SEARCH_MENU_ITEM:
                 if( (this.menuService.getCurrentItem() !== this.menuItem.IMAGE_SEARCH_MENU_ITEM) && (!this.disabled) ){
@@ -258,8 +371,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
                     if( this.currentUser === Properties.API_SERVER_USER_DEFAULT ){
                         this.menuService.setCurrentItem( menuChoice );
-                    }
-                    else{
+                    }else{
                         this.apiServerService.logOutCurrentUser();
                     }
                 }
@@ -348,8 +460,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         // Just launch the cart download.
         if( !this.showDownloaderDownload ){
             this.commonService.cartListDownLoadButton();
-        }
-        else{
+        }else{
             // Launch the popup with the TCIA downloader link.
             this.commonService.downloaderDownLoadButton();
         }
@@ -358,7 +469,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     /**
      * This maintains the "Is the mouse pointer over the menu button" state. This isn't used yet.<br>
-     * I was thinking in the future, to add real time one line context help to a footer ore other status type display.
+     * I was thinking in the future, to add real time one line context help to a footer or other status type display.
      */
     onMouseOver( n ) {
         this.menuMouseOver[n] = true;
@@ -366,7 +477,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     /**
      * This maintains the "Is the mouse pointer over the menu button" state. This isn't used yet.<br>
-     * I was thinking in the future, to add real time one line context help to a footer ore other status type display.
+     * I was thinking in the future, to add real time one line context help to a footer or other status type display.
      */
     onMouseOut( n ) {
         this.menuMouseOver[n] = false;
@@ -382,8 +493,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         if( this.apiServerService.getCurrentUser() === Properties.API_SERVER_USER_DEFAULT ){
             this.loginButtonText = 'Login';
             this.userIsLoggedIn = false;
-        }
-        else{
+        }else{
             this.loginButtonText = 'Logout - ' + this.apiServerService.getCurrentUser();
             this.userIsLoggedIn = true;
         }

@@ -179,7 +179,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
     onDateRangeClearAllClick( totalClear: boolean ) {
         this.commonService.setHaveUserInput( true );
 
-
         this.setToDateToToday();
         this.setFromDate( Properties.LAST_ACCESS );
         this.checked = false;

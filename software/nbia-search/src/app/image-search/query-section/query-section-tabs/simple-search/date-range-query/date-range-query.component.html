@@ -46,7 +46,6 @@
         <!--Apply Available range  checkbox-->
         <div>
             <input type="checkbox" class="query-panel-checkboxes available-checkbox" [disabled]="disableUseDateRange"
-                   [(checked)]="checked"
                    (click)="onApplyCheckboxClick( $event.target.checked)">
             <label
                 [ngClass]="{

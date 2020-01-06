@@ -25,7 +25,9 @@
         "@angular/router": "^8.1.2",
         "@ng-bootstrap/ng-bootstrap": "^5.1.0",
         "@types/d3": "^5.7.2",
+        "angular-progress-bar": "^1.0.9",
         "angular2-cookie": "^1.2.6",
+        "angular2-draggable": "^2.3.2",
         "classlist.js": "^1.1.20150312",
         "core-js": "^2.4.1",
         "d3": "^5.11.0",
@@ -36,7 +38,7 @@
         "ngx-mydatepicker": "^2.1.5",
         "ngx-tabs": "0.0.13",
         "rxjs": "~6.4.0",
-        "typedoc": "^0.14.2",
+        "typedoc": "^0.15.4",
         "util": "^0.10.3",
         "web-animations-js": "^2.3.1",
         "zone.js": "^0.8.26"
@@ -60,7 +62,6 @@
         "karma-jasmine-html-reporter": "^1.4.0",
         "protractor": "~5.4.0",
         "ts-node": "~7.0.0",
-        "tslint": "~5.15.0",
-        "typescript": "~3.4.3"
+        "tslint": "~5.15.0"
     }
 }

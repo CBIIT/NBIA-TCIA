@@ -26,7 +26,7 @@
         <th>
             Series
         </th>
-        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_OHIF_SERIES_VIEWER">s</span></th>
+        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_OHIF_SERIES_VIEWER || properties.CINE_MODE">s</span></th>
         <th>
             DICOM
         </th>
@@ -115,6 +115,15 @@
                    (click)="onSeriesOhifViewerClick(i)">
                 <span class="glyphicon glyphicon-facetime-video"></span>
             </label>
+
+           <!-- -----  The Cine mode button  ----- -->
+            <label *ngIf="series['showOhif'] && properties.CINE_MODE" style="margin-left: 5px"
+                   class="btn btn-default series-data-button series-viewer"
+                   title="Cine mode"
+                   (click)="onCineModeViewerClick(i)">
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </label>
+
         </td>
 
         <!-- -----  Show DICOM button  ----- -->

@@ -87,7 +87,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
-        // Comma or space(s) delimited
+        // Comma delimited
         let subjectIdForQuery = this.subjectText.replace( /^,?\s*,?/g, '' ).replace( /\s*,\s*/g, ',' ).replace( /\s*$/, '' ).split( ',' );
         let queryUrlString = '';
         for( let id of subjectIdForQuery ){

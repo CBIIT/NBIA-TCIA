@@ -102,6 +102,9 @@ import { OhifViewerService } from '@app/image-search/services/ohif-viewer.servic
 import { AppRoutingModule } from '@app/app-routing.module';
 import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from '@app/common/services/configuration.service';
+import { CineModeComponent } from './cine-mode/cine-mode.component';
+import { AngularDraggableModule } from 'angular2-draggable';
+import { ProgressBarModule } from 'angular-progress-bar';
 
 
 /*
@@ -191,7 +194,8 @@ const appRoutes: Routes = [
         PhantomQueryComponent,
         ThirdPartyQueryComponent,
         ThirdPartyExplanationComponent,
-        BannerComponent
+        BannerComponent,
+        CineModeComponent
     ],
     imports: [
         BrowserModule,
@@ -202,7 +206,9 @@ const appRoutes: Routes = [
         ClickOutsideModule,
         NgxMyDatePickerModule.forRoot(),
         AppRoutingModule,
-        ClipboardModule
+        ClipboardModule,
+        AngularDraggableModule,
+        ProgressBarModule
 
     ],
     providers: [CommonService, CartService, MenuService, ApiServerService,

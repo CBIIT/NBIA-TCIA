@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Properties } from '@assets/properties';
+import { MenuService } from '@app/common/services/menu.service';
 
 @Component( {
     selector: 'nbia-display-query-simple-search',
@@ -20,9 +21,6 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
      * @type {Array}
      */
     criteriaList = [];
-
-    maxVals = 5;
-
 
     /**
      * The data organized for display.
@@ -43,7 +41,8 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
     // For access in the HTML. The AOT compiler setting can't have any private objects in the HTML
     comService;
 
-    constructor( private commonService: CommonService, private apiServerService: ApiServerService ) {
+    constructor( private commonService: CommonService, private apiServerService: ApiServerService,
+                 private menuService: MenuService) {
         this.comService = commonService;
     }
 
