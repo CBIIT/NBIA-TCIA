@@ -248,6 +248,7 @@ public class ImageDAOImpl extends AbstractDAO
 			GeneralImage image = (GeneralImage)result.get(0);
 			imageDto.setProject(image.getDataProvenance().getProject());
 			imageDto.setSiteName(image.getDataProvenance().getDpSiteName());
+			imageDto.setFileURI(image.getFilename());
 		}
 
 		return imageDto;
@@ -260,7 +261,7 @@ public class ImageDAOImpl extends AbstractDAO
 
     private static final String LAST_CURATION_DATE_HQL = "select max(gi.curationTimestamp) from GeneralImage gi";
 
-	private static final String SQL_QUERY_SELECT = "SELECT image.id, image.contentDate, image.contentTime, image.filename, image.seriesPKId, image.dicomSize, image.instanceNumber, image.seriesInstanceUID, image.SOPInstanceUID, image.usFrameNum, image.studyInstanceUID ";
+	private static final String SQL_QUERY_SELECT = "SELECT image.id, image.contentDate, image.contentTime, image.filename, image.seriesPKId, image.dicomSize, image.instanceNumber, image.seriesInstanceUID, image.SOPInstanceUID, image.usFrameNum, image.studyInstanceUID, image.acquisitionNumber ";
     private static final String SQL_QUERY_FROM = "FROM GeneralImage image ";
     private static final String SQL_QUERY_WHERE = "WHERE ";
 
@@ -303,11 +304,12 @@ public class ImageDAOImpl extends AbstractDAO
 			            	thumbnailDTO.setFrameNum(Integer.parseInt((String) row[9]));
             }
              thumbnailDTO.setStudyInstanceUid(row[10].toString());
+             thumbnailDTO.setAcquisitionNumber((Integer) row[6]);
             imageList.add(thumbnailDTO);
         }
 
         Collections.sort(imageList);
-
+        
         return imageList;
     }
 }

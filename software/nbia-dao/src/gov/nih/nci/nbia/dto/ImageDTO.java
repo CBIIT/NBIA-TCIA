@@ -78,7 +78,7 @@ public class ImageDTO implements Comparable<ImageDTO>  {
     private String project;
     private String siteName;
     private int frameNum;
-
+    private Integer acquisitionNumber;
 
     /**
      * @return Returns the imagePkId.
@@ -140,9 +140,25 @@ public class ImageDTO implements Comparable<ImageDTO>  {
      * @param o
      */
     public int compareTo(ImageDTO o) {
-        Integer instanceNumber = this.getInstanceNumber();
         Integer otherInstanceNumber = o.getInstanceNumber();
+        Integer acquisitionNumber = this.getInstanceNumber();
+        Integer otherAcquisitionNumber= o.getInstanceNumber();
+        
+        if (acquisitionNumber == null) {
+        	return compareInstanceNumber(otherInstanceNumber);
+        }
 
+        if (otherAcquisitionNumber == null) {
+            return 1;
+        }
+        
+        if (acquisitionNumber.compareTo(otherAcquisitionNumber)==0) {
+        	return compareInstanceNumber(otherInstanceNumber);
+        }
+        return acquisitionNumber.compareTo(otherAcquisitionNumber);
+    }
+
+    private int compareInstanceNumber(Integer otherInstanceNumber) {
         if (instanceNumber == null) {
             return -1;
         }
@@ -153,7 +169,6 @@ public class ImageDTO implements Comparable<ImageDTO>  {
 
         return instanceNumber.compareTo(otherInstanceNumber);
     }
-
 
     /**
      *
@@ -263,6 +278,16 @@ public class ImageDTO implements Comparable<ImageDTO>  {
 
 	public void setStudyInstanceUid(String studyInstanceUid) {
 		this.studyInstanceUid = studyInstanceUid;
+	}
+
+
+	public Integer getAcquisitionNumber() {
+		return acquisitionNumber;
+	}
+
+
+	public void setAcquisitionNumber(Integer acquisitionNumber) {
+		this.acquisitionNumber = acquisitionNumber;
 	}
 	
 }
