@@ -217,4 +217,16 @@ public class JSONUtil {
 		}
 		return jsonInString;
 	}
+	public static String getJSONforQCList(List<QcSearchResultDTO> value){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(value);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
 }
