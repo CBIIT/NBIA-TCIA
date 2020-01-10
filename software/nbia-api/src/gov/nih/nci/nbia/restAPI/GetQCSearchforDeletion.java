@@ -62,7 +62,7 @@ public class GetQCSearchforDeletion extends getData{
 			                          @FormParam("confirmedComplete") String confirmedComplete,
 			                          @FormParam("subjectIds") List<String> subjectIds,
 			                          @FormParam("fromDate") String fromDate,
-			                          @FormParam("fromDate") String toDate) {
+			                          @FormParam("toDate") String toDate) {
 		String user = null;
 
 		try {	
