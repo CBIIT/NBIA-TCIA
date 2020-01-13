@@ -1,6 +1,6 @@
 export let Properties = {
     // 05_DEC_2019
-    VERSION: '1.0.64',
+    VERSION: '1.0.65',
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
 
@@ -51,15 +51,14 @@ export let Properties = {
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
-    // API_SERVER_URL: 'http://192.168.1.20:8080',
     API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
     // //////////////////////////////////////////////////////////////////////////
 
-
-    CINE_MODE: true,
+    // We will only use this in the QC tools
+    CINE_MODE: false,
 
 
     // This is a flag that is set to true by the ConfigurationService when all the configuration file settings have been set.
