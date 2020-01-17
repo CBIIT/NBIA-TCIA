@@ -257,7 +257,9 @@ public class QcStatusDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Map<String,String>> findExistingStatus(String project, String site, List<String> seriesUids) throws DataAccessException {
 		String whereStmt = " WHERE gs.project='" + project + "' and gs.site='" + site +"' and gs.seriesInstanceUID in (" + constructSeriesIdList(seriesUids) +")";
-		
+		if (project==null) {
+			whereStmt = " WHERE gs.seriesInstanceUID in (" + constructSeriesIdList(seriesUids) +")";
+		}
 		SessionFactory sf = getHibernateTemplate().getSessionFactory();
 		Session s = sf.getCurrentSession();
 
