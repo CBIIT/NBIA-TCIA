@@ -78,10 +78,10 @@ public class SetDeleteVisibility extends getData{
 				    roles.addAll(sm.getRoles(user));
 				    RoleCache.setRoles(user, roles);
                 }
-		    /*	if (!roles.contains("NCIA.DELETE_ADMIN")) {
+		    	if (!roles.contains("NCIA.DELETE_ADMIN")) {
 				  	  return Response.status(401)
 							.entity("Insufficiant Privileges").build();
-			    }*/
+			    }
 				
 				String status = "Not submitted.";
 				
