@@ -72,9 +72,30 @@ public class StudyIdentifiers {
     	this.seriesIdentifiers.add(value);
     }
     
-    /////////////////////////////////PRIVATE//////////////////////////////////
     
-    private List<Integer> seriesIdentifiers = new ArrayList<Integer>();
+    /**
+     * Add another series id for this study.
+     */
+    public void addSeriesAndModality(SeriesAndModality value) {
+    	this.seriesAndModality.add(value);
+    }
+    
+
+    
+    public List<SeriesAndModality> getSeriesAndModality() {
+		return seriesAndModality;
+	}
+
+
+	public void setSeriesAndModality(List<SeriesAndModality> seriesAndModality) {
+		this.seriesAndModality = seriesAndModality;
+	}
+
+    /////////////////////////////////PRIVATE//////////////////////////////////
+
+
+	private List<Integer> seriesIdentifiers = new ArrayList<Integer>();
+    private List<SeriesAndModality> seriesAndModality = new ArrayList<SeriesAndModality>();
     
     private int studyIdentifier;
 }
