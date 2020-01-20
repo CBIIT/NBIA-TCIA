@@ -201,7 +201,7 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
      * @param studyId - the ID of the study that the patient belongs to
      * @param seriesId - the ID of the seriess
      */
-    public void addSeriesForStudy(Integer studyId, Integer seriesId) {
+    public void addSeriesForStudy(Integer studyId, Integer seriesId, String modality) {
     	StudyIdentifiers found = null;
     	for(StudyIdentifiers studyIdentifiers : arr) {
     		if(studyIdentifiers.getStudyIdentifier()==studyId.intValue()) {
@@ -217,11 +217,18 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
     		StudyIdentifiers newStudyIdentifiers = new StudyIdentifiers();
     		newStudyIdentifiers.setStudyIdentifier(studyId);
     		newStudyIdentifiers.setSeriesIdentifiers(seriesIds);
-
-    		arr.add(newStudyIdentifiers);
+    		if (modality!=null) {
+				SeriesAndModality sandm = new SeriesAndModality(seriesId, modality);
+			}
+			arr.add(newStudyIdentifiers);
     	}
     	else {
    		     found.addSeriesIdentifier(seriesId);
+   		     
+   		     if (modality!=null) {
+				SeriesAndModality sandm = new SeriesAndModality(seriesId, modality);
+				found.addSeriesAndModality(sandm);
+			}
     	}
     }
 

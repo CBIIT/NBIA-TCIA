@@ -151,7 +151,10 @@ L-->
 				conf="compile->master;runtime->master"/>
           <dependency org="org.apache.commons" name="commons-jcs-core" rev="2.2" conf="compile->master;runtime->master"/>   
           <dependency org="org.apache.commons" name="commons-jcs-jcache" rev="2.2" conf="compile->master;runtime->master"/>
-             
+                 <dependency org="opensymphony"
+                name="quartz"
+                rev="1.6.1"
+                conf="*->master"/>
   
 		<!-- end of dicom -->
 	</dependencies>
