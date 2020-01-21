@@ -80,6 +80,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 		query.setCriteria(auth);
 		String queryKey=userName;
         System.out.println(inFormParams.get("criteriaType"+i).get(0));
+        ImageModalityCriteria modalityCriteria=null;
 		while (inFormParams.get("criteriaType"+i)!=null)
 		{
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("CollectionCriteria")){
@@ -244,7 +245,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
-            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null);
+            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null, query);
             //System.out.println("Size is "+SizeOf.getObjectSize(cacheValue));
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
@@ -256,7 +257,8 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 				System.out.println("Doing sort");
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
 				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
-						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies()),
+						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies(), 
+						null),
 						start, size);
 			} else {
 				returnValue = PatientSummaryFactory.getReturnValue(patientSearchSummary, start, size);

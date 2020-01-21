@@ -189,6 +189,10 @@ L-->
                 name="commons-lang"
                 rev="2.4"
                 conf="compile->master;runtime->master"/> 
+        <dependency org="opensymphony"
+                name="quartz"
+                rev="1.6.1"
+                conf="*->master"/>
 
 <!-- add spring framework -->
 <!-- add spring framework 3.2.8-->
@@ -263,6 +267,10 @@ L-->
     <exclude org="javax.jms" module="jms"/>
     <exclude org="com.sun.jdmk" module="jmxtools"/>
     <exclude org="com.sun.jmx" module="jmxri"/>
+    
+    
+    
+    
   </dependencies>
 
 </ivy-module>

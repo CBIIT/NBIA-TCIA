@@ -3,10 +3,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.*;
 
+import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
+import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModalityAndBodyPartImpl;
+import gov.nih.nci.nbia.searchresult.StudyIdentifiers;
+import gov.nih.nci.nbia.searchresult.SeriesAndModality;
+import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 public class PatientSummaryFactory {
 	public static PatientSearchSummary getNewPatientSearchSummary(List<PatientSearchResultWithModilityAndBodyPart> input, String sort, boolean compute,
-			List <ValueAndCount> bodyCounts, List <ValueAndCount> modalityCounts, List <ValueAndCount> collectionCounts, List <ValueAndCount> speciesCounts) {
+			List <ValueAndCount> bodyCounts, List <ValueAndCount> modalityCounts, List <ValueAndCount> collectionCounts, 
+			List <ValueAndCount> speciesCounts, DICOMQuery theQuery) {
 		PatientSearchSummary returnValue = new PatientSearchSummary();
 		returnValue.setResultSet(input);
 		returnValue.setSort(sort);
@@ -19,8 +25,12 @@ public class PatientSummaryFactory {
 			returnValue.setCollections(collectionCounts);
 			returnValue.setCollections(speciesCounts);
 		}
+		if (isModalityAll(theQuery)) {
+			returnValue.setResultSet(cleanAllModalityScans(returnValue.getResultSet(), theQuery));
+		}
 		return returnValue;
 	}
+
 	public static PatientSearchSummary getReturnValue(PatientSearchSummary input, int start, int size) {
 		PatientSearchSummary returnValue = new PatientSearchSummary();
 	   	if (size+start>input.getResultSet().size()) {
@@ -131,5 +141,51 @@ public class PatientSummaryFactory {
     	input.setSpecies(speciesCounts);
     	input.setCollections(collectionCounts);
     	return input;
+    }
+    private static boolean isModalityAll(DICOMQuery theQuery) {
+    	 if (theQuery == null || theQuery.getModalityAndedSearchCriteria()==null) {
+    		 return false;
+		}
+		if (theQuery != null &&
+        		 theQuery.getModalityAndedSearchCriteria().getModalityAndedSearchValue()!=null &&
+        		theQuery.getModalityAndedSearchCriteria().getModalityAndedSearchValue().equals("all")) {
+              return true;
+       } 
+       return false;
+    }
+    private static List<PatientSearchResultWithModilityAndBodyPart> cleanAllModalityScans(List<PatientSearchResultWithModilityAndBodyPart> input,
+    		DICOMQuery theQuery){
+    	
+    	List<PatientSearchResultWithModilityAndBodyPart> returnValue=new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
+    	List<String> modalityCriteriaList = new ArrayList<String>(theQuery.getImageModalityCriteria().getImageModalityObjects());
+    	for (PatientSearchResultWithModilityAndBodyPart patient : input) {
+    		 List<StudyIdentifiers> newStudyIdentifiers = new ArrayList<StudyIdentifiers>();
+    		 for (StudyIdentifiers sdi : patient.getStudyIdentifiers()) {
+    			 List<Integer> seriesIdsPerStudy = new ArrayList<Integer>();
+    			 for (SeriesAndModality sam : sdi.getSeriesAndModality()) {
+    				 if(modalityCriteriaList.contains(sam.getModality())){
+    					 seriesIdsPerStudy.add(sam.getSeriesId());
+    				 }
+    				  				 
+    			 }
+    			 if (seriesIdsPerStudy.size()>0) {
+    				 StudyIdentifiers newSDI = new StudyIdentifiers();
+    				 newSDI.setStudyIdentifier(sdi.getStudyIdentifier());
+    				 newSDI.setSeriesIdentifiers(seriesIdsPerStudy.toArray(new Integer[0]));
+    				 newStudyIdentifiers.add(newSDI);
+    			 }
+    			 
+    		 }
+    		 if (newStudyIdentifiers.size()>0) {
+    			 PatientSearchResultWithModalityAndBodyPartImpl patientImpl =  (PatientSearchResultWithModalityAndBodyPartImpl) patient;
+    			 Set<String> modalitySet=new HashSet<String>(modalityCriteriaList);
+    			 patientImpl.setModalities(modalitySet);
+    			 patientImpl.setStudyIdentifiers(newStudyIdentifiers.toArray(new StudyIdentifiers[0]));
+    			 returnValue.add(patientImpl);
+    		 }
+    		 
+    	}
+    	return returnValue;
+    	
     }
 }

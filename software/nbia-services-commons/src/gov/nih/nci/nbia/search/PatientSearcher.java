@@ -56,10 +56,13 @@
  */
 package gov.nih.nci.nbia.search;
 
+import gov.nih.nci.nbia.criteriahandler.CriteriaHandler;
+import gov.nih.nci.nbia.criteriahandler.CriteriaHandlerFactory;
 import gov.nih.nci.nbia.dto.StudyNumberDTO;
 import gov.nih.nci.nbia.factories.ApplicationFactory;
 import gov.nih.nci.nbia.query.DICOMQuery;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultImpl;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
@@ -164,9 +167,13 @@ public class PatientSearcher {
             PatientSearchResultWithModalityAndBodyPartImpl patient = patients.get(patientId);
 
             if (patient != null) {
-                // Patient is already in list, just add series, modality and bodyPart data
-                patient.addSeriesForStudy(studyId, seriesId);
-                patient.addModalities(modality);
+                if (isModalityAll(query)) {
+					// Patient is already in list, just add series, modality and bodyPart data
+					patient.addSeriesForStudy(studyId, seriesId, modality);
+				}  else  {
+					patient.addSeriesForStudy(studyId, seriesId, null);
+				}
+				patient.addModalities(modality);
                 patient.addBodyParts(bodyPart);
                 patient.addSpecies(species);
             } else {
@@ -174,10 +181,13 @@ public class PatientSearcher {
             	PatientSearchResultWithModalityAndBodyPartImpl patientDTO = new PatientSearchResultWithModalityAndBodyPartImpl();
                 patientDTO.setId(prs.getPatientPkId());
 
-                // Add the series and study to the list
-                patientDTO.addSeriesForStudy(studyId, seriesId);
-
-                // Get the other patient data from the cache
+                if (isModalityAll(query)) {
+					// Add the series and study to the list
+					patientDTO.addSeriesForStudy(studyId, seriesId, modality);
+				}   else  {
+					patientDTO.addSeriesForStudy(studyId, seriesId, null);
+				}
+				// Get the other patient data from the cache
                 StudyNumberDTO cachedPatientData = ApplicationFactory.getInstance().getStudyNumberMap().getStudiesForPatient(prs.getPatientPkId());
                 patientDTO.setTotalNumberOfStudies(cachedPatientData.getStudyNumber());
                 patientDTO.setTotalNumberOfSeries(cachedPatientData.getSeriesNumber());
@@ -202,6 +212,15 @@ public class PatientSearcher {
         logger.info("Results returned and built into DTOs in " + elapsedTime +" ms.");
 
         return returnList;
+    }
+    
+    private static boolean isModalityAll(DICOMQuery theQuery) throws Exception {
+ 
+             if (theQuery.getModalityAndedSearchCriteria() != null &&
+              theQuery.getModalityAndedSearchCriteria().getModalityAndedSearchValue().equals("all")) {
+                   return true;
+            } 
+            return false;
     }
     
     /////////////////////////////////////PRIVATE//////////////////////////////////////////

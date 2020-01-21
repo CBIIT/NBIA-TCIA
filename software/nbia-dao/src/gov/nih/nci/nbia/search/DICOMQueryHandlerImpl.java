@@ -159,7 +159,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     private static final String NUMBER_MONTHS_FIELD = "nm.numberMonth ";
 
     private static final String BODY_PART_EXAMINED_NOT_SPECIFIED = "NOT SPECIFIED";
-	private static final String PATIENT_ID_IN_MODALITY = " p.id in ( select gsi2.patientPkId from GeneralSeries gsi2 where gsi2.modality = '";
+	private static final String PATIENT_ID_IN_MODALITY = " p.id in ( select gsi2.patientPkId from GeneralSeries gsi2 where gsi2.visibility='1' and gsi2.modality = '";
 
     // Used to obtain criteria handlers
 	private CriteriaHandlerFactory handlerFac = CriteriaHandlerFactory.getInstance();
