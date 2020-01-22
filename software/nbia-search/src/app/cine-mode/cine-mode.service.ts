@@ -24,7 +24,6 @@ export class CineModeService{
             data => {
                 if( data['id'] === this.seriesUID && this.showCineModeToggle ){
                     this.dicomData = data['res'];
-                    console.log( 'MHL 001 dicom: ', this.dicomData );
                     this.sendCineModeDataEmitter.emit( {
                         'seriesUID': this.seriesUID,
                         'seriesId': this.seriesId,
@@ -39,17 +38,7 @@ export class CineModeService{
 
     }
 
-    openCineMode0( seriesUID, seriesId, description ) { // @FIXME  MHL do not need dicomData
-        this.displayCineModeImagesEmitter.emit( true );
-        this.seriesUID = seriesUID;
-        this.seriesId = seriesId;
-        this.seriesDescription = description;
-        let query = 'SeriesUID=' + seriesUID;
-        this.showCineModeToggle = true;
-        this.apiServerService.dataGet( Consts.DICOM_TAGS, query );
-    }
-
-    openCineMode( seriesUID, seriesId, description, studyDate ) { // @FIXME  MHL do not need dicomData
+    openCineMode( seriesUID, seriesId, description, studyDate ) {
         this.displayCineModeImagesEmitter.emit( true );
         this.seriesUID = seriesUID;
         this.seriesId = seriesId;

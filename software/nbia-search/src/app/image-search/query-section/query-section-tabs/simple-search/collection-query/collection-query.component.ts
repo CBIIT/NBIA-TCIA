@@ -93,13 +93,11 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      * @type {boolean}
      */
     showToolTip = false;
-    showToolTipTrailer = false;
     toolTipText = '';
-    toolTipY = 0;
-    toolTipShowDelay: number = 500; // in 1/1000 of a second  How long after mouse over does Tool tip display.
-    toolTipHideDelay: number = 2000; // in 1/1000 of a second  How long after mouse leaves does Tool tip fade out.
+    toolTipY = 242;
     toolTipStayOn = false;
     toolTipHeading = '';
+    toolTipCounter = 0;
 
     /**
      * For sorting of Collections.
@@ -180,7 +178,6 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.completeCriteriaList = data;
-
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
                 if( this.completeCriteriaListHold === null ){
@@ -738,21 +735,12 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      * @param collectionName Collection name used to retrieve the description.
      */
     getPos( e, collectionName ) {
-
-        this.showToolTipTrailer = true;
-        // this.toolTipY = e.clientY;
         this.toolTipY = e.view.pageYOffset + e.clientY;
         this.toolTipHeading = collectionName;
+        this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
+        this.showToolTip = true;
 
-        setTimeout( () => {
-            if( this.showToolTipTrailer ){
-                this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
-                this.showToolTip = true;
-            }else{
-                this.showToolTip = false;
-            }
-
-        }, this.toolTipShowDelay );
+        this.hideToolTip(); // Start the delay to hide.
     }
 
     /**
@@ -767,16 +755,23 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      */
     mouseleaveToolTip() {
         this.toolTipStayOn = false;
-        this.hideToolTip( 0 );
+        this.hideToolTip();
     }
 
-    hideToolTip( delay = this.toolTipHideDelay ) {
-        setTimeout( () => {
-            if( !this.toolTipStayOn ){
-                this.showToolTip = false;
-                this.showToolTipTrailer = false;
+    async hideToolTip() {
+        this.toolTipCounter++;
+        let count = Properties.COLLECTION_DESCRIPTION_TOOLTIP_TIME;
+        while( count > 0 ){
+            await this.commonService.sleep( 1000 );
+            count--;
+            if( count > 0 ){
+                this.showToolTip = true;
             }
-        }, delay );
+        }
+        this.toolTipCounter--;
+        if( count <= 0 && this.toolTipCounter <= 0 && ( ! this.toolTipStayOn ) ){
+            this.showToolTip = false;
+        }
     }
 
     onSetSort( sortCriteria ) {

@@ -1,5 +1,5 @@
 export let Properties = {
-    // 05_DEC_2019
+    // 22_JAN_2019
     VERSION: '1.0.65',
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -201,6 +201,9 @@ export let Properties = {
 
     // Number of elements to show per criteria in the display query. If there are more, show ...
     // Must be 2, 3, 4 or 5 !!!
-    DISPLAY_QUERY_ELEMENTS_MAX: 4
+    DISPLAY_QUERY_ELEMENTS_MAX: 4,
+
+    // How long to show Collection descriptions after mouse ove, in seconds.
+    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 3
 };
 
