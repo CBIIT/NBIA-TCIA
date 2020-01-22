@@ -109,6 +109,8 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     currentUserRoles;
 
+    properties = Properties;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
 

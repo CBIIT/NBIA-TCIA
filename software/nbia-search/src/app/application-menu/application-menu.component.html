@@ -14,7 +14,7 @@
 <span class="left-gradient">&nbsp;&nbsp;&nbsp;</span>
 
     <!--  Data Admin  -->
-    <span  *ngIf="showDataAdminButton"
+    <span  *ngIf="showDataAdminButton && properties.SHOW_DATA_ADMIN_MENU"
            class="application-menu-item unselectable"
            [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.DATA_ADMIN_MENU_ITEM] && (! disabled ),
