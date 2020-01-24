@@ -76,7 +76,7 @@ public class GetJNLPText extends getData{
 			input.add(item);
 			System.out.println("Input is :"+item);
 		}
-        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUID(input);
+        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUID(input, authorizedSiteData, null);
 
 		List<SeriesSearchResult> seriesFound=SeriesDTOConverter.convert(ssList);
 		List<BasketSeriesItemBean> seriesItems=new ArrayList<BasketSeriesItemBean>();
