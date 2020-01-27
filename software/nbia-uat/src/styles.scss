@@ -1,0 +1,199 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url("./assets/bootstrap-3.3.7-dist/css/bootstrap.css");
+
+@font-face {
+	font-family:'PrimeIcons';
+	src:url('../node_modules/font-awesome/fonts/fontawesome-webfont.eot?v=4.7.0');
+	src:url('../node_modules/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url('../node_modules/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),url('../node_modules/font-awesome/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),url('../node_modules/font-awesome/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),url('../node_modules/font-awesome/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.base-table { 
+  p-dropdown {
+    .ui-dropdown {
+      min-width:0;
+    }
+  }
+}
+
+p-table tr  th {
+	border-bottom: 0 !important; 
+	background-color: #dedddd !important;
+}
+
+.base-table .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+	background-color:#686868 !important;
+	color: #ffffff;
+}
+
+.base-table .ui-paginator {
+	background-color: #ffffff !important;
+	height: 4em !important;
+    text-align: right;
+	vertical-align: middle !important;
+    padding: .85em;
+}
+
+.base-table .ui-paginator::before {
+	float: left;
+	content: "Show";
+	padding: .6em;
+}
+
+.base-table .ui-paginator .ui-dropdown::after {
+	left: 50px;
+	top:  0px;
+	position: absolute;
+	content: "entries";
+	padding: .6em;
+}
+
+
+.base-table .ui-paginator .ui-paginator-page,.ui-paginator .ui-paginator-next,.ui-paginator .ui-paginator-last,.ui-paginator .ui-paginator-first,.ui-paginator .ui-paginator-prev{
+    cursor: pointer;
+	border: 1px solid #cfcfcf !important;
+}
+
+/*.base-table .ui-paginator .ui-paginator-bottom{
+    border-top:6px solid !important;
+}*/
+
+.base-table .ui-paginator .ui-dropdown {
+    border: 1px solid #cfcfcf !important;
+	left: 60px;
+	position: absolute;
+	height: auto !important;
+}
+
+.ui-paginator .ui-paginator-page,.ui-paginator .ui-paginator-pages,.ui-paginator .ui-paginator-next,.ui-paginator .ui-paginator-last,.ui-paginator .ui-paginator-first,.ui-paginator .ui-paginator-prev,.ui-paginator .ui-paginator-current{
+    display: inline-block;
+    min-width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    zoom: 1;
+    margin-left: 0em;
+    margin-right: 0em;
+    text-decoration: none;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+
+.pi-caret-left:before {
+	content:"\f104";
+}
+
+.pi-step-backward:before {
+	content:"\f100";
+}
+
+.pi-caret-right:before {
+	content:"\f105";
+}
+
+.pi-step-forward:before {
+	content:"\f101";
+}
+
+
+
+/*
+.base-table .ui-paginator .ui-dropdown::after {
+    content: "entries";
+	left: 100px;
+	position: absolute;	
+}
+
+.base-table .ui-paginator .ui-paginator-bottom{
+    border-top: 1px solid !important;
+}
+
+.ui-paginator{
+	background-color: #ffffff !important;
+	height: 3em !important;
+    text-align: center;
+	vertical-align: middle !important;
+    padding: .125em;
+}
+
+
+.ui-paginator .ui-paginator-top{
+    border-bottom:  1px solid !important;
+}
+
+.ui-paginator .ui-paginator-bottom{
+    border-top: 1px solid !important;
+}
+
+.ui-paginator .ui-paginator-left-content{
+    float: left;
+}
+
+.ui-paginator .ui-paginator-right-content{
+    float: right;
+}
+
+.ui-paginator .ui-paginator-page,.ui-paginator .ui-paginator-pages,.ui-paginator .ui-paginator-next,.ui-paginator .ui-paginator-last,.ui-paginator .ui-paginator-first,.ui-paginator .ui-paginator-prev,.ui-paginator .ui-paginator-current{
+    display: inline-block;
+    min-width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    zoom: 1;
+    margin-left: .063em;
+    margin-right: .063em;
+    text-decoration: none;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+
+.ui-paginator .ui-paginator-pages{
+    width: auto;
+    line-height: 1;
+}
+
+.ui-paginator .ui-paginator-icon{
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1em;
+    height: 1em;
+    margin-top: -.5em;
+    margin-left: -.5em;
+}
+
+.ui-paginator .ui-paginator-page,.ui-paginator .ui-paginator-next,.ui-paginator .ui-paginator-last,.ui-paginator .ui-paginator-first,.ui-paginator .ui-paginator-prev{
+    cursor: pointer;
+}
+
+.ui-paginator .ui-paginator-current,.ui-paginator .ui-paginator-rpp-options{
+    margin-left: 1em;
+    margin-right: 1em;
+    background-image: none;
+}
+
+.ui-paginator .ui-paginator-jtp-select option,.ui-paginator .ui-paginator-rpp-options option{
+    background-image: none;
+            box-shadow: none;
+       -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.ui-paginator a.ui-state-disabled{
+    outline: 0 none;
+}
+
+.ui-paginator .ui-dropdown{
+    min-width: 4em;
+    margin-left: .375em;
+	border: 1px solid !important; 
+}
+
+.ui-fluid .ui-paginator .ui-dropdown{
+    width: auto;
+}
+*/
