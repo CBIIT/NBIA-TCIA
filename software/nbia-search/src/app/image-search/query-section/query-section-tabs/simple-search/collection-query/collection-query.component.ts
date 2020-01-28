@@ -86,6 +86,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
     searchToolTip = 'Search';
     showSearch = false;
+    inCollection = false;
 
     /**
      * Used to when displaying Collection description.
@@ -547,11 +548,6 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
-        // @TODO explain
-        if( checked ){
-            this.showToolTip = false;
-        }
-
         this.cBox[i] = checked;
         this.updateCheckboxCount();
 
@@ -679,7 +675,6 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 this.unCheckedCount++;
             }
         }
-
     }
 
 
@@ -735,18 +730,18 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      * @param collectionName Collection name used to retrieve the description.
      */
     getPos( e, collectionName ) {
+        this.inCollection = true;
         this.toolTipY = e.view.pageYOffset + e.clientY;
         this.toolTipHeading = collectionName;
         this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
         this.showToolTip = true;
-
-        this.hideToolTip(); // Start the delay to hide.
     }
 
     /**
      * If the user has their mouse over the tool tip don't let it fade out.
      */
     mouseOverToolTip() {
+        this.inCollection = true;
         this.toolTipStayOn = true;
     }
 
@@ -754,11 +749,13 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      * If the user moved the mouse over the tool tip, fade out as soon as the mouse leaves.
      */
     mouseleaveToolTip() {
+        this.inCollection = false;
         this.toolTipStayOn = false;
         this.hideToolTip();
     }
 
     async hideToolTip() {
+        this.inCollection = false;
         this.toolTipCounter++;
         let count = Properties.COLLECTION_DESCRIPTION_TOOLTIP_TIME;
         while( count > 0 ){
@@ -769,7 +766,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
             }
         }
         this.toolTipCounter--;
-        if( count <= 0 && this.toolTipCounter <= 0 && ( ! this.toolTipStayOn ) ){
+        if( count <= 0 && this.toolTipCounter <= 0 && ( ! this.toolTipStayOn ) && ( ! this.inCollection) ){
             this.showToolTip = false;
         }
     }

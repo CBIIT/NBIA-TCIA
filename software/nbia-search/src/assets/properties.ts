@@ -101,7 +101,7 @@ export let Properties = {
      */
     DISABLE_COUNTS_AND_SIZE: true,
 
-    // Show in console, curl version of post & get calls.
+    // Show in console, curl version of API calls.
     DEBUG_CURL: false,
 
     ACTION_LOGGING: true,
@@ -204,7 +204,7 @@ export let Properties = {
     // Must be 2, 3, 4 or 5 !!!
     DISPLAY_QUERY_ELEMENTS_MAX: 4,
 
-    // How long to show Collection descriptions after mouse ove, in seconds.
-    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 3
+    // How long to show Collection descriptions after mouse leaves the Collection, in seconds.
+    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 2
 };
 
