@@ -1,0 +1,42 @@
+.no-outline {
+    outline: none;
+}
+
+.nbia-button {
+   @extend .no-outline;
+    color: #fff;
+    background-color: #0b7983;
+    cursor: pointer;
+	border: 1px solid #E8E8E8
+    /*
+    font-size: 10pt;
+    */
+}
+
+.nbia-button:hover {
+    background-color: #277599;
+}
+
+.nbia-button:active {
+    background-color: #1e5975;
+}
+
+.hide-item {
+    display: none;
+}
+
+.nbia-col-button {
+    @extend .no-outline;
+    color: #333;
+    background-color: #ffffff;
+	border-color: #ccc;
+    cursor: pointer;
+    /*
+    font-size: 10pt;
+    */
+}
+
+.nbia-col-button:hover {
+    background-color: #dedede !important;
+	border-color: #ccc !important;
+}
