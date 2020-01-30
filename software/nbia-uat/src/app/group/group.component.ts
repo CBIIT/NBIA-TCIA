@@ -10,11 +10,15 @@ import { PgRole } from '../pgRole/pgRole';
 import { GroupService } from './groupservice';
 import { LoadingDisplayService } from '../common/components/loading-display/loading-display.service';
 
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/api';
+import { DialogService } from 'primeng/components/dynamicdialog/dialogservice';
+import { UgMemberList } from './ugmemberlist';
+
 @Component({
   selector: 'group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
-  providers:  [Globals]    
+  providers:  [Globals, DialogService, DynamicDialogRef, DynamicDialogConfig]    
 })
 export class GroupComponent implements OnInit {
 	@ViewChild(Table, {static: false}) 
@@ -40,7 +44,7 @@ export class GroupComponent implements OnInit {
 	loadingComplete: boolean = false;
 	
 	
-  constructor(private appservice: ConfigService, private groupService: GroupService, private globals: Globals, private loadingDisplayService: LoadingDisplayService) { 
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, private appservice: ConfigService, private groupService: GroupService, private globals: Globals, private loadingDisplayService: LoadingDisplayService, public dialogService: DialogService) { 
   	if (this.globals.wikiBaseUrl === "") {
 		this.appservice.getWikiUrlParam().then(data => {this.globals.wikiBaseUrl = data; 
 		this.wikiLink = this.globals.wikiBaseUrl + this.globals.manageGroupWiki},
@@ -111,6 +115,17 @@ export class GroupComponent implements OnInit {
 		this.displayDeassignDialog = true;
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});			
+	}
+
+	showMemberDialog(group){
+		//console.log("passed in pg name="+pg.dataGroup);
+	   const ref = this.dialogService.open(UgMemberList, {
+			data: {
+				id: group.userGroup
+			},
+			header: 'Users in Protection Group: '+ group.userGroup,
+			width: '70%'
+		});
 	}	
 
     save() {

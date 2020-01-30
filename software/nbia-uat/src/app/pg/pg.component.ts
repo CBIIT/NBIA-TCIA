@@ -7,14 +7,18 @@ import { ConfigService } from '../configs/configservice';
 import { Globals } from '../conf/globals'
 import { Pg } from './pg';
 import { PgService } from './pgservice';
-import {Pe} from '../pe/pe';
+import { Pe } from '../pe/pe';
 import { LoadingDisplayService } from '../common/components/loading-display/loading-display.service';
+
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/api';
+import { DialogService } from 'primeng/components/dynamicdialog/dialogservice';
+import { PgMemberList } from './pgmemberlist';
 
 @Component({
   selector: 'pg',
   templateUrl: './pg.component.html',
   styleUrls: ['./pg.component.scss'],
-  providers:  [Globals] 
+  providers:  [Globals,DialogService, DynamicDialogRef, DynamicDialogConfig] 
 })
 
 
@@ -38,7 +42,7 @@ export class PgComponent implements OnInit {
 	statusMessage: Message[] = [];	
 	loadingComplete: boolean = false;	
 	
-  constructor(private appservice: ConfigService, private pgService: PgService, private globals: Globals,private loadingDisplayService: LoadingDisplayService) { 
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, private appservice: ConfigService, private pgService: PgService, private globals: Globals,private loadingDisplayService: LoadingDisplayService, public dialogService: DialogService) { 
    	if (this.globals.wikiBaseUrl === "") {
 		this.appservice.getWikiUrlParam().then(data => {this.globals.wikiBaseUrl = data; 
 		this.wikiLink = this.globals.wikiBaseUrl + this.globals.managePGWiki},
@@ -85,7 +89,18 @@ export class PgComponent implements OnInit {
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 		this.displayAssignDialog = false;
 		this.displayDeassignDialog = true;	
-	}		
+	}
+
+	showMemberDialog(pg){
+		//console.log("passed in pg name="+pg.dataGroup);
+	   const ref = this.dialogService.open(PgMemberList, {
+			data: {
+				id: pg.dataGroup
+			},
+			header: 'Users in Protection Group: '+ pg.dataGroup,
+			width: '70%'
+		});
+	}
 
     save() {
 		this.clearMsg();
@@ -185,12 +200,22 @@ export class PgComponent implements OnInit {
         this.displayDialog = true;
     }
 	
+	/*
+	
     onRowSelect(event) {
         this.newPg = false;
         this.pg = this.clonePg(event.data);
         this.displayDialog = true;
     }
+*/
+    onRowSelect(event) {
+		this.selectedPg = event.data;
+        //this.messageService.add({severity:'info', summary:'Car Selected', detail:'Vin: ' + event.data.vin});
+    }
 
+    onRowUnselect(event) {
+        //this.messageService.add({severity:'info', summary:'Car Unselected', detail:'Vin: ' + event.data.vin});
+    }
     clonePg(u: Pg): Pg {
         let pg = new PrimePg();
         for(let prop in u) {

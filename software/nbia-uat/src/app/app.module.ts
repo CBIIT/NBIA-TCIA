@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
@@ -30,6 +31,10 @@ import { Globals } from './conf/globals';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { PgMemberList } from './pg/pgmemberlist';
+import { PgMemberService } from './pg/pgmemberservice';
+import { UgMemberList } from './group/ugmemberlist';
+import { UgMemberService } from './group/ugmemberservice';
 
 @NgModule({
   declarations: [
@@ -41,7 +46,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PgRoleComponent,
     UserComponent,
 	LoadingDisplayComponent,
-	AddNewLine	
+	AddNewLine,
+	PgMemberList,
+	UgMemberList	
   ],
   imports: [
     BrowserModule,
@@ -51,6 +58,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 	CheckboxModule,
 	DialogModule,
 	DropdownModule,
+	DynamicDialogModule,
 	InputTextModule,
 	MessagesModule,
 	MessageModule,
@@ -59,9 +67,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 	TabViewModule,
 	TooltipModule,
     FormsModule,
-    BrowserAnimationsModule		
+    BrowserAnimationsModule	
   ],
-  providers: [Globals, LoadingDisplayService],
+	entryComponents: [
+		PgMemberList,
+		UgMemberList
+	],  
+  providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
