@@ -19,7 +19,7 @@ export let Properties = {
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
-    OHIF_MODALITIES: [ 'MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT', 'XA'],
+    OHIF_MODALITIES: [ 'MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
 
     // @TODO
     // This does not work yet when the value is not an empty string, leave it an empty string!
@@ -102,7 +102,7 @@ export let Properties = {
     DISABLE_COUNTS_AND_SIZE: true,
 
     // Show in console, curl version of API calls.
-    DEBUG_CURL: false,
+    DEBUG_CURL: true,
 
     ACTION_LOGGING: true,
     SHORT_LOG: true,
