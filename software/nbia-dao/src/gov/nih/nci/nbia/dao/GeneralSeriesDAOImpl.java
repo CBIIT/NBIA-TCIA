@@ -701,6 +701,31 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 	////////////////////////////////////////////////////////// PROTECTED//////////////////////////////////////////////////////////////
 
+	
+	public List<SeriesDTO> getSeriesFromSeriesInstanceUIDsIgnoreSecurity(List<String> seriesIds) throws DataAccessException {
+		List<GeneralSeries> seriesList = null;
+		
+
+		List<List<String>> breakdownList = Util.breakListIntoChunks(seriesIds, 900);
+		for (List<String> unitList : breakdownList) {
+
+			DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
+			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
+			criteria.add(Restrictions.in("visibility", new String[] { "1"}));
+			criteria = criteria.createCriteria("study");
+			criteria = criteria.createCriteria("patient");
+			criteria = criteria.createCriteria("dataProvenance");
+			List<GeneralSeries> results = getHibernateTemplate().findByCriteria(criteria);
+			if (seriesList == null) {
+				seriesList = new ArrayList<GeneralSeries>();
+			}
+			seriesList.addAll(results);
+		}
+
+		
+		return convertHibernateObjectToSeriesDTO(seriesList);
+	}
+	
 	protected List<GeneralSeries> getSeriesFromSeriesInstanceUIDs(List<String> seriesIds,
 			List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
 		List<GeneralSeries> seriesList = null;

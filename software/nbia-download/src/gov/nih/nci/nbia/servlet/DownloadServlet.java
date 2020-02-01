@@ -67,27 +67,34 @@ public class DownloadServlet extends HttpServlet {
             String password = request.getHeader("password");
             Boolean includeAnnotation = Boolean.valueOf(request.getParameter("includeAnnotation"));
             Boolean hasAnnotation = Boolean.valueOf(request.getParameter("hasAnnotation"));
-            String sopUids = request.getParameter("sopUids");          		
+            String sopUids = request.getParameter("sopUids");   
+            boolean newFileNames=false;
             
+            
+            if (request.getParameter("newFileNames")!=null&&request.getParameter("newFileNames").length()>1) {
+            	newFileNames=true;
+            }
+
             if ((userId==null) ||(userId.length() <1)) {
             	userId = NCIAConfig.getGuestUsername();
             }
 
             logger.info("sopUids:"+sopUids);
             logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation + " hasAnnotation: " + hasAnnotation);
-
             processRequest(response,
                        seriesUid,
                        userId,
                        password,
                        includeAnnotation,
                        hasAnnotation,
-                       sopUids);
-        	}
+                       sopUids,
+                       newFileNames);
+ 
+        }
     }
     
 	protected void processRequest(HttpServletResponse response, String seriesUid, String userId, String password,
-			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids) throws IOException {
+			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids, boolean newFileNames) throws IOException {
 
 		DownloadProcessor processor = new DownloadProcessor();
 		List<AnnotationDTO> annoResults = new ArrayList<AnnotationDTO>();
@@ -121,7 +128,7 @@ public class DownloadServlet extends HttpServlet {
 			if (includeAnnotation && hasAnnotation) {
 				annoResults = processor.process(seriesUid);
 			}
-			sendResponse(response, imageResults, annoResults);
+			sendResponse(response, imageResults, annoResults,newFileNames);
 			// compute the size for this series
 			System.out.println("computing size");
 			long size = computeContentLength(imageResults, annoResults);
@@ -136,7 +143,7 @@ public class DownloadServlet extends HttpServlet {
 	
     private void sendResponse(HttpServletResponse response,
             List<ImageDTO2> imageResults,
-            List<AnnotationDTO> annoResults) throws IOException {
+            List<AnnotationDTO> annoResults, boolean newFileNames) throws IOException {
     	System.out.println("Sending response");
         TarArchiveOutputStream tos = new TarArchiveOutputStream(response.getOutputStream());
 
@@ -146,7 +153,7 @@ public class DownloadServlet extends HttpServlet {
             logger.info("images size: " + imageResults.size() + " anno size: " + annoResults.size());
 
             sendAnnotationData(annoResults, tos);
-            sendImagesData(imageResults, tos);
+            sendImagesData(imageResults, tos, newFileNames);
 
             logger.info("total time to send  files are " + (System.currentTimeMillis() - start)/1000 + " ms.");
         }
@@ -156,7 +163,7 @@ public class DownloadServlet extends HttpServlet {
     }
 
     private void sendImagesData(List<ImageDTO2> imageResults,
-                                TarArchiveOutputStream tos) throws IOException {
+                                TarArchiveOutputStream tos, boolean newFileNames) throws IOException {
         InputStream dicomIn = null;
         try {
         for (ImageDTO2 imageDto : imageResults){
@@ -166,7 +173,12 @@ public class DownloadServlet extends HttpServlet {
              logger.info("filepath: " + filePath + " filename: " + sop);
              try {
                   File dicomFile = new File(filePath);
-                  ArchiveEntry tarArchiveEntry = tos.createArchiveEntry(dicomFile, sop + ".dcm");
+                  ArchiveEntry tarArchiveEntry = null;
+                  if (!newFileNames) {
+                     tarArchiveEntry = tos.createArchiveEntry(dicomFile, sop + ".dcm");
+                  } else {
+                	 tarArchiveEntry = tos.createArchiveEntry(dicomFile, imageDto.getNewFilename());
+                  }
                   dicomIn = new FileInputStream(dicomFile);
                   tos.putArchiveEntry(tarArchiveEntry);
                   IOUtils.copy(dicomIn, tos);
@@ -229,6 +241,17 @@ public class DownloadServlet extends HttpServlet {
         }
         return contentSize;
     }
+    private static long computeContentLengthNewFileNames(List<ImageDTO2> imageResults,
+            List<AnnotationDTO> annoResults) {
+         long contentSize=0;
+         for(ImageDTO2 imageDto : imageResults){
+            contentSize += imageDto.getDicomSize();
+         }
+         for(AnnotationDTO annoDto : annoResults){
+            contentSize += annoDto.getFileSize();
+         }
+         return contentSize;
+     }
     private void downloadJNLPDataFile(String fileName, String isJNLP, HttpServletResponse response) {
             logger.info("looking for file name ..."+fileName);
             response.setContentType("text/plain");
@@ -255,11 +278,12 @@ public class DownloadServlet extends HttpServlet {
 			input.add(item);
 		}
 		logger.info("Regenerating Manifest");
-        List<SeriesDTO> ssList = generalSeriesDAO.findSeriesBySeriesInstanceUID(input);
+        List<SeriesDTO> ssList = generalSeriesDAO.getSeriesFromSeriesInstanceUIDsIgnoreSecurity(input);
 
 		List<SeriesSearchResult> seriesFound=convert(ssList);
 		List<BasketSeriesItemBean> seriesItems=new ArrayList<BasketSeriesItemBean>();
 		for (SeriesSearchResult series:seriesFound){
+			System.out.println("series-"+series);
 			seriesItems.add(convert(series));
 		}
 		List<String> seriesDownloadData = new ArrayList<String>();
@@ -358,5 +382,6 @@ public class DownloadServlet extends HttpServlet {
     		results.add(result);
     	}
     	return results;
+    }   	
+
     }
-}

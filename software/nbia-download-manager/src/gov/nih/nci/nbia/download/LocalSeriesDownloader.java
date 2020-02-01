@@ -193,6 +193,8 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		// this is ignored
 		postParams.add(new BasicNameValuePair("Range", "bytes=" + downloaded + "-"));
 		postParams.add(new BasicNameValuePair("password", password));		
+		postParams.add(new BasicNameValuePair("newFileNames", "Yes"));	
+		System.out.println("requesting new file names");
 		//postParams.add(new BasicNameValuePair("dirType", Boolean.toString(this.dirType)));		
 		httpPostMethod.addHeader("password", password);
 		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
@@ -353,16 +355,35 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				long fileSize = tarArchiveEntry.getSize();
 				long startDownloaded = downloaded;
 				// End lrt additions
-				String sop = tarArchiveEntry.getName();
-				int pos = sop.indexOf(".dcm");
 				OutputStream outputStream = null;
-				if (pos > 0) {
-					// sopUidsList.add(sop.substring(0, pos)); - lrt moved to
-					// below, after file size check
-					outputStream = new FileOutputStream(location + File.separator + StringUtil.displayAsSixDigitString(imageCnt) + ".dcm");
-				} else {
-					outputStream = new FileOutputStream(location + File.separator + sop);
+				String fileName = tarArchiveEntry.getName();
+				String sop = null;
+				System.out.println("fileName-"+fileName);
+				boolean annotation=true;
+				if (fileName.contains("^")) {
+					annotation=false;
+					int pos = fileName.indexOf("^");
+					sop=fileName.substring(0, pos);
+					String newFileName=fileName.substring(pos+1);
+					outputStream = new FileOutputStream(location + File.separator + newFileName);
+				}  else {
+					int pos = fileName.indexOf(".dcm");
+					if (pos > 0) {
+						sop=fileName.substring(0, pos);
+						annotation=false;
+					} else {
+						sop=fileName;
+					}
+					if (!annotation) {
+						// sopUidsList.add(sop.substring(0, pos)); - lrt moved to
+						// below, after file size check
+						outputStream = new FileOutputStream(location + File.separator + StringUtil.displayAsSixDigitString(imageCnt));
+					} else {
+						outputStream = new FileOutputStream(location + File.separator + sop);
+					}
 				}
+				
+
 
 				try {
 					NBIAIOUtils.copy(zis, outputStream, progressUpdater);
@@ -379,9 +400,9 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 					additionalInfo.append(" file size mismatch for instance " + sop + "\n");
 					error();
 				} else {
-					if (pos > 0) { // image file
+					if (!annotation) { // image file
 						downloadedImgSize += bytesDownloaded;
-						sopUidsList.add(sop.substring(0, pos));
+						sopUidsList.add(sop);
 					} else { // annotation file
 						downloadedAnnoSize += bytesDownloaded;
 					}
