@@ -144,23 +144,29 @@ public class ImageDAO2Impl extends AbstractDAO
 		// set the filenames
 		accNumber=new Integer(0);
 		insNumber=new Integer(0);
-		accNumberCount=0;
+		accNumberCount=1;
 		insNumberCount=0;
 		if (imageResults.size()>0) {
 			ImageDTO2 dto =  imageResults.get(0);
 			if (dto.getAcquisitionNumber()!=null) {
 				accNumber=dto.getAcquisitionNumber();
+			} else {
+				accNumber=new Integer(0);
 			}
 			if (dto.getInstanceNumber()!=null) {
 				insNumber=dto.getInstanceNumber();
+			} else {
+				insNumber=new Integer(0);
 			}
 		}
-		String accNumberPart=String.format("%0"+accPadding+"d", 0);
+		String accNumberPart=String.format("%0"+accPadding+"d", 1);
 		String insNumberPart=String.format("%0"+insPadding+"d", 1);
+		Integer currentAccNumber;
 		for (ImageDTO2 dto:imageResults) {	
-			Integer currentAccNumber=new Integer(0);
 			if (dto.getAcquisitionNumber()!=null) {
 				currentAccNumber=dto.getAcquisitionNumber();
+			} else {
+				currentAccNumber=new Integer(0);
 			}
 			if (!currentAccNumber.equals(accNumber)) {
 				    accNumber=dto.getAcquisitionNumber();
@@ -171,7 +177,7 @@ public class ImageDAO2Impl extends AbstractDAO
 			} else {
 				// if the aquistion number has not change I need to increment in order to prevent name collisions
 				   insNumberCount++;
-				   accNumberPart=String.format("%0"+insPadding+"d", insNumberCount);
+				   insNumberPart=String.format("%0"+insPadding+"d", insNumberCount);
 			}
 			
 			String newFileName=dto.getSOPInstanceUID()+"^"+accNumberPart+"-"+insNumberPart+".dcm";
