@@ -13,6 +13,7 @@ import gov.nih.nci.nbia.dao.DownloadDataDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dto.AnnotationDTO;
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.dto.ImageDTO2;
 import gov.nih.nci.nbia.security.AuthorizationManager;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import gov.nih.nci.nbia.security.NCIASecurityManager.RoleType;
@@ -32,7 +33,6 @@ public class DownloadProcessor {
 		List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid, sopUids);
 		return imageResults;
 	}
-
 	public List<AnnotationDTO> process(String seriesInstanceUid) {
 		List<AnnotationDTO> annoResults = null;
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-//import {map} from 'rxjs/operators';
+
 import {Pg} from './pg';
 
 import {Globals} from '../conf/globals'

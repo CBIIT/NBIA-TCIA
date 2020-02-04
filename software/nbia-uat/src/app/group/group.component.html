@@ -21,6 +21,7 @@
 				</th>
 				<th rowspan="2" style="width:8em">Delete User Group</th>
 				<th rowspan="2" style="width:8em">Assign Protection Group(s) with Role(s)</th>
+				<th rowspan="2" style="width:8em">Show Associated User(s)</th>	
 			</tr>
 			<tr>
 				<th style="border-top: none;border-left: none;">
@@ -51,7 +52,10 @@
    			  </td>
 			  <td>
                 <button pButton type="button" icon="fa fa-plus" class="nbia-col-button" (click)="showDialogToAssign(rowData)"></button>
-   			  </td>				  
+   			  </td>
+			  <td>
+                <button pButton type="button" icon="fa fa-user" class="nbia-col-button" (click)="showMemberDialog(rowData)"></button>
+   			  </td>	
 			</tr>
 		</ng-template>
 					

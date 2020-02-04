@@ -16,6 +16,7 @@ import gov.nih.nci.nbia.internaldomain.GeneralImage;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -39,13 +40,13 @@ public class ImageDAO2Impl extends AbstractDAO
     		                                    String exclusionSopUidList) throws DataAccessException {
     	String query="";
     	if(exclusionSopUidList.equals("")) {
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup " +
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
     				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid + "'";
     	}
     	else {
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup " +
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
     				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid +
@@ -79,9 +80,14 @@ public class ImageDAO2Impl extends AbstractDAO
         			(Long)row[2],
         			(String)row[4],
         			(String)row[5],
-        			(String)row[6], (String)row[3]);
+        			(String)row[6], 
+        			(String)row[3],
+        			(Integer)row[7],
+        			(Integer)row[8]);
         	imageResults.add(image);
         }
+        Collections.sort(imageResults);
+        setNewFileNames(imageResults);
         return imageResults;
     }
 	
@@ -101,5 +107,83 @@ public class ImageDAO2Impl extends AbstractDAO
 		List<String> rs = getHibernateTemplate().find(hql, seriesInstanceUid); // protect against sql injection				
 
         return rs;
+	}
+	
+	private void setNewFileNames(List<ImageDTO2> imageResults)
+	{
+		int accNumberCount=1;
+		int insNumberCount=1;
+		Integer accNumber=new Integer(0);
+		Integer insNumber=new Integer(0);;
+		if (imageResults.size()>0) {
+			ImageDTO2 dto =  imageResults.get(0);
+			if (dto.getAcquisitionNumber()!=null) {
+				accNumber=dto.getAcquisitionNumber();
+			}
+			if (dto.getInstanceNumber()!=null) {
+				insNumber=dto.getInstanceNumber();
+			}
+		}
+		// find the total for each
+		for (ImageDTO2 dto:imageResults) {	
+			if (dto.getAcquisitionNumber()!=null) {
+				if (!dto.getAcquisitionNumber().equals(accNumber)) {
+				    accNumber=dto.getAcquisitionNumber();
+				    accNumberCount++;
+				}
+			}
+			if (dto.getInstanceNumber()!=null) {
+				if (!dto.getInstanceNumber().equals(insNumber)) {
+				   insNumber=dto.getInstanceNumber();
+				   insNumberCount++;
+				}
+			}
+		}
+		int accPadding=String.valueOf(accNumberCount).length();
+		int insPadding=String.valueOf(insNumberCount).length();
+		// set the filenames
+		accNumber=new Integer(0);
+		insNumber=new Integer(0);
+		accNumberCount=1;
+		insNumberCount=0;
+		if (imageResults.size()>0) {
+			ImageDTO2 dto =  imageResults.get(0);
+			if (dto.getAcquisitionNumber()!=null) {
+				accNumber=dto.getAcquisitionNumber();
+			} else {
+				accNumber=new Integer(0);
+			}
+			if (dto.getInstanceNumber()!=null) {
+				insNumber=dto.getInstanceNumber();
+			} else {
+				insNumber=new Integer(0);
+			}
+		}
+		String accNumberPart=String.format("%0"+accPadding+"d", 1);
+		String insNumberPart=String.format("%0"+insPadding+"d", 1);
+		Integer currentAccNumber;
+		for (ImageDTO2 dto:imageResults) {	
+			if (dto.getAcquisitionNumber()!=null) {
+				currentAccNumber=dto.getAcquisitionNumber();
+			} else {
+				currentAccNumber=new Integer(0);
+			}
+			if (!currentAccNumber.equals(accNumber)) {
+				    accNumber=dto.getAcquisitionNumber();
+				    accNumberCount++;
+				    accNumberPart=String.format("%0"+accPadding+"d", accNumberCount);
+				    insNumberCount=1;
+				    insNumberPart=String.format("%0"+insPadding+"d", insNumberCount);
+			} else {
+				// if the aquistion number has not change I need to increment in order to prevent name collisions
+				   insNumberCount++;
+				   insNumberPart=String.format("%0"+insPadding+"d", insNumberCount);
+			}
+			
+			String newFileName=dto.getSOPInstanceUID()+"^"+accNumberPart+"-"+insNumberPart+".dcm";
+			dto.setNewFilename(newFileName);
+		}
+		
+		
 	}
 }

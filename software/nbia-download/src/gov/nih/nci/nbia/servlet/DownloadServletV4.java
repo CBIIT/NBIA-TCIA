@@ -61,8 +61,7 @@ public class DownloadServletV4 extends HttpServlet {
 		// This servlet processes Manifest download related requests only. JNLP
 		// download related requests are processed at DownloadServlet
 		String numOfS = request.getParameter("numberOfSeries");
-
-		if (numOfS != null) {
+  		if (numOfS != null) {
 			int numberOfSeries = Integer.parseInt(numOfS);
 			List<String> seriesList = new ArrayList<String>();
 
@@ -109,8 +108,13 @@ public class DownloadServletV4 extends HttpServlet {
 			logger.info("sopUids:" + sopUids);
 			logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
 					+ " hasAnnotation: " + hasAnnotation);
-
-			processRequest(response, seriesUid, userId, password, includeAnnotation, hasAnnotation, sopUids);
+             boolean newFileNames=false;
+            
+            
+            if (request.getParameter("newFileNames")!=null&&request.getParameter("newFileNames").length()>1) {
+            	newFileNames=true;
+            }
+			processRequest(response, seriesUid, userId, password, includeAnnotation, hasAnnotation, sopUids, newFileNames);
 		}
 	}
 
@@ -143,7 +147,7 @@ public class DownloadServletV4 extends HttpServlet {
 	}
 
 	protected void processRequest(HttpServletResponse response, String seriesUid, String userId, String password,
-			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids) throws IOException {
+			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids, boolean newFileNames) throws IOException {
 
 		DownloadProcessor processor = new DownloadProcessor();
 		List<AnnotationDTO> annoResults = new ArrayList<AnnotationDTO>();
@@ -167,7 +171,7 @@ public class DownloadServletV4 extends HttpServlet {
 			if (includeAnnotation && hasAnnotation) {
 				annoResults = processor.process(seriesUid);
 			}
-			sendResponse(response, imageResults, annoResults);
+			sendResponse(response, imageResults, annoResults, newFileNames);
 			// compute the size for this series
 			long size = computeContentLength(imageResults, annoResults);
 			try {
@@ -184,7 +188,7 @@ public class DownloadServletV4 extends HttpServlet {
 	}
 
 	private void sendResponse(HttpServletResponse response, List<ImageDTO2> imageResults,
-			List<AnnotationDTO> annoResults) throws IOException {
+			List<AnnotationDTO> annoResults, boolean newFileNames) throws IOException {
 
 		TarArchiveOutputStream tos = new TarArchiveOutputStream(response.getOutputStream());
 
@@ -194,7 +198,7 @@ public class DownloadServletV4 extends HttpServlet {
 			logger.info("images size: " + imageResults.size() + " anno size: " + annoResults.size());
 
 			sendAnnotationData(annoResults, tos);
-			sendImagesData(imageResults, tos);
+			sendImagesData(imageResults, tos, newFileNames);
 
 			logger.info("total time to send  files are " + (System.currentTimeMillis() - start) / 1000 + " ms.");
 		} finally {
@@ -202,7 +206,7 @@ public class DownloadServletV4 extends HttpServlet {
 		}
 	}
 
-	private void sendImagesData(List<ImageDTO2> imageResults, TarArchiveOutputStream tos) throws IOException {
+	private void sendImagesData(List<ImageDTO2> imageResults, TarArchiveOutputStream tos, boolean newFileNames) throws IOException {
 		InputStream dicomIn = null;
 		try {
 			for (ImageDTO2 imageDto : imageResults) {
@@ -212,7 +216,12 @@ public class DownloadServletV4 extends HttpServlet {
 				logger.info("filepath: " + filePath + " filename: " + sop);
 				try {
 					File dicomFile = new File(filePath);
-					ArchiveEntry tarArchiveEntry = tos.createArchiveEntry(dicomFile, sop + ".dcm");
+	                  ArchiveEntry tarArchiveEntry = null;
+	                  if (!newFileNames) {
+	                     tarArchiveEntry = tos.createArchiveEntry(dicomFile, sop + ".dcm");
+	                  } else {
+	                	 tarArchiveEntry = tos.createArchiveEntry(dicomFile, imageDto.getNewFilename());
+	                  }
 					dicomIn = new FileInputStream(dicomFile);
 					tos.putArchiveEntry(tarArchiveEntry);
 					IOUtils.copy(dicomIn, tos);
