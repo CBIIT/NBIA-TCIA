@@ -3,9 +3,10 @@
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
+import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 
@@ -28,8 +29,8 @@ import javax.ws.rs.core.Response;
 import org.springframework.dao.DataAccessException;
 
 
-@Path("/v3/getAvailablePGsForUser")
-public class V3_getAvailablePGsForUser extends getData{
+@Path("/v3/getAvailableGroupsForUser")
+public class V3_getAvailableGroupsForUser extends getData{
 	private static final String[] columns={"label", "value"};
 	public final static String TEXT_CSV = "text/csv";
 
@@ -43,29 +44,38 @@ public class V3_getAvailablePGsForUser extends getData{
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
-	public Response  constructResponse(@QueryParam("loginName") String loginName, @QueryParam("format") String format) {
-		Set<String> allPg = null;
-
+	public Response constructResponse(@QueryParam("loginName") String loginName, @QueryParam("format") String format) {
+		// Set<String> allGroup = null;
+		List<Object[]> gOptions = new ArrayList<Object[]>();
 		try {
 			UserProvisioningManager upm = getUpm();
-			List<ProtectionGroup> protectionGrps = upm.getProtectionGroups();
+			Group group = new Group();
+			SearchCriteria searchCriteria = new GroupSearchCriteria(group);
 
-			if ((protectionGrps != null) && (!protectionGrps.isEmpty())) {
-				allPg = new HashSet<String>();
-				for (ProtectionGroup pg: protectionGrps) {
-					allPg.add(pg.getProtectionGroupName());
-				}
-				
-				Set<String> usedPg = new HashSet<String>();
+			java.util.List<Group> allGroupLst = upm.getObjects(searchCriteria);
+			if ((allGroupLst != null) && (!allGroupLst.isEmpty())) {
+				Set<Group> allGroupSet = new HashSet<>(allGroupLst);
+
 				User user = getUserByLoginName(loginName);
-				List<ProtectionGroupRoleContext> pgRCs = new ArrayList<ProtectionGroupRoleContext>(upm.getProtectionGroupRoleContextForUser(user.getUserId().toString()));
-			    for (ProtectionGroupRoleContext pgRC:pgRCs) {
-			    	usedPg.add(pgRC.getProtectionGroup().getProtectionGroupName());
-			    }
-				
-			    allPg.removeAll(usedPg);
+				Set usedGroups = upm.getGroups(user.getUserId().toString());
+				allGroupSet.removeAll(usedGroups);
+
+				if (!(allGroupSet.isEmpty())) {
+
+					for (Group ag : allGroupSet) {
+						Object[] objs = { ag.getGroupName(), ag.getGroupName() };
+						gOptions.add(objs);
+					}
+
+					Collections.sort(gOptions, new Comparator<Object[]>() {
+						public int compare(Object[] s1, Object[] s2) {
+							// ascending order
+							return s1[0].toString().compareTo(s2[0].toString());
+						}
+					});
+				}
 			}
-			else allPg.add("Info: No Data Group found. Please create one first.");
+
 		} catch (CSConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,22 +85,7 @@ public class V3_getAvailablePGsForUser extends getData{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	 
-
-		List<Object []> pgOptions= new ArrayList<Object[]>();
-		if (!(allPg.isEmpty())) {
-			for (String apg: allPg) {
-				Object [] objs = {apg, apg};
-				pgOptions.add(objs);
-			}
-			
-			Collections.sort(pgOptions, new Comparator<Object[]>() {
-				public int compare(Object[] s1, Object[] s2) {
-				   //ascending order
-				   return s1[0].toString().compareTo(s2[0].toString());
-			    }
-			});
 		}
-		return formatResponse(format, pgOptions, columns);
+		return formatResponse(format, gOptions, columns);
 	}
 }

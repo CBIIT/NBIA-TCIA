@@ -88,6 +88,15 @@ L-->
         <value>gov/nih/nci/nbia/internaldomain/SavedQueryLastExec.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/SubmissionHistory.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/GUIActionHistory.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/User.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml</value>
+        <value>gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml</value> 
+        <!--value>gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml</value-->          
       </list>
     </property>
 
