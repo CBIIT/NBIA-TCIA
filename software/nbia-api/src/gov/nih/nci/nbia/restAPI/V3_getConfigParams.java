@@ -4,20 +4,8 @@
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.nbia.util.NCIAConfig;
-import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
-import gov.nih.nci.security.authorization.domainobjects.Role;
-import gov.nih.nci.security.dao.GroupSearchCriteria;
-import gov.nih.nci.security.dao.SearchCriteria;
-import gov.nih.nci.security.exceptions.CSConfigurationException;
-import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.security.util.ProtectionGroupRoleContextComparator;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +16,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
-
 
 @Path("/v3/getConfigParams")
 public class V3_getConfigParams extends getData{
@@ -48,11 +32,12 @@ public class V3_getConfigParams extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 	public Response  constructResponse(@QueryParam("format") String format) {
 		List<Object []> data = new ArrayList<Object[]>();
-System.out.println("########################################uat pe param="+ NCIAConfig.getUatCreationNewProjectSite());
 		Object [] urlObjs = {"wikiBaseUrl", NCIAConfig.getWikiURL()};
         data.add(urlObjs);
         Object [] peObjs = {"peOption", NCIAConfig.getUatCreationNewProjectSite()};
         data.add(peObjs);
+        Object [] userAuthorObjs = {"assignToUG", NCIAConfig.getUatUserAssginToUG()};
+        data.add(userAuthorObjs);			
 		return formatResponse(format, data, columns);
 	}	
 }

@@ -1,6 +1,7 @@
 package gov.nih.nci.nbia.csmDao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,4 +47,31 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
 		}
 		return userOptions;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<String> getAllUsersFromPG(String pgName) {
+		//List<Object []> userOptions= new ArrayList<Object[]>();
+		List<String> results = null;
+		String hql = "select distinct ugrpg.user.loginName from UserGroupRoleProtectionGroup ugrpg where ugrpg.protectionGroup.protectionGroupName='"+pgName+"'";
+
+		try {		
+			results = getHibernateTemplate().find(hql);
+			if (results != null && results.size() > 0) {
+				Collections.sort(results, new Comparator<String>() {
+					public int compare(String s1, String s2) {
+					   //ascending order
+					   return s1.toString().compareTo(s2.toString());
+				    }
+				});
+			}
+			else {
+				results = Arrays.asList("Warning: No User found for PG."+pgName);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Could not execute the query.");
+		}
+		return results;
+	}	
 }

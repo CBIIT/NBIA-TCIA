@@ -20,14 +20,7 @@ export class PgRoleService {
 		var headers = 
 			new HttpHeaders({'Content-type': 'application/json',
 			'Authorization': 'Bearer '+ this.globals.accessToken});		
-		return this.http.get(serviceUrl + params,{headers: headers});                    
-		//		.toPromise()
-		//		.then(res => <SelectItem[]> res.json())
-		//		.then(data => { return data; })
-		//		.catch(this.handleError)
-		//.pipe(
-		//	catchError(this.handleError('getUserNames', []))
-		//); 					
+		return this.http.get(serviceUrl + params,{headers: headers});                     					
     }
 
 //	private handleError (error: any) {
@@ -37,20 +30,25 @@ export class PgRoleService {
 //		return Promise.reject(errMsg);
 //	}
 
+
+
+	getGroupsForUser(selectedUserName: string) {
+		var serviceUrl = this.globals.serviceUrl +'getAllGroupsForUser';
+		var params = '?loginName=' + selectedUserName + '&format=json';
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/json',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+			
+			return this.http.get(serviceUrl + params,{headers: headers});
+	}
+
 	getPgRolesForUser(selectedUserName: string) {
 		var serviceUrl = this.globals.serviceUrl +'getAllPGsWithRolesForUser';
 		var params = '?loginName=' + selectedUserName + '&format=json';
 		var headers = 
 			new HttpHeaders({'Content-type': 'application/json',
 			'Authorization': 'Bearer '+ this.globals.accessToken});		
-		
-//        return this.http.get(serviceUrl + params,{headers: headers})
-//                    .toPromise()
-//                    .then(res => <PgRole[]> res.json())
-//                    .then(data => { return data; }); 
-//		if (selectedUserName === undefined) 
-//			return [];
-//		else	
+			
 			return this.http.get(serviceUrl + params,{headers: headers});
 			//.map((res) => <PgRole[]> res.json());
 	}
@@ -75,14 +73,16 @@ export class PgRoleService {
 			new HttpHeaders({'Content-type': 'application/json',
 			'Authorization': 'Bearer '+ this.globals.accessToken});		
 		return this.http.get(serviceUrl + params,{headers: headers});
-//		.pipe(
-//			catchError(this.handleError('getAvailablePGs', []))
-//		); 	
-		//		.toPromise()
-		//		.then(res => <SelectItem[]> res.json())
-		//		.then(data => { return data; })
-		//		.catch(this.handleError); 	
 	}
+	
+	getAvailableGroups(loginName: string){
+		var serviceUrl = this.globals.serviceUrl +'getAvailableGroupsForUser';
+		var params = '?loginName='+ loginName + '&format=json';
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/json',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+		return this.http.get(serviceUrl + params,{headers: headers});
+	}	
 /*
 	getAvailableRoles(loginName: string, pgName:string) {
 		var serviceUrl = this.globals.serviceUrl +'getAvailablePEsForPG';
@@ -99,6 +99,17 @@ export class PgRoleService {
 				.catch(this.handleError); 	
 	}
 */
+
+	addNewGroupForUser(loginName: string, groupNames: string[])	{
+		var serviceUrl = this.globals.serviceUrl +'assignUserToGroups';
+		var params = '?loginName=' + loginName + '&groupNames='+groupNames.join(",");
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+		return this.http.post(serviceUrl + params,
+			params, {headers: headers});
+			//.map(res => res.json());	
+	}
 
 	addNewPgRoleForUser(loginName: string, pgName: String, roleNames: string[])	{
 		var serviceUrl = this.globals.serviceUrl +'assignUserToPGWithRoles';
@@ -134,6 +145,17 @@ export class PgRoleService {
 			params, {headers: headers});
 			//.map(res => res.json());		
 	}
+	
+	removeUserFromGroup(loginName: string, groupName: String) {
+		var serviceUrl = this.globals.serviceUrl +'removeUserFromGroup';
+		var params = '?loginName=' + loginName + '&groupName=' + groupName;
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+		
+		return this.http.post(serviceUrl + params,
+			params, {headers: headers});
+	}		
 	
 	/**
 	 * Handle Http operation that failed.

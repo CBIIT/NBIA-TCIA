@@ -15,6 +15,8 @@ import { LoadingDisplayComponent } from './common/components/loading-display/loa
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
@@ -56,6 +58,7 @@ import { UgMemberService } from './group/ugmemberservice';
 	HttpClientModule,
 	ButtonModule,
 	CheckboxModule,
+	ConfirmDialogModule,
 	DialogModule,
 	DropdownModule,
 	DynamicDialogModule,
@@ -73,7 +76,7 @@ import { UgMemberService } from './group/ugmemberservice';
 		PgMemberList,
 		UgMemberList
 	],  
-  providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService],
+  providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -14,5 +14,6 @@ import org.springframework.dao.DataAccessException;
 public interface UserDao {
 
 	public List<Object []> getAllCsmUser() throws DataAccessException;
+	public List<String> getAllUsersFromPG(String pgName) throws DataAccessException;
 
 }

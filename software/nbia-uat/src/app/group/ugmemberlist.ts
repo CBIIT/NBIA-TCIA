@@ -22,6 +22,7 @@ import {UgMemberService} from './ugmemberservice';
                 </tr>
             </ng-template>
         </p-table>
+		<p-messages [value]="statusMessage" [closable]="true"></p-messages>
     `
 })
 export class UgMemberList {

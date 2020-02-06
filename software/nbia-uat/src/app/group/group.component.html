@@ -19,7 +19,7 @@
 					Description
 					<p-sortIcon [field]="'description'"></p-sortIcon>
 				</th>
-				<th rowspan="2" style="width:8em">Delete User Group</th>
+				<th rowspan="2" style="width:8em">Edit User Group</th>
 				<th rowspan="2" style="width:8em">Assign Protection Group(s) with Role(s)</th>
 				<th rowspan="2" style="width:8em">Show Associated User(s)</th>	
 			</tr>
@@ -48,7 +48,7 @@
 			  <td style="border-left: none;">{{rowData.userGroup}}</td>
 			  <td>{{rowData.description}}</td>
 			  <td>
-                <button pButton type="button" icon="fa fa-cut" class="nbia-col-button" (click)="onSelect(rowData);dt.toggleRow(rowData);"></button>
+                <button pButton type="button" icon="pi pi-pencil" class="nbia-col-button" (click)="onSelect(rowData);dt.toggleRow(rowData);"></button>
    			  </td>
 			  <td>
                 <button pButton type="button" icon="fa fa-plus" class="nbia-col-button" (click)="showDialogToAssign(rowData)"></button>
@@ -81,25 +81,50 @@
 			</td>	
         </tr>
 		</ng-template>
+		<ng-template pTemplate="summary" let-rowData>
+			<div style="text-align:left">
+				<button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add User Group" class="nbia-button"></button>
+			</div>
+		</ng-template>  
 	</p-table>
 	
 	<p-messages [value]="statusMessage" [closable]="true" ></p-messages>
 	
-	<p-dialog header="Delete the Following Group?" [(visible)]="displayDialog" [modal]="true"
+	<p-dialog header="Add New User Group" [(visible)]="displayAddDialog" [modal]="true"
 			[responsive]="true" [style]="{width: '600px', minWidth: '300px'}" [maximizable]="true" appendTo="body">	
-		<div class="ui-g ui-fluid" *ngIf="group">
+		<div class="ui-g ui-fluid">
 			<div class="ui-g-12 background-none">
-				<div class="ui-g-4 background-none"><label for="dataGroup">User Group Name</label></div>
-				<div class="ui-g-8 background-none"><input pInputText id="userGroup" [(ngModel)]="group.userGroup" [disabled]="true"/></div>
+				<div class="ui-g-4 background-none"><label for="userGroup">User Group Name</label></div>
+				<div class="ui-g-8 background-none"><input pInputText id="userGroup" [(ngModel)]="group.userGroup" required="true"/></div>
 			</div>
 			<div class="ui-g-12 background-none">
 				<div class="ui-g-4 background-none"><label for="description">Description</label></div>
-				<div class="ui-g-8 background-none"><input pInputText id="description" [(ngModel)]="group.description" [disabled]="true"/></div>
+				<div class="ui-g-8 background-none"><input pInputText id="description" [(ngModel)]="group.description"/></div>
 			</div>
 		</div>
 		<p-footer>
 			<div class="ui-dialog-buttonpane ui-helper-clearfix">
-				<button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete" [disabled]="newGroup"></button>	
+				<button type="button" pButton icon="fa fa-check" (click)="saveGroup()" label="Save" [disabled]="!group.userGroup"></button>	
+			</div>
+		</p-footer>
+	</p-dialog>	
+	
+	<p-dialog header="Edit or Delete the Group" [(visible)]="displayDialog" [modal]="true"
+			[responsive]="true" [style]="{width: '600px', minWidth: '300px'}" [maximizable]="true" appendTo="body">	
+		<div class="ui-g ui-fluid" *ngIf="group">
+			<div class="ui-g-12 background-none">
+				<div class="ui-g-4 background-none"><label for="userGroup">User Group Name</label></div>
+				<div class="ui-g-8 background-none"><input pInputText id="userGroup" [(ngModel)]="group.userGroup" [disabled]="true"/></div>
+			</div>
+			<div class="ui-g-12 background-none">
+				<div class="ui-g-4 background-none"><label for="description">Description</label></div>
+				<div class="ui-g-8 background-none"><input pInputText id="description" [(ngModel)]="group.description"/></div>
+			</div>
+		</div>
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="fa fa-check" (click)="saveGroup()" label="Save"></button>
+				<button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete Group" [disabled]="newGroup"></button>	
 			</div>
 		</p-footer>
 	</p-dialog>
