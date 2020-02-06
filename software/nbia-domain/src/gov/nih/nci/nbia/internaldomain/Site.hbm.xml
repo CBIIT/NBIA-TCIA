@@ -10,31 +10,18 @@ L-->
 
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.nbia.internaldomain">
-	<class name="TrialDataProvenance" table="TRIAL_DATA_PROVENANCE" lazy="true" polymorphism="explicit">
+	<class name="Site" table="SITE" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="integer" column="TRIAL_DP_PK_ID">
+		<id name="id" type="integer" column="SITE_PK_ID">
 		   <generator class="org.hibernate.id.TableHiLoGenerator">
   	  			<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
 		<!-- Attributes mapping for the TrialDataProvenance class -->
-		<property name="project" type="string" column="PROJECT"/>
+		<property name="dpSiteId" type="string" column="DP_SITE_ID"/>
+		<property name="dpSiteName" type="string" column="DP_SITE_NAME"/>
 		<!-- Associations mapping for the TrialDataProvenance class -->
-		<set name="generalImageCollection" lazy="true">
-			<cache usage="read-write" />
-			<key column="TRIAL_DP_PK_ID" />
-			<one-to-many class="gov.nih.nci.nbia.internaldomain.GeneralImage"/>
-		</set>
-		<set name="patientCollection" lazy="true">
-			<cache usage="read-write" />
-			<key column="TRIAL_DP_PK_ID" />
-			<one-to-many class="gov.nih.nci.nbia.internaldomain.Patient"/>
-		</set>
-		<set name="siteCollection" lazy="true">
-			<cache usage="read-write" />
-			<key column="TRIAL_DP_PK_ID" />
-			<one-to-many class="gov.nih.nci.nbia.internaldomain.Site"/>
-		</set>
+        <many-to-one name="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" column="TRIAL_DP_PK_ID" lazy="proxy" />
 	</class>
 </hibernate-mapping>

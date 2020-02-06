@@ -508,7 +508,7 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 
 		for (SiteData sd : sites){
 			Conjunction con = new Conjunction();
-			con.add(Restrictions.eq("dpSiteName",sd.getSiteName()));
+			con.add(Restrictions.eq("site.dpSiteName",sd.getSiteName()));
 			con.add(Restrictions.eq("project", sd.getCollection()));
 			disjunction.add(con);
 		}

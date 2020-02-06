@@ -57,7 +57,7 @@ public class ImageDAOImpl extends AbstractDAO
             ImageSecurityDTO imageSecurityDTO = new ImageSecurityDTO(gi.getSOPInstanceUID(),
                                                                      gi.getFilename(),
                                                                      gi.getProject(),
-                                                                     gi.getDataProvenance().getDpSiteName(),
+                                                                     gi.getGeneralSeries().getSite(),
                                                                      gi.getGeneralSeries().getSecurityGroup(),
                                                                      gi.getGeneralSeries().getVisibility().equals("1"),
                                                                      gi.getUsFrameNum());
@@ -94,13 +94,14 @@ public class ImageDAOImpl extends AbstractDAO
                 projectionList.add(Projections.property("gs.visibility"));
                 projectionList.add(Projections.property("gs.securityGroup"));
                 projectionList.add(Projections.property("tdp.project"));
-                projectionList.add(Projections.property("tdp.dpSiteName"));
+                projectionList.add(Projections.property("tdp.st.dpSiteName"));
                 projectionList.add(Projections.property("i.usFrameNum"));
 
                 criteria = criteria.createCriteria("generalSeries","gs");
                 criteria = criteria.createCriteria("study","s");
                 criteria = criteria.createCriteria("patient","p");
                 criteria = criteria.createCriteria("dataProvenance","tdp");
+                criteria = criteria.createCriteria("dataProvenance.site", "st");
                 criteria.setProjection(projectionList);
 
                 criteria.add(Restrictions.eq("i.SOPInstanceUID", imageSopInstanceUid));
@@ -247,7 +248,7 @@ public class ImageDAOImpl extends AbstractDAO
 			imageDto = new ImageDTO();
 			GeneralImage image = (GeneralImage)result.get(0);
 			imageDto.setProject(image.getDataProvenance().getProject());
-			imageDto.setSiteName(image.getDataProvenance().getDpSiteName());
+			imageDto.setSiteName(image.getGeneralSeries().getSite());
 			imageDto.setFileURI(image.getFilename());
 		}
 

@@ -209,7 +209,7 @@ public class SeriesDAOImpl extends HibernateDaoSupport implements SeriesDAO{
 		else
 		{
 			dObject.setProject(series.getStudy().getPatient().getDataProvenance().getProject());
-			dObject.setSite(series.getStudy().getPatient().getDataProvenance().getDpSiteName());
+			dObject.setSite(series.getSite());
 		}
 	}
 }

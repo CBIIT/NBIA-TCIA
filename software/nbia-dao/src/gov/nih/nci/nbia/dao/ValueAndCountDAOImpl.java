@@ -58,7 +58,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	public static final String OPEN_PARENTHESIS = " ( ";
 	public static final String CLOSE_PARENTHESIS = " ) ";
 	private static final String COLLECTION_FIELD = "dp.project ";
-	private static final String SITE_FIELD = "dp.dp_site_name ";
+	private static final String SITE_FIELD = "gs.site ";
     public static final String PATIENT_ID = "p.patientId ";
 	private final static String COLLECTION_QUERY="select dp.project, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs "
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";

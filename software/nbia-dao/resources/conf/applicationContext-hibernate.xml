@@ -75,9 +75,9 @@ L-->
         <value>gov/nih/nci/nbia/internaldomain/StudyNumber.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/TrialDataProvenance.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/TrialSite.hbm.xml</value>
+        <value>gov/nih/nci/nbia/internaldomain/Site.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/Annotation.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/DeletionAuditTrail.hbm.xml</value>
-
         <value>gov/nih/nci/nbia/security/NCIAUser.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/CollectionDesc.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/ModalityDesc.hbm.xml</value>
@@ -292,6 +292,7 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
    <bean id="patient" class="gov.nih.nci.nbia.internaldomain.Patient" scope="prototype"/>
    <bean id="study" class="gov.nih.nci.nbia.internaldomain.Study" scope="prototype"/>
    <bean id="trialSite" class="gov.nih.nci.nbia.internaldomain.TrialSite" scope="prototype"/>
+   <bean id="site" class="gov.nih.nci.nbia.internaldomain.Site" scope="prototype"/>
    <bean id="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" scope="prototype"/>
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

@@ -26,9 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
  class WorkflowDAOImpl extends AbstractDAO
                                    implements WorkflowDAO {
 	 
-	private final static String SITES_QUERY="select distinct dp_site_name from trial_data_provenance";
+	private final static String SITES_QUERY="select distinct dp_site_name from site";
 	private final static String COLLECTION_QUERY="select distinct project from trial_data_provenance";
-	private final static String SITE_COLLECTION_QUERY="select distinct dp_site_name from trial_data_provenance where project=:project";
+	private final static String SITE_COLLECTION_QUERY="select distinct site.dp_site_name from trial_data_provenance, site where site.trial_dp_pk_id=trial_data_provenance.trial_dp_pk_id and project=:project";
 	static Logger log = Logger.getLogger(WorkflowDAOImpl.class);
 	
 	@Transactional(propagation=Propagation.REQUIRED)

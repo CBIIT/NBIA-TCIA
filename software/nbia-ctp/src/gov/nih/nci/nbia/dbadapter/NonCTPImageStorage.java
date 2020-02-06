@@ -17,6 +17,7 @@ import gov.nih.nci.nbia.domain.operation.PatientOperationInterface;
 import gov.nih.nci.nbia.domain.operation.SeriesOperationInterface;
 import gov.nih.nci.nbia.domain.operation.StudyOperationInterface;
 import gov.nih.nci.nbia.domain.operation.TrialDataProvenanceOperationInterface;
+import gov.nih.nci.nbia.domain.operation.SiteOperationInterface;
 import gov.nih.nci.nbia.internaldomain.CTImage;
 import gov.nih.nci.nbia.internaldomain.MRImage;
 import gov.nih.nci.nbia.internaldomain.GeneralEquipment;
@@ -26,6 +27,7 @@ import gov.nih.nci.nbia.internaldomain.Patient;
 import gov.nih.nci.nbia.internaldomain.Study;
 import gov.nih.nci.nbia.internaldomain.SubmissionHistory;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
+import gov.nih.nci.nbia.internaldomain.Site;
 import gov.nih.nci.nbia.util.DicomConstants;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -44,6 +46,8 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 
 	@Autowired
 	private TrialDataProvenanceOperationInterface tdpo;
+	@Autowired
+	private SiteOperationInterface siteo;
 	@Autowired
 	private PatientOperationInterface po;
 	@Autowired
@@ -111,6 +115,16 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
             return errorMessage(e, "TrialDataProvenanceOperation");
         }
 
+        Site site=null;
+        try {
+        	siteo.setTdp(tdp);
+			site = (Site)siteo.validate(numbers);
+			getHibernateTemplate().saveOrUpdate(site);
+        }catch(Exception e) {
+            log.error("Exception in SiteOperation " + e);
+            return errorMessage(e, "SiteOperation");
+        }
+        
         Patient patient=null;
         try {
 			po.setTdp(tdp);

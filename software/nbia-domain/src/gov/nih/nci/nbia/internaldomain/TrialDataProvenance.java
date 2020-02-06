@@ -10,57 +10,14 @@ package gov.nih.nci.nbia.internaldomain;
 
 import java.util.Collection;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 	/**
 	* Data (chosen by the image submitter) to describe the clinical trial and site from which the image and related data originated.	**/
 public class TrialDataProvenance  implements Serializable
 {
-	/**
-	* An attribute to allow serialization of the domain objects
-	*/
-	private static final long serialVersionUID = 1234567890L;
-
-
-		/**
-	* A numerical identifier chosen by the image submitter to identify the clinical trial site from which the image originated.	**/
-	private String dpSiteId;
-	/**
-	* Retrieves the value of dpSiteId attribute
-	* @return dpSiteId
-	**/
-
-	public String getDpSiteId(){
-		return dpSiteId;
-	}
 
 	/**
-	* Sets the value of dpSiteId attribute
-	**/
-
-	public void setDpSiteId(String dpSiteId){
-		this.dpSiteId = dpSiteId;
-	}
-
-		/**
-	* A name chosen by the image submitter to identify the clinical trial site from which the image originated.	**/
-	private String dpSiteName;
-	/**
-	* Retrieves the value of dpSiteName attribute
-	* @return dpSiteName
-	**/
-
-	public String getDpSiteName(){
-		return dpSiteName;
-	}
-
-	/**
-	* Sets the value of dpSiteName attribute
-	**/
-
-	public void setDpSiteName(String dpSiteName){
-		this.dpSiteName = dpSiteName;
-	}
-
-		/**
 	* One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing.	**/
 	private Integer id;
 	/**
@@ -100,21 +57,6 @@ public class TrialDataProvenance  implements Serializable
 		this.project = project;
 	}
 
-	String projAndSite;
-	/**
-	* Retrieves the value of concatenation value of project,"//" and value of dpSiteName
-	* @return projAndSite
-	**/
-	public String getProjAndSite() {
-		return projAndSite;
-	}
-
-	/**
-	* Sets the value of projAndSite attribute
-	**/
-	public void setProjAndSite(String projAndSite) {
-		this.projAndSite = projAndSite;
-	}
 
 	/**
 	* An associated gov.nih.nci.ncia.domain.GeneralImage object's collection
@@ -160,6 +102,51 @@ public class TrialDataProvenance  implements Serializable
 		this.patientCollection = patientCollection;
 	}
 
+	
+	/**
+	* An associated gov.nih.nci.ncia.domain.GeneralSeries object's collection
+	**/
+
+	private Collection<Site> siteCollection;
+	/**
+	* Retreives the value of siteCollection attribue
+	* @return siteCollection
+	**/
+
+	public Collection<Site> getSiteCollection(){
+		return siteCollection;
+	}
+
+	/**
+	* Sets the value of siteCollection attribue
+	**/
+
+	public void setSiteCollection(Collection<Site> siteCollection){
+		this.siteCollection = siteCollection;
+	}
+	
+	public void addSiteName(String dbSiteName) {
+		boolean hasSite=false;
+		if (siteCollection != null) {
+			for (Site cs : siteCollection){
+				if (cs.getDpSiteName().equals(dbSiteName)) {
+					hasSite=false;
+				}
+			}
+			if (!hasSite) {
+				Site site = new Site();
+				site.setDpSiteName(dbSiteName);
+				siteCollection.add(site);
+			}
+		} else {
+			Site site = new Site();
+			site.setDpSiteName(dbSiteName);
+			List<Site> sites = new ArrayList<Site>();
+			sites.add(site);
+			siteCollection=sites;
+		}
+	}
+	
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same
 	*

@@ -148,7 +148,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     private static final String COLLECTION_FIELD = "dp.project ";
     private static final String SPECIES_FIELD = "p.speciesCode ";
     private static final String THIRD_PARTY_FIELD = "series.thirdPartyAnalysis ";
-    private static final String SITE_FIELD = "dp.dpSiteName ";
+    private static final String SITE_FIELD = "series.site ";
     private static final String IMAGE_MODALITY_FIELD = "series.modality ";
     private static final String SLICE_THICKNESS_FIELD = "gi.sliceThickness ";
     private static final String KVP_FIELD = "ci.KVP ";

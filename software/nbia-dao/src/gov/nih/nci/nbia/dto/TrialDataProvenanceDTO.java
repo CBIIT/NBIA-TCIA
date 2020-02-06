@@ -8,11 +8,12 @@
 
 package gov.nih.nci.nbia.dto;
 
+import java.util.List;
+
 public class TrialDataProvenanceDTO   {
 
-    public TrialDataProvenanceDTO(String project, String site) {
+    public TrialDataProvenanceDTO(String project, List siteNames) {
     	this.project = project;
-    	this.site = site;
     }
 
 
@@ -21,12 +22,15 @@ public class TrialDataProvenanceDTO   {
     }
 
 
-	public String getSite() {
-		return site;
+	
+	public List<String> getSiteNames() {
+		return siteNames;
 	}
-	
-	
+
+
+
 	///////////////////////////////////////PRIVATE//////////////////////////////////
     private String project;
-    private String site;	
+    private List<String> siteNames;
+	
 }

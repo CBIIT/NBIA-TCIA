@@ -69,6 +69,7 @@ L-->
         <value>gov/nih/nci/nbia/internaldomain/StudyNumber.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/TrialDataProvenance.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/TrialSite.hbm.xml</value>
+        <value>gov/nih/nci/nbia/internaldomain/Site.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/Annotation.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/DeletionAuditTrail.hbm.xml</value>
         <value>gov/nih/nci/nbia/security/NCIAUser.hbm.xml</value>
@@ -251,6 +252,9 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
    <bean id="tdpo" class="gov.nih.nci.nbia.domain.operation.TrialDataProvenanceOperation">
     <property name="sessionFactory"><ref bean="sessionFactory"/></property>
    </bean>
+   <bean id="stpo" class="gov.nih.nci.nbia.domain.operation.SiteOperation">
+    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+   </bean>
    <bean id="po" class="gov.nih.nci.nbia.domain.operation.PatientOperation">
     <property name="sessionFactory"><ref bean="sessionFactory"/></property>
    </bean>
@@ -288,6 +292,7 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
    <bean id="patient" class="gov.nih.nci.nbia.internaldomain.Patient" scope="prototype"/>
    <bean id="study" class="gov.nih.nci.nbia.internaldomain.Study" scope="prototype"/>
    <bean id="trialSite" class="gov.nih.nci.nbia.internaldomain.TrialSite" scope="prototype"/>
+   <bean id="site" class="gov.nih.nci.nbia.internaldomain.Site" scope="prototype"/>
    <bean id="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" scope="prototype"/>
    <bean id="textSupportDAO" class="gov.nih.nci.nbia.textsupport.TextSupportDAOImpl">
     <property name="sessionFactory">

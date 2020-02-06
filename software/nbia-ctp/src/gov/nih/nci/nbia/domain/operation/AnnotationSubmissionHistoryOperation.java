@@ -14,6 +14,7 @@ import gov.nih.nci.nbia.internaldomain.Patient;
 import gov.nih.nci.nbia.internaldomain.Study;
 import gov.nih.nci.nbia.internaldomain.SubmissionHistory;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
+import gov.nih.nci.nbia.util.DicomConstants;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 import java.util.Date;
@@ -58,7 +59,7 @@ public class AnnotationSubmissionHistoryOperation extends DomainOperation implem
             	throw new Exception("Cannot figure out Trial Data Provenance for annotation submission:"+seriesInstanceUid);      	
             }
             submissionHistory.setProject(tdp.getProject());
-            submissionHistory.setSite(tdp.getDpSiteName());
+            submissionHistory.setSite(((String) numbers.get(DicomConstants.SITE_NAME)).trim());
         }
 		return submissionHistory;
 	}
