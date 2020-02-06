@@ -79,7 +79,7 @@ public class SolrAccess {
 			   query.setHighlightSimplePost("</strong>");
 			   
 			   // hold to 3000 values for performance
-			   query.setRows(3000);
+			   query.setRows(1000);
 			   query.setParam(GroupParams.GROUP, Boolean.TRUE);
 			   query.setParam(GroupParams.GROUP_FIELD, "patientId"); 
 			   query.setParam(GroupParams.GROUP_MAIN, true);
