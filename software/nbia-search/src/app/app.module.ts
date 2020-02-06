@@ -105,6 +105,7 @@ import { ConfigurationService } from '@app/common/services/configuration.service
 import { CineModeComponent } from './cine-mode/cine-mode.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { ProgressBarModule } from 'angular-progress-bar';
+import { DaysFromBaselineComponent } from './image-search/query-section/query-section-tabs/simple-search/days-from-baseline/days-from-baseline.component';
 
 
 /*
@@ -195,7 +196,8 @@ const appRoutes: Routes = [
         ThirdPartyQueryComponent,
         ThirdPartyExplanationComponent,
         BannerComponent,
-        CineModeComponent
+        CineModeComponent,
+        DaysFromBaselineComponent
     ],
     imports: [
         BrowserModule,

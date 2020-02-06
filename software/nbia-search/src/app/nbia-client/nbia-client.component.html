@@ -24,13 +24,13 @@
         <nbia-header></nbia-header>
 
         <nbia-image-search
-            [ngClass]="{'hide-item':currentMenuItem != menuItems.IMAGE_SEARCH_MENU_ITEM }"></nbia-image-search>
+            [ngClass]="{'hide-item':currentMenuItem !== menuItems.IMAGE_SEARCH_MENU_ITEM }"></nbia-image-search>
 
         <!--  If a user other than the default user is logged in, don't switch to the login screen, instead just log them out, and login the default user.  -->
-        <nbia-login [ngClass]="{ 'hide-item':( (currentMenuItem !=  menuItems.LOGIN_MENU_ITEM) || (currentUser != defaultUser))}"></nbia-login>
+        <nbia-login [ngClass]="{ 'hide-item':( (currentMenuItem !==  menuItems.LOGIN_MENU_ITEM) || (currentUser != defaultUser))}"></nbia-login>
 
         <!-- The Cart managment screen.  -->
-        <nbia-cart [ngClass]="{'hide-item':currentMenuItem !=  menuItems.CART_MENU_ITEM}"></nbia-cart>
+        <nbia-cart [ngClass]="{'hide-item':currentMenuItem !==  menuItems.CART_MENU_ITEM}"></nbia-cart>
 
         <nbia-cine-mode></nbia-cine-mode>
 </div>

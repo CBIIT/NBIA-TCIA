@@ -41,6 +41,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
      * @type {number}
      */
     cartTotalFileSize = 0;
+    cartTotalFileSizeWithDisabled = 0;
 
     /**
      * This maintains the "Is the mouse pointer over the menu button" state.
@@ -179,12 +180,13 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         );
 
         // Receive the Cart contents count, and the total size of all its files.
+        // When user clicks a cart button in the Search Results or Cart page.
         this.cartService.cartCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.cartCount = data['count'];
                 this.cartTotalFileSize = data['fileSize'];
+                this.cartTotalFileSizeWithDisabled = data['fullFileSize'];
                 this.checkShareEnabled();
-
             }
         );
 
@@ -284,7 +286,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
                 break;
 
-             // Perform QC
+            // Perform QC
             case this.menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
                     '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_QC + '&accessToken=' + this.apiServerService.showToken(),
@@ -292,7 +294,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
                 break;
 
-             // Approve Deletions
+            // Approve Deletions
             case this.menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
                     '/nbia-admin/?tool=' + Consts.TOOL_APPROVE_DELETIONS + '&accessToken=' + this.apiServerService.showToken(),

@@ -19,7 +19,7 @@ export let Properties = {
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
-    OHIF_MODALITIES: [ 'MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
+    OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
 
     // @TODO
     // This does not work yet when the value is not an empty string, leave it an empty string!
@@ -32,7 +32,6 @@ export let Properties = {
     SHOW_OHIF_VIEWER: false,
     // This value can be changed in the config file.
     SHOW_OHIF_SERIES_VIEWER: true,
-
 
 
     /*
@@ -51,6 +50,7 @@ export let Properties = {
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
+    // API_SERVER_URL: 'http://192.168.1.20:8080',
     API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over ridden in the assets/configuration file
@@ -102,7 +102,7 @@ export let Properties = {
     DISABLE_COUNTS_AND_SIZE: true,
 
     // Show in console, curl version of API calls.
-    DEBUG_CURL: true,
+    DEBUG_CURL: false,
 
     ACTION_LOGGING: true,
     SHORT_LOG: true,

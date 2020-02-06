@@ -375,9 +375,15 @@ export class ParameterService{
         this.stillWaitingOnAtLeastOneComponent--;
 
         if( this.stillWaitingOnAtLeastOneComponent < 1 ){
-            this.reset();
-            this.commonService.runSearchForUrlParameters();
+            this.doUrlSearch();
         }
+    }
+
+    async doUrlSearch(){
+        await this.commonService.sleep( 10000 );
+
+        this.reset();
+        this.commonService.runSearchForUrlParameters();
     }
 
     incStillWaitingOnAtLeastOneComponent() {

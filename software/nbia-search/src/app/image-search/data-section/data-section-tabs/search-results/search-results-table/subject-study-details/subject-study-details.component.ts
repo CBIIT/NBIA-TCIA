@@ -108,6 +108,10 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
 
 
     isStudyInThisSubject( study ) {
+        if( study === undefined )
+        {
+            return false;
+        }
         for( let subjectStudyIds of this.subjectDetailData.studyIdentifiers ){
             if( subjectStudyIds.studyIdentifier === study.id ){
                 return true;

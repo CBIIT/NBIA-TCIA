@@ -14,17 +14,17 @@
 <span class="left-gradient">&nbsp;&nbsp;&nbsp;</span>
 
     <!--  Data Admin  -->
-    <span  *ngIf="showDataAdminButton && properties.SHOW_DATA_ADMIN_MENU"
-           class="application-menu-item unselectable"
-           [ngClass]="{
+    <span *ngIf="showDataAdminButton && properties.SHOW_DATA_ADMIN_MENU"
+          class="application-menu-item unselectable"
+          [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.DATA_ADMIN_MENU_ITEM] && (! disabled ),
             'application-menu-current-item': currentMenuItem === menuItem.DATA_ADMIN_MENU_ITEM,
             'application-menu-disabled-item': disabled
         }"
-           dropdown [dropdownToggle]="true"
-           dropdown-open
-           (mouseover)="onMouseOver(menuItem.DATA_ADMIN_MENU_ITEM)"
-           (mouseout)="onMouseOut(menuItem.DATA_ADMIN_MENU_ITEM)"
+          dropdown [dropdownToggle]="true"
+          dropdown-open
+          (mouseover)="onMouseOver(menuItem.DATA_ADMIN_MENU_ITEM)"
+          (mouseout)="onMouseOut(menuItem.DATA_ADMIN_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-wrench"></span> Data Admin
 
@@ -35,45 +35,45 @@
         >
 
 
-            <li     *ngIf="showDataAdminPerformQcButton"
-                    class="application-menu-dropdown-menu-item-data-admin"
-                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM)"
+            <li *ngIf="showDataAdminPerformQcButton"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM)"
             >
                 Perform QC
             </li>
 
 
-            <li     *ngIf="showDataAdminApproveDeletions"
-                    class="application-menu-dropdown-menu-item-data-admin"
-                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM)"
+            <li *ngIf="showDataAdminApproveDeletions"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM)"
             >
                 Approve Deletions
             </li>
 
-            <li     *ngIf="showDataAdminViewSubmissionReports"
-                    class="application-menu-dropdown-menu-item-data-admin"
-                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM)"
+            <li *ngIf="showDataAdminViewSubmissionReports"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM)"
             >
                 View Submission Reports
             </li>
 
-            <li     *ngIf="showPerformOnlineDeletions"
-                    class="application-menu-dropdown-menu-item-data-admin"
-                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM)"
+            <li *ngIf="showPerformOnlineDeletions"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM)"
             >
                 Perform Online Deletion
             </li>
 
-            <li     *ngIf="showEditCollectionDescriptions"
-                    class="application-menu-dropdown-menu-item-data-admin"
-                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM)"
+            <li *ngIf="showEditCollectionDescriptions"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM)"
             >
                 Edit Collection Desc
             </li>
 
-            <li     *ngIf="showManageWorkflowItems"
-                    class="application-menu-dropdown-menu-item-data-admin"
-                    (click)="onMenuItemClick(menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM)"
+            <li *ngIf="showManageWorkflowItems"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM)"
             >
                 Manage Workflow Items
             </li>
@@ -81,19 +81,17 @@
     </span>
 
 
-
-
-    <!--    -->
+    <!--  User Admin   -->
     <span *ngIf="showUserAdminButton"
-        class="application-menu-item unselectable"
-        [ngClass]="{
+          class="application-menu-item unselectable"
+          [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.USER_ADMIN_MENU_ITEM] && (! disabled ),
             'application-menu-current-item': currentMenuItem === menuItem.USER_ADMIN_MENU_ITEM,
             'application-menu-disabled-item': disabled
         }"
-        (click)="onMenuItemClick(menuItem.USER_ADMIN_MENU_ITEM)"
-        (mouseover)="onMouseOver(menuItem.USER_ADMIN_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.USER_ADMIN_MENU_ITEM)"
+          (click)="onMenuItemClick(menuItem.USER_ADMIN_MENU_ITEM)"
+          (mouseover)="onMouseOver(menuItem.USER_ADMIN_MENU_ITEM)"
+          (mouseout)="onMouseOut(menuItem.USER_ADMIN_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-wrench"></span> User Admin
 
@@ -101,15 +99,15 @@
 
     <!--  Search  -->
     <span
-        class="application-menu-item unselectable"
-        [ngClass]="{
+            class="application-menu-item unselectable"
+            [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.IMAGE_SEARCH_MENU_ITEM] && (! disabled ),
             'application-menu-current-item': currentMenuItem === menuItem.IMAGE_SEARCH_MENU_ITEM,
             'application-menu-disabled-item': disabled
         }"
-        (click)="onMenuItemClick(menuItem.IMAGE_SEARCH_MENU_ITEM)"
-        (mouseover)="onMouseOver(menuItem.IMAGE_SEARCH_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.IMAGE_SEARCH_MENU_ITEM)"
+            (click)="onMenuItemClick(menuItem.IMAGE_SEARCH_MENU_ITEM)"
+            (mouseover)="onMouseOver(menuItem.IMAGE_SEARCH_MENU_ITEM)"
+            (mouseout)="onMouseOut(menuItem.IMAGE_SEARCH_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-search"></span> Search
 
@@ -118,15 +116,15 @@
 
     <!--  Login  -->
     <span
-        class="application-menu-item unselectable"
-        [ngClass]="{
+            class="application-menu-item unselectable"
+            [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.LOGIN_MENU_ITEM] && (! disabled ),
             'application-menu-current-item': currentMenuItem === menuItem.LOGIN_MENU_ITEM,
             'application-menu-disabled-item': disabled
         }"
-        (click)="onMenuItemClick(menuItem.LOGIN_MENU_ITEM)"
-        (mouseover)="onMouseOver(menuItem.LOGIN_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.LOGIN_MENU_ITEM)"
+            (click)="onMenuItemClick(menuItem.LOGIN_MENU_ITEM)"
+            (mouseover)="onMouseOver(menuItem.LOGIN_MENU_ITEM)"
+            (mouseout)="onMouseOut(menuItem.LOGIN_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-log-in"></span>
         {{loginButtonText}}
@@ -135,59 +133,60 @@
 
     <!-- Download  -->
     <span
-        class="application-menu-item" unselectable
-        [ngClass]="{
+            class="application-menu-item" unselectable
+            [ngClass]="{
             'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled ),
             'application-menu-disabled-item':( cartCount === 0 || disabled )
         }"
-        (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
-        (mouseover)="onMouseOver(menuItem.DOWNLOAD_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.DOWNLOAD_MENU_ITEM)"
+            (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
+            (mouseover)="onMouseOver(menuItem.DOWNLOAD_MENU_ITEM)"
+            (mouseout)="onMouseOut(menuItem.DOWNLOAD_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-download-alt"></span> Download
     </span>
 
+    <!-- Share  -->
     <span
-        class="application-menu-item unselectable"
-        [ngClass]="{
+            class="application-menu-item unselectable"
+            [ngClass]="{
             'application-menu-mouse-over':menuMouseOver[menuItem.SAVE_SHARED_LIST_MENU_ITEM] && (! disabled ) && (! shareDisabled),
             'application-menu-disabled-item':disabled || shareDisabled
         }"
-        dropdown [dropdownToggle]="true"
-        dropdown-open
-        (mouseover)="onMouseOver(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
+            dropdown [dropdownToggle]="true"
+            dropdown-open
+            (mouseover)="onMouseOver(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
+            (mouseout)="onMouseOut(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-export"></span>
         &nbsp;Share
         <ul
-            *ngIf="( ( ! disabled ) && (! shareDisabled) && ( ! menuLock ))"
-            class="dropdown-menu application-menu-dropdown-menu-share"
-            role="menu"
+                *ngIf="( ( ! disabled ) && (! shareDisabled) && ( ! menuLock ))"
+                class="dropdown-menu application-menu-dropdown-menu-share"
+                role="menu"
         >
             <li
-                class="application-menu-dropdown-menu-item-share"
-                [ngClass]="{
+                    class="application-menu-dropdown-menu-item-share"
+                    [ngClass]="{
                     'hide-item':cartCount === 0,
                     'application-menu-mouse-over':menuMouseOver[menuItem.SAVE_CART_MENU_ITEM]
                 }"
-                (mouseover)="onMouseOver(menuItem.SAVE_CART_MENU_ITEM);onMouseOut(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
-                (mouseout)="onMouseOut(menuItem.SAVE_CART_MENU_ITEM)"
-                (click)="onMenuItemClick(menuItem.SAVE_CART_MENU_ITEM)"
+                    (mouseover)="onMouseOver(menuItem.SAVE_CART_MENU_ITEM);onMouseOut(menuItem.SAVE_SHARED_LIST_MENU_ITEM)"
+                    (mouseout)="onMouseOut(menuItem.SAVE_CART_MENU_ITEM)"
+                    (click)="onMenuItemClick(menuItem.SAVE_CART_MENU_ITEM)"
             >
                 Share My Cart
             </li>
 
             <!-- Share my query - Display a URL with parameters which will reproduce the current search.  -->
             <li
-                class="application-menu-dropdown-menu-item-share"
-                [ngClass]="{
+                    class="application-menu-dropdown-menu-item-share"
+                    [ngClass]="{
                     'hide-item': ( (! haveSimpleSearchQuery ) && ( ! haveTextSearchQuery)),
                     'application-menu-mouse-over':menuMouseOver[menuItem.DISPLAY_QUERY_URL]
                 }"
-                (click)="onMenuItemClick(menuItem.DISPLAY_QUERY_URL)"
-                (mouseover)="onMouseOver(menuItem.DISPLAY_QUERY_URL)"
-                (mouseout)="onMouseOut(menuItem.DISPLAY_QUERY_URL)"
+                    (click)="onMenuItemClick(menuItem.DISPLAY_QUERY_URL)"
+                    (mouseover)="onMouseOver(menuItem.DISPLAY_QUERY_URL)"
+                    (mouseout)="onMouseOut(menuItem.DISPLAY_QUERY_URL)"
             >
                 Share My Query
             </li>
@@ -195,29 +194,40 @@
     </span>
 
     <span
-        class="application-menu-item unselectable"
-        [ngClass]="{
+            class="application-menu-item unselectable"
+            [ngClass]="{
             'application-menu-mouse-over':( menuMouseOver[menuItem.CART_MENU_ITEM] && (cartCount > 0)  && (! disabled )),
             'application-menu-disabled-item':(cartCount === 0) || disabled,
             'application-menu-current-item': currentMenuItem === menuItem.CART_MENU_ITEM
          } "
-        title="{{cartCount}} Series"
-        (click)="onMenuItemClick(menuItem.CART_MENU_ITEM)"
-        (mouseover)="onMouseOver(menuItem.CART_MENU_ITEM)"
-        (mouseout)="onMouseOut(menuItem.CART_MENU_ITEM)"
+            title="{{cartCount}} Series"
+            (click)="onMenuItemClick(menuItem.CART_MENU_ITEM)"
+            (mouseover)="onMouseOver(menuItem.CART_MENU_ITEM)"
+            (mouseout)="onMouseOut(menuItem.CART_MENU_ITEM)"
     >
         <span class="glyphicon glyphicon-shopping-cart"> </span>
         Cart
         <span
-            class="cart-count"
-            [ngClass]="{
+                class="cart-count"
+                [ngClass]="{
                 'cart-count-non-zero': cartCount > 0,
                 'cart-count-zero': cartCount <1
             }"
         >
-            <!-- Cart data size displayed in the bottom of the button if it's not zero.  -->
-            <span *ngIf="cartTotalFileSize > 0 " class="data-size">{{cartTotalFileSize | toMbGb}}</span>
-            <span *ngIf="cartTotalFileSize <1 " class="data-size">0 MB</span>
+            <!-- Cart data size displayed in the Cart tab.  -->
+            <!-- If the user is showing the Cart tab do not include disabled series in the size..  -->
+            <span *ngIf="  (currentMenuItem === menuItem.CART_MENU_ITEM) && ( cartTotalFileSize > 0 )"
+                  class="data-size">{{cartTotalFileSize | toMbGb}}</span>
+
+            <span *ngIf="  (currentMenuItem !== menuItem.CART_MENU_ITEM) && ( cartTotalFileSizeWithDisabled > 0 )"
+                  class="data-size">{{cartTotalFileSizeWithDisabled | toMbGb}}</span>
+
+            <span *ngIf="  (currentMenuItem === menuItem.CART_MENU_ITEM) && ( cartTotalFileSize < 1 )"
+                  class="data-size">0 MB</span>
+
+            <span *ngIf="  (currentMenuItem !== menuItem.CART_MENU_ITEM) && ( cartTotalFileSizeWithDisabled < 1 )"
+                  class="data-size">0 MB</span>
+
         </span>
     </span>
 
