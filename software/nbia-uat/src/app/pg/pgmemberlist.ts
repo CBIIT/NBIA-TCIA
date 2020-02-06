@@ -22,6 +22,7 @@ import {PgMemberService} from './pgmemberservice';
                 </tr>
             </ng-template>
         </p-table>
+		<p-messages [value]="statusMessage" [closable]="true"></p-messages>
     `
 })
 export class PgMemberList {

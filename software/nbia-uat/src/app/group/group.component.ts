@@ -25,6 +25,7 @@ export class GroupComponent implements OnInit {
 //	@Input() selectedTabHeader: string;
 	private dt:Table;
 	displayDialog: boolean;
+	displayAddDialog: boolean;
 	displayAssignDialog: boolean;
 	displayDeassignDialog: boolean;
     group: Group = new PrimeGroup();
@@ -42,6 +43,7 @@ export class GroupComponent implements OnInit {
 	selectedGroupName: string;
 	srs: string[] = [];	
 	loadingComplete: boolean = false;
+	newGroup: boolean;
 	
 	
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, private appservice: ConfigService, private groupService: GroupService, private globals: Globals, private loadingDisplayService: LoadingDisplayService, public dialogService: DialogService) { 
@@ -76,7 +78,8 @@ export class GroupComponent implements OnInit {
 
     showDialogToAdd() {
         this.group = new PrimeGroup();
-        this.displayDialog = true;
+		this.newGroup = true;
+        this.displayAddDialog = true;
 		this.displayDeassignDialog = false;
         this.displayAssignDialog = false;
     }
@@ -144,6 +147,52 @@ export class GroupComponent implements OnInit {
 		this.displayAssignDialog = false;
     }
 	
+	saveGroup() {
+		this.clearMsg();
+        if(this.newGroup) {
+			if (this.group.userGroup) {
+				if (this.groupExists(this.group.userGroup, this.groups)) {
+					alert("The User Group name " + this.group.userGroup + " is taken.  Please try a different name.");
+				}
+				else {
+					this.groupService.addNewGroup(this.group)
+					.subscribe(
+						data => this.postData = JSON.stringify(data),
+						error => {this.handleError(error);this.errorMessage = <any>error},
+						() => {this.displayAddDialog = false; this.newGroup = false; this.statusMessage.push({severity:'success', summary: 'Success', detail:'New user group is saved. Do not forget to add some protection group(s).'});this.refreshTable(); }
+					);
+					this.groups.push(this.group);
+				}
+			}
+		}
+       else {
+			this.groupService.modifyExistingGroup(this.group)
+			.subscribe(
+				data => this.postData = JSON.stringify(data),
+				error => {this.handleError(error);this.errorMessage = <any>error},
+				() => {this.displayDialog=false; this.statusMessage.push({severity:'success', summary: 'Success', detail:'User group is updated'});this.refreshTable(); }
+			);
+            this.groups[this.findSelectedGroupIndex()] = this.group;
+		}
+		
+ //       this.group = null;
+        this.displayAddDialog = false;
+    }
+/*	
+	modifyExistingGroup(group: Group) {
+		var serviceUrl = this.globals.serviceUrl +'modifyUserGroup';
+		var params = '?PGName=' + pg.dataGroup + '&description='+pg.description;
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+		
+		return this.http.post(serviceUrl + params,
+			params, {headers: headers});
+			//.map(res => res.json());
+	}	
+	
+*/	
+	
     deassignPG() {
 		this.statusMessage = [];
   
@@ -195,7 +244,7 @@ export class GroupComponent implements OnInit {
     }
 	
     onSelect(group) {
-		console.log("click user group-- delete user group");
+		console.log("click user group-- edit or delete user group");
         this.group = this.cloneGroup(group);
 		this.selectedGroup = group;
         this.displayDialog = true;
@@ -239,7 +288,7 @@ export class GroupComponent implements OnInit {
 	
 	groupExists(nameKey, myArray): boolean{
 		for (var i=0; i < myArray.length; i++) {
-			if (myArray[i].dataGroup.toUpperCase() == nameKey.toUpperCase()) {
+			if (myArray[i].userGroup.toUpperCase() == nameKey.toUpperCase()) {
 				return true;
 			}
 		}

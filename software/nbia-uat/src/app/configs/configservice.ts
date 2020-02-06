@@ -19,20 +19,12 @@ private result: Object;
 		var headers = 
 			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
 			'Authorization': 'Bearer '+ this.globals.accessToken});
-//		console.log("url="+serviceUrl + " accessToken=" + this.globals.accessToken);
-//		if(this.globals.accessToken) {
-//			headers.append('Authorization', 'Bearer ' + this.globals.accessToken);      
-//		}
 		
 		return this.http.get(serviceUrl, { headers: headers });			
     }
 	
 	getWikiUrlParam() {
 		var serviceUrl = this.globals.serviceUrl +'getConfigParams';	
-//		var headers = new HttpHeaders();
-//		if(this.globals.accessToken) {
-//			headers.append('Authorization', 'Bearer ' + this.globals.accessToken);      
-//		}
 		var headers = 
 			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
 			'Authorization': 'Bearer '+ this.globals.accessToken});
@@ -40,6 +32,16 @@ private result: Object;
                     // .then(res => <Config[]> res.json())
                     .then(data => { return data[0].paramValue; });  			
     }
+	
+	getUserAthorParam() {
+		var serviceUrl = this.globals.serviceUrl +'getConfigParams';	
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+			'Authorization': 'Bearer '+ this.globals.accessToken});
+		return this.http.get(serviceUrl, {headers: headers}).toPromise()
+                    // .then(res => <Config[]> res.json())
+                    .then(data => { return (data[2].paramValue=="true"); });  			
+    }	
 	
 }
 

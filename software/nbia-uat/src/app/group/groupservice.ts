@@ -126,6 +126,29 @@ export class GroupService {
 			params, {headers: headers});
 			//.map(res => res.json());
 	}
+	
+	addNewGroup(group: Group) {
+		var serviceUrl = this.globals.serviceUrl +'createUserGroup';
+		var params = '?GroupName=' + group.userGroup + '&description='+group.description;
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+		return this.http.post(serviceUrl + params,
+			params, {headers: headers});
+			//.map(res => res.json());
+	}
+	
+	modifyExistingGroup(group: Group) {
+		var serviceUrl = this.globals.serviceUrl +'modifyUserGroup';
+		var params = '?GroupName=' + group.userGroup + '&description='+group.description;
+		var headers = 
+			new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+			'Authorization': 'Bearer '+ this.globals.accessToken});		
+		
+		return this.http.post(serviceUrl + params,
+			params, {headers: headers});
+			//.map(res => res.json());
+	}	
 
 	/**
 	 * Handle Http operation that failed.

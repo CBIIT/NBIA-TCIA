@@ -1,9 +1,16 @@
 # nbia-uat
-User Authorization Tool used in NBIA project.  It is developed using Angular 2 with PrimeNG.
+User Authorization Tool used in NBIA project.  It is developed using Angular with PrimeNG.
 
-Execute the following commands to run the application. A browser window pops up with http:\\\\localhost:3000 address.
+Execute the following commands to run the application. The UAT portal can be access on http:\\\\localhost:4200/nbia-uat?accessToken=<oauth access token>.
 
 ```
-npm install
-npm start
+## Development server
+
+Run `ng serve` for a dev server.
+
+
+## Build
+
+Run `ng build` to build the project.  Use the `--prod` flag for a production build.
+
 ```
