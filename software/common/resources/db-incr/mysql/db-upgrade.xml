@@ -2054,7 +2054,7 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
                       where p1.project=p2.project) minids
                set  patient.trial_dp_pk_id=minid
               where patient.trial_dp_pk_id=minids.trial_dp_pk_id;
-              
+              alter table general_image drop FOREIGN KEY FK_general_image_trialdata_prov;
               delete from trial_data_provenance
                      where trial_dp_pk_id
 	          not in (select trial_dp_pk_id 
