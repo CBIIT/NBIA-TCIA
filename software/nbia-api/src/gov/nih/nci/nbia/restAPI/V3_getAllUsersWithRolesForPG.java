@@ -49,7 +49,7 @@ public class V3_getAllUsersWithRolesForPG extends getData{
 			List<User> users = upm.getUsers();
 		Date after = Calendar.getInstance().getTime();
 		long diffInSeconds = (after.getTime() - before.getTime()) / 1000;
-		System.out.println("&&&&&&&& it takes " + diffInSeconds +"sec to get a users list");
+//		System.out.println("&&&&&&&& it takes " + diffInSeconds +"sec to get a users list");
 		
 			for (User user : users) {
 	//			before = Calendar.getInstance().getTime();

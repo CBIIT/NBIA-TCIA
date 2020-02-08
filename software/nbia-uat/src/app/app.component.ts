@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
 	config: Config[];
 	errorMessage: string;
 	show: boolean;
+	showAuthorUG: boolean;
+	showAuthorPG: boolean;
 	selectedTabHeader = "User";
 	@ViewChild(TabView,{static:false}) tabView: TabView;
 	@ViewChild(GroupComponent,{static:false}) groupComponent: GroupComponent;
@@ -39,6 +41,9 @@ export class AppComponent implements OnInit {
 	ngOnInit() {
 		this.appservice.getConfigParams().subscribe((config:Config[]) => {this.config = config; 
 		this.show=this.config[1].paramValue.toLowerCase() == 'true';
+		this.showAuthorUG = this.config[2].paramValue.toLowerCase() == 'true';
+		this.showAuthorPG = this.config[3].paramValue.toLowerCase() == 'true';
+		console.log("show ug = " + this.config[2].paramValue.toLowerCase() + "  show pg=" + this.config[3].paramValue.toLowerCase());
 		},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 

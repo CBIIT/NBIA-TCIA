@@ -11,6 +11,6 @@ Run `ng serve` for a dev server.
 
 ## Build
 
-Run `ng build` to build the project.  Use the `--prod` flag for a production build.
+Run `ng build --base-href=/nbia-uat/` to build the project.  Use the `--prod` flag for a production build.
 
 ```

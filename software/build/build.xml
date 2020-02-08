@@ -1122,7 +1122,7 @@ L-->
 			</sequential>
 		</for>
 		<replaceregexp file="${dist.exploded.dir}/install.properties" byline="true" match="^(grid.index.url)=.*" replace="\1=http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"/>
-		<copy todir="${dist.exploded.dir}/nbia-uat" overwrite="true">
+		<copy todir="${dist.exploded.dir}" overwrite="true">
 			<fileset dir="${nbia-uat.dist.dir}"/>
 		</copy>
 		<copy todir="${dist.exploded.dir}/nbia-search" overwrite="true">
@@ -1154,8 +1154,10 @@ L-->
 				<exec executable="npm" dir="${nbia-uat.base.dir}">
 					<arg value="install" />
 				</exec>
-				<exec executable="gulp" dir="${nbia-uat.base.dir}">
-					<arg value="compile" />
+				<exec executable="ng" dir="${nbia-uat.base.dir}">
+					<arg value="build" />
+					<arg value="--base-href" />
+					<arg value="/nbia-uat/" />
 				</exec>
 			</sequential>
 		</then>
@@ -1169,7 +1171,11 @@ L-->
 						<arg line="/c npm 'install'"/>
 					</exec>			
 					<exec dir="${nbia-uat.base.dir}" executable="cmd" >
-						<arg line="/c gulp 'compile'"/>
+						<arg value="/c"/>
+						<arg value="ng"/>
+						<arg value="build"/>  
+						<arg value="--base-href"/>
+						<arg value="/nbia-uat/"/>		
 					</exec>
 				</sequential>
 			</then>	

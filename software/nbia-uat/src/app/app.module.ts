@@ -35,6 +35,7 @@ import { PgMemberList } from './pg/pgmemberlist';
 import { PgMemberService } from './pg/pgmemberservice';
 import { UgMemberList } from './group/ugmemberlist';
 import { UgMemberService } from './group/ugmemberservice';
+import { UserToGroupComponent } from './userToGroup/userToGroup.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { UgMemberService } from './group/ugmemberservice';
 	LoadingDisplayComponent,
 	AddNewLine,
 	PgMemberList,
-	UgMemberList	
+	UgMemberList,
+	UserToGroupComponent	
   ],
   imports: [
     BrowserModule,
