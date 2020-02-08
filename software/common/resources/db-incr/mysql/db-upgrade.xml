@@ -2055,7 +2055,8 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
                set  patient.trial_dp_pk_id=minid
               where patient.trial_dp_pk_id=minids.trial_dp_pk_id;
               
-              alter table general_image drop FOREIGN KEY FK_general_image_trialdata_prov;
+            update general_image
+			set  general_image.trial_dp_pk_id=null;
               
               delete from trial_data_provenance
                      where trial_dp_pk_id
