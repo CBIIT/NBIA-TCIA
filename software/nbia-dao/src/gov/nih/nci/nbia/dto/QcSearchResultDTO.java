@@ -32,6 +32,8 @@ public class QcSearchResultDTO {
 	private String submissionType;
 	private String releasedStatus;
 	private String trialDpPkId;
+	private String studyDate;
+	private String seriesPkId;
 	
 	
 	public QcSearchResultDTO(String collection, 
@@ -43,9 +45,9 @@ public class QcSearchResultDTO {
 							 String visibility,
 							 String modality, 
 							 String seriesDesc, 
-							 
 							 String batch, 
-							 String submissionType, String releasedStatus, String trialDpPkId) {
+							 String submissionType, String releasedStatus, String trialDpPkId,
+							 String seriesPkId, String studyDate) {
 		setCollection(collection);
 		setSite(site);
 		setPatientId(patientId);
@@ -60,7 +62,9 @@ public class QcSearchResultDTO {
 		setBatch(batch);
 		setSubmissionType(submissionType);
 		setReleasedStatus(releasedStatus);
-		setTrialDpPkId(trialDpPkId);		
+		setTrialDpPkId(trialDpPkId);
+		setSeriesPkId(seriesPkId);
+		setStudyDate(studyDate);
 		
 	}
 	
@@ -237,6 +241,26 @@ public class QcSearchResultDTO {
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	public String getStudyDate() {
+		return studyDate;
+	}
+
+	public String getSeriesDpPkId() {
+		return seriesPkId;
+	}
+
+	public String getSeriesPkId() {
+		return seriesPkId;
+	}
+
+	public void setSeriesPkId(String seriesPkId) {
+		this.seriesPkId = seriesPkId;
+	}
+
+	public void setStudyDate(String studyDate) {
+		this.studyDate = studyDate;
 	}
 
 	

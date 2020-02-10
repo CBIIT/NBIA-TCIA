@@ -226,7 +226,7 @@ public class QueryHandlerImpl extends AbstractDAO
 							                                          series,
 							                                          subDate,
 							                                          visibilitySt, modality, seriesDesc,
-							                                          batch, submissionType, releasedStatus, trialDpPkId);
+							                                          batch, submissionType, releasedStatus, trialDpPkId,"","");
 					searchResultDtos.add(qcSrDTO);
 				}
 			}
