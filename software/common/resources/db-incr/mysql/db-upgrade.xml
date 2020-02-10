@@ -2031,12 +2031,13 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
                               dp_site_name,
                               dp_site_id, 
                               trial_dp_pk_id)
-             select   (@row_number:=@row_number + 1) + min(trial_dp_pk_id) as pk,
+             select   (@row_number:=@row_number + 1) as pk,
                       dp_site_name,
-                      dp_site_id,min(trial_dp_pk_id)
+                      dp_site_id,
+                      min(trial_dp_pk_id)
                from   trial_data_provenance
-             group by dp_site_name,
-                      dp_site_id;
+             group by project;
+             
                       
              update patient,
                     (select minid, p1.trial_dp_pk_id
@@ -2054,6 +2055,11 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
                       where p1.project=p2.project) minids
                set  patient.trial_dp_pk_id=minid
               where patient.trial_dp_pk_id=minids.trial_dp_pk_id;
+              
+            delete from site 
+             where trial_dp_pk_id 
+			not in (select trial_dp_pk_id 
+                      from patient);
               
             update general_image
 			set  general_image.trial_dp_pk_id=null;
