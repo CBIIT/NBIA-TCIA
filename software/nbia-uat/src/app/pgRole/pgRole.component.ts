@@ -54,7 +54,7 @@ export class PgRoleComponent implements OnInit {
 		this.userNames.push({label:'Select User', value:''});	
 		this.pgRoleService.getUserNames().
 		subscribe(userNames => {this.userNames = <SelectItem[]>userNames; this.statusMessage = [];
-//		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 
