@@ -2032,11 +2032,18 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
                               dp_site_id, 
                               trial_dp_pk_id)
              select   (@row_number:=@row_number + 1) as pk,
-                      dp_site_name,
-                      dp_site_id,
-                      min(trial_dp_pk_id)
-               from   trial_data_provenance
-             group by project;
+                       sites.dp_site_name,
+					   sites.dp_site_id,
+                       minids.minid                      
+               from  (select  min(trial_dp_pk_id) as minid,
+							  project
+					     from trial_data_provenance
+                     group by project) minids, 
+					 ( select dp_site_name,
+                              dp_site_id,
+                              project
+                         from trial_data_provenance) sites
+			 where minids.project=sites.project;
              
                       
              update patient,
