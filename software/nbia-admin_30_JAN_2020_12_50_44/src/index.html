@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>NbiaAdmin</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <script src="assets/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('#header').load("https://omnicreative.com/tcia-2019/tcia-masthead-head-include.html");
+                $('#footer').load("https://omnicreative.com/tcia-2019/tcia-masthead-body-include.html");
+            });
+        </script>
+
+    </head>
+    <body>
+    <div id="header"></div>
+    <nbia-root></nbia-root>
+    <div id="footer"></div>
+    </body>
+</html>

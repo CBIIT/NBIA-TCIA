@@ -1,0 +1,80 @@
+$display-query-top: 0;
+$display-query-right-margin: 10px;
+$display-query-z-index: 0;  // @TODO explain
+
+
+.display-query {
+    background-color: #edf8fb;
+    border: solid 1px #c9dce0;
+    border-radius: 4px;
+
+    min-height: 66px;
+    // margin-right: $display-query-right-margin;
+    margin-top: $display-query-top;
+    margin-bottom: 10px;
+
+    /* Font for commas and Ellipses*/
+    font-size: 15pt;
+    font-weight: normal;
+
+    padding: 14px;
+}
+
+
+.display-on-top{
+    position: relative;
+    left: 0px;
+    top: 0px;
+    z-index: $display-query-z-index;
+}
+
+.display-wrap{
+    display: inline-block;
+    // word-wrap: break-word;
+}
+
+
+/*  Each query element/label  */
+.criteria-display {
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 6px 5px 5px;
+    font-size: 11pt;
+    font-weight: normal;
+}
+
+.criteria-display-title {
+    background-color: #5b5151;
+    margin: 0 1px 0 4px;
+}
+
+.criteria-display-name {
+    background-color: #255425;
+    padding: 6px 8px 6px 8px;
+    margin: 0 2px 0 2px;
+}
+
+.criteria-and {
+    background-color: #955c0d;
+    font-weight: normal;
+    margin: 0 2px 0 4px;
+}
+
+.criteria-and-or {
+    background-color: #955c0d;
+    margin-left: 5px;
+    font-weight: normal;
+}
+.criteria-display-peren{
+    padding: 0;
+    margin: 0;
+}
+
+.criteria-display-comma{
+    padding: 0 2px 0 0;
+    margin: 0;
+}
+
+.show-all-criteria-button-span{
+    float: right;
+}

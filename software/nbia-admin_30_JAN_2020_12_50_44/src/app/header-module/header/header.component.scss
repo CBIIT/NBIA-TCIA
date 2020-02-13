@@ -1,0 +1,16 @@
+@import '../../app.component';
+
+.header-div{
+    color: #fff;
+    background-color: $header-background-color;
+    height: 85px;
+    padding-left: 10px;
+    padding-top: 8px;
+    font-size: 38px;
+}
+
+.header-iframe{
+    width: 100%;
+    border: solid #2aabd2 4px;
+    height: 200px;
+}

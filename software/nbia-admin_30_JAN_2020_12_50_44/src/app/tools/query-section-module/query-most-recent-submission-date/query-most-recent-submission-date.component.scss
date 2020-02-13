@@ -1,0 +1,101 @@
+@import '../left-section/left-section.component.scss';
+@import '../../../app.component.scss';
+
+.main-date-range-div {
+    color: #000;
+    background-color: #fff;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    padding: 0 0 0 0;
+    margin-left: $query-criteria-content-left-margin;
+    margin-top: 8px;
+    width: $left-section-width - ($query-section-left-pad + $query-section-right-pad + ( $query-criteria-content-left-margin * 2));
+    height: 32px;
+    font-size: 12px;
+}
+
+.available-checkbox {
+    margin-top: 15px;
+    margin-bottom: 12px;
+}
+
+.date-box-label {
+    /* Label text color  */
+    color: #000;
+    background-color: #eee;
+    border-right: solid 1px #ccc;
+}
+
+.date-box-label-from {
+    padding: 7px 6px 7px 11px;
+}
+
+.date-box-label-to {
+    padding: 7px 20px 7px 11px;
+}
+
+.date-box-label-box {
+    /* label background color   */
+    background-color: #eee;
+    border-right: solid 1px #ccc;
+    padding: 0;
+    margin: 0;
+    width: 48px;
+    display: inline-block;
+}
+
+.date-box-button-box {
+     background-color: #fff;
+    border-right: solid 1px #ccc;
+    height: 100%;
+    width: 32px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.date-box-button {
+    /* Glyph color  */
+    color: #000;
+    position: relative;
+    top: 6pt;
+    left: 6pt;
+    display: inline-block;
+}
+
+/*  Box around theTex input  */
+.date-box-text-box {
+    /* Trying to clean this up for Chrome */
+    outline: none;
+
+    border: none;
+    // width: 240px;
+    width: $left-section-width - 150px;
+
+    height: 100%;
+    display: inline-block;
+    float: none;
+    padding-left:4px;
+}
+
+.apply-is-set {
+    color: $query-criteria-heading-text-color;
+    font-weight: bold;
+}
+
+$disabled-text: #acacac; // MHL FIXME temp
+
+.disabled-text {
+    color: $disabled-text;
+    cursor: not-allowed;
+}
+
+.apply-date-range-text{
+    font-weight: normal;
+}
+
+.display-date-range{
+    color: $query-criteria-heading-text-color;
+
+    margin: -10px 0 4px 32px;
+
+}

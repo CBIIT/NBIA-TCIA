@@ -1,0 +1,89 @@
+
+<table class="search-results-table">
+    <tr>
+        <!--  The check boxes  -->
+        <th  class="thead-td thead-tr">
+            <input
+                type="checkbox"
+                (click)="toggleSearchResultsCheckbox()"
+            >
+        </th>
+        <th class="thead-td thead-tr">
+            Submission date
+        </th>
+        <th class="thead-td thead-tr">
+            Trial ID
+        </th>
+        <th class="thead-td thead-tr">
+            Collection//Site
+        </th>
+        <th class="thead-td thead-tr">
+            Patient
+        </th>
+        <th class="thead-td thead-tr">
+            Study
+        </th>
+        <th class="thead-td thead-tr">
+            Series
+        </th>
+        <th class="thead-td thead-tr">
+            Series Description
+        </th>
+        <th class="thead-td thead-tr">
+            Modality
+        </th>
+        <th class="thead-td thead-tr">
+            Visibility
+        </th>
+        <th class="thead-td thead-tr">
+            Thumbnails
+        </th>
+        <th class="thead-td thead-tr">
+            DICOM Viewer
+        </th>
+    </tr>
+
+    <tr *ngFor="let dataRow of searchResults ; let i=index; let even = even; let odd = odd"
+        [ngClass]="{
+            'dark': odd
+        }"
+    >
+        <td>
+            <input type="checkbox">
+        </td>
+        <td>
+            {{dataRow['dateTime']}}
+        </td>
+        <td>
+            {{dataRow['trialDpPkId']}}
+        </td>
+        <td>
+            {{dataRow['collectionSite']}}
+        </td>
+        <td>
+            {{dataRow['patientId']}}
+        </td>
+        <td title="{{dataRow['study']}}">
+            ...{{dataRow['study']|shortenRight}}
+        </td>
+        <td title="{{dataRow['series']}}">
+            ...{{dataRow['series']|shortenRight}}
+        </td>
+        <td>
+            {{dataRow['seriesDescription']}}
+        </td>
+        <td>
+            {{dataRow['modality']}}
+        </td>
+        <td>
+            {{dataRow['visibilityStatus']}}
+        </td>
+        <td>
+            <button class="btn btn-primary view-button">View</button>
+        </td>
+        <td>
+            <button class="btn btn-primary view-button">View</button>
+
+        </td>
+    </tr>
+</table>

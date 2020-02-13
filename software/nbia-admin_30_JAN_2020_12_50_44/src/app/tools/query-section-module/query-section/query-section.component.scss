@@ -1,0 +1,42 @@
+@import 'src/app/app.component';
+
+$query-section-left-pad: 10px;
+$query-section-right-pad: 15px;
+
+
+$left-section-width: 380px;
+$left-section-right-margin: 15px;
+$query-criteria-heading-text-color: #bb0e3d;
+$query-criteria-content-left-margin: 18px;
+
+.query-section {
+   // padding-left: $query-section-left-pad;
+    padding-right: $query-section-right-pad;
+    width: $left-section-width;
+}
+
+
+.search-query-closer {
+    color: $query-criteria-heading-text-color;
+    left: $left-section-width - 47px;
+    cursor: pointer;
+
+    padding: 4px 8px 4px 4px;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    border-left: solid 1px #ddd;
+    border-radius: 4px;
+
+}
+
+.search-query-opener {
+    color: $query-criteria-heading-text-color;
+    cursor: pointer;
+    padding: 4px 4px 4px 8px;
+
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+    border-radius: 4px;
+}
+

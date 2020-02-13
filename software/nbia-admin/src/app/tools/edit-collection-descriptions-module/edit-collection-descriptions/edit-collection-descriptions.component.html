@@ -1,0 +1,58 @@
+<div class="collection-description-div">
+    <span [dropdownToggle]="false" class="dropdown " dropdown>
+
+
+        <button class="btn btn-primary edit-collection-dropdown-button" dropdown-open>  {{currentCollection}}
+            &nbsp;<span class="caret"></span>
+        </button>
+
+
+        <ul class="dropdown-menu edit-collection-description-dropdown-menu">
+            <li (click)="onCollectionClick(i)"
+                *ngFor="let c of collections; let i = index"
+                class="dropdown-menu-item-data-admin clicker"
+            >{{c['name']}}</li>
+        </ul>
+
+
+    </span>
+    <span>
+        <button
+            [ngClass]="{
+                 'disabled': this.textTrailer === this.htmlContent,
+                 'nbia-button-disabled': this.textTrailer === this.htmlContent
+             }"
+
+            (click)="onSave()"
+            class="btn nbia-button edit-collection-button"
+        >Save
+        </button>
+    </span>
+
+</div>
+
+<div class="collection-description-div">
+    <div>
+        <angular-editor
+            [(ngModel)]="htmlContent"
+            [config]="editorConfig">
+        </angular-editor>
+    </div>
+
+
+    <br>
+    <div>
+        <label
+            class="label label-primary"
+            for="edit-collection-description-html-text"
+        >HTML:</label>
+    </div>
+
+    <textarea
+        class="collection-description-div-html"
+        placeholder="Enter HTML here..."
+        id="edit-collection-description-html-text"
+        [(ngModel)]="htmlContent"
+    ></textarea>
+
+</div>

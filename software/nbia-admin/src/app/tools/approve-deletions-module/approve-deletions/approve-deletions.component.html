@@ -1,0 +1,29 @@
+<div class="approve-deletions-tool">
+
+
+    <!-- approve-deletions does not use the Status section of left-section. -->
+    <nbia-query-section
+        [useQcStatusQuerySectionComponent]="false"
+        [currentTool]="consts.TOOL_APPROVE_DELETIONS"
+    ></nbia-query-section>
+
+
+    <div class="container data-section">
+        <div class="row ">
+            <nbia-display-query
+                [currentTool]="consts.TOOL_APPROVE_DELETIONS"
+            ></nbia-display-query>
+        </div>
+        <div class="row">
+            <nbia-search-results-section></nbia-search-results-section>
+        </div>
+    </div>
+
+</div>
+roles: {{userRoles}}
+roleIsGood: {{roleIsGood}}
+<h4  *ngIf="! roleIsGood && ( userRoles !== undefined)" >
+    <p>User does not have authorization required for "<b>Approve deletions</b>"</p>
+    <p>Users role(s): <b>{{userRoles}}</b></p>
+    Required role: <b>NCIA.MANAGE_VISIBILITY_STATUS</b>
+</h4>

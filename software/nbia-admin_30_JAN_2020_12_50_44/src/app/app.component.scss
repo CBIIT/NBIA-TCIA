@@ -1,0 +1,99 @@
+$toolHeadingFontSize: 16pt;
+$header-background-color: #013856;
+$popup-z-index: 21;
+$alert-top: 100px;
+
+.hide {
+    display: none;
+}
+
+
+
+/* Trying to clean this up for Chrome */
+.no-outline {
+    outline: none;
+}
+
+/* ********* Buttons ******** */
+.nbia-button {
+    @extend .no-outline;
+    color: #fff;
+    background-color: #0b7983;
+    cursor: pointer;
+    /*
+    font-size: 10pt;
+    */
+}
+
+.nbia-button:hover {
+    background-color: #277599;
+}
+
+.nbia-button:active {
+    background-color: #1e5975;
+}
+
+.nbia-button-disabled:active {
+    cursor: not-allowed;
+}
+
+.nbia-button-disabled:hover {
+    cursor: not-allowed;
+}
+
+.nbia-button-disabled {
+    cursor: not-allowed;
+}
+
+.clicker{
+    cursor: pointer;
+}
+
+
+.dropdown-menu-item-data-admin {
+    color: #fff;
+    padding: 1px 0px 4px 14px;
+    background-color: #337ab7;
+    border: solid 1px #828282;
+}
+
+.dropdown-menu-item-data-admin:hover {
+    color: #fff;
+    background-color: #286090;
+}
+
+
+.display-query-div{
+     width: 100%;
+}
+
+
+
+
+/*  TODO  explain  */
+.alert-box-div {
+    z-index: $popup-z-index;
+    position: absolute;
+
+    /* Set the vertical location of all the Alert/Message boxes.  */
+    margin-top: $alert-top;
+}
+
+.alert-box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.alert-box-button {
+    float: right;
+    margin-left: 4px;
+}
+
+.alert-panel-title {
+    /* Looks better without this.
+    font-weight: bold;
+    */
+}
+
+.alert-box-icon {
+    font-size: x-large;
+}
