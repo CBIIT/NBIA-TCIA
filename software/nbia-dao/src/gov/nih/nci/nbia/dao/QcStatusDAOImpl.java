@@ -60,7 +60,7 @@ public class QcStatusDAOImpl extends AbstractDAO
                 "gs.seriesDesc, " +
                 
                 "gs.batch, " +
-                "gs.submissionType, gs.releasedStatus, tdp.id ";
+                "gs.submissionType, gs.releasedStatus, tdp.id,  gs.id, gs.studyDate ";
 		
 		String fromStmt = "FROM GeneralSeries as gs, Patient as pt, TrialDataProvenance as tdp ";
 			
@@ -104,6 +104,14 @@ public class QcStatusDAOImpl extends AbstractDAO
 			String submissionType = (String) row[10];
 			String releasedStatus = (String) row[11];
 			String trialDpPkId = "" + row[12];
+			String seriesDpPkId = "" + row[13];
+			String studyDate = "";
+			if  (row[14]!=null) {
+				Timestamp sDate = (Timestamp) row[14];
+				String pattern = "MM-dd-yyyy";
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+				studyDate =simpleDateFormat.format(sDate);
+			}
 			
 			Date subDate = null;
 			if(submissionDate != null) {
@@ -119,7 +127,8 @@ public class QcStatusDAOImpl extends AbstractDAO
 					                                          visibilitySt, 
 					                                          modality, 
 					                                          seriesDesc, 
-					                                          batch, submissionType, releasedStatus, trialDpPkId);
+					                                          batch, submissionType, releasedStatus, trialDpPkId,
+					                                          seriesDpPkId, studyDate);
 			searchResultDtos.add(qcSrDTO);
 		}
 

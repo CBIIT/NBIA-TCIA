@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NbiaUatComponent } from './nbia-uat.component';
+import { UserToGroupComponent } from './userToGroup.component';
 
-describe('NbiaUatComponent', () => {
-  let component: NbiaUatComponent;
-  let fixture: ComponentFixture<NbiaUatComponent>;
+describe('UserToGroupComponent', () => {
+  let component: UserToGroupComponent;
+  let fixture: ComponentFixture<UserToGroupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NbiaUatComponent ]
+      declarations: [ UserToGroupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NbiaUatComponent);
+    fixture = TestBed.createComponent(UserToGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

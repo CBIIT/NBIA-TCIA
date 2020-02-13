@@ -2010,4 +2010,75 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
             ADD COLUMN description_uri varchar(500);    
          </sql>
    </changeSet> 
+   <changeSet id="7.5.add.sitetable" author="gustafss" dbms="mysql">
+         <comment>
+           adds thee site table, populates it, updates patient to the min and removes the extra records in trial data provenance
+         </comment>          
+         <sql>       
+			CREATE TABLE site (
+             site_pk_id bigint(20) NOT NULL,
+             dp_site_name varchar(40) default NULL,
+             dp_site_id varchar(64) default NULL,
+             trial_dp_pk_id bigint(20) NOT NULL,
+             PRIMARY KEY  (site_pk_id),
+             UNIQUE KEY SITE_PK_ID (site_pk_id),
+             KEY siteNameInd (dp_site_name),
+             CONSTRAINT fk_tdp_st_pk_id FOREIGN KEY (trial_dp_pk_id) REFERENCES trial_data_provenance (trial_dp_pk_id) ON DELETE NO ACTION ON UPDATE NO ACTION);  
+             
+             set @row_number = 0; 
+
+             insert into site(site_pk_id,
+                              dp_site_name,
+                              dp_site_id, 
+                              trial_dp_pk_id)
+             select   (@row_number:=@row_number + 1) as pk,
+                       sites.dp_site_name,
+					   sites.dp_site_id,
+                       minids.minid                      
+               from  (select  min(trial_dp_pk_id) as minid,
+							  project
+					     from trial_data_provenance
+                     group by project) minids, 
+					 ( select dp_site_name,
+                              dp_site_id,
+                              project
+                         from trial_data_provenance) sites
+			 where minids.project=sites.project;
+             
+                      
+             update patient,
+                    (select minid, p1.trial_dp_pk_id
+                     from (select  distinct tdp.trial_dp_pk_id,
+	                               project
+                             from  trial_data_provenance tdp,
+		  	                       patient p2
+		                    where  tdp.trial_dp_pk_id=p2.trial_dp_pk_id) p1,
+                          (select  min(tdp.trial_dp_pk_id) as minid,
+			                       project
+                             from  trial_data_provenance tdp,
+			                       patient p2
+		                    where  tdp.trial_dp_pk_id=p2.trial_dp_pk_id
+	                     group by  project) p2
+                      where p1.project=p2.project) minids
+               set  patient.trial_dp_pk_id=minid
+              where patient.trial_dp_pk_id=minids.trial_dp_pk_id;
+              
+            delete from site 
+             where trial_dp_pk_id 
+			not in (select trial_dp_pk_id 
+                      from patient);
+              
+            update general_image
+			set  general_image.trial_dp_pk_id=null;
+              
+              delete from trial_data_provenance
+                     where trial_dp_pk_id
+	          not in (select trial_dp_pk_id 
+                from patient);
+              
+         </sql>
+   </changeSet> 
+   
+   
+   
 </databaseChangeLog>

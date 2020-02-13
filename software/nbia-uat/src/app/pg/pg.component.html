@@ -1,8 +1,3 @@
-<!--div style="position:absolute;top: 46px;right: 30px;">
-	<a href="{{wikiLink}}" target="_blank">
-		<img src="assets/img/help.png" alt="Help">
-	</a>
-</div-->
 <div style="position:absolute;top: 46px;right: 30px;">
 	<div (click)="openWiki()" style="cursor: pointer;">
 		<i class="fa fa-question-circle" style="color: #700; font-size: 2em;"></i>
@@ -35,8 +30,7 @@
 					Associated Protection Element
 					<p-sortIcon [field]="'dataSets'"></p-sortIcon>
 				</th>
-				<th rowspan="2" style="width:8em">Assign Protection Element(s)</th>
-				<th rowspan="2" style="width:8em">Remove Protection Element(s)</th>
+				<th rowspan="2" style="width:10em">Assign/Remove Protection Element(s)</th>
 				<th rowspan="2" style="width:8em">Show Associated User(s)</th>				
 			</tr>
 			<tr>
@@ -70,9 +64,7 @@
 			  <td><div style="white-space: pre-wrap;">{{rowData.dataSets | addNewLine}}</div></td>
 			  <td>
                 <button pButton type="button" icon="fa fa-plus" class="nbia-col-button" (click)="showDialogToAssign(rowData)"></button>
-   			  </td>
-			  <td>
-                <button pButton type="button" icon="fa fa-minus" class="nbia-col-button" (click)="showDialogToRemove(rowData)"></button>
+				<button pButton type="button" icon="fa fa-minus" class="nbia-col-button" (click)="showDialogToRemove(rowData)"></button>
    			  </td>
 			  <td>
                 <button pButton type="button" icon="fa fa-user" class="nbia-col-button" (click)="showMemberDialog(rowData)"></button>
@@ -104,24 +96,6 @@
 			</div>
 		</p-footer>
 	</p-dialog>
-	<!--p-dialog header="Users Associated with the Protection Group" [(visible)]="displayMemberDialog" [modal]="true" [responsive]="true" [style]="{width: '600px', minWidth: '300px'}" [maximizable]="true">
-		<div class="ui-g ui-fluid" *ngIf="pg">
-			<div class="ui-g-12">
-				<div class="ui-g-4"><label for="dataGroup">Protection Group Name</label></div>
-				<div class="ui-g-8"><input pInputText id="dataGroup" [(ngModel)]="pg.dataGroup" [disabled]="!newPg" required="true"/></div>
-			</div>
-			<div class="ui-g-12">
-				<div class="ui-g-4"><label for="description">Description</label></div>
-				<div class="ui-g-8"><input pInputText id="description" [(ngModel)]="pg.description" required="true"/></div>
-			</div>
-		</div>
-		<p-footer>
-			<div class="ui-dialog-buttonpane ui-helper-clearfix">
-				<button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
-				<button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete" [disabled]="newPg"></button>
-			</div>
-		</p-footer>
-	</p-dialog-->	
 	<p-dialog header="Add Protection Element(s) to Protection Group" [(visible)]="displayAssignDialog" [modal]="true"
 			[responsive]="true" [style]="{width: '800px', minWidth: '300px'}" [maximizable]="true">
 		<div class="ui-g ui-fluid" *ngIf="pg">

@@ -1,0 +1,78 @@
+<div style="position:absolute;top: 46px;right: 30px;">
+	<div (click)="openWiki()" style="cursor: pointer;">
+		<i class="fa fa-question-circle" style="color: #700; font-size: 2em;"></i>
+	</div>
+</div>
+	
+<p-dropdown [options]="userNames" [(ngModel)]="selectedUserName" [showClear]="true" [filter]="true" placeholder="Select a user name" appendTo="body" [panelStyle]="{minWidth:'12em'}"
+	[virtualScroll]="true" itemSize="30"(onChange)="getGroupsForUser()"
+	pTooltip="To find a user quickly, enter a whole or partial login name to fileter then click on the login name to select the user" 
+	></p-dropdown>
+<br/>
+
+<div *ngIf="showUserGroup">
+	<br/>
+	
+	<p-table #dt [columns]="cols" [value]="groups" [paginator]="true" [rows]="10" 
+	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [responsive]="true" [styleClass]="'base-table'">
+		<ng-template pTemplate="header" let-columns>
+			<tr>
+				<th [pSortableColumn]="'GroupName'" style="border-bottom: none">
+					User Group
+					<p-sortIcon [field]="'GroupName'"></p-sortIcon>
+				</th>
+				<th rowspan="2" style="width:8em">Remove the Access</th>
+			</tr>
+			<tr>
+				<th style="border-top: none;">
+					<div class="ui-fluid">
+						<input pInputText type="text" pTooltip="Enter a whole or partial word to fileter on group name" (input)="dt.filter($event.target.value, 'GroupName', 'contains')"
+						[value]="dt.filters['GroupName'] ? dt.filters['GroupName'].value : ''">
+					</div>
+				</th>				
+			</tr>
+		</ng-template>		
+		<ng-template pTemplate="body" let-rowData>
+			<tr >
+			  <td>{{rowData.GroupName}}</td>	
+			  <td>
+                <button pButton type="button" icon="fa fa-minus" class="nbia-col-button" (click)="confirmDeletion(rowData.GroupName)"></button>
+   			  </td>			  
+			</tr>
+		</ng-template>
+	
+		<ng-template pTemplate="summary" let-rowData>
+			<div style="text-align:left">
+				<button type="button" pButton icon="fa fa-plus" (click)="showDialogToAddGroup()" label="Add Group" class="nbia-button" ></button>
+			</div>
+		</ng-template>  
+	</p-table>
+</div>
+
+<p-messages [value]="statusMessage" [closable]="true" ></p-messages>
+
+<p-dialog header="Assing Group(s) to Selected User" [(visible)]="displayDialogAdd" [modal]="true" [responsive]="true" [style]="{width: '600px', minWidth: '300px'}" [maximizable]="true">
+	<div class="ui-g ui-fluid" *ngIf="selectedUserName">
+		<div class="ui-g-12">
+			<div class="ui-g-4"><label for="loginName">Login Name</label></div>
+			<div class="ui-g-8"><input pInputText id="loginName" [(ngModel)]="selectedUserName" [disabled]="true"/></div>
+		</div>
+		<div class="ui-g-12">
+			<div class="ui-g-4"><label>Groups</label></div>
+			<div class="ui-g-8">
+				<p-multiSelect [options]="availableGroups" [(ngModel)]="selectedGroupNames" [scrollHeight]="300" appendTo="body"></p-multiSelect>
+				<p>Selected group(s): {{selectedGroupNames}}</p>
+			</div>
+		</div>
+	</div>
+	<p-footer>
+		<div class="ui-dialog-buttonpane ui-helper-clearfix">
+			<button type="button" pButton icon="fa fa-check" (click)="saveGroup()" label="Save" [disabled]="selectedGroupNames == null || selectedGroupNames.length==0"></button>
+		</div>
+	</p-footer>
+</p-dialog>
+
+ <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+
+
+

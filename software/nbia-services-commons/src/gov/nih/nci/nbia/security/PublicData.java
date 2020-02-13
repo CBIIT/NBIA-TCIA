@@ -38,11 +38,12 @@ public class PublicData {
 		List<SiteData> siteData = authorizationManager.getAuthorizedSites();
 		for (SiteData site : siteData)
 		{
-			if (site.getCollection().equals(patientDto.getProject())
-					&& site.getSiteName().equals(patientDto.getSiteName()))
-			{
-				isPublic = true;
-				break;
+			for (String siteName : patientDto.getSiteNames()) {
+				if (site.getCollection().equals(patientDto.getProject())
+						&& site.getSiteName().equals(siteName)) {
+					isPublic = true;
+					break;
+				} 
 			}
 		}
 
@@ -65,11 +66,13 @@ public class PublicData {
 		List<SiteData> siteData = authorizationManager.getAuthorizedSites();
 		for (SiteData site : siteData)
 		{
-			if (site.getCollection().equals(patientDto.getProject())
-					&& site.getSiteName().equals(patientDto.getSiteName()))
-			{
+			for (String siteName:patientDto.getSiteNames()) {
+		  	  if (site.getCollection().equals(patientDto.getProject())
+					&& site.getSiteName().equals(siteName))
+			  {
 				isPublic = true;
 				break;
+			  }
 			}
 		}
 

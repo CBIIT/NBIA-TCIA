@@ -10,11 +10,13 @@ package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.PatientDTO;
 import gov.nih.nci.nbia.internaldomain.Patient;
+import gov.nih.nci.nbia.internaldomain.Site;
 import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;  
 import java.util.Date; 
@@ -46,8 +48,13 @@ public class PatientDAOImpl extends AbstractDAO
 			Patient patient = result.get(0);
 			pDto = new PatientDTO();
 			pDto.setProject(patient.getDataProvenance().getProject());
-			pDto.setSiteName(patient.getDataProvenance().getDpSiteName());
-
+			List<String> siteList=new ArrayList<String>();
+			if (patient.getDataProvenance().getSiteCollection()!=null) {
+				for (Site site : patient.getDataProvenance().getSiteCollection()) {
+					siteList.add(site.getDpSiteName());
+				} 
+			}
+			pDto.setSiteNames(siteList);
 		}
 
 		return pDto;
@@ -71,8 +78,13 @@ public class PatientDAOImpl extends AbstractDAO
 			Patient patient = result.get(0);
 			pDto = new PatientDTO();
 			pDto.setProject(patient.getDataProvenance().getProject());
-			pDto.setSiteName(patient.getDataProvenance().getDpSiteName());
-
+			List<String> siteList=new ArrayList<String>();
+			if (patient.getDataProvenance().getSiteCollection()!=null) {
+				for (Site site : patient.getDataProvenance().getSiteCollection()) {
+					siteList.add(site.getDpSiteName());
+				} 
+			}
+			pDto.setSiteNames(siteList);
 		}
 
 		return pDto;

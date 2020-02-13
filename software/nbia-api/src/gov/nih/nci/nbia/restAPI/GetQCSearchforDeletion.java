@@ -104,8 +104,6 @@ public class GetQCSearchforDeletion extends getData{
         		toDateValue=getDate(null);
         	}
         }
-        System.out.println(fromDateValue);
-        System.out.println(toDateValue);
         QcStatusDAO qcStatusDAO = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
         List<String> collectionSites=new <String> ArrayList();
         if (collectionSite==null||collectionSite.equals("")) {

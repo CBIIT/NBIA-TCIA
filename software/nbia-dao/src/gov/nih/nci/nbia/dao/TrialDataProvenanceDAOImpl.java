@@ -33,7 +33,7 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
 			return null;
 	}
-	String hql = "select distinct(tdp.project) from TrialDataProvenance tdp " + addAuthorizedProjAndSites(authorizedProjAndSites);
+	String hql = "select distinct(tdp.project) from TrialDataProvenance tdp join tdp.siteCollection s " + addAuthorizedProjAndSites(authorizedProjAndSites);
 	String orderBy = " order by upper(tdp.project)";
 	List<String> rs = getHibernateTemplate().find(hql + orderBy);
 
@@ -50,8 +50,8 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	// Actually the Rest API only need project. Added second project just
 	// for using common util for format transferring.
 
-	String hql = "select distinct(CONCAT(tdp.project, '//', tdp.dpSiteName)) from TrialDataProvenance tdp ";
-	String orderBy = " order by CONCAT(tdp.project, '//', tdp.dpSiteName)";
+	String hql = "select distinct(CONCAT(tdp.project, '//', s.dpSiteName)) from TrialDataProvenance tdp join tdp.siteCollection s ";
+	String orderBy = " order by CONCAT(tdp.project, '//', s.dpSiteName)";
 	List<String> rs = getHibernateTemplate().find(hql + orderBy);
 
 	return rs;
@@ -63,8 +63,8 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean hasExistingProjSite(String project, String site) throws DataAccessException {
-	String hql = "select distinct(CONCAT(tdp.project, '//', tdp.dpSiteName)) from TrialDataProvenance tdp ";
-	String where = " where tdp.project = '" + project +"' and tdp.dpSiteName = '" + site +"'";
+	String hql = "select distinct(CONCAT(tdp.project, '//', s.dpSiteName)) from TrialDataProvenance tdp join tdp.siteCollection s ";
+	String where = " where tdp.project = '" + project +"' and s.dpSiteName = '" + site +"'";
 	List<String> rs = getHibernateTemplate().find(hql + where);
 	if ((rs != null) && (rs.size() == 1))
 		return true;
@@ -81,7 +81,7 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	public void setProjSiteValues(String project, String site) throws DataAccessException {
 		TrialDataProvenance tdp = new TrialDataProvenance();
 		tdp.setProject(project.trim());
-		tdp.setDpSiteName(site.trim());
+		tdp.addSiteName(site.trim());
 		getHibernateTemplate().save(tdp);
 }	
 	/**
@@ -93,7 +93,7 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 		StringBuffer where = new StringBuffer();
 
 		if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())){
-			where = where.append("where tdp.projAndSite in (");
+			where = where.append("where concat(concat(tdp.project, '//'), s.dpSiteName) in (");
 
 			for (Iterator<String> projAndSites =  authorizedProjAndSites.iterator(); projAndSites .hasNext();) {
 	    		String str = projAndSites.next();

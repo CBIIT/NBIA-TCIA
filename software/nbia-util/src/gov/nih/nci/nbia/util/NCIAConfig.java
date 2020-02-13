@@ -848,7 +848,7 @@ public class NCIAConfig {
     
     /**
      * Externalized Property!
-     *  Property: uat.enable.creating.newCollectionSite
+     *  Property: uat.enable.assign.user.to.userGroup
      *  This property is configured via nbia.properties/defaultAHP3.properties
      *  to contain value for UAT to creat new collection and site in DB.
      */
@@ -856,7 +856,20 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("uat.enable.assign.user.to.userGroup");
         checkProperty("uat.enable.assign.user.to.userGroup", propertyValue);
         return propertyValue;
-    }            
+    }
+    
+    /**
+     * Externalized Property!
+     *  Property: uat.enable.assign.user.to.protectionGroup
+     *  This property is configured via nbia.properties/defaultAHP3.properties
+     *  to contain value for UAT to creat new collection and site in DB.
+     */
+    public static String getUatUserAssginToPG(){
+        String propertyValue = properties.getProperty("uat.enable.assign.user.to.protectionGroup");
+        checkProperty("uat.enable.assign.user.to.protectionGroup", propertyValue);
+        return propertyValue;
+    }  
+    
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer

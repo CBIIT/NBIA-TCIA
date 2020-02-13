@@ -1,7 +1,5 @@
 import { Component, Input, ViewChild, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng/components/common/api';
 import { Table } from 'primeng/table';
 import { SelectItem } from 'primeng/api';
@@ -15,14 +13,13 @@ import { PgRoleService } from './pgRoleservice';
   selector: 'pgRole',
   templateUrl: './pgRole.component.html',
   styleUrls: ['./pgRole.component.scss'],
-  providers:  [Globals, ConfirmationService]    
+  providers:  [Globals]      
 })
 export class PgRoleComponent implements OnInit {
 	@Input() addedUser: any;
 	@ViewChild(Table, {static: false}) 
 	private dt:Table;
 	displayDialog: boolean;
-	displayDialogAdd: boolean;
 	userNames: SelectItem[];
 	errorMessage: string;
 	statusMessage: Message[] = [];
@@ -34,26 +31,21 @@ export class PgRoleComponent implements OnInit {
 	srs: string[] = [];
 	availablePGs: SelectItem[] =[];
 	selectedPGs: SelectItem[] =[];
-	selectedGroupNames: string[] = [];
-	availableGroups:SelectItem[] =[];
 	selectedPGName: string;
 	newPgRole: boolean;
 	selectedPgRole: PgRole;
 	postData: string;
 	wikiLink: string;
 	searchInProgress:boolean;
-	showUserGroup:boolean;
-	groups: any;
+
 	
-  constructor(private appservice: ConfigService, private pgRoleService: PgRoleService, private globals: Globals, private confirmationService: ConfirmationService) { 
+  constructor(private appservice: ConfigService, private pgRoleService: PgRoleService, private globals: Globals) { 
     if (this.globals.wikiBaseUrl === "") {
 		this.appservice.getWikiUrlParam().then(data => {this.globals.wikiBaseUrl = data; 
 		this.wikiLink = this.globals.wikiBaseUrl + this.globals.userAuthorizationWiki},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 	}
 	else this.wikiLink = this.globals.wikiBaseUrl + this.globals.userAuthorizationWiki; 
-	this.appservice.getUserAthorParam().then(data => {this.showUserGroup = data; console.log("get user autor option="+ this.showUserGroup); },
-	error =>  {this.handleError(error);this.errorMessage = <any>error});	
   }
 
   ngOnInit() {
@@ -62,7 +54,7 @@ export class PgRoleComponent implements OnInit {
 		this.userNames.push({label:'Select User', value:''});	
 		this.pgRoleService.getUserNames().
 		subscribe(userNames => {this.userNames = <SelectItem[]>userNames; this.statusMessage = [];
-//		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
+		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 
@@ -76,33 +68,17 @@ export class PgRoleComponent implements OnInit {
   }
 
 	getPgRolesForUser() {
-		if (this.showUserGroup === true) {
-			console.log("group enabled: will show user group association:"+this.selectedUserName );
-			this.statusMessage = [];
-			this.groups = [];
-			this.pgRoleService.getGroupsForUser(this.selectedUserName).
-			subscribe((groups:any) => {
-			this.groups = groups; 
-//			this.pgSize = this.pgRoles.length; 
-//			this.searchInProgress=false;
-			}, 
-			error =>  {this.handleError(error);this.errorMessage = <any>error});
-		}
-		else {
-			console.log("pg enabled: will show pg role association");
-						
-			this.searchInProgress = true;
-			this.statusMessage = [];
-			this.pgRoles = [];
-			this.pgSize = 0;
-			this.pgRoleService.getPgRolesForUser(this.selectedUserName).
-			subscribe((pgRoles:PgRole[]) => {
-			this.pgRoles = pgRoles; 
-			this.pgSize = this.pgRoles.length; 
-			this.searchInProgress=false;
-			}, 
-			error =>  {this.handleError(error);this.errorMessage = <any>error});
-		}
+		this.searchInProgress = true;
+		this.statusMessage = [];
+		this.pgRoles = [];
+		this.pgSize = 0;
+		this.pgRoleService.getPgRolesForUser(this.selectedUserName).
+		subscribe((pgRoles:PgRole[]) => {
+		this.pgRoles = pgRoles; 
+		this.pgSize = this.pgRoles.length; 
+		this.searchInProgress=false;
+		}, 
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
 	}
 	
 	ngOnChanges(changes: any[]) {
@@ -131,26 +107,6 @@ export class PgRoleComponent implements OnInit {
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 	}
 	
-    showDialogToAddGroup() {
-//        this.newPgRole = true;
-//        this.pgRole = new PrimePgRole();
-		this.selectedGroupNames = [];		
-		this.pgRoleService.getAvailableGroups(this.selectedUserName).subscribe((availableGroups:SelectItem[]) => {
-		this.availableGroups = availableGroups;
-		// a workaround to show the choose as the initial tool tip as the dropdown box dose not provide it
-		//this.availableGroups.unshift({label:'Choose', value:''});
-		this.displayDialogAdd = true;
-		}, 
-		error =>  {this.handleError(error);this.errorMessage = <any>error});		
-		
-		//this.srs = [];
-		//this.pgRoleService.getAllRoles().subscribe((allRoles:SelectItem[]) => {
-		//this.allRoles = allRoles;
-		//this.displayDialogAdd = true;
-		//}, 
-		//error =>  {this.handleError(error);this.errorMessage = <any>error});
-	}	
-	
     showDialogToUpdate(pgRole) {
         this.newPgRole = false;
 		this.selectedPGName = pgRole.pgName;
@@ -164,29 +120,7 @@ export class PgRoleComponent implements OnInit {
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
     }
 	
-    confirmDeletion(groupName) {
-		console.log("confirm the deletion for group " + groupName);
-        this.confirmationService.confirm({
-            message: 'Do you want to remove the user from group ' + groupName + '?',
-            header: 'Deassign Confirmation',
-            icon: 'pi pi-info-circle',
-            accept: () => {
-				this.pgRoleService.removeUserFromGroup(this.selectedUserName, groupName)
-				.subscribe(
-				data => {this.postData = JSON.stringify(data)},
-				error =>  {this.handleError(error);this.errorMessage = <any>error;this.refreshTable()},
-				() => {console.log("Finished");this.refreshTable()}
-				);
-				this.groups.splice(this.findSelectedGroupIndex(groupName), 1);
-				this.statusMessage = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
-            },
-            reject: () => {
-                this.statusMessage = [{severity:'info', summary:'Info', detail:'No action performed.'}];
-            }
-        });
-    }	
-
-	clonePgRole(u: PgRole): PgRole {
+ 	clonePgRole(u: PgRole): PgRole {
 		let pgRole = new PrimePgRole();
 		for(let prop in u) {
 			pgRole[prop] = u[prop];
@@ -198,15 +132,6 @@ export class PgRoleComponent implements OnInit {
         return this.pgRoles.indexOf(this.selectedPgRole);
     }
 	
-    findSelectedGroupIndex(groupName): number {
-		var index = this.groups.findIndex(function(item, i){
-			return item.GroupName === groupName
-		});
-		console.log("groupName=" + groupName + " index="+ index);
-       // return this.groups.indexOf({GroupName: groupName});
-	   return index;
-    }	
-
     save() {
 		this.statusMessage = [];
         if(this.newPgRole) {
@@ -227,22 +152,6 @@ export class PgRoleComponent implements OnInit {
         this.newPgRole = null;
         this.displayDialog = false;
     }
-	
-    saveGroup() {
-		this.statusMessage = [];
-		this.pgRoleService.addNewGroupForUser(this.selectedUserName, this.selectedGroupNames)
-		.subscribe(
-			data => {this.postData = JSON.stringify(data);
-			},
-			error =>  {this.handleError(error);this.errorMessage = <any>error;this.refreshTable()},
-			() => console.log("Finished")
-		);
-		for(let i=0; i<(this.selectedGroupNames).length; i++) {
-			this.groups.push({GroupName: this.selectedGroupNames[i]});
-		}
-
-        this.displayDialogAdd = false;
-    }	
 	
 	delete(){
 		this.statusMessage = [];
@@ -274,7 +183,7 @@ export class PgRoleComponent implements OnInit {
 		this.statusMessage = [];
 		
 		if (error.status==500) {
-			this.statusMessage.push({severity:'error', summary:'Error: ', detail:'No data found from server.'});
+			this.statusMessage.push({severity:'info', summary:'Error: ', detail:'No data found from server.'});
 		}
 		else if (error.status == 401) {		
 			this.statusMessage.push({severity:'error', summary:'Error: ', detail:'Session expired. Please login again.'});
@@ -304,6 +213,5 @@ export class PgRoleComponent implements OnInit {
 class PrimePgRole implements PgRole {
 	pgName: string;
 	roleNames: string;
-   // constructor(public pgName?, public roleNames?) {}
 }
 

@@ -645,7 +645,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			criteria = criteria.createCriteria("study");
 			criteria = criteria.createCriteria("patient");
 			criteria = criteria.createCriteria("dataProvenance");
-
 			List<GeneralSeries> results = getHibernateTemplate().findByCriteria(criteria);
 			if (seriesList == null) {
 				seriesList = new ArrayList<GeneralSeries>();
@@ -668,7 +667,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			GeneralSeries gs = (GeneralSeries) result.get(0);
 			series = new SeriesDTO();
 			series.setProject(gs.getStudy().getPatient().getDataProvenance().getProject());
-			series.setDataProvenanceSiteName(gs.getStudy().getPatient().getDataProvenance().getDpSiteName());
+			series.setDataProvenanceSiteName(gs.getSite());
 		}
 
 		return series;
@@ -741,14 +740,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			if (authorizedSeriesSecurityGroups != null) {
 				setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);
 			}
-			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
-			criteria.add(Restrictions.in("visibility", new String[] { "1"}));
-			criteria = criteria.createCriteria("study");
-			criteria = criteria.createCriteria("patient");
-			criteria = criteria.createCriteria("dataProvenance");
 			if (authorizedSites != null) {
 				setAuthorizedSiteData(criteria, authorizedSites);
 			}
+			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
+			criteria.add(Restrictions.in("visibility", new String[] { "1"}));
+
+
 
 			List<GeneralSeries> results = getHibernateTemplate().findByCriteria(criteria);
 			if (seriesList == null) {
@@ -778,13 +776,12 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			if (authorizedSeriesSecurityGroups != null) {
 				setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);
 			}
-			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
-			criteria = criteria.createCriteria("study");
-			criteria = criteria.createCriteria("patient");
-			criteria = criteria.createCriteria("dataProvenance");
 			if (authorizedSites != null) {
 				setAuthorizedSiteData(criteria, authorizedSites);
 			}
+			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
+
+
 
 			List<GeneralSeries> results = getHibernateTemplate().findByCriteria(criteria);
 			if (seriesList == null) {
@@ -814,15 +811,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			if (authorizedSeriesSecurityGroups != null) {
 				setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);
 			}
-			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
-			criteria.add(Restrictions.in("visibility", new String[] { "1", "12" }));
-			criteria = criteria.createCriteria("study");
-			criteria = criteria.createCriteria("patient");
-			criteria = criteria.createCriteria("dataProvenance");
 			if (authorizedSites != null) {
 				setAuthorizedSiteData(criteria, authorizedSites);
 			}
-
+			criteria.add(Restrictions.in("seriesInstanceUID", unitList));
+			criteria.add(Restrictions.in("visibility", new String[] { "1", "12" }));
 			List<GeneralSeries> results = getHibernateTemplate().findByCriteria(criteria);
 			if (seriesList == null) {
 				seriesList = new ArrayList<GeneralSeries>();
@@ -856,12 +849,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<GeneralSeries> seriesList = null;
 		DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
 		setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);
+		setAuthorizedSiteData(criteria, authorizedSites);
 		criteria.add(Restrictions.in("visibility", new String[] { "1" }));
 		criteria = criteria.createCriteria("study");
 		criteria.add(Restrictions.in("studyInstanceUID", studyIDs));
-		criteria = criteria.createCriteria("patient");
-		criteria = criteria.createCriteria("dataProvenance");
-		setAuthorizedSiteData(criteria, authorizedSites);
+		
 
 		seriesList = getHibernateTemplate().findByCriteria(criteria);
 		System.out.println(
@@ -879,13 +871,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		DetachedCriteria criteria = DetachedCriteria.forClass(GeneralSeries.class);
 		setSeriesSecurityGroups(criteria, authorizedSeriesSecurityGroups);
+		setAuthorizedSiteData(criteria, authorizedSites);
 		criteria.add(Restrictions.in("patientId", patientIDs));
 		// criteria.add(Restrictions.eq("visibility", "1"));
 		criteria.add(Restrictions.in("visibility", new String[] { "1" }));
-		criteria = criteria.createCriteria("study");
-		criteria = criteria.createCriteria("patient");
-		criteria = criteria.createCriteria("dataProvenance");
-		setAuthorizedSiteData(criteria, authorizedSites);
 
 		seriesList = getHibernateTemplate().findByCriteria(criteria);
 
@@ -917,7 +906,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				sd.setTotalImagesInSeries(gs.getImageCount());
 				sd.setTotalSizeForAllImagesInSeries(gs.getTotalSize());
 				sd.setProject(gs.getStudy().getPatient().getDataProvenance().getProject());
-				sd.setDataProvenanceSiteName(gs.getStudy().getPatient().getDataProvenance().getDpSiteName());
+				sd.setDataProvenanceSiteName(gs.getSite());
 				sd.setStudyDate(gs.getStudy().getStudyDate());
 				sd.setStudyDesc(gs.getStudy().getStudyDesc());
 				sd.setStudy_id(gs.getStudy().getStudyId());
@@ -932,7 +921,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		for (SiteData sd : sites) {
 			Conjunction con = new Conjunction();
-			con.add(Restrictions.eq("dpSiteName", sd.getSiteName()));
+			con.add(Restrictions.eq("site", sd.getSiteName()));
 			con.add(Restrictions.eq("project", sd.getCollection()));
 			disjunction.add(con);
 		}

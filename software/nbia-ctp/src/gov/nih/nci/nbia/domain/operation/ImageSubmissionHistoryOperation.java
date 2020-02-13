@@ -68,7 +68,7 @@ public class ImageSubmissionHistoryOperation extends DomainOperation implements 
         submissionHistory.setStudyInstanceUID(study.getStudyInstanceUID());
         submissionHistory.setSeriesInstanceUID(series.getSeriesInstanceUID());
         submissionHistory.setProject(dataProvenance.getProject());
-        submissionHistory.setSite(dataProvenance.getDpSiteName());
+        submissionHistory.setSite(((String) numbers.get(DicomConstants.SITE_NAME)).trim());
 
         if(replacement) {
         	submissionHistory.setOperationType(SubmissionHistory.REPLACE_IMAGE_SUBMISSION_OPERATION);

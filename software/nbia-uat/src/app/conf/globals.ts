@@ -16,5 +16,6 @@ export class Globals {
 	manageGroupWiki = "-ManagingUserGroups";
 //export var managePEWiki = "-ManagingPE";
 	managePEWiki = "-ManagingProtectionElements";
-	userAuthorizationWiki = "-AddingProtectionGroupsandAssigningRoles";
+	userAuthorizationWiki = "-AuthorizingProtectionGroups";
+	userAuthorizationWithGroupWiki = "-AuthorizingUserGroups";
 }

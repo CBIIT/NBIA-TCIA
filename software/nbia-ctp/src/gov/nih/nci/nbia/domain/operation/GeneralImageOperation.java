@@ -167,8 +167,8 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
         String project = existingGeneralImage.getDataProvenance().getProject();
         String studyID = existingGeneralImage.getStudyInstanceUID();
         String seriesID = existingGeneralImage.getSeriesInstanceUID();
-        String siteID = existingGeneralImage.getDataProvenance().getDpSiteId();
-        log.debug("PatientID: " + patientID + "\tstudyUID: "+ studyID + "\tseriesUID: " + seriesID + "\tProject: " +project + "\tsiteID: " + siteID );
+        //String siteID = existingGeneralImage.getDataProvenance().getDpSiteId();
+        log.debug("PatientID: " + patientID + "\tstudyUID: "+ studyID + "\tseriesUID: " + seriesID + "\tProject: " +project);
 
         if(!patientID.equalsIgnoreCase(thisPatient) ) {
             log.error(SOP_INSTANCE_UID_LPAREN+ sopInstanceUid + ") has different patient information: " + patientID + IN_DATABASE_AND + thisPatient + IN_THE_SUBMITTED_IMAGE  );
@@ -186,10 +186,10 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
             log.error(SOP_INSTANCE_UID_LPAREN+ sopInstanceUid + ") has different project/collection information: " + project + IN_DATABASE_AND + thisProject + IN_THE_SUBMITTED_IMAGE );
             throw new Exception(SOP_INSTANCE_UID_LPAREN+ sopInstanceUid + ") has different project/collection information: " + project + IN_DATABASE_AND + thisProject + IN_THE_SUBMITTED_IMAGE );
         }
-        if(!siteID.equalsIgnoreCase(thisSiteID) ) {
+      /**  if(!siteID.equalsIgnoreCase(thisSiteID) ) {
             log.error(SOP_INSTANCE_UID_LPAREN+ sopInstanceUid + ") has different site information: " + siteID + IN_DATABASE_AND + thisSiteID + IN_THE_SUBMITTED_IMAGE );
             throw new Exception(SOP_INSTANCE_UID_LPAREN+ sopInstanceUid + ") has different site information: " + siteID + IN_DATABASE_AND + thisSiteID + IN_THE_SUBMITTED_IMAGE );
-        }
+        } */
 
         GeneralSeries theSeries = (GeneralSeries)existingGeneralImage.getGeneralSeries();
         log.debug("GeneralSeries from GeneralImage is " + theSeries);
@@ -204,7 +204,7 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
                 throw new Exception(SOP_INSTANCE_UID_LPAREN+ sopInstanceUid + ") has different series pk id");
             }
         }
-        log.debug("PatientID: " + patientID + "\tstudyUID: "+ studyID + "\tseriesUID: " + seriesID + "\tProject: " +project + "\tsiteID: " + siteID );
+        log.debug("PatientID: " + patientID + "\tstudyUID: "+ studyID + "\tseriesUID: " + seriesID + "\tProject: " +project);
 
     }
 

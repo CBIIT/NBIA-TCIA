@@ -219,6 +219,7 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
     		newStudyIdentifiers.setSeriesIdentifiers(seriesIds);
     		if (modality!=null) {
 				SeriesAndModality sandm = new SeriesAndModality(seriesId, modality);
+				newStudyIdentifiers.addSeriesAndModality(sandm);
 			}
 			arr.add(newStudyIdentifiers);
     	}

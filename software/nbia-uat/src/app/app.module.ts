@@ -1,9 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NbiaUatComponent } from './nbia-uat/nbia-uat.component';
 import { GroupComponent } from './group/group.component';
 import { PeComponent } from './pe/pe.component';
 import { PgComponent } from './pg/pg.component';
@@ -37,11 +35,11 @@ import { PgMemberList } from './pg/pgmemberlist';
 import { PgMemberService } from './pg/pgmemberservice';
 import { UgMemberList } from './group/ugmemberlist';
 import { UgMemberService } from './group/ugmemberservice';
+import { UserToGroupComponent } from './userToGroup/userToGroup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NbiaUatComponent,
     GroupComponent,
     PeComponent,
     PgComponent,
@@ -50,11 +48,11 @@ import { UgMemberService } from './group/ugmemberservice';
 	LoadingDisplayComponent,
 	AddNewLine,
 	PgMemberList,
-	UgMemberList	
+	UgMemberList,
+	UserToGroupComponent	
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
 	HttpClientModule,
 	ButtonModule,
 	CheckboxModule,

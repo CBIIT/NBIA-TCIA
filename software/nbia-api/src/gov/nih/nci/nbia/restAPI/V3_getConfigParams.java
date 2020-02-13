@@ -36,8 +36,11 @@ public class V3_getConfigParams extends getData{
         data.add(urlObjs);
         Object [] peObjs = {"peOption", NCIAConfig.getUatCreationNewProjectSite()};
         data.add(peObjs);
-        Object [] userAuthorObjs = {"assignToUG", NCIAConfig.getUatUserAssginToUG()};
-        data.add(userAuthorObjs);			
+        Object [] userAuthorUGObjs = {"assignToUG", NCIAConfig.getUatUserAssginToUG()};
+        data.add(userAuthorUGObjs);
+        Object [] userAuthorPGObjs = {"assignToPG", NCIAConfig.getUatUserAssginToPG()};
+        data.add(userAuthorPGObjs);
+
 		return formatResponse(format, data, columns);
 	}	
 }

@@ -74,13 +74,13 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	        	//db constraints will make 1 the max
 	        }
 	
-	        populateSeriesFromNumbers(numbers, series);
+	        String site=populateSeriesFromNumbers(numbers, series);
 	        
 	        series.setPatientPkId(patient.getId());
 	        series.setPatientId(patient.getPatientId());
 	        series.setStudyInstanceUID(study.getStudyInstanceUID());
 	        series.setProject(patient.getDataProvenance().getProject());
-	        series.setSite(patient.getDataProvenance().getDpSiteName());
+	        series.setSite(site);
 	        
 	        //does this cause any possible issue with parallelism?
 	        //multiple images submitted to same series at "same time"?
@@ -119,7 +119,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	}
 
 	
-    private static void populateSeriesFromNumbers(Map numbers, 
+    private static String populateSeriesFromNumbers(Map numbers, 
                                                   GeneralSeries series) throws Exception {
         String temp;
        
@@ -196,7 +196,10 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
         }	
         if ((temp = (String) numbers.get(DicomConstants.FRAME_OF_REFERENCE_UID)) != null) {
             series.setFrameOfReferenceUID(temp.trim());
-        }	    	
+        }
+        return ((String) numbers.get(DicomConstants.SITE_NAME)).trim();
+
+
     }
     
 	private static void setModality(GeneralSeries series, Map numbers) throws Exception {

@@ -126,7 +126,7 @@ export class GroupComponent implements OnInit {
 			data: {
 				id: group.userGroup
 			},
-			header: 'Users in Protection Group: '+ group.userGroup,
+			header: 'Users in User Group: '+ group.userGroup,
 			width: '70%'
 		});
 	}	

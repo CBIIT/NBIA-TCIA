@@ -55,8 +55,8 @@ public class PatientAccessDAOImpl extends AbstractDAO
 			if (trialDP!=null)
 			{
 			   TrialDataProvenanceDoc trialDPDoc = new TrialDataProvenanceDoc();
-			   trialDPDoc.setDpSiteId(trialDP.getDpSiteId());
-			   trialDPDoc.setDpSiteName(trialDP.getDpSiteName());
+			  // trialDPDoc.setDpSiteId(trialDP.getDpSiteId());
+			  // trialDPDoc.setDpSiteName(trialDP.getDpSiteName());
 			   trialDPDoc.setProject(trialDP.getProject());
 			   TextSupportDAO support = (TextSupportDAO)SpringApplicationContext.getBean("textSupportDAO");
 			   List  rs2 = support.getCollectionDesc(trialDPDoc.getProject());
@@ -370,8 +370,8 @@ public class PatientAccessDAOImpl extends AbstractDAO
 	{
 		if (trialDP==null) return document;
 		TrialDataProvenanceDoc trialDPDoc = new TrialDataProvenanceDoc();
-		trialDPDoc.setDpSiteId(trialDP.getDpSiteId());
-		trialDPDoc.setDpSiteName(trialDP.getDpSiteName());
+		//trialDPDoc.setDpSiteId(trialDP.getDpSiteId());
+		//trialDPDoc.setDpSiteName(trialDP.getDpSiteName());
 		trialDPDoc.setProject(trialDP.getProject());
 		TextSupportDAO support = (TextSupportDAO)SpringApplicationContext.getBean("textSupportDAO");
 		List  rs = support.getCollectionDesc(trialDPDoc.getProject());

@@ -204,8 +204,8 @@ try {
 	TrialDataProvenance trialDP = patient.getDataProvenance();
 	if (trialDP!=null)
 	{
-	  trialDP.getDpSiteId();
-      trialDP.getDpSiteName();
+	  //trialDP.getDpSiteId();
+      //trialDP.getDpSiteName();
 	  trialDP.getProject();
 	}
 	if (patient.getStudyCollection()!=null)
