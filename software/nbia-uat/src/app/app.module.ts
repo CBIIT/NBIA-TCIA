@@ -26,7 +26,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { AddNewLine } from './addNewLine.pipe';
+import { AddNewLinePipe } from './addNewLine.pipe';
 import { Globals } from './conf/globals';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,7 +46,7 @@ import { UserToGroupComponent } from './userToGroup/userToGroup.component';
     PgRoleComponent,
     UserComponent,
 	LoadingDisplayComponent,
-	AddNewLine,
+	AddNewLinePipe,
 	PgMemberList,
 	UgMemberList,
 	UserToGroupComponent	
