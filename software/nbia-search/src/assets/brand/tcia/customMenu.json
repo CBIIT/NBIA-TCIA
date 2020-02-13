@@ -78,7 +78,7 @@
             },
             {
                 "menuText": "Data Usage Statistics",
-                "target": "https://cancerimagingarchive.net/dashboard2"
+                "target": "https://www.cancerimagingarchive.net/stats"
             }
         ]
     },
