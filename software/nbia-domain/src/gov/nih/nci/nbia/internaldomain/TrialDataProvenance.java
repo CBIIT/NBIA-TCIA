@@ -125,28 +125,6 @@ public class TrialDataProvenance  implements Serializable
 		this.siteCollection = siteCollection;
 	}
 	
-	public void addSiteName(String dbSiteName) {
-		boolean hasSite=false;
-		if (siteCollection != null) {
-			for (Site cs : siteCollection){
-				if (cs.getDpSiteName().equals(dbSiteName)) {
-					hasSite=false;
-				}
-			}
-			if (!hasSite) {
-				Site site = new Site();
-				site.setDpSiteName(dbSiteName);
-				siteCollection.add(site);
-			}
-		} else {
-			Site site = new Site();
-			site.setDpSiteName(dbSiteName);
-			List<Site> sites = new ArrayList<Site>();
-			sites.add(site);
-			siteCollection=sites;
-		}
-	}
-	
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same
 	*
