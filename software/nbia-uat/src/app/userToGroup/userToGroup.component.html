@@ -6,7 +6,7 @@
 	
 <p-dropdown [options]="userNames" [(ngModel)]="selectedUserName" [showClear]="true" [filter]="true" placeholder="Select a user name" appendTo="body" [panelStyle]="{minWidth:'12em'}"
 	[virtualScroll]="true" itemSize="30"(onChange)="getGroupsForUser()"
-	pTooltip="To find a user quickly, enter a whole or partial login name to fileter then click on the login name to select the user" 
+	pTooltip="To find a user quickly, enter a whole or partial login name to filter then click on the login name to select the user" 
 	></p-dropdown>
 <br/>
 
@@ -26,7 +26,7 @@
 			<tr>
 				<th style="border-top: none;">
 					<div class="ui-fluid">
-						<input pInputText type="text" pTooltip="Enter a whole or partial word to fileter on group name" (input)="dt.filter($event.target.value, 'GroupName', 'contains')"
+						<input pInputText type="text" pTooltip="Enter a whole or partial word to filter on group name" (input)="dt.filter($event.target.value, 'GroupName', 'contains')"
 						[value]="dt.filters['GroupName'] ? dt.filters['GroupName'].value : ''">
 					</div>
 				</th>				
