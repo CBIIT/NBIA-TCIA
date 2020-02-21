@@ -518,7 +518,7 @@ public class StandaloneDMDispatcher {
 					// sudo dpkg -i tciadownloader_1.0-2_amd64.deb
 					String upgradCmd="/usr/bin/sudo -S dpkg -i ";
 					if (vNum>=3.2)
-						upgradCmd="/usr/bin/sudo -S dpkg -i nbia-data-retriever; /usr/bin/sudo -S dpkg -i ";
+						upgradCmd="/usr/bin/sudo -S dpkg -r nbia-data-retriever; /usr/bin/sudo -S dpkg -i ";
 					try {
 						String[] cmd = { "/bin/bash", "-c", upgradCmd + installerPath };
 
@@ -571,7 +571,7 @@ public class StandaloneDMDispatcher {
 
 			HttpParams httpParams = new BasicHttpParams();
 			HttpConnectionParams.setConnectionTimeout(httpParams, 500000);
-			HttpConnectionParams.setSoTimeout(httpParams, new Integer(120000));
+			HttpConnectionParams.setSoTimeout(httpParams, new Integer(720000));
 			httpClient = new DefaultHttpClient(ccm, httpParams);
 			httpClient.setRoutePlanner(new ProxySelectorRoutePlanner(schemeRegistry, ProxySelector.getDefault()));
 			// // Additions by lrt for tcia -

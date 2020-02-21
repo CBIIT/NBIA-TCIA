@@ -170,7 +170,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		HttpParams httpParams = new BasicHttpParams();
 		// set timeout values
 		HttpConnectionParams.setConnectionTimeout(httpParams, 50000);
-		HttpConnectionParams.setSoTimeout(httpParams, new Integer(12000));
+		HttpConnectionParams.setSoTimeout(httpParams, new Integer(720000));
 		ClientConnectionManager ccm = new ThreadSafeClientConnManager(schemeRegistry);
 		DefaultHttpClient httpClient = new DefaultHttpClient(ccm, httpParams);
 		httpClient.setRoutePlanner(new ProxySelectorRoutePlanner(schemeRegistry, ProxySelector.getDefault()));
