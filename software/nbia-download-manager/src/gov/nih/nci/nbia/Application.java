@@ -133,7 +133,7 @@ public class Application {
 
 	        HttpParams httpParams = new BasicHttpParams();
 	        HttpConnectionParams.setConnectionTimeout(httpParams, 50000);
-	        HttpConnectionParams.setSoTimeout(httpParams,  new Integer(120000));
+	        HttpConnectionParams.setSoTimeout(httpParams,  new Integer(720000));
 	        httpClient = new DefaultHttpClient(ccm,httpParams);
 	        httpClient.setRoutePlanner(new ProxySelectorRoutePlanner(schemeRegistry, ProxySelector.getDefault()));
 	//        // Additions by lrt for tcia -
