@@ -119,9 +119,6 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 		
  System.out.println("===== In nbia-dao, CustomSeriesListDAOImpl:getSeriesList(..) -  criteria.add(Restrictions.in('visibility', new String[] {'1'})) "); 
 		
-		criteria = criteria.createCriteria("study");
-		criteria = criteria.createCriteria("patient");
-		criteria = criteria.createCriteria("dataProvenance");
 		if (authorizedPublicSites != null) {
 			setAuthorizedSiteData(criteria,
 					authorizedPublicSites);
@@ -508,7 +505,7 @@ public class CustomSeriesListDAOImpl extends AbstractDAO
 
 		for (SiteData sd : sites){
 			Conjunction con = new Conjunction();
-			con.add(Restrictions.eq("site.dpSiteName",sd.getSiteName()));
+			con.add(Restrictions.eq("site",sd.getSiteName()));
 			con.add(Restrictions.eq("project", sd.getCollection()));
 			disjunction.add(con);
 		}
