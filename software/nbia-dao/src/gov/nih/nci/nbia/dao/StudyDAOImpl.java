@@ -677,6 +677,7 @@ public class StudyDAOImpl extends AbstractDAO
             if(annotationFlag!=null) {
             	seriesDTO.setAnnotationsFlag(true);
             }
+            
             seriesDTO.setStudyPkId(((BigInteger)  row[1]).intValue());
             seriesDTO.setStudyId(row[2].toString());
             seriesDTO.setTotalImagesInSeries(((BigInteger)  row[6]).intValue());
