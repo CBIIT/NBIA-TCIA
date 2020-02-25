@@ -25,6 +25,7 @@ public interface StudyDAO  {
      * for the second level query.
      */
     public List<StudyDTO> findStudiesBySeriesId(Collection<Integer> seriesPkIds) throws DataAccessException;
+    public List<StudyDTO> findStudiesBySeriesIdForCart(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesUIds(Collection<String> seriesPkIds) throws DataAccessException;
 	public List<Object[]> getSeriesMetadata(List<String> seriesIDs, List<String> authorizedProjAndSites) throws DataAccessException;
     public List<Object[]> getPatientStudy(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException;
