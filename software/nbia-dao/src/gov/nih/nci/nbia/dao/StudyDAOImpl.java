@@ -673,7 +673,7 @@ public class StudyDAOImpl extends AbstractDAO
             seriesDTO.setSeriesPkId(((BigInteger)  row[0]).intValue());
             seriesDTO.setDescription(Util.nullSafeString(row[7]));
             seriesDTO.setNumberImages(((BigInteger)  row[6]).intValue());
-            Boolean annotationFlag = (Boolean) row[11];
+            String annotationFlag = Util.nullSafeString(row[11]);
             if(annotationFlag!=null) {
             	seriesDTO.setAnnotationsFlag(true);
             }
