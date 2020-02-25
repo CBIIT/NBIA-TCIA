@@ -90,7 +90,7 @@ public class QueryHandlerImpl extends AbstractDAO
 			criteria = addAllRestriction(criteria, searchCriteria);
 			//add user authorized site name and collection
 			CriteriaForAuthorizedSiteData casd = new CriteriaForAuthorizedSiteData();
-			casd.setAuthorizedSiteData(generateAlias(elementTree.get(0).getAlias()),
+			casd.setAuthorizedSiteData(generateAlias(elementTree.get(3).getAlias()),
 					                   criteria,
 					                   authorizedSiteData);
 			//add this for IDRI security group
@@ -187,7 +187,7 @@ public class QueryHandlerImpl extends AbstractDAO
 		
 			//add user authorized site name and collection
 			CriteriaForAuthorizedSiteData casd = new CriteriaForAuthorizedSiteData();
-			casd.setAuthorizedSiteData(generateAlias(elementTree.get(0).getAlias()),
+			casd.setAuthorizedSiteData(generateAlias(elementTree.get(3).getAlias()),
 					                   criteria,
 					                   authorizedSiteData);
 			//add this for IDRI security group

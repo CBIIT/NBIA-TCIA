@@ -30,7 +30,7 @@ public class CriteriaForAuthorizedSiteData {
 			for (SiteData sd : sites)
 			{
 				Conjunction con = new Conjunction();
-				con.add(Restrictions.eq(tableAlias+".dpSiteName",sd.getSiteName()));
+				con.add(Restrictions.eq(tableAlias+".site",sd.getSiteName()));
 				con.add(Restrictions.eq(tableAlias+".project", sd.getCollection()));
 				disjunction.add(con);
 			}
@@ -41,7 +41,7 @@ public class CriteriaForAuthorizedSiteData {
 			for (SiteData sd : sites)
 			{
 				Conjunction con = new Conjunction();
-				con.add(Restrictions.eq("dpSiteName",sd.getSiteName()));
+				con.add(Restrictions.eq("site",sd.getSiteName()));
 				con.add(Restrictions.eq("project", sd.getCollection()));
 				disjunction.add(con);
 			}

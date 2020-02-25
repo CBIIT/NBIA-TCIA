@@ -4,6 +4,7 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
+import gov.nih.nci.nbia.internaldomain.Site;
 import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.ArrayList;
@@ -71,7 +72,22 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	else return false;
 
 }	
-	
+	/**
+	 * Check if collection and site exist already.
+	 *
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public TrialDataProvenance getTrialDataProvenance(String project) throws DataAccessException {
+	TrialDataProvenance returnValue=null;
+	String hql = "from TrialDataProvenance ";
+	String where = " where project = '" + project +"'";
+	List<TrialDataProvenance> list=(List<TrialDataProvenance>)getHibernateTemplate().find(hql + where);
+	if (list.size()>0) {
+	    returnValue = list.get(0);
+	}
+     return returnValue;
+
+}
 	/**
 	 * Save a collection (ie. project) and site.
 	 *
@@ -79,10 +95,27 @@ public class TrialDataProvenanceDAOImpl extends AbstractDAO implements
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void setProjSiteValues(String project, String site) throws DataAccessException {
-		TrialDataProvenance tdp = new TrialDataProvenance();
+		// see if it already exists, if it does quit
+		if (hasExistingProjSite(project, site)) {
+			return;
+		}
+		// see if project exists, if so add or update site
+		TrialDataProvenance tdp=getTrialDataProvenance(project);
+		if (tdp!=null) {
+			Site siteObject = new Site();
+			siteObject.setDpSiteName(site);
+			siteObject.setTrialDataProvenance(tdp);
+			getHibernateTemplate().saveOrUpdate(siteObject);
+			return;
+		}
+		tdp = new TrialDataProvenance();
 		tdp.setProject(project.trim());
-		tdp.addSiteName(site.trim());
-		getHibernateTemplate().save(tdp);
+		getHibernateTemplate().save(tdp); 
+		Site siteObject=new Site();
+		siteObject.setDpSiteName(site.trim());
+		siteObject.setTrialDataProvenance(tdp);
+		getHibernateTemplate().save(siteObject);
+		
 }	
 	/**
 	 * Construct the partial where clause which contains checking with authorized project and site combinations.

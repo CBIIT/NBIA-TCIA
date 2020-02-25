@@ -67,7 +67,7 @@
 		</div>
 		<p-footer>
 			<div class="ui-dialog-buttonpane ui-helper-clearfix">
-				<button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+				<button type="button" pButton icon="fa fa-check" (click)="save()" label="Save" [disabled]="pe.collection == null || pe.site== null || pe.collection==''||pe.site==''"></button>
 			</div>		
 		</p-footer>
 	</p-dialog>
