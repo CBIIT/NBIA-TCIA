@@ -5,6 +5,8 @@ import { Properties } from '@assets/properties';
 import { Consts, MenuItems } from '@app/consts';
 import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { MenuService } from '@app/common/services/menu.service';
+import { CartSortService } from '@app/cart/cart-sort.service';
+import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 
 
 /**
@@ -57,7 +59,8 @@ export class ParameterService{
 
 
     constructor( private commonService: CommonService, private initMonitorService: InitMonitorService,
-                 private queryUrlService: QueryUrlService, private menuService: MenuService ) {
+                 private queryUrlService: QueryUrlService, private menuService: MenuService,
+                 private loadingDisplayService: LoadingDisplayService ) {
     }
 
     reset() {
@@ -380,10 +383,11 @@ export class ParameterService{
     }
 
     async doUrlSearch(){
-        await this.commonService.sleep( 10000 );
-
+        this.loadingDisplayService.setLoading( true, 'Updating Counts' );
+        await this.commonService.sleep( 10000 ); // TODO this is a bit long - revisit
         this.reset();
         this.commonService.runSearchForUrlParameters();
+        this.loadingDisplayService.setLoading( false );
     }
 
     incStillWaitingOnAtLeastOneComponent() {

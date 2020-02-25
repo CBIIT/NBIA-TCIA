@@ -787,6 +787,9 @@ export class ApiServerService implements OnDestroy{
 
             // Searches that use drillDown search
             case Consts.DRILL_DOWN_CART:
+                searchService = Consts.DRILL_DOWN_CART;
+                break;
+
             case Consts.DRILL_DOWN:
             case Consts.SERIES_FOR_SHARED_LIST_SUBJECT:
 
@@ -867,9 +870,8 @@ export class ApiServerService implements OnDestroy{
 
                                 // We have a new token, try the search one more time.
                                 this.doPost( searchService, query ).subscribe(
-                                    // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
+                                // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
                                     ( res1 ) => {
-
                                         this.emitPostResults( searchType, res1, id, selected );
                                     },
 
@@ -1439,6 +1441,7 @@ export class ApiServerService implements OnDestroy{
      * This version is for "One page at a time search"
      */
     getCriteriaCountsPaged() {
+
         if(
             (this.utilService.isNullOrUndefined( this.simpleSearchQueryHold )) ||
             (this.simpleSearchQueryHold.length < 1) ||

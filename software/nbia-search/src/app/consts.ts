@@ -103,7 +103,8 @@ export const Consts = {
         ],
 
         DRILL_DOWN: 'getStudyDrillDown',
-        DRILL_DOWN_CART: 'getStudyDrillDownCart',
+        // DRILL_DOWN_CART: 'getStudyDrillDownCart',
+        DRILL_DOWN_CART: 'getCartData',
         DRILL_DOWN_WITH_SERIES: 'getStudyDrillDownWithSeriesIds',
         DRILL_DOWN_CART_FROM_SERIES: 'getStudyDrillDownCartFromSeries',
         DRILL_DOWN_IMAGE: 'getImageDrillDown',
