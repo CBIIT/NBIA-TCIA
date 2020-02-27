@@ -15,6 +15,8 @@ import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -829,6 +832,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		return seriesList;
 	}
 
+
 	////////////////////////////////////////// PRIVATE/////////////////////////////////////////
 
 	private static int CHUNK_SIZE = 500;
@@ -1005,4 +1009,118 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		return (List<String>) getHibernateTemplate().find(hql);
 	}
+	/**
+	 * Return all the series for a given list of series instance UIDs, but only when
+	 * the series are authorized.
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<SeriesDTO> findSeriesBySeriesInstanceUID112Light(List<String> seriesIds, List<SiteData> authorizedSites,
+			List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
+		List<GeneralSeries> seriesList = null;
+		List<SeriesDTO> seriesDTOList = null;
+
+		if (seriesIds == null || seriesIds.size() <= 0) {
+			return null;
+		}
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}						
+
+		seriesDTOList = getSeriesDTOs(true, seriesIds, authorizedSites);
+		return seriesDTOList;
+	}
+
+	/**
+	 * Return all the series for a given list of series instance UIDs, but only when
+	 * the series are authorized.
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<SeriesDTO> findSeriesBySeriesInstanceUIDAllVisibilitiesLight(List<String> seriesIds,
+			List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException {
+		List<SeriesDTO> seriesDTOList = null;
+
+		if (seriesIds == null || seriesIds.size() <= 0) {
+			return null;
+		}
+		
+		if (authorizedSites == null || authorizedSites.size() == 0){
+			return null;
+		}		
+
+		seriesDTOList = getSeriesDTOs(true, seriesIds, authorizedSites);
+		return seriesDTOList;
+	}
+	
+	private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seriesIds,
+			List<SiteData> authorizedSites) {
+		
+		List <SeriesDTO> returnValue= new ArrayList<SeriesDTO>();
+		String sQL = "select G.GENERAL_SERIES_PK_ID,  G.ANNOTATIONS_FLAG, G.BODY_PART_EXAMINED, G.PATIENT_ID, G.SERIES_DESC, G.SERIES_INSTANCE_UID, G.SERIES_NUMBER, "+
+				"G.STUDY_DATE, G.STUDY_DESC, G.STUDY_INSTANCE_UID, G.PROJECT, G.SITE, S.STUDY_ID, "+
+				"( SELECT sum(a.file_size) FROM annotation a WHERE a.general_series_pk_id = G.general_series_pk_id  ) as ANNOSIZE, "+
+				"( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID ) as IMAGESIZE, "+
+				"( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID ) as IMAGECOUNT "+
+				"from GENERAL_SERIES G, STUDY S where S.STUDY_PK_ID=G.STUDY_PK_ID ";
+		String siteWhereClause=" AND (";
+		boolean first=true;
+		for (SiteData sd : authorizedSites) {
+			if (first) {
+			    siteWhereClause+="(G.SITE='"+sd.getSiteName()+"' AND G.PROJECT='"+sd.getCollection()+"')";
+			    first=false;
+			} else {
+				siteWhereClause+=" OR (G.SITE='"+sd.getSiteName()+"' AND G.PROJECT='"+sd.getCollection()+"')";
+			}
+		}
+		siteWhereClause+=")";
+		String seriesIdWhereClause=" AND G.SERIES_INSTANCE_UID IN(:ids) ";
+		String visibilityWhereClause="";
+		if (!allVisibilities) {
+			visibilityWhereClause=" AND G.VISIBILITY IN ('1', '12') ";
+		}
+		String fullSQL=sQL+visibilityWhereClause+seriesIdWhereClause+siteWhereClause;
+		List<Object[]> seriesResults= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(fullSQL).setParameterList("ids", seriesIds).list();
+	    Iterator<Object[]> iter = seriesResults.iterator();
+
+	    // Loop through the results.  There is one result for each series
+	    while (iter.hasNext()) {
+	    	Object[] row = iter.next();
+
+	        // Create the seriesDTO
+
+	        SeriesDTO seriesDTO = new SeriesDTO();
+	        //modality should never be null... but currently possible
+	        seriesDTO.setSeriesPkId(((BigInteger)  row[0]).intValue());
+	        String annotationFlag = Util.nullSafeString(row[1]);
+	        if(annotationFlag!=null) {
+	        	seriesDTO.setAnnotationsFlag(true);
+	        }
+	        seriesDTO.setBodyPartExamined(Util.nullSafeString(row[2]));
+	        seriesDTO.setPatientId((String)row[3]);
+	        seriesDTO.setDescription(Util.nullSafeString(row[4]));
+	        seriesDTO.setSeriesUID(row[5].toString());
+	        seriesDTO.setSeriesNumber(Util.nullSafeString(row[6]));
+	        if (row[7]!=null) {
+	           seriesDTO.setStudyDate((Date)(row[7]));
+	        }
+	        seriesDTO.setStudyDesc(Util.nullSafeString(row[8]));
+	        seriesDTO.setStudyId(row[9].toString());
+	        seriesDTO.setProject((String)row[10]);
+	        seriesDTO.setDataProvenanceSiteName((String)row[11]);
+	        seriesDTO.setStudy_id(Util.nullSafeString(row[12]));
+	        seriesDTO.setTotalSizeForAllImagesInSeries(((BigDecimal)  row[14]).longValue());
+	        if (row[13]!=null)
+	        {
+	        	seriesDTO.setAnnotationsSize(((BigDecimal)  row[13]).longValue());
+	        } else {
+	        	seriesDTO.setAnnotationsSize(0L);
+	        }
+	        seriesDTO.setNumberImages(((BigInteger)  row[15]).intValue());
+	        returnValue.add(seriesDTO);
+	    }
+		
+		return returnValue;	
+		
+	}
+
 }
