@@ -54,7 +54,7 @@ public class SetQCVisibilityForDataAdmin extends getData{
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@FormParam("project") String projectSite, 
+	public Response constructResponse(@FormParam("projectSite") String projectSite, 
 			@FormParam("seriesId") List<String> seriesIdList,
 			@FormParam("newQcStatus") String newQcStatus,
 			@FormParam("batch") String batch,
