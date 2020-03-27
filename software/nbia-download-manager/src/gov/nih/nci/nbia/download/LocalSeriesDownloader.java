@@ -377,7 +377,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 					if (!annotation) {
 						// sopUidsList.add(sop.substring(0, pos)); - lrt moved to
 						// below, after file size check
-						outputStream = new FileOutputStream(location + File.separator + StringUtil.displayAsSixDigitString(imageCnt));
+						outputStream = new FileOutputStream(location + File.separator + StringUtil.displayAsSixDigitString(imageCnt)+".dcm");
 					} else {
 						outputStream = new FileOutputStream(location + File.separator + sop);
 					}
