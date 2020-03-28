@@ -58,11 +58,12 @@ export class UserComponent implements OnInit {
   }
   
   onRowEditInit(user: User) {
+		this.clearMsg();	  
         this.clonedUsers[user.loginName] = {...user};
     }
 
   onRowEditSave(user: User) {
-	  console.log("onEditSave: loginName=" + user.loginName +" email=" + user.email + " active=" + user.active);
+//	  console.log("onEditSave: loginName=" + user.loginName +" email=" + user.email + " active=" + user.active);
 		var idx = this.users.findIndex(a => a.loginName === user.loginName);
 		this.users[idx] = user;
         if (user.loginName && user.email) {
@@ -86,13 +87,14 @@ export class UserComponent implements OnInit {
     }
 
     onRowEditCancel(user: User, index: number) {
-		console.log("onEditCancel: index=" + index);
-		console.log("onEditCancel: loginName=" + user.loginName +" email=" + user.email + " active=" + user.active);
-		console.log("onEditCancelCloned: loginName=" + this.clonedUsers[user.loginName].loginName +" email=" + this.clonedUsers[user.loginName].email + " active=" + this.clonedUsers[user.loginName].active);
+//		console.log("onEditCancel: index=" + index);
+//		console.log("onEditCancel: loginName=" + user.loginName +" email=" + user.email + " active=" + user.active);
+//		console.log("onEditCancelCloned: loginName=" + this.clonedUsers[user.loginName].loginName +" email=" + this.clonedUsers[user.loginName].email + " active=" + this.clonedUsers[user.loginName].active);
 //        this.dt22 = '';
 //		this.dt23 = '';
 
 //		this.users[index] = this.clonedUsers[user.loginName];
+		this.clearMsg();
         var idx = this.users.findIndex(a => a.loginName === user.loginName);
 		console.log("onEditCancel: idx=" + idx);
 		this.users[idx] = this.clonedUsers[user.loginName];

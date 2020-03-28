@@ -361,16 +361,15 @@ System.out.println("!!!unauthorized : "+ sb.toString().substring(0, sb.lastIndex
 			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
 
 
-
 			List<SiteData> authorizedSiteData = am.getAuthorizedSites();
 			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 			List<SeriesDTO> seriesDTOsFound = null;
 			if (mgr.hasQaRole(loginName)) {
-				seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUIDAllVisibilities(seriesUids,
+				seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUIDAllVisibilitiesLight(seriesUids,
 						authorizedSiteData, null);
 			}
 			else 
-				seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID112(seriesUids,
+				seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID112Light(seriesUids,
 					authorizedSiteData, null);
 
 			if  ((seriesDTOsFound != null) && (seriesDTOsFound.size() < seriesUids.size() )) {

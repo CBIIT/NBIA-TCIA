@@ -38,13 +38,13 @@
 				</th-->
 				<th style="border-top: 0;">
 					<div class="ui-fluid">
-						<input pInputText type="text" pTooltip="Enter a whole or partial word to fileter on login name" (input)="dt.filter($event.target.value, 'loginName', 'contains')"
+						<input pInputText type="text" pTooltip="Enter a whole or partial word to filter on login name" (input)="dt.filter($event.target.value, 'loginName', 'contains')"
 						[value]="dt.filters['loginName'] ? dt.filters['loginName'].value : ''">
 					</div>
 				</th>
 				<th style="border-top: 0;">
 					<div class="ui-fluid">
-						<input pInputText type="text" pTooltip="Enter a whole or partial word to fileter on email" (input)="dt.filter($event.target.value, 'email', 'contains')"
+						<input pInputText type="text" pTooltip="Enter a whole or partial word to filter on email" (input)="dt.filter($event.target.value, 'email', 'contains')"
 						[value]="dt.filters['email'] ? dt.filters['email'].value : ''">
 					</div>	
 				</th>				
@@ -78,8 +78,8 @@
 			  </td> 			  
 			  <td>
                 <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="nbia-col-button" (click)="onRowEditInit(rowData)"></button>
-                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
-                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri);dt.reset()"></button>				
+                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"pTooltip="Save the change" ></button>
+                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri);dt.reset()"pTooltip="Cancel the action" ></button>				
 			  </td>
 			</tr>
 		</ng-template>

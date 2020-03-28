@@ -40,6 +40,13 @@ public interface QcStatusDAO {
 			                   String newStatus, String[] additionalQcFlagList, String[] newAdditionalQcFlagList, 
 			                   String userName, 
 			                   String comment) throws DataAccessException;
+	public void updateQcStatus(List<String> seriesList,
+            String newStatus, 
+            String batch,
+            String submissionType,
+            String releasedStatus,
+            String userName, 
+            String comment) throws DataAccessException;
 	
 	public List<Map<String,String>> findExistingStatus(String project, String site, List<String> seriesUids) throws DataAccessException;
 	
