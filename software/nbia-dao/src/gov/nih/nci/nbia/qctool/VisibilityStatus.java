@@ -171,7 +171,6 @@ public enum VisibilityStatus {
 		returnValue.add("Visible");
 		returnValue.add("Not Visible");
 		returnValue.add("To Be Deleted");
-		returnValue.add("Delete");
 		returnValue.add(getPropertyValue("qctool.visibility.stage1"));
 		returnValue.add(getPropertyValue("qctool.visibility.stage2"));
 		returnValue.add(getPropertyValue("qctool.visibility.stage3"));
