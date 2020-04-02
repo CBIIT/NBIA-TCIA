@@ -421,6 +421,11 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 //				System.out.println(this.seriesInstanceUid + additionalInfo);
 				error();
 			}
+			else {
+				downloaded= size;
+	            stateChanged();
+	            updateDownloadProgress(size);
+			}
 			if (downloadedImgSize != imagesSize) {
 				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
 			}
@@ -440,6 +445,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			 * System.out.println(this.seriesInstanceUid + additionalInfo);
 			 * error(); }
 			 */
+			
 		}
 		// End lrt additions
 	}
@@ -510,6 +516,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
     	downloaded = 0;
     	sopUids = null;
     	clearSopUidsList();
-    }	    
-    
+    	status = NOT_STARTED;
+    	stateChanged();
+    }	        
 }

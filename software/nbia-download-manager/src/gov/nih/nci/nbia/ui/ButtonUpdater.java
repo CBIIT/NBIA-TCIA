@@ -87,20 +87,38 @@ public class ButtonUpdater implements ThreadPoolListener {
 	public void update() {
 		// TODO Auto-generated method stub
 		// disable pause/resume buttons
+//System.out.println("????????????completed the list yet ");	
+		boolean stillDownloading = false;
+		boolean hasIncomplete = false;
 		
-	    if (stillDownloading())
-	    	return;
-	    
-		this.pauseButton.setEnabled(false);
-		this.resumeButton.setEnabled(false);
-		if (!errorLabel.isVisible()) {
-			this.errorLabel.setText("Downloads Complete"); // lrt - let user know that we are done with all downloads
-															// and retries
-		} else {	
-			String errLabletext = this.errorLabel.getText();
-			this.errorLabel.setText(errLabletext + " Please contact support for failed series. Downloads Complete");
-			optionsForErrCondiction();
+		for (int i = 0; i < table.getRowCount(); ++i) {
+			String downloadStatus = (String) table.getValueAt(i, DownloadsTableModel.STATUS_COLUMN);
+			if ((downloadStatus.equals("Downloading")||downloadStatus.equals("Not Started"))) {
+				stillDownloading =true;
+			}
+			else if (!(downloadStatus.equals("Complete"))) {
+				hasIncomplete= true;
+			}
 		}
+		
+	    if (stillDownloading)
+	    	return;
+	    else {
+	    	this.pauseButton.setEnabled(false);
+			this.resumeButton.setEnabled(false);
+			if (hasIncomplete == false) {
+				if (!errorLabel.isVisible()) {
+					this.errorLabel.setText("Downloads Complete"); // lrt - let user know that we are done with all downloads
+																	// and retries
+				}
+			}
+			else {	
+				String errLabletext = this.errorLabel.getText();
+				this.errorLabel.setText(errLabletext + " Please contact support for failed series. Downloads Complete");
+				optionsForErrCondiction();
+			}	
+	    }
+	    	
 		if (!retry)
 			this.errorLabel.setVisible(true);
 	}

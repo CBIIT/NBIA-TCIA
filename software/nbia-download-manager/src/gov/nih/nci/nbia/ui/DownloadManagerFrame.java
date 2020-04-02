@@ -476,7 +476,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	}
 
 	/* Resume the entire download. */
-	private void actionResume() {
+	private void actionResume() {		
 		int size = tableModel.getRowCount();
 		for (int i = 0; i < size; i++) {
 			LocalSeriesDownloader sd = (LocalSeriesDownloader) ((DownloadsTableModel) table.getModel())

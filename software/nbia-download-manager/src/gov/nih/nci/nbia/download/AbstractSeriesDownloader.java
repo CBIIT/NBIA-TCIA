@@ -220,11 +220,11 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 
             System.out.println("runImpl is done:"+status +" for series:"+seriesInstanceUid);
             //could be NO_DATA or ERROR i think
-            if (status == COMPLETE) {
-                downloaded= size;
-                stateChanged();
-                updateDownloadProgress(size);
-            }
+//            if (status == COMPLETE) {
+//                downloaded= size;
+//                stateChanged();
+//                updateDownloadProgress(size);
+//            }
 
         }
         catch (Exception e){
