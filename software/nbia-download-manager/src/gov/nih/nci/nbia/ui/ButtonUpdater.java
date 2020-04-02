@@ -71,16 +71,32 @@ public class ButtonUpdater implements ThreadPoolListener {
 		this.errorLabel = errorLabel;
 		this.table = table;
 	}
+	
+   boolean stillDownloading() {
+    	boolean ys = false;
+		for (int i = 0; i < table.getRowCount(); ++i) {
+			String downloadStatus = (String) table.getValueAt(i, DownloadsTableModel.STATUS_COLUMN);
+			if ((downloadStatus.equals("Downloading")||downloadStatus.equals("Not Started"))) {
+				ys =true;
+				break;
+			}
+		}
+		return ys;
+    }
 
 	public void update() {
 		// TODO Auto-generated method stub
 		// disable pause/resume buttons
+		
+	    if (stillDownloading())
+	    	return;
+	    
 		this.pauseButton.setEnabled(false);
 		this.resumeButton.setEnabled(false);
 		if (!errorLabel.isVisible()) {
 			this.errorLabel.setText("Downloads Complete"); // lrt - let user know that we are done with all downloads
 															// and retries
-		} else {
+		} else {	
 			String errLabletext = this.errorLabel.getText();
 			this.errorLabel.setText(errLabletext + " Please contact support for failed series. Downloads Complete");
 			optionsForErrCondiction();
