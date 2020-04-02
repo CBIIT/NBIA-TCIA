@@ -154,8 +154,8 @@ public class StandaloneDMV3 extends StandaloneDM {
 			int last = (maxInGroup * count) >= seriesSize ? seriesSize : (maxInGroup * count);
 //			System.out.println("@@@@@@@@@@@@@@@@@@group count = "+ count + " index = " + index + " last = " + last);
 			seriesSubgroup = seriesList.subList(index, last);
-			for (int i = 0; i < seriesSubgroup.size(); ++i)
-				System.out.println(seriesSubgroup.get(i));
+//			for (int i = 0; i < seriesSubgroup.size(); ++i)
+//				System.out.println(seriesSubgroup.get(i));
 			index = maxInGroup * count;
 			try {
 				if (count == 1) {
@@ -185,7 +185,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 //				e1.printStackTrace();
 //			}
 			
-		System.out.println("return size = " +seriesInfo.size());
+//		System.out.println("return size = " +seriesInfo.size());
 		return seriesInfo;
 	}
 
@@ -689,7 +689,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		helpDeskLbl.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("mouse clicked");
+				//System.out.println("mouse clicked");
 				//BrowserLauncher.openUrl(DownloaderProperties.getHelpDeskUrl());
 				BrowserLauncher.openUrlForHelpDesk();
 			}

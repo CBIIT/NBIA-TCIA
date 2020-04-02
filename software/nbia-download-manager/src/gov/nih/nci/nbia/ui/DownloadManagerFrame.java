@@ -11,6 +11,7 @@ package gov.nih.nci.nbia.ui;
 import gov.nih.nci.nbia.Application;
 import gov.nih.nci.nbia.download.SeriesDownloaderFactory;
 import gov.nih.nci.nbia.download.AbstractSeriesDownloader;
+import gov.nih.nci.nbia.download.LocalSeriesDownloader;
 import gov.nih.nci.nbia.download.SeriesData;
 import gov.nih.nci.nbia.util.ThreadPool;
 import gov.nih.nci.nbia.util.DownloaderProperties;
@@ -144,7 +145,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		} else {
 			setTitle(appName+" Download Manager");
 		}
-		setSize(800, 480);
+		setSize(800, 450);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				actionExit();
@@ -187,7 +188,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			setTitle(appName+" Download Manager");
 		}
 		//setSize(800, 480);
-		setSize(1400, 980);
+		setSize(1280, 680);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				actionExit();
@@ -470,27 +471,30 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		pool.pause();
 		pauseButton.setEnabled(false);
 		resumeButton.setEnabled(!pauseButton.isEnabled());
-		System.out.println("Resume button enabled: " + resumeButton.isEnabled());
+		//System.out.println("Resume button enabled: " + resumeButton.isEnabled());
 		// updateButtons();
 	}
 
 	/* Resume the entire download. */
-	private void actionResume() {
+	private void actionResume() {		
 		int size = tableModel.getRowCount();
 		for (int i = 0; i < size; i++) {
-			AbstractSeriesDownloader sd = tableModel.getDownload(i);
+			LocalSeriesDownloader sd = (LocalSeriesDownloader) ((DownloadsTableModel) table.getModel())
+					.getDownload(i);
 			if (sd.getStatus() == AbstractSeriesDownloader.PAUSED
 					|| sd.getStatus() == AbstractSeriesDownloader.NOT_STARTED) {
 				pool.assign(tableModel.getDownload(i));
 			}
 
 			if (sd.getStatus() == AbstractSeriesDownloader.PAUSED) {
+				sd.resetForResume();
 				sd.resume();
 			}
 		}
+		
 		resumeButton.setEnabled(false);
 		pauseButton.setEnabled(!resumeButton.isEnabled());
-		System.out.println("Pause button enabled: " + pauseButton.isEnabled());
+		//System.out.println("Pause button enabled: " + pauseButton.isEnabled());
 		// updateButtons();
 	}
 
@@ -549,6 +553,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if ("status".equals(evt.getPropertyName())) {
 				int status = Integer.parseInt(evt.getNewValue().toString());
+
 				if (AbstractSeriesDownloader.ERROR == status && !errorLabel.isVisible()) {
 					errorLabel.setVisible(true);
 				}

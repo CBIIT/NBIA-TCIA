@@ -23,6 +23,8 @@
 package gov.nih.nci.nbia.qctool;
 
 import java.util.Properties;
+import java.util.List;
+import java.util.ArrayList;
 import gov.nih.nci.nbia.util.*;
 
 
@@ -161,5 +163,23 @@ public enum VisibilityStatus {
 
 	public Integer getNumberValue() {
 		return numberValue;
+	}
+	public static List<String> getVisibilities() {
+		List <String> returnValue = new ArrayList<String>();
+		
+		returnValue.add("Not Yet Reviewed");
+		returnValue.add("Visible");
+		returnValue.add("Not Visible");
+		returnValue.add("To Be Deleted");
+		returnValue.add(getPropertyValue("qctool.visibility.stage1"));
+		returnValue.add(getPropertyValue("qctool.visibility.stage2"));
+		returnValue.add(getPropertyValue("qctool.visibility.stage3"));
+		returnValue.add(getPropertyValue("qctool.visibility.stage4"));
+		returnValue.add(getPropertyValue("qctool.visibility.stage5"));
+		returnValue.add(getPropertyValue("qctool.visibility.stage6"));
+		returnValue.add(getPropertyValue("qctool.visibility.stage7"));
+		returnValue.add("Downloadable");
+		return returnValue;
+		
 	}
 }

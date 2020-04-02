@@ -50,6 +50,10 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     public float getProgress(){
         return ((float) downloaded / size) * 100;
     }
+    
+    public long getDownloaded() {
+    	return downloaded;
+    }
 
     /* Get this download's status.*/
     public int getStatus(){
@@ -64,7 +68,7 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 
     /* Resume this download.*/
     public void resume() {
-        status = DOWNLOADING;
+        status = DOWNLOADING;        
         stateChanged();
     }
 
@@ -89,7 +93,20 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 
         pcs.firePropertyChange("status", oldStatus, status);
         stateChanged();
-    }    
+    }  
+    
+    public void completed() {
+        int oldStatus = status;
+        status = COMPLETE;
+
+        pcs.firePropertyChange("status", oldStatus, status);
+        stateChanged();
+        
+//    	status = COMPLETE;
+//    	downloaded= size;
+//        stateChanged();
+//        updateDownloadProgress(size);
+    }        
 
 
     public void stateChanged(){
@@ -203,11 +220,11 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 
             System.out.println("runImpl is done:"+status +" for series:"+seriesInstanceUid);
             //could be NO_DATA or ERROR i think
-            if (status == COMPLETE) {
-                downloaded= size;
-                stateChanged();
-                updateDownloadProgress(size);
-            }
+//            if (status == COMPLETE) {
+//                downloaded= size;
+//                stateChanged();
+//                updateDownloadProgress(size);
+//            }
 
         }
         catch (Exception e){
@@ -229,7 +246,6 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
        }
         long end = System.currentTimeMillis();
         additionalInfo.append(" - total download time: " + (end - start)/1000 + "s.");
-        System.out.println(additionalInfo.toString());
     }
 
     /**

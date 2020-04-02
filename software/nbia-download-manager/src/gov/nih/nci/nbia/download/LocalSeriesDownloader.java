@@ -184,7 +184,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		// end lrt additions
 
 		HttpPost httpPostMethod = new HttpPost(url.toString());
-		List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
+		List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();	
 		postParams.add(new BasicNameValuePair("userId", this.userId));
 		postParams.add(new BasicNameValuePair("sopUids", this.sopUids));
 		postParams.add(new BasicNameValuePair("seriesUid", this.seriesInstanceUid));
@@ -194,7 +194,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		postParams.add(new BasicNameValuePair("Range", "bytes=" + downloaded + "-"));
 		postParams.add(new BasicNameValuePair("password", password));		
 		postParams.add(new BasicNameValuePair("newFileNames", "Yes"));	
-		System.out.println("requesting new file names");
+		//System.out.println("requesting new file names");
 		//postParams.add(new BasicNameValuePair("dirType", Boolean.toString(this.dirType)));		
 		httpPostMethod.addHeader("password", password);
 		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
@@ -358,7 +358,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				OutputStream outputStream = null;
 				String fileName = tarArchiveEntry.getName();
 				String sop = null;
-				System.out.println("fileName-"+fileName);
+//				System.out.println("fileName-"+fileName);
 				boolean annotation=true;
 				if (fileName.contains("^")) {
 					annotation=false;
@@ -381,9 +381,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 					} else {
 						outputStream = new FileOutputStream(location + File.separator + sop);
 					}
-				}
-				
-
+				}				
 
 				try {
 					NBIAIOUtils.copy(zis, outputStream, progressUpdater);
@@ -394,6 +392,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				}
 
 				imageCnt += 1;
+
 				// Begin lrt additions
 				long bytesDownloaded = downloaded - startDownloaded;
 				if (bytesDownloaded != fileSize) {
@@ -419,8 +418,13 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				additionalInfo
 						.append("Number of image files mismatch. It Was supposed to be " + numberOfImages
 								+ " image files but we found " + sopUidsList.size() + " at server side\n");
-				System.out.println(this.seriesInstanceUid + additionalInfo);
+//				System.out.println(this.seriesInstanceUid + additionalInfo);
 				error();
+			}
+			else {
+				downloaded= size;
+	            stateChanged();
+	            updateDownloadProgress(size);
 			}
 			if (downloadedImgSize != imagesSize) {
 				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
@@ -441,6 +445,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			 * System.out.println(this.seriesInstanceUid + additionalInfo);
 			 * error(); }
 			 */
+			
 		}
 		// End lrt additions
 	}
@@ -505,5 +510,13 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
     	sopUids = null;
     	clearSopUidsList();
     	stateChanged();
-    }	
+    }
+    
+    public void resetForResume() {
+    	downloaded = 0;
+    	sopUids = null;
+    	clearSopUidsList();
+    	status = NOT_STARTED;
+    	stateChanged();
+    }	        
 }

@@ -130,7 +130,9 @@ public class ThreadPool {
     public void addThreadPoolListener(ThreadPoolListener tpl ){
         listeners.add(tpl);
     }
+    
     private List<ThreadPoolListener> listeners= new ArrayList<ThreadPoolListener>();
+
     public void fireUpdateEvent(){
         for(ThreadPoolListener listener: listeners){
             listener.update();
@@ -182,6 +184,7 @@ class WorkerThread extends Thread {
         if(owner.tempAssignments.contains(target)){
             owner.tempAssignments.remove((target));
         }
+
         if(!owner.isPaused() && owner.tempAssignments.size() == 0){
             owner.fireUpdateEvent();
         }

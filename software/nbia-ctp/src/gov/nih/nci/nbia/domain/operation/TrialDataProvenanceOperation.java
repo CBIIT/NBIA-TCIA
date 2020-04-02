@@ -35,6 +35,7 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		    if ((temp = (String) numbers.get(DicomConstants.PROJECT_NAME)) != null) {
 		        hql += ("lower(tdp.project) = '" + temp.trim().toLowerCase() +
 		        "'");
+		        tdp.setProject(temp.trim());
 		    } else {
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Collection is null");
 		    }
