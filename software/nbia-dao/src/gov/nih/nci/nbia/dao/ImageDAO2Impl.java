@@ -39,19 +39,10 @@ public class ImageDAO2Impl extends AbstractDAO
     public List<ImageDTO2> findImagesBySeriesUid(String seriesUid,
     		                                    String exclusionSopUidList) throws DataAccessException {
     	String query="";
-    	if(exclusionSopUidList.equals("")) {
     		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
     				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid + "'";
-    	}
-    	else {
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
-    				"from GeneralImage gimg join gimg.generalSeries gs " +
-    				"where gimg.seriesInstanceUID = '"+
-                    seriesUid +
-                    "' and gimg.SOPInstanceUID not in (" + exclusionSopUidList + ")";
-    	}
     	// Submit the search
         long start = System.currentTimeMillis();
     	logger.info("Issuing query: ");
@@ -88,6 +79,13 @@ public class ImageDAO2Impl extends AbstractDAO
         }
         Collections.sort(imageResults);
         setNewFileNames(imageResults);
+        if (exclusionSopUidList!=null&&exclusionSopUidList.length()>1) {
+           for (ImageDTO2 image : imageResults) {
+        	  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
+        		  imageResults.remove(image);
+        	  }
+           }
+        }
         return imageResults;
     }
 	
