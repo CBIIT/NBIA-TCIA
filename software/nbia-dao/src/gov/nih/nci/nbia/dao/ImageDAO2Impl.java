@@ -18,6 +18,7 @@ import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
@@ -81,11 +82,12 @@ public class ImageDAO2Impl extends AbstractDAO
         setNewFileNames(imageResults);
         try {
 			if (exclusionSopUidList!=null&&exclusionSopUidList.length()>1) {
-			   for (ImageDTO2 image : imageResults) {
-				  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
-					  imageResults.remove(image);
-				  }
-			   }
+			   for (Iterator<ImageDTO2> iterator = imageResults.iterator(); iterator.hasNext(); ) {
+				   ImageDTO2 image = iterator.next();
+					  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
+						  iterator.remove();
+					  }
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
