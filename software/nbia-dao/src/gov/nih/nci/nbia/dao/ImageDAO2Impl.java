@@ -79,13 +79,17 @@ public class ImageDAO2Impl extends AbstractDAO
         }
         Collections.sort(imageResults);
         setNewFileNames(imageResults);
-        if (exclusionSopUidList!=null&&exclusionSopUidList.length()>1) {
-           for (ImageDTO2 image : imageResults) {
-        	  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
-        		  imageResults.remove(image);
-        	  }
-           }
-        }
+        try {
+			if (exclusionSopUidList!=null&&exclusionSopUidList.length()>1) {
+			   for (ImageDTO2 image : imageResults) {
+				  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
+					  imageResults.remove(image);
+				  }
+			   }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return imageResults;
     }
 	
