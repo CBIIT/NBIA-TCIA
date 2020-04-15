@@ -27,7 +27,6 @@ public class QcSearchResultDTOLight {
 	private String batch;
 	private String submissionType;
 	private String releasedStatus;
-	private String studyDate;
 	private String seriesPkId;
 	
 	
@@ -159,18 +158,6 @@ public class QcSearchResultDTOLight {
 
 
 
-
-
-
-	public String getStudyDate() {
-		return studyDate;
-	}
-
-
-
-	public void setStudyDate(String studyDate) {
-		this.studyDate = studyDate;
-	}
 
 
 
