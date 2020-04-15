@@ -18,6 +18,7 @@ import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,19 +40,10 @@ public class ImageDAO2Impl extends AbstractDAO
     public List<ImageDTO2> findImagesBySeriesUid(String seriesUid,
     		                                    String exclusionSopUidList) throws DataAccessException {
     	String query="";
-    	if(exclusionSopUidList.equals("")) {
     		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
     				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid + "'";
-    	}
-    	else {
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
-    				"from GeneralImage gimg join gimg.generalSeries gs " +
-    				"where gimg.seriesInstanceUID = '"+
-                    seriesUid +
-                    "' and gimg.SOPInstanceUID not in (" + exclusionSopUidList + ")";
-    	}
     	// Submit the search
         long start = System.currentTimeMillis();
     	logger.info("Issuing query: ");
@@ -88,6 +80,18 @@ public class ImageDAO2Impl extends AbstractDAO
         }
         Collections.sort(imageResults);
         setNewFileNames(imageResults);
+        try {
+			if (exclusionSopUidList!=null&&exclusionSopUidList.length()>1) {
+			   for (Iterator<ImageDTO2> iterator = imageResults.iterator(); iterator.hasNext(); ) {
+				   ImageDTO2 image = iterator.next();
+					  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
+						  iterator.remove();
+					  }
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return imageResults;
     }
 	

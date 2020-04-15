@@ -258,10 +258,32 @@ public class QcStatusDAOImpl extends AbstractDAO
 			updateDb(seriesId, statusList.get(i), newStatus, additionalQcFlagList, newAdditionalQcFlagList, userName, comment);
 			
 		}
+	}
+	
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+	public void updateQcStatus(List<String> seriesList,
+			                   String newStatus, 
+			                   String batch,
+			                   String submissionType,
+			                   String releasedStatus,
+			                   String userName, 
+			                   String comment) throws DataAccessException {
+		
+		//System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - statusList size is: " + statusList.size());
 		
 		
+		
+		for (int i = 0; i < seriesList.size(); ++i) {
+			String seriesId = seriesList.get(i);
+			
+
+			updateDb(seriesId, newStatus, batch, submissionType, releasedStatus, userName, comment);
+			
+		}
 		
 	}
+	
 	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Map<String,String>> findExistingStatus(String project, String site, List<String> seriesUids) throws DataAccessException {
@@ -489,6 +511,63 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 	}
 
+	@Transactional(propagation=Propagation.REQUIRED)	
+	private void updateDb(String seriesId,
+			      String newStatus, 
+			      String batch,
+			      String submissionType,
+			      String releasedStatus,
+			      String userName, 
+			      String comment) {
+		    System.out.println("newStatus-"+newStatus);
+		    Integer visibility=VisibilityStatus.stringStatusFactory(newStatus).getNumberValue();
+			QCStatusHistory qsh = new QCStatusHistory();
+			qsh.setNewValue(visibility.toString());
+			qsh.setHistoryTimestamp(new Date());
+			qsh.setSeriesInstanceUid(seriesId);
+			qsh.setUserId(userName);
+			qsh.setComment(comment);
+		
+			String hql = "select distinct gs from GeneralSeries gs where gs.seriesInstanceUID ='"
+					+ seriesId + "'";
+			final String updateHql = createUpdateCurationTStatement(seriesId);
+			List searchResults = getHibernateTemplate().find(hql);
+			
+			if (searchResults != null) {
+				GeneralSeries gs = (GeneralSeries) (searchResults.get(0));
+				
+				qsh.setOldValue(gs.getVisibility());
+				gs.setVisibility(visibility.toString());
+				if (gs.getBatch()!=null) {
+					qsh.setOldBatch(gs.getBatch().toString());
+            	}
+				if (batch!=null) {
+					gs.setBatch(Integer.parseInt(batch));
+					qsh.setNewBatch(batch.toString());
+				}
+				if (gs.getSubmissionType()!=null) {
+					qsh.setOldSubmissionType(gs.getSubmissionType());
+				}
+				if (submissionType!=null) {
+					gs.setSubmissionType(submissionType);
+					qsh.setNewSubmissionType(submissionType);
+				}
+				if (gs.getReleasedStatus()!=null) {
+					qsh.setOldReleasedStatus(gs.getReleasedStatus());
+				}
+				if (releasedStatus!=null) {
+					gs.setReleasedStatus(releasedStatus);
+					qsh.setOldReleasedStatus(releasedStatus);
+				}
+					
+				getHibernateTemplate().update(gs);
+				getHibernateTemplate().bulkUpdate(updateHql);	
+				getHibernateTemplate().saveOrUpdate(qsh);
+				
+			}
+	}	
+	
+	
 	private String createUpdateCurationTStatement(String seriesId){
 	    String hql = "update GeneralImage set curationTimestamp = current_timestamp() where seriesInstanceUID = '"+seriesId+"'";
 	    return hql;

@@ -93,6 +93,7 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
 //            }
         }
         catch(Exception e) {
+        	e.printStackTrace();
             log.error("Exception in GeneralImageOperation " + e);
             throw new Exception("Exception in GeneralImageOperation " + e);
         }
@@ -164,7 +165,7 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
         log.debug("SOP instance uid: " + sopInstanceUid + " The image PatientID: " + thisPatient + "\tstudyUID: "+ thisStudyID + "\tseriesUID: " + thisSeries + "\tProject: " +thisProject + "\tsiteID: " + thisSiteID );
 
         String patientID = existingGeneralImage.getPatientId();
-        String project = existingGeneralImage.getDataProvenance().getProject();
+        String project = existingGeneralImage.getGeneralSeries().getProject();
         String studyID = existingGeneralImage.getStudyInstanceUID();
         String seriesID = existingGeneralImage.getSeriesInstanceUID();
         //String siteID = existingGeneralImage.getDataProvenance().getDpSiteId();
