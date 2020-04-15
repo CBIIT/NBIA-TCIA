@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Consts } from '../../../constants';
+import { Consts } from '@app/constants';
 import { QuerySectionService } from '../services/query-section.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,10 +14,11 @@ export class QueryQcStatusComponent implements OnInit, OnDestroy{
     @Input() isTop = true; // This one defaults to the top.
     @Input() currentTool;
 
-    showCriteriaList = false;
+    showCriteriaList = true;
     hasChecked = false;
     cBox = [];
     qcStatuses = Consts.QC_STATUSES;
+    consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -60,9 +61,9 @@ export class QueryQcStatusComponent implements OnInit, OnDestroy{
 
     updateQuery() {
         if( this.hasChecked ){
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_QC_STATUS, this.cBox );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_QC_STATUS, this.cBox );
         }else{
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_QC_STATUS, null );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_QC_STATUS, null );
         }
     }
 

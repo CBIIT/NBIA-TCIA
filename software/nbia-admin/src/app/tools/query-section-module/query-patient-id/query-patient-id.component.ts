@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Consts } from '../../../constants';
+import { Consts } from '@app/constants';
 import { QuerySectionService } from '../services/query-section.service';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
@@ -13,7 +13,6 @@ import { DisplayQueryService } from '../../display-query-module/display-query/di
 } )
 
 export class QueryPatientIdComponent implements OnInit{
-    @Input() isTop = false;
     @Input() currentTool;
 
     /**
@@ -27,6 +26,7 @@ export class QueryPatientIdComponent implements OnInit{
      */
     subjectText = '';
     subjectIds;
+    consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -77,7 +77,7 @@ export class QueryPatientIdComponent implements OnInit{
     }
 
     updateQuery() {
-        this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_SUBJECT_ID, this.subjectIds );
+        this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_SUBJECT_ID, this.subjectIds );
     }
 
 }

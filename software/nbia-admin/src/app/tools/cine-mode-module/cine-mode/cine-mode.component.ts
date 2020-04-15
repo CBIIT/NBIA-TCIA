@@ -1,33 +1,31 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CineModeService } from './cine-mode.service';
-import { ApiService } from '../../../admin-common/services/api.service';
+import { ApiService } from '@app/admin-common/services/api.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UtilService } from '../../../admin-common/services/util.service';
-import { takeUntil } from 'rxjs/operators';
-import { Properties } from '../../../../assets/properties';
-import { Consts } from '../../../constants';
-import { AccessTokenService } from '../../../admin-common/services/access-token.service';
+import { UtilService } from '@app/admin-common/services/util.service';
+import { takeUntil, timeout } from 'rxjs/operators';
+import { Properties } from '@assets/properties';
+import { Consts } from '@app/constants';
+import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 
-@Component({
-  selector: 'nbia-cine-mode',
-  templateUrl: './cine-mode.component.html',
-  styleUrls: ['./cine-mode.component.scss']
-})
-export class CineModeComponent implements OnInit {
+@Component( {
+    selector: 'nbia-cine-mode',
+    templateUrl: './cine-mode.component.html',
+    styleUrls: ['./cine-mode.component.scss']
+} )
+export class CineModeComponent implements OnInit{
     dicomData = [];
-    showDicomData = false;
+    showDicomData = true;
+    showQcHistory = false;
+    showQcStatus = false;
+    showSeriesData = false;
     showCineModeViewer = false;
     // currentImage is 1 rather than 0 for the benefit of the user who does not expect the first image to be zero.
     currentImage = 1;
     currentImageWiggleRoom = 1;
 
-    displayCineModeImagesEmitter = new EventEmitter();
-    seriesId;
-    seriesUID;
-    seriesDescription;
-    studyDate;
 
     images;
     loading = false;
@@ -42,60 +40,58 @@ export class CineModeComponent implements OnInit {
     handleMoving = false;
     showDicom = false;
     progress = 0;
+    seriesData = {};
+    collectionSite = '';
+    /**
+     * We will need this when asking for the next series in the Search results.
+     */
+    searchResultsIndex;
+
+    qcStatusReportResults = [];
 
     frameRate = 15;
+    maxFps = Properties.MAX_VIDEO_FPS;
     playState;
     PLAY = 0;
     PLAY_BACK = 1;
     STOP = 2;
 
+    properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private cineModeService: CineModeService, private apiService: ApiService, private httpClient: HttpClient,
-                 private sanitizer: DomSanitizer,  private utilService: UtilService, private accessTokenService: AccessTokenService ) {
+                 private sanitizer: DomSanitizer, private utilService: UtilService, private accessTokenService: AccessTokenService ) {
     }
 
     ngOnInit() {
 
         this.cineModeService.displayCineModeImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                this.reset();
+            ( data ) => {
+                this.collectionSite = data['collectionSite'];
+                this.seriesData = data['series'];
+                this.searchResultsIndex = data['searchResultsIndex']; // FIXMENOW  We will not be using this get rid of it here and at the source
                 this.showCineModeViewer = true;
+                this.reset();
+                this.getImages();
+                this.apiService.doSubmit( Consts.GET_HISTORY_REPORT_TABLE, '&seriesId=' + this.seriesData['series'] );
             } );
 
-        // From cine-mode.service
-        console.log('MHL  subscribe HERE');
-        this.cineModeService.sendCineModeDataEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+
+        this.apiService.qcHistoryResultsTableEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                console.log('MHL NOG data: ', data);
-                this.dicomData = data['dicomData'];
-                this.seriesUID = data['seriesUID'];
-                this.seriesId = data['seriesId'];
-                this.seriesDescription = data['seriesDescription'];
-                this.studyDate = data['studyDate'];
-                this.getImages();
+                this.qcStatusReportResults = data;
 
-                // This gets the DICOM data by series which returns the DICOM data for the first image.
-                // We don't get it by image number, like we do elsewhere because we may not have the images yet.
-                if( (!this.haveDicomData) && this.showDicomData ){
-                    let query = 'SeriesUID=' + this.seriesUID;
-// this.apiService.dataGet( Consts.DICOM_TAGS, query );
-                }
-            },
-            error => {
-                console.error('MHL NOG error ', error);
-
-            }
-
-
-            );
+                // Sort by Series Id then Time Stamp
+                this.qcStatusReportResults.sort( ( row1, row2 ) =>
+                    row1['series'] < row2['series'] ? 1 : row1['series'] > row2['series'] ? 1 : row1['timeStamp'] < row2['timeStamp'] ? -1 : 1 );
+            } );
 
 
         // Receive DICOM data by image.
-        this.apiService.getDicomTagsByImageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+        this.cineModeService.getDicomTagsByImageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                if( (data['id'] === 'imageID=' + this.images[this.currentImage - 1]['imagePkId'] ) ||
-                    (data['id'] === 'imageID=' + this.images[this.currentImageWiggleRoom - 1]['imagePkId'] )
+                if( (data['id'] === 'imageID=' + this.images[this.currentImage - 1]['imagePkId']) ||
+                    (data['id'] === 'imageID=' + this.images[this.currentImageWiggleRoom - 1]['imagePkId'])
                 ){
                     this.dicomData = data['res'];
                     this.haveDicomData = true;
@@ -105,7 +101,6 @@ export class CineModeComponent implements OnInit {
                 console.error( 'Error getting DICOM Data: ', err );
             }
         );
-
     }
 
     checkCurrentImageNumber() {
@@ -198,23 +193,61 @@ export class CineModeComponent implements OnInit {
 
     updateDicom() {
         if( this.showDicomData ){
- /*           this.dicomData = [];
-            // currentImage - 1  because currentImage starts at 1 not 0.
-            let query = 'imageID=' + this.images[this.currentImage - 1]['imagePkId'];
-            this.apiService.dataGet( Consts.DICOM_TAGS_BY_IMAGE, query );
-*/
+            if( this.images[this.currentImage - 1] !== undefined ){
+                this.dicomData = [];
+
+                // currentImage - 1  because currentImage starts at 1 not 0.
+                let query = 'imageID=' + this.images[this.currentImage - 1]['imagePkId'];
+
+                this.getDicomData( query ).subscribe(
+                    data => {
+                        this.dicomData = data;
+                        this.haveDicomData = true;
+                    }
+                );
+            }
+        }
+    }
+
+
+    getDicomData( query ) {
+        let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + Consts.DICOM_TAGS_BY_IMAGE + '?' + query;
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
+            console.log( 'getDicomData: ' + curl );
         }
 
+
+        let headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+        } );
+
+        let options = {
+            headers: headers,
+            method: 'get',
+        };
+
+        let results;
+        try{
+            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+            return results;
+        }catch( e ){
+            // TODO react to error.
+            console.error( 'getDicomData Exception: ' + e );
+        }
     }
+
 
     closeCineMode() {
         this.showCineModeViewer = false;
+        this.cineModeService.closeCineMode();
         this.reset();
     }
 
     reset() {
         this.progress = 0;
-        this.seriesDescription = '';
         this.images = [];
         this.currentImage = 1;
         this.getThumbnailErrorCount = 0;
@@ -222,16 +255,15 @@ export class CineModeComponent implements OnInit {
         this.haveAllData = false;
         this.loadingX = true;
         this.haveDicomData = false;
-
     }
 
     getImageDrillDownData(): Observable<any> {
-        let query = 'list=' + this.seriesId;
+        let query = 'list=' + this.seriesData['seriesPkId'];
 
-        // if( Properties.DEBUG_CURL ){
-        let curl = ' curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/getImageDrillDown\' -d \'' + query + '\'';
-        console.log( 'doPost: ', curl );
-        // }
+        if( Properties.DEBUG_CURL ){
+            let curl = ' curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/getImageDrillDown\' -d \'' + query + '\'';
+            console.log( 'doPost: ', curl );
+        }
 
         let imageDrillDownUrl = Properties.API_SERVER_URL + '/nbia-api/services/getImageDrillDown';
         let headers = new HttpHeaders( {
@@ -245,17 +277,8 @@ export class CineModeComponent implements OnInit {
         return this.httpClient.post( imageDrillDownUrl, query, options );
     }
 
-    /**
-     * If page has a value, only that page of images is downloaded.
-     * If page & imageNumber have value, get just one image.
-     *
-     * We get the current number of images per page from commonService.getImagesPerPage().
 
-     * @param page
-     * @param imageNumber
-     */
-    async getImages( page?, imageNumber? ) {
-        console.log('MHL getImages: ', page + '  ' + imageNumber );
+    async getImages() {
         this.loading = true;
         this.images = [];
         let len = 99999999;
@@ -263,12 +286,10 @@ export class CineModeComponent implements OnInit {
             data => {
                 this.imageCount = data.length;
                 len = this.imageCount;
-
                 this.first = 0;
                 this.last = len - 1;
                 let n = 0;
                 for( let i = this.first; i <= this.last; i++ ){
-
                     this.getThumbnails( data[i]['seriesInstanceUid'], data[i]['sopInstanceUid'], this.accessTokenService.getAccessToken() ).subscribe(
                         thumbnailData => {
                             this.images.push(
@@ -285,15 +306,26 @@ export class CineModeComponent implements OnInit {
                                     'seq': i
                                 }
                             );
-                            this.progress = Math.trunc( (+n / +this.last) * 100 );
-                            n++;
+                            // If there is only one image, don't divide by zer0
+                            if( this.last === 0 ){
+                                this.progress = 100;
+                            }else{
+                                this.progress = Math.trunc( (+n / +this.last) * 100 );
+                                n++;
+                            }
+
+                            // If there is just one image we need to get the DICOM now/here.
+                            if( this.imageCount === 1 ){
+                                this.updateDicom();
+                            }
                         },
 
                         // If we could not get the thumbnail from the server,
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         thumbnailError => {
-                            console.log( 'ThumbnailError: ', thumbnailError );
+                            console.error('MHL thumbnailData: ', thumbnailError);
+
                             // We need this count when we are waiting for all the images (by count) to arrive before moving on
                             this.getThumbnailErrorCount++;
 
@@ -310,18 +342,18 @@ export class CineModeComponent implements OnInit {
                                     'seq': i
                                 }
                             );
+                            // If there is just one image we need to get the DICOM now/here.
+                            if( this.imageCount === 1 ){
+                                this.updateDicom();
+                            }
                             // this.getThumbnailsEmitter.emit( thumbnailError );
                         }
                     );
                 }
                 this.loading = false;
-
-
             },
             err => {
                 this.loading = false;
-                //  this.getImageDrillDownDataErrorEmitter.emit( err );
-
             }
         );
 
@@ -342,10 +374,13 @@ export class CineModeComponent implements OnInit {
             }
             this.loadingX = false;
         }
+
         // this.commonService.setHaveAllData( true );
-        this.haveAllData = true;
         // Sort by seq here - need to sort, they may not have arrived from the server in the order they where requested.
         this.images.sort( ( row1, row2 ) => (row1.seq - row2.seq) );
+        this.haveAllData = true;
+        this.currentImage = 1;
+        this.updateDicom();
     }
 
 
@@ -376,12 +411,25 @@ export class CineModeComponent implements OnInit {
     toggleDicomCheckbox() {
         if( this.showDicomData ){
             let query = 'imageID=' + this.images[this.currentImage - 1]['imagePkId'];
-/*
-            if( !this.haveDicomData ){
-                this.apiService.dataGet( Consts.DICOM_TAGS_BY_IMAGE, query );
-            }
-*/
+            this.updateDicom();
+            /*
+                        if( !this.haveDicomData ){
+                            this.apiService.dataGet( Consts.DICOM_TAGS_BY_IMAGE, query );
+                        }
+            */
         }
+    }
+
+    onShowQcHistoryClick( s ) {
+        this.showQcHistory = s;
+    }
+
+    onShowQcStatusClick( s ) {
+        this.showQcStatus = s;
+    }
+
+    onShowSeriesDataClick( s ) {
+        this.showSeriesData = s;
     }
 
     /////////////////////////
@@ -389,15 +437,8 @@ export class CineModeComponent implements OnInit {
         this.handleMoving = true;
     }
 
-    onDragEnd( e ) {
-    }
-
-    onMoving( e ) {
-    }
-
     onMoveEnd( e ) {
         this.handleMoving = false;
     }
-
 
 }

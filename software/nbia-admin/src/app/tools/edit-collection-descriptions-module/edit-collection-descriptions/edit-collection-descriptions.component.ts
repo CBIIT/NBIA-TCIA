@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../../../admin-common/services/api.service';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { ApiService } from '@app/admin-common/services/api.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Consts } from '@app/constants';
+import { QuerySectionService } from '../../query-section-module/services/query-section.service';
 
 
 @Component( {
@@ -19,6 +21,8 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
     collections;
     currentCollection;
     showHtml = false;
+    consts = Consts;
+
 
     // @TODO Most of these configuration values came from a demo.  Look them over, make sure they are good.
     htmlContent = 'The <b>Description</b> text will go here.';
@@ -89,7 +93,8 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private apiService: ApiService, private utilService: UtilService ) {
+    constructor( private apiService: ApiService, private utilService: UtilService,
+                 private querySectionService: QuerySectionService) {
     }
 
     ngOnInit() {
@@ -98,16 +103,18 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         this.apiService.collectionsAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.collections = data;
-                console.log('MHL collections: ', this.collections);
                 if( !this.utilService.isNullOrUndefinedOrEmpty( this.collections ) ){
                     this.currentCollection = this.collections[0]['name'];
                     this.htmlContent = this.collections[0]['description'];
                     this.textTrailer = this.htmlContent;
                 }
             } );
-        console.log('MHL CALLING getCollectionDescriptions' );
         this.apiService.getCollectionAndDescriptions(); // TODO
 
+        this.querySectionService.updateCollectionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.onCollectionClick( data );
+            } );
     }
 
     onCollectionClick( i ) {
@@ -118,7 +125,6 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     onSave() {
         if(this.textTrailer !== this.htmlContent){
-            console.log('MHL this.currentCollection: ', this.currentCollection.replace(/\/\/.*/, '')); // .replace(/.*(?=#[^\s]*$)/, '')
             this.apiService.updateCollectionDescription( this.currentCollection.replace(/\/\/.*/, ''), this.htmlContent );
             this.textTrailer = this.htmlContent;
         }

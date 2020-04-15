@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LoginService } from './login.service';
 import { takeUntil } from 'rxjs/operators';
-import { Consts, TokenStatus } from '../constants';
+import { Consts, TokenStatus } from '@app/constants';
 import { AccessTokenService } from '../admin-common/services/access-token.service';
 import { ParameterService } from '../admin-common/services/parameter.service';
 import { UtilService } from '../admin-common/services/util.service';

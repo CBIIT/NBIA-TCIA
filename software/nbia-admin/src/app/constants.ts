@@ -20,9 +20,9 @@ export const Consts = {
     URL_KEY_TOKEN: 'accessToken',
 
     TOOL_PERFORM_QC: 'perform-qc',
+    TOOL_BULK_QC: 'bulk-qc',
     TOOL_APPROVE_DELETIONS: 'approve-deletions',
     TOOL_EDIT_COLLECTION_DESCRIPTIONS: 'edit-collection-descriptions',
-    TOOL_MANAGE_WORKFLOW_ITEMS: 'manage-workflow-items',
     TOOL_PERFORM_ONLINE_DELETION: 'perform-online-deletion',
     TOOL_VIEW_SUBMISSION_REPORTS: 'view-submission-reports',
     TOOL_NONE: 'no-tool',
@@ -35,6 +35,10 @@ export const Consts = {
     QUERY_CRITERIA_CONFIRMED_COMPLETE: 'queryCriteriaConfirmedComplete',
     QUERY_CRITERIA_SUBJECT_ID: 'queryCriteriaSubjectId',
     QUERY_CRITERIA_MOST_RECENT_SUBMISSION: 'queryCriteriaMostRecentSubmission',
+    SUBMIT_QC_STATUS_UPDATE: 'submitQCVisibilityForDataAdmin',
+
+    CRITERIA_SEARCH: 0,
+    TEXT_SEARCH: 1,
 
     ACCESS_TOKEN: '',
 
@@ -43,6 +47,10 @@ export const Consts = {
     GET_COLLECTION_NAMES_AND_SITES: 'getCollectionSite',
     GET_COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
     GET_SEARCH_FOR_APPROVE_DELETIONS: 'getQCSearchForDeletion',
+    GET_HISTORY_REPORT: 'getQCHistoryReport',
+    GET_VISIBILITIES: 'getVisibilities',
+    GET_HISTORY_REPORT_TABLE: 'getQCHistoryReportTable',
+    GET_SEARCH_FOR_PERFORM_QC: 'getQCSearch',
     UPDATE_COLLECTION_DESCRIPTION: 'submitCollectionDescription',
 
     DICOM_TAGS: 'getDicomTags',
@@ -63,5 +71,13 @@ export const Consts = {
         'To Be Deleted', 'First Review', 'Second Review', 'Third Review',
         'Fourth Review', 'Fifth Review', 'Sixth Review', 'Seventh Review', 'Downloadable'],
 
+    NO_SEARCH: 'NO_SEARCH'
+
 };
 
+
+export enum SortState{
+    NO_SORT,
+    SORT_UP,
+    SORT_DOWN
+}

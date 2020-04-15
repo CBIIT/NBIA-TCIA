@@ -4,11 +4,8 @@
     }"
 ></nbia-login>
 
-<!--
-<h3>Current tool: {{currentTool}}</h3>
-<h3>accessTokenStatus: {{accessTokenStatus}}</h3>
-<p>Users role(s): <b>{{userRoles}}</b></p>
--->
+<!-- The wait, we are busy screen -->
+<nbia-loading-display></nbia-loading-display>
 
 <!-- We have an access token from the calling site.   -->
 <div *ngIf="accessTokenStatus  === tokenStatus.GOOD_TOKEN"
@@ -29,17 +26,20 @@
             *ngIf="currentTool === consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS">
         </nbia-edit-collection-descriptions>
 
-        <nbia-qc-tool
+        <nbia-perform-qc
             *ngIf="currentTool === consts.TOOL_PERFORM_QC">
-        </nbia-qc-tool>
-1
+        </nbia-perform-qc>
+
+<!--
         <nbia-view-submission-reports
             *ngIf="currentTool === consts.TOOL_VIEW_SUBMISSION_REPORTS">
         </nbia-view-submission-reports>
+-->
 
         <nbia-perform-online-deletion
             *ngIf="currentTool === consts.TOOL_PERFORM_ONLINE_DELETION">
         </nbia-perform-online-deletion>
+
     </span>
 </div>
 
@@ -70,6 +70,7 @@
         Approve Deletions
         <p class="required-role" *ngIf="! showDataAdminApproveDeletions">(Required role: NCIA.SUPER_CURATOR)</p>
     </span>
+<!--
 
     <span class="row label label-primary admin-tool-button nbia-button col-md-12"
         [ngClass]="{
@@ -81,6 +82,7 @@
         <p class="required-role" *ngIf="! showDataAdminViewSubmissionReports">(Required role: NCIA.VIEW_SUBMISSION_REPORT)</p>
     </span>
 
+-->
     <span class="row label label-primary admin-tool-button nbia-button col-md-12"
         [ngClass]="{
             'disabled-tool nbia-button-disabled': ! showPerformOnlineDeletions
@@ -101,15 +103,6 @@
         <p class="required-role" *ngIf="! showEditCollectionDescriptions">(Required role: NCIA.DELETE_ADMIN)</p>
     </span>
 
-    <span class="row label label-primary admin-tool-button nbia-button col-md-12"
-        [ngClass]="{
-            'disabled-tool nbia-button-disabled': ! showManageWorkflowItems
-        }"
-        (click)="onToolItemClicked(toolItems.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM, showManageWorkflowItems)"
-    >
-        Manage Workflow Items
-        <p class="required-role" *ngIf="! showManageWorkflowItems">(Required role: NCIA.SUPER_CURATOR)</p>
-    </span>
-</div>
+ </div>
 
 <nbia-cine-mode></nbia-cine-mode>

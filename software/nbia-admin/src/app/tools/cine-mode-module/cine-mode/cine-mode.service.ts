@@ -1,38 +1,26 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { ApiService } from '../../../admin-common/services/api.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable( {
+    providedIn: 'root'
+} )
 
 
-export class CineModeService {
-    seriesId;
-    seriesUID;
+export class CineModeService{
     seriesDescription;
     displayCineModeImagesEmitter = new EventEmitter();
-    sendCineModeDataEmitter = new EventEmitter();
-    showCineModeToggle = false;
+    closeCineModeEmitter = new EventEmitter();
+    getDicomTagsByImageEmitter = new EventEmitter();
 
-  constructor( private apiService: ApiService) { }
-
-    openCineMode( seriesUID, seriesId, description, studyDate ) {
-        this.displayCineModeImagesEmitter.emit( true );
-
-        this.seriesUID = seriesUID;
-        this.seriesId = seriesId;
-        this.seriesDescription = description;
-        this.showCineModeToggle = true;
-
-        console.log('MHL CineModeService.openCineMode seriesId: ', this.seriesId);
-        this.sendCineModeDataEmitter.emit( {
-            'seriesUID': seriesUID,
-            'seriesId': seriesId, // This is seriesPkId
-            'dicomData': [],
-            'seriesDescription': description,
-            'studyDate': studyDate
-        });
+    constructor() {
     }
 
+    openCineMode(  series, collectionSite, searchResultsIndex ) {
+        console.log('MHL 000 CineModeService calling displayCineModeImagesEmitter.emit');
+        this.displayCineModeImagesEmitter.emit( {series, collectionSite, searchResultsIndex} );
+    }
+
+    closeCineMode(){
+        this.closeCineModeEmitter.emit();
+    }
 
 }

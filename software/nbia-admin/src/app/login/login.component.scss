@@ -1,4 +1,5 @@
-@import '../app.component.scss';
+@import '../app.component';
+@import '../popup';
 
 .login-form{
     margin-bottom: 0;
@@ -33,11 +34,6 @@
 
 .new_account-button{
     margin-top: 0;
-}
-
-hr{
-    margin: 0 0 6px 0;
-    padding: 0;
 }
 
 .login-button{

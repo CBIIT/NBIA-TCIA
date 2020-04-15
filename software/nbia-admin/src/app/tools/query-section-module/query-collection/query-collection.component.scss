@@ -1,6 +1,5 @@
 @import 'src/app/tools/query-section-module/query-section/query-section.component';
 
-$close-x-red: #700;
 
 .query-collection-search{
     position: absolute;
@@ -40,8 +39,17 @@ $close-x-red: #700;
     cursor: pointer;
 }
 
-
-.close-x {
-    color: $close-x-red;
-    float: right;
+.collection-scroller-div {
+    padding-bottom: 12px;
+    resize: vertical;
+    overflow: auto;
 }
+
+.collection-scroller{
+    height: 100%;
+}
+
+.collection-scroller-content {
+    height: $query-collection-start-height;
+}
+

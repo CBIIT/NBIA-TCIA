@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QcToolComponent } from './qc-tool/qc-tool.component';
+import { PerformQcComponent } from './perform-qc/perform-qc.component';
 import { QueryQcStatusComponent } from '../query-section-module/query-qc-status/query-qc-status.component';
 import { QueryReleasedComponent } from '../query-section-module/query-released/query-released.component';
 import { QueryBatchComponent } from '../query-section-module/query-batch/query-batch.component';
@@ -15,24 +15,21 @@ import { QueryCollectionComponent } from '../query-section-module/query-collecti
 import { AppModule } from '../../app.module';
 import { DisplayQueryModule } from '../display-query-module/display-query.module';
 import { QuerySectionModule } from '../query-section-module/query-section.module';
+import { PerformQcBulkOperationsComponent } from './perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component';
+import { SearchResultsSectionModule } from '../search-results-section-module/search-results-section.module';
+import { QcHistoryReportModuleModule } from '../qc-history-report-module/qc-history-report-module.module';
+import { AngularDraggableModule } from 'angular2-draggable';
 
 
 @NgModule( {
     declarations: [
-        QcToolComponent,
-/*
-        QueryQcStatusComponent,
-        QueryCollectionComponent,
-        QueryReleasedComponent,
-        QueryBatchComponent,
-        QueryConfirmedComponent,
-        QueryPatientIdComponent,
-        QueryMostRecentSubmissionDateComponent,
-*/
+        PerformQcComponent,
+        PerformQcBulkOperationsComponent
 
     ],
     exports: [
-        QcToolComponent
+        PerformQcComponent
+
     ],
     imports: [
         CommonModule,
@@ -40,8 +37,12 @@ import { QuerySectionModule } from '../query-section-module/query-section.module
         NgxMyDatePickerModule,
         AdminCommonPipeModule,
         DisplayQueryModule,
-        QuerySectionModule
+        QuerySectionModule,
+        AdminCommonPipeModule,
+        SearchResultsSectionModule,
+        QcHistoryReportModuleModule,
+        AngularDraggableModule
     ]
 } )
-export class QcToolModule{
+export class PerformQcModule{
 }

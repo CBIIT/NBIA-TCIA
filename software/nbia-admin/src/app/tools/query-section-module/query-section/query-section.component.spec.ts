@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuerySectionComponent } from '../query-section.component';
+import { QuerySectionComponent } from './query-section.component';
 
 describe('QuerySectionComponent', () => {
   let component: QuerySectionComponent;

@@ -1,0 +1,94 @@
+<div class="tableFixHead outer-div">
+    <div class="qc-history-report-table ">
+        <table>
+            <thead>
+                <tr class="data-table-thead-tr">
+                    <th class="data-table-thead-th">
+                        Time Stamp
+                    </th>
+                    <th class="data-table-thead-th">
+                        Series ID
+                    </th>
+                    <th class="data-table-thead-th">
+                        Previous QC Status
+                    </th>
+                    <th class="data-table-thead-th">
+                        New QC Status
+                    </th>
+                    <th class="data-table-thead-th">
+                        Previous QC Batch-Number
+                    </th>
+                    <th class="data-table-thead-th">
+                        New QC Batch-Number
+                    </th>
+                    <th class="data-table-thead-th">
+                        Previous QC Submission-Status
+                    </th>
+                    <th class="data-table-thead-th">
+                        New QC Submission-Status
+                    </th>
+                    <th class="data-table-thead-th">
+                        Previous QC Released-Status
+                    </th>
+                    <th class="data-table-thead-th">
+                        New QC Released-Status
+                    </th>
+                    <th class="data-table-thead-th">
+                        Comment
+                    </th>
+                    <th class="data-table-thead-th">
+                        User User ID
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let row of qcStatusReportResults ; let odd = odd"
+
+                   class="data-table-body-tr"
+                    [ngClass]="{
+                    'data-table-body-dark-tr': odd
+                }"
+
+                >
+                    <td class="data-table-body-td">
+                        {{row['dateTime']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['series']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['oldVisibilityStatus']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['newVisibilityStatus']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['oldBatch']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['newBatch']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['oldSubmissionType']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['newSubmissionType']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['oldReleasedStatus']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['newReleasedStatus']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['comment']}}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{row['userId']}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

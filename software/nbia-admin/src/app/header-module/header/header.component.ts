@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Properties } from '../../../assets/properties';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
