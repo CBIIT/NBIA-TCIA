@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
-import { Consts } from '../../constants';
-import { Properties } from '../../../assets/properties';
+import { Consts } from '@app/constants';
+import { Properties } from '@assets/properties';
 import { UtilService } from './util.service';
-import { LoginService } from '../../login/login.service';
+import { LoginService } from '@app/login/login.service';
 import { AccessTokenService } from './access-token.service';
 
 @Injectable( {
@@ -31,7 +31,8 @@ export class ParameterService implements OnDestroy{
         // @FIXME This is a dev time temporary bypass of receiving a token from the calling site.
         if( Properties.DEV_MODE ){
             // this.getAccessToken( 'nbia_guest', 'test', Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
-            this.getAccessToken( 'mlerner', 'changeme', Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
+            // this.getAccessToken( 'mlerner', 'changeme', Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
+            this.getAccessToken( Properties.DEV_USER, Properties.DEV_PASSWORD, Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
                 data => {
                     this.token = data['access_token'];
                     this.accessTokenService.setAccessToken( this.token );

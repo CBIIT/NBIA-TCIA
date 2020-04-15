@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Consts, TokenStatus } from '../../constants';
-import { Properties } from '../../../assets/properties';
+import { Consts, TokenStatus } from '@app/constants';
+import { Properties } from '@assets/properties';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { UtilService } from './util.service';
@@ -16,11 +16,8 @@ export class AccessTokenService{
 
 
     constructor( private httpClient: HttpClient, private utilService: UtilService ) {
-        this.init();
     }
 
-    async init() {
-    }
 
     /**
      * Gets an Access token from the server
@@ -53,6 +50,15 @@ export class AccessTokenService{
         )
     }
 
+    /**
+     * Possible values for tokenStatus
+     NO_TOKEN,
+     NO_TOKEN_YET,
+     EXP_TOKEN,
+     BAD_TOKEN,
+     HAVE_TOKEN,
+     GOOD_TOKEN
+     */
     getAccessTokenStatus() {
         return this.tokenStatus;
     }

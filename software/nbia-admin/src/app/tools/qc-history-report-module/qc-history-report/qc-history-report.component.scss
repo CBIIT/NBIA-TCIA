@@ -1,0 +1,18 @@
+@import '../../../app.component';
+@import '../../../popup.scss';
+
+$qcReportTop: 100px;
+ $qcReportWidth: calc(100% - 40px);
+// $qcReportWidth: 1800px;
+$qcReportPadding: 6px;
+
+.perform-qc-history-report-div{
+    z-index: 4;
+    position: absolute;
+    top: $qcReportTop;
+    //  width-max: $qcReportWidth;
+    width: $qcReportWidth;
+    left: calc(50% - #{($qcReportWidth) / 2 });
+    margin: 0;
+    resize: both;
+}

@@ -1,8 +1,9 @@
-<div class="query-panel"
+<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
+            currentTool===consts.TOOL_APPROVE_DELETIONS"
+     class="query-panel"
      [ngClass]=" {
-           'top-query-panel': isTop,
             'query-panel-long': showSubjectIds
-       }"
+      }"
 >
 
     <div class="query-panel-heading">

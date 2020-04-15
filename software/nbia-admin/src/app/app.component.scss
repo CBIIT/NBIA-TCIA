@@ -1,12 +1,19 @@
 $toolHeadingFontSize: 16pt;
 $header-background-color: #013856;
-$popup-z-index: 21;
+$popup-z-index: 91;
 $alert-top: 100px;
+$close-x-red: #700;
+$loading-screen-z-index: 5;
+$heading-text-color: #bb0e3d;
+
+
+table {
+    border-collapse: separate;
+}
 
 .hide {
     display: none;
 }
-
 
 
 /* Trying to clean this up for Chrome */
@@ -45,7 +52,7 @@ $alert-top: 100px;
     cursor: not-allowed;
 }
 
-.clicker{
+.clicker {
     cursor: pointer;
 }
 
@@ -63,37 +70,16 @@ $alert-top: 100px;
 }
 
 
-.display-query-div{
-     width: 100%;
+.display-query-div {
+    width: 100%;
 }
 
 
-
-
-/*  TODO  explain  */
-.alert-box-div {
-    z-index: $popup-z-index;
-    position: absolute;
-
-    /* Set the vertical location of all the Alert/Message boxes.  */
-    margin-top: $alert-top;
-}
-
-.alert-box-shadow {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.alert-box-button {
-    float: right;
-    margin-left: 4px;
-}
-
-.alert-panel-title {
-    /* Looks better without this.
-    font-weight: bold;
-    */
-}
-
-.alert-box-icon {
-    font-size: x-large;
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

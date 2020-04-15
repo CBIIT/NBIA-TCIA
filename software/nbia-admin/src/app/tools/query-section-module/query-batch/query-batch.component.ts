@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { QuerySectionService } from '../services/query-section.service';
-import { Consts } from '../../../constants';
+import { Consts } from '@app/constants';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
+import { DisplayQueryService } from '@app/tools/display-query-module/display-query/display-query.service';
 
 @Component( {
     selector: 'nbia-query-batch',
@@ -12,11 +12,12 @@ import { DisplayQueryService } from '../../display-query-module/display-query/di
 } )
 
 export class QueryBatchComponent implements OnInit, OnDestroy{
-    @Input() isTop = false;
     @Input() currentTool;
 
     batchNumber = 1;
     useBatchNumber = false;
+    consts = Consts;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(private querySectionService: QuerySectionService, private displayQueryService: DisplayQueryService) {
@@ -42,10 +43,10 @@ export class QueryBatchComponent implements OnInit, OnDestroy{
 
     updateQuery() {
         if( this.useBatchNumber){
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_BATCH_NUMBER, this.batchNumber );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_BATCH_NUMBER, this.batchNumber );
         }else{
             // A null entry instead of a number tells updateQuery not to include Batch number.
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_BATCH_NUMBER, null );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_BATCH_NUMBER, null );
         }
     }
 

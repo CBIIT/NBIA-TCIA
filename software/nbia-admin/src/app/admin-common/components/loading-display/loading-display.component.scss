@@ -1,0 +1,36 @@
+@import '../../../app.component.scss';
+
+.loading-div{
+    z-index: $loading-screen-z-index;
+
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    background-color: #c4e8ff;
+    color: #000;
+    opacity: 0.75;
+    width: calc(100% - 10px);
+    /*
+    height: calc(100% - 10px);
+    */
+    height: 100%;
+    cursor: progress;
+}
+
+.loading-img{
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    top:  calc(50% - 60px);
+    left: calc(50% - 60px);
+}
+
+
+.loading-message{
+    position: absolute;
+    top:  calc(50% + 70px);
+    left: 50%;
+    margin: 0 -50% 0 0;
+    transform: translate(-50%, -50%);
+}
+

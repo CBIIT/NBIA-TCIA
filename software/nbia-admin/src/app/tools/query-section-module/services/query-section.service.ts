@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
 
 @Injectable( {
@@ -10,15 +10,28 @@ export class QuerySectionService{
     queryData = [];
 
     updatedQueryEmitter = new EventEmitter();
+    rerunCurrentQueryEmitter = new EventEmitter();
+
+    /**
+     * For Edit Collection Description.
+     */
+    updateCollectionEmitter = new EventEmitter();
+
+    /**
+     * Criteria Search or Text Search.
+     */
+    searchType = 0;
+    updateSearchTypeEmitter = new EventEmitter();
+
 
     constructor( private utilService: UtilService, private displayQueryService: DisplayQueryService ) {
     }
 
+    rerunCurrentQuery(){
+        this.rerunCurrentQueryEmitter.emit();
+    }
 
-    updateQuery( tool, criteria, data ) {
-        console.log('MHL updateQuery tool: ', tool);
-        console.log('MHL updateQuery criteria: ', criteria);
-        console.log('MHL updateQuery data: ', data);
+    updateSearchQuery( tool, criteria, data ) {
         // Do we have this criteria yet?
         let i = this.entryExists( tool, criteria );
         if( i >= 0 ){
@@ -35,13 +48,13 @@ export class QuerySectionService{
         }
 
         this.displayQueryService.query( this.queryData );
-
-
-        console.log('MHL this.queryData: ', this.queryData);
         // Tell anyone who is subscribing, there is a new query.
         this.updatedQueryEmitter.emit( this.queryData);
     }
 
+    emitCollection( collection ){
+        this.updateCollectionEmitter.emit( collection );
+    }
 
     addToQueryArray( qData ) {
         this.queryData.push( qData );
@@ -68,6 +81,16 @@ export class QuerySectionService{
             }
         }
         return -1;
+    }
+
+    /**
+     * Criteria Search or Text Search
+     */
+    setSearchType( t ){
+        if( this.searchType !== t ){
+            this.searchType = t;
+            this.updateSearchTypeEmitter.emit( this.searchType );
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Consts } from '../../../constants';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { Consts } from '@app/constants';
+import { UtilService } from '@app/admin-common/services/util.service';
 
 
 @Component( {
@@ -37,6 +37,10 @@ export class ToolTitleComponent implements OnInit{
             this.currentToolTitle = 'Approve Deletions';
         }else if( this.currentTool === Consts.TOOL_PERFORM_QC ){
             this.currentToolTitle = 'Perform QC';
+        }else if( this.currentTool === Consts.TOOL_VIEW_SUBMISSION_REPORTS ){
+            this.currentToolTitle = 'View Submission Reports';
+        }else if( this.currentTool === Consts.TOOL_PERFORM_ONLINE_DELETION ){
+            this.currentToolTitle = 'Perform Online Deletion';
         }else{
             this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
         }

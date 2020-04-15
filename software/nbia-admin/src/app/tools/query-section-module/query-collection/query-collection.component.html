@@ -1,6 +1,9 @@
-<div class="query-panel"
+<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
+            currentTool===consts.TOOL_APPROVE_DELETIONS ||
+            currentTool===consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS "
+     class="query-panel collection-query-panel"
      [ngClass]=" {
-           'top-query-panel': isTop
+           'top-query-panel': currentTool===consts.TOOL_APPROVE_DELETIONS|| currentTool===consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS
        }"
 >
 
@@ -28,11 +31,9 @@
         </span>
 
 
-
-
         <!-- Search (filter) Collections. -->
         <label class="query-collection-search"
-            (click)="onSearchGlassClick()"
+               (click)="onSearchGlassClick()"
         >
             <img
                 class="clicker"
@@ -40,8 +41,6 @@
                 alt="Search collections"
             >
         </label>
-
-
 
 
     </div>
@@ -58,46 +57,43 @@
                (blur)="onSearchTextOutFocus(0)"
                (focus)="onSearchTextFocus(0)"
                (ngModelChange)="onSearchChange($event)">
-
-        <!-- This needs to be "for", not "ngFor", it needs to be hidden, not removed from the DOM -->
-        <!-- The "X" to clear the search text -->
-<!--
-        <span *ngIf="searchInput.length > 0"
-              class="glyphicon glyphicon-remove search-text-area-x close-x"
-              (blur)="onSearchTextOutFocus(1)"
-              (focus)="onSearchTextFocus(1)"
-              (click)="onSearchGlassClick()">
-        </span>
--->
     </div>
     <!-- -----  End Search input  ----- -->
 
 
+    <div class="collection-scroller-div"
+         (resized)="onResized($event)"
 
-    <div
-        [ngClass]="{
+         [ngClass]="{
            'hide': ! showCriteriaList
        }"
     >
-        <div *ngFor="let collection of collections; let i = index"
-             class="query-panel-radio-button"
-             [ngClass]="{
-                 'hide': ! collection['include']
-             }"
-        >
-            <input type="radio"
-                   class="radio-button"
-                   name="collectionsRadio"
-                   id="collections-radio{{i}}"
-                   (click)="onCriteriaClicked(i)"
-                   [checked]="cBox[i]"
-            >
 
-            <label [attr.for]="'collections-radio'+i"
-                   class="criteria-text"
-            >
-                {{collection['name']}}
-            </label>
+        <div class="collection-scroller">
+
+            <div class="collection-scroller-content" id="collections">
+                <div *ngFor="let collection of collections; let i = index"
+                     class="query-panel-radio-button"
+                     [ngClass]="{
+                                     'hide': ! collection['include']
+                                 }"
+                >
+                    <input type="radio"
+                           class="radio-button"
+                           name="collectionsRadio"
+                           id="collections-radio{{i}}"
+                           (click)="onCriteriaClicked(i)"
+                           [checked]="cBox[i]"
+                    >
+
+                    <label [attr.for]="'collections-radio'+i"
+                           class="criteria-text"
+                    >
+                        {{collection['name']}}
+                    </label>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

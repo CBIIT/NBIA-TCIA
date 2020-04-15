@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Consts } from '../../../constants';
+import { Consts } from '@app/constants';
 import { QuerySectionService } from '../services/query-section.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,13 +12,13 @@ import { DisplayQueryService } from '../../display-query-module/display-query/di
 } )
 
 export class QueryReleasedComponent implements OnInit, OnDestroy{
-    @Input() isTop = false;
     @Input() currentTool;
 
     options = ['Yes', 'No', 'Ignore'];
     currentOption = 2;
     showCriteriaList = false;
     cBox = [];
+    consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -57,10 +57,10 @@ export class QueryReleasedComponent implements OnInit, OnDestroy{
     updateQuery() {
         // Ignore
         if( this.currentOption === 2 ){
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_RELEASED, null );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_RELEASED, null );
         // Yes
         }else {
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_RELEASED, this.currentOption );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_RELEASED, this.currentOption );
         }
     }
 

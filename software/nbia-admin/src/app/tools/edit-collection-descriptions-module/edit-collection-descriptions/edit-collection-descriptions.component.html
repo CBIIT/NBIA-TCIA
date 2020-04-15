@@ -1,58 +1,50 @@
-<div class="collection-description-div">
-    <span [dropdownToggle]="false" class="dropdown " dropdown>
+<div class="edit-collection-description-tool">
 
+    <nbia-query-section
+        [currentTool]="consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
 
-        <button class="btn btn-primary edit-collection-dropdown-button" dropdown-open>  {{currentCollection}}
-            &nbsp;<span class="caret"></span>
-        </button>
+    ></nbia-query-section>
 
+    <div class="container data-section">
 
-        <ul class="dropdown-menu edit-collection-description-dropdown-menu">
-            <li (click)="onCollectionClick(i)"
-                *ngFor="let c of collections; let i = index"
-                class="dropdown-menu-item-data-admin clicker"
-            >{{c['name']}}</li>
-        </ul>
+        <div class="row edit-collection-description-edit">
+            <angular-editor
+                [(ngModel)]="htmlContent"
+                [config]="editorConfig">
+            </angular-editor>
+        </div>
 
+        <div  class="row edit-collection-description-edit">
+            <div>
+                <label
+                    class="label label-primary"
+                    for="edit-collection-description-html-text"
+                >HTML:</label>
+            </div>
 
-    </span>
-    <span>
-        <button
-            [ngClass]="{
-                 'disabled': this.textTrailer === this.htmlContent,
-                 'nbia-button-disabled': this.textTrailer === this.htmlContent
-             }"
+            <textarea
+                class="collection-description-div-html"
+                placeholder="Enter HTML here..."
+                id="edit-collection-description-html-text"
+                [(ngModel)]="htmlContent"
+            ></textarea>
 
-            (click)="onSave()"
-            class="btn nbia-button edit-collection-button"
-        >Save
-        </button>
-    </span>
+        </div>
 
-</div>
+        <!--  Save button  -->
+        <div class="row ">
+            <button
+                [ngClass]="{
+                     'disabled': this.textTrailer === this.htmlContent,
+                     'nbia-button-disabled': this.textTrailer === this.htmlContent
+                 }"
 
-<div class="collection-description-div">
-    <div>
-        <angular-editor
-            [(ngModel)]="htmlContent"
-            [config]="editorConfig">
-        </angular-editor>
+                (click)="onSave()"
+                class="btn nbia-button edit-collection-button"
+            >
+                Save
+            </button>
+        </div>
+
     </div>
-
-
-    <br>
-    <div>
-        <label
-            class="label label-primary"
-            for="edit-collection-description-html-text"
-        >HTML:</label>
-    </div>
-
-    <textarea
-        class="collection-description-div-html"
-        placeholder="Enter HTML here..."
-        id="edit-collection-description-html-text"
-        [(ngModel)]="htmlContent"
-    ></textarea>
-
 </div>

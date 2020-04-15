@@ -3,6 +3,13 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
 
 # TODO
+1. **DESTRUCTORS!!!!!**
+1. **Change Tab title in browser for each tool**
+1. **Move query-section-module/left-section into query-section-module/query-section directory.**
+1. XXX Rename QC Tool to PerformQc
+1. **Apply Subjects button needs to move left**
+1. **Truncate Collection name//site when collapsed to make room for Mag glass.**
+1. **Set things unselectable**
 1. **Link button for Description editor**
 1. **Set mouse pointer to arrow in search results.**
 1. **Disabled text color in scss!!!!!**
@@ -22,7 +29,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Maybe
 1. Persistence/cookie
 1. XXX Display query?
-1. Collection More/Less
+1. Collection More/Less - No I used a scroller
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4300/`. The app will automatically reload if you change any of the source files.

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DisplayQueryService } from './display-query.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Consts } from '../../../constants';
+import { Consts } from '@app/constants';
 
 @Component( {
     selector: 'nbia-display-query',
@@ -15,9 +15,7 @@ export class DisplayQueryComponent implements OnInit{
     displayQuery;
     displayQueryData;
     consts = Consts;
-
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-
 
     constructor( private displayQueryService: DisplayQueryService ) {
     }

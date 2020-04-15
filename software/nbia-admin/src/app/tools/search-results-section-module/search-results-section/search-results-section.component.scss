@@ -1,6 +1,62 @@
-$search-results-right-margin: 10px;
+@import '../../../app.component';
+@import '../../../data-table';
 
-.search-result-div {
- //   border: solid #ad23d2 2px;
-    // margin-right: $search-results-right-margin;
+// Results count and Collection//Site at the top.
+.results-heading-text {
+    font-size: 12pt;
+}
+
+// Without these 24 pixels an unneeded horizontal scroller will appear.
+.search-results-table {
+    width: calc(100% - 24px);
+}
+
+.search-results-series-viewers-td {
+    padding-left: 4px;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.search-results-series-viewer-button {
+    padding: 2px 7px 1px 7px;
+    margin: 0 0 0 2px;
+}
+
+.search-results-outer-div {
+    // border:  solid #4af;
+    border: solid #e7e7e7;
+    padding-bottom: 12px;
+    resize: vertical;
+    overflow: auto;
+}
+
+// Starting/Default height
+.search-results-scroller-div {
+    height: 50vh;
+}
+
+
+
+// Starting/Default column width
+.search-results-series-viewer-td {
+    width: 116px;
+}
+
+// Starting/Default column width
+.search-results-series-visibility-td {
+    width: 170px;
+}
+
+.search-results-series-modality-td {
+    width: 160px;
+}
+
+.search-results-submission-date-td {
+    width: 190px;
+}
+
+.search-results-table-thead-th-checkbox {
+    width: 28px;
+    min-width: 28px;
 }

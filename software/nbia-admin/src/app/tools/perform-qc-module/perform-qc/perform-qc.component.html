@@ -1,0 +1,51 @@
+<div *ngIf="roleIsGood"
+     class="perform-qc"
+>
+
+    <!-- ----------  The search query section on the left side  ---------- -->
+    <nbia-query-section
+        [currentTool]="consts.TOOL_PERFORM_QC"
+    >
+    </nbia-query-section>
+
+    <!-- ----------  The search results with the checkboxes  ---------- -->
+    <div class="container data-section">
+
+        <!-- Display Query -->
+        <div class="row ">
+            <nbia-display-query
+                [currentTool]="consts.TOOL_PERFORM_QC"
+            ></nbia-display-query>
+        </div>
+
+        <!-- Search Results -->
+        <div class="row">
+            <nbia-search-results-section
+                *ngIf="true"
+                (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
+            ></nbia-search-results-section>
+        </div>
+
+        <!-- Bulk Operations -->
+        <div *ngIf="showBulkOperations"
+             class="row"
+        >
+            <nbia-perform-qc-bulk-operations
+                [searchResults]="searchResults"
+                [searchResultsSelectedCount]="searchResultsSelectedCount"
+            ></nbia-perform-qc-bulk-operations>
+        </div>
+
+    </div>
+
+    <nbia-qc-history-report></nbia-qc-history-report>
+</div>
+
+
+
+<h4 *ngIf="! roleIsGood && ( userRoles !== undefined)">
+    <p>User does not have authorization required for "<b>Perform QC</b>"</p>
+    <p>Users role(s): <b>{{userRoles}}</b></p>
+    Required role: <b>NCIA.MANAGE_VISIBILITY_STATUS</b>
+</h4>

@@ -1,0 +1,187 @@
+<!-- ----------  QC Edit for Cine mode only  ---------- -->
+<div class="qc-status-outer-div">
+    <div class="bulk-qc-status-table-frame">
+        <table class="bulk-qc-status-table">
+            <tr>
+                <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-status-radios"
+                    [ngClass]="{
+                'hide': n > 5
+                }"
+                >
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-status{{n}}"
+                           name="qcBulkRadio"
+                           (click)="onQcBulkStatusClick(n)">
+                    <label [attr.for]="'radio-qc-status-status'+n"
+                           class="qc-status-radio-label clicker"
+                    >
+                        {{criteria}}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-status-radios"
+                    [ngClass]="{
+                'hide': n < 6
+                }"
+                >
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-status2{{n}}"
+                           name="qcBulkRadio"
+                           (click)="onQcBulkStatusClick(n)">
+                    <label [attr.for]="'radio-qc-status-status2'+n"
+                           class="qc-status-radio-label clicker"
+                    >
+                        {{criteria}}
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--
+        <div class="qc-status-section-2">
+        -->
+    <div class="bulk-qc-status-table-frame">
+        <table class="bulk-qc-status-table">
+            <tr>
+                <!-- ----- Batch number  ----- -->
+                <td class="qc-status-radios">
+                    <input type="checkbox"
+                           class="clicker"
+                           id="qc-status-batch-checkbox"
+                           [(ngModel)]="useBatchNumber"
+                    >
+                    <label
+                        class="qc-status-radio-label clicker"
+                        for="qc-status-batch-checkbox"
+                    >
+                        Batch Number
+                    </label>
+                    <input type="number" class="qc-status-batch-number-spinner"
+                           min="1"
+                           [ngClass]="{
+                    'disabled-spinner': ! useBatchNumber
+                    }"
+                           [disabled]="! useBatchNumber"
+                           [(ngModel)]="batchNumber"
+                    >
+                </td>
+                <!-- ----- Confirmed as Complete  ----- -->
+                <td class="qc-status-complete-radios">
+                    Confirmed as Complete<br>
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-complete-yes"
+                           name="qcBulkRadioComplete"
+                           (click)="onQcBulkStatusCompleteClick(YES)"
+                    >
+                    <label [attr.for]="'radio-qc-status-complete-yes'"
+                           class="qc-status-radio-label clicker"
+                    >
+                        Yes
+                    </label>
+                    &nbsp;&nbsp;
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-complete-no"
+                           name="qcBulkRadioComplete"
+                           (click)="onQcBulkStatusCompleteClick(NO)"
+                    >
+                    <label [attr.for]="'radio-qc-status-complete-no'"
+                           class="qc-status-radio-label clicker"
+                    >
+                        No
+                    </label>
+                    &nbsp;&nbsp;
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-complete-no-change"
+                           name="qcBulkRadioComplete"
+                           [checked]="true"
+                           (click)="onQcBulkStatusCompleteClick(NO_CHANGE)"
+                    >
+                    <label [attr.for]="'radio-qc-status-complete-no-change'"
+                           class="qc-status-radio-label clicker"
+                    >
+                        No Change
+                    </label>
+                </td>
+                <!-- ----- Released  ----- -->
+                <td class="qc-status-complete-radios">
+                    Released<br>
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-released-yes"
+                           name="qcBulkRadioReleased"
+                           (click)="onQcBulkStatusReleasedClick(YES)"
+                    >
+                    <label [attr.for]="'radio-qc-status-released-yes'"
+                           class="qc-status-radio-label clicker"
+                    >
+                        Yes
+                    </label>
+                    &nbsp;&nbsp;
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-released-no"
+                           name="qcBulkRadioReleased"
+                           (click)="onQcBulkStatusReleasedClick(NO)"
+                    >
+                    <label [attr.for]="'radio-qc-status-released-no'"
+                           class="qc-status-radio-label clicker"
+                    >
+                        No
+                    </label>
+                    &nbsp;&nbsp;
+                    <input type="radio"
+                           class="clicker"
+                           id="radio-qc-status-released-no-change"
+                           name="qcBulkRadioReleased"
+                           [checked]="true"
+                           (click)="onQcBulkStatusReleasedClick(NO_CHANGE)"
+                    >
+                    <label [attr.for]="'radio-qc-status-released-no-change'"
+                           class="qc-status-radio-label clicker"
+                    >
+                        No Change
+                    </label>
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td colspan="3">
+                    <textarea
+                        class="qc-status-edit-log-text"
+                        [(ngModel)]="logText"
+                        placeholder="Enter change log here..."
+                    ></textarea>
+                </td>
+            </tr>
+                <tr>
+                <td colspan="2">
+                    <span>
+                        <button class="btn nbia-button qc-status-update-button"
+                                [ngClass]="{
+                                   'nbia-button-disabled': visible < 0
+                                }"
+                                [disabled]="visible < 0 "
+                                type="button"
+                                (click)="onQcUpdateNextClick()">
+                            Update / Next Series
+                        </button>
+                    </span>
+                    <span>
+                        <button class="btn nbia-button qc-status-update-button"
+                                type="button"
+                                (click)="onQcSkipNextClick()">
+                            Skip / Next Series
+                        </button>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
