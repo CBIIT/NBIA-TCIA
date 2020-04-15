@@ -28,7 +28,7 @@ public class QcSearchResultDTOLight {
 	private String submissionType;
 	private String releasedStatus;
 	private String studyDate;
-
+	private String seriesPkId;
 	
 	
 
@@ -45,6 +45,7 @@ public class QcSearchResultDTOLight {
 		setBatch(obj.getBatch());
 		setSubmissionType(obj.getSubmissionType());		
 		setReleasedStatus(obj.getReleasedStatus());	
+		setSeriesPkId(obj.getSeriesPkId());
 
 		
 }
@@ -169,6 +170,18 @@ public class QcSearchResultDTOLight {
 
 	public void setStudyDate(String studyDate) {
 		this.studyDate = studyDate;
+	}
+
+
+
+	public String getSeriesPkId() {
+		return seriesPkId;
+	}
+
+
+
+	public void setSeriesPkId(String seriesPkId) {
+		this.seriesPkId = seriesPkId;
 	}
 
 	
