@@ -229,6 +229,7 @@ public class JSONUtil {
 		}
 		return jsonInString;
 	}
+	
 	public static String getJSONforQCListLight(List<QcSearchResultDTOLight> value){
 		String jsonInString = null;
 		try {
