@@ -39,7 +39,7 @@ public class V3_getUserListForPG extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method get a list of user login names assigned to the given group
+	 * This method get a list of login names associated with the given protection group
 	 *
 	 * @return String - list of user login names
 	 */

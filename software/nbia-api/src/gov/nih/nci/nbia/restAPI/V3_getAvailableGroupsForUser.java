@@ -37,9 +37,9 @@ public class V3_getAvailableGroupsForUser extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method get a list of protection element names
+	 * This method get a list of user groups that the user does not associated with.
 	 *
-	 * @return String - list of protection element names
+	 * @return String - a list of user groups that the user does not associated with.
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})

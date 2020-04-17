@@ -21,7 +21,7 @@ public class V3_modifyUserGroup extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method create a new Protection Group
+	 * This method modify the description for the given user group
 	 *
 	 * @return String - the status of operation 
 	 */
