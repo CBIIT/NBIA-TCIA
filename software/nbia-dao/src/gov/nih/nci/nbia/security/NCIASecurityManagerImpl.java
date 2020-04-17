@@ -54,7 +54,9 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.AuthorizationDAOImpl;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
+import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
+import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
@@ -342,7 +344,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 	public void syncDBWithLDAP(String loginName) {
 		resultLog.debug("user " + loginName + " in LDAP/DB sync process:");
 
-		List<String> ignoreGroups = getIgnoreGroupList();
+//		List<String> ignoreGroups = getIgnoreGroupList();
 		String publicGrpName = NCIAConfig.getPublicGroupName();
 		Set<Group> grpsInDB = null;
 		List<String> grpInDBList = null;
@@ -363,7 +365,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 				if ((grpsInDB != null) && grpsInDB.size() > 0)
 					grpInDBList = new ArrayList<String>();
 				for (Group obj : grpsInDB) {
-					ignoreGroups.add(obj.getGroupName());
+//					ignoreGroups.add(obj.getGroupName());
 					grpInDBList.add(obj.getGroupName());
 					resultLog.debug(loginName + "'s DB group: " + obj.getGroupName());
 				}
@@ -380,16 +382,23 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
 		if (grps != null) {
 			resultLog.debug("get number of LDAP group for the user " + grps.size());
+			
+			// get the LDAP groups that are defined in DB already
+			grps = getDefinedGroupsInDB(new ArrayList(grps));  // a list of groups in Both LDAP and Database
+	
+			
 			for (int i = 0; i < grps.size(); ++i) {
 				String ldapGrpName = grps.get(i);
 				resultLog.debug("LDAP group:" + ldapGrpName);
+
+				
 				if ((grpInDBList != null) && (grpInDBList.contains(ldapGrpName)))
 					grpInDBList.remove(ldapGrpName); // the group in both LDAP
 														// and DB then remove
 														// from the list
 				else {
-					if (!ignoreGroups.contains(ldapGrpName)) {
-						checkThenAddGroup(ldapGrpName);
+//					if (!ignoreGroups.contains(ldapGrpName)) {
+//						checkThenAddGroup(ldapGrpName);
 						try {
 							upm.assignUserToGroup(loginName, ldapGrpName);
 							resultLog.info("assign user " + loginName + " to group: " + ldapGrpName + " in database");
@@ -397,7 +406,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 							e.printStackTrace();
 						}
 
-					}
+//					}
 				}
 				// else System.out.println(ldapGrpName + " should be ignored");
 			}
@@ -409,13 +418,13 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		}
 	}
     
-    private List<String> getIgnoreGroupList() {
-    	if ((null!= NCIAConfig.getLDAPGroupIgnoreList())  &&  (NCIAConfig.getLDAPGroupIgnoreList().length()>0))
-    		return  new ArrayList(Arrays.asList(NCIAConfig.getLDAPGroupIgnoreList().split(",")));
-    	else {
-    		return new ArrayList<String>();
-    	}
-    }
+//    private List<String> getIgnoreGroupList() {
+//    	if ((null!= NCIAConfig.getLDAPGroupIgnoreList())  &&  (NCIAConfig.getLDAPGroupIgnoreList().length()>0))
+//    		return  new ArrayList(Arrays.asList(NCIAConfig.getLDAPGroupIgnoreList().split(",")));
+//    	else {
+//   		return new ArrayList<String>();
+//    	}
+//    }
     
     private void rptDeassignedGrp(String loginName, List<String> grpInDBList) {
     	for (String grpN: grpInDBList) {
@@ -568,5 +577,27 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		
        return false;
 	}	
-     
+	
+	private List<String> getDefinedGroupsInDB(ArrayList<String> ldapGrpList){
+		ArrayList<String> data = null;
+		try {
+			Group group = new Group();
+			SearchCriteria searchCriteria = new GroupSearchCriteria(group);
+
+			java.util.List<Group> existGroupLst = upm.getObjects(searchCriteria);
+
+			if ( existGroupLst != null) {
+				data = new ArrayList<String>();
+				for(Group existGroup : existGroupLst) {
+		            data.add(existGroup.getGroupName());
+		        }
+				
+				ldapGrpList.retainAll(data);
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return ldapGrpList;
+	}
 }
