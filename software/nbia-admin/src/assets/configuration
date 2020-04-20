@@ -10,3 +10,9 @@ OHIF_viewer = true
 #########################################################################
 # OHIF_MODALITIES = MG, CT, MR, PT, DX, CR, SC, NM, CTPT
 
+
+#########################################################################
+# This is (sort of) a demo mode.
+# No changes will be made to the data. Ex. Approve Deletions, Perform QC, etc.
+#########################################################################
+DEMO_MODE = true

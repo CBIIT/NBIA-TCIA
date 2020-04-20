@@ -15,7 +15,6 @@ export class CineModeService{
     }
 
     openCineMode(  series, collectionSite, searchResultsIndex ) {
-        console.log('MHL 000 CineModeService calling displayCineModeImagesEmitter.emit');
         this.displayCineModeImagesEmitter.emit( {series, collectionSite, searchResultsIndex} );
     }
 

@@ -19,6 +19,10 @@ export class ApproveDeletionsComponent implements OnInit{
     userRoles;
     roleIsGood = false;
     currentQueryData = [];
+    searchResults = {};
+    searchResultsSelectedCount = 0;
+    collectionSite = '';
+    showBulkOperations = false;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -39,10 +43,38 @@ export class ApproveDeletionsComponent implements OnInit{
             this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentQueryData = data;
+                this.collectionSite = this.getCollectionSite();
                 this.doApproveDeletionsSearch();
             } );
 
 
+        /**
+         * Check for search results.  If there are none, don't show bulk operations.
+         */
+        this.apiService.searchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showBulkOperations = data[0] !== Consts.NO_SEARCH && data.length > 0;
+            } );
+
+    }
+
+    onSearchResultsUpdate( e ) {
+        if( !this.utilService.isNullOrUndefinedOrEmpty( e ) ){
+            this.searchResults = e;
+        }
+    }
+
+    onResultsSelectCountUpdate( e ) {
+        this.searchResultsSelectedCount = e;
+    }
+
+    getCollectionSite(){
+        for( let row of this.currentQueryData){
+            if( row['criteria'] === Consts.QUERY_CRITERIA_COLLECTION){
+                return row['data'];
+            }
+        }
+        return '';
     }
 
     // Run the query

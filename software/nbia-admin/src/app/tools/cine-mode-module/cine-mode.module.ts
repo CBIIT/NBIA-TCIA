@@ -7,12 +7,14 @@ import { ProgressBarModule } from 'angular-progress-bar';
 import { QcStatusEditComponent } from './qc-status-edit/qc-status-edit.component';
 import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-module/admin-common-pipe.module';
 import { QcHistoryReportModuleModule } from '../qc-history-report-module/qc-history-report-module.module';
+import { DeleteCinemodeSeriesComponent } from './delete-cinemode-series/delete-cinemode-series.component';
 
 
 @NgModule( {
     declarations: [
         CineModeComponent,
-        QcStatusEditComponent
+        QcStatusEditComponent,
+        DeleteCinemodeSeriesComponent
     ],
     exports: [
         CineModeComponent

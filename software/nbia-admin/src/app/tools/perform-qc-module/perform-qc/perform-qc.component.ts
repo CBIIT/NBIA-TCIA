@@ -23,7 +23,7 @@ export class PerformQcComponent implements OnInit{
     roleIsGood = false;
     currentQueryData = [];
     showBulkOperations = false;
-
+    collectionSite = '';
 
     searchResults = {};
     searchResultsSelectedCount = 0;
@@ -48,7 +48,7 @@ export class PerformQcComponent implements OnInit{
         this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentQueryData = data;
-
+            this.collectionSite = this.getCollectionSite();
                 this.loadingDisplayService.setLoading( true, 'Searching...' );
                 this.doPerformQcSearch();
             } );
@@ -85,5 +85,14 @@ export class PerformQcComponent implements OnInit{
 
     onResultsSelectCountUpdate( e ) {
         this.searchResultsSelectedCount = e;
+    }
+
+    getCollectionSite(){
+        for( let row of this.currentQueryData){
+            if( row['criteria'] === Consts.QUERY_CRITERIA_COLLECTION){
+                return row['data'];
+            }
+        }
+        return '';
     }
 }

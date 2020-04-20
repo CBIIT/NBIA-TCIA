@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { SearchResultByIndexService } from '@app/tools/search-results-section-module/services/search-result-by-index.service';
+import { Consts } from '@app/constants';
+import { Properties } from '@assets/properties';
 
 @Component( {
     selector: 'nbia-qc-status-edit',
@@ -44,32 +46,66 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
 
     onQcBulkStatusClick( n ) {
-        console.log('MHL onQcBulkStatusClick: ', n );
         this.visible = n;
     }
 
 
     onQcBulkStatusCompleteClick( c ) {
         this.isComplete = c;
-        console.log('MHL onQcBulkStatusCompleteClick: ', c );
     }
 
 
     onQcBulkStatusReleasedClick( r ) {
         this.isReleased = r;
-        console.log('MHL onQcBulkStatusReleasedClick: ', r );
-
     }
 
     onQcUpdateNextClick() {
-        console.log('MHL onQcUpdateNextClick');
+        this.onQcUpdate();
+        this.searchResultByIndexService.updateCurrentSearchResultByIndex(0);
 
     }
 
     onQcSkipNextClick(){
-        console.log('MHL onQcSkipNextClick');
+        // FIXMENOW this is for the high light in the search results, it must be renamed
         this.searchResultByIndexService.updateCurrentSearchResultByIndex(0);
-        // updateCurrentSearchResultByIndex
+
+    }
+
+    onQcUpdate(){
+        let query = 'projectSite=' + this.collectionSite;
+
+        query += '&seriesId=' + this.seriesData['series'];
+
+        if(  this.isComplete === this.YES ){
+            query += '&complete=Complete';
+        }
+        if(  this.isComplete === this.NO ){
+            query += '&complete=NotComplete';
+        }
+        if(  this.isReleased === this.YES ){
+            query += '&released=released';
+        }
+        if(  this.isReleased === this.NO ){
+            query += '&released=NotReleased';
+        }
+
+        if( this.useBatchNumber ){
+            query += '&batch=' + this.batchNumber;
+        }
+
+        if( this.visible >= 0){
+            query += '&newQcStatus=' + Consts.QC_STATUSES[this.visible];
+        }
+
+        if(! this.utilService.isNullOrUndefinedOrEmpty( this.logText)){
+            query += '&comment=' + this.logText;
+        }
+        if( Properties.DEMO_MODE){
+            console.log('DEMO mode: Perform QC  Update ', query );
+        }
+        else{
+            this.apiService.doSubmit(Consts.TOOL_BULK_QC, query);
+        }
     }
 
 

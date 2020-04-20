@@ -1,7 +1,8 @@
 @import '../../../../app.component';
+@import '../../../../data-table';
 
 .qc-bulk-outer-div {
-    border: solid #e7e7e7;
+    border: solid $data-table-body-border-color;
     margin-top: 10px;
 }
 
@@ -18,13 +19,13 @@
 
 // td
 .qc-bulk-radios {
-    border: solid #e7e7e7 1px;
+    border: solid $data-table-body-border-color 1px;
    // padding-right: 1px;
     padding: 6px;
 }
 
 .qc-bulk-complete-radios{
-    border: solid #e7e7e7 1px;
+    border: solid $data-table-body-border-color 1px;
     // padding-right: 1px;
     padding: 6px 18px 6px 18px;
 }
@@ -54,7 +55,7 @@
 
 .log-text{
     margin-top: 14px;
-    border: solid #e7e7e7 1px;
+    border: solid $data-table-body-border-color 1px;
     width: 100%;
 }
 

@@ -41,6 +41,9 @@ export class ApiService{
     submitBulkQcResultsEmitter = new EventEmitter();
     submitBulkQcErrorEmitter = new EventEmitter();
 
+    submitSeriesDeletionResultsEmitter = new EventEmitter();
+    submitSeriesDeletionErrorEmitter = new EventEmitter();
+
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService ) {
 
@@ -73,6 +76,10 @@ export class ApiService{
 
             case Consts.GET_HISTORY_REPORT_TABLE:
                 this.getQcHistoryReportTable(submitData );
+                break;
+
+            case Consts.TOOL_APPROVE_DELETIONS:
+                this.submitBulkDeletion(submitData );
                 break;
 
         }
@@ -187,8 +194,20 @@ export class ApiService{
             },
             ( err ) => {
                 this.submitBulkQcErrorEmitter.emit(err);
-                console.error( 'MHL 00 submitBulkQc err: ', err['error'] );
-                console.error( 'MHL 01 submitBulkQc err: ', err );
+                console.error( 'submitBulkQc err: ', err['error'] );
+                console.error( 'submitBulkQc err: ', err );
+            } );
+    }
+
+    submitBulkDeletion( query ) {
+        this.doPost( Consts.SUBMIT_SERIES_DELETION, query ).subscribe(
+            ( data ) => {
+                this.submitSeriesDeletionResultsEmitter.emit(data);
+            },
+            ( err ) => {
+                this.submitSeriesDeletionErrorEmitter.emit(err);
+                console.error( 'submitBulkDeletion err: ', err['error'] );
+                console.error( 'submitBulkDeletion err: ', err );
             } );
     }
 
@@ -199,8 +218,8 @@ export class ApiService{
             },
             ( err ) => {
                 this.qcHistoryErrorEmitter.emit(err);
-                console.error( 'MHL 00 getQcHistoryReport err: ', err['error'] );
-                console.error( 'MHL 01 getQcHistoryReport err: ', err );
+                console.error( 'getQcHistoryReport err: ', err['error'] );
+                console.error( 'getQcHistoryReport err: ', err );
             } );
 
     }
@@ -212,8 +231,8 @@ export class ApiService{
             },
             ( err ) => {
                 this.qcHistoryTableErrorEmitter.emit(err);
-                console.error( 'MHL 00 getQcHistoryReportTable err: ', err['error'] );
-                console.error( 'MHL 01 getQcHistoryReportTable err: ', err );
+                console.error( 'getQcHistoryReportTable err: ', err['error'] );
+                console.error( 'getQcHistoryReportTable err: ', err );
             } );
 
     }
@@ -225,8 +244,8 @@ export class ApiService{
             },
             ( err ) => {
                 this.visibilitiesErrorEmitter.emit(err);
-                console.error( 'MHL 02 getVisibilities err: ', err['error'] );
-                console.error( 'MHL 03 getVisibilities err: ', err );
+                console.error( 'getVisibilities err: ', err['error'] );
+                console.error( 'getVisibilities err: ', err );
             } );
 
     }
@@ -470,6 +489,7 @@ export class ApiService{
 
         // These are returned as text NOT JSON.
         if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ||
+            queryType === Consts.SUBMIT_SERIES_DELETION ||
             queryType === Consts.SUBMIT_QC_STATUS_UPDATE
         ){
             options = {

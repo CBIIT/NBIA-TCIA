@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Consts } from '@app/constants';
 import { QuerySectionService } from '../../query-section-module/services/query-section.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -124,9 +125,14 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
     }
 
     onSave() {
-        if(this.textTrailer !== this.htmlContent){
-            this.apiService.updateCollectionDescription( this.currentCollection.replace(/\/\/.*/, ''), this.htmlContent );
-            this.textTrailer = this.htmlContent;
+        if( Properties.DEMO_MODE){
+            console.log('Demo Mode Update Collection description ', this.htmlContent);
+        }
+        else{
+            if( this.textTrailer !== this.htmlContent ){
+                this.apiService.updateCollectionDescription( this.currentCollection.replace( /\/\/.*/, '' ), this.htmlContent );
+                this.textTrailer = this.htmlContent;
+            }
         }
     }
 

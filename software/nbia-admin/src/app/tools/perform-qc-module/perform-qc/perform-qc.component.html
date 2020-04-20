@@ -20,11 +20,17 @@
 
         <!-- Search Results -->
         <div class="row">
+
             <nbia-search-results-section
-                *ngIf="true"
                 (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
                 (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
             ></nbia-search-results-section>
+
+
+<!--
+                <nbia-search-results-section></nbia-search-results-section>
+-->
+
         </div>
 
         <!-- Bulk Operations -->
@@ -32,6 +38,7 @@
              class="row"
         >
             <nbia-perform-qc-bulk-operations
+                [collectionSite]="collectionSite"
                 [searchResults]="searchResults"
                 [searchResultsSelectedCount]="searchResultsSelectedCount"
             ></nbia-perform-qc-bulk-operations>

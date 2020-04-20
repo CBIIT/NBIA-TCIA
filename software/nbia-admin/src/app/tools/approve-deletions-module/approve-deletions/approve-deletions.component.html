@@ -14,14 +14,30 @@
             ></nbia-display-query>
         </div>
         <div class="row">
-            <nbia-search-results-section></nbia-search-results-section>
+            <nbia-search-results-section
+                (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
+            ></nbia-search-results-section>
         </div>
+        <div *ngIf="showBulkOperations"
+             class="row"
+        >
+            <nbia-deletion-bulk-operations
+            [collectionSite]="collectionSite"
+            [searchResults]="searchResults"
+            [searchResultsSelectedCount]="searchResultsSelectedCount"
+        ></nbia-deletion-bulk-operations>
+    </div>
     </div>
 
 </div>
+
+<!--
 roles: {{userRoles}}
 roleIsGood: {{roleIsGood}}
-<h4  *ngIf="! roleIsGood && ( userRoles !== undefined)" >
+-->
+
+<h4 *ngIf="! roleIsGood && ( userRoles !== undefined)">
     <p>User does not have authorization required for "<b>Approve deletions</b>"</p>
     <p>Users role(s): <b>{{userRoles}}</b></p>
     Required role: <b>NCIA.MANAGE_VISIBILITY_STATUS</b>

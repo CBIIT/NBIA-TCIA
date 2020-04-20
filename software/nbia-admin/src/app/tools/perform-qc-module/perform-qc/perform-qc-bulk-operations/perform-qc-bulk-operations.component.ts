@@ -3,6 +3,7 @@ import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { PerformQcService } from '../../services/perform-qc.service';
+import { Properties } from '@assets/properties';
 
 @Component( {
     selector: 'nbia-perform-qc-bulk-operations',
@@ -12,6 +13,7 @@ import { PerformQcService } from '../../services/perform-qc.service';
 export class PerformQcBulkOperationsComponent implements OnInit{
     @Input() searchResults;
     @Input() searchResultsSelectedCount = 0;
+    @Input() collectionSite = '';
 
     useBatchNumber = false;
     batchNumber = 1;
@@ -24,6 +26,7 @@ export class PerformQcBulkOperationsComponent implements OnInit{
     visible = -1;
 
     qcStatuses = Consts.QC_STATUSES;
+
     cBox = [];
 
     constructor( private utilService: UtilService, private apiService: ApiService,
@@ -46,7 +49,7 @@ export class PerformQcBulkOperationsComponent implements OnInit{
     }
 
     onQcBulkUpdateClick(){
-        let query = 'projectSite=' + this.searchResults[0]['collectionSite'];
+        let query = 'projectSite=' + this.collectionSite;
         for(let row of this.searchResults ){
             if( row['selected'] ){
                 query += '&seriesId=' + row['series'];
@@ -77,7 +80,12 @@ export class PerformQcBulkOperationsComponent implements OnInit{
             query += '&comment=' + this.logText;
         }
 
-        this.apiService.doSubmit(Consts.TOOL_BULK_QC, query);
+        if( Properties.DEMO_MODE){
+            console.log('DEMO mode: Perform QC  Update ', query );
+        }
+        else{
+            this.apiService.doSubmit(Consts.TOOL_BULK_QC, query);
+        }
     }
 
 

@@ -36,6 +36,7 @@ export const Consts = {
     QUERY_CRITERIA_SUBJECT_ID: 'queryCriteriaSubjectId',
     QUERY_CRITERIA_MOST_RECENT_SUBMISSION: 'queryCriteriaMostRecentSubmission',
     SUBMIT_QC_STATUS_UPDATE: 'submitQCVisibilityForDataAdmin',
+    SUBMIT_SERIES_DELETION: 'submitDeleteVisibility',
 
     CRITERIA_SEARCH: 0,
     TEXT_SEARCH: 1,

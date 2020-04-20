@@ -41,12 +41,11 @@
                 <div class="col-md-5">
                     <!-- ----- The image ----- -->
                     <div *ngIf="!loadingX && !!images[currentImage - 1]">
-                        images[{{currentImage}} - 1]: {{images[currentImage - 1]}}
-                        <img
-                            class="image"
-                            [src]="images[currentImage - 1].thumbnailImage"
-                            alt="Missing Image {{imageCount}}"
-                        />
+                        ` <img
+                        class="image"
+                        [src]="images[currentImage - 1].thumbnailImage"
+                        alt="Missing Image {{imageCount}}"
+                    />
                     </div>
                     <span *ngIf="imageCount > 1">
                         <!-- ----- The Slider ----- -->
@@ -378,25 +377,30 @@
         </div>
         <!-- ----- END Series data display ----- -->
 
-        <div class="section-div">
+        <!-- ----- Change QC Status or Deletion----- -->
+        <div
+            class="section-div">
             <span
                 *ngIf="showQcStatus"
                 class="clicker section-heading"
                 (click)="onShowQcStatusClick(false)"
             >
                 <img src="assets/images/down_V01.png"/>
-                Change QC Status
+                {{sectionHeading}}
             </span>
-            <!-- Show the Collection radio button list -->
+
             <span
                 *ngIf="!showQcStatus"
                 class="clicker section-heading"
                 (click)="onShowQcStatusClick(true)"
             >
                 <img src="assets/images/right_V01.png"/>
-                Change QC Status
+                {{sectionHeading}}
             </span>
+
+            <!-- ----- Change QC Status ----- -->
             <nbia-qc-status-edit
+                *ngIf="currentTool === consts.TOOL_PERFORM_QC"
                 [ngClass]="{
                     hide: !showQcStatus
                 }"
@@ -404,7 +408,21 @@
                 [seriesData]="seriesData"
             >
             </nbia-qc-status-edit>
+
+            <!-- ----- Put Deletion here ----- -->
+            <nbia-delete-cinemode-series
+                *ngIf="currentTool === consts.TOOL_APPROVE_DELETIONS"
+                [ngClass]="{
+                    hide: !showQcStatus
+                }"
+                [seriesData]="seriesData"
+            ></nbia-delete-cinemode-series>
+
+
         </div>
+        <!-- ----- END Change QC Status ----- -->
+
+
         <!--  ----- QC History ----- -->
         <div class="section-div">
             <span
@@ -415,6 +433,8 @@
                 <img src="assets/images/down_V01.png"/>
                 QC Status History
             </span>
+
+
             <!-- Show the Collection radio button list -->
             <span
                 *ngIf="!showQcHistory"

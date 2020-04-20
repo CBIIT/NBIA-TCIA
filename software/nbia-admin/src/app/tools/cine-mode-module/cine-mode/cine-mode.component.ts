@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CineModeService } from './cine-mode.service';
 import { ApiService } from '@app/admin-common/services/api.service';
@@ -9,6 +9,7 @@ import { takeUntil, timeout } from 'rxjs/operators';
 import { Properties } from '@assets/properties';
 import { Consts } from '@app/constants';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
+import { QuerySectionService } from '@app/tools/query-section-module/services/query-section.service';
 
 @Component( {
     selector: 'nbia-cine-mode',
@@ -16,6 +17,7 @@ import { AccessTokenService } from '@app/admin-common/services/access-token.serv
     styleUrls: ['./cine-mode.component.scss']
 } )
 export class CineModeComponent implements OnInit{
+    @Input() currentTool = '';
     dicomData = [];
     showDicomData = true;
     showQcHistory = false;
@@ -48,7 +50,7 @@ export class CineModeComponent implements OnInit{
     searchResultsIndex;
 
     qcStatusReportResults = [];
-
+    consts = Consts;
     frameRate = 15;
     maxFps = Properties.MAX_VIDEO_FPS;
     playState;
@@ -56,11 +58,16 @@ export class CineModeComponent implements OnInit{
     PLAY_BACK = 1;
     STOP = 2;
 
+    sectionHeading = '';
+    sectionHeadings = ['Change QC Status', 'Delete Series'];
+
     properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private cineModeService: CineModeService, private apiService: ApiService, private httpClient: HttpClient,
-                 private sanitizer: DomSanitizer, private utilService: UtilService, private accessTokenService: AccessTokenService ) {
+                 private sanitizer: DomSanitizer, private utilService: UtilService,
+                 private accessTokenService: AccessTokenService, private querySectionService: QuerySectionService ) {
+
     }
 
     ngOnInit() {
@@ -71,6 +78,14 @@ export class CineModeComponent implements OnInit{
                 this.seriesData = data['series'];
                 this.searchResultsIndex = data['searchResultsIndex']; // FIXMENOW  We will not be using this get rid of it here and at the source
                 this.showCineModeViewer = true;
+
+                if( this.currentTool === Consts.TOOL_PERFORM_QC){
+                    this.sectionHeading = this.sectionHeadings[0];
+                }
+                 else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS){
+                    this.sectionHeading = this.sectionHeadings[1];
+                }
+
                 this.reset();
                 this.getImages();
                 this.apiService.doSubmit( Consts.GET_HISTORY_REPORT_TABLE, '&seriesId=' + this.seriesData['series'] );
@@ -101,6 +116,13 @@ export class CineModeComponent implements OnInit{
                 console.error( 'Error getting DICOM Data: ', err );
             }
         );
+
+        this.querySectionService.updateCollectionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+               this.collectionSite = data;
+            });
+
+
     }
 
     checkCurrentImageNumber() {
@@ -324,7 +346,7 @@ export class CineModeComponent implements OnInit{
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         thumbnailError => {
-                            console.error('MHL thumbnailData: ', thumbnailError);
+                            console.error('Error thumbnailData: ', thumbnailError);
 
                             // We need this count when we are waiting for all the images (by count) to arrive before moving on
                             this.getThumbnailErrorCount++;

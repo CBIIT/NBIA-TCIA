@@ -53,14 +53,12 @@ export class ConfigurationService{
                     if( key === 'OHIF_viewer_url' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.OHIF_SERVER_URL = value;
-                            console.log( 'MHL OHIF_SERVER_URL: ', Properties.OHIF_SERVER_URL );
                         }
                     }
 
                     if( key === 'MAX_VIDEO_FPS' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.MAX_VIDEO_FPS = value;
-                            console.log( 'MHL OHIF_SERVER_URL: ', Properties.MAX_VIDEO_FPS );
                         }
                     }
 
@@ -72,6 +70,11 @@ export class ConfigurationService{
 
                     if( key === 'OHIF_viewer' ){
                         Properties.SHOW_OHIF_VIEWER = this.utilService.isTrue( value );
+                    }
+
+                   if( key === 'DEMO_MODE' ){
+                        Properties.DEMO_MODE = this.utilService.isTrue( value );
+                        console.log('Setting Demo mode to: ', Properties.DEMO_MODE);
                     }
                 }
             }

@@ -4,6 +4,8 @@
     </div>
     <div class="bulk-qc-status-table-frame">
         <table class="bulk-qc-status-table">
+
+            <!-- Top row  TODO this is a bad way of doing this!  -->
             <tr>
                 <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-bulk-radios"
                     [ngClass]="{
@@ -22,6 +24,7 @@
                     </label>
                 </td>
             </tr>
+            <!-- 2nd row  TODO this is a bad way of doing this!  -->
             <tr>
                 <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-bulk-radios"
                     [ngClass]="{
