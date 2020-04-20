@@ -39,7 +39,9 @@ L-->
 	<property name="nbia-search-cover.base.dir" value="${software.dir}/nbia-search-cover"/>	
 	<property name="nbia-search.dist.dir" value="${nbia-search.base.dir}/dist"/>
 	<property name="nbia-viewer.base.dir" value="${software.dir}/nbia-viewer"/>
-	<property name="nbia-viewer.dist.dir" value="${nbia-viewer.base.dir}/dist"/>	
+	<property name="nbia-viewer.dist.dir" value="${nbia-viewer.base.dir}/dist"/>
+	<property name="nbia-admin.base.dir" value="${software.dir}/nbia-admin"/>
+	<property name="nbia-admin.dist.dir" value="${nbia-admin.base.dir}/dist"/>	
 	<property name="nbia-download-manager.base.dir" value="${software.dir}/nbia-download-manager"/>
 	<property name="nbia-download.base.dir" value="${software.dir}/nbia-download"/>
 	<property name="nbia-remote-search.base.dir" value="${software.dir}/nbia-remote-search"/>
@@ -1039,6 +1041,7 @@ L-->
         build:all,
 		build:nbia-uat,
 		build:nbia-search,
+		build:nbia-admin,
         dist:installer,
         dist:solr"/>
 	<!-- Copies install time resources into distribution tree -->
@@ -1128,6 +1131,9 @@ L-->
 		<copy todir="${dist.exploded.dir}/nbia-search" overwrite="true">
 			<fileset dir="${nbia-search.dist.dir}"/>
 		</copy>
+		<copy todir="${dist.exploded.dir}/nbia-admin" overwrite="true">
+			<fileset dir="${nbia-admin.dist.dir}"/>
+		</copy>		
 		<copy todir="${dist.exploded.dir}/nbia-viewer" overwrite="true">
 			<fileset dir="${nbia-viewer.dist.dir}"/>
 		</copy>
@@ -1269,5 +1275,48 @@ L-->
 			</if>
 		</else>
 		</if>			
-	</target>			
+	</target>
+
+	<target name="build:nbia-admin" description="This target is created for Jenkins build workflow"
+			depends="build:nbia-search, build:nbia-viewer">
+		<delete dir="${nbia-admin.dist.dir}" quiet="true"/>
+
+		<if>
+			<os family="unix"/>
+		<then>
+			<sequential>
+				<echo message="Linux build environment"/>
+				<exec executable="npm" dir="${nbia-admin.base.dir}">
+					<arg value="install" />
+				</exec>
+				<exec executable="ng" dir="${nbia-admin.base.dir}">
+					<arg value="build" />
+					<arg value="--base-href" />
+					<arg value="." />
+				</exec>
+			</sequential>
+		</then>
+		<else>
+			<if>
+				<os family="windows"/>
+			<then>
+				<echo message="Windows build environment"/>
+				<sequential>
+					<exec dir="${nbia-admin.base.dir}" executable="cmd" >
+						<arg line="/c npm 'install'"/>
+					</exec>	
+					
+					<exec dir="${nbia-admin.base.dir}" executable="cmd" >
+						<arg value="/c"/>
+						<arg value="ng"/>
+						<arg value="build"/>  
+						<arg value="--base-href"/>
+						<arg value="."/>					
+					</exec>
+				</sequential>
+			</then>	
+			</if>
+		</else>
+		</if>			
+	</target>	
 </project>

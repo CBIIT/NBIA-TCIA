@@ -38,6 +38,7 @@ import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.dto.QcSearchResultDTO;
+import gov.nih.nci.nbia.dto.QcSearchResultDTOLight;
 import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.dao.QcStatusDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
@@ -123,15 +124,15 @@ public class GetQCSearch extends getData{
         }
         String maxRows=NCIAConfig.getQctoolSearchResultsMaxNumberOfRows();
         List<QcSearchResultDTO> qsrDTOList = qcStatusDAO.findSeries(qcStatus, collectionSites, additionalQcFlagList, subjectIdArray, fromDateValue, toDateValue,  Integer.valueOf(maxRows));
-         
+        List<QcSearchResultDTOLight> qsrDTOListLight=new ArrayList<QcSearchResultDTOLight>();
 		for (QcSearchResultDTO dto:qsrDTOList){
-				System.out.println("===== In QcToolSearchBean:submit() - adding user to QC DTO ---");
-				dto.setUser(user);
-			}
+			QcSearchResultDTOLight dtol=new QcSearchResultDTOLight(dto);
+			qsrDTOListLight.add(dtol);			
+		}
 
 
 		
-		return Response.ok(JSONUtil.getJSONforQCList(qsrDTOList)).type("application/json")
+		return Response.ok(JSONUtil.getJSONforQCListLight(qsrDTOListLight)).type("application/json")
 				.build();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

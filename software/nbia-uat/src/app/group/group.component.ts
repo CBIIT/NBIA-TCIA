@@ -245,6 +245,7 @@ export class GroupComponent implements OnInit {
 	
     onSelect(group) {
 		console.log("click user group-- edit or delete user group");
+		this.newGroup = false;
         this.group = this.cloneGroup(group);
 		this.selectedGroup = group;
         this.displayDialog = true;

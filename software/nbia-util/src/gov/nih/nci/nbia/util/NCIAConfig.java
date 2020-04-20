@@ -709,10 +709,10 @@ public class NCIAConfig {
         return propertyValue;   	
     } 
     
-    public static String getLDAPGroupIgnoreList() {
-        String propertyValue = properties.getProperty("ldap.group.ignore.list");
-        return propertyValue;   	
-    } 
+//    public static String getLDAPGroupIgnoreList() {
+//        String propertyValue = properties.getProperty("ldap.group.ignore.list");
+//        return propertyValue;   	
+//    } 
     public static String getPublicGroupName() {
         String propertyValue = properties.getProperty("public.collection.access.group.name");
         checkProperty("public.collection.access.group.name", propertyValue);

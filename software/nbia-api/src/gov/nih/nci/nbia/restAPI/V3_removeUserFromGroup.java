@@ -23,7 +23,7 @@ public class V3_removeUserFromGroup extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method remove an user to a protection group
+	 * This method remove an user to a user group
 	 *
 	 * @return String - the status of operation 
 	 */
