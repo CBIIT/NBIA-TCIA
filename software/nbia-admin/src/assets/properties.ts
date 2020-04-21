@@ -6,8 +6,8 @@ export let Properties = {
     // This value can be changed in the config file.
 
     // Use this when server is local npm run
-      API_SERVER_URL: 'http://192.168.1.20:8080',
-    // API_SERVER_URL: '',
+    //  API_SERVER_URL: 'http://192.168.1.20:8080',
+     API_SERVER_URL: '',
      // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
 
     CONFIG_FILE: 'configuration',
