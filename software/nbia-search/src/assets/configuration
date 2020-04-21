@@ -46,3 +46,5 @@
 # Server URL wil default to the same server the client loaded from
 #########################################################################
 # API_host =https://public.cancerimagingarchive.net
+
+# SHOW_DATA_ADMIN_MENU = false
