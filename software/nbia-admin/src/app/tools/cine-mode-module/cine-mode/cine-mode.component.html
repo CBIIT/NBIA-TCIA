@@ -19,7 +19,7 @@
         <span class="panel-title"
         >
             {{ seriesData["seriesDescription"] }}&nbsp;&nbsp;
-            {{seriesData["studyDate"]}}
+            {{seriesData["dateTime"]}}
         </span
         >
         <span
@@ -353,12 +353,20 @@
                     <td class="data-table-body-td">
                         {{ seriesData["patientId"] }}
                     </td>
-                    <td class="data-table-body-td">
+
+
+                    <td class="data-table-body-td"
+                        title="{{seriesData['study']}}"
+                    >
                         ...{{ seriesData["study"] | shortenRight }}
                     </td>
-                    <td class="data-table-body-td">
+
+                    <td class="data-table-body-td"
+                        title="{{seriesData['series']}}"
+                    >
                         ...{{ seriesData["series"] | shortenRight }}
                     </td>
+
                     <td class="data-table-body-td">
                         {{ seriesData["visibilityStatus"] }}
                     </td>

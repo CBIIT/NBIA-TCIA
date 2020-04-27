@@ -217,6 +217,7 @@ export class SearchResultsSectionComponent implements OnInit{
     // Cine-mode viewer
     onClickCineMode( i ) {
         this.currentCineModeSeriesIndex = i;
+
         this.cineModeService.openCineMode( this.searchResults[i], this.collectionSite, i );
     }
 

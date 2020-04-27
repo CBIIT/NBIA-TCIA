@@ -35,7 +35,7 @@ $data-table-cell-padding: 8px;
     background-color: $data-table-header-background-color;
     color: #000;
     // Keeps the viewer button icons from scrolling over the top of the heading.
-    z-index: 2;
+    z-index: 1;
     position: sticky;
     top: 0;
 }

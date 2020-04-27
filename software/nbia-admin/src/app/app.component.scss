@@ -6,6 +6,11 @@ $close-x-red: #700;
 $loading-screen-z-index: 5;
 $heading-text-color: #bb0e3d;
 
+$top-logo-height: 41px;
+$heading-height: 110px;
+$heading-margin-bottom: 8px;   /* Space between menu bar and top of content */
+$disabled-text: #acacac; // TODO rename & explain
+
 
 table {
     border-collapse: separate;
@@ -83,3 +88,4 @@ table {
     -ms-user-select: none;
     user-select: none;
 }
+

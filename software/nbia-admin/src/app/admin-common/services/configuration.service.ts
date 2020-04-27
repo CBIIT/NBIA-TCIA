@@ -76,6 +76,13 @@ export class ConfigurationService{
                         Properties.DEMO_MODE = this.utilService.isTrue( value );
                         console.log('Setting Demo mode to: ', Properties.DEMO_MODE);
                     }
+
+                    if( key === 'brand' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.BRAND = value;
+                        }
+                    }
+
                 }
             }
         }

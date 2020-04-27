@@ -53,6 +53,7 @@ export const Consts = {
     GET_HISTORY_REPORT_TABLE: 'getQCHistoryReportTable',
     GET_SEARCH_FOR_PERFORM_QC: 'getQCSearch',
     UPDATE_COLLECTION_DESCRIPTION: 'submitCollectionDescription',
+    GET_HOST_NAME: 'hostName',
 
     DICOM_TAGS: 'getDicomTags',
     DICOM_TAGS_BY_IMAGE: 'getDicomTagsByImageID',

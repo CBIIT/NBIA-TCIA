@@ -16,3 +16,9 @@ OHIF_viewer = true
 # No changes will be made to the data. Ex. Approve Deletions, Perform QC, etc.
 #########################################################################
 DEMO_MODE = true
+
+#########################################################################
+# This will over ride the brand set in assets/brand/currentBrand
+#########################################################################
+# brand=nbia
+

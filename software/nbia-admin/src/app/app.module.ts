@@ -23,15 +23,18 @@ import { CineModeModule } from './tools/cine-mode-module/cine-mode.module';
 import { ManageWorkflowItemsModule } from './tools/manage-workflow-items-module/manage-workflow-items.module';
 import { CookieService } from 'angular2-cookie/core';
 import { LoadingDisplayComponent } from './admin-common/components/loading-display/loading-display.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule( {
     declarations: [
         AppComponent,
         NbiaAdminClientComponent,
         LoginComponent,
-        LoadingDisplayComponent
+        LoadingDisplayComponent,
+        FooterComponent
     ],
     exports: [
+
     ],
     imports: [
         BrowserModule,

@@ -12,6 +12,9 @@ export class AccessTokenService{
 
     tokenStatus = -1;
     accessToken = TokenStatus.NO_TOKEN_YET;
+    currentUser = '';
+    currentPassword = '';
+
     tokenStatusChangeEmitter = new EventEmitter();
 
 
@@ -41,10 +44,12 @@ export class AccessTokenService{
         this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
             accessTokenData => {
                 this.setAccessToken( accessTokenData['access_token'] );
+                this.setCurrentUser( user );
+                this.setCurrentPassword( password );
                 this.setAccessTokenStatus( TokenStatus.HAVE_TOKEN );
             },
             err => {
-                console.error('Get new token error: ', err);
+                console.error( 'Get new token error: ', err );
                 this.setAccessTokenStatus( TokenStatus.BAD_TOKEN );
             }
         )
@@ -63,10 +68,10 @@ export class AccessTokenService{
         return this.tokenStatus;
     }
 
-    setAccessTokenStatus( s ){
-        if( this.tokenStatus !== s){
+    setAccessTokenStatus( s ) {
+        if( this.tokenStatus !== s ){
             this.tokenStatus = s;
-            this.tokenStatusChangeEmitter.emit( this.tokenStatus);
+            this.tokenStatusChangeEmitter.emit( this.tokenStatus );
         }
     }
 
@@ -80,27 +85,27 @@ export class AccessTokenService{
     }
 
     testToken( token ? ) {
-        if( this.utilService.isNullOrUndefinedOrEmpty( token )){
+        if( this.utilService.isNullOrUndefinedOrEmpty( token ) ){
             token = this.accessToken;
         }
 
-        this.setAccessTokenStatus(TokenStatus.NO_TOKEN_YET);
+        this.setAccessTokenStatus( TokenStatus.NO_TOKEN_YET );
 
         // Is there a token to test
         if( this.utilService.isNullOrUndefinedOrEmpty( token ) ){
-            this.setAccessTokenStatus(TokenStatus.NO_TOKEN);
+            this.setAccessTokenStatus( TokenStatus.NO_TOKEN );
         }else
             // Test the token by trying to get the user roles.
-            {
+        {
             this.doGet( Consts.GET_USER_ROLES ).subscribe(
                 ( collectionDescriptionsData ) => {
-                    this.setAccessTokenStatus(TokenStatus.GOOD_TOKEN);
+                    this.setAccessTokenStatus( TokenStatus.GOOD_TOKEN );
                 },
                 collectionDescriptionsError => {
                     if( collectionDescriptionsError.status === 401 ){
-                        this.setAccessTokenStatus(TokenStatus.EXP_TOKEN);
+                        this.setAccessTokenStatus( TokenStatus.EXP_TOKEN );
                     }else{
-                        this.setAccessTokenStatus(TokenStatus.BAD_TOKEN);
+                        this.setAccessTokenStatus( TokenStatus.BAD_TOKEN );
                     }
                 } );
         }
@@ -134,6 +139,23 @@ export class AccessTokenService{
         }
 
         return results;
+    }
+
+
+    setCurrentUser( user ) {
+        this.currentUser = user;
+    }
+
+    getCurrentUser() {
+        return this.currentUser;
+    }
+
+    setCurrentPassword( pw ) {
+        this.currentPassword = pw;
+    }
+
+    getCurrentPassword() {
+        return this.currentPassword;
     }
 
 }

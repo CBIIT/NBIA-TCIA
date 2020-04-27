@@ -3,7 +3,7 @@ import { UtilService } from './util.service';
 import { ParameterService } from './parameter.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
-import { Consts } from '@app/constants';
+import { Consts, TokenStatus } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from './access-token.service';
 
@@ -258,22 +258,61 @@ export class ApiService{
                 // CHECKME I am switching this function to use the same emitter as PreformQc, should work. - Looks like it worked check again...
                 this.searchResultsEmitter.emit( approveDeletionsSearchData );
             },
-            approveDeletionsSearchDataError => {
-                this.resultsErrorEmitter.emit( Array.from( new Uint8Array( approveDeletionsSearchDataError ) ) );
-                console.error( 'Could not get ApproveDeletionsSearch from server: ', approveDeletionsSearchDataError );
+            async approveDeletionsSearchDataError => {
+
+                // Token has expired, try to get a new one
+                if( approveDeletionsSearchDataError['status'] === 401){
+                    console.log('MHL Token has expired, try to get a new one');
+                    this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
+                    while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
+                        await this.utilService.sleep( Consts.waitTime );
+                    }
+                    this.doPost( Consts.GET_SEARCH_FOR_APPROVE_DELETIONS, query ).subscribe(
+                        approveDeletionsSearchData0  => {
+                            this.searchResultsEmitter.emit( approveDeletionsSearchData0 );
+                        },
+                        performQcSearchDataError0 => {
+                            this.resultsErrorEmitter.emit( performQcSearchDataError0 );
+                        });
+                }
+                else{
+
+                    this.resultsErrorEmitter.emit( approveDeletionsSearchDataError );
+                    console.error( 'Could not get ApproveDeletionsSearch from server: ', approveDeletionsSearchDataError );
+                }
             } );
     }
 
-    getPerformQcSearch( query ) {
+     getPerformQcSearch( query ) {
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
             ( performQcSearchData ) => {
                 this.searchResultsEmitter.emit( performQcSearchData );
             },
-            performQcSearchDataError => {
-                this.resultsErrorEmitter.emit( Array.from( new Uint8Array( performQcSearchDataError ) ) );
-                console.error( 'Could not get performQcSearch from server: ', performQcSearchDataError );
-                console.error( 'Could not get performQcSearch from server: ', Array.from( new Uint8Array( performQcSearchDataError ) ) );
+            async performQcSearchDataError => {
+
+                // Token has expired, try to get a new one
+                if( performQcSearchDataError['status'] === 401){
+                    console.log('MHL Token has expired, try to get a new one');
+                    this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
+                    while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
+                        await this.utilService.sleep( Consts.waitTime );
+                    }
+                    this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
+                         performQcSearchData0  => {
+                            this.searchResultsEmitter.emit( performQcSearchData0 );
+                        },
+                        performQcSearchDataError0 => {
+                            this.resultsErrorEmitter.emit( performQcSearchDataError0 );
+                        });
+                }
+
+
+                else{
+                    this.resultsErrorEmitter.emit( performQcSearchDataError );
+                    console.error( 'Could not get performQcSearch from server: ', performQcSearchDataError['status'] );
+                    console.error( 'Could not get performQcSearch from server: ', Array.from( new Uint8Array( performQcSearchDataError ) ) );
+                }
             } );
     }
 
@@ -515,4 +554,42 @@ export class ApiService{
             }
         )
     }
+
+
+    /**
+     * For rest calls with no access token.
+     *
+     * @param queryType
+     */
+    doGetNoToken( queryType ) {
+        let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl  -k \'' + getUrl + '\'';
+            console.log( 'doGet: ' + curl );
+        }
+
+        let headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        } );
+
+        let options = {
+            headers: headers,
+            method: 'get',
+            responseType: 'text' as 'text'
+        };
+
+        let results;
+        try{
+            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+        }catch( e ){
+            // TODO react to error.
+            console.error( 'doGetNoToken Exception: ' + e );
+        }
+
+        return results;
+    }
+
+
+
 }

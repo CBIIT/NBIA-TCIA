@@ -9,6 +9,7 @@ import { LoginService } from '../login/login.service';
 import { AccessTokenService } from '../admin-common/services/access-token.service';
 import { Properties } from '@assets/properties';
 import { ConfigurationService } from '../admin-common/services/configuration.service';
+import { BrandingService } from '@app/admin-common/services/branding.service';
 
 
 @Component( {
@@ -42,7 +43,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
 
     constructor( private parameterService: ParameterService, private apiService: ApiService,
                  private utilService: UtilService, private loginService: LoginService,
-                 private accessTokenService: AccessTokenService,
+                 private accessTokenService: AccessTokenService, private brandingService: BrandingService,
                  private configurationService: ConfigurationService ) {
         this.configurationService.initConfiguration();
     }
@@ -79,6 +80,8 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         }
         this.accessToken = this.accessTokenService.getAccessToken();
         this.initAccess();
+
+        this.brandingService.initCurrentBrand();
 
     }
 
