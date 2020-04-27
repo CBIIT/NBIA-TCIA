@@ -47,4 +47,4 @@
 #########################################################################
 # API_host =https://public.cancerimagingarchive.net
 
-# SHOW_DATA_ADMIN_MENU = false
+# SHOW_DATA_ADMIN_MENU = true

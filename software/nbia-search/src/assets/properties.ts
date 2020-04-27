@@ -77,7 +77,7 @@ export let Properties = {
     FOOTER_HTML: '',
     BRAND_DIR: 'brand',
     CONFIG_FILE: 'configuration',
-    DEFAULT_BRAND: 'nbia',
+    DEFAULT_BRAND: 'tcia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
 
     VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts to know if it is initialized before appending to the version.
