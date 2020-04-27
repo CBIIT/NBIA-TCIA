@@ -109,5 +109,6 @@
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-net-2.0.25.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/dcm4che-soundex-2.0.25.jar"/>
 	<classpathentry exported="true" kind="var" path="ECLIPSE_HOME"/>
+	<classpathentry kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -399,8 +399,8 @@ L-->
 			</else>
 		</if>
 		<!-- should be part of the new database creation script TBD -->
-		<!--antcall target="create-guest-account"/-->
-		<antcall target="create.admin.account.in.db" />
+		<!--antcall target="create-guest-account and super user account"/-->
+		<antcall target="create.initial.account.in.db" />
 	</target>
 
 	<target name="build:db:update" description="Update database" depends="common:common:init">
@@ -439,7 +439,7 @@ L-->
 		<updateDatabase driver="${database.driver}" url="${database.url}" username="${database.user}" password="${database.password}" classpathref="liquibase_stuff" promptOnNonLocalDatabase="${prompt.user.if.not.local.database}" defaultSchemaName="${database.schema}" dropFirst="false" changeLogFile="${database.changelog.file}" />
 	</target>
 	
-	<target name="create.admin.account.in.db" description="insert the defined admin user into database">
+	<target name="create.initial.account.in.db" description="insert the defined admin user and nbia_guest into database">
 		<echo message="Insert NBIA admin login ${nbia.admin.login} into database." />
 		<property name="database.driver.file" value="${common.lib.dir}/${database.driver.jar}"/>
 		<path id="db_stuff">
@@ -454,7 +454,10 @@ L-->
 		 <![CDATA[
 
 		UPDATE csm_user SET login_name="${nbia.admin.login.name}" WHERE login_name='nciadevtest';
-
+		insert into csm_user (LOGIN_NAME,FIRST_NAME,LAST_NAME,EMAIL_ID,UPDATE_DATE)
+		values ("nbia_guest","DQ4nFusFQxr7f3z5/qvdhw==","DQ4nFusFQxr7f3z5/qvdhw==","J+U4jOdifJsvA5uICPsem96DzM2a7MkdUeb0eQ3Sr8E=", sysdate());
+		UPDATE csm_group SET group_name="${public.collection.access.group.name}", group_desc="Public user group" WHERE group_name='PUBLIC-GRID';
+		insert into csm_user_group_role_pg(USER_GROUP_ROLE_PG_ID,USER_ID,GROUP_ID,ROLE_ID,PROTECTION_GROUP_ID,UPDATE_DATE) values (3,2,NULL,1,1,sysdate());
 	]]>
 		</sql>
 	</target>	
