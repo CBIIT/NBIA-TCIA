@@ -2078,7 +2078,18 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
               
          </sql>
    </changeSet> 
-   
+         <changeSet id="7.6.change.dbengines" author="gustafss" dbms="mysql">
+         <comment>
+           alters some table to InnoDB
+         </comment>          
+         <sql>       
+              ALTER TABLE databasechangelog ENGINE=InnoDB;
+              ALTER TABLE databasechangeloglock ENGINE=InnoDB;
+              ALTER TABLE download_data_history ENGINE=InnoDB;
+              ALTER TABLE qc_status_history ENGINE=InnoDB;
+              ALTER TABLE submission_history ENGINE=InnoDB;    
+         </sql>
+   </changeSet> 
    
    
 </databaseChangeLog>
