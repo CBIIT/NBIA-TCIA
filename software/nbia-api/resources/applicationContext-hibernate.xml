@@ -304,6 +304,38 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
+    <bean id="imageDeletionService" class="gov.nih.nci.nbia.deletion.ImageDeletionServiceImpl">
+  </bean>
+    <bean id="seriesDao" class="gov.nih.nci.nbia.deletion.dao.SeriesDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+    <bean id="annotationDao" class="gov.nih.nci.nbia.deletion.dao.AnnotationDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <bean id="imageDao" class="gov.nih.nci.nbia.deletion.dao.ImageDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <bean id="studyDao" class="gov.nih.nci.nbia.deletion.dao.StudyDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <bean id="patientDao" class="gov.nih.nci.nbia.deletion.dao.PatientDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <bean id="deletionAuditTrailDao" class="gov.nih.nci.nbia.deletion.dao.DeletionAuditTrailDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
   <!--
     Activates various annotations to be detected in bean classes:
     Spring's @Required and @Autowired, as well as JSR 250's @Resource.
