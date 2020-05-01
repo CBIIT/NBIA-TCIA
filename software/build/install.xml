@@ -136,6 +136,7 @@ L-->
 						<filter token="ldap.basedn" value="${ldap.basedn}"/>
 						<filter token="ldap.user" value="${ldap.user}"/>
 						<filter token="ldap.pass" value="${ldap.pass}"/>
+						<filter token="ldap.user.id.label" value="${ldap.user.id.label}"/>						
 					</filterset>
 				</copy>
 			</then>

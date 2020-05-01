@@ -708,6 +708,12 @@ public class NCIAConfig {
         checkProperty("ldap.memberOf.attribute.name", propertyValue);
         return propertyValue;   	
     } 
+	
+    public static String getLDAPUserIdLabel() {
+        String propertyValue = properties.getProperty("ldap.user.id.label");
+        checkProperty("ldap.user.id.label", propertyValue);
+        return propertyValue;   	
+    } 	
     
 //    public static String getLDAPGroupIgnoreList() {
 //        String propertyValue = properties.getProperty("ldap.group.ignore.list");
