@@ -11,11 +11,11 @@ export class Globals {
 	accessToken = "d4a5d1ac-9630-42d2-8eb7-8379573ce504";
 	wikiBaseUrl = "";
 //export var wikiContextSensitiveHelpUrl="https://wiki.cancerimagingarchive.net/display/NBIA/TCIA+Current+Help+Topics#TCIACurrentHelpTopics";
-	manageUserWiki = "-ManagingUsers";
-	managePGWiki = "-ManagingProtectionGroups";
-	manageGroupWiki = "-ManagingUserGroups";
-//export var managePEWiki = "-ManagingPE";
-	managePEWiki = "-ManagingProtectionElements";
-	userAuthorizationWiki = "-AuthorizingProtectionGroups";
-	userAuthorizationWithGroupWiki = "-AuthorizingUserGroups";
+	wikiUrlSubSection = "User+Administration+Tool+Guide#UserAdministrationToolGuide"
+	manageUserWiki = this.wikiUrlSubSection + "-ManagingUsers";
+	managePGWiki = this.wikiUrlSubSection + "-ManagingProtectionGroups";
+	manageGroupWiki = this.wikiUrlSubSection + "-ManagingUserGroups";
+	managePEWiki = this.wikiUrlSubSection + "-ManagingProtectionElements";
+	userAuthorizationWiki = this.wikiUrlSubSection + "-AuthorizingProtectionGroups";
+	userAuthorizationWithGroupWiki = this.wikiUrlSubSection + "-AuthorizingUserGroups";
 }
