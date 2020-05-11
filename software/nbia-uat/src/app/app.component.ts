@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
 	showAuthorUG: boolean;
 	showAuthorPG: boolean;
 	selectedTabHeader = "User";
+	version = '2.3';
+	hostName:string;
 	@ViewChild(TabView,{static:false}) tabView: TabView;
 	@ViewChild(GroupComponent,{static:false}) groupComponent: GroupComponent;
 	@ViewChild(PeComponent,{static:false}) peComponent: PeComponent;	
@@ -35,6 +37,9 @@ export class AppComponent implements OnInit {
 		console.log("url="+ this.globals.serviceUrl + " access token=" + this.globals.accessToken);
 //		this.loadingDisplayService.setLoading( true, 'Standby...' );
 		this.appservice.getWikiUrlParam().then(data => {this.globals.wikiBaseUrl = data},
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
+		this.appservice.getSerVerHostName().subscribe(data => {this.hostName = <string>data;
+		console.log("server host name is " + this.hostName)},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 		this.appservice.getConfigParams().subscribe((config:Config[]) => {this.config = config; 
 		this.show=this.config[1].paramValue.toLowerCase() == 'true';
