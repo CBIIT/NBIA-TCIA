@@ -47,7 +47,8 @@ export class AppComponent implements OnInit {
 		this.showAuthorPG = this.config[3].paramValue.toLowerCase() == 'true';
 		console.log("show ug = " + this.config[2].paramValue.toLowerCase() + "  show pg=" + this.config[3].paramValue.toLowerCase());
 		},
-		error =>  {this.handleError(error);this.errorMessage = <any>error});		
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
+		this.version = this.globals.uatVersionNumber;		
 	}
 
 	ngOnInit() {
