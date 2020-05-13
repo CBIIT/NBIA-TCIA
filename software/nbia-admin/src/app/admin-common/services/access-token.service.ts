@@ -12,6 +12,8 @@ export class AccessTokenService{
 
     tokenStatus = -1;
     accessToken = TokenStatus.NO_TOKEN_YET;
+    refreshToken = TokenStatus.NO_TOKEN_YET;
+    expiresIn;
     currentUser = '';
     currentPassword = '';
 
@@ -34,19 +36,33 @@ export class AccessTokenService{
         let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + Consts.API_CLIENT_SECRET_DEFAULT + '&grant_type=password';
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'getAccessToken: ' + curl );
+            console.log( 'MHL getAccessToken: ' + curl );
         }
         let options =
             {
                 headers: headers,
                 method: 'post'
             };
+
         this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
             accessTokenData => {
                 this.setAccessToken( accessTokenData['access_token'] );
+                this.setRefreshToken( accessTokenData['refresh_token'] );
+                this.setExpiresIn( accessTokenData['expires_in'] );
+
                 this.setCurrentUser( user );
                 this.setCurrentPassword( password );
                 this.setAccessTokenStatus( TokenStatus.HAVE_TOKEN );
+
+ /*
+                console.log( 'MHL accessTokenData: ', accessTokenData );
+                console.log('MHL AccessToken: ', this.accessToken);
+                console.log('MHL RefreshToken: ', this.refreshToken);
+                console.log('MHL ExpiresIn: ', this.expiresIn);
+                console.log('MHL user: ', user);
+                console.log('MHL password: ', password);
+                console.log('MHL HAVE_TOKEN: ', TokenStatus.HAVE_TOKEN);
+*/
             },
             err => {
                 console.error( 'Get new token error: ', err );
@@ -82,6 +98,14 @@ export class AccessTokenService{
 
     setAccessToken( token ) {
         this.accessToken = token;
+    }
+
+    setRefreshToken( token ) {
+        this.refreshToken = token;
+    }
+
+    setExpiresIn( expIn ) {
+        this.expiresIn = expIn;
     }
 
     testToken( token ? ) {

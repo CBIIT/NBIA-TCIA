@@ -22,3 +22,7 @@ DEMO_MODE = true
 #########################################################################
 # brand=nbia
 
+#########################################################################
+# This is the URL for the tool help website that is launched by clicking the "?" next to the tool heading.
+#########################################################################
+# HELP_BASE_URL = https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide

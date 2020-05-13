@@ -19,6 +19,9 @@ import { Properties } from '@assets/properties';
  * Read, edit, save Collection descriptions.
  */
 export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
+    userRoles;
+    roleIsGood = false;
+
     collections;
     currentCollection;
     showHtml = false;
@@ -104,18 +107,34 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         this.apiService.collectionsAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.collections = data;
+
                 if( !this.utilService.isNullOrUndefinedOrEmpty( this.collections ) ){
                     this.currentCollection = this.collections[0]['name'];
                     this.htmlContent = this.collections[0]['description'];
                     this.textTrailer = this.htmlContent;
                 }
+
             } );
-        this.apiService.getCollectionAndDescriptions(); // TODO
+
+        this.apiService.getCollectionAndDescriptions();
+
 
         this.querySectionService.updateCollectionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.onCollectionClick( data );
             } );
+
+
+        this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.userRoles = data;
+                if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+                    this.roleIsGood = true;
+                }
+            });
+        this.apiService.getRoles();
+
+
     }
 
     onCollectionClick( i ) {

@@ -7,9 +7,23 @@ export let Properties = {
 
     // Use this when server is local npm run
     //  API_SERVER_URL: 'http://192.168.1.20:8080',
-     API_SERVER_URL: '',
-     // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+    /*
+     Our Dev server
+     API_SERVER_URL: 'http://ncias-d1707-v.nci.nih.gov:8080',
+     API_SERVER_URL: 'https://imaging-devcm.nci.nih.gov',
 
+     QA
+     API_SERVER_URL: 'https://ncias-q1730-v.nci.nih.gov',
+     API_SERVER_URL: 'https://imaging-qacm.nci.nih.gov',
+
+     Public
+     API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+     API_SERVER_URL: 'https://public.cancerimagingarchive.net',
+ */
+
+     // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+     API_SERVER_URL: '',
+    // API_SERVER_URL: 'http://192.168.1.20:8080',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -29,6 +43,7 @@ export let Properties = {
     CONFIG_FILE: 'configuration',
     DEFAULT_BRAND: 'tcia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
+    HELP_BASE_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide',
     //  END The following values will by set by the "Brand"
     // //////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +74,6 @@ export let Properties = {
 
     // This value can be changed in the config file.  FIXMENOW  No this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
-
 
 
     DEV_MODE: false,

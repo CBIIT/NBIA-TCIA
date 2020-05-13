@@ -6,6 +6,7 @@ import { timeout } from 'rxjs/operators';
 import { Consts, TokenStatus } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from './access-token.service';
+import { Observable } from 'rxjs';
 
 @Injectable( {
     providedIn: 'root'
@@ -23,7 +24,7 @@ export class ApiService{
     collectionsAndDescriptionEmitter = new EventEmitter();
 
     // When a QC Tools or Approve Deletion search is run, it emits the Collection//Site to the search
-    // results so we can Show the Collection in the resuls, but not get it back from the server with each row of results.
+    // results so we can Show the Collection in the results, but not get it back from the server with each row of results.
     collectionSiteEmitter = new EventEmitter();
 
     searchResultsEmitter = new EventEmitter();
@@ -38,11 +39,16 @@ export class ApiService{
     visibilitiesEmitter = new EventEmitter();
     visibilitiesErrorEmitter = new EventEmitter();
 
+    seriesForDeletionEmitter = new EventEmitter();
+    seriesForDeletionErrorEmitter = new EventEmitter();
+
     submitBulkQcResultsEmitter = new EventEmitter();
     submitBulkQcErrorEmitter = new EventEmitter();
 
     submitSeriesDeletionResultsEmitter = new EventEmitter();
     submitSeriesDeletionErrorEmitter = new EventEmitter();
+
+    getDicomImageErrorEmitter = new EventEmitter();
 
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService ) {
@@ -57,6 +63,11 @@ export class ApiService{
             await this.utilService.sleep( Consts.waitTime );
         }
         this.update();
+
+        while( this.accessTokenService.getAccessToken() === undefined ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+        this.getWikiUrlParam();
     }
 
     update() {
@@ -71,21 +82,24 @@ export class ApiService{
                 break;
 
             case Consts.GET_HISTORY_REPORT:
-                this.getQcHistoryReport(submitData );
+                this.getQcHistoryReport( submitData );
                 break;
 
             case Consts.GET_HISTORY_REPORT_TABLE:
-                this.getQcHistoryReportTable(submitData );
+                this.getQcHistoryReportTable( submitData );
                 break;
 
             case Consts.TOOL_APPROVE_DELETIONS:
-                this.submitBulkDeletion(submitData );
+                this.submitBulkDeletion( submitData );
+                break;
+
+            case Consts.GET_SERIES_FOR_DELETION:
+                this.getSeriesForDeletion();
                 break;
 
         }
     }
 
-// collectionSite=CBIS-DDSM//CBIS-DDSM&fromDate=01-01-2017&toDate=01-01-2019
     /**
      * Used by criteria search for Perform QC and Approve Deletions.
      *
@@ -190,10 +204,10 @@ export class ApiService{
     submitBulkQc( query ) {
         this.doPost( Consts.SUBMIT_QC_STATUS_UPDATE, query ).subscribe(
             ( data ) => {
-                this.submitBulkQcResultsEmitter.emit(data);
+                this.submitBulkQcResultsEmitter.emit( data );
             },
             ( err ) => {
-                this.submitBulkQcErrorEmitter.emit(err);
+                this.submitBulkQcErrorEmitter.emit( err );
                 console.error( 'submitBulkQc err: ', err['error'] );
                 console.error( 'submitBulkQc err: ', err );
             } );
@@ -202,48 +216,59 @@ export class ApiService{
     submitBulkDeletion( query ) {
         this.doPost( Consts.SUBMIT_SERIES_DELETION, query ).subscribe(
             ( data ) => {
-                this.submitSeriesDeletionResultsEmitter.emit(data);
+                this.submitSeriesDeletionResultsEmitter.emit( data );
             },
             ( err ) => {
-                this.submitSeriesDeletionErrorEmitter.emit(err);
+                this.submitSeriesDeletionErrorEmitter.emit( err );
                 console.error( 'submitBulkDeletion err: ', err['error'] );
                 console.error( 'submitBulkDeletion err: ', err );
             } );
     }
 
-    getQcHistoryReport(query){
-        this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(
+    getSeriesForDeletion() {
+        this.doGet( Consts.GET_SERIES_FOR_DELETION ).subscribe(
             ( data ) => {
-                this.qcHistoryResultsEmitter.emit(data);
+                this.seriesForDeletionEmitter.emit( data );
             },
             ( err ) => {
-                this.qcHistoryErrorEmitter.emit(err);
+                this.seriesForDeletionErrorEmitter.emit( err );
+                console.error( 'seriesForDeletion err: ', err['error'] );
+                console.error( 'seriesForDeletion err: ', err );
+            } );
+    }
+
+    getQcHistoryReport( query ) {
+        this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(
+            ( data ) => {
+                this.qcHistoryResultsEmitter.emit( data );
+            },
+            ( err ) => {
+                this.qcHistoryErrorEmitter.emit( err );
                 console.error( 'getQcHistoryReport err: ', err['error'] );
                 console.error( 'getQcHistoryReport err: ', err );
             } );
-
     }
 
-    getQcHistoryReportTable(query){
+    getQcHistoryReportTable( query ) {
         this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(
             ( data ) => {
-                this.qcHistoryResultsTableEmitter.emit(data);
+                this.qcHistoryResultsTableEmitter.emit( data );
             },
             ( err ) => {
-                this.qcHistoryTableErrorEmitter.emit(err);
+                this.qcHistoryTableErrorEmitter.emit( err );
                 console.error( 'getQcHistoryReportTable err: ', err['error'] );
                 console.error( 'getQcHistoryReportTable err: ', err );
             } );
 
     }
 
-    getVisibilities(){
+    getVisibilities() {
         this.doGet( Consts.GET_VISIBILITIES ).subscribe(
             ( data ) => {
-                this.visibilitiesEmitter.emit(data);
+                this.visibilitiesEmitter.emit( data );
             },
             ( err ) => {
-                this.visibilitiesErrorEmitter.emit(err);
+                this.visibilitiesErrorEmitter.emit( err );
                 console.error( 'getVisibilities err: ', err['error'] );
                 console.error( 'getVisibilities err: ', err );
             } );
@@ -261,21 +286,19 @@ export class ApiService{
             async approveDeletionsSearchDataError => {
 
                 // Token has expired, try to get a new one
-                if( approveDeletionsSearchDataError['status'] === 401){
-                    console.log('MHL Token has expired, try to get a new one');
+                if( approveDeletionsSearchDataError['status'] === 401 ){
                     this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
                     while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
                         await this.utilService.sleep( Consts.waitTime );
                     }
                     this.doPost( Consts.GET_SEARCH_FOR_APPROVE_DELETIONS, query ).subscribe(
-                        approveDeletionsSearchData0  => {
+                        approveDeletionsSearchData0 => {
                             this.searchResultsEmitter.emit( approveDeletionsSearchData0 );
                         },
                         performQcSearchDataError0 => {
                             this.resultsErrorEmitter.emit( performQcSearchDataError0 );
-                        });
-                }
-                else{
+                        } );
+                }else{
 
                     this.resultsErrorEmitter.emit( approveDeletionsSearchDataError );
                     console.error( 'Could not get ApproveDeletionsSearch from server: ', approveDeletionsSearchDataError );
@@ -283,7 +306,7 @@ export class ApiService{
             } );
     }
 
-     getPerformQcSearch( query ) {
+    getPerformQcSearch( query ) {
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
             ( performQcSearchData ) => {
@@ -292,23 +315,19 @@ export class ApiService{
             async performQcSearchDataError => {
 
                 // Token has expired, try to get a new one
-                if( performQcSearchDataError['status'] === 401){
-                    console.log('MHL Token has expired, try to get a new one');
+                if( performQcSearchDataError['status'] === 401 ){
                     this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
                     while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
                         await this.utilService.sleep( Consts.waitTime );
                     }
                     this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
-                         performQcSearchData0  => {
+                        performQcSearchData0 => {
                             this.searchResultsEmitter.emit( performQcSearchData0 );
                         },
                         performQcSearchDataError0 => {
                             this.resultsErrorEmitter.emit( performQcSearchDataError0 );
-                        });
-                }
-
-
-                else{
+                        } );
+                }else{
                     this.resultsErrorEmitter.emit( performQcSearchDataError );
                     console.error( 'Could not get performQcSearch from server: ', performQcSearchDataError['status'] );
                     console.error( 'Could not get performQcSearch from server: ', Array.from( new Uint8Array( performQcSearchDataError ) ) );
@@ -316,6 +335,25 @@ export class ApiService{
             } );
     }
 
+
+    getWikiUrlParam() {
+        this.doGet( Consts.GET_CONFIG_PARAMS ).subscribe(
+            ( data ) => {
+                for( let param of data ){
+                    if( param['paramName'].match( '^\s*wikiBaseUrl\s*$' ) ){
+                        Properties.HELP_BASE_URL = param['paramValue'];
+                    }
+                }
+            },
+                    // Don't display this error, this will happen if a user has not yet logged in.
+                       /*
+                       getParamsError => {
+                            console.error( 'Error: ', getParamsError );
+                            console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
+                        }
+                        */
+        );
+    }
 
     getCollectionAndDescriptions() {
         this.doGet( Consts.GET_COLLECTION_DESCRIPTIONS ).subscribe(
@@ -356,6 +394,7 @@ export class ApiService{
         this.doGet( Consts.GET_COLLECTION_NAMES_AND_SITES ).subscribe(
             collectionNamesData => {
                 this.collectionSiteNames = collectionNamesData;
+
                 this.mergeCollectionSitesAndDescriptions();
             },
             ( collectionNamesError ) => {
@@ -396,6 +435,7 @@ export class ApiService{
     }
 
     mergeCollectionsAndDescriptions() {
+
         for( let name of this.collectionNames ){
             let temp = { 'name': name['criteria'] };
             temp['description'] = '';
@@ -432,6 +472,7 @@ export class ApiService{
             }
             this.collectionSitesAndDescriptions.push( temp );
         }
+
         this.sendCollectionSitesAndDescriptions();
     }
 
@@ -444,6 +485,7 @@ export class ApiService{
     // @TODO Explain
     async sendCollectionSitesAndDescriptions() {
         await this.utilService.sleep( Consts.waitTime );
+
         this.collectionSitesAndDescriptionEmitter.emit( this.collectionSitesAndDescriptions );
     }
 
@@ -472,6 +514,72 @@ export class ApiService{
                     }
                 } );
         }
+    }
+
+
+    downLoadDicomImageFile( seriesUID, objectUID, studyUID ) {
+        this.getDicomImage( seriesUID, objectUID, studyUID ).subscribe(
+            data => {
+                let dicomFile = new Blob( [data], { type: 'application/dicom' } );
+
+                // TODO in the download popup, it says 'from: blob:'  see if we can change this.
+                let url = (<any>window).URL.createObjectURL( dicomFile );
+                (<any>window).open( url );
+            },
+            err => {
+                console.error( 'Error downloading DICOM: ', err );
+                this.getDicomImageErrorEmitter.emit( err );
+            }
+        );
+    }
+
+
+    getDicomImage( seriesUID, objectUID, studyUID ): Observable<any> {
+        let post_url = Properties.API_SERVER_URL + '/nbia-api/services/getWado';
+        let headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer  ' + this.accessTokenService.getAccessToken()
+        } );
+
+        let data = 'seriesUID=' + seriesUID + '&objectUID=' + objectUID + '&studyUID=' + studyUID + '&requestType=WADO';
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
+            console.log( 'doGet: ' + curl );
+        }
+
+        let options =
+            {
+                headers: headers,
+                method: 'post',
+                responseType: 'blob' as 'blob'
+            };
+        return this.httpClient.post( post_url, data, options );
+    }
+
+
+    downloadSeriesList( seriesList ) {
+        let query = seriesList + '&includeAnnotation=true';
+        let downloadManifestUrl = Properties.API_SERVER_URL + '/' + Consts.API_MANIFEST_URL;
+
+        if( Properties.DEBUG_CURL ){
+            let curl = ' curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL +
+                '/' + Consts.API_MANIFEST_URL + '\' -d \'' + query + '\'';
+            console.log( 'doPost: ', curl );
+        }
+
+
+        let headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+        } );
+
+        let options = {
+            headers: headers,
+            responseType: 'text' as 'text'
+        };
+
+        return this.httpClient.post( downloadManifestUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
 
@@ -589,7 +697,5 @@ export class ApiService{
 
         return results;
     }
-
-
 
 }

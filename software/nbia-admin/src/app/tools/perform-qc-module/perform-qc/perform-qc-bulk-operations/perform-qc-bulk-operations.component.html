@@ -186,6 +186,15 @@
                                 (click)="onQcStatusHistoryReportClick()">
                             QC Status History Report
                         </button>
+                        <button class="btn nbia-button qc-bulk-update-button"
+                                [ngClass]="{
+                                   'nbia-button-disabled': searchResultsSelectedCount < 1
+                                }"
+                                [disabled]="searchResultsSelectedCount < 1"
+                                type="button"
+                                (click)="onDownloadClick()">
+                            Download
+                        </button>
                     </div>
                 </td>
             </tr>

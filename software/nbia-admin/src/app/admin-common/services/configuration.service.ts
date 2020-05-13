@@ -65,21 +65,24 @@ export class ConfigurationService{
                     if( key === 'OHIF_MODALITIES' ){
                         // toUpperCase for case insensitive.
                         Properties.OHIF_MODALITIES = value.toUpperCase().split( /\s*,\s*/ );
-
                     }
 
                     if( key === 'OHIF_viewer' ){
                         Properties.SHOW_OHIF_VIEWER = this.utilService.isTrue( value );
                     }
 
-                   if( key === 'DEMO_MODE' ){
+                    if( key === 'DEMO_MODE' ){
                         Properties.DEMO_MODE = this.utilService.isTrue( value );
-                        console.log('Setting Demo mode to: ', Properties.DEMO_MODE);
                     }
 
                     if( key === 'brand' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.BRAND = value;
+                        }
+                    }
+                    if( key === 'HELP_BASE_URL' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.HELP_BASE_URL = value;
                         }
                     }
 

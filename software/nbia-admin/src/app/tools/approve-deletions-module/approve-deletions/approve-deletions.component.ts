@@ -32,15 +32,19 @@ export class ApproveDeletionsComponent implements OnInit{
 
     async ngOnInit() {
         // make sure we are not ahead of apiService initialization.
-        while( this.userRoles === undefined ){
-            this.userRoles = this.apiService.getUserRoles();
-            if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.SUPER_CURATOR' ) > -1 ){
-                this.roleIsGood = true;
-            }
-            await this.utilService.sleep( Consts.waitTime );
-        }
 
-            this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+
+        this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.userRoles = data;
+                if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.SUPER_CURATOR' ) > -1 ){
+                    this.roleIsGood = true;
+                }
+            });
+        this.apiService.getRoles();
+
+
+        this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentQueryData = data;
                 this.collectionSite = this.getCollectionSite();

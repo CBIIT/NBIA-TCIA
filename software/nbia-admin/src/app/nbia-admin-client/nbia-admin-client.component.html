@@ -17,7 +17,6 @@
             [currentTool]="currentTool"
         ></nbia-tool-title>
 
-
         <nbia-approve-deletions
             *ngIf="currentTool === consts.TOOL_APPROVE_DELETIONS">
         </nbia-approve-deletions>
@@ -55,7 +54,7 @@
         }"
           (click)="onToolItemClicked(toolItems.DATA_ADMIN_PERFORM_QC_MENU_ITEM, showDataAdminPerformQcButton)"
     >
-        Perform QC
+        Perform Quality Control
         <p class="required-role"
            *ngIf="! showDataAdminPerformQcButton">(Required role: NCIA.MANAGE_VISIBILITY_STATUS)
         </p>
@@ -90,7 +89,7 @@
         (click)="onToolItemClicked(toolItems.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM, showPerformOnlineDeletions)"
     >
         Perform Online Deletion
-        <p class="required-role" *ngIf="! showPerformOnlineDeletions">(Required role: NCIA.VIEW_SUBMISSION_REPORT)</p>
+        <p class="required-role" *ngIf="! showPerformOnlineDeletions">(Required role: NCIA.DELETE_ADMIN)</p>
     </span>
 
     <span class="row label label-primary admin-tool-button nbia-button col-md-12"
@@ -99,8 +98,8 @@
         }"
         (click)="onToolItemClicked(toolItems.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM, showEditCollectionDescriptions)"
     >
-        Edit Collection Desc
-        <p class="required-role" *ngIf="! showEditCollectionDescriptions">(Required role: NCIA.DELETE_ADMIN)</p>
+        Edit Collection Description
+        <p class="required-role" *ngIf="! showEditCollectionDescriptions">(Required role: MANAGE_COLLECTION_DESCRIPTION)</p>
     </span>
 
  </div>

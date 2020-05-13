@@ -110,6 +110,7 @@ export class SearchResultsSectionComponent implements OnInit{
             data => {
                 this.collectionSite = data;
             } );
+/*
 
         // @ts-ignore
         $( function() {
@@ -151,6 +152,7 @@ export class SearchResultsSectionComponent implements OnInit{
 
         } );
 
+*/
     }
 
     toggleTopSearchResultsCheckbox( c ) {

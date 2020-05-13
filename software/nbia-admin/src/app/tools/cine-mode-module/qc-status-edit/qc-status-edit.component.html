@@ -5,7 +5,7 @@
             <tr>
                 <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-status-radios"
                     [ngClass]="{
-                'hide': n > 5
+                'hide': n > 11
                 }"
                 >
                     <input type="radio"
@@ -23,7 +23,7 @@
             <tr>
                 <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-status-radios"
                     [ngClass]="{
-                'hide': n < 6
+                'hide': n < 12
                 }"
                 >
                     <input type="radio"

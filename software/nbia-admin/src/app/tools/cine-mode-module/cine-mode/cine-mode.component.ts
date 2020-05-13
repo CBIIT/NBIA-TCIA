@@ -21,15 +21,15 @@ export class CineModeComponent implements OnInit{
     dicomData = [];
     showDicomData = true;
     showQcHistory = false;
-    showQcStatus = false;
-    showSeriesData = false;
+    showQcStatus = true; // This default was requested by Betty
+    showSeriesData = true; // This default was requested by Betty
     showCineModeViewer = false;
     // currentImage is 1 rather than 0 for the benefit of the user who does not expect the first image to be zero.
     currentImage = 1;
     currentImageWiggleRoom = 1;
 
 
-    images;
+    images = [];
     loading = false;
     loadingX = true;
     first;
@@ -131,6 +131,12 @@ export class CineModeComponent implements OnInit{
             this.currentImage = 1;
         }
         this.updateDicom();
+    }
+
+    onOpenImageClick( image ) {
+        if( this.last > 0){
+            this.apiService.downLoadDicomImageFile( image.seriesInstanceUid, image.sopInstanceUid, image.studyInstanceUid );
+        }
     }
 
 
@@ -303,10 +309,13 @@ export class CineModeComponent implements OnInit{
     async getImages() {
         this.loading = true;
         this.images = [];
+        this.imageCount = 0;
+
         let len = 99999999;
         this.getImageDrillDownData().subscribe(
             data => {
                 this.imageCount = data.length;
+
                 len = this.imageCount;
                 this.first = 0;
                 this.last = len - 1;
@@ -317,14 +326,15 @@ export class CineModeComponent implements OnInit{
                             this.images.push(
                                 {
                                     'thumbnailImage': this.sanitizer.bypassSecurityTrustUrl( window.URL.createObjectURL( thumbnailData ) ),
+                                    // 'thumbnailImage': 'assets/images/image_not_found.png',
                                     'imagePkId': data[i]['imagePkId'],
 
 
-                                    /*                                  We can add this data back in if we want to make the image clickable and do/launch things.
+                                    /*                                  We can add this data back in if we want to make the image clickable and do/launch things.*/
                                                                         'seriesInstanceUid': data[i]['seriesInstanceUid'],
                                                                         'sopInstanceUid': data[i]['sopInstanceUid'],
                                                                         'studyInstanceUid': data[i]['studyInstanceUid'],
-                                    */
+
                                     'seq': i
                                 }
                             );
@@ -346,29 +356,30 @@ export class CineModeComponent implements OnInit{
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         thumbnailError => {
-                            console.error('Error thumbnailData: ', thumbnailError);
+                            console.error('Error thumbnailError: ', thumbnailError['statusText']);
 
                             // We need this count when we are waiting for all the images (by count) to arrive before moving on
                             this.getThumbnailErrorCount++;
-
-                            // Add a "we can't find it" image.
                             this.images.push(
                                 {
+                                    // 'thumbnailImage': this.sanitizer.bypassSecurityTrustUrl( window.URL.createObjectURL( thumbnailData ) ),
+                                     'thumbnailImage': 'assets/images/image_not_found.png',
                                     'imagePkId': data[i]['imagePkId'],
-                                    /*
-                                        'seriesInstanceUid': data[i]['seriesInstanceUid'],
-                                        'sopInstanceUid': data[i]['sopInstanceUid'],
-                                        'studyInstanceUid': data[i]['studyInstanceUid'],
-                                    */
+
+
+                                    /*                                  We can add this data back in if we want to make the image clickable and do/launch things.*/
+                                    'seriesInstanceUid': data[i]['seriesInstanceUid'],
+                                    'sopInstanceUid': data[i]['sopInstanceUid'],
+                                    'studyInstanceUid': data[i]['studyInstanceUid'],
 
                                     'seq': i
                                 }
                             );
+                            // If there is only one image, don't divide by zer0
+                            this.progress = 100;
+
                             // If there is just one image we need to get the DICOM now/here.
-                            if( this.imageCount === 1 ){
-                                this.updateDicom();
-                            }
-                            // this.getThumbnailsEmitter.emit( thumbnailError );
+                            this.updateDicom();
                         }
                     );
                 }

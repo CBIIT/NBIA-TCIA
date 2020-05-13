@@ -99,4 +99,43 @@ export class PerformQcBulkOperationsComponent implements OnInit{
 
         this.apiService.doSubmit( Consts.GET_HISTORY_REPORT, query);
     }
+
+    onDownloadClick(){
+        let query = '';
+        for(let row of this.searchResults ){
+            if( row['selected'] ){
+                query += '&list=' + row['series'];
+            }
+        }
+        query = query.substr( 1 );
+
+        // Call Rest service to generate the '.tcia download manifest file.
+        this.apiService.downloadSeriesList( query ).subscribe(
+            data => {
+                let tciaManifestFile = new Blob( [data], { type: 'application/x-nbia-manifest-file' } );
+
+                //  This worked, but I could not figure out how to set the file name.
+                // let url= (<any>window).URL.createObjectURL(tciaManifestFile);
+                // (<any>window).open(url);
+
+                // This works
+                // TODO in the manifest download popup, it says 'from: blob:'  see if we can change this.
+                let objectUrl = (<any>window).URL.createObjectURL( tciaManifestFile );
+                let a = (<any>window).document.createElement( 'a' );
+                a.href = objectUrl;
+                // Use epoch for unique file name
+                a.download = 'NBIA-manifest-' + new Date().getTime() + '.tcia';
+                (<any>window).document.body.appendChild( a );
+                a.click();
+                (<any>window).document.body.removeChild( a );
+
+
+            },
+            err => {
+                // TODO React to this error
+                console.error( 'Error downloading cart/manifest: ', err );
+
+            }
+        );
+    }
 }

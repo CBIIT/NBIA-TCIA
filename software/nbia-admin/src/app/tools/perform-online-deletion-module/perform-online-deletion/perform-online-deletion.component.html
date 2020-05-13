@@ -1,1 +1,53 @@
-<p>perform-online-deletion works!</p>
+<!--
+<div *ngFor="let series of seriesForDeletion">
+-->
+<h1>This feature is not yet implemented.</h1>
+<h2>Coming soon...</h2>
+<br>
+<br>
+<br>
+<br>
+<!--
+
+<div   *ngIf="roleIsGood"
+       class="container perform-online-deletion-div">
+    <div class="row">
+        <div class="data-tableFixHead">
+            <div class="search-results-scroller-div">
+
+                <table class="search-results-table" id="normal" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <caption>The following series have been approved for deletion.</caption>
+                    <thead>
+                    <tr class="data-table-thead-tr">
+                        <th class="perform-online-deletion-number-column">#</th>
+                        <th class="data-table-thead-th">Series Instance UID</th>
+                        <th class="data-table-thead-th">Project</th>
+                        <th class="data-table-thead-th">Site Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let series of seriesForDeletion; let i=index; let even = even; let odd = odd"
+                        class="data-table-body-tr"
+                        [ngClass]="{
+                            'data-table-body-dark-tr': odd
+                        }"
+                    >
+                        <td class="data-table-body-td">{{series['order']}}</td>
+                        <td class="data-table-body-td">{{series['seriesUID']}}</td>
+                        <td class="data-table-body-td">{{series['project']}}</td>
+                        <td class="data-table-body-td">{{series['site']}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h4 *ngIf="! roleIsGood && ( userRoles !== undefined)">
+    <p>User does not have authorization required for "<b>Perform Online Deletion</b>"</p>
+    <p>Users role(s): <b>{{userRoles}}</b></p>
+    Required role: <b>NCIA.DELETE_ADMIN</b>
+</h4>
+-->

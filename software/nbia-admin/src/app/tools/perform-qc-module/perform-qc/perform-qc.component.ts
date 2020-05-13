@@ -36,13 +36,26 @@ export class PerformQcComponent implements OnInit{
 
     async ngOnInit() {
         // make sure we are not ahead of apiService initialization.
+ /*
         while( this.userRoles === undefined ){
             this.userRoles = this.apiService.getUserRoles();
+            console.log('MHL this.userRoles: ', this.userRoles);
             if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1 ){
                 this.roleIsGood = true;
             }
             await this.utilService.sleep( Consts.waitTime );
         }
+*/
+
+
+        this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.userRoles = data;
+                if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1 ){
+                    this.roleIsGood = true;
+                }
+            });
+        this.apiService.getRoles();
 
 
         this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(

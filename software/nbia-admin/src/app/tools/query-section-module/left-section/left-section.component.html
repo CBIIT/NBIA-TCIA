@@ -5,6 +5,10 @@
         ></nbia-query-qc-status>
 
         <nbia-query-collection
+            *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
+            currentTool===consts.TOOL_APPROVE_DELETIONS ||
+            currentTool===consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS
+"
             [currentTool]="currentTool"
         ></nbia-query-collection>
 

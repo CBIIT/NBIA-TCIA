@@ -8,6 +8,7 @@ import { Properties } from '@assets/properties';
 import { UtilService } from './util.service';
 import { LoginService } from '@app/login/login.service';
 import { AccessTokenService } from './access-token.service';
+import { ApiService } from '@app/admin-common/services/api.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -16,6 +17,8 @@ export class ParameterService implements OnDestroy{
 
     currentTool = Consts.TOOL_NONE;
     token;
+    refreshToken;
+    expiresIn;
 
     parameterValuesSet = false;
     currentToolEmitter = new EventEmitter();
@@ -30,13 +33,19 @@ export class ParameterService implements OnDestroy{
 
         // @FIXME This is a dev time temporary bypass of receiving a token from the calling site.
         if( Properties.DEV_MODE ){
-            // this.getAccessToken( 'nbia_guest', 'test', Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
-            // this.getAccessToken( 'mlerner', 'changeme', Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
             this.getAccessToken( Properties.DEV_USER, Properties.DEV_PASSWORD, Consts.API_CLIENT_SECRET_DEFAULT ).subscribe(
                 data => {
                     this.token = data['access_token'];
+                    this.refreshToken = data['refresh_token'];
+                    this.expiresIn = data['expires_in'];
+
                     this.accessTokenService.setAccessToken( this.token );
+                    this.accessTokenService.setRefreshToken( this.refreshToken );
+                    this.accessTokenService.setExpiresIn( this.expiresIn );
                     this.initUrlParameters();
+
+                   // this.apiService.getWikiUrlParam();
+
                 } );
         }else{
             this.initUrlParameters();
@@ -44,17 +53,17 @@ export class ParameterService implements OnDestroy{
     }
 
     async initUrlParameters() {
-
         // wait briefly to ensure components that subscribe to these emitters have time to subscribe before the emit.
         await this.utilService.sleep( Consts.waitTime );
 
         //////////////////////////////////////////////////////////////////////////////////////////
         // Get any URL parameters
         // Get the tool.
-        if( (!this.utilService.isNullOrUndefinedOrEmpty( this.route.snapshot.queryParams[Consts.URL_KEY_TOOL] )) && (<string>this.route.snapshot.queryParams[Consts.URL_KEY_TOOL]).length > 0 ){
+        if( (!this.utilService.isNullOrUndefinedOrEmpty( this.route.snapshot.queryParams[Consts.URL_KEY_TOOL] )) &&
+            (<string>this.route.snapshot.queryParams[Consts.URL_KEY_TOOL]).length > 0 ){
             this.setCurrentTool( this.route.snapshot.queryParams[Consts.URL_KEY_TOOL] );  // Subject
         }else{
-            this.setCurrentTool( Consts.TOOL_NONE);
+            this.setCurrentTool( Consts.TOOL_NONE );
         }
 
         // Get access token  @CHECKME  If'd around for DEV time  MHL
@@ -86,8 +95,9 @@ export class ParameterService implements OnDestroy{
         return this.token;
     }
 
-    // This is for testing only, use  @CHECKME
+    // This is for testing DEV mode only, use  @CHECKME
     getAccessToken( user, password, secret ): Observable<any> {
+
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
 
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
@@ -96,7 +106,7 @@ export class ParameterService implements OnDestroy{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'getAccessToken: ' + curl );
+            console.log( 'MHL  getAccessToken: ' + curl );
         }
 
         let options =

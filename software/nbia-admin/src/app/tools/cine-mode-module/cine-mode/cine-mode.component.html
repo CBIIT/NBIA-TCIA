@@ -39,14 +39,24 @@
             <!-- ---------- This row is the image viewer and the DICOM data ---------- -->
             <div class="row">
                 <div class="col-md-5">
+
+
                     <!-- ----- The image ----- -->
-                    <div *ngIf="!loadingX && !!images[currentImage - 1]">
-                        ` <img
-                        class="image"
-                        [src]="images[currentImage - 1].thumbnailImage"
-                        alt="Missing Image {{imageCount}}"
-                    />
+                    <div *ngIf="!loadingX && !!images[currentImage - 1]"
+
+                         (click)="onOpenImageClick(images[currentImage - 1])"
+                         [ngClass]="{
+                             'clicker': last > 0
+                         }"
+                    >
+                        <img
+                            class="image"
+                            [src]="images[currentImage - 1]['thumbnailImage']"
+                            alt="Missing Image {{imageCount}}"
+                        />
                     </div>
+                    <!-- ----- END The image ----- -->
+
                     <span *ngIf="imageCount > 1">
                         <!-- ----- The Slider ----- -->
                         <input
@@ -74,6 +84,7 @@
                                     [(ngModel)]="currentImage"
                                     (input)="checkCurrentImageNumber()"
                                     class="cine-mode-image-number-input"
+
                                 />
                                 of {{ imageCount }}
                             </span>
@@ -252,7 +263,7 @@
                         </table>
                     </div>
                 </div>
-                <!-- loading DICOM data Graphic and Text -->
+                <!-- loading DICOM, Graphic and Text -->
                 <div
                     *ngIf="
                         showDicomData &&

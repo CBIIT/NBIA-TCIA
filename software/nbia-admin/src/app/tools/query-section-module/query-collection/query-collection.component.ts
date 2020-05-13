@@ -61,7 +61,6 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
                 data => {
                     this.init( data );
                 } );
-            this.apiService.getCollectionAndDescriptions();
         }else
             // For Any other than "Edit Collection descriptions" we need Collection//Site.
         {
@@ -81,14 +80,13 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
                 this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
             } );
 
-
      }
 
 
     init( data ) {
         this.collections = data;
         // Sort
-        // this.collections.sort((a, b) =>  a.name.toUpperCase().localeCompare(b.name));
+        this.collections.sort((a, b) =>  a.name.toUpperCase().localeCompare(b.name.toUpperCase()));
 
         this.clearCBox();
         this.cBox[this.currentCollection] = true;

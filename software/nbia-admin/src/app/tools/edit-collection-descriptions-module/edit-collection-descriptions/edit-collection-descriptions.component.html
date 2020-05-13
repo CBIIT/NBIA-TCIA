@@ -1,4 +1,5 @@
-<div class="edit-collection-description-tool">
+<div  *ngIf="roleIsGood"
+      class="edit-collection-description-tool">
 
     <nbia-query-section
         [currentTool]="consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
@@ -48,3 +49,10 @@
 
     </div>
 </div>
+
+
+<h4 *ngIf="! roleIsGood && ( userRoles !== undefined)">
+    <p>User does not have authorization required for "<b>Edit Collection Description</b>"</p>
+    <p>Users role(s): <b>{{userRoles}}</b></p>
+    Required role: <b>NCIA.MANAGE_COLLECTION_DESCRIPTION</b>
+</h4>

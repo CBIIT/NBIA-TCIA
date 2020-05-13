@@ -1,5 +1,6 @@
 @import '../../../app.component';
 @import '../../../data-table';
+$qc-status-radio-label-font-size: 13px;
 
 .qc-status-edit-log-text{
     width:100%;
@@ -38,6 +39,7 @@
 .qc-status-radio-label {
     font: 14px arial, sans-serif;
     padding-left: 4px;
+    font-size: $qc-status-radio-label-font-size;
 }
 
 

@@ -49,6 +49,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     }
 
     async ngOnInit() {
+
         // Get the current tool, if there is one.
         this.parameterService.currentToolEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -62,6 +63,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
                 // loginMode determines whether the Login screen needs to bs shown.
                 this.loginMode = data;
                 this.accessTokenStatus = this.accessTokenService.getAccessTokenStatus();
+
             } );
 
 
@@ -82,6 +84,8 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         this.initAccess();
 
         this.brandingService.initCurrentBrand();
+
+
 
     }
 
@@ -106,9 +110,11 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             }
         }else{
             this.accessTokenService.setAccessTokenStatus( TokenStatus.GOOD_TOKEN );
+
         }
         // @TODO do something here if we don't like accessTokenStatus
         this.accessTokenStatus = this.accessTokenService.getAccessTokenStatus();
+
     }
 
     // If no "tool" parameter is included in the URL a menu is presented.
