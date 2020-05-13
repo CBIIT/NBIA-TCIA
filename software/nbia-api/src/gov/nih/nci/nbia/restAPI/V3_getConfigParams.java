@@ -32,7 +32,7 @@ public class V3_getConfigParams extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 	public Response  constructResponse(@QueryParam("format") String format) {
 		List<Object []> data = new ArrayList<Object[]>();
-		Object [] urlObjs = {"wikiBaseUrl", NCIAConfig.getWikiURL()};
+		Object [] urlObjs = {"wikiBaseUrl", NCIAConfig.getWikiBaseURL()};
         data.add(urlObjs);
         Object [] peObjs = {"peOption", NCIAConfig.getUatCreationNewProjectSite()};
         data.add(peObjs);

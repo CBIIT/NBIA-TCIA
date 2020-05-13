@@ -27,14 +27,15 @@ public class UserLdapService {
 	public List getUserGroupInfo(String loginName) {
 		String mailAttrName = NCIAConfig.getLDAPMailAttrName();
 		String memberOfAttrName = NCIAConfig.getLDAPMemberOfAttrName();
+		String userIdLabel = NCIAConfig.getLDAPUserIdLabel();
 		SearchControls sc = new SearchControls();
 		//sc.setReturningAttributes(new String[] { "cn", "mail", "isMemberOf" });
-		sc.setReturningAttributes(new String[] { "cn", mailAttrName, memberOfAttrName});
+		sc.setReturningAttributes(new String[] { userIdLabel, mailAttrName, memberOfAttrName});
 		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
 		AndFilter filter = new AndFilter();
 		filter.and(new EqualsFilter("objectclass", "inetOrgPerson"));
-		filter.and(new EqualsFilter("cn", loginName));
+		filter.and(new EqualsFilter(userIdLabel, loginName));
 
 		return lt.search("", filter.encode(), sc, new PersonAttributesMapper());
 	}
@@ -76,7 +77,7 @@ public class UserLdapService {
 				}
 			}
 			nciaUser.setGroups(groups);
-			nciaUser.setLoginName((String) attrs.get("cn").get());
+			nciaUser.setLoginName((String) attrs.get(NCIAConfig.getLDAPUserIdLabel()).get());
 //			nciaUser.setEmail((String) attrs.get("mail").get());
 			nciaUser.setEmail((String) attrs.get(NCIAConfig.getLDAPMailAttrName()).get());
 			return nciaUser;

@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
 	showAuthorUG: boolean;
 	showAuthorPG: boolean;
 	selectedTabHeader = "User";
+	version = '2.3';
+	hostName:string;
 	@ViewChild(TabView,{static:false}) tabView: TabView;
 	@ViewChild(GroupComponent,{static:false}) groupComponent: GroupComponent;
 	@ViewChild(PeComponent,{static:false}) peComponent: PeComponent;	
@@ -36,13 +38,17 @@ export class AppComponent implements OnInit {
 //		this.loadingDisplayService.setLoading( true, 'Standby...' );
 		this.appservice.getWikiUrlParam().then(data => {this.globals.wikiBaseUrl = data},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
+		this.appservice.getSerVerHostName().subscribe(data => {this.hostName = <string>data;
+		console.log("server host name is " + this.hostName)},
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
 		this.appservice.getConfigParams().subscribe((config:Config[]) => {this.config = config; 
 		this.show=this.config[1].paramValue.toLowerCase() == 'true';
 		this.showAuthorUG = this.config[2].paramValue.toLowerCase() == 'true';
 		this.showAuthorPG = this.config[3].paramValue.toLowerCase() == 'true';
 		console.log("show ug = " + this.config[2].paramValue.toLowerCase() + "  show pg=" + this.config[3].paramValue.toLowerCase());
 		},
-		error =>  {this.handleError(error);this.errorMessage = <any>error});		
+		error =>  {this.handleError(error);this.errorMessage = <any>error});
+		this.version = this.globals.uatVersionNumber;		
 	}
 
 	ngOnInit() {

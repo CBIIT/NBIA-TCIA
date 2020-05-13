@@ -892,6 +892,7 @@ L-->
 				<filter token="gov.nih.nci.ncia.download.no.retry" value="${gov.nih.nci.ncia.download.no.retry}"/>
 				<filter token="gov.nih.nci.ncia.encrypt.key" value="${gov.nih.nci.ncia.encrypt.key}"/>
 				<filter token="gov.nih.nci.ncia.wiki.context.sensitive.help.url" value="${gov.nih.nci.ncia.wiki.context.sensitive.help.url}"/>
+				<filter token="nbia.wiki.base.url" value="${nbia.wiki.base.url}"/>
 				<filter token="nbia.wiki.user.guide.url" value="${nbia.wiki.user.guide.url}"/>
 				<filter token="help.desk.url" value="${help.desk.url}"/>
 				<filter token="online.help.url" value="${online.help.url}"/>
@@ -931,6 +932,7 @@ L-->
 						<filter token="ldap.basedn" value="${ldap.basedn}"/>
 						<filter token="ldap.user" value="${ldap.user}"/>
 						<filter token="ldap.pass" value="${ldap.pass}"/>
+						<filter token="ldap.user.id.label" value="${ldap.user.id.label}"/>
 					</filterset>
 				</copy>
 			</then>
@@ -985,6 +987,7 @@ L-->
 						<filter token="ldap.basedn" value="${ldap.basedn}"/>
 						<filter token="ldap.user" value="${ldap.user}"/>
 						<filter token="ldap.pass" value="${ldap.pass}"/>
+						<filter token="ldap.user.id.label" value="${ldap.user.id.label}"/>
 					</filterset>
 				</copy>
 			</then>

@@ -43,5 +43,19 @@ private result: Object;
                     .then(data => { return (data[2].paramValue=="true"); });  			
     }	
 	
+	getSerVerHostName() {
+		var serviceUrl = (this.globals.serviceUrl).slice(0, -3) +'hostName';
+		var headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        } );
+		
+		let options = {
+            headers: headers,
+            method: 'get',
+            responseType: 'text' as 'text'
+        };
+
+        return this.http.get(serviceUrl, options);  
+	}
 }
 
