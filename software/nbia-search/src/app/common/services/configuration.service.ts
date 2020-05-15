@@ -69,7 +69,13 @@ export class ConfigurationService{
                         }
                     }
 
-                    if( key === 'OHIF_viewer_series' ){
+                    if( key === 'SHOW_DATA_ADMIN_MENU' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.SHOW_DATA_ADMIN_MENU = this.utilService.isTrue( value );
+                        }
+                    }
+
+                   if( key === 'OHIF_viewer_series' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.SHOW_OHIF_SERIES_VIEWER = this.utilService.isTrue( value );
                         }

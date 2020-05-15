@@ -12,32 +12,36 @@
     "importHelpers": true,
     "target": "es2015",
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "../node_modules/@types/jquery",
+      "node_modules/@types/jquery",
+        "./node_modules/@types",
+        "./@types"
     ],
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+      "paths": {
+          "@assets/*": [
+              "src/assets/*"
+          ],
+          "@app/*": [
+              "src/app/*"
+          ],
+          "@env": [
+              "environments/environment"
+          ],
+          "@pages/*": [
+              "pages/*"
+          ],
+          "@theme/*": [
+              "theme/*"
+          ]
+      }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
-  },
-    "paths": {
-        "@app/*": [
-            "app/*"
-        ],
-        "@assets/*": [
-            "assets/*"
-        ],
-        "@env": [
-            "environments/environment"
-        ],
-        "@pages/*": [
-            "pages/*"
-        ],
-        "@theme/*": [
-            "theme/*"
-        ]
-    }
+  }
 }

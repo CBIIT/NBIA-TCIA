@@ -590,7 +590,7 @@ public class NCIAConfig {
 
     /**
      * Externalized Property!
-     *  Property: gov.nih.nci.ncia.encrypt.key
+     *  Property: gov.nih.nci.ncia.wiki.context.sensitive.help.url
      *  This property is configured via the JBoss Property Service MDB (property-service.xml)
      *  to contain value for the download servlet server url.
      */
@@ -599,6 +599,17 @@ public class NCIAConfig {
         checkProperty("gov.nih.nci.ncia.wiki.context.sensitive.help.url", propertyValue);
         return propertyValue;
     }
+	
+    /**
+     * Externalized Property!
+     *  Property: nbia.wiki.base.url
+     *  This property is configured  for context sensitive help links in UAT and Data Admin
+     */
+    public static String getWikiBaseURL(){
+        String propertyValue = properties.getProperty("nbia.wiki.base.url");
+        checkProperty("nbia.wiki.base.url", propertyValue);
+        return propertyValue;
+    }	
 
     /**
      * Externalized Property!
@@ -708,11 +719,17 @@ public class NCIAConfig {
         checkProperty("ldap.memberOf.attribute.name", propertyValue);
         return propertyValue;   	
     } 
-    
-    public static String getLDAPGroupIgnoreList() {
-        String propertyValue = properties.getProperty("ldap.group.ignore.list");
+	
+    public static String getLDAPUserIdLabel() {
+        String propertyValue = properties.getProperty("ldap.user.id.label");
+        checkProperty("ldap.user.id.label", propertyValue);
         return propertyValue;   	
-    } 
+    } 	
+    
+//    public static String getLDAPGroupIgnoreList() {
+//        String propertyValue = properties.getProperty("ldap.group.ignore.list");
+//        return propertyValue;   	
+//    } 
     public static String getPublicGroupName() {
         String propertyValue = properties.getProperty("public.collection.access.group.name");
         checkProperty("public.collection.access.group.name", propertyValue);

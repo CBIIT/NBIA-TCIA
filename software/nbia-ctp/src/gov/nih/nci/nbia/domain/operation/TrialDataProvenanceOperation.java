@@ -34,13 +34,24 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 	    try {
 		    if ((temp = (String) numbers.get(DicomConstants.PROJECT_NAME)) != null) {
 		        hql += ("lower(tdp.project) = '" + temp.trim().toLowerCase() +
-		        "'");
+		        "' and ");
 		        tdp.setProject(temp.trim());
 		    } else {
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Collection is null");
 		    }
 		
-
+		    if ((temp = (String) numbers.get(DicomConstants.SITE_ID)) != null) {
+		        hql += ("tdp.siteCollection.dpSiteId = '" + temp.trim() + "' and ");
+		    } else {
+		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site id is null");
+		    }
+		
+		    if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
+		        hql += ("lower(tdp.siteCollection.dpSiteName) = '" + temp.trim().toLowerCase() +
+		        "' ");
+		    } else {
+		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site name is null");
+		    }
 		
 		    List ret = getHibernateTemplate().find(hql);
 		    if(ret != null  && ret.size() > 0) {

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 import { IMyDateModel, INgxMyDpOptions, NgxMyDatePickerDirective } from 'ngx-mydatepicker';
 // import moment from 'moment';
 import * as moment from 'moment'
@@ -39,6 +39,7 @@ export class QueryMostRecentSubmissionDateComponent implements OnInit, OnDestroy
     checked = false;
     disableUseDateRange = true;
     dateRangeTrailer = null;
+    consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -108,7 +109,7 @@ export class QueryMostRecentSubmissionDateComponent implements OnInit, OnDestroy
         if( (dateRangeForQuery === null) ||
             ((this.dateRangeTrailer === null) || (dateRangeForQuery.localeCompare( this.dateRangeTrailer ) !== 0))
         ){
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_MOST_RECENT_SUBMISSION, dateRangeForQuery );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_MOST_RECENT_SUBMISSION, dateRangeForQuery );
         }
         this.dateRangeTrailer = dateRangeForQuery;
     }

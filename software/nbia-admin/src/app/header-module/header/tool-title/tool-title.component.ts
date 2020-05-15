@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Consts } from '../../../constants';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { Consts } from '@app/constants';
+import { UtilService } from '@app/admin-common/services/util.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -19,6 +20,7 @@ export class ToolTitleComponent implements OnInit{
      */
     @Input() currentTool;
     currentToolTitle;
+    helpUrl;
 
     constructor( private utilService: UtilService ) {
     }
@@ -30,16 +32,28 @@ export class ToolTitleComponent implements OnInit{
             await this.utilService.sleep( Consts.waitTime );
         }
 
+        this.helpUrl = Properties.HELP_BASE_URL;
         // @TODO this is just a quick fix for early demo purposes.
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
             this.currentToolTitle = 'Edit Collection Descriptions';
+            this.helpUrl += '#DataAdministrationToolGuide-Edit Collection Descriptions';
         }else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS ){
             this.currentToolTitle = 'Approve Deletions';
+            this.helpUrl += '#DataAdministrationToolGuide-Approve Deletions';
         }else if( this.currentTool === Consts.TOOL_PERFORM_QC ){
-            this.currentToolTitle = 'Perform QC';
+            this.currentToolTitle = 'Perform Quality Control';
+            this.helpUrl += '#DataAdministrationToolGuide-Perform Quality Control';
+        }else if( this.currentTool === Consts.TOOL_VIEW_SUBMISSION_REPORTS ){
+            this.currentToolTitle = 'View Submission Reports';
+        }else if( this.currentTool === Consts.TOOL_PERFORM_ONLINE_DELETION ){
+            this.currentToolTitle = 'Perform Online Deletion';
+            this.helpUrl += '#DataAdministrationToolGuide-Perform Online Deletions';
         }else{
             this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
         }
     }
 
+    onCurrentToolClickClick(){
+        window.open( this.helpUrl, '_blank' );
+    }
 }

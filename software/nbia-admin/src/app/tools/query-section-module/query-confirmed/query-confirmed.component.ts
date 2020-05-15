@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { QuerySectionService } from '../services/query-section.service';
-import { Consts } from '../../../constants';
+import { Consts } from '@app/constants';
 import { Subject } from 'rxjs';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
 import { takeUntil } from 'rxjs/operators';
@@ -13,12 +13,13 @@ import { takeUntil } from 'rxjs/operators';
 } )
 
 export class QueryConfirmedComponent implements OnInit, OnDestroy{
-    @Input() isTop = false;
     @Input() currentTool;
+
     showCriteriaList = true;
     options = ['Yes', 'No', 'Ignore'];
     cBox = [];
     currentOption = 2;
+    consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -57,11 +58,11 @@ export class QueryConfirmedComponent implements OnInit, OnDestroy{
     updateQuery() {
         // Ignore
         if( this.currentOption === 2 ){
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_CONFIRMED_COMPLETE, null );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_CONFIRMED_COMPLETE, null );
         }
         // No
         else{
-            this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_CONFIRMED_COMPLETE, this.currentOption );
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_CONFIRMED_COMPLETE, this.currentOption );
         }
     }
 

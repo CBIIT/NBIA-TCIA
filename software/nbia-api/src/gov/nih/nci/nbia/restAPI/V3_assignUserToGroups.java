@@ -22,7 +22,7 @@ public class V3_assignUserToGroups extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method assign an user to a protection group with a role
+	 * This method assign an user to a list of user groups
 	 *
 	 * @return String - the status of operation 
 	 */

@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Consts } from '@app/constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { QuerySectionService } from '../services/query-section.service';
 
 
 @Component( {
@@ -15,9 +19,22 @@ export class LeftSectionComponent implements OnInit{
     @Input() useQcStatusLeftSectionComponent;
     @Input() currentTool;
 
-    constructor() {
+    consts = Consts;
+
+    /**
+     * Criteria Search or Text Search.
+     */
+    searchType = Consts.CRITERIA_SEARCH;
+
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+
+    constructor( private querySectionService: QuerySectionService ) {
     }
 
     ngOnInit() {
+        this.querySectionService.updateSearchTypeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.searchType = data;
+            } );
     }
 }

@@ -1,237 +1,474 @@
 <!--The parent div/ bootstrap panel-->
-<div *ngIf="showCineModeViewer" ngDraggable [handle]="PanelHandle"
-     class="panel panel-info  alert-box-div alert-box-shadow unselectable"
-
-     [ngClass]="{
-            'cine-mode-div-with-dicom':showDicomData &&  ( progress > 99 ),
-            'cine-mode-div':(! showDicomData ) || ( progress <= 99 ),
-            'cine-panel-heading-moving': handleMoving,
-            'cine-mode-loading-00': loadingX
-        }"
-
-     [ngDraggable]="true"
-     (started)="onDragBegin($event)"
-     (stopped)="onDragEnd($event)"
-     (movingOffset)="onMoving($event)"
-     (endOffset)="onMoveEnd($event)"
-
+<div
+    *ngIf="showCineModeViewer"
+    ngDraggable
+    [handle]="PanelHandle"
+    class="panel panel-info alert-box-div alert-box-shadow unselectable"
+    [ngClass]="{
+        'cine-mode-div-with-dicom': showDicomData && progress > 99,
+        'cine-mode-div': !showDicomData || progress <= 99,
+        'alert-box-heading-moving': handleMoving,
+        'cine-mode-loading': loadingX
+    }"
+    [ngDraggable]="true"
+    (started)="onDragBegin($event)"
+    (endOffset)="onMoveEnd($event)"
 >
-
     <!-- The panel heading, this is the draggable part -->
-    <div #PanelHandle class="panel-heading unselectable cine-panel-heading">
-        <span class="panel-title">{{seriesDescription}}&nbsp;&nbsp;{{studyDate|date}}</span>
-        <span *ngIf="progress > 0" class="clicker glyphicon glyphicon-remove close-x" (click)="closeCineMode()"></span>
+    <div #PanelHandle class="panel-heading unselectable alert-box-heading">
+        <span class="panel-title"
+        >
+            {{ seriesData["seriesDescription"] }}&nbsp;&nbsp;
+            {{seriesData["dateTime"]}}
+        </span
+        >
+        <span
+            class="clicker glyphicon glyphicon-remove close-x"
+            (click)="closeCineMode()"
+        ></span>
     </div>
-
-
     <div class="cine-mode-content">
-
-
-        <!--
-                <span *ngIf="loadingX && progress <= 0">
-                    <span class="data-loading-text">Accessing data &nbsp;&nbsp;</span>
-                    <img src="../assets/images/test_loading.gif" alt="Accessing data gif">
-                </span>
-        -->
-        <span *ngIf="loadingX ">
-            <span class="data-loading-text">Loading images</span>
-            <progress-bar [progress]="progress" [color]="'#488aff'"></progress-bar>
+        <span *ngIf="loadingX">
+            <span class="cine-mode-progress-bar-data-loading-text">Loading images</span>
+            <progress-bar
+                [progress]="progress"
+                [color]="'#488aff'"
+            ></progress-bar>
         </span>
-
-        <!--
-                <span *ngIf="loadingX && progress <= 0">
-                    <span class="data-loading-text">Accessing data &nbsp;&nbsp;</span>
-                    <img src="../assets/images/test_loading.gif" alt="Accessing data gif">
-                </span>
-
-                <span *ngIf="loadingX && progress > 0">
-                    <span class="data-loading-text">Loading images</span>
-                    <progress-bar [progress]="progress" [color]="'#488aff'"></progress-bar>
-                </span>
-
-        -->
-
-
         <div class="container-fluid">
+            <!-- ---------- This row is the image viewer and the DICOM data ---------- -->
             <div class="row">
-
                 <div class="col-md-5">
 
-                    <!-- The image -->
-                    <div *ngIf="! loadingX && !! images[currentImage-1]">
+
+                    <!-- ----- The image ----- -->
+                    <div *ngIf="!loadingX && !!images[currentImage - 1]"
+
+                         (click)="onOpenImageClick(images[currentImage - 1])"
+                         [ngClass]="{
+                             'clicker': last > 0
+                         }"
+                    >
                         <img
                             class="image"
-                            [src]=images[currentImage-1].thumbnailImage
-                        >
+                            [src]="images[currentImage - 1]['thumbnailImage']"
+                            alt="Missing Image {{imageCount}}"
+                        />
                     </div>
+                    <!-- ----- END The image ----- -->
 
+                    <span *ngIf="imageCount > 1">
+                        <!-- ----- The Slider ----- -->
+                        <input
+                            *ngIf="!loadingX"
+                            class="cine-mode-scroller"
+                            type="range"
+                            name="points"
+                            min="1"
+                            max="{{ imageCount }}"
+                            [(ngModel)]="currentImage"
+                            (change)="updateDicom()"
+                        />
 
-                    <!-- The Slider -->
-                    <input *ngIf="! loadingX"
-                           class="cine-mode-scroller"
-                           type="range" name="points" min="1" max='{{imageCount}}'
-                           [(ngModel)]="currentImage"
-                           (change)="updateDicom()"
-                    >
+                        <!-- ----- The Image of Images numbers display ----- -->
+                        <span *ngIf="progress > 99">
+                            <span
+                                *ngIf="imageCount > 1"
+                                class="image-count-display"
+                            >
+                                Image:
+                                <input
+                                    type="text"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '');
+                                             this.value = this.value.replace(/(\..*)\./g, '$1');"
+                                    [(ngModel)]="currentImage"
+                                    (input)="checkCurrentImageNumber()"
+                                    class="cine-mode-image-number-input"
 
-                    <!--  The buttons  -->
-
-                    <div *ngIf="! loadingX" class="cine-mode-button-bar">
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Frame one"
-                            (click)="onFirstFrameClick()"
-                        >
-                            <span class="glyphicon  glyphicon-fast-backward cine-mode-button-icon"
-                                  title="Frame one"></span>
-                        </label>
-
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Previous one"
-                            (click)="onPreviousFrameClick()"
-                        >
-                            <span class="glyphicon glyphicon-step-backward cine-mode-button-icon"
-                                  title="Previous one"></span>
-                        </label>
-
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Play backwards"
-                            (click)="onPlayBackwardsClick()"
-
-                        >
-                            <img class="play-back-image" src="../../assets/images/playBack.svg" alt="">
-                        </label>
-
-
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Pause"
-                            (click)="onPause()"
-                        >
-                            <span class="glyphicon glyphicon-pause cine-mode-button-icon" title="Pause"></span>
-                        </label>
-
-
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Play"
-                            (click)="onPlayClick()"
-                        >
-                            <span class="glyphicon glyphicon-play cine-mode-button-icon" title="Play"></span>
-                        </label>
-
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Next frame"
-                            (click)="onNextFrameClick()"
-
-                        >
-                            <span class="glyphicon glyphicon-step-forward cine-mode-button-icon"
-                                  title="Next frame"></span>
-                        </label>
-
-                        <label
-                            class="btn btn-default cine-mode-buttons"
-                            title="Last frame"
-                            (click)="onLastFrameClick()"
-                        >
-                            <span class="glyphicon glyphicon-fast-forward cine-mode-button-icon"
-                                  title="Last frame"></span>
-                        </label>
-
-
-                        <span >
-                                <input class="cine-mode-frame-rate"
-                                       type="number"
-                                       min="1"
-                                       max="30"
-                                       [(ngModel)]="frameRate"
-                                >
-                            F.P.S.
+                                />
+                                of {{ imageCount }}
+                            </span>
+                            <span *ngIf="imageCount === 1">
+                                <b>Image: 1 of 1</b>
+                            </span>
                         </span>
-                    </div>
+
+                        <!-- ----- The image viewing buttons ----- -->
+                        <span *ngIf="!loadingX" class="cine-mode-button-bar">
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Frame one"
+                                (click)="onFirstFrameClick()"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-fast-backward cine-mode-button-icon"
+                                    title="Frame one"
+                                ></span>
+                            </label>
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Previous one"
+                                (click)="onPreviousFrameClick()"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-step-backward cine-mode-button-icon"
+                                    title="Previous one"
+                                ></span>
+                            </label>
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Play backwards"
+                                (click)="onPlayBackwardsClick()"
+                            >
+                                <img
+                                    class="play-back-image"
+                                    src="assets/images/playBack.svg"
+                                    alt=""
+                                />
+                            </label>
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Pause"
+                                (click)="onPause()"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-pause cine-mode-button-icon"
+                                    title="Pause"
+                                ></span>
+                            </label>
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Play"
+                                (click)="onPlayClick()"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-play cine-mode-button-icon"
+                                    title="Play"
+                                ></span>
+                            </label>
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Next frame"
+                                (click)="onNextFrameClick()"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-step-forward cine-mode-button-icon"
+                                    title="Next frame"
+                                ></span>
+                            </label>
+                            <label
+                                class="btn btn-default cine-mode-buttons"
+                                title="Last frame"
+                                (click)="onLastFrameClick()"
+                            >
+                                <span
+                                    class="glyphicon glyphicon-fast-forward cine-mode-button-icon"
+                                    title="Last frame"
+                                ></span>
+                            </label>
+
+                            <!-- The play back speed number input -->
+                            <!--
+                                                <span>
+                                                <input class="cine-mode-frame-rate"
+                                                       type="number"
+                                                       min="1"
+                                                       max="60"
+                                                       [(ngModel)]="frameRate"
+                                                >
+                                                </span>
+                        -->
+                            <table class="cine-mode-frame-rate-table"
+                                   title="Frames per second"
+                            >
+                                <tr>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            class="cine-mode-frame-rate-number"
+                                            min="1"
+                                            max="60"
+                                            [(ngModel)]="frameRate"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        class="cine-mode-frame-rate-number-text"
+                                    >
+                                        &nbsp;F.P.S.
+                                    </td>
+                                </tr>
+                            </table>
+                        </span>
+                    </span>
                 </div>
 
                 <!-- ------------ -->
                 <!--  DICOM Data  -->
-                <div *ngIf="showDicomData &&  ( progress > 99 ) && !! dicomData &&  dicomData.length > 0"
-                     class="col-md-7 cine-mode-dicom-col">
+                <div
+                    *ngIf="
+                        showDicomData &&
+                        progress > 99 &&
+                        !!dicomData &&
+                        dicomData.length > 0
+                    "
+                    class="col-md-7"
+                >
                     <div class="dicom-scroll-area">
-
                         <table class="dicom-data-table">
-
                             <!-- ----- Header  ----- -->
-                            <tr class="cine-mode-dicom-header-tr">
-                                <th>
+                            <thead>
+                            <tr class="data-table-thead-tr">
+                                <th class="data-table-thead-th">
                                     Element
                                 </th>
-                                <th>
+                                <th class="data-table-thead-th">
                                     Name
                                 </th>
-                                <th>
+                                <th class="data-table-thead-th">
                                     Data
                                 </th>
                             </tr>
-
+                            </thead>
                             <!-- ----- Data  ----- -->
+                            <tbody>
                             <tr
-                                class="cine-mode-dicom-tr"
-                                *ngFor="let row of dicomData; let i=index; let even = even; let odd = odd"
+                                class="cine-mode-dicom-tr data-table-body-tr"
+                                *ngFor="
+                                        let row of dicomData;
+                                        let odd = odd
+                                    "
                                 [ngClass]="{
-                                        'dark': i%4 !== 0
+                                        'data-table-body-dark-tr': odd
                                     }"
                             >
-                                <td class="dicom-element-column">{{row.element}}</td>
-                                <td class="dicom-name-column">{{row.name}}</td>
-                                <td class="dicom-data-column">{{row.data}}</td>
+                                <td
+                                    class="dicom-element-column data-table-body-td"
+                                >
+                                    {{ row.element }}
+                                </td>
+                                <td
+                                    class="dicom-name-column data-table-body-td"
+                                >
+                                    {{ row.name }}
+                                </td>
+                                <td
+                                    class="dicom-data-column data-table-body-td"
+                                >
+                                    {{ row.data }}
+                                </td>
                             </tr>
+                            </tbody>
                         </table>
                     </div>
-
-
                 </div>
-
-                <!-- loading DICOM data  -->
-                <div *ngIf="showDicomData &&  ( progress > 99 ) && !! dicomData &&  dicomData.length <= 1">
-                    <span class="data-loading-text">Accessing DICOM data &nbsp;&nbsp;</span>
-                    <img src="./assets/images/test_loading.gif" alt="Accessing data gifXXX">
+                <!-- loading DICOM, Graphic and Text -->
+                <div
+                    *ngIf="
+                        showDicomData &&
+                        progress > 99 &&
+                        ((!!dicomData && dicomData.length <= 1) ||
+                            dicomData === undefined)
+                    "
+                >
+                    <span class="cine-mode-progress-bar-data-loading-text"
+                    >Accessing DICOM data &nbsp;&nbsp;</span
+                    >
+                    <img
+                        src="./assets/images/test_loading.gif"
+                        alt="Accessing data gif"
+                    />
                 </div>
-
-
+                <!-- END loading DICOM data Graphic and Text -->
             </div>
+            <!--
+                <span *ngIf="progress > 99">
+                    &lt;!&ndash; The Image of Images numbers display &ndash;&gt;
+                    <span *ngIf="imageCount > 1" class="image-count-display">
+                        Image:
+                        <input
+                            type="text"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '');
+                                 this.value = this.value.replace(/(\..*)\./g, '$1');"
 
-            <span *ngIf="progress > 99">
-            <!-- The Image of Images numbers display -->
-            <span *ngIf="imageCount > 0" class="image-count-display">
+                            [(ngModel)]="currentImage"
+                            (input)="checkCurrentImageNumber()"
+                            class="cine-mode-image-number-input">
 
-                Image:
-                <input
-                    type="text"
-                    oninput="this.value = this.value.replace(/[^0-9.]/g, '');
-                         this.value = this.value.replace(/(\..*)\./g, '$1');"
+                        of {{imageCount}}
+                    </span>
+                <span *ngIf="imageCount === 1">
+                   <b>Image: 1 of 1</b>
+                </span>
 
-                    [(ngModel)]="currentImage"
-                    (input)="checkCurrentImageNumber()"
-                    class="cine-mode-image-number-input">
-
-                of {{imageCount}}
-            </span>
-
-
-                <!--  Show DICOM Checkbox  -->
-            <span
-                class="show-dicom-checkbox">
-                     <label for="showDicomCheckboxId">Show Dicom data&nbsp;</label>
-                       <input type="checkbox"
-                              id="showDicomCheckboxId"
-                              [(ngModel)]="showDicomData"
-                              (change)="toggleDicomCheckbox()"
-                       >
-            </span>
-            </span>
-
+                </span>
+                -->
+            <!--  Show DICOM Checkbox  -->
+            <!--
+                <span
+                    class="show-dicom-checkbox">
+                         <label for="showDicomCheckboxId">Show Dicom data&nbsp;</label>
+                           <input type="checkbox"
+                                  id="showDicomCheckboxId"
+                                  [(ngModel)]="showDicomData"
+                                  (change)="toggleDicomCheckbox()"
+                           >
+                </span>
+                -->
         </div>
     </div>
+
+
+    <!-- ----- Series data display ----- -->
+    <div *ngIf="progress > 99">
+        <div class="section-div">
+
+            <!-- The heading with show/hide clicker. -->
+            <span
+                *ngIf="showSeriesData"
+                class="clicker section-heading"
+                (click)="onShowSeriesDataClick(false)"
+            >
+                <img src="assets/images/down_V01.png"/>
+                Series Data
+            </span>
+
+            <!-- The data table. -->
+            <span
+                *ngIf="!showSeriesData"
+                class="clicker section-heading"
+                (click)="onShowSeriesDataClick(true)"
+            >
+                <img src="assets/images/right_V01.png"/>
+                Series Data
+            </span>
+            <table *ngIf="showSeriesData">
+                <thead>
+                <tr class="data-table-thead-tr">
+                    <th class="data-table-thead-th">Collection//Site</th>
+                    <th class="data-table-thead-th">Patient</th>
+                    <th class="data-table-thead-th">Study</th>
+                    <th class="data-table-thead-th">Series</th>
+                    <th class="data-table-thead-th">QC Status</th>
+                    <th class="data-table-thead-th">Batch Number</th>
+                    <th class="data-table-thead-th">Submission Type</th>
+                    <th class="data-table-thead-th">Released Status</th>
+                </tr>
+                </thead>
+                <tbody class="series-data-display-table-body">
+                <tr class="data-table-body-tr">
+                    <td class="data-table-body-td">
+                        {{ collectionSite }}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{ seriesData["patientId"] }}
+                    </td>
+
+
+                    <td class="data-table-body-td"
+                        title="{{seriesData['study']}}"
+                    >
+                        ...{{ seriesData["study"] | shortenRight }}
+                    </td>
+
+                    <td class="data-table-body-td"
+                        title="{{seriesData['series']}}"
+                    >
+                        ...{{ seriesData["series"] | shortenRight }}
+                    </td>
+
+                    <td class="data-table-body-td">
+                        {{ seriesData["visibilityStatus"] }}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{ seriesData["batch"] }}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{ seriesData["submissionType"] }}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{ seriesData["releasedStatus"] }}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- ----- END Series data display ----- -->
+
+        <!-- ----- Change QC Status or Deletion----- -->
+        <div
+            class="section-div">
+            <span
+                *ngIf="showQcStatus"
+                class="clicker section-heading"
+                (click)="onShowQcStatusClick(false)"
+            >
+                <img src="assets/images/down_V01.png"/>
+                {{sectionHeading}}
+            </span>
+
+            <span
+                *ngIf="!showQcStatus"
+                class="clicker section-heading"
+                (click)="onShowQcStatusClick(true)"
+            >
+                <img src="assets/images/right_V01.png"/>
+                {{sectionHeading}}
+            </span>
+
+            <!-- ----- Change QC Status ----- -->
+            <nbia-qc-status-edit
+                *ngIf="currentTool === consts.TOOL_PERFORM_QC"
+                [ngClass]="{
+                    hide: !showQcStatus
+                }"
+                [collectionSite]="collectionSite"
+                [seriesData]="seriesData"
+            >
+            </nbia-qc-status-edit>
+
+            <!-- ----- Put Deletion here ----- -->
+            <nbia-delete-cinemode-series
+                *ngIf="currentTool === consts.TOOL_APPROVE_DELETIONS"
+                [ngClass]="{
+                    hide: !showQcStatus
+                }"
+                [seriesData]="seriesData"
+            ></nbia-delete-cinemode-series>
+
+
+        </div>
+        <!-- ----- END Change QC Status ----- -->
+
+
+        <!--  ----- QC History ----- -->
+        <div class="section-div">
+            <span
+                *ngIf="showQcHistory"
+                class="clicker section-heading"
+                (click)="onShowQcHistoryClick(false)"
+            >
+                <img src="assets/images/down_V01.png"/>
+                QC Status History
+            </span>
+
+
+            <!-- Show the Collection radio button list -->
+            <span
+                *ngIf="!showQcHistory"
+                class="clicker section-heading"
+                (click)="onShowQcHistoryClick(true)"
+            >
+                <img src="assets/images/right_V01.png"/>
+                QC Status History
+            </span>
+            <div *ngIf="showQcHistory">
+                <nbia-qc-history-report-table
+                    [qcStatusReportResults]="qcStatusReportResults"
+                ></nbia-qc-history-report-table>
+            </div>
+        </div>
+    </div>
+    <!-- ----- END Series data display ----- -->
 </div>

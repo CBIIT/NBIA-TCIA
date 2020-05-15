@@ -7,7 +7,9 @@ import { Consts, TokenStatus, ToolItems } from '../constants';
 import { UtilService } from '../admin-common/services/util.service';
 import { LoginService } from '../login/login.service';
 import { AccessTokenService } from '../admin-common/services/access-token.service';
-import { Properties } from '../../assets/properties';
+import { Properties } from '@assets/properties';
+import { ConfigurationService } from '../admin-common/services/configuration.service';
+import { BrandingService } from '@app/admin-common/services/branding.service';
 
 
 @Component( {
@@ -26,7 +28,6 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     userRoles;
     showDataAdminViewSubmissionReports = false;
     showDataAdminApproveDeletions = false;
-    showManageWorkflowItems = false;
     showPerformOnlineDeletions = false;
     showDataAdminPerformQcButton = false;
     showEditCollectionDescriptions = false;
@@ -42,10 +43,13 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
 
     constructor( private parameterService: ParameterService, private apiService: ApiService,
                  private utilService: UtilService, private loginService: LoginService,
-                 private accessTokenService: AccessTokenService ) {
+                 private accessTokenService: AccessTokenService, private brandingService: BrandingService,
+                 private configurationService: ConfigurationService ) {
+        this.configurationService.initConfiguration();
     }
 
     async ngOnInit() {
+
         // Get the current tool, if there is one.
         this.parameterService.currentToolEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -59,6 +63,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
                 // loginMode determines whether the Login screen needs to bs shown.
                 this.loginMode = data;
                 this.accessTokenStatus = this.accessTokenService.getAccessTokenStatus();
+
             } );
 
 
@@ -69,7 +74,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
 
                 // Enable or disable tools according to the users role(s).
                 this.enableTools();
-            });
+            } );
 
         // Wait for the url parameters to be set
         while( !this.parameterService.haveParameters() ){
@@ -78,9 +83,14 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         this.accessToken = this.accessTokenService.getAccessToken();
         this.initAccess();
 
+        this.brandingService.initCurrentBrand();
+
+
+
     }
 
     async initAccess() {
+        // DEV_MODE just logs in with user specified in Properties.DEV_PASSWORD and  Properties.DEV_USER
         if( !Properties.DEV_MODE ){
             // Do we have a good token?
             this.accessTokenService.testToken( this.accessToken );
@@ -100,11 +110,15 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             }
         }else{
             this.accessTokenService.setAccessTokenStatus( TokenStatus.GOOD_TOKEN );
+
         }
         // @TODO do something here if we don't like accessTokenStatus
         this.accessTokenStatus = this.accessTokenService.getAccessTokenStatus();
+
     }
 
+    // If no "tool" parameter is included in the URL a menu is presented.
+    // This is called when a user selects a tool.
     onToolItemClicked( tool, enabled ) {
         if( enabled ){
             if( tool === 0 ){
@@ -113,7 +127,13 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             if( tool === 1 ){
                 this.currentTool = Consts.TOOL_APPROVE_DELETIONS;
             }
-            if( tool === 4) {
+            if( tool === 2 ){
+                this.currentTool = Consts.TOOL_VIEW_SUBMISSION_REPORTS;
+            }
+            if( tool === 3 ){
+                this.currentTool = Consts.TOOL_PERFORM_ONLINE_DELETION;
+            }
+            if( tool === 4 ){
                 this.currentTool = Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS;
             }
         }
@@ -126,7 +146,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         }
         if( this.userRoles.indexOf( 'NCIA.SUPER_CURATOR' ) > -1 ){
             this.showDataAdminApproveDeletions = true;
-            this.showManageWorkflowItems = true;
+          //  this.showManageWorkflowItems = true;
         }
 
         if( this.userRoles.indexOf( 'NCIA.DELETE_ADMIN' ) > -1 ){

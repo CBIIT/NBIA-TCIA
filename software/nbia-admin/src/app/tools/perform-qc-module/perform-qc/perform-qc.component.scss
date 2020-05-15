@@ -1,0 +1,16 @@
+@import '../../../app.component';
+
+.perform-qc{
+    /* keep the Query section and the Display section side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}
+
+.data-section{
+    width: 100%;
+}
+
+.bulk-operations-section{
+    border: solid #4fa;
+}

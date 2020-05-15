@@ -78,11 +78,10 @@
 }
 
 .apply-is-set {
-    color: $query-criteria-heading-text-color;
+    color: $heading-text-color;
     font-weight: bold;
 }
 
-$disabled-text: #acacac; // MHL FIXME temp
 
 .disabled-text {
     color: $disabled-text;
@@ -94,7 +93,7 @@ $disabled-text: #acacac; // MHL FIXME temp
 }
 
 .display-date-range{
-    color: $query-criteria-heading-text-color;
+    color: $heading-text-color;
 
     margin: -10px 0 4px 32px;
 

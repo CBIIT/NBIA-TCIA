@@ -136,6 +136,7 @@ L-->
 						<filter token="ldap.basedn" value="${ldap.basedn}"/>
 						<filter token="ldap.user" value="${ldap.user}"/>
 						<filter token="ldap.pass" value="${ldap.pass}"/>
+						<filter token="ldap.user.id.label" value="${ldap.user.id.label}"/>						
 					</filterset>
 				</copy>
 			</then>
@@ -212,6 +213,9 @@ L-->
 		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-search">
 			<fileset dir="${basedir}/nbia-search"/>
 		</copy>
+		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-admin">
+			<fileset dir="${basedir}/nbia-admin"/>
+		</copy>		
 		<copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-viewer">
 			<fileset dir="${basedir}/nbia-viewer"/>
 		</copy>
@@ -396,7 +400,8 @@ L-->
 			</else>
 		</if>
 		<!-- should be part of the new database creation script TBD -->
-		<!--antcall target="create-guest-account"/-->
+		<!--antcall target="create-guest-account and super user account"/-->
+		<antcall target="create.initial.account.in.db" />
 	</target>
 
 	<target name="build:db:update" description="Update database" depends="common:common:init">
@@ -434,5 +439,28 @@ L-->
 		<echo message="changelog.file=${changelog.file} database.changelog.file=${database.changelog.file}"/-->
 		<updateDatabase driver="${database.driver}" url="${database.url}" username="${database.user}" password="${database.password}" classpathref="liquibase_stuff" promptOnNonLocalDatabase="${prompt.user.if.not.local.database}" defaultSchemaName="${database.schema}" dropFirst="false" changeLogFile="${database.changelog.file}" />
 	</target>
+	
+	<target name="create.initial.account.in.db" description="insert the defined admin user and nbia_guest into database">
+		<echo message="Insert NBIA admin login ${nbia.admin.login} into database." />
+		<property name="database.driver.file" value="${common.lib.dir}/${database.driver.jar}"/>
+		<path id="db_stuff">
+			<pathelement location="${database.driver.file}" />
+		</path>
+		<classloader loader="project" classpathref="db_stuff" />
+
+		<sql driver="${database.driver}"
+		 url="${database.url}"
+		 userid="${database.user}"
+		 password="${database.password}">
+		 <![CDATA[
+
+		UPDATE csm_user SET login_name="${nbia.admin.login.name}" WHERE login_name='nciadevtest';
+		insert into csm_user (LOGIN_NAME,FIRST_NAME,LAST_NAME,EMAIL_ID,UPDATE_DATE)
+		values ("nbia_guest","DQ4nFusFQxr7f3z5/qvdhw==","DQ4nFusFQxr7f3z5/qvdhw==","J+U4jOdifJsvA5uICPsem96DzM2a7MkdUeb0eQ3Sr8E=", sysdate());
+		UPDATE csm_group SET group_name="${public.collection.access.group.name}", group_desc="Public user group" WHERE group_name='PUBLIC-GRID';
+		insert into csm_user_group_role_pg(USER_GROUP_ROLE_PG_ID,USER_ID,GROUP_ID,ROLE_ID,PROTECTION_GROUP_ID,UPDATE_DATE) values (3,2,NULL,1,1,sysdate());
+	]]>
+		</sql>
+	</target>	
 	
 </project>

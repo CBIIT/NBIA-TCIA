@@ -2,13 +2,13 @@ $editCollectionDescriptionMenuWidth: 400px;
 
 .collection-description-text-editor {
     margin: 10px;
-
 }
 
 .collection-description-div-html {
     width: 100%;
     min-height: 100px;
     border: solid #ddd 1px;
+    resize: vertical;
 }
 
 .collection-description-div {
@@ -26,5 +26,26 @@ $editCollectionDescriptionMenuWidth: 400px;
 }
 
 .edit-collection-button {
-    margin-left: 10px;
+    margin-top: 10px;
+}
+
+
+.edit-collection-description-tool{
+        /* keep the Query section and the Display section side by side.  */
+        display: -webkit-flex;
+        display: flex;
+        flex-direction: row;
+}
+
+// Includes Display query and search results
+// TODO rename this
+.data-section{
+    //   border: solid #d2484c 2px;
+    width: 100%;
+    // margin-right: 10px;
+
+}
+
+.edit-collection-description-edit{
+    margin-bottom: 8px;
 }

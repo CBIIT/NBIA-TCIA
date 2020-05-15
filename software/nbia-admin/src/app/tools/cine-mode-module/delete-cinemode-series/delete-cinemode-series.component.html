@@ -1,0 +1,22 @@
+<div>
+<textarea
+    class="delete-cine-mode-edit-log-text"
+    [(ngModel)]="logText"
+    placeholder="Enter change log here..."
+></textarea>
+</div>
+
+<div>
+    <span>
+    <button class="btn nbia-button delete-cine-mode-button"
+            type="button"
+            (click)="onDeleteSeriesNextClick()">
+        Delete / Next Series
+    </button>
+    <button class="btn nbia-button delete-cine-mode-button"
+            type="button"
+            (click)="onDeleteSeriesSkipNextClick()">
+        Skip / Next Series
+    </button>
+        </span>
+</div>

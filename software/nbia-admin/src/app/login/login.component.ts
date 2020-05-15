@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LoginService } from './login.service';
 import { takeUntil } from 'rxjs/operators';
-import { Consts, TokenStatus } from '../constants';
+import { Consts, TokenStatus } from '@app/constants';
 import { AccessTokenService } from '../admin-common/services/access-token.service';
-import { ParameterService } from '../admin-common/services/parameter.service';
 import { UtilService } from '../admin-common/services/util.service';
 import { ApiService } from '../admin-common/services/api.service';
 
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private loginService: LoginService, private accessTokenService: AccessTokenService,
-                 private parameterService: ParameterService, private utilService: UtilService,
+                 private utilService: UtilService,
                  private apiService: ApiService ) {
     }
 
@@ -45,6 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy{
         while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
+        this.apiService.getWikiUrlParam();
+
 
         // Test the new token
         this.accessTokenService.testToken();

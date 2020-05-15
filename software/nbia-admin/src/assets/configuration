@@ -1,0 +1,28 @@
+#####################################################################################################
+##  Any line starting with "#" optionally preceded by one or more spaces will be considered a comment
+#####################################################################################################
+
+# OHIF_viewer_url = PLACE_HOLDER
+OHIF_viewer = true
+
+#########################################################################
+# The OHIF viewer button will only appears if the series' modality is in this comma separated list.
+#########################################################################
+# OHIF_MODALITIES = MG, CT, MR, PT, DX, CR, SC, NM, CTPT
+
+
+#########################################################################
+# This is (sort of) a demo mode.
+# No changes will be made to the data. Ex. Approve Deletions, Perform QC, etc.
+#########################################################################
+DEMO_MODE = true
+
+#########################################################################
+# This will over ride the brand set in assets/brand/currentBrand
+#########################################################################
+# brand=nbia
+
+#########################################################################
+# This is the URL for the tool help website that is launched by clicking the "?" next to the tool heading.
+#########################################################################
+# HELP_BASE_URL = https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide

@@ -1,26 +1,29 @@
 @import '../../../app.component';
+@import '../../../../app/data-table';
+@import '../../../popup';
 
-$imageWidth: 512px;
-$imageHeight: 512px;
+$cineModeImageWidth: 512px;
+$cineModeImageHeight: 512px;
 $cineModeMinWidth: 350px; // A good width for when we just have the loading progress bar.
-$cineModeMinWidthWithDicom: 1300px;
+$cineModeMinWidthWithDicom: 1400px;
 $cineModePadding: 6px;
-$cineModeTop: 70px;
-$loading-message-top: 250px;
+$cineModeTop: 40px;
+$cineModeLoadingMessageTop: 250px;
+
 
 .cine-mode-div {
     z-index: 4;
     position: absolute;
     top: $cineModeTop;
-    left: calc(50% - #{($imageWidth+$cineModePadding) / 2 });
+    left: calc(50% - #{($cineModeImageWidth+$cineModePadding) / 2 });
     padding: 0;
     margin: 0;
 }
 
-.cine-mode-loading-00 {
+.cine-mode-loading {
     min-width: $cineModeMinWidth;
     left: calc(50% - #{$cineModeMinWidth / 2 });
-    top: $loading-message-top;
+    top: $cineModeLoadingMessageTop;
 }
 
 .cine-mode-div-with-dicom {
@@ -33,14 +36,13 @@ $loading-message-top: 250px;
     margin: 0;
 }
 
-.data-loading-text{
+.cine-mode-progress-bar-data-loading-text {
     font-size: 12pt;
 }
 
-
 .image {
-    height: $imageHeight;
-    width: $imageWidth;
+    height: $cineModeImageHeight;
+    width: $cineModeImageWidth;
     padding: 0;
     margin: 0;
 }
@@ -50,23 +52,39 @@ $loading-message-top: 250px;
 }
 
 .cine-mode-scroller {
-    width: $imageWidth;
+    width: $cineModeImageWidth;
 }
 
-.cine-mode-image-number-input{
+.cine-mode-image-number-input {
     width: 40px;
 }
 
-.cine-mode-frame-rate{
-    margin-left: 60px;
-    height: 30px;
+.cine-mode-frame-rate-number {
+    margin: 0;
+    padding-bottom: 0;
+    height: 14px;
     width: 40px;
     font-size: 16px;
+    border-style: hidden;
+}
+
+.cine-mode-frame-rate-number-text {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    height: 12px;
+    width: 40px;
+}
+
+.cine-mode-frame-rate-table {
+    float: right;
+    border: solid 1px #ccc;
+    padding: 2px 4px 2px 4px;
 }
 
 
 .image-count-display {
-    font-size: 14pt;
+    font-size: 10pt;
 }
 
 .show-dicom-checkbox {
@@ -75,71 +93,29 @@ $loading-message-top: 250px;
 }
 
 
-// .cursor-draggable isn't working for me, this is a workaround.
-.cine-panel-heading:hover {
-    cursor: grab;
-}
-
-/*  Apply a "closed-hand" cursor during drag operation. */
-.cine-panel-heading:active {
-    cursor: grabbing;
-}
-
-/*  Apply a "closed-hand" cursor during drag operation. */
-.cine-panel-heading-moving {
-    cursor: grabbing;
-}
-
-
-.cine-mode-dicom-div {
-    // color: #fff;
-    // background-color: #2aabd2;
-    z-index: 4;
-    position: absolute;
-    top: $cineModeTop;
-    left: calc(50% - #{(($imageWidth+$cineModePadding) / 2)+ 200 });
-    min-width: $cineModeMinWidth;
-}
-
-.cine-mode-buttons{
+.cine-mode-buttons {
     margin: 6px 0 0 0;
 }
 
-.cine-mode-button-icon{
+.cine-mode-button-icon {
     font-size: 20px;
     padding: 0;
     margin: 0;
 
 }
 
-.cine-mode-button-bar{
-    margin-left: 40px;
+.cine-mode-button-bar {
+    margin-left: 4px;
     margin-bottom: 20px;
-    width: $imageWidth+$cineModePadding - 50px;
+    width: $cineModeImageWidth+$cineModePadding - 40px;
 }
 
-.play-back-image{
+
+.play-back-image {
     height: 25px;
     padding: 3px 0 3px 0;
 }
 
-/*
-
-
-.cine-mode-dicom-col {
-  border: solid #c9302c 5px;
-}
-
-*/
-
-
-//////////////////////////
-.cine-mode-dicom-header-tr {
-    background-color: #dedddd;
-    border: solid 1px #dedddd;
-    height: 30px;
-    font-weight: bold;
-}
 
 .cine-mode-dicom-tr {
     height: 30px;
@@ -147,7 +123,7 @@ $loading-message-top: 250px;
 
 
 .dicom-scroll-area {
-    height: $imageHeight;
+    height: $cineModeImageHeight;
     overflow-y: auto;
 }
 
@@ -156,16 +132,26 @@ $loading-message-top: 250px;
 }
 
 .dicom-data-column {
-    border: solid 1px #bbb;
     width: calc(75% - 140px);
 }
 
 .dicom-element-column {
-    border: solid 1px #bbb;
     width: 140px;
 }
 
 .dicom-name-column {
-    border: solid 1px #bbb;
     width: 25%;
 }
+
+.section-heading {
+    color: $heading-text-color;
+    padding: 7px 0 0 0;
+    font: 16px arial, sans-serif;
+}
+
+.section-div {
+    border: solid 1px $data-table-header-border-color;
+    margin: 4px;
+    padding: 4px;
+}
+

@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Consts } from '../../../constants';
 
 @Injectable( {
     providedIn: 'root'
@@ -13,7 +12,6 @@ export class DisplayQueryService{
     }
 
     query( q ) {
-        console.log('MHL DISPLAY Q input: ', q);
         this.displayQueryEmitter.emit( q );
 
     }

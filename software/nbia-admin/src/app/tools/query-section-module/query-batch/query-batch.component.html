@@ -1,7 +1,6 @@
-<div class="query-panel"
-     [ngClass]=" {
-           'top-query-panel': isTop
-       }"
+<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
+            currentTool===consts.TOOL_APPROVE_DELETIONS"
+     class="query-panel"
 >
 
     <span class="query-panel-heading">

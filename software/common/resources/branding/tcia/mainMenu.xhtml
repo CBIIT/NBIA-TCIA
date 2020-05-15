@@ -276,7 +276,7 @@ L-->
       </td>   
     
     
-     <f:subview id="adminToolsView" rendered="#{securityBean.loggedIn and (securityBean.hasQaRole or securityBean.hasSuperCuratorRole or seriesDeletionBean.showDeletionLink or securityBean.hasCollectionDescRole)}">
+     <f:subview id="adminToolsView" rendered="#{securityBean.loggedIn and (securityBean.hasQaRole or securityBean.hasAdminRole or securityBean.hasSuperCuratorRole or seriesDeletionBean.showDeletionLink or securityBean.hasCollectionDescRole)}">
           
             <td class="mainMenuItem">
               <h:outputText value="Admin" />

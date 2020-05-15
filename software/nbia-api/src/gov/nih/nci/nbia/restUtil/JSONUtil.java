@@ -10,6 +10,7 @@ import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
 import gov.nih.nci.nbia.dto.SpeciesDTO;
 import gov.nih.nci.nbia.dto.*;
 import gov.nih.nci.nbia.util.*;
+import gov.nih.nci.nbia.deletion.DeletionDisplayObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -229,7 +230,32 @@ public class JSONUtil {
 		}
 		return jsonInString;
 	}
+	
+	public static String getJSONforQCListLight(List<QcSearchResultDTOLight> value){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(value);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
 	public static String getJSONforQcStatusHistory(List<QcStatusHistoryDTO> value){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(value);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
+	public static String getJSONforDeletionDisplayObject(List<DeletionDisplayObject> value){
 		String jsonInString = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();

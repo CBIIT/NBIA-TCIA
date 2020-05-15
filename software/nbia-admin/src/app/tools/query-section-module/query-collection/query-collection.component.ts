@@ -1,12 +1,15 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ApiService } from '../../../admin-common/services/api.service';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { ApiService } from '@app/admin-common/services/api.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 import { Subject } from 'rxjs';
 import { QuerySectionService } from '../services/query-section.service';
-import { Consts } from '../../../constants';
+import { Consts, SortState } from '@app/constants';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
-import { LoginService } from '../../../login/login.service';
+import { LoginService } from '@app/login/login.service';
+import { ResizedEvent } from 'angular-resize-event';
+
+// TODO Collection description does not need //SITE
 
 @Component( {
     selector: 'nbia-query-collection',
@@ -15,7 +18,6 @@ import { LoginService } from '../../../login/login.service';
 } )
 
 export class QueryCollectionComponent implements OnInit, OnDestroy{
-    @Input() isTop = false;
     @Input() currentTool;
 
 
@@ -39,29 +41,35 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
     cBox = [];
     currentCollectionName = '';
 
+    width: number;
+    height: number;
+
+    consts = Consts;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiService: ApiService, private utilService: UtilService,
                  private querySectionService: QuerySectionService, private displayQueryService: DisplayQueryService,
-                 private loginService: LoginService) {
+                 private loginService: LoginService ) {
     }
 
     ngOnInit() {
-        this.apiService.collectionSitesAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
-                this.init(data);
-            } );
-        console.log('MHL CALLING getCollectionDescriptions' );
-        this.apiService.getCollectionSiteAndDescriptions();
 
-/*
-        this.loginService.newLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                // If there was an initial Login, we won't have the Collections yet.
-                this.apiService.update();
-            } );
-*/
-
+        // For Edit Collection descriptions we only need Collection, NOT Collection//Site.
+        if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
+            this.apiService.collectionsAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+                data => {
+                    this.init( data );
+                } );
+        }else
+            // For Any other than "Edit Collection descriptions" we need Collection//Site.
+        {
+            this.apiService.collectionSitesAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+                data => {
+                    this.init( data );
+                } );
+            this.apiService.getCollectionSiteAndDescriptions();
+        }
 
         this.displayQueryService.clearQuerySectionQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
@@ -69,21 +77,38 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
                 this.clearCBox();
                 this.cBox[0] = true;
                 this.currentCollectionName = this.collections[this.currentCollection]['name'];
-                this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
+                this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
             } );
-    }
+
+     }
 
 
     init( data ) {
         this.collections = data;
+        // Sort
+        this.collections.sort((a, b) =>  a.name.toUpperCase().localeCompare(b.name.toUpperCase()));
+
         this.clearCBox();
         this.cBox[this.currentCollection] = true;
 
         this.currentCollectionName = this.collections[this.currentCollection]['name'];
-        this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
+        this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
+
+        let maxInitialCountHeight = 10;
+        // Increase height for "Edit Collection Descriptions" because it has only one search criteria.
+        if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
+            maxInitialCountHeight = 16;
+        }
+        // Set height to show all collections, or maxInitialCountHeight collections, which ever is less.
+        let h = Math.min(data.length, maxInitialCountHeight) * 26;
+        document.getElementById('collections').style.height = h + 'px';
     }
 
 
+    onResized( event: ResizedEvent ) {
+        this.width = event.newWidth;
+        this.height = event.newHeight;
+    }
 
     onShowCriteriaListClick( s ) {
         this.showCriteriaList = s;
@@ -94,13 +119,25 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         this.cBox[i] = true;
         this.currentCollection = i;
         this.currentCollectionName = this.collections[this.currentCollection]['name'];
-
-        this.querySectionService.updateQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
-        this.onSearchChange();
+        this.selectCollection();
     }
 
-    clearCBox(){
-        for( let i = 0; i < this.collections.length; i++){
+    /**
+     * Tell other components that this Collection has been selected.
+     */
+    selectCollection() {
+        if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
+            this.querySectionService.emitCollection( this.currentCollection );
+        }else{
+            this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_COLLECTION, this.currentCollectionName );
+            this.onSearchChange();
+        }
+
+    }
+
+
+    clearCBox() {
+        for( let i = 0; i < this.collections.length; i++ ){
             this.cBox[i] = false;
             // include is used to filter collections to show when the search/filter magnifying glass tool is used.
             this.collections[i]['include'] = true;
@@ -115,12 +152,12 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
      */
     onSearchGlassClick() {
         this.showSearch = (!this.showSearch);
-/*
-        if( !this.showSearch ){
-            this.criteriaList = this.criteriaListHold;
-            this.onClearSearchInputClick();
-        }
-*/
+        /*
+                if( !this.showSearch ){
+                    this.criteriaList = this.criteriaListHold;
+                    this.onClearSearchInputClick();
+                }
+        */
 
     }
 
@@ -177,7 +214,6 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         */
 
     }
-
 
 
     ngOnDestroy(): void {

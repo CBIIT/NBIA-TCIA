@@ -384,7 +384,7 @@ export class ParameterService{
 
     async doUrlSearch(){
         this.loadingDisplayService.setLoading( true, 'Updating Counts' );
-        await this.commonService.sleep( 10000 ); // TODO this is a bit long - revisit
+        await this.commonService.sleep( 4500 ); // TODO this is a bit long - revisit  Changed from 10000 to 5000 29 APR 2020
         this.reset();
         this.commonService.runSearchForUrlParameters();
         this.loadingDisplayService.setLoading( false );

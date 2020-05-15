@@ -25,7 +25,7 @@ public class V3_createUserGroup extends getData{
 	@Context private HttpServletRequest httpRequest;
 
 	/**
-	 * This method create a new Protection Group
+	 * This method create a new user Group
 	 *
 	 * @return String - the status of operation 
 	 */

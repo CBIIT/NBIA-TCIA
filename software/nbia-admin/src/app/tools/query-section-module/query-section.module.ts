@@ -8,11 +8,10 @@ import { QueryMostRecentSubmissionDateComponent } from './query-most-recent-subm
 import { QueryPatientIdComponent } from './query-patient-id/query-patient-id.component';
 import { QueryQcStatusComponent } from './query-qc-status/query-qc-status.component';
 import { QueryReleasedComponent } from './query-released/query-released.component';
-import { QuerySectionComponent } from './query-section.component';
+import { QuerySectionComponent } from './query-section/query-section.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../../app-routing.module';
-import { EditCollectionDescriptionsModule } from '../edit-collection-descriptions-module/edit-collection-descriptions.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderModule } from '../../header-module/header.module';
 import { ViewSubmissionReportsModule } from '../view-submission-reports-module/view-submission-reports.module';
@@ -20,6 +19,9 @@ import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { PerformOnlineDeletionModule } from '../perform-online-deletion-module/perform-online-deletion.module';
 import { MomentModule } from 'ngx-moment';
 import { AngularDraggableModule } from 'angular2-draggable';
+import { AngularResizedEventModule } from 'angular-resize-event';
+import { TabsModule } from 'ngx-tabs';
+
 
 
 @NgModule( {
@@ -50,7 +52,6 @@ import { AngularDraggableModule } from 'angular2-draggable';
         BrowserModule,
         FormsModule,
         AppRoutingModule,
-        EditCollectionDescriptionsModule,
         HttpClientModule,
         HeaderModule,
         ViewSubmissionReportsModule,
@@ -58,7 +59,8 @@ import { AngularDraggableModule } from 'angular2-draggable';
         PerformOnlineDeletionModule,
         MomentModule,
         AngularDraggableModule,
-
+        TabsModule,
+        AngularResizedEventModule
     ]
 } )
 export class QuerySectionModule{

@@ -13,10 +13,10 @@
     margin-bottom: 2px;
 }
 
-.check-box {
+// TODO rename
+.check-box{
     margin-right: 4px;
 }
-
 
 .query-panel-radio-button {
     color: #3a3a3a;
@@ -31,7 +31,7 @@
 
 
 .left-section-div{
-    margin: 0;
+    margin:  0;
 
 }
 
@@ -52,7 +52,7 @@
 
 /*For the individual query entry panels */
 .query-panel-heading {
-    color: $query-criteria-heading-text-color;
+    color: $heading-text-color;
     background-color: #fff;
     padding: 7px 0 0 0;
     margin-left: $query-criteria-content-left-margin;

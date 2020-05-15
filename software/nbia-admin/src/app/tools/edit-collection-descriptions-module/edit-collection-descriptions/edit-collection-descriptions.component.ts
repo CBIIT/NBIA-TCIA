@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../../../admin-common/services/api.service';
-import { UtilService } from '../../../admin-common/services/util.service';
+import { ApiService } from '@app/admin-common/services/api.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Consts } from '@app/constants';
+import { QuerySectionService } from '../../query-section-module/services/query-section.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -16,9 +19,14 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
  * Read, edit, save Collection descriptions.
  */
 export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
+    userRoles;
+    roleIsGood = false;
+
     collections;
     currentCollection;
     showHtml = false;
+    consts = Consts;
+
 
     // @TODO Most of these configuration values came from a demo.  Look them over, make sure they are good.
     htmlContent = 'The <b>Description</b> text will go here.';
@@ -89,7 +97,8 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private apiService: ApiService, private utilService: UtilService ) {
+    constructor( private apiService: ApiService, private utilService: UtilService,
+                 private querySectionService: QuerySectionService) {
     }
 
     ngOnInit() {
@@ -98,15 +107,33 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         this.apiService.collectionsAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.collections = data;
-                console.log('MHL collections: ', this.collections);
+
                 if( !this.utilService.isNullOrUndefinedOrEmpty( this.collections ) ){
                     this.currentCollection = this.collections[0]['name'];
                     this.htmlContent = this.collections[0]['description'];
                     this.textTrailer = this.htmlContent;
                 }
+
             } );
-        console.log('MHL CALLING getCollectionDescriptions' );
-        this.apiService.getCollectionAndDescriptions(); // TODO
+
+        this.apiService.getCollectionAndDescriptions();
+
+
+        this.querySectionService.updateCollectionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.onCollectionClick( data );
+            } );
+
+
+        this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.userRoles = data;
+                if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+                    this.roleIsGood = true;
+                }
+            });
+        this.apiService.getRoles();
+
 
     }
 
@@ -117,10 +144,14 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
     }
 
     onSave() {
-        if(this.textTrailer !== this.htmlContent){
-            console.log('MHL this.currentCollection: ', this.currentCollection.replace(/\/\/.*/, '')); // .replace(/.*(?=#[^\s]*$)/, '')
-            this.apiService.updateCollectionDescription( this.currentCollection.replace(/\/\/.*/, ''), this.htmlContent );
-            this.textTrailer = this.htmlContent;
+        if( Properties.DEMO_MODE){
+            console.log('Demo Mode Update Collection description ', this.htmlContent);
+        }
+        else{
+            if( this.textTrailer !== this.htmlContent ){
+                this.apiService.updateCollectionDescription( this.currentCollection.replace( /\/\/.*/, '' ), this.htmlContent );
+                this.textTrailer = this.htmlContent;
+            }
         }
     }
 
