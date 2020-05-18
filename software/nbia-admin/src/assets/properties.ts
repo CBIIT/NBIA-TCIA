@@ -90,5 +90,8 @@ export let Properties = {
     // It used to determine if it is okay to start using the configured settings yet.
     CONFIG_COMPLETE: false,
 
-    SHOW_CUSTOM_MENU: true
+    SHOW_CUSTOM_MENU: true,
+
+    SHOW_ROLES: false
+
 };

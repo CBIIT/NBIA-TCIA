@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { SearchResultsSectionComponent } from './search-results-section/search-results-section.component';
 import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-module/admin-common-pipe.module';
 import { FormsModule } from '@angular/forms';
+import { SearchResultsSectionBravoComponent } from './search-results-section-bravo/search-results-section-bravo.component';
 
 
 @NgModule( {
     declarations: [
-        SearchResultsSectionComponent
+        SearchResultsSectionComponent,
+        SearchResultsSectionBravoComponent
     ],
 
     exports: [

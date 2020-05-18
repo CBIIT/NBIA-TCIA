@@ -3,7 +3,7 @@
 #####################################################################################################
 
 # OHIF_viewer_url = PLACE_HOLDER
-OHIF_viewer = true
+OHIF_viewer = false
 
 #########################################################################
 # The OHIF viewer button will only appears if the series' modality is in this comma separated list.
@@ -26,3 +26,5 @@ DEMO_MODE = true
 # This is the URL for the tool help website that is launched by clicking the "?" next to the tool heading.
 #########################################################################
 # HELP_BASE_URL = https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide
+
+SHOW_ROLES=true

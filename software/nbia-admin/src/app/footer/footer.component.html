@@ -1,2 +1,9 @@
 <!-- The footer HTML comes from the Branding file footer.html.  -->
+<div *ngIf="properties.SHOW_ROLES">
+    <b>User role(s) for {{user}}:</b><br>
+    <span  *ngFor="let role of userRoles">[ <b>{{role}}</b> ]&nbsp;&nbsp;</span>
+
+</div>
+
+
 <span [innerHTML]="properties.FOOTER_HTML"></span>
