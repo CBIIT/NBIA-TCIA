@@ -876,7 +876,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     }
 
     onSubjectOhifViewerClick() {
-        alert( 'This feature (onSubjectOhifViewerClick) has not yet been implemented.' );
+        alert( 'This feature (OHIF Viewer for Subject level) has not yet been implemented.' );
     }
 
     ngOnDestroy() {

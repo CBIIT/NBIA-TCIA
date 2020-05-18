@@ -182,7 +182,7 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
     }
 
     onStudyOhifViewerClick(){
-        alert( 'This feature (onStudyOhifViewerClick) has not yet been implemented.' );
+        alert( 'This feature (OHIF Viewer at Study level) has not yet been implemented.' );
     }
 
 

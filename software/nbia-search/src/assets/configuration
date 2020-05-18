@@ -22,12 +22,12 @@
 #########################################################################
 # Show OHIF viewer button in Study sections of search results
 #########################################################################
-# OHIF_viewer_study = true
+OHIF_viewer_study = false
 
 #########################################################################
 # Show OHIF viewer button in Series sections of search results
 #########################################################################
-# OHIF_viewer_series = true
+OHIF_viewer_series = true
 
 #########################################################################
 # The OHIF viewer button will only appears if the series' modality is in this comma separated list.
@@ -48,3 +48,5 @@
 # API_host =https://public.cancerimagingarchive.net
 
 # SHOW_DATA_ADMIN_MENU = true
+
+SHOW_ROLES=true

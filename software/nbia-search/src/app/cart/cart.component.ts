@@ -352,7 +352,6 @@ export class CartComponent implements OnInit, OnDestroy{
                         a.click();
                         (<any>window).document.body.removeChild( a );
 
-
                     },
                     err => {
                         console.error( 'Error downloading cart/manifest: ', err );
@@ -369,14 +368,9 @@ export class CartComponent implements OnInit, OnDestroy{
                         );
                     }
                 );
-
-
             }
         );
-
-
         this.sortService.initSortState( this.columns );
-
     }
 
 

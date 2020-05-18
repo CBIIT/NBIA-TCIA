@@ -29,7 +29,7 @@ export let Properties = {
 
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
-    SHOW_OHIF_VIEWER: false,
+    SHOW_OHIF_VIEWER: true,
     // This value can be changed in the config file.
     SHOW_OHIF_SERIES_VIEWER: true,
 
@@ -93,7 +93,7 @@ export let Properties = {
     // This can be removed when I get rid of all the old code used to get all the search results at once rather than just a page at a time.
     PAGED_SEARCH: true,
 
-    SHOW_DATA_ADMIN_MENU: false,
+    SHOW_DATA_ADMIN_MENU: true,
     /*
        Don't show "Image counts"or "Disk Space" in the search results, or the column selector for search results.
        We get "Image counts" and "Disk space" included in the search results when using the "getExtendedSimpleSearch" rest service,
@@ -126,6 +126,8 @@ export let Properties = {
     SHOW_CUSTOM_MENU: true,
 
     CONFIRM_EXIT: true,
+
+    SHOW_ROLES: true,
 
     // If false sort just by name, this is the default for criteria sorting
     // This is the sort for "Image Modality" and "Anatomical Site" and the default sort for Collections.

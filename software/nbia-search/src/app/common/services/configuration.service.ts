@@ -111,6 +111,12 @@ export class ConfigurationService{
                         }
                     }
 
+                    if( key === 'SHOW_ROLES' ){
+                        Properties.SHOW_ROLES = this.utilService.isTrue( value );
+                    }
+
+
+
                 }
             }
         }

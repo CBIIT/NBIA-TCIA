@@ -1,12 +1,9 @@
-import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
-import { CommonService } from '@app/image-search/services/common.service';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Properties } from '@assets/properties';
-import { Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { UtilService } from '@app/common/services/util.service';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { Consts } from '@app/consts';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-footer',
@@ -17,9 +14,12 @@ import { ApiServerService } from '@app/image-search/services/api-server.service'
 export class FooterComponent implements OnInit{
 
     properties = Properties;
+    userRoles;
+    user;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private apiServerService: ApiServerService  ) {
+    constructor( private apiServerService: ApiServerService ) {
     }
 
     ngOnInit() {
@@ -31,8 +31,22 @@ export class FooterComponent implements OnInit{
             },
             error => {
                 Properties.HOST_NAME = 'Unknown';
-                console.error('Error getting host name: ', error);
-            });
+                console.error( 'Error getting host name: ', error );
+            } );
+
+        this.apiServerService.currentUserRolesEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.userRoles = data;
+                console.log('MHL userRoles: ', this.userRoles);
+            }
+        );
+        this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.user = data;
+                console.log('MHL user: ', this.user);
+            }
+        );
+
     }
 
 }
