@@ -13,7 +13,7 @@ import { ApiService } from '@app/admin-common/services/api.service';
 @Injectable( {
     providedIn: 'root'
 } )
-export class ParameterService implements OnDestroy{
+export class ParameterService{
 
     currentTool = Consts.TOOL_NONE;
     token;
@@ -22,9 +22,6 @@ export class ParameterService implements OnDestroy{
 
     parameterValuesSet = false;
     currentToolEmitter = new EventEmitter();
-
-    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-
 
     constructor( private route: ActivatedRoute, private httpClient: HttpClient,
                  private utilService: UtilService, private loginService: LoginService,
@@ -66,7 +63,7 @@ export class ParameterService implements OnDestroy{
             this.setCurrentTool( Consts.TOOL_NONE );
         }
 
-        // Get access token  @CHECKME  If'd around for DEV time  MHL
+        // Get access token
         if( !Properties.DEV_MODE ){
             this.token = this.route.snapshot.queryParams[Consts.URL_KEY_TOKEN];  // Access Token
             this.accessTokenService.setAccessToken( this.token );
@@ -97,17 +94,16 @@ export class ParameterService implements OnDestroy{
 
     // This is for testing DEV mode only, use  @CHECKME
     getAccessToken( user, password, secret ): Observable<any> {
-
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
-
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-
         let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
 
+/*      Don't show user and password
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'MHL  getAccessToken: ' + curl );
+            console.log( 'getAccessToken: ' + curl );
         }
+*/
 
         let options =
             {
@@ -116,10 +112,4 @@ export class ParameterService implements OnDestroy{
             };
         return this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
-
-    ngOnDestroy(): void {
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
-    }
-
 }

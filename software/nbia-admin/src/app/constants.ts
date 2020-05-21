@@ -35,8 +35,6 @@ export const Consts = {
     QUERY_CRITERIA_CONFIRMED_COMPLETE: 'queryCriteriaConfirmedComplete',
     QUERY_CRITERIA_SUBJECT_ID: 'queryCriteriaSubjectId',
     QUERY_CRITERIA_MOST_RECENT_SUBMISSION: 'queryCriteriaMostRecentSubmission',
-    SUBMIT_QC_STATUS_UPDATE: 'submitQCVisibilityForDataAdmin',
-    SUBMIT_SERIES_DELETION: 'submitDeleteVisibility',
 
     CRITERIA_SEARCH: 0,
     TEXT_SEARCH: 1,
@@ -56,6 +54,10 @@ export const Consts = {
     GET_SERIES_FOR_DELETION: 'getSeriesForDeletion',
     UPDATE_COLLECTION_DESCRIPTION: 'submitCollectionDescription',
     GET_HOST_NAME: 'hostName',
+
+    SUBMIT_QC_STATUS_UPDATE: 'submitQCVisibilityForDataAdmin',
+    SUBMIT_SERIES_DELETION: 'submitDeleteVisibility',
+    SUBMIT_ONLINE_DELETION: 'submitOnlineDeletion',
 
     DICOM_TAGS: 'getDicomTags',
     DICOM_TAGS_BY_IMAGE: 'getDicomTagsByImageID',

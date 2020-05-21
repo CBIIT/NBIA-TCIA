@@ -10,12 +10,11 @@ OHIF_viewer = false
 #########################################################################
 # OHIF_MODALITIES = MG, CT, MR, PT, DX, CR, SC, NM, CTPT
 
-
 #########################################################################
 # This is (sort of) a demo mode.
 # No changes will be made to the data. Ex. Approve Deletions, Perform QC, etc.
 #########################################################################
-DEMO_MODE = true
+# DEMO_MODE = true
 
 #########################################################################
 # This will over ride the brand set in assets/brand/currentBrand
@@ -24,7 +23,11 @@ DEMO_MODE = true
 
 #########################################################################
 # This is the URL for the tool help website that is launched by clicking the "?" next to the tool heading.
+# By default it will retrieve this base URL from the server
 #########################################################################
 # HELP_BASE_URL = https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide
 
-SHOW_ROLES=true
+#########################################################################
+# This will show the current user's roles which grant access to the different Admin tools.
+#########################################################################
+# SHOW_ROLES=true

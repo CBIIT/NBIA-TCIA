@@ -15,39 +15,43 @@
                 [currentTool]="consts.TOOL_APPROVE_DELETIONS"
             ></nbia-display-query>
         </div>
+
+
+<!--
         <div class="row">
             <nbia-search-results-section
                 (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
                 (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
-            ></nbia-search-results-section>
-            <!--
-                    <div class="row">
-                        <nbia-search-results-section-bravo
-                            (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
-                            (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
-                        ></nbia-search-results-section-bravo>
-                    </div>
-            -->
-            <div *ngIf="showBulkOperations"
-                 class="row"
             >
-                <nbia-deletion-bulk-operations
-                    [collectionSite]="collectionSite"
-                    [searchResults]="searchResults"
-                    [searchResultsSelectedCount]="searchResultsSelectedCount"
-                ></nbia-deletion-bulk-operations>
-            </div>
+            </nbia-search-results-section>
         </div>
+-->
 
+
+        <div class="row">
+            <nbia-search-results-section-bravo
+                (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
+            >
+
+            </nbia-search-results-section-bravo>
+        </div>
+        <div *ngIf="showBulkOperations"
+             class="row"
+        >
+            <nbia-deletion-bulk-operations
+                [collectionSite]="collectionSite"
+                [searchResults]="searchResults"
+                [searchResultsSelectedCount]="searchResultsSelectedCount"
+            ></nbia-deletion-bulk-operations>
+        </div>
     </div>
 
-    <!--
-    roles: {{userRoles}}
-    roleIsGood: {{roleIsGood}}
-    -->
 </div>
-    <h4 *ngIf="! roleIsGood">
-        <p>User does not have authorization required for "<b>Approve deletions</b>"</p>
-        <p>Users role(s): <b>{{userRoles}}</b></p>
-        Required role: <b>NCIA.NCIA.SUPER_CURATOR</b>
-    </h4>
+
+
+<h4 *ngIf="! roleIsGood">
+    <p>User does not have authorization required for "<b>Approve deletions</b>"</p>
+    <p>Users role(s): <b>{{userRoles}}</b></p>
+    Required role: <b>NCIA.NCIA.SUPER_CURATOR</b>
+</h4>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { UtilService } from '@app/admin-common/services/util.service';
@@ -17,7 +17,7 @@ import { LoadingDisplayService } from '@app/admin-common/components/loading-disp
 /**
  * The parent component for "Perform QC"
  */
-export class PerformQcComponent implements OnInit{
+export class PerformQcComponent implements OnInit, OnDestroy{
     consts = Consts;
     userRoles;
     roleIsGood = false;
@@ -35,18 +35,6 @@ export class PerformQcComponent implements OnInit{
     }
 
     async ngOnInit() {
-        // make sure we are not ahead of apiService initialization.
- /*
-        while( this.userRoles === undefined ){
-            this.userRoles = this.apiService.getUserRoles();
-            console.log('MHL this.userRoles: ', this.userRoles);
-            if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1 ){
-                this.roleIsGood = true;
-            }
-            await this.utilService.sleep( Consts.waitTime );
-        }
-*/
-
 
         this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -108,4 +96,10 @@ export class PerformQcComponent implements OnInit{
         }
         return '';
     }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

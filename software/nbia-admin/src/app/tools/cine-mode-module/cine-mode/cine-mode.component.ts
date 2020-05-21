@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CineModeService } from './cine-mode.service';
 import { ApiService } from '@app/admin-common/services/api.service';
@@ -16,7 +16,7 @@ import { QuerySectionService } from '@app/tools/query-section-module/services/qu
     templateUrl: './cine-mode.component.html',
     styleUrls: ['./cine-mode.component.scss']
 } )
-export class CineModeComponent implements OnInit{
+export class CineModeComponent implements OnInit, OnDestroy{
     @Input() currentTool = '';
     dicomData = [];
     showDicomData = true;
@@ -472,6 +472,11 @@ export class CineModeComponent implements OnInit{
 
     onMoveEnd( e ) {
         this.handleMoving = false;
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
 }

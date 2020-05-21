@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -17,7 +17,7 @@ import { SearchResultByIndexService } from '@app/tools/search-results-section-mo
     templateUrl: './search-results-section.component.html',
     styleUrls: ['./search-results-section.component.scss']
 } )
-export class SearchResultsSectionComponent implements OnInit{
+export class SearchResultsSectionComponent implements OnInit, OnDestroy{
 
     searchResults = [];
     currentCineModeSeriesIndex = -1;
@@ -65,17 +65,17 @@ export class SearchResultsSectionComponent implements OnInit{
 
         this.searchResultByIndexService.searchResultsByIndexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                if( this.currentCineModeSeriesIndex < ( this.searchResults.length - 1) ){
+                if( this.currentCineModeSeriesIndex < (this.searchResults.length - 1) ){
                     this.currentCineModeSeriesIndex++;
                     this.cineModeService.openCineMode( this.searchResults[this.currentCineModeSeriesIndex], this.collectionSite, this.currentCineModeSeriesIndex );
                 }
-            });
+            } );
 
         // closeCineModeEmitter
         this.cineModeService.closeCineModeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.currentCineModeSeriesIndex = -1;
-            });
+            } );
 
         this.apiService.searchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -110,49 +110,7 @@ export class SearchResultsSectionComponent implements OnInit{
             data => {
                 this.collectionSite = data;
             } );
-/*
 
-        // @ts-ignore
-        $( function() {
-            // @ts-ignore
-            $( '#normal' ).colResizable( {
-                liveDrag: true,
-                gripInnerHtml: '<div class=\'grip\'></div>',
-                draggingClass: 'dragging',
-                resizeMode: 'fit'
-            } );
-
-            // @ts-ignore
-            $( '#flex' ).colResizable( {
-                liveDrag: true,
-                gripInnerHtml: '<div class=\'grip\'></div>',
-                draggingClass: 'dragging',
-                resizeMode: 'flex'
-            } );
-
-
-            // @ts-ignore
-            $( '#overflow' ).colResizable( {
-                liveDrag: true,
-                gripInnerHtml: '<div class=\'grip\'></div>',
-                draggingClass: 'dragging',
-                resizeMode: 'overflow'
-            } );
-
-
-            // @ts-ignore
-            $( '#disabled' ).colResizable( {
-                liveDrag: true,
-                gripInnerHtml: '<div class=\'grip\'></div>',
-                draggingClass: 'dragging',
-                resizeMode: 'overflow',
-                disabledColumns: [2]
-            } );
-
-
-        } );
-
-*/
     }
 
     toggleTopSearchResultsCheckbox( c ) {
@@ -333,4 +291,10 @@ export class SearchResultsSectionComponent implements OnInit{
         }
         this.loadingDisplayService.setLoading( false );
     }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

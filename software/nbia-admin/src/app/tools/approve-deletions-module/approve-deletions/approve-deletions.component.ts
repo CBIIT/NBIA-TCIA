@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { UtilService } from '@app/admin-common/services/util.service';
@@ -14,7 +14,7 @@ import { LoginService } from '@app/login/login.service';
     styleUrls: ['./approve-deletions.component.scss']
 } )
 
-export class ApproveDeletionsComponent implements OnInit{
+export class ApproveDeletionsComponent implements OnInit, OnDestroy{
     consts = Consts;
     userRoles;
     roleIsGood = false;
@@ -84,7 +84,11 @@ export class ApproveDeletionsComponent implements OnInit{
     // Run the query
     doApproveDeletionsSearch() {
         this.apiService.doCriteriaSearchQuery( Consts.TOOL_APPROVE_DELETIONS,  this.currentQueryData);
+    }
 
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
 }

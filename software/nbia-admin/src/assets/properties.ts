@@ -23,13 +23,12 @@ export let Properties = {
 
      // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
      API_SERVER_URL: '',
-    // API_SERVER_URL: 'http://192.168.1.20:8080',
+     // API_SERVER_URL: 'http://192.168.1.20:8080',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
     OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
 
-    DEMO_MODE: false,
 
     // //////////////////////////////////////////////////////////////////////////
     //  The following values will by set by the "Brand"
@@ -78,8 +77,8 @@ export let Properties = {
 
     DEV_MODE: false,
 
-    DEV_PASSWORD: 'changeme',
-    DEV_USER: 'mlerner',
+     DEV_PASSWORD: 'changeme',
+     DEV_USER: 'mlerner',
 
     // DEV_PASSWORD: 'Froggy_127',
     // DEV_USER: 'lernermh',
@@ -92,6 +91,8 @@ export let Properties = {
 
     SHOW_CUSTOM_MENU: true,
 
-    SHOW_ROLES: false
+    SHOW_ROLES: false,
+    DEMO_MODE: false,
+
 
 };

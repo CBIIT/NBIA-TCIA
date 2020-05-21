@@ -13,7 +13,8 @@ import { SearchResultsSectionBravoComponent } from './search-results-section-bra
     ],
 
     exports: [
-        SearchResultsSectionComponent
+        SearchResultsSectionComponent,
+        SearchResultsSectionBravoComponent
     ],
 
     imports: [

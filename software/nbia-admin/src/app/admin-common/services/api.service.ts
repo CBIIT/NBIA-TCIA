@@ -48,6 +48,9 @@ export class ApiService{
     submitSeriesDeletionResultsEmitter = new EventEmitter();
     submitSeriesDeletionErrorEmitter = new EventEmitter();
 
+    submitOnlineDeletionResultsEmitter = new EventEmitter();
+    submitOnlineDeletionErrorEmitter = new EventEmitter();
+
     getDicomImageErrorEmitter = new EventEmitter();
 
     constructor( private utilService: UtilService, private parameterService: ParameterService,
@@ -224,7 +227,18 @@ export class ApiService{
                 console.error( 'submitBulkDeletion err: ', err );
             } );
     }
-
+    submitOnlineDeletion( ) {
+        this.doPost( Consts.SUBMIT_ONLINE_DELETION, 'deletion=online' ).subscribe(
+            ( data ) => {
+                this.submitOnlineDeletionResultsEmitter.emit( data );
+            },
+            ( err ) => {
+                this.submitOnlineDeletionErrorEmitter.emit( err );
+                console.error( 'submitOnlineDeletion err: ', err['error'] );
+                console.error( 'submitOnlineDeletion err: ', err );
+            } );
+    }
+// SUBMIT_ONLINE_DELETION
     getSeriesForDeletion() {
         this.doGet( Consts.GET_SERIES_FOR_DELETION ).subscribe(
             ( data ) => {
@@ -637,6 +651,7 @@ export class ApiService{
         // These are returned as text NOT JSON.
         if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ||
             queryType === Consts.SUBMIT_SERIES_DELETION ||
+            queryType === Consts.SUBMIT_ONLINE_DELETION ||
             queryType === Consts.SUBMIT_QC_STATUS_UPDATE
         ){
             options = {
