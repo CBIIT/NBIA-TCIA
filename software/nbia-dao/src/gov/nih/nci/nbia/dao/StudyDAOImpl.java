@@ -620,27 +620,10 @@ public class StudyDAOImpl extends AbstractDAO
         // Add the series PK IDs to the where clause
         
 
-        int listSize = seriesPkIds.size();
-		if (listSize > PARAMETER_LIMIT) {
-			Collection<Collection<Integer>> seriesPkIdsBatches = split(
-					seriesPkIds, PARAMETER_LIMIT);
-			whereStmt = new String() + " and (";
-			int i = 0;
-			for (Collection<Integer> seriesPkIdBatch : seriesPkIdsBatches) {
-				if (i==0) {
-					whereStmt += "generalser1_.GENERAL_SERIES_PK_ID in";
-				} else {
-				    whereStmt += "or generalser1_.GENERAL_SERIES_PK_ID in (";
-				}
-				i++;
-				whereStmt += constructSeriesIdList(seriesPkIdBatch);
-				whereStmt += ")";
-			}
-			whereStmt += ")";
-		} else {
+
 			  whereStmt += "and generalser1_.GENERAL_SERIES_PK_ID in (";
               whereStmt += constructSeriesIdList(seriesPkIds);
-		}
+
 
         whereStmt += ")";
 
