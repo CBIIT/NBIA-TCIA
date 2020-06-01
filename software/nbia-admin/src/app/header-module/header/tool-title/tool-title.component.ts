@@ -36,18 +36,18 @@ export class ToolTitleComponent implements OnInit{
         // @TODO this is just a quick fix for early demo purposes.
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
             this.currentToolTitle = 'Edit Collection Descriptions';
-            this.helpUrl += '#DataAdministrationToolGuide-Edit Collection Descriptions';
+            this.helpUrl += '#DataAdministrationToolGuide-EditCollectionDescriptions';
         }else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS ){
             this.currentToolTitle = 'Approve Deletions';
-            this.helpUrl += '#DataAdministrationToolGuide-Approve Deletions';
+            this.helpUrl += '#DataAdministrationToolGuide-ApproveDeletions';
         }else if( this.currentTool === Consts.TOOL_PERFORM_QC ){
             this.currentToolTitle = 'Perform Quality Control';
-            this.helpUrl += '#DataAdministrationToolGuide-Perform Quality Control';
+            this.helpUrl += '#DataAdministrationToolGuide-PerformQualityControl';
         }else if( this.currentTool === Consts.TOOL_VIEW_SUBMISSION_REPORTS ){
             this.currentToolTitle = 'View Submission Reports';
         }else if( this.currentTool === Consts.TOOL_PERFORM_ONLINE_DELETION ){
             this.currentToolTitle = 'Perform Online Deletion';
-            this.helpUrl += '#DataAdministrationToolGuide-Perform Online Deletions';
+            this.helpUrl += '#DataAdministrationToolGuide-PerformOnlineDeletions';
         }else{
             this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
         }

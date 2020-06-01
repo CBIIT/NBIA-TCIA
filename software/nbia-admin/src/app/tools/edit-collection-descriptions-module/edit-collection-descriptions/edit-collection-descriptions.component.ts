@@ -59,7 +59,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
             ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
             ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
             ['image', 'video', 'insertVideo', 'insertImage', 'customClasses', 'insertHorizontalRule'],
-            ['toggleEditorMode', 'removeFormat', 'unlink']
+            ['toggleEditorMode', 'unlink']
         ]
     };
 
