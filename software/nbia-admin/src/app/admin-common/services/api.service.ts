@@ -128,7 +128,7 @@ export class ApiService{
                     if( tool === Consts.TOOL_APPROVE_DELETIONS ||
                         tool === Consts.TOOL_PERFORM_QC
                     ){
-                        queryParameters += '&collectionSite=' + element['data'];
+                         queryParameters += '&collectionSite=' + element['data'];
                     }
                     break;
 
@@ -227,7 +227,8 @@ export class ApiService{
                 console.error( 'submitBulkDeletion err: ', err );
             } );
     }
-    submitOnlineDeletion( ) {
+
+    submitOnlineDeletion() {
         this.doPost( Consts.SUBMIT_ONLINE_DELETION, 'deletion=online' ).subscribe(
             ( data ) => {
                 this.submitOnlineDeletionResultsEmitter.emit( data );
@@ -238,6 +239,7 @@ export class ApiService{
                 console.error( 'submitOnlineDeletion err: ', err );
             } );
     }
+
 // SUBMIT_ONLINE_DELETION
     getSeriesForDeletion() {
         this.doGet( Consts.GET_SERIES_FOR_DELETION ).subscribe(
@@ -359,13 +361,13 @@ export class ApiService{
                     }
                 }
             },
-                    // Don't display this error, this will happen if a user has not yet logged in.
-                       /*
-                       getParamsError => {
-                            console.error( 'Error: ', getParamsError );
-                            console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
-                        }
-                        */
+            // Don't display this error, this will happen if a user has not yet logged in.
+            /*
+            getParamsError => {
+                 console.error( 'Error: ', getParamsError );
+                 console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
+             }
+             */
         );
     }
 
@@ -648,7 +650,7 @@ export class ApiService{
 
         let options;
 
-        // These are returned as text NOT JSON.
+        // These are returned as text not JSON (which is the default return format).
         if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ||
             queryType === Consts.SUBMIT_SERIES_DELETION ||
             queryType === Consts.SUBMIT_ONLINE_DELETION ||
@@ -668,9 +670,9 @@ export class ApiService{
     }
 
     updateCollectionDescription( name, description ) {
-        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + description ).subscribe(
+        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURI( description ) ).subscribe(
             data => {
-                console.log( 'updateCollectionDescription response: ', data );
+                // console.log( 'updateCollectionDescription response: ', data );
             },
             error => {
                 console.error( 'ERROR updateCollectionDescription doPost: ', error );

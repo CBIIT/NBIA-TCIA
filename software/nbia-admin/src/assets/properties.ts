@@ -1,6 +1,7 @@
 export let Properties = {
     // 18_MAR_2019 Don't change until 7.7
-    VERSION: '1.0.1',
+    VERSION: '1.0.7',
+    TEST_VERSION: '1.0.7e',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
