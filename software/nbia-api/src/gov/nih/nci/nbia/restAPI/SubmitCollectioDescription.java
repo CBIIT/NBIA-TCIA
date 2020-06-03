@@ -42,7 +42,7 @@ public class SubmitCollectioDescription extends getData{
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				String user = (String) authentication.getPrincipal();
-
+                System.out.println("description-"+description);
 				List<String> roles=RoleCache.getRoles(user);
                 if (roles==null) {
                 	roles=new ArrayList<String>();
@@ -65,6 +65,7 @@ public class SubmitCollectioDescription extends getData{
                 CollectionDescDTO collectionDescDTO=new CollectionDescDTO();
                 collectionDescDTO.setCollectionName(name);
                 collectionDescDTO.setDescription(description);
+                collectionDescDTO.setUserName(user);
                 collectionDescDAO.save(collectionDescDTO);
         
 		return Response.ok().type("text/plain")
