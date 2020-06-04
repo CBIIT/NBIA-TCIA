@@ -43,7 +43,7 @@ export class TestComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         this.token = this.persistenceService.get( 'token' );
-        this.sortByCount = Properties.SORT_BY_COUNT;
+        this.sortByCount = Properties.SORT_COLLECTIONS_BY_COUNT;
         this.sortByName = !this.sortByCount;
 
         this.currentUser = this.apiServerService.getCurrentUser();
@@ -105,7 +105,7 @@ export class TestComponent implements OnInit, OnDestroy{
     onSortRadio( state ) {
         this.sortByCount = state;
         this.sortByName = !state;
-        Properties.SORT_BY_COUNT = this.sortByCount;
+        Properties.SORT_COLLECTIONS_BY_COUNT = this.sortByCount;
     }
 
     ngOnDestroy() {

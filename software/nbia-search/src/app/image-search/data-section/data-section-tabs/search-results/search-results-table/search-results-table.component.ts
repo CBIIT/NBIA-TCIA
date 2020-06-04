@@ -14,6 +14,7 @@ import { HistoryLogService } from '@app/common/services/history-log.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertBoxService } from '@app/common/components/alert-box/alert-box.service';
+import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 
 @Component( {
     selector: 'nbia-search-results-table',
@@ -153,7 +154,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                  private cartService: CartService, private sortService: SearchResultsSortService,
                  private persistenceService: PersistenceService, private loadingDisplayService: LoadingDisplayService,
                  private parameterService: ParameterService, private historyLogService: HistoryLogService,
-                 private utilService: UtilService, private alertBoxService: AlertBoxService ) {
+                 private utilService: UtilService, private ohifViewerService: OhifViewerService ) {
 
         // currentSearchMode tells us if the "Simple search" or the "Free text" column names are shown.
         // We need the Consts.SEARCH_TYPES array, because persistenceService.Field.QUERY_TYPE_TAB is a number and currentSearchMode needs the string
@@ -875,8 +876,9 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         this.arrowMouseOver[i] = false;
     }
 
-    onSubjectOhifViewerClick() {
-        alert( 'This feature (OHIF Viewer for Subject level) has not yet been implemented.' );
+    onSubjectOhifViewerClick( subjectId  ) {
+         this.ohifViewerService.launchOhifViewerSubject( subjectId );
+
     }
 
     ngOnDestroy() {

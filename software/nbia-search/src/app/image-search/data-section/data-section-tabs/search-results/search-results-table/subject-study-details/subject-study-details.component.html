@@ -13,17 +13,17 @@
                     <div class="col-xs-2">
                         <!-- Show/Collapse Series table  -->
                         <span
-                            *ngIf="toggleSeriesVisibleArray[i]"
-                            class="clicker arrow-span"
-                            (click)="onShowSeriesClick(i, false)"
+                                *ngIf="toggleSeriesVisibleArray[i]"
+                                class="clicker arrow-span"
+                                (click)="onShowSeriesClick(i, false)"
                         >
                              <img src="assets/images/down_V01.png">
                         </span>
 
                         <span
-                            *ngIf="!toggleSeriesVisibleArray[i]"
-                            class="clicker arrow-span"
-                            (click)="onShowSeriesClick(i, true)"
+                                *ngIf="!toggleSeriesVisibleArray[i]"
+                                class="clicker arrow-span"
+                                (click)="onShowSeriesClick(i, true)"
                         >
                              <img src="assets/images/right_V01.png">
                         </span>
@@ -37,11 +37,12 @@
 
                     <div class="col-xs-2">
                         <!-- Show/Collapse Series table  -->
-                        <span class="clicker" >
+                        <span class="clicker">
                             <a class="study-date-clicker" (click)="onShowSeriesClick(i, !toggleSeriesVisibleArray[i])">
                             <!-- Format the date from Epoch -->
-                                {{study.date | date: 'MMM dd, yyyy'}}<span class="glyphicon glyphicon-asterisk date-asterisk "
-                                                                                   title={{SUBJECT_DATE_TOOLTIP}}></span>
+                                {{study.date | date: 'MMM dd, yyyy'}}<span
+                                    class="glyphicon glyphicon-asterisk date-asterisk "
+                                    title={{SUBJECT_DATE_TOOLTIP}}></span>
                             </a>
                         </span>
                     </div>
@@ -54,38 +55,38 @@
                         {{study.seriesList.length}} Series
                     </div>
 
-                    <div  *ngIf="properties.SHOW_OHIF_VIEWER"
-                        class="col-xs-2"
-                        title={{study.studyId}}>
+                    <div *ngIf="properties.SHOW_OHIF_VIEWER"
+                         class="col-xs-2"
+                         title={{study.studyId}}>
                         Study UID: ...{{ study.studyId | shortenRight }}
                     </div>
 
                     <!-- TODO Remove this when OHIF Viewer is working.  -->
-                     <div  *ngIf="! properties.SHOW_OHIF_VIEWER"
-                        class="col-xs-3"
-                        title={{study.studyId}}>
+                    <div *ngIf="! properties.SHOW_OHIF_VIEWER"
+                         class="col-xs-3"
+                         title={{study.studyId}}>
                         Study UID: ...{{ study.studyId | shortenRight }}
                     </div>
 
                     <label *ngIf="properties.SHOW_OHIF_VIEWER"
                            class="btn btn-default col-xs-1 ohif-study-button"
                            title="OHIF Vewer"
-                           (click)="onStudyOhifViewerClick()">
-                           <span class="glyphicon glyphicon-facetime-video"></span>
+                           (click)="onStudyOhifViewerClick(study.studyId)">
+                        <span class="glyphicon glyphicon-facetime-video"></span>
                     </label>
 
                 </div>
             </div>
 
             <span
-                [ngClass]="{
+                    [ngClass]="{
                     'hide': ! toggleSeriesVisibleArray[i]
                 }"
             >
                 <nbia-series-details
-                    [study]="study"
-                    [currentSubjectDetailRow]="subjectDetailData"
-                    [id]="i"
+                        [study]="study"
+                        [currentSubjectDetailRow]="subjectDetailData"
+                        [id]="i"
                 ></nbia-series-details>
             </span>
         </div>

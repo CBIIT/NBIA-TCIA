@@ -37,13 +37,11 @@ export class FooterComponent implements OnInit{
         this.apiServerService.currentUserRolesEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.userRoles = data;
-                console.log('MHL userRoles: ', this.userRoles);
             }
         );
         this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.user = data;
-                console.log('MHL user: ', this.user);
             }
         );
 

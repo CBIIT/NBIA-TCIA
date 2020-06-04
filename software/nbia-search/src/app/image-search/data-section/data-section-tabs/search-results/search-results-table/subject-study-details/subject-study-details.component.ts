@@ -6,6 +6,8 @@ import { CommonService } from '../../../../../services/common.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Properties } from '@assets/properties';
+import { UtilService } from '@app/common/services/util.service';
+import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 
 @Component( {
     selector: 'nbia-subject-study-details',
@@ -60,7 +62,7 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiServerService: ApiServerService, private loadingDisplayService: LoadingDisplayService,
-                 private commonService: CommonService ) {
+                 private commonService: CommonService, private ohifViewerService: OhifViewerService ) {
     }
 
     ngOnInit() {
@@ -181,8 +183,8 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
 
     }
 
-    onStudyOhifViewerClick(){
-        alert( 'This feature (OHIF Viewer at Study level) has not yet been implemented.' );
+    onStudyOhifViewerClick( studyId ){
+        this.ohifViewerService.launchOhifViewerStudy( studyId );
     }
 
 

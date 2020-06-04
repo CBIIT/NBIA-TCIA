@@ -97,7 +97,6 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
             Properties.OHIF_SERVER_URL = Properties.API_SERVER_URL;
         }
 
-
     }  // End constructor
 
     ngOnInit() {

@@ -39,6 +39,8 @@ export class BrandingService{
     VERSION_SUFFIX = 7;
     DOWNLOADER_URL = 8;
 
+    currentDate = new Date();
+
     constructor( private httpClient: HttpClient, private commonService: CommonService,
                  private utilService: UtilService) {
     }
@@ -132,6 +134,7 @@ export class BrandingService{
            case this.FOOTER_HTML:
                 Properties.FOOTER_HTML = value.trim().
                 replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX).
+                replace( /%TEST_VERSION%/g, Properties.TEST_VERSION + '  ' +  this.currentDate.getMonth() + '/' + this.currentDate.getDate() + '/' + this.currentDate.getFullYear()).
                 replace( /%HOST_NAME%/g, Properties.HOST_NAME);
                 break;
         }
