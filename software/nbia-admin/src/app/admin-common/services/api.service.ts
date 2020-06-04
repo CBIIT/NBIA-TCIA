@@ -128,7 +128,7 @@ export class ApiService{
                     if( tool === Consts.TOOL_APPROVE_DELETIONS ||
                         tool === Consts.TOOL_PERFORM_QC
                     ){
-                         queryParameters += '&collectionSite=' + element['data'];
+                        queryParameters += '&collectionSite=' + element['data'];
                     }
                     break;
 
@@ -536,11 +536,9 @@ export class ApiService{
     downLoadDicomImageFile( seriesUID, objectUID, studyUID ) {
         this.getDicomImage( seriesUID, objectUID, studyUID ).subscribe(
             data => {
-                let dicomFile = new Blob( [data], { type: 'application/dicom' } );
-
-                // TODO in the download popup, it says 'from: blob:'  see if we can change this.
+                let dicomFile = new Blob( [data], { type: 'application/dicom'} );
                 let url = (<any>window).URL.createObjectURL( dicomFile );
-                (<any>window).open( url );
+                (<any>window).open( url  );
             },
             err => {
                 console.error( 'Error downloading DICOM: ', err );
@@ -634,7 +632,6 @@ export class ApiService{
     }
 
     doPost( queryType, query ) {
-
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
             console.log( 'doPost: ', curl );
@@ -665,6 +662,8 @@ export class ApiService{
                 headers: headers
             };
         }
+        console.log('Url: ', simpleSearchUrl);
+        console.log('query: ', query);
 
         return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
@@ -672,7 +671,7 @@ export class ApiService{
     updateCollectionDescription( name, description ) {
         this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURI( description ) ).subscribe(
             data => {
-                // console.log( 'updateCollectionDescription response: ', data );
+                console.log( 'updateCollectionDescription response: ', data );
             },
             error => {
                 console.error( 'ERROR updateCollectionDescription doPost: ', error );
