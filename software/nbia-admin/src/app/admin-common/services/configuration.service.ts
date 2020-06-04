@@ -50,7 +50,7 @@ export class ConfigurationService {
                     key = key.replace( /^\s*/, '' );
 
 
-                    if( key === 'OHIF_viewer_url' ){
+                    if( key === 'OHIF_SERVER_URL' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.OHIF_SERVER_URL = value;
                         }

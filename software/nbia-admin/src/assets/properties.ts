@@ -22,9 +22,9 @@ export let Properties = {
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
  */
 
-     // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+    // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
      API_SERVER_URL: '',
-     // API_SERVER_URL: 'http://192.168.1.20:8080',
+    // API_SERVER_URL: 'http://192.168.1.20:8080',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -55,31 +55,24 @@ export let Properties = {
     // This is set from the server, so far it is only used in the footer (depending on the brand)
     HOST_NAME: '',
 
-
-    // @TODO
-    // This does not work yet when the value is not an empty string, leave it an empty string!
-    // This value can be changed in the config file.
-    // If this is left an empty string, the API server url will be used .
-   // OHIF_SERVER_URL: '',
-
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
     SHOW_OHIF_VIEWER: true,
 
+    // This value can be changed in the config file.
+    // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
     MAX_VIDEO_FPS: 30,
 
     // Show in console, curl version of post & get calls.
     DEBUG_CURL: false,
 
-    // This value can be changed in the config file.  FIXMENOW  No this is not yet in the config file!
+    // This value can be changed in the config file.  FIXME  No this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
 
-
     DEV_MODE: false,
-
-     DEV_PASSWORD: 'changeme',
-     DEV_USER: 'mlerner',
+    DEV_PASSWORD: 'changeme',
+    DEV_USER: 'mlerner',
 
     // DEV_PASSWORD: 'Froggy_127',
     // DEV_USER: 'lernermh',
