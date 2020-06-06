@@ -67,6 +67,9 @@ export class UtilService{
     return new Promise( resolve => setTimeout( resolve, ms ) );
   }
 
-
+    leftPad(val, resultLength = 2, leftpadChar = '0'): string {
+        return (String(leftpadChar).repeat(resultLength)
+            + String(val)).slice(String(val).length);
+    }
 
 }
