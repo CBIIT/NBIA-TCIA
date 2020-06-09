@@ -65,7 +65,7 @@ export let Properties = {
     MAX_VIDEO_FPS: 30,
 
     // Show in console, curl version of post & get calls.
-    DEBUG_CURL: true,
+    DEBUG_CURL: false,
 
     // This value can be changed in the config file.  FIXME  No this is not yet in the config file!
     HTTP_TIMEOUT: 120000,

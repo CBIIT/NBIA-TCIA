@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { Properties } from '@assets/properties';
+import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 
 
 @Component( {
@@ -22,7 +23,7 @@ export class ToolTitleComponent implements OnInit{
     currentToolTitle;
     helpUrl;
 
-    constructor( private utilService: UtilService ) {
+    constructor( private utilService: UtilService, private accessTokenService: AccessTokenService ) {
     }
 
     async ngOnInit() {
@@ -51,6 +52,10 @@ export class ToolTitleComponent implements OnInit{
         }else{
             this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
         }
+    }
+    onHomeMenuClick(){
+       // window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken(), '_blank' );
+        window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken() );
     }
 
     onCurrentToolClickClick(){

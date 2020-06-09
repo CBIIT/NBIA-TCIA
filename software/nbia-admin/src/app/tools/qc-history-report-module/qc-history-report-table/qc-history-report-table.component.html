@@ -1,9 +1,8 @@
-<div class="tableFixHead outer-div">
-    <div class="qc-history-report-table ">
-        <table>
+<div class="outer-div">
+        <table  class="qc-history-report-table ">
             <thead>
                 <tr class="data-table-thead-tr">
-                    <th class="data-table-thead-th">
+                    <th class="data-table-thead-th ">
                         Time Stamp
                     </th>
                     <th class="data-table-thead-th">
@@ -41,6 +40,7 @@
                     </th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr
                     *ngFor="let row of qcStatusReportResults ; let odd = odd"
@@ -90,5 +90,4 @@
                 </tr>
             </tbody>
         </table>
-    </div>
 </div>

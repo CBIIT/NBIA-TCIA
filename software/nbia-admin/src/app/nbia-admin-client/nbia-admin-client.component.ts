@@ -95,6 +95,9 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         if( (this.utilService.isNullOrUndefined( Properties.OHIF_SERVER_URL )) || (Properties.OHIF_SERVER_URL.length < 1) ){
             Properties.OHIF_SERVER_URL = Properties.API_SERVER_URL;
         }
+
+
+
     }
 
     async initAccess() {
