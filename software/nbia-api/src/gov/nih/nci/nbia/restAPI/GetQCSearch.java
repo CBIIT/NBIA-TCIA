@@ -125,8 +125,6 @@ public class GetQCSearch extends getData{
 			QcSearchResultDTOLight dtol=new QcSearchResultDTOLight(dto);
 			qsrDTOListLight.add(dtol);			
 		}
-
-
 		
 		return Response.ok(JSONUtil.getJSONforQCListLight(qsrDTOListLight)).type("application/json")
 				.build();
