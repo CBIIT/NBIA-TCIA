@@ -79,10 +79,9 @@ export class CineModeComponent implements OnInit, OnDestroy{
                 this.searchResultsIndex = data['searchResultsIndex']; // FIXMENOW  We will not be using this get rid of it here and at the source
                 this.showCineModeViewer = true;
 
-                if( this.currentTool === Consts.TOOL_PERFORM_QC){
+                if( this.currentTool === Consts.TOOL_PERFORM_QC ){
                     this.sectionHeading = this.sectionHeadings[0];
-                }
-                 else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS){
+                }else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS ){
                     this.sectionHeading = this.sectionHeadings[1];
                 }
 
@@ -119,9 +118,8 @@ export class CineModeComponent implements OnInit, OnDestroy{
 
         this.querySectionService.updateCollectionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-               this.collectionSite = data;
-            });
-
+                this.collectionSite = data;
+            } );
 
     }
 
@@ -134,7 +132,7 @@ export class CineModeComponent implements OnInit, OnDestroy{
     }
 
     onOpenImageClick( image ) {
-        if( this.last > 0){
+        if( this.last > 0 ){
             this.apiService.downLoadDicomImageFile( image.seriesInstanceUid, image.sopInstanceUid, image.studyInstanceUid );
         }
     }
@@ -331,9 +329,9 @@ export class CineModeComponent implements OnInit, OnDestroy{
 
 
                                     /*                                  We can add this data back in if we want to make the image clickable and do/launch things.*/
-                                                                        'seriesInstanceUid': data[i]['seriesInstanceUid'],
-                                                                        'sopInstanceUid': data[i]['sopInstanceUid'],
-                                                                        'studyInstanceUid': data[i]['studyInstanceUid'],
+                                    'seriesInstanceUid': data[i]['seriesInstanceUid'],
+                                    'sopInstanceUid': data[i]['sopInstanceUid'],
+                                    'studyInstanceUid': data[i]['studyInstanceUid'],
 
                                     'seq': i
                                 }
@@ -356,14 +354,14 @@ export class CineModeComponent implements OnInit, OnDestroy{
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         thumbnailError => {
-                            console.error('Error thumbnailError: ', thumbnailError['statusText']);
+                            console.error( 'Error thumbnailError: ', thumbnailError['statusText'] );
 
                             // We need this count when we are waiting for all the images (by count) to arrive before moving on
                             this.getThumbnailErrorCount++;
                             this.images.push(
                                 {
                                     // 'thumbnailImage': this.sanitizer.bypassSecurityTrustUrl( window.URL.createObjectURL( thumbnailData ) ),
-                                     'thumbnailImage': 'assets/images/image_not_found.png',
+                                    'thumbnailImage': 'assets/images/image_not_found.png',
                                     'imagePkId': data[i]['imagePkId'],
 
 

@@ -536,9 +536,9 @@ export class ApiService{
     downLoadDicomImageFile( seriesUID, objectUID, studyUID ) {
         this.getDicomImage( seriesUID, objectUID, studyUID ).subscribe(
             data => {
-                let dicomFile = new Blob( [data], { type: 'application/dicom'} );
+                let dicomFile = new Blob( [data], { type: 'application/dicom' } );
                 let url = (<any>window).URL.createObjectURL( dicomFile );
-                (<any>window).open( url  );
+                (<any>window).open( url );
             },
             err => {
                 console.error( 'Error downloading DICOM: ', err );
@@ -632,19 +632,25 @@ export class ApiService{
     }
 
     doPost( queryType, query ) {
+        let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
             console.log( 'doPost: ', curl );
         }
 
-        let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+        let headers = null;
 
-
-        let headers = new HttpHeaders( {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
-        } );
-
+        if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ){
+            headers = new HttpHeaders( {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+            } );
+        }else{
+            headers = new HttpHeaders( {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+            } );
+        }
         let options;
 
         // These are returned as text not JSON (which is the default return format).
@@ -662,14 +668,11 @@ export class ApiService{
                 headers: headers
             };
         }
-        console.log('Url: ', simpleSearchUrl);
-        console.log('query: ', query);
-
         return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
     updateCollectionDescription( name, description ) {
-        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURI( description ) ).subscribe(
+         this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURIComponent( description ) ).subscribe(
             data => {
                 console.log( 'updateCollectionDescription response: ', data );
             },
