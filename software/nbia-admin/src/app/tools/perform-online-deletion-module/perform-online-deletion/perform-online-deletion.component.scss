@@ -9,6 +9,19 @@ $perform-online-deletion-results-table-starting-width: 960px;
     padding-left: 10px;
 }
 
+.online-deletion-message-div{
+    width: 100%;
+    text-align: center;
+}
+
+.online-deletion-message{
+    font-size: 20px;
+    padding: 12px;
+    max-width: 1000px;
+    width: calc(100% - 25px);
+    display: inline-block;
+}
+
 .perform-online-deletion-button{
     margin-top: 4px;
     margin-left: 30px;

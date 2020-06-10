@@ -13,7 +13,7 @@ export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
     userRoles;
     roleIsGood = false;
     seriesCount = -1;
-
+    deletedFlag = false;
     seriesForDeletion;
 
     /*
@@ -47,10 +47,9 @@ export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
 
         this.apiService.submitOnlineDeletionResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                console.log( '[submitOnlineDeletionResultsEmitter]We have an answer from the server: ', data );
-
-                // Update search results (Approved for deletion"
-                this.apiService.getSeriesForDeletion();
+                if( (<string>data).startsWith( 'ok')){
+                    this.deletedFlag = true;
+                }
             } );
 
         this.apiService.seriesForDeletionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
