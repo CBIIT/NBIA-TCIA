@@ -327,7 +327,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 
 	private static String computePatientCriteria(String[] patients) {
 		StringBuffer sb = new StringBuffer();
-		if (patients != null) {
+		if (patients != null && patients.length>0) {
 			for (int i = 0; i < patients.length; ++i) {
 				if (i == 0) {
 					sb.append(" and (gs.patientId in ('" + patients[i] + "'");

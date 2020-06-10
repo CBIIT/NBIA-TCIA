@@ -88,16 +88,12 @@ public class GetQCSearch extends getData{
         String [] qcStatus = null;
         Date fromDateValue=null;
         Date toDateValue=null;
-        System.out.println("fromDate-"+fromDate);
         if ((fromDate!=null&&!fromDate.equals(""))||(toDate!=null&&!toDate.equals(""))) {
-        	System.out.println("passed fromDate-"+fromDate);
         	if ((fromDate!=null&&!fromDate.equals(""))){
-        		System.out.println("passed 2 fromDate-"+fromDate);
         		fromDateValue=getDate(fromDate);
         	} else {
         		fromDateValue=getDate("01-01-1980");
         	}
-        	System.out.println("toDate-"+toDate);
         	if ((toDate!=null&&!toDate.equals(""))){
         		toDateValue=getDate(toDate);
         	} else {
@@ -149,15 +145,13 @@ public class GetQCSearch extends getData{
 		{
 			return Calendar.getInstance().getTime();
 		}
-		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		try {
 		returnValue=format.parse(date);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String today = format.format(new Date());
-		System.out.println("today-"+today);
 		return returnValue;
 	}
 	
