@@ -43,9 +43,11 @@ export let Properties = {
     CONFIG_FILE: 'configuration',
     DEFAULT_BRAND: 'tcia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
-    HELP_BASE_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide',
     //  END The following values will by set by the "Brand"
     // //////////////////////////////////////////////////////////////////////////
+
+    HELP_BASE_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA',
+    HELP_PATH: 'Data+Administration+Tool+Guide',
 
 
     BRAND_DIR: 'brand',

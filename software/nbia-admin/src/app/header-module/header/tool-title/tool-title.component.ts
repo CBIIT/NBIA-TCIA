@@ -33,7 +33,7 @@ export class ToolTitleComponent implements OnInit{
             await this.utilService.sleep( Consts.waitTime );
         }
 
-        this.helpUrl = Properties.HELP_BASE_URL;
+        this.helpUrl = Properties.HELP_BASE_URL + '/' + Properties.HELP_PATH;
         // @TODO this is just a quick fix for early demo purposes.
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
             this.currentToolTitle = 'Edit Collection Descriptions';
