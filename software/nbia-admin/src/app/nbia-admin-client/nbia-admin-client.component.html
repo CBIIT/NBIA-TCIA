@@ -88,7 +88,7 @@
         }"
         (click)="onToolItemClicked(toolItems.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM, showPerformOnlineDeletions)"
     >
-        Perform Online Deletion
+        Perform Online Deletions
         <p class="required-role" *ngIf="! showPerformOnlineDeletions">(Required role: NCIA.DELETE_ADMIN)</p>
     </span>
 
@@ -98,11 +98,17 @@
         }"
         (click)="onToolItemClicked(toolItems.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM, showEditCollectionDescriptions)"
     >
-        Edit Collection Description
+        Edit Collection Descriptions
         <p class="required-role" *ngIf="! showEditCollectionDescriptions">(Required role: MANAGE_COLLECTION_DESCRIPTION)</p>
     </span>
 
  </div>
+
+
+<!--
+<nbia-cine-mode-window class="hide"></nbia-cine-mode-window>
+-->
+
 
 <nbia-cine-mode
     [currentTool]="currentTool"
