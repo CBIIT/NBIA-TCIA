@@ -134,7 +134,7 @@ export class BrandingService{
            case this.FOOTER_HTML:
                 Properties.FOOTER_HTML = value.trim().
                 replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX).
-                replace( /%TEST_VERSION%/g, Properties.TEST_VERSION + '  ' +  this.currentDate.getMonth() + '/' + this.currentDate.getDate() + '/' + this.currentDate.getFullYear()).
+                replace( /%TEST_VERSION%/g, Properties.TEST_VERSION).
                 replace( /%HOST_NAME%/g, Properties.HOST_NAME);
                 break;
         }
