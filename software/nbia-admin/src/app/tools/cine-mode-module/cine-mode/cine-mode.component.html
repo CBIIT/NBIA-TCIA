@@ -1,5 +1,5 @@
 <!--The parent div/ bootstrap panel-->
-<div
+<div id="cineMode"
     *ngIf="showCineModeViewer"
     ngDraggable
     [handle]="PanelHandle"
@@ -469,6 +469,8 @@
                 ></nbia-qc-history-report-table>
             </div>
         </div>
+        <span class="clicker glyphicon glyphicon-remove close-x" (click)="closeCineMode()"></span>
     </div>
     <!-- ----- END Series data display ----- -->
+
 </div>

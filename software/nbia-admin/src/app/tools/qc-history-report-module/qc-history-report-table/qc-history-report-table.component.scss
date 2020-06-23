@@ -18,8 +18,10 @@
 .outer-div {
     height: 300px;
     padding-bottom: 12px;
+
     resize: vertical;
     overflow: auto;
+    cursor: default;
 }
 
 

@@ -14,5 +14,25 @@ $qcReportPadding: 6px;
     width: $qcReportWidth;
     left: calc(50% - #{($qcReportWidth) / 2 });
     margin: 0;
-    resize: both;
+    resize: vertical;
+
+}
+
+#div1, #div2 {
+    float: left;
+    width: 100px;
+    height: 35px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.move-top{
+    position: absolute;
+    top: $qcReportTop;
+}
+
+.qc-history-footer{
+    padding: 0;
+    margin: 0;
 }

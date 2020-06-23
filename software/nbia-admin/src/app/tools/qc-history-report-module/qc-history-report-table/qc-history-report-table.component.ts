@@ -19,7 +19,7 @@ export class QcHistoryReportTableComponent implements OnInit{
     }
 
     ngOnInit() {
-        // @ts-ignore
+/*        // @ts-ignore
         $( function() {
             // @ts-ignore
             $( '#normal' ).colResizable( {
@@ -57,7 +57,7 @@ export class QcHistoryReportTableComponent implements OnInit{
             } );
 
 
-        } );
+        } );*/
     }
 
 

@@ -78,7 +78,6 @@ export class CineModeComponent implements OnInit, OnDestroy{
                 this.seriesData = data['series'];
                 this.searchResultsIndex = data['searchResultsIndex']; // FIXMENOW  We will not be using this get rid of it here and at the source
                 this.showCineModeViewer = true;
-
                 if( this.currentTool === Consts.TOOL_PERFORM_QC ){
                     this.sectionHeading = this.sectionHeadings[0];
                 }else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS ){
@@ -88,6 +87,7 @@ export class CineModeComponent implements OnInit, OnDestroy{
                 this.reset();
                 this.getImages();
                 this.apiService.doSubmit( Consts.GET_HISTORY_REPORT_TABLE, '&seriesId=' + this.seriesData['series'] );
+
             } );
 
 
@@ -122,6 +122,18 @@ export class CineModeComponent implements OnInit, OnDestroy{
             } );
 
     }
+
+    /**
+     * This is just a (bad) test of trying to open CineMode in its own window.
+     */
+    openWin() {
+        let divText = document.getElementById( 'cineMode' ).outerHTML;
+        let myWindow = window.open( '', '', 'width=700,height=200' );
+        let doc = myWindow.document;
+        doc.open();
+        doc.write( divText );
+        doc.close();
+   }
 
     checkCurrentImageNumber() {
         this.currentImage = +this.currentImage;

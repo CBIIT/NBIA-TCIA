@@ -40,27 +40,19 @@ export class UtilService{
       return true;
     }
 
-    if( this.isEmpty( v ) ){
-        return true;
-    }
-      return false;
+    return this.isEmpty( v ); // CHECKME
+
   }
 
   isTrue( value ) {
 
     if( typeof value === 'boolean' ){
-      if( value ){
-        return true;
-      }else{
-        return false;
-      }
+      return value;
     }
 
     let val = value.toUpperCase();
-    if( (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1') || (val === '') ){
-      return true;
-    }
-    return false;
+    return (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1') || (val === '');
+
   }
 
   sleep( ms ) {
