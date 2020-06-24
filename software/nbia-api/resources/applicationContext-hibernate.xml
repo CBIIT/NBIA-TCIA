@@ -70,6 +70,7 @@ L-->
         <value>gov/nih/nci/nbia/internaldomain/TrialDataProvenance.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/TrialSite.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/Site.hbm.xml</value>
+        <value>gov/nih/nci/nbia/internaldomain/License.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/Annotation.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/DeletionAuditTrail.hbm.xml</value>
         <value>gov/nih/nci/nbia/security/NCIAUser.hbm.xml</value>
@@ -336,6 +337,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
+   <bean id="licenseDAO" class="gov.nih.nci.nbia.dao.LicenseDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+   </bean>
   	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="5" />

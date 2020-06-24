@@ -26,7 +26,8 @@ public class CollectionDesc  implements Serializable
 	private String description;
 	private Date collectionDescTimestamp;
 	private String userName;
-	
+	private Integer licenseID;
+	private License license;
 	public Integer getId() {
 		return id;
 	}
@@ -57,6 +58,20 @@ public class CollectionDesc  implements Serializable
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public Integer getLicenseID() {
+		return licenseID;
+	}
+	public void setLicenseID(Integer licenseID) {
+		this.licenseID = licenseID;
+	}
+	
+	public License getLicense() {
+		return license;
+	}
+	public void setLicense(License license) {
+		this.license = license;
 	}
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same

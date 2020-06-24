@@ -10,6 +10,7 @@ package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.CollectionDescDTO;
 import gov.nih.nci.nbia.internaldomain.CollectionDesc;
+import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,6 +97,7 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		}else{
 			insert(collectionDescDTO);
 		}
+		setExcludeCommercialForSeries(collectionDescDTO.getCollectionName());
 		return 1L;
 	}
 
@@ -130,6 +133,23 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		return null;
 
 	}
+	private void setExcludeCommercialForSeries(String project)  {
+	
+  
+        String SQLQuery="select collection_descriptions_pk_id from collection_descriptions where license_id in (select license_id from license where commercial_use<>'YES') and collection_name='"+project+"'";
+		List<Object[]> data= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();
+		if (!(data!=null&&data.size()>0)) {
+			String queryString = "update GeneralSeries s set excludeCommercial=null where project='"+project+"'";
+	        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+	        int count = query.executeUpdate();
+		}  else {
+			String queryString = "update GeneralSeries s set excludeCommercial='YES' where project='"+project+"'";
+	        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+	        int count = query.executeUpdate();
+		}
+
+	} 
 
 	/////////////////////////////////PRIVATE/////////////////////////////////////////////
 	private CollectionDesc convertDTOToObject(CollectionDescDTO collectionDescDTO){

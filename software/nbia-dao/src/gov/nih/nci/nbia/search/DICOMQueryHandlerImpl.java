@@ -84,6 +84,7 @@ import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.ThirdPartyAnalysisCriteria;
 import gov.nih.nci.ncia.criteria.UrlParamCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
+import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandler;
 import gov.nih.nci.nbia.criteriahandler.CriteriaHandlerFactory;
 import gov.nih.nci.nbia.dao.AbstractDAO;
@@ -493,6 +494,20 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         }
         return thirdWhereStmt;
     }
+    
+    private static String processDataLicenseCriteria(DICOMQuery theQuery) throws Exception {
+    	DataLicenseCriteria dc = theQuery.getDataLicenseCriteria();
+
+        String licenseStmt = "";
+        if (dc != null) {
+        	String exclude= dc.getExcludeCommercial();
+            if (exclude.equals("YES"))
+            	licenseStmt += AND + PHANTOM_ONLY;
+           System.out.println("licenseStmt===="+licenseStmt);
+        }
+        return licenseStmt;
+    }
+    
     
     private static String processPhantomCriteria(DICOMQuery theQuery) throws Exception {
         PhantomCriteria pc = theQuery.getPhantomCriteria();

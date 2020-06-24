@@ -829,5 +829,15 @@ public class GeneralSeries  implements Serializable
 		this.descriptionURI = descriptionURI;
 	}
 	
+	private String excludeCommercial;
+	public String getExcludeCommercial() {
+		return excludeCommercial;
+	}
+
+	public void setExcludeCommercial(String excludeCommercial) {
+		this.excludeCommercial = excludeCommercial;
+	}
+	
+	
 	
 }
