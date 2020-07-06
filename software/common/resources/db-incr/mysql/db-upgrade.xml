@@ -2148,7 +2148,7 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
          </comment>          
          <sql>       
           ALTER TABLE study 
-          ADD COLUMN longitudinal_temporal_event_type varchar(20) NULL,
+          ADD COLUMN longitudinal_temporal_event_type varchar(100) NULL,
           ADD COLUMN longitudinal_temporal_offset_from_event DOUBLE PRECISION NULL;    
          </sql>
        </changeSet>
