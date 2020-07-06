@@ -2142,4 +2142,14 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
 			ADD COLUMN exclude_commercial  varchar(4);        
          </sql>
    </changeSet>
+         <changeSet id="7.7.add.clinicaltimepoint" author="gustafss" dbms="mysql">
+         <comment>
+           add fields to 
+         </comment>          
+         <sql>       
+          ALTER TABLE study 
+          ADD COLUMN longitudinal_temporal_event_type varchar(20) NULL,
+          ADD COLUMN longitudinal_temporal_offset_from_event DOUBLE PRECISION NULL;    
+         </sql>
+       </changeSet>
 </databaseChangeLog>
