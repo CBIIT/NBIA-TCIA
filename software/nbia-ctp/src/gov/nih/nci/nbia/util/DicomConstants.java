@@ -146,4 +146,7 @@ public class DicomConstants {
     public static final String QUALTITY_CONTROL_SUBJECT = "133";
     public static final String THIRD_PARTY_ANALYSIS = "134";
     public static final String DESCRIPTION_URI = "135";
+    public static final String EVENT_TYPE = "136";
+    public static final String EVENT_OFFSET = "137";
+    
 }

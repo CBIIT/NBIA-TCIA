@@ -24,6 +24,7 @@ public interface StudyDAO  {
      * the SeriesListResultSet, which contains all of the information necessary
      * for the second level query.
      */
+	public List<String> getEventTypes() throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesId(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesIdForCart(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesUIds(Collection<String> seriesPkIds) throws DataAccessException;

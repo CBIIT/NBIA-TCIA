@@ -111,6 +111,10 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 	    setPatientWeight(study, numbers);
 	
 	    setAdditionalPatientHistory(study, numbers);  	
+	    
+	    setLongitudinalTemporalEventType(study, numbers);
+	    
+	    setLongitudinalTemporalOffsetFromEvent(study, numbers);
     }
     
 	private static void setStudyInstanceUid(Study study, Map numbers) {
@@ -234,5 +238,17 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 	    if (additionalPatientHistory != null) {
 	    	study.setAdditionalPatientHistory(additionalPatientHistory.trim());
 	    }  		
-	}    
+	} 
+	private static void setLongitudinalTemporalEventType(Study study, Map numbers) {
+		String longitudinalTemporalEventType = (String) numbers.get(DicomConstants.EVENT_TYPE);
+	    if (longitudinalTemporalEventType != null) {
+	        study.setLongitudinalTemporalEventType(longitudinalTemporalEventType.trim());
+	    }
+	}
+	private static void setLongitudinalTemporalOffsetFromEvent(Study study, Map numbers) {
+		String longitudinalTemporalOffsetFromEvent = (String) numbers.get(DicomConstants.EVENT_OFFSET);
+	    if (longitudinalTemporalOffsetFromEvent != null) {
+	        study.setLongitudinalTemporalOffsetFromEvent(Double.valueOf(longitudinalTemporalOffsetFromEvent.trim()));
+	    }
+	}
 }

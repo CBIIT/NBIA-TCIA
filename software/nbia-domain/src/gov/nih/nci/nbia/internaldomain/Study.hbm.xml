@@ -34,6 +34,9 @@ L-->
     <property name="studyTime" type="string" column="STUDY_TIME"/>
     <property name="timePointDesc" type="string" column="TRIAL_TIME_POINT_DESC"/>
     <property name="timePointId" type="string" column="TRIAL_TIME_POINT_ID"/>
+    <property name="longitudinalTemporalEventType" type="string" column="longitudinal_temporal_event_type"/>
+    <property name="longitudinalTemporalOffsetFromEvent" type="double" column="longitudinal_temporal_offset_from_event"/>
+    
 
     <!-- Associations mapping for the Study class -->
     <set name="generalSeriesCollection" lazy="true">

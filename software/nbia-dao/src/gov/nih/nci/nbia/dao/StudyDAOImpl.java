@@ -357,6 +357,19 @@ public class StudyDAOImpl extends AbstractDAO
         return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getEventTypes() throws DataAccessException{
+		List<String> returnValue=new ArrayList<String>();
+		String hql = "select distinct longitudinalTemporalEventType from Study";
+		List<Object[]> rs = getHibernateTemplate().find(hql);
+		for (Object object: rs) {
+			if (object!=null&&object!="") {
+				returnValue.add(object.toString());
+			}
+		}
+		return returnValue;
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientStudyFromDate(String collection, String patientId, String fromDate, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		String hql = "select distinct s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
