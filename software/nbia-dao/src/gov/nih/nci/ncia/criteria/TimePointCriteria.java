@@ -67,7 +67,6 @@ public class TimePointCriteria extends PersistentCriteria {
     @Override
     public String getDisplayValue() {
     	if (fromDay != null && toDay != null){
-    		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
     		return fromDay+ " ~ " + toDay;
     	}
         return "";
@@ -76,7 +75,7 @@ public class TimePointCriteria extends PersistentCriteria {
     @Override
     public String getDisplayName() {
 
-        return "Days Available on NCIA";
+        return "clinical time points";
     }
 
     public List<QueryAttributeWrapper> getQueryAttributes() {
@@ -119,7 +118,7 @@ public class TimePointCriteria extends PersistentCriteria {
     		}
     	}
     	catch (Exception ex) {
-    		logger.error("error in parsing date in database", ex);
+    		logger.error("error in timepointcriteria", ex);
     	}
     }
 }

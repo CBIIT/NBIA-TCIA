@@ -386,6 +386,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         
         whereStmt += processThirdPartyAnalysisCriteria(query, handlerFac);
         
+        whereStmt += processDataLicenseCriteria(query);
+        
         generateGeneralEquipmentJoinHql();
     }
 
@@ -501,8 +503,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         String licenseStmt = "";
         if (dc != null) {
         	String exclude= dc.getExcludeCommercial();
-            if (exclude.equals("YES"))
-            	licenseStmt += AND + PHANTOM_ONLY;
+            if (exclude.equalsIgnoreCase("YES"))
+            	licenseStmt += AND + EXCLUDE_COMMERCIAL;
            System.out.println("licenseStmt===="+licenseStmt);
         }
         return licenseStmt;

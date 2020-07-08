@@ -98,7 +98,7 @@ public interface DICOMQueryHandler {
     public static final String PHANTOM_ONLY = "p.qcSubject = 'YES' ";
     public static final String PHANTOM_EXCLUDED= "(p.qcSubject != 'YES' or p.qcSubject is null) "
     		+ "";    
-    public static final String ALLOW_COMMERCIAL = "(series.excludeCommercial != 'YES' or p.excludeCommercial is null) ";
+    public static final String EXCLUDE_COMMERCIAL = "(series.excludeCommercial != 'YES' or series.excludeCommercial is null) ";
 
     /**
      * This will process a provided query in to an HQL statement and pass it to
