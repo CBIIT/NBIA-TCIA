@@ -58,7 +58,7 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			dto.setId(c.getId());
 			dto.setUserName(c.getUserName());
 			dto.setCollectionName(c.getCollectionName());
-			dto.setLicenseId(c.getLicenseID());
+			dto.setLicenseId(c.getLicense().getId());
 			//calling this from save() causes duplicate object in session
 			//might be better to rework this so the find can just return
 			//that object and save update that instead of re-creating
@@ -74,14 +74,13 @@ public class CollectionDescDAOImpl extends AbstractDAO
         DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
         criteria.add(Restrictions.isNotNull("collectionName"));
         List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
-        System.out.println("collectionDescList:"+collectionDescList.size());
 		for(CollectionDesc collectionDesc : collectionDescList)	{
 			CollectionDescDTO dto = new CollectionDescDTO();
 			dto.setDescription(collectionDesc.getDescription());
 			dto.setId(collectionDesc.getId());
 			dto.setCollectionName(collectionDesc.getCollectionName());
-			dto.setLicenseId(collectionDesc.getLicenseID());
-			System.out.println("Description:"+dto.getDescription());
+			dto.setLicenseId(collectionDesc.getLicense().getId());
+
 			returnValue.add(dto);
 		}
 		return returnValue;
