@@ -35,7 +35,7 @@ public class LicenseDTO {
 		return shortName;
 	}
 	public void setShortName(String shortName) {
-		shortName = shortName;
+		this.shortName = shortName;
 	}
 	public String getLicenseURL() {
 		return licenseURL;
@@ -72,7 +72,6 @@ public class LicenseDTO {
 	   returnValue.setShortName(shortName);
 	   returnValue.setLongName(longName);
 	   returnValue.setUrl(licenseURL);
-	   
 	   return returnValue;
    }
 

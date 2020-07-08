@@ -67,12 +67,13 @@ public class SubmitLicense extends getData{
                 LicenseDTO licenseDTO=new LicenseDTO();
                 licenseDTO.setCommercialUse(commercialUse);
                 if (id!=null&&id.length()>0) {
-                    licenseDTO.setId(Integer.getInteger(id));
+                    licenseDTO.setId(Integer.parseInt(id));
                 }
                 licenseDTO.setLicenseText(licenseText);
                 licenseDTO.setShortName(shortName);
                 licenseDTO.setLongName(longName);
                 licenseDTO.setLicenseURL(licenseURL);
+                licenseDAO.save(licenseDTO);
         
 		return Response.ok().type("text/plain")
 				.entity("License updated")
