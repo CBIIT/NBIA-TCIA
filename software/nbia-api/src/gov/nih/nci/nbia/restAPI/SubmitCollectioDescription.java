@@ -36,17 +36,17 @@ public class SubmitCollectioDescription extends getData{
 	@Produces(MediaType.TEXT_PLAIN)
 
 	public Response constructResponse(@FormParam("name") String name,
-			@FormParam("description") String description) {
+			@FormParam("description") String description,
+			@FormParam("license") Integer license) {
 
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				String user = (String) authentication.getPrincipal();
-                System.out.println("description-"+description);
 				List<String> roles=RoleCache.getRoles(user);
                 if (roles==null) {
                 	roles=new ArrayList<String>();
-                	System.out.println("geting roles for user");
+   
 				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
 				    roles.addAll(sm.getRoles(user));
 				    RoleCache.setRoles(user, roles);
@@ -66,6 +66,7 @@ public class SubmitCollectioDescription extends getData{
                 collectionDescDTO.setCollectionName(name);
                 collectionDescDTO.setDescription(description);
                 collectionDescDTO.setUserName(user);
+                collectionDescDTO.setLicenseId(license);
                 collectionDescDAO.save(collectionDescDTO);
         
 		return Response.ok().type("text/plain")

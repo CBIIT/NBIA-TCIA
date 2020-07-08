@@ -26,7 +26,7 @@ import gov.nih.nci.nbia.dao.LicenseDAO;
 import gov.nih.nci.nbia.restUtil.RoleCache;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
-@Path("/submitCollectionDescription")
+@Path("/submitLicense")
 public class SubmitLicense extends getData{
 	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
@@ -75,7 +75,7 @@ public class SubmitLicense extends getData{
                 licenseDTO.setLicenseURL(licenseURL);
         
 		return Response.ok().type("text/plain")
-				.entity("Description updated")
+				.entity("License updated")
 				.build();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -11,6 +11,7 @@ package gov.nih.nci.nbia.dao;
 import gov.nih.nci.nbia.dto.CollectionDescDTO;
 import gov.nih.nci.nbia.internaldomain.CollectionDesc;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
+import gov.nih.nci.nbia.internaldomain.License;
 
 import java.util.Date;
 import java.util.List;
@@ -56,6 +57,8 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			dto.setDescription(c.getDescription());
 			dto.setId(c.getId());
 			dto.setUserName(c.getUserName());
+			dto.setCollectionName(c.getCollectionName());
+			dto.setLicenseId(c.getLicenseID());
 			//calling this from save() causes duplicate object in session
 			//might be better to rework this so the find can just return
 			//that object and save update that instead of re-creating
@@ -77,6 +80,7 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			dto.setDescription(collectionDesc.getDescription());
 			dto.setId(collectionDesc.getId());
 			dto.setCollectionName(collectionDesc.getCollectionName());
+			dto.setLicenseId(collectionDesc.getLicenseID());
 			System.out.println("Description:"+dto.getDescription());
 			returnValue.add(dto);
 		}
@@ -107,7 +111,6 @@ public class CollectionDescDAOImpl extends AbstractDAO
 
 	protected void update(CollectionDescDTO collectionDescDTO){
 		CollectionDesc collectionDesc = convertDTOToObject(collectionDescDTO);
-
 		getHibernateTemplate().update(collectionDesc);
 		getHibernateTemplate().flush();
 
@@ -159,6 +162,12 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		collectionDesc.setUserName(collectionDescDTO.getUserName());
 		collectionDesc.setId(collectionDescDTO.getId());
 		collectionDesc.setCollectionDescTimestamp(new Date());
+		DetachedCriteria criteria = DetachedCriteria.forClass(License.class);
+		criteria.add(Restrictions.eq("id", collectionDescDTO.getLicenseId()));
+        List<License> licenseList = getHibernateTemplate().findByCriteria(criteria);
+        for (License license: licenseList) {
+		    collectionDesc.setLicense(license);
+        }
 		return collectionDesc;
 	}
 }
