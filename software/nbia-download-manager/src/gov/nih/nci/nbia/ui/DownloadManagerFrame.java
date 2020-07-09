@@ -90,6 +90,8 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 
 	private DirectoryBrowserPanel directoryBrowserPanel;
 	private RadioButtonPanel radioButtonPanel;
+	private TotalProgressPanel totalProgressPanel;
+	private long totalSize = 0;
 
 	public DownloadManagerFrame(String userId, String password, boolean includeAnnotation, List<SeriesData> series,
 			String downloadServerUrl, Integer noOfRetry) {
@@ -136,6 +138,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			e.printStackTrace();
 			//System.out.println("Error adding series to data table: " + e.getMessage());
 		}
+		totalProgressPanel.setTotalSize(totalSize);
 	}	
 
 	private void buildUI() {
@@ -217,9 +220,10 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		southPanel.add(directoryBrowserPanel);
 		southPanel.add(buttonsPanel);
 
+		totalProgressPanel = new TotalProgressPanel();
 		/* Add panels to the display. */
 		getContentPane().setLayout(new BorderLayout());
-
+		getContentPane().add(totalProgressPanel, BorderLayout.NORTH);
 		getContentPane().add(createDownloadsPanel(), BorderLayout.CENTER);
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
 	}
@@ -384,8 +388,11 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 					seriesData.get(i).getStudyId(), seriesData.get(i).getStudyDesc(), seriesData.get(i).getSeriesNum(),
 					seriesData.get(i).getSeriesDesc());
 			tableModel.addDownload(seriesDownloader);
+			totalSize = seriesData.get(i).getImagesSize() + seriesData.get(i).getAnnoSize() + totalSize;
+			seriesDownloader.addObserver(totalProgressPanel);
 
 			studyIdToSeriesCntMap.put(seriesData.get(i).getStudyInstanceUid(), seriesCnt + 1);
+			System.out.println("total size="+totalSize + " image size =" + seriesData.get(i).getImagesSize() + "annotation size = "+ seriesData.get(i).getAnnoSize());
 		}
 	}
 
@@ -457,6 +464,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			}
 		});
 		pauseButton.setEnabled(true);
+		totalProgressPanel.actionStarted();
 	}
 
 	/* Pause the entire download. */
@@ -500,6 +508,10 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 
 	/* Clear the selected download. */
 	private void actionClear() {
+		//need update the total size
+		totalSize = totalSize - tableModel.getDownload(table.getSelectedRow()).getSize();
+		totalProgressPanel.setTotalSize(totalSize);
+		
 		clearing = true;
 		tableModel.clearDownload(table.getSelectedRow());
 		clearing = false;

@@ -423,7 +423,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			}
 			else {
 				downloaded= size;
-	            stateChanged();
+	            //stateChanged();
 	            updateDownloadProgress(size);
 			}
 			if (downloadedImgSize != imagesSize) {

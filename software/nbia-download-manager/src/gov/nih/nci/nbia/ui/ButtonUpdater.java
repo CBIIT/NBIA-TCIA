@@ -49,6 +49,8 @@ public class ButtonUpdater implements ThreadPoolListener {
 	private PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if ("status".equals(evt.getPropertyName())) {
+System.out.println("status at buttonupdate class="+Integer.parseInt(evt.getNewValue().toString()));				
+				
 				int status = Integer.parseInt(evt.getNewValue().toString());
 				if (AbstractSeriesDownloader.ERROR == status && !errorLabel.isVisible()) {
 					errorLabel.setVisible(true);
