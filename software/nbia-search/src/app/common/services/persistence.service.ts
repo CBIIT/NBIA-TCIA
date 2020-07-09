@@ -25,6 +25,7 @@ export class PersistenceService{
 
         // true sort by count
         COLLECTIONS_SORT_BY_COUNT: 'collectionsSortByCount',
+        ANATOMICAL_SITE_SORT_BY_COUNT: 'anatomicalSiteSortByCount',
         SEARCH_RESULTS_SORT_STATE: 'searchResultSortState',
         SEARCH_RESULTS_COLUMNS: 'searchResultsColumns',
         CART_SORT_STATE: 'cartSortState',

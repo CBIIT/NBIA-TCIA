@@ -7,9 +7,10 @@ import { Consts } from '@app/constants';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+
+@Injectable( {
+    providedIn: 'root'
+} )
 
 /**
  * Sets brand related Properties.
@@ -38,9 +39,10 @@ export class BrandingService{
     TEXT_SEARCH_DOCUMENTATION = 6;
     VERSION_SUFFIX = 7;
     DOWNLOADER_URL = 8;
+    currentDate = new Date();
 
     constructor( private httpClient: HttpClient, private commonService: CommonService,
-                 private utilService: UtilService) {
+                 private utilService: UtilService ) {
     }
 
 
@@ -54,7 +56,7 @@ export class BrandingService{
             await this.utilService.sleep( Consts.waitTime );  // Wait 50ms
             runaway--;
         }
-        if( this.utilService.isNullOrUndefinedOrEmpty(Properties.BRAND) || (  Properties.BRAND === '%BRAND%')){
+        if( this.utilService.isNullOrUndefinedOrEmpty( Properties.BRAND ) || (Properties.BRAND === '%BRAND%') ){
             this.readTextFile( 'assets/' + Properties.BRAND_DIR + '/currentBrand' ).subscribe(
                 data => {
 
@@ -72,10 +74,8 @@ export class BrandingService{
                     }
                     console.error( 'Could not access Brand file! ', err.status );
                 }
-
             );
-        }
-        else{
+        }else{
             this.initBrandSettings();
         }
     }
@@ -91,7 +91,7 @@ export class BrandingService{
 
         // MAKE SURE FOOTER_HTML COMES AFTER VERSION_SUFFIX!!!  FOOTER_HTML uses VERSION_SUFFIX!!!
         let runaway = 100; // Just in case.
-        while( (Properties.VERSION_SUFFIX === 'PLACE_HOLDER' ) && ( runaway > 0)){
+        while( (Properties.VERSION_SUFFIX === 'PLACE_HOLDER') && (runaway > 0) ){
             await this.utilService.sleep( Consts.waitTime );  // Wait 50ms
             runaway--;
         }
@@ -103,8 +103,7 @@ export class BrandingService{
     initValue( file, item = this.OTHER ) {
         if( item === this.CUSTOM_MENU_DATA ){
             return this.getJSON( 'assets/' + Properties.BRAND_DIR + '/' + file );
-        }
-        else{
+        }else{
             return this.readTextFile( 'assets/' + Properties.BRAND_DIR + '/' + file );
         }
     }
@@ -130,18 +129,20 @@ export class BrandingService{
                 Properties.VERSION_SUFFIX = value;
                 break;
             case this.FOOTER_HTML:
-                if( Properties.DEMO_MODE){
-                    Properties.FOOTER_HTML = value.trim().
-                    replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX + ' Read Only mode.').
-                    replace( /%HOST_NAME%/g, Properties.HOST_NAME);
-                }
-                else{
-                    Properties.FOOTER_HTML = value.trim().
-                    replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX ).
-                    replace( /%HOST_NAME%/g, Properties.HOST_NAME );
-                }
+                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX +
+                    ((Properties.DEMO_MODE) ? ' Read Only mode.' : '') )
+                    .replace( /%TEST_VERSION%/g, Properties.TEST_VERSION )
+                    .replace( /%HOST_NAME%/g, Properties.HOST_NAME );
                 break;
         }
+    }
+
+    getTimeStamp() {
+        return (this.currentDate.getMonth() + 1) + '/' +
+            this.currentDate.getDate() + '/' +
+            this.currentDate.getFullYear() + '  ' +
+            this.utilService.leftPad( this.currentDate.getHours(), 2 ) + ':' +
+            this.utilService.leftPad( this.currentDate.getMinutes() );
     }
 
     initBrandItem( item, file ) {
@@ -162,8 +163,7 @@ export class BrandingService{
                             console.error( 'Could not ' + ((err1.status === 404) ? 'find ' : 'access ') + Properties.BRAND + file + ' or ' + Properties.DEFAULT_BRAND + file );
                         }
                     );
-                }
-                else{
+                }else{
                     console.error( 'Error initBrandItem: ', err0 );
                 }
             }
@@ -189,14 +189,18 @@ export class BrandingService{
     }
 
 
-    readTextFile( file ): Observable<any> {
+    readTextFile( file )
+        :
+        Observable<any> {
         return this.httpClient.get( file,
             {
                 responseType: 'text'
-            } ).pipe(timeout(Properties.HTTP_TIMEOUT));
+            } ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
-    getJSON( file ): Observable<any> {
+    getJSON( file )
+        :
+        Observable<any> {
         return this.httpClient.get( file );
     }
 

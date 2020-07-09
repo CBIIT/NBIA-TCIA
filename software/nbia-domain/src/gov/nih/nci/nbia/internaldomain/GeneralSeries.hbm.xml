@@ -55,6 +55,7 @@ L-->
 	<property name="releasedStatus" type="string" column="RELEASED_STATUS"/>
 	<property name="thirdPartyAnalysis" type="string" column="THIRD_PARTY_ANALYSIS"/>	
 	<property name="descriptionURI" type="string" column="DESCRIPTION_URI"/>
+	<property name="excludeCommercial" type="string" column="EXCLUDE_COMMERCIAL"/>	
 
     <!-- Associations mapping for the GeneralSeries class -->
     <many-to-one name="study" class="gov.nih.nci.nbia.internaldomain.Study" column="STUDY_PK_ID" lazy="proxy" />

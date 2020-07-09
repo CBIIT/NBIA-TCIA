@@ -1,5 +1,5 @@
 <div *ngIf="roleIsGood"
-    class="approve-deletions-tool"
+     class="approve-deletions-tool"
 >
 
 
@@ -15,29 +15,39 @@
                 [currentTool]="consts.TOOL_APPROVE_DELETIONS"
             ></nbia-display-query>
         </div>
+
+
+<!--
         <div class="row">
             <nbia-search-results-section
                 (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
                 (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
-            ></nbia-search-results-section>
+            >
+            </nbia-search-results-section>
+        </div>
+-->
+
+
+        <div class="row">
+            <nbia-search-results-section-bravo
+                (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
+            >
+            </nbia-search-results-section-bravo>
         </div>
         <div *ngIf="showBulkOperations"
              class="row"
         >
             <nbia-deletion-bulk-operations
-            [collectionSite]="collectionSite"
-            [searchResults]="searchResults"
-            [searchResultsSelectedCount]="searchResultsSelectedCount"
-        ></nbia-deletion-bulk-operations>
-    </div>
+                [collectionSite]="collectionSite"
+                [searchResults]="searchResults"
+                [searchResultsSelectedCount]="searchResultsSelectedCount"
+            ></nbia-deletion-bulk-operations>
+        </div>
     </div>
 
 </div>
 
-<!--
-roles: {{userRoles}}
-roleIsGood: {{roleIsGood}}
--->
 
 <h4 *ngIf="! roleIsGood">
     <p>User does not have authorization required for "<b>Approve deletions</b>"</p>

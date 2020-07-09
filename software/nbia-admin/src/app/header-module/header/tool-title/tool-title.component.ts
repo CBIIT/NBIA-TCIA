@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { Properties } from '@assets/properties';
+import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 
 
 @Component( {
@@ -22,7 +23,7 @@ export class ToolTitleComponent implements OnInit{
     currentToolTitle;
     helpUrl;
 
-    constructor( private utilService: UtilService ) {
+    constructor( private utilService: UtilService, private accessTokenService: AccessTokenService ) {
     }
 
     async ngOnInit() {
@@ -32,25 +33,29 @@ export class ToolTitleComponent implements OnInit{
             await this.utilService.sleep( Consts.waitTime );
         }
 
-        this.helpUrl = Properties.HELP_BASE_URL;
+        this.helpUrl = Properties.HELP_BASE_URL + '/' + Properties.HELP_PATH;
         // @TODO this is just a quick fix for early demo purposes.
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
             this.currentToolTitle = 'Edit Collection Descriptions';
-            this.helpUrl += '#DataAdministrationToolGuide-Edit Collection Descriptions';
+            this.helpUrl += '#DataAdministrationToolGuide-EditCollectionDescriptions';
         }else if( this.currentTool === Consts.TOOL_APPROVE_DELETIONS ){
             this.currentToolTitle = 'Approve Deletions';
-            this.helpUrl += '#DataAdministrationToolGuide-Approve Deletions';
+            this.helpUrl += '#DataAdministrationToolGuide-ApproveDeletions';
         }else if( this.currentTool === Consts.TOOL_PERFORM_QC ){
             this.currentToolTitle = 'Perform Quality Control';
-            this.helpUrl += '#DataAdministrationToolGuide-Perform Quality Control';
+            this.helpUrl += '#DataAdministrationToolGuide-PerformQualityControl';
         }else if( this.currentTool === Consts.TOOL_VIEW_SUBMISSION_REPORTS ){
             this.currentToolTitle = 'View Submission Reports';
         }else if( this.currentTool === Consts.TOOL_PERFORM_ONLINE_DELETION ){
             this.currentToolTitle = 'Perform Online Deletion';
-            this.helpUrl += '#DataAdministrationToolGuide-Perform Online Deletions';
+            this.helpUrl += '#DataAdministrationToolGuide-PerformOnlineDeletions';
         }else{
             this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
         }
+    }
+    onHomeMenuClick(){
+       // window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken(), '_blank' );
+        window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken() );
     }
 
     onCurrentToolClickClick(){

@@ -1,5 +1,6 @@
 <!--The parent div/ bootstrap panel-->
-<div *ngIf="showReport"
+<div id="historyDragPanel"
+    *ngIf="showReport"
      ngDraggable [handle]="PanelHandle"
      class="panel panel-info  alert-box-div alert-box-shadow unselectable perform-qc-history-report-div"
      [ngClass]="{
@@ -12,7 +13,7 @@
 >
 
     <!-- The panel heading, this is the draggable part -->
-    <div #PanelHandle class="panel-heading unselectable alert-box-heading">
+    <div #PanelHandle class="panel-heading unselectable alert-box-heading" >
         <span class="panel-title">QC Status History</span>
         <span class="clicker glyphicon glyphicon-remove close-x" (click)="closeQcHistoryReportClick()"></span>
     </div>
@@ -21,4 +22,9 @@
         [qcStatusReportResults]="qcStatusReportResults"
     ></nbia-qc-history-report-table>
 
+    <div class="panel-heading unselectable qc-history-footer">
+        <span class="clicker glyphicon glyphicon-remove close-x" (click)="closeQcHistoryReportClick()"></span>
+    </div>
+
 </div>
+

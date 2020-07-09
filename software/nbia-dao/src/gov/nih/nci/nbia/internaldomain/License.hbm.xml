@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC, Ellumen and RSNA (CTP)
+
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.nbia.internaldomain">
+	<class name="License" table="LICENSE" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" column="LICENSE_ID" unsaved-value="0">
+			<generator class="org.hibernate.id.TableHiLoGenerator">
+  	  			<param name="table">hibernate_unique_key</param>
+				<param name="column">next_hi</param>
+			</generator>
+		</id>
+		<!-- Attributes mapping for the CustomSeriesList class -->
+		<property name="longName" type="string" column="LONG_NAME"/>
+		<property name="shortName" type="string" column="SHORT_NAME"/>
+		<property name="url" type="string" column="LICENSE_URL" />
+		<property name="commercialUse" type="string" column="COMMERCIAL_USE" />
+		<property name="licenseText" type="string" column="LICENSE_TEXT" />
+	
+		
+	</class>
+</hibernate-mapping>

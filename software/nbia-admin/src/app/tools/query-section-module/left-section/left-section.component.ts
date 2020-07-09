@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { QuerySectionService } from '../services/query-section.service';
  *  This is the parent component for the Left section, it contains query-section.
  *  It has the show and hide buttons at the top which "close" and "open" the whole left query-section.
  */
-export class LeftSectionComponent implements OnInit{
+export class LeftSectionComponent implements OnInit, OnDestroy{
     @Input() useQcStatusLeftSectionComponent;
     @Input() currentTool;
 
@@ -37,4 +37,10 @@ export class LeftSectionComponent implements OnInit{
                 this.searchType = data;
             } );
     }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

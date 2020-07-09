@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Properties } from '@assets/properties';
 import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
-import { PersistenceService } from '@app/common/services/persistence.service';
 import { UtilService } from '@app/common/services/util.service';
 import { CineModeService } from '@app/cine-mode/cine-mode.service';
 
@@ -125,14 +124,13 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
         this.seriesListForDisplay = [];
         this.haveThirdParty = false;
         for( let row of this.study.seriesList ){
-            if( (! this.utilService.isNullOrUndefined( row['thirdPartyAnalysis'] )) && (row['thirdPartyAnalysis'].toLowerCase() === 'yes'))
-            {
+            if( (!this.utilService.isNullOrUndefined( row['thirdPartyAnalysis'] )) && (row['thirdPartyAnalysis'].toLowerCase() === 'yes') ){
                 this.haveThirdParty = true;
             }
 
             // toUpperCase for case insensitive.
             row['showOhif'] = false;
-            if(  ! this.utilService.isNullOrUndefinedOrEmpty(  Properties.OHIF_MODALITIES.find( m => m === row.modality.toUpperCase() ))){
+            if( !this.utilService.isNullOrUndefinedOrEmpty( Properties.OHIF_MODALITIES.find( m => m === row.modality.toUpperCase() ) ) ){
                 row['showOhif'] = true;
             }
 
@@ -153,11 +151,10 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
 
 
     onSeriesOhifViewerClick( i ) {
-        // this.ohifViewerService.callOhifViewer( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId']);
-        this.ohifViewerService.launchOhifViewer( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId'] );
+        this.ohifViewerService.launchOhifViewerSeries( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId'] );
     }
 
-    onCineModeViewerClick(i){
+    onCineModeViewerClick( i ) {
         this.cineModeService.openCineMode( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['seriesPkId'],
             this.seriesListForDisplay[i]['description'], this.study['date'] );
     }

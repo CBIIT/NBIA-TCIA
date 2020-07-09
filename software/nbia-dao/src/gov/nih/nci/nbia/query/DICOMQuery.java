@@ -81,6 +81,7 @@ import gov.nih.nci.ncia.criteria.UrlParamCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 import gov.nih.nci.ncia.criteria.SpeciesCriteria;
 import gov.nih.nci.ncia.criteria.ThirdPartyAnalysisCriteria;
+import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
 import gov.nih.nci.nbia.util.CriteriaComparator;
 
 import java.util.ArrayList;
@@ -129,6 +130,7 @@ public class DICOMQuery extends Query {
     private SpeciesCriteria speciesCriteria;
     private PhantomCriteria phantomCriteria;   
     private ThirdPartyAnalysisCriteria thirdPartyAnalysisCriteria;
+    private DataLicenseCriteria dataLicenseCriteria;
     private boolean queryFromUrl = false;
     private ImagingObservationCharacteristicCodeMeaningCriteria imagingObservationCharacteristicCodeMeaningCriteria;
     private ImagingObservationCharacteristicCodeValuePairCriteria imagingObservationCharacteristicCodeValuePairCriteria;
@@ -763,11 +765,20 @@ public class DICOMQuery extends Query {
 	public ThirdPartyAnalysisCriteria getThirdPartyAnalysisCriteria() {
 		return thirdPartyAnalysisCriteria;
 	}
-
 	public void setCriteria(ThirdPartyAnalysisCriteria thirdPartyAnalysisCriteria) {
 	 	if (thirdPartyAnalysisCriteria != null){
     		criteriaList.add(thirdPartyAnalysisCriteria);
     		this.thirdPartyAnalysisCriteria = thirdPartyAnalysisCriteria;
+    	}
+	}
+	public DataLicenseCriteria getDataLicenseCriteria() {
+		return dataLicenseCriteria;
+	}
+
+	public void setCriteria(DataLicenseCriteria dataLicenseCriteria) {
+	 	if (dataLicenseCriteria != null){
+    		criteriaList.add(dataLicenseCriteria);
+    		this.dataLicenseCriteria = dataLicenseCriteria;
     	}
 	}
 	

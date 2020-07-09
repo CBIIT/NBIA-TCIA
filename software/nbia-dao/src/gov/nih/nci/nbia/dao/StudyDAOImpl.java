@@ -357,6 +357,19 @@ public class StudyDAOImpl extends AbstractDAO
         return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getEventTypes() throws DataAccessException{
+		List<String> returnValue=new ArrayList<String>();
+		String hql = "select distinct longitudinalTemporalEventType from Study";
+		List<Object[]> rs = getHibernateTemplate().find(hql);
+		for (Object object: rs) {
+			if (object!=null&&object!="") {
+				returnValue.add(object.toString());
+			}
+		}
+		return returnValue;
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientStudyFromDate(String collection, String patientId, String fromDate, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		String hql = "select distinct s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
@@ -620,27 +633,10 @@ public class StudyDAOImpl extends AbstractDAO
         // Add the series PK IDs to the where clause
         
 
-        int listSize = seriesPkIds.size();
-		if (listSize > PARAMETER_LIMIT) {
-			Collection<Collection<Integer>> seriesPkIdsBatches = split(
-					seriesPkIds, PARAMETER_LIMIT);
-			whereStmt = new String() + " and (";
-			int i = 0;
-			for (Collection<Integer> seriesPkIdBatch : seriesPkIdsBatches) {
-				if (i==0) {
-					whereStmt += "generalser1_.GENERAL_SERIES_PK_ID in";
-				} else {
-				    whereStmt += "or generalser1_.GENERAL_SERIES_PK_ID in (";
-				}
-				i++;
-				whereStmt += constructSeriesIdList(seriesPkIdBatch);
-				whereStmt += ")";
-			}
-			whereStmt += ")";
-		} else {
+
 			  whereStmt += "and generalser1_.GENERAL_SERIES_PK_ID in (";
               whereStmt += constructSeriesIdList(seriesPkIds);
-		}
+
 
         whereStmt += ")";
 

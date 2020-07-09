@@ -86,6 +86,17 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         this.brandingService.initCurrentBrand();
 
 
+        // If we don't have an API Url, set it to the same server as the client.
+        if( (this.utilService.isNullOrUndefined( Properties.API_SERVER_URL )) || (Properties.API_SERVER_URL.length < 1) ){
+            Properties.API_SERVER_URL = location.origin.toString();
+        }
+
+        // If we don't have an OHIFViewer Url, set it to the same server as the API Url.
+        if( (this.utilService.isNullOrUndefined( Properties.OHIF_SERVER_URL )) || (Properties.OHIF_SERVER_URL.length < 1) ){
+            Properties.OHIF_SERVER_URL = Properties.API_SERVER_URL;
+        }
+
+
 
     }
 

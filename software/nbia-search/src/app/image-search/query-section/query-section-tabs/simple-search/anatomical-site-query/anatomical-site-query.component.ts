@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import { CollectionDescriptionsService } from '@app/common/services/collection-descriptions.service';
+import { PersistenceService } from '@app/common/services/persistence.service';
 
 
 /**
@@ -109,6 +111,16 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
     properties = Properties;
 
     /**
+     * For sorting of Collections.
+     * We will over write this if there is a saved value in the browser cookie.
+     *
+     * @type {boolean}
+     */
+    sortNumChecked = Properties.SORT_COLLECTIONS_BY_COUNT;
+    sortAlphaChecked = !this.sortNumChecked;
+
+
+    /**
      * Used to clean up subscribes on the way out to prevent memory leak.
      * @type {Subject<boolean>}
      */
@@ -117,7 +129,8 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,
                  private sortService: SearchResultsSortService, private parameterService: ParameterService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
-                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService ) {
+                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService,
+                 private persistenceService: PersistenceService) {
     }
 
     async ngOnInit() {
@@ -130,12 +143,19 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
          */
         let errorFlag = false;
 
+        // Update the Anatomical sort criteria from a persisted value (Alpha or NUm).
+        this.sortNumChecked = this.persistenceService.get( this.persistenceService.Field.ANATOMICAL_SITE_SORT_BY_COUNT );
+        // If there is no persisted value, use the same one as the others (Sort by count).
+        if( this.utilService.isNullOrUndefined( this.sortNumChecked ) ){
+            this.sortNumChecked = Properties.SORT_ANATOMICAL_BY_COUNT;
+        }
+        this.sortAlphaChecked = !this.sortNumChecked;
+
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getBodyPartValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-
                 this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -282,7 +302,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                 }
 
                 // (Re)sort the list because a checked criteria is higher than unchecked.
-                this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
+                this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked ); // sortNumChecked is an optional bool
                 this.setSequenceValue();
 
             } );
@@ -404,7 +424,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         }
 
         // Need to sort after checkboxes change.
-        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
+        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked );  // sortNumChecked is a boolean.
         this.setSequenceValue();
     }
 
@@ -476,7 +496,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                 this.updateCheckboxCount();
             }
 
-        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
+        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
         this.criteriaListHold = this.criteriaList;
 
         this.setSequenceValue();
@@ -522,7 +542,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         this.commonService.updateQuery( criteriaForQuery );
 
         // (Re)sort the list because a checked criteria is higher than unchecked.
-        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
+        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
 
         // Update the query URL
         if( this.checkedCount === 0 ){
@@ -569,7 +589,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                 n++;
             }
         }
-        this.criteriaList = this.sortService.criteriaSort( tempList, this.cBox );
+        this.criteriaList = this.sortService.criteriaSort( tempList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
 
         // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
         if( this.searchInput.length === 0 ){
@@ -681,6 +701,17 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
         this.updateCriteriaList( true );
     }
+
+
+    onSetSort( sortCriteria ) {
+        // (Re)sort the list because a checked criteria is higher than unchecked.
+        this.sortNumChecked = sortCriteria === 0;
+        this.persistenceService.put( this.persistenceService.Field.ANATOMICAL_SITE_SORT_BY_COUNT, this.sortNumChecked );
+        this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
+        this.setSequenceValue();
+
+    }
+
 
 
     ngOnDestroy() {

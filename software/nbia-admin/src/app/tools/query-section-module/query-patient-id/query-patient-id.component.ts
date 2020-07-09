@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { QuerySectionService } from '../services/query-section.service';
 import { UtilService } from '@app/admin-common/services/util.service';
@@ -12,7 +12,7 @@ import { DisplayQueryService } from '../../display-query-module/display-query/di
     styleUrls: ['./query-patient-id.component.scss', '../left-section/left-section.component.scss']
 } )
 
-export class QueryPatientIdComponent implements OnInit{
+export class QueryPatientIdComponent implements OnInit, OnDestroy{
     @Input() currentTool;
 
     /**
@@ -78,6 +78,11 @@ export class QueryPatientIdComponent implements OnInit{
 
     updateQuery() {
         this.querySectionService.updateSearchQuery( this.currentTool, Consts.QUERY_CRITERIA_SUBJECT_ID, this.subjectIds );
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
 }

@@ -406,6 +406,28 @@ public class Study  implements Serializable
 	public void setGeneralImageCollection(Collection<GeneralImage> generalImageCollection){
 		this.generalImageCollection = generalImageCollection;
 	}
+	
+	private String longitudinalTemporalEventType;
+	
+	public String getLongitudinalTemporalEventType() {
+		return longitudinalTemporalEventType;
+	}
+
+	public void setLongitudinalTemporalEventType(String longitudinalTemporalEventType) {
+		this.longitudinalTemporalEventType = longitudinalTemporalEventType;
+	}
+	
+	private Double longitudinalTemporalOffsetFromEvent;
+	
+	
+
+	public Double getLongitudinalTemporalOffsetFromEvent() {
+		return longitudinalTemporalOffsetFromEvent;
+	}
+
+	public void setLongitudinalTemporalOffsetFromEvent(Double longitudinalTemporalOffsetFromEvent) {
+		this.longitudinalTemporalOffsetFromEvent = longitudinalTemporalOffsetFromEvent;
+	}
 
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same
@@ -432,5 +454,7 @@ public class Study  implements Serializable
 			return getId().hashCode();
 		return 0;
 	}
+
+
 
 }

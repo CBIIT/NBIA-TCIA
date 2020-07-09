@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DisplayQueryService } from './display-query.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -9,7 +9,7 @@ import { Consts } from '@app/constants';
     templateUrl: './display-query.component.html',
     styleUrls: ['./display-query.component.scss']
 } )
-export class DisplayQueryComponent implements OnInit{
+export class DisplayQueryComponent implements OnInit, OnDestroy{
     @Input() currentTool;
 
     displayQuery;
@@ -95,15 +95,19 @@ export class DisplayQueryComponent implements OnInit{
                 case Consts.QUERY_CRITERIA_MOST_RECENT_SUBMISSION:
                     q[i]['displayName'] = 'Most recent submission';
                     q[i]['displayData'] = q[i]['data'];
-
                     break;
             }
         }
         return q;
     }
 
-    onClearQueryClick(){
+    onClearQueryClick() {
         this.displayQueryService.clearQuerySectionQuery();
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
 }

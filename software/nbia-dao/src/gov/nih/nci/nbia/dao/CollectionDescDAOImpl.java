@@ -10,6 +10,8 @@ package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.CollectionDescDTO;
 import gov.nih.nci.nbia.internaldomain.CollectionDesc;
+import gov.nih.nci.nbia.internaldomain.GeneralSeries;
+import gov.nih.nci.nbia.internaldomain.License;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +57,8 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			dto.setDescription(c.getDescription());
 			dto.setId(c.getId());
 			dto.setUserName(c.getUserName());
+			dto.setCollectionName(c.getCollectionName());
+			dto.setLicenseId(c.getLicense().getId());
 			//calling this from save() causes duplicate object in session
 			//might be better to rework this so the find can just return
 			//that object and save update that instead of re-creating
@@ -69,13 +74,13 @@ public class CollectionDescDAOImpl extends AbstractDAO
         DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
         criteria.add(Restrictions.isNotNull("collectionName"));
         List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
-        System.out.println("collectionDescList:"+collectionDescList.size());
 		for(CollectionDesc collectionDesc : collectionDescList)	{
 			CollectionDescDTO dto = new CollectionDescDTO();
 			dto.setDescription(collectionDesc.getDescription());
 			dto.setId(collectionDesc.getId());
 			dto.setCollectionName(collectionDesc.getCollectionName());
-			System.out.println("Description:"+dto.getDescription());
+			dto.setLicenseId(collectionDesc.getLicense().getId());
+
 			returnValue.add(dto);
 		}
 		return returnValue;
@@ -95,6 +100,7 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		}else{
 			insert(collectionDescDTO);
 		}
+		setExcludeCommercialForSeries(collectionDescDTO.getCollectionName());
 		return 1L;
 	}
 
@@ -104,7 +110,6 @@ public class CollectionDescDAOImpl extends AbstractDAO
 
 	protected void update(CollectionDescDTO collectionDescDTO){
 		CollectionDesc collectionDesc = convertDTOToObject(collectionDescDTO);
-
 		getHibernateTemplate().update(collectionDesc);
 		getHibernateTemplate().flush();
 
@@ -130,6 +135,23 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		return null;
 
 	}
+	private void setExcludeCommercialForSeries(String project)  {
+	
+  
+        String SQLQuery="select collection_descriptions_pk_id from collection_descriptions where license_id in (select license_id from license where commercial_use<>'YES') and collection_name='"+project+"'";
+		List<Object[]> data= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();
+		if (!(data!=null&&data.size()>0)) {
+			String queryString = "update GeneralSeries s set excludeCommercial=null where project='"+project+"'";
+	        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+	        int count = query.executeUpdate();
+		}  else {
+			String queryString = "update GeneralSeries s set excludeCommercial='YES' where project='"+project+"'";
+	        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+	        int count = query.executeUpdate();
+		}
+
+	} 
 
 	/////////////////////////////////PRIVATE/////////////////////////////////////////////
 	private CollectionDesc convertDTOToObject(CollectionDescDTO collectionDescDTO){
@@ -139,6 +161,12 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		collectionDesc.setUserName(collectionDescDTO.getUserName());
 		collectionDesc.setId(collectionDescDTO.getId());
 		collectionDesc.setCollectionDescTimestamp(new Date());
+		DetachedCriteria criteria = DetachedCriteria.forClass(License.class);
+		criteria.add(Restrictions.eq("id", collectionDescDTO.getLicenseId()));
+        List<License> licenseList = getHibernateTemplate().findByCriteria(criteria);
+        for (License license: licenseList) {
+		    collectionDesc.setLicense(license);
+        }
 		return collectionDesc;
 	}
 }

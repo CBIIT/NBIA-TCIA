@@ -81,6 +81,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	        series.setStudyInstanceUID(study.getStudyInstanceUID());
 	        series.setProject(patient.getDataProvenance().getProject());
 	        series.setSite(site);
+	        setExcludeCommercial(series, patient.getDataProvenance().getProject());
 	        
 	        //does this cause any possible issue with parallelism?
 	        //multiple images submitted to same series at "same time"?
@@ -88,10 +89,8 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	        
             //enforce to set visibility to be "Not Yet Reviewed"
             //regardless what CTP annonymizer says.
-            if ((series.getVisibility() == null)||(!series.getVisibility().equals("0")))
-            {
-                 series.setVisibility("0");
-            }
+            series.setVisibility("0");
+
 
         }catch(Exception e) {
         	//log.error("Exception in SeriesOperation " + e);
@@ -230,9 +229,17 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 		
 		series.setThirdPartyAnalysis(thirdPartyAnalysis);
 		series.setDescriptionURI(descriptionURI);
+             
+	} 
+	private void setExcludeCommercial(GeneralSeries series, String project) throws Exception {
+	    
+        String SQLQuery="select trail_dp_pk_id from trial_data_provenance where license id in (select license_id from license where commercial_use='YES') and project='"+project+"'";
+		List<Object[]> data= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();
+		if (!(data!=null&&data.size()>0)) {
+		    series.setExcludeCommercial("YES");
+		}
 
-
-              
 	} 
 	
 }

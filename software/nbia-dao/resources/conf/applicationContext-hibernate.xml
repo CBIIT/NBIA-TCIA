@@ -76,6 +76,7 @@ L-->
         <value>gov/nih/nci/nbia/internaldomain/TrialDataProvenance.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/TrialSite.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/Site.hbm.xml</value>
+        <value>gov/nih/nci/nbia/internaldomain/License.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/Annotation.hbm.xml</value>
         <value>gov/nih/nci/nbia/internaldomain/DeletionAuditTrail.hbm.xml</value>
         <value>gov/nih/nci/nbia/security/NCIAUser.hbm.xml</value>
@@ -281,6 +282,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
+  <bean id="licenseDAO" class="gov.nih.nci.nbia.dao.LicenseDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+   </bean>
     <!-- Define all the services below -->
    <bean id="annotation" class="gov.nih.nci.nbia.internaldomain.Annotation" scope="prototype"/>
    <bean id="series" class="gov.nih.nci.nbia.internaldomain.GeneralSeries" scope="prototype" />
@@ -293,6 +299,7 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
    <bean id="study" class="gov.nih.nci.nbia.internaldomain.Study" scope="prototype"/>
    <bean id="trialSite" class="gov.nih.nci.nbia.internaldomain.TrialSite" scope="prototype"/>
    <bean id="site" class="gov.nih.nci.nbia.internaldomain.Site" scope="prototype"/>
+   <bean id="license" class="gov.nih.nci.nbia.internaldomain.License" scope="prototype"/>
    <bean id="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" scope="prototype"/>
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

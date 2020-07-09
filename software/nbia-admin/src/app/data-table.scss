@@ -5,16 +5,11 @@ $data-table-body-background-color: #fff;
 $data-table-body-background-dark-color: #f4f4f4;
 $data-table-body-background-high-light-color: #fff51a;
 $data-table-body-border-color: #e7e7e7;
-$data-table-cell-padding: 8px;
+$data-table-cell-padding: 7px;
 
 
 .data-tableFixHead {
     overflow-y: auto;
-}
-
-.data-tableFixHead thead th {
-    position: sticky;
-    top: 0;
 }
 
 .data-table-thead-th {
@@ -31,6 +26,8 @@ $data-table-cell-padding: 8px;
     user-select: none;
 }
 
+
+
 .data-table-thead-tr {
     background-color: $data-table-header-background-color;
     color: #000;
@@ -39,6 +36,7 @@ $data-table-cell-padding: 8px;
     position: sticky;
     top: 0;
 }
+
 
 .data-table-body-tr {
     background-color: $data-table-body-background-color;
@@ -57,7 +55,6 @@ $data-table-cell-padding: 8px;
     padding: $data-table-cell-padding;
     overflow: hidden;
 }
-
 
 
 

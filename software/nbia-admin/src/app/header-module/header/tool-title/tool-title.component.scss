@@ -1,15 +1,22 @@
 @import '../../../app.component.scss';
 
-.tool-heading{
+.tool-heading {
     padding: 0 0 10px 10px;
     font-size: $toolHeadingFontSize;
 }
 
-.current-tool-text{
+.current-tool-text {
     font-size: 32px;
 }
 
-.tool-help-clicker{
+.tool-help-clicker {
     color: $close-x-red;
-    margin-left: 5px;
+    float: right;
+    margin: 10px 10px 0 0;
+}
+
+.home-menu-clicker{
+       color: #000;
+    float: right;
+    margin: 10px 10px 0 0;
 }

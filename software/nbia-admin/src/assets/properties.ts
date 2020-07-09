@@ -1,6 +1,7 @@
 export let Properties = {
     // 18_MAR_2019 Don't change until 7.7
-    VERSION: '1.0.1',
+    VERSION: '1.0.7',
+    TEST_VERSION: '1.0.7e',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
@@ -21,7 +22,7 @@ export let Properties = {
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
  */
 
-     // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+    // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
      API_SERVER_URL: '',
     // API_SERVER_URL: 'http://192.168.1.20:8080',
 
@@ -29,7 +30,6 @@ export let Properties = {
     // Only series with these modalities will show the OHIF viewer button
     OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
 
-    DEMO_MODE: false,
 
     // //////////////////////////////////////////////////////////////////////////
     //  The following values will by set by the "Brand"
@@ -43,9 +43,11 @@ export let Properties = {
     CONFIG_FILE: 'configuration',
     DEFAULT_BRAND: 'tcia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
-    HELP_BASE_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA/Data+Administration+Tool+Guide',
     //  END The following values will by set by the "Brand"
     // //////////////////////////////////////////////////////////////////////////
+
+    HELP_BASE_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA',
+    HELP_PATH: 'Data+Administration+Tool+Guide',
 
 
     BRAND_DIR: 'brand',
@@ -55,29 +57,22 @@ export let Properties = {
     // This is set from the server, so far it is only used in the footer (depending on the brand)
     HOST_NAME: '',
 
-
-    // @TODO
-    // This does not work yet when the value is not an empty string, leave it an empty string!
-    // This value can be changed in the config file.
-    // If this is left an empty string, the API server url will be used .
-   // OHIF_SERVER_URL: '',
-
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
     SHOW_OHIF_VIEWER: true,
 
+    // This value can be changed in the config file.
+    // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
     MAX_VIDEO_FPS: 30,
 
     // Show in console, curl version of post & get calls.
     DEBUG_CURL: false,
 
-    // This value can be changed in the config file.  FIXMENOW  No this is not yet in the config file!
+    // This value can be changed in the config file.  FIXME  No this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
 
-
     DEV_MODE: false,
-
     DEV_PASSWORD: 'changeme',
     DEV_USER: 'mlerner',
 
@@ -90,5 +85,10 @@ export let Properties = {
     // It used to determine if it is okay to start using the configured settings yet.
     CONFIG_COMPLETE: false,
 
-    SHOW_CUSTOM_MENU: true
+    SHOW_CUSTOM_MENU: true,
+
+    SHOW_ROLES: false,
+    DEMO_MODE: false,
+
+
 };

@@ -7,7 +7,7 @@ import { UtilService } from './util.service';
 @Injectable( {
     providedIn: 'root'
 } )
-export class ConfigurationService{
+export class ConfigurationService {
 
     constructor( private httpClient: HttpClient, private utilService: UtilService ) {
     }
@@ -50,7 +50,7 @@ export class ConfigurationService{
                     key = key.replace( /^\s*/, '' );
 
 
-                    if( key === 'OHIF_viewer_url' ){
+                    if( key === 'OHIF_SERVER_URL' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.OHIF_SERVER_URL = value;
                         }
@@ -85,6 +85,11 @@ export class ConfigurationService{
                             Properties.HELP_BASE_URL = value;
                         }
                     }
+
+                    if( key === 'SHOW_ROLES' ){
+                        Properties.SHOW_ROLES = this.utilService.isTrue( value );
+                    }
+
 
                 }
             }

@@ -19,18 +19,21 @@
         </div>
 
         <!-- Search Results -->
+<!--
         <div class="row">
-
             <nbia-search-results-section
                 (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
                 (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
             ></nbia-search-results-section>
-
-
-<!--
-                <nbia-search-results-section></nbia-search-results-section>
+        </div>
 -->
+        <div class="row">
+            <nbia-search-results-section-bravo
+                (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
+            >
 
+            </nbia-search-results-section-bravo>
         </div>
 
         <!-- Bulk Operations -->

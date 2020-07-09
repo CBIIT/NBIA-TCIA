@@ -106,7 +106,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      *
      * @type {boolean}
      */
-    sortNumChecked = Properties.SORT_BY_COUNT;
+    sortNumChecked = Properties.SORT_COLLECTIONS_BY_COUNT;
     sortAlphaChecked = !this.sortNumChecked;
 
     /**
@@ -168,10 +168,9 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.sortNumChecked = this.persistenceService.get( this.persistenceService.Field.COLLECTIONS_SORT_BY_COUNT );
         // If there is no persisted value, use the same one as the others (Sort by count).
         if( this.utilService.isNullOrUndefined( this.sortNumChecked ) ){
-            this.sortNumChecked = Properties.SORT_BY_COUNT;
+            this.sortNumChecked = Properties.SORT_COLLECTIONS_BY_COUNT;
         }
         this.sortAlphaChecked = !this.sortNumChecked;
-
 
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
@@ -179,6 +178,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.completeCriteriaList = data;
+
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
                 if( this.completeCriteriaListHold === null ){
@@ -189,10 +189,8 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
                     this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 }
-
             }
         );
-
 
         // React to errors when getting the full complete criteria list.
         this.apiServerService.getCollectionValuesAndCountsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(

@@ -215,6 +215,26 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 					queryKey+="ThirdPartyAnalysis"+inFormParams.get("value"+i).get(0);
 				}
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ExcludeCommercialCriteria")){
+				if (query.getDataLicenseCriteria() == null){
+					System.out.println("ExcludingCommercial");
+					DataLicenseCriteria criteria=new DataLicenseCriteria();
+					criteria.setExcludeCommercial(inFormParams.get("value"+i).get(0));
+					query.setCriteria(criteria);
+					queryKey+="ExcludeCommercial"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getDataLicenseCriteria().setExcludeCommercial(inFormParams.get("value"+i).get(0));
+					queryKey+="ExcludeCommercial"+inFormParams.get("value"+i).get(0);
+				}
+			}
+	/**		if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("TimePointCriteria")){
+				TimePointCriteria criteria=new TimePointCriteria();
+			    criteria.setFromDay(inFormParams.get("fromDate"+i).get(0));
+			    criteria.setToDay(inFormParams.get("toDay"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="TimePointCriteria"+inFormParams.get("fromDate"+i).get(0)+inFormParams.get("toDay"+i).get(0);
+			}  **/
+
 			i++;
 		}
 		String sortField=inFormParams.get("sortField").get(0);

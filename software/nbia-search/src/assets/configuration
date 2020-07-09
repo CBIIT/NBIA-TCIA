@@ -34,8 +34,7 @@
 #########################################################################
 # OHIF_MODALITIES = MG, CT, MR, PT, DX, CR, SC, NM, CTPT
 
-# This does not work yet, keep it commented out.
-# OHIF_SERVER_URL =
+# OHIF_SERVER_URL = ''
 
 #########################################################################
 # Timeout wait for server calls in 1/000 of a second.  120000 = 2 minutes
@@ -48,3 +47,5 @@
 # API_host =https://public.cancerimagingarchive.net
 
 # SHOW_DATA_ADMIN_MENU = true
+
+# SHOW_ROLES=

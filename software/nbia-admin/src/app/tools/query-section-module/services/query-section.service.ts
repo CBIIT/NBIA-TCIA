@@ -34,13 +34,15 @@ export class QuerySectionService{
     updateSearchQuery( tool, criteria, data ) {
         // Do we have this criteria yet?
         let i = this.entryExists( tool, criteria );
+
+        // It exists and must be changed
         if( i >= 0 ){
             if( this.utilService.isNullOrUndefinedOrEmpty( data ) && (typeof data !== 'number') ){
                 this.deleteFromQueryArray( i )
             }else{
                 this.updateToQueryArray( i, data );
             }
-
+        // It dose not exist in the query array, so add it.
         }else{
             if( ! this.utilService.isNullOrUndefined( data ) ){
                 this.addToQueryArray( { tool, criteria, data } );

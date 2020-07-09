@@ -34,10 +34,14 @@ export class AccessTokenService{
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
         let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + Consts.API_CLIENT_SECRET_DEFAULT + '&grant_type=password';
+
+/*  Don't show user and password
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'MHL getAccessToken: ' + curl );
+            console.log( 'getAccessToken: ' + curl );
         }
+*/
+
         let options =
             {
                 headers: headers,
@@ -53,16 +57,6 @@ export class AccessTokenService{
                 this.setCurrentUser( user );
                 this.setCurrentPassword( password );
                 this.setAccessTokenStatus( TokenStatus.HAVE_TOKEN );
-
- /*
-                console.log( 'MHL accessTokenData: ', accessTokenData );
-                console.log('MHL AccessToken: ', this.accessToken);
-                console.log('MHL RefreshToken: ', this.refreshToken);
-                console.log('MHL ExpiresIn: ', this.expiresIn);
-                console.log('MHL user: ', user);
-                console.log('MHL password: ', password);
-                console.log('MHL HAVE_TOKEN: ', TokenStatus.HAVE_TOKEN);
-*/
             },
             err => {
                 console.error( 'Get new token error: ', err );

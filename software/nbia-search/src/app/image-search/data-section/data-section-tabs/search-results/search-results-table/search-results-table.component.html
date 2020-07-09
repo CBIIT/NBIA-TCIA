@@ -121,20 +121,21 @@
                 'dark': i%4 !== 0
             }"
         >
-            <!--
-            <td>First:{{firstRow}} Last:{{lastRow}} pagedSearch:{{properties.PAGED_SEARCH}}</td>
-            -->
-            <!-- -------- Show Subject details -------- -->
+
+            <!-- -------- Show Subject details. This <td> is only shown on odd <tr>s-------- -->
             <td
                     *ngIf="odd && subjectDataShow[i]"
                     [colSpan]=columnCount+1
                     class="child-data-display-parent-background">
+
                 <nbia-subject-study-details
                         [subjectDetailData]="searchResultsForDisplay[i - 1]"
                         [subjectIndex]="i"
                 >
                 </nbia-subject-study-details>
             </td>
+
+
 
             <!-- -------------------------------------- -->
             <td
@@ -289,7 +290,7 @@
                 <label
                         class="btn btn-default col-xs-1 ohif-subject-button"
                         title="OHIF Vewer"
-                        (click)="onSubjectOhifViewerClick()">
+                        (click)="onSubjectOhifViewerClick(row['subjectId'])">
                     <span class="glyphicon glyphicon-facetime-video"></span>
                 </label>
             </td>

@@ -2090,6 +2090,66 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
               ALTER TABLE submission_history ENGINE=InnoDB;    
          </sql>
    </changeSet> 
+   <changeSet id="7.7.add.license" author="gustafss" dbms="mysql">
+         <comment>
+           adds license table
+         </comment>          
+         <sql>       
+           CREATE TABLE license (
+           license_id BIGINT(20) NOT NULL,
+           long_name VARCHAR(255) NULL,
+           short_name VARCHAR(50) NULL,
+           license_url VARCHAR(255) NULL,
+           commercial_use VARCHAR(45) NULL DEFAULT 'YES',
+           license_text VARCHAR(255) NULL,
+           PRIMARY KEY (license_id));
    
-   
+         </sql>
+   </changeSet> 
+      <changeSet id="7.7.add.licensedata" author="gustafss" dbms="mysql">
+         <comment>
+           adds data to license table
+         </comment>          
+         <sql>       
+           INSERT INTO license (license_id, long_name, short_name, license_url, commercial_use, license_text) VALUES ('1', 'Creative Commons Attribution 3.0 Unported License', 'CC BY 3.0', 'http://creativecommons.org/licenses/by/3.0/', 'YES', 'https://creativecommons.org/licenses/by/3.0/');
+           INSERT INTO license (license_id, long_name, short_name, license_url, commercial_use, license_text) VALUES ('2', 'Creative Commons Attribution 4.0 International License', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', 'YES', 'https://creativecommons.org/licenses/by/4.0/legalcode');
+           INSERT INTO license (license_id, long_name, short_name, license_url, commercial_use, license_text) VALUES ('3', 'Creative Commons Attribution-NonCommercial 4.0 International', 'CC BY-NC 4.0', 'https://creativecommons.org/licenses/by-nc/4.0/', 'NO', 'https://creativecommons.org/licenses/by-nc/4.0/legalcode');
+           INSERT INTO license (license_id, long_name, short_name, license_url, commercial_use, license_text) VALUES ('4', 'Creative Commons Attribution-NonCommercial 3.0 Unported License', 'CC BY-NC 3.0', 'https://creativecommons.org/licenses/by-nc/3.0/', 'NO', 'https://creativecommons.org/licenses/by-nc/3.0/legalcode');
+         </sql>
+   </changeSet>
+      <changeSet id="7.7.add.licensekey" author="gustafss" dbms="mysql">
+         <comment>
+           adds fk to license table
+         </comment>          
+         <sql>       
+          ALTER TABLE collection_descriptions 
+          ADD COLUMN license_id BIGINT(20) NULL AFTER collection_descriptions_timest,
+          ADD INDEX license_id_fk_idx (license_id ASC);
+          ALTER TABLE collection_descriptions 
+          ADD CONSTRAINT license_id_fk
+            FOREIGN KEY (license_id)
+            REFERENCES license (license_id)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION;        
+         </sql>
+   </changeSet>
+      <changeSet id="7.6.add.ExcludeCommercial" author="gustafss" dbms="mysql">
+         <comment>
+           adds exclude commercial to series table
+         </comment>          
+         <sql>       
+			ALTER TABLE general_series  
+			ADD COLUMN exclude_commercial  varchar(4);        
+         </sql>
+   </changeSet>
+         <changeSet id="7.7.add.clinicaltimepoint" author="gustafss" dbms="mysql">
+         <comment>
+           add fields to 
+         </comment>          
+         <sql>       
+          ALTER TABLE study 
+          ADD COLUMN longitudinal_temporal_event_type varchar(100) NULL,
+          ADD COLUMN longitudinal_temporal_offset_from_event DOUBLE PRECISION NULL;    
+         </sql>
+       </changeSet>
 </databaseChangeLog>

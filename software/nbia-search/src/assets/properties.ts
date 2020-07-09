@@ -1,6 +1,8 @@
 export let Properties = {
     // 22_APR_2020
     VERSION: '1.0.70',
+    TEST_VERSION: '1.0.7e',
+
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
 
@@ -21,15 +23,13 @@ export let Properties = {
     // Only series with these modalities will show the OHIF viewer button
     OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
 
-    // @TODO
-    // This does not work yet when the value is not an empty string, leave it an empty string!
     // This value can be changed in the config file.
     // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
 
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
-    SHOW_OHIF_VIEWER: false,
+    SHOW_OHIF_VIEWER: true,
     // This value can be changed in the config file.
     SHOW_OHIF_SERIES_VIEWER: true,
 
@@ -93,7 +93,7 @@ export let Properties = {
     // This can be removed when I get rid of all the old code used to get all the search results at once rather than just a page at a time.
     PAGED_SEARCH: true,
 
-    SHOW_DATA_ADMIN_MENU: false,
+    SHOW_DATA_ADMIN_MENU: true,
     /*
        Don't show "Image counts"or "Disk Space" in the search results, or the column selector for search results.
        We get "Image counts" and "Disk space" included in the search results when using the "getExtendedSimpleSearch" rest service,
@@ -127,9 +127,12 @@ export let Properties = {
 
     CONFIRM_EXIT: true,
 
+    SHOW_ROLES: false,
+
     // If false sort just by name, this is the default for criteria sorting
     // This is the sort for "Image Modality" and "Anatomical Site" and the default sort for Collections.
-    SORT_BY_COUNT: true,
+    SORT_COLLECTIONS_BY_COUNT: true,
+    SORT_ANATOMICAL_BY_COUNT: true,
 
     SHOW_COLLECTIONS_SORT_OPTIONS: true,
 

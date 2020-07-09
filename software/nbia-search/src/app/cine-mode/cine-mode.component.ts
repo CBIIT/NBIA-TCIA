@@ -66,7 +66,7 @@ export class CineModeComponent implements OnInit{
         // From cine-mode.service
         this.cineModeService.sendCineModeDataEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                this.dicomData = data['dicomData'];
+                this.dicomData = <any>data['dicomData'];
                 this.seriesUID = data['seriesUID'];
                 this.seriesId = data['seriesId'];
                 this.seriesDescription = data['seriesDescription'];
@@ -88,7 +88,7 @@ export class CineModeComponent implements OnInit{
                 if( (data['id'] === 'imageID=' + this.images[this.currentImage - 1]['imagePkId'] ) ||
                     (data['id'] === 'imageID=' + this.images[this.currentImageWiggleRoom - 1]['imagePkId'] )
                 ){
-                    this.dicomData = data['res'];
+                    this.dicomData = <any>data['res'];
                     this.haveDicomData = true;
                 }
             },

@@ -24,6 +24,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     collections;
     currentCollection;
+    currentCollectionIndex = 0;
     showHtml = false;
     consts = Consts;
 
@@ -59,7 +60,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
             ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
             ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
             ['image', 'video', 'insertVideo', 'insertImage', 'customClasses', 'insertHorizontalRule'],
-            ['toggleEditorMode', 'removeFormat', 'unlink']
+            ['toggleEditorMode', 'unlink']
         ]
     };
 
@@ -141,6 +142,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         this.currentCollection = this.collections[i]['name'];
         this.htmlContent = this.collections[i]['description'];
         this.textTrailer = this.htmlContent;
+        this.currentCollectionIndex = i;
     }
 
     onSave() {
@@ -151,6 +153,8 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
             if( this.textTrailer !== this.htmlContent ){
                 this.apiService.updateCollectionDescription( this.currentCollection.replace( /\/\/.*/, '' ), this.htmlContent );
                 this.textTrailer = this.htmlContent;
+
+                this.collections[this.currentCollectionIndex]['description'] = this.htmlContent;
             }
         }
     }

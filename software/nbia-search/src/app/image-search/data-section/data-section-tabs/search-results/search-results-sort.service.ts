@@ -390,7 +390,7 @@ export class SearchResultsSortService{
 
 
     /**
-     * Properties.SORT_BY_COUNT is the default, it is set to true.
+     * Properties.SORT_COLLECTIONS_BY_COUNT is the default, it is set to true.
      *
      * @param criteriaList
      * @param selectedList
@@ -399,7 +399,7 @@ export class SearchResultsSortService{
      */
     criteriaSort( criteriaList, selectedList, sortByCount? ) {
         if( this.utilService.isNullOrUndefined( sortByCount ) ){
-            sortByCount = Properties.SORT_BY_COUNT;
+            sortByCount = Properties.SORT_COLLECTIONS_BY_COUNT;
         }
         if( sortByCount ){
             return this.criteriaSortByCount( criteriaList, selectedList );

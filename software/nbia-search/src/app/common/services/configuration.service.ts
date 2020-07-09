@@ -84,13 +84,6 @@ export class ConfigurationService{
                     if( key === 'OHIF_viewer_study' ){
                         Properties.SHOW_OHIF_VIEWER = this.utilService.isTrue( value );
                     }
-
-                    if( key === 'OHIF_viewer_url' ){
-                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
-                            Properties.OHIF_SERVER_URL = value;
-                        }
-                    }
-
                     if( key === 'API_host' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.API_SERVER_URL = value;
@@ -99,16 +92,20 @@ export class ConfigurationService{
                     if( key === 'http_timeout' ){
                         Properties.HTTP_TIMEOUT = value;
                     }
+
                     if( key === 'OHIF_MODALITIES'){
                         // toUpperCase for case insensitive.
                         Properties.OHIF_MODALITIES = value.toUpperCase().split(/\s*,\s*/);
-
                     }
 
                     if( key === 'OHIF_SERVER_URL' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.OHIF_SERVER_URL = value;
                         }
+                    }
+
+                    if( key === 'SHOW_ROLES' ){
+                        Properties.SHOW_ROLES = this.utilService.isTrue( value );
                     }
 
                 }

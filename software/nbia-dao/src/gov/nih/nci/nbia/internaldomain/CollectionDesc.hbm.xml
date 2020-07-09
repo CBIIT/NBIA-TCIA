@@ -23,5 +23,6 @@ L-->
 		<property name="description" type="string" column="DESCRIPTION"/>
 		<property name="userName" type="string" column="USER_NAME" />
 		<property name="collectionDescTimestamp" type="java.util.Date" column="COLLECTION_DESCRIPTIONS_TIMEST"/>
+		 <many-to-one name="license" class="gov.nih.nci.nbia.internaldomain.License" column="LICENSE_ID" lazy="proxy"/>
 	</class>
 </hibernate-mapping>

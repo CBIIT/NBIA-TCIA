@@ -48,6 +48,9 @@ export class ApiService{
     submitSeriesDeletionResultsEmitter = new EventEmitter();
     submitSeriesDeletionErrorEmitter = new EventEmitter();
 
+    submitOnlineDeletionResultsEmitter = new EventEmitter();
+    submitOnlineDeletionErrorEmitter = new EventEmitter();
+
     getDicomImageErrorEmitter = new EventEmitter();
 
     constructor( private utilService: UtilService, private parameterService: ParameterService,
@@ -225,6 +228,19 @@ export class ApiService{
             } );
     }
 
+    submitOnlineDeletion() {
+        this.doPost( Consts.SUBMIT_ONLINE_DELETION, 'deletion=online' ).subscribe(
+            ( data ) => {
+                this.submitOnlineDeletionResultsEmitter.emit( data );
+            },
+            ( err ) => {
+                this.submitOnlineDeletionErrorEmitter.emit( err );
+                console.error( 'submitOnlineDeletion err: ', err['error'] );
+                console.error( 'submitOnlineDeletion err: ', err );
+            } );
+    }
+
+// SUBMIT_ONLINE_DELETION
     getSeriesForDeletion() {
         this.doGet( Consts.GET_SERIES_FOR_DELETION ).subscribe(
             ( data ) => {
@@ -345,13 +361,13 @@ export class ApiService{
                     }
                 }
             },
-                    // Don't display this error, this will happen if a user has not yet logged in.
-                       /*
-                       getParamsError => {
-                            console.error( 'Error: ', getParamsError );
-                            console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
-                        }
-                        */
+            // Don't display this error, this will happen if a user has not yet logged in.
+            /*
+            getParamsError => {
+                 console.error( 'Error: ', getParamsError );
+                 console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
+             }
+             */
         );
     }
 
@@ -521,8 +537,6 @@ export class ApiService{
         this.getDicomImage( seriesUID, objectUID, studyUID ).subscribe(
             data => {
                 let dicomFile = new Blob( [data], { type: 'application/dicom' } );
-
-                // TODO in the download popup, it says 'from: blob:'  see if we can change this.
                 let url = (<any>window).URL.createObjectURL( dicomFile );
                 (<any>window).open( url );
             },
@@ -618,25 +632,31 @@ export class ApiService{
     }
 
     doPost( queryType, query ) {
-
+        let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
             console.log( 'doPost: ', curl );
         }
 
-        let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+        let headers = null;
 
-
-        let headers = new HttpHeaders( {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
-        } );
-
+        if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ){
+            headers = new HttpHeaders( {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+            } );
+        }else{
+            headers = new HttpHeaders( {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+            } );
+        }
         let options;
 
-        // These are returned as text NOT JSON.
+        // These are returned as text not JSON (which is the default return format).
         if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ||
             queryType === Consts.SUBMIT_SERIES_DELETION ||
+            queryType === Consts.SUBMIT_ONLINE_DELETION ||
             queryType === Consts.SUBMIT_QC_STATUS_UPDATE
         ){
             options = {
@@ -648,12 +668,11 @@ export class ApiService{
                 headers: headers
             };
         }
-
         return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
     updateCollectionDescription( name, description ) {
-        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + description ).subscribe(
+         this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURIComponent( description ) ).subscribe(
             data => {
                 console.log( 'updateCollectionDescription response: ', data );
             },
