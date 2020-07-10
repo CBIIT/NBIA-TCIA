@@ -82,6 +82,7 @@ import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 import gov.nih.nci.ncia.criteria.SpeciesCriteria;
 import gov.nih.nci.ncia.criteria.ThirdPartyAnalysisCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
+import gov.nih.nci.ncia.criteria.TimePointCriteria;
 import gov.nih.nci.nbia.util.CriteriaComparator;
 
 import java.util.ArrayList;
@@ -131,6 +132,7 @@ public class DICOMQuery extends Query {
     private PhantomCriteria phantomCriteria;   
     private ThirdPartyAnalysisCriteria thirdPartyAnalysisCriteria;
     private DataLicenseCriteria dataLicenseCriteria;
+    private TimePointCriteria timePointCriteria;
     private boolean queryFromUrl = false;
     private ImagingObservationCharacteristicCodeMeaningCriteria imagingObservationCharacteristicCodeMeaningCriteria;
     private ImagingObservationCharacteristicCodeValuePairCriteria imagingObservationCharacteristicCodeValuePairCriteria;
@@ -782,6 +784,14 @@ public class DICOMQuery extends Query {
     	}
 	}
 	
-	
+	public void setCriteria(TimePointCriteria timePointCriteria) {
+	 	if (timePointCriteria != null){
+    		criteriaList.add(timePointCriteria);
+    		this.timePointCriteria = timePointCriteria;
+    	}
+	}
+	public TimePointCriteria getTimePointCriteria() {
+		return timePointCriteria;
+	}
 
 }

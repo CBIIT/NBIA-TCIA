@@ -99,6 +99,8 @@ public interface DICOMQueryHandler {
     public static final String PHANTOM_EXCLUDED= "(p.qcSubject != 'YES' or p.qcSubject is null) "
     		+ "";    
     public static final String EXCLUDE_COMMERCIAL = "(series.excludeCommercial != 'YES' or series.excludeCommercial is null) ";
+    public static final String EVENT_TYPE = " study.longitudinalTemporalEventType = ";
+    public static final String EVENT_OFFSET=" study.longitudinalTemporalOffsetFromEvent ";
 
     /**
      * This will process a provided query in to an HQL statement and pass it to

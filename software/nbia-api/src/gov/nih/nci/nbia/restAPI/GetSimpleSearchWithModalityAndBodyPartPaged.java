@@ -81,6 +81,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 		String queryKey=userName;
         System.out.println(inFormParams.get("criteriaType"+i).get(0));
         ImageModalityCriteria modalityCriteria=null;
+        String errorMessage=" ";
 		while (inFormParams.get("criteriaType"+i)!=null)
 		{
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("CollectionCriteria")){
@@ -227,13 +228,26 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 					queryKey+="ExcludeCommercial"+inFormParams.get("value"+i).get(0);
 				}
 			}
-	/**		if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("TimePointCriteria")){
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("TimePointCriteria")){
 				TimePointCriteria criteria=new TimePointCriteria();
-			    criteria.setFromDay(inFormParams.get("fromDate"+i).get(0));
-			    criteria.setToDay(inFormParams.get("toDay"+i).get(0));
+				if (inFormParams.get("fromDay"+i).get(0)!=null&inFormParams.get("fromDay"+i).get(0).length()>0) {
+			        criteria.setFromDay(Integer.parseInt(inFormParams.get("fromDay"+i).get(0)));
+				}
+				if (inFormParams.get("toDay"+i).get(0)!=null&inFormParams.get("toDay"+i).get(0).length()>0) {
+			        criteria.setToDay(Integer.parseInt(inFormParams.get("toDay"+i).get(0)));
+				}
+			    criteria.setEventType(inFormParams.get("eventType"+i).get(0));
 				query.setCriteria(criteria);
-				queryKey+="TimePointCriteria"+inFormParams.get("fromDate"+i).get(0)+inFormParams.get("toDay"+i).get(0);
-			}  **/
+				if (criteria.getEventType()==null) {
+					errorMessage=" time points must include event type";
+					throw new Exception();
+				}
+				if (criteria.getFromDay()==null&&criteria.getToDay()==null) {
+					errorMessage=" time points must include at least a from day or to day";
+					throw new Exception();
+				}
+				queryKey+="TimePointCriteria"+inFormParams.get("fromDay"+i).get(0)+inFormParams.get("fromDay"+i).get(0)+inFormParams.get("eventType"+i).get(0);
+			}  
 
 			i++;
 		}

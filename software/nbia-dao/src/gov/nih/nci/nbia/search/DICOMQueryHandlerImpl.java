@@ -82,6 +82,7 @@ import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.ThirdPartyAnalysisCriteria;
+import gov.nih.nci.ncia.criteria.TimePointCriteria;
 import gov.nih.nci.ncia.criteria.UrlParamCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
@@ -388,6 +389,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         
         whereStmt += processDataLicenseCriteria(query);
         
+        whereStmt += processTimePointCriteria(query);
+        
+               
         generateGeneralEquipmentJoinHql();
     }
 
@@ -539,6 +543,28 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		}
 		return patientWhereStmt;
 }
+    private static String processTimePointCriteria(DICOMQuery theQuery) throws Exception {
+    	TimePointCriteria tc = theQuery.getTimePointCriteria();
+
+        String timepointStmt = "";
+        if (tc != null) {
+        	String event= tc.getEventType();
+            if (event!=null&&event.length()>1) {
+            	timepointStmt += AND + EVENT_TYPE+"'"+event+"' ";
+            }
+            Integer fromDay=tc.getFromDay();
+            if (fromDay!=null) {
+            	timepointStmt += AND + EVENT_OFFSET+" >= "+fromDay+" ";
+            }
+            Integer toDay=tc.getToDay();
+            if (toDay!=null) {
+            	timepointStmt += AND + EVENT_OFFSET+" <= "+toDay+" ";
+            }
+           System.out.println("timepointStmt===="+timepointStmt);
+        }
+        return timepointStmt;
+    }
+    
 
     /**
      * Returns the part of the where clause to match a series
