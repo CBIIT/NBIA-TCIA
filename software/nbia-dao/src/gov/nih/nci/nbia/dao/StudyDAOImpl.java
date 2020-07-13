@@ -621,7 +621,7 @@ public class StudyDAOImpl extends AbstractDAO
                 + " ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = generalser1_.GENERAL_SERIES_PK_ID ) "
                 + " as col_12_0_, generalser1_.PATIENT_ID , trialdatap4_.PROJECT , "
                 + " generalser1_.PATIENT_PK_ID , study0_.STUDY_ID , generalser1_.BODY_PART_EXAMINED , "
-                + " generalser1_.THIRD_PARTY_ANALYSIS , generalser1_.DESCRIPTION_URI , generalser1_.project  "
+                + " generalser1_.THIRD_PARTY_ANALYSIS , generalser1_.DESCRIPTION_URI , generalser1_.project, generalser1_.exclude_commercial  "
                 + " from STUDY study0_ inner join GENERAL_SERIES generalser1_ on study0_.STUDY_PK_ID=generalser1_.STUDY_PK_ID "
                 + " inner join GENERAL_EQUIPMENT generalequ2_ on generalser1_.GENERAL_EQUIPMENT_PK_ID=generalequ2_.GENERAL_EQUIPMENT_PK_ID, "
                 + " PATIENT patient3_, TRIAL_DATA_PROVENANCE trialdatap4_ "
@@ -656,9 +656,8 @@ public class StudyDAOImpl extends AbstractDAO
         // Loop through the results.  There is one result for each series
         while (iter.hasNext()) {
         	Object[] row = iter.next();
-
+            boolean excludeFlag=false;
             // Create the seriesDTO
-        	System.out.println("in series dto");
             SeriesDTO seriesDTO = new SeriesDTO();
             //modality should never be null... but currently possible
             seriesDTO.setModality(Util.nullSafeString(row[8]));
@@ -685,12 +684,18 @@ public class StudyDAOImpl extends AbstractDAO
             seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[18]));
             seriesDTO.setDescriptionURI(Util.nullSafeString(row[19]));
             seriesDTO.setProject(Util.nullSafeString(row[20]));
+            if (row[21]!=null&&row[21].toString().equalsIgnoreCase("YES")){
+            	excludeFlag=true;
+            }
             // Try to get the study if it already exists
             StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
 
             if (studyDTO != null) {
                 // Study already exists.  Just add series info
                 studyDTO.getSeriesList().add(seriesDTO);
+                if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
             } else {
                 // Create the StudyDTO
                 studyDTO = new StudyDTO();
@@ -704,6 +709,9 @@ public class StudyDAOImpl extends AbstractDAO
 
                 // Add the series to the study
                 studyDTO.getSeriesList().add(seriesDTO);
+                if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
 
                 // Add the study to the list
                 studyList.put(studyDTO.getId(), studyDTO);
