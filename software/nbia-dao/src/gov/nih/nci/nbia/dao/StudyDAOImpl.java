@@ -266,7 +266,7 @@ public class StudyDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getSeriesMetadata(List<String> seriesIDs, List<String> authorizedProjAndSites) throws DataAccessException
 	{
-		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, s.studyDate, gs.seriesInstanceUID, " +
+		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, DATE_FORMAT(s.studyDate,'%Y-%m-%d'), gs.seriesInstanceUID, " +
 				"gs.seriesDesc, gs.imageCount, gs.totalSize, gs.project, gs.modality, ge.manufacturer " +
 				"FROM Study s join s.generalSeriesCollection gs join gs.generalEquipment ge where gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
