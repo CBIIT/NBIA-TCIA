@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the output of PatientSearcher.
@@ -192,6 +194,27 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
 			   this.species.add(species);
 		}
 	}
+	
+	public void addTimepoints(String event, Integer offset) {
+		if (event!=null&&offset!=null) {
+			   Set <Integer>existingTimepoints = this.timepoints.get(event);
+			   if (existingTimepoints!=null) {
+				   existingTimepoints.add(offset);
+			   }  else {
+				   HashSet <Integer> newTimepoints = new HashSet<Integer>();
+				   newTimepoints.add(offset);
+				   this.timepoints.put(event, newTimepoints);
+			   }
+		}
+	}
+
+	public Map<String, HashSet<Integer>> getTimepoints() {
+		return timepoints;
+	}
+
+	public void setTimepoints(Map<String, HashSet<Integer>> timepoints) {
+		this.timepoints = timepoints;
+	}
 
 	/**
      * Adds a series to the list of series for this patient.
@@ -281,7 +304,7 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
     private Set<String> modalities = new HashSet<String>();
     private Set<String> bodyParts = new HashSet<String>();
     private Set<String> species = new HashSet<String>();
-
+    private Map<String, HashSet<Integer>> timepoints = new HashMap<String, HashSet<Integer>>();
     private Integer totalNumberOfStudies;
     private Integer totalNumberOfSeries;
 }

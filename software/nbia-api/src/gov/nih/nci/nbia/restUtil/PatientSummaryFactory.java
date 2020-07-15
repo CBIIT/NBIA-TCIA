@@ -1,6 +1,4 @@
 package gov.nih.nci.nbia.restUtil;
-import java.util.HashMap;
-import java.util.List;
 import java.util.*;
 
 import gov.nih.nci.nbia.query.DICOMQuery;
@@ -41,6 +39,8 @@ public class PatientSummaryFactory {
 		returnValue.setModalities(input.getModalities());
 		returnValue.setCollections(input.getCollections());
 		returnValue.setSpecies(input.getSpecies());
+		returnValue.setMaxTimepoints(input.getMaxTimepoints());
+		returnValue.setMinTimepoints(input.getMinTimepoints());
 		returnValue.setSort(input.getSort());
 		returnValue.setTotalPatients(input.getTotalPatients());
 
@@ -51,6 +51,8 @@ public class PatientSummaryFactory {
     	Map<String, Integer> modalities=new HashMap<String, Integer>();
     	Map<String, Integer> collections=new HashMap<String, Integer>();
     	Map<String, Integer> species=new HashMap<String, Integer>();
+    	Map<String, Integer> maxTimepoint=new HashMap<String, Integer>();
+    	Map<String, Integer> minTimepoint=new HashMap<String, Integer>();
     	for (PatientSearchResultWithModilityAndBodyPart item:input.getResultSet()) {
     		try {
 				if (item.getBodyParts()!=null) {
@@ -95,6 +97,30 @@ public class PatientSummaryFactory {
 						collections.put(item.getProject(), new Integer(1));
 				     }
 				}
+				if (item.getTimepoints()!=null) {
+					Map<String, HashSet<Integer>> itemTimepoints= item.getTimepoints();
+			        for (Map.Entry<String,HashSet<Integer>> entry : itemTimepoints.entrySet())  {
+			        	for (Integer currentTimepoint : entry.getValue()) {
+				        	Integer existingMax=maxTimepoint.get(entry.getKey());
+				        	Integer existingMin=minTimepoint.get(entry.getKey());
+			        	     if (existingMax==null) {
+			        		     maxTimepoint.put(entry.getKey(), currentTimepoint);
+			        	     } else {
+			        		     if (currentTimepoint>existingMax) {
+			        			     maxTimepoint.put(entry.getKey(), currentTimepoint);
+			        		     }
+			        	     }
+			        	     if (existingMin==null) {
+			        	    	 minTimepoint.put(entry.getKey(), currentTimepoint);
+			        	     } else {
+			        		     if (currentTimepoint<existingMin) {
+			        			     minTimepoint.put(entry.getKey(), currentTimepoint);
+			        		     }
+			        	     } 
+
+			        	}
+			        }
+				} 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -140,6 +166,8 @@ public class PatientSummaryFactory {
     	input.setModalities(modalityCounts);
     	input.setSpecies(speciesCounts);
     	input.setCollections(collectionCounts);
+    	input.setMaxTimepoints(maxTimepoint);
+    	input.setMinTimepoints(minTimepoint);
     	return input;
     }
     private static boolean isModalityAll(DICOMQuery theQuery) {

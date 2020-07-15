@@ -8,6 +8,8 @@
 
 package gov.nih.nci.nbia.searchresult;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -90,4 +92,5 @@ public interface PatientSearchResultWithModilityAndBodyPart extends Comparable<P
     public Set<String> getModalities();
     public Set<String> getBodyParts();
     public Set<String> getSpecies();
+    public Map<String, HashSet<Integer>> getTimepoints();
 }

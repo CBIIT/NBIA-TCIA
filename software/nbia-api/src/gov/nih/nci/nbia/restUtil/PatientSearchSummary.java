@@ -1,6 +1,6 @@
 package gov.nih.nci.nbia.restUtil;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
 public class PatientSearchSummary {
 	private List <PatientSearchResultWithModilityAndBodyPart> resultSet;
@@ -9,6 +9,8 @@ public class PatientSearchSummary {
 	private List<ValueAndCount> modalities;
 	private List<ValueAndCount> collections;
 	private List<ValueAndCount> species;
+	private Map<String, Integer> maxTimepoints;
+	private Map<String, Integer> minTimepoints;
 	private String sort;
 	public List<PatientSearchResultWithModilityAndBodyPart> getResultSet() {
 		return resultSet;
@@ -53,6 +55,19 @@ public class PatientSearchSummary {
 	public void setSpecies(List<ValueAndCount> species) {
 		this.species = species;
 	}
+	public Map<String, Integer> getMaxTimepoints() {
+		return maxTimepoints;
+	}
+	public void setMaxTimepoints(Map<String, Integer> maxTimepoints) {
+		this.maxTimepoints = maxTimepoints;
+	}
+	public Map<String, Integer> getMinTimepoints() {
+		return minTimepoints;
+	}
+	public void setMinTimepoints(Map<String, Integer> minTiempoints) {
+		this.minTimepoints = minTiempoints;
+	}
+	
 	
 
 }
