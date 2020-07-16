@@ -123,7 +123,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
-    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.speciesCode,'"+NCIAConfig.getSpeciesCode()+"')  ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || "+
+            "ifnull(p.speciesCode,'"+NCIAConfig.getSpeciesCode()+"') || '/' || ifnull(study.longitudinalTemporalEventType,'')  || '/' || ifnull(study.longitudinalTemporalOffsetFromEvent,'') ";
     
 
     //switch query to include aim criteria conditionally
@@ -319,7 +320,13 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	                      prs.setBodyPart(ids[4].toUpperCase());
 	                   } if (ids.length>5) {
 	                	   prs.setSpecies(ids[5]);
-	                   }
+	                         if (ids.length>6&&ids[6]!=null) {
+	                	       prs.setEventType(ids[6]);
+		                         if (ids.length>7&&ids[7]!=null) {
+			                	       prs.setEventOffset(Integer.parseInt(ids[7]));
+		                         }
+	                          }
+	                    }
 	                }
 	                patientList.add(prs);
 	            }
