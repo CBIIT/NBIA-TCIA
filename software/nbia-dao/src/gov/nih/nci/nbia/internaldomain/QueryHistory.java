@@ -174,7 +174,7 @@ public class QueryHistory implements Serializable, PersistentQuery {
      * @param attr
      */
     public void addQueryAttribute(QueryAttributeWrapper attr, int sequenceNumber) {
-    	if (attr.getCriteriaClassName().equals("gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria")&&
+    	if (attr!=null&&attr.getCriteriaClassName().equals("gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria")&&
     			sequenceNumber!=1)
     	{
     		System.out.println("only one min studies allowed");
