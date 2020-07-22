@@ -9,9 +9,11 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.SeriesDTO;
+import gov.nih.nci.nbia.dto.TimePointDTO;
 import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
+import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -731,5 +733,71 @@ public class StudyDAOImpl extends AbstractDAO
             studyDTO.setSeriesList(seriesList);
         }
         return returnList;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+	public TimePointDTO getMinMaxTimepoints(AuthorizationCriteria auth) throws DataAccessException
+	{
+		TimePointDTO returnValue=new TimePointDTO();
+		String selectFrom = "select max(study.longitudinal_temporal_offset_from_event), min(study.longitudinal_temporal_offset_from_event), study.longitudinal_temporal_event_type " + 
+				" from study, general_series gs " + 
+				" where study.study_pk_id = gs.study_pk_id " +
+				" and study.longitudinal_temporal_event_type is not null ";	
+		String authorization=processAuthorizationSites(auth);
+		String groupBy=" group by study.longitudinal_temporal_event_type ";
+		String sql = selectFrom+authorization+groupBy;
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sql)
+		        .list();
+		Map maxTimePoints=new HashMap<String, Integer>();
+		Map minTimePoints=new HashMap<String, Integer>();
+        for(Object[] row : data)
+        {
+        	if (row[0]!=null&&row[1]!=null&&row[2]!=null) {
+        		maxTimePoints.put(row[2].toString(), new Integer(((Double)row[0]).intValue()));
+        		minTimePoints.put(row[2].toString(), new Integer(((Double)row[1]).intValue()));
+        	}
+        }
+        returnValue.setMaxTimepoints(maxTimePoints);
+        returnValue.setMinTimepoints(minTimePoints);
+		return returnValue;
+	}
+    private static String processAuthorizationSites(AuthorizationCriteria authCrit)  {
+    	   
+        if (authCrit.getSites().isEmpty()) {
+            // User is not allowed to view any sites.
+            // Since all data has a site, user is not allowed to see anything
+            // Return empty list
+            //logger.info("No results returned because user does not have access to any sites");
+
+            return null;
+        }
+        else {
+            // Build HQL for sites
+        	String whereStmt = "";
+            whereStmt += " and (";
+
+            boolean first = true;
+
+            // For each site, need to include both collection and site
+            // since site names can be duplicated across collections
+            for (SiteData siteData : authCrit.getSites()) {
+                if (!first) {
+                    whereStmt += " OR ";
+                }
+
+                whereStmt += "(";
+                whereStmt += "gs.project";
+                whereStmt += " = '";
+                whereStmt += siteData.getCollection();
+                whereStmt += "' and ";
+                whereStmt += "gs.site";
+                whereStmt += " = '";
+                whereStmt += siteData.getSiteName();
+                whereStmt += "') ";
+                first = false;
+            }
+
+            whereStmt += ")";
+            return whereStmt;
+        }
     }
 }
