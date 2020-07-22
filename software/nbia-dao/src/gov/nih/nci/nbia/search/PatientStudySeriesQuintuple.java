@@ -40,6 +40,8 @@ public class PatientStudySeriesQuintuple {
     private String modality;
     private String bodyPart;
     private String species;
+    private String eventType;
+    private Integer eventOffset;
     public PatientStudySeriesQuintuple() {
     }
 
@@ -102,6 +104,26 @@ public class PatientStudySeriesQuintuple {
 
 	public void setSpecies(String species) {
 		this.species = species;
+	}
+
+
+	public String getEventType() {
+		return eventType;
+	}
+
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+
+
+	public Integer getEventOffset() {
+		return eventOffset;
+	}
+
+
+	public void setEventOffset(Integer eventOffset) {
+		this.eventOffset = eventOffset;
 	}
     
 }

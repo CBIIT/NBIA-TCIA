@@ -61,7 +61,7 @@ public class StudyDTO implements Comparable<StudyDTO>  {
     private String description;
     private Integer id;		//study pk id
     private String study_id; //study_id
-    
+    private String excludeCommercial;
     public String getStudy_id() {
 		return study_id;
 	}
@@ -118,7 +118,17 @@ public class StudyDTO implements Comparable<StudyDTO>  {
         this.studyId = studyId;
     }
 
-    /**
+    
+    
+    public String getExcludeCommercial() {
+		return excludeCommercial;
+	}
+
+	public void setExcludeCommercial(String excludeCommercial) {
+		this.excludeCommercial = excludeCommercial;
+	}
+
+	/**
      * Sort the studies by date.
      */
     public int compareTo(StudyDTO o) {

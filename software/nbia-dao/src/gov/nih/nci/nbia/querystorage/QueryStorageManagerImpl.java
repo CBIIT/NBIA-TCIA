@@ -501,14 +501,17 @@ public class QueryStorageManagerImpl extends AbstractDAO
             criteriaCounts.put(criteriaClassName, ++criteriaCount);
 
             // Get the attribute wrapper for each criteria and add to the query history
-            for (QueryAttributeWrapper attr : criteria.getQueryAttributes()) {
-            	if (attr.getCriteriaClassName().equals("gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria")&&
+            if (criteria.getQueryAttributes()!=null) {
+              for (QueryAttributeWrapper attr : criteria.getQueryAttributes()) {
+            	if (attr.getCriteriaClassName()!=null&&
+            			attr.getCriteriaClassName().equals("gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria")&&
             			criteriaCount!=1)
-            	{
+            	  {
             		System.out.println("only one min studies allowed");
             		return;
-            	}
-                persistentQuery.addQueryAttribute(attr, criteriaCount);
+            	  }
+                  persistentQuery.addQueryAttribute(attr, criteriaCount);
+              }
             }
         }
     }

@@ -82,6 +82,7 @@ import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.ThirdPartyAnalysisCriteria;
+import gov.nih.nci.ncia.criteria.TimePointCriteria;
 import gov.nih.nci.ncia.criteria.UrlParamCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
@@ -122,7 +123,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      * <p>because n AIM rows will match to 1 series, need distinct.  without AIM, distinct not necessary
      */
     private static final String SQL_QUERY_SELECT = "SELECT distinct p.id || '/' || study.id || '/' || series.id ";
-    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || ifnull(p.speciesCode,'"+NCIAConfig.getSpeciesCode()+"')  ";
+    private static final String SQL_QUERY_SELECT2 = "SELECT distinct p.id || '/' || study.id || '/' || series.id || '/' || ifnull(series.modality,'') || '/' || ifnull(series.bodyPartExamined,'') || '/' || "+
+            "ifnull(p.speciesCode,'"+NCIAConfig.getSpeciesCode()+"') || '/' || ifnull(study.longitudinalTemporalEventType,'')  || '/' || ifnull(study.longitudinalTemporalOffsetFromEvent,'') ";
     
 
     //switch query to include aim criteria conditionally
@@ -318,7 +320,13 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	                      prs.setBodyPart(ids[4].toUpperCase());
 	                   } if (ids.length>5) {
 	                	   prs.setSpecies(ids[5]);
-	                   }
+	                         if (ids.length>6&&ids[6]!=null) {
+	                	       prs.setEventType(ids[6]);
+		                         if (ids.length>7&&ids[7]!=null) {
+			                	       prs.setEventOffset(Integer.parseInt(ids[7]));
+		                         }
+	                          }
+	                    }
 	                }
 	                patientList.add(prs);
 	            }
@@ -386,6 +394,11 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         
         whereStmt += processThirdPartyAnalysisCriteria(query, handlerFac);
         
+        whereStmt += processDataLicenseCriteria(query);
+        
+        whereStmt += processTimePointCriteria(query);
+        
+               
         generateGeneralEquipmentJoinHql();
     }
 
@@ -501,8 +514,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         String licenseStmt = "";
         if (dc != null) {
         	String exclude= dc.getExcludeCommercial();
-            if (exclude.equals("YES"))
-            	licenseStmt += AND + PHANTOM_ONLY;
+            if (exclude.equalsIgnoreCase("YES"))
+            	licenseStmt += AND + EXCLUDE_COMMERCIAL;
            System.out.println("licenseStmt===="+licenseStmt);
         }
         return licenseStmt;
@@ -537,6 +550,28 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		}
 		return patientWhereStmt;
 }
+    private static String processTimePointCriteria(DICOMQuery theQuery) throws Exception {
+    	TimePointCriteria tc = theQuery.getTimePointCriteria();
+
+        String timepointStmt = "";
+        if (tc != null) {
+        	String event= tc.getEventType();
+            if (event!=null&&event.length()>1) {
+            	timepointStmt += AND + EVENT_TYPE+"'"+event+"' ";
+            }
+            Integer fromDay=tc.getFromDay();
+            if (fromDay!=null) {
+            	timepointStmt += AND + EVENT_OFFSET+" >= "+fromDay+" ";
+            }
+            Integer toDay=tc.getToDay();
+            if (toDay!=null) {
+            	timepointStmt += AND + EVENT_OFFSET+" <= "+toDay+" ";
+            }
+           System.out.println("timepointStmt===="+timepointStmt);
+        }
+        return timepointStmt;
+    }
+    
 
     /**
      * Returns the part of the where clause to match a series

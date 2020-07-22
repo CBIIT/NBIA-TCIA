@@ -17,6 +17,7 @@ public class CollectionDescDTO {
 	private Date collectionDescTimestamp;
 	private String collectionName;
 	private String userName;
+	private Integer licenseId;
 	
 	public String getCollectionName() {
 		return collectionName;
@@ -48,5 +49,12 @@ public class CollectionDescDTO {
 	public void setCollectionDescTimestamp(Date collectionDescTimestamp) {
 		this.collectionDescTimestamp = collectionDescTimestamp;
 	}
+	public Integer getLicenseId() {
+		return licenseId;
+	}
+	public void setLicenseId(Integer licenseId) {
+		this.licenseId = licenseId;
+	}
 
+	
 }

@@ -26,4 +26,6 @@ public interface LicenseDAO  {
 	public List<LicenseDTO> findLicenses() throws DataAccessException;
 	
 	public void save(LicenseDTO license) throws DataAccessException;
+	
+	public String deleteLicense(Integer id) throws DataAccessException;
 }

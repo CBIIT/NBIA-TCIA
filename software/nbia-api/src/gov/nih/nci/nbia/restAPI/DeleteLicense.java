@@ -21,23 +21,20 @@ import javax.ws.rs.core.Response;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import gov.nih.nci.nbia.dao.CollectionDescDAO;
-import gov.nih.nci.nbia.dto.CollectionDescDTO;
+import gov.nih.nci.nbia.dto.LicenseDTO;
+import gov.nih.nci.nbia.dao.LicenseDAO;
 import gov.nih.nci.nbia.restUtil.RoleCache;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
-@Path("/submitCollectionDescription")
-public class SubmitCollectioDescription extends getData{
+@Path("/deleteLicense")
+public class DeleteLicense extends getData{
 	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@FormParam("name") String name,
-			@FormParam("description") String description,
-			@FormParam("license") Integer license) {
+	public Response constructResponse(@FormParam("id") String id) {
 
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()
@@ -46,7 +43,7 @@ public class SubmitCollectioDescription extends getData{
 				List<String> roles=RoleCache.getRoles(user);
                 if (roles==null) {
                 	roles=new ArrayList<String>();
-   
+                	System.out.println("geting roles for user");
 				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
 				    roles.addAll(sm.getRoles(user));
 				    RoleCache.setRoles(user, roles);
@@ -60,18 +57,20 @@ public class SubmitCollectioDescription extends getData{
                 if (!hasRole) {
 					return Response.status(401)
 							.entity("Insufficiant Privileges").build();
-                }
-                CollectionDescDAO collectionDescDAO = (CollectionDescDAO)SpringApplicationContext.getBean("collectionDescDAO");
-                CollectionDescDTO collectionDescDTO=new CollectionDescDTO();
-                collectionDescDTO.setCollectionName(name);
-                collectionDescDTO.setDescription(description);
-                collectionDescDTO.setUserName(user);
-                collectionDescDTO.setLicenseId(license);
-                collectionDescDAO.save(collectionDescDTO);
-        
-		return Response.ok().type("text/plain")
-				.entity("Description updated")
-				.build();
+                } 
+                LicenseDAO licenseDAO = (LicenseDAO)SpringApplicationContext.getBean("licenseDAO");
+                Integer intId=Integer.parseInt(id);
+                String returnValue = licenseDAO.deleteLicense(intId);
+           if (returnValue==null) {
+		     return Response.ok().type("text/plain")
+		  		   .entity("License deleted")
+				   .build();
+           } else {
+        	 returnValue="Unable to delete, the following collection descriptions use this id: "+returnValue;
+		     return Response.status(500)
+			  		   .entity(returnValue)
+					   .build();
+           }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

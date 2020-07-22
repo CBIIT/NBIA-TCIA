@@ -35,10 +35,19 @@ public class TimePointCriteria extends PersistentCriteria {
     private static final long serialVersionUID = 1L;
     private Integer fromDay;
     private Integer toDay;
+    private String eventType;
     private static Logger logger = Logger.getLogger(TimePointCriteria.class);
 
   
-    public Integer getFromDay() {
+    public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+
+	public Integer getFromDay() {
 		return fromDay;
 	}
 
@@ -67,8 +76,7 @@ public class TimePointCriteria extends PersistentCriteria {
     @Override
     public String getDisplayValue() {
     	if (fromDay != null && toDay != null){
-    		 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-    		return fromDay+ " ~ " + toDay;
+    		return fromDay+ " ~ " + toDay+ " ~ " + eventType;
     	}
         return "";
     }
@@ -76,13 +84,14 @@ public class TimePointCriteria extends PersistentCriteria {
     @Override
     public String getDisplayName() {
 
-        return "Days Available on NCIA";
+        return "clinical time points";
     }
 
     public List<QueryAttributeWrapper> getQueryAttributes() {
     	List<QueryAttributeWrapper> attrList = new ArrayList<QueryAttributeWrapper>();
     	String fromDayString = null;
         String toDayString = null;
+        String eventTypeString=null;
         int subAttrName = 1;
         SimpleDateFormat sdf = CrossDatabaseUtil.getDatabaseSpecificDatePattern();
 
@@ -92,6 +101,9 @@ public class TimePointCriteria extends PersistentCriteria {
 
 		if (toDay != null) {
 		    toDayString = toDay.toString();
+		}
+		if (eventType != null) {
+			eventTypeString = eventType.toString();
 		}
         // Create a wrapper for each of the criteria's values
 
@@ -106,6 +118,12 @@ public class TimePointCriteria extends PersistentCriteria {
         attr2.setSubAttributeName(String.valueOf(subAttrName++));
         attr2.setAttributeValue(toDayString);
         attrList.add(attr2);
+        
+        QueryAttributeWrapper attr3 = new QueryAttributeWrapper();
+        attr2.setCriteriaClassName(getClass().getName());
+        attr2.setSubAttributeName(String.valueOf(subAttrName++));
+        attr2.setAttributeValue(eventTypeString);
+        attrList.add(attr3);
         return attrList;
     }
 
@@ -113,13 +131,15 @@ public class TimePointCriteria extends PersistentCriteria {
 
     	try {
     		if (attr.getSubAttributeName().equals("1")) {
-    			fromDay = Integer.valueOf(attr.getAttributeValue());
+    			fromDay = Integer.parseInt(attr.getAttributeValue());
     		} else if (attr.getSubAttributeName().equals("2")) {
-    			toDay = Integer.valueOf(attr.getAttributeValue());
+    			toDay = Integer.parseInt(attr.getAttributeValue());
+    		} else if (attr.getSubAttributeName().equals("3")) {
+    			eventType = attr.getAttributeValue();
     		}
     	}
     	catch (Exception ex) {
-    		logger.error("error in parsing date in database", ex);
+    		logger.error("error in timepointcriteria", ex);
     	}
     }
 }

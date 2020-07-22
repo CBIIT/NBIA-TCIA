@@ -9,9 +9,11 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.SeriesDTO;
+import gov.nih.nci.nbia.dto.TimePointDTO;
 import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
+import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -266,7 +268,7 @@ public class StudyDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getSeriesMetadata(List<String> seriesIDs, List<String> authorizedProjAndSites) throws DataAccessException
 	{
-		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, s.studyDate, gs.seriesInstanceUID, " +
+		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, DATE_FORMAT(s.studyDate,'%Y-%m-%d'), gs.seriesInstanceUID, " +
 				"gs.seriesDesc, gs.imageCount, gs.totalSize, gs.project, gs.modality, ge.manufacturer " +
 				"FROM Study s join s.generalSeriesCollection gs join gs.generalEquipment ge where gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
@@ -621,7 +623,7 @@ public class StudyDAOImpl extends AbstractDAO
                 + " ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = generalser1_.GENERAL_SERIES_PK_ID ) "
                 + " as col_12_0_, generalser1_.PATIENT_ID , trialdatap4_.PROJECT , "
                 + " generalser1_.PATIENT_PK_ID , study0_.STUDY_ID , generalser1_.BODY_PART_EXAMINED , "
-                + " generalser1_.THIRD_PARTY_ANALYSIS , generalser1_.DESCRIPTION_URI , generalser1_.project  "
+                + " generalser1_.THIRD_PARTY_ANALYSIS , generalser1_.DESCRIPTION_URI , generalser1_.project, generalser1_.exclude_commercial  "
                 + " from STUDY study0_ inner join GENERAL_SERIES generalser1_ on study0_.STUDY_PK_ID=generalser1_.STUDY_PK_ID "
                 + " inner join GENERAL_EQUIPMENT generalequ2_ on generalser1_.GENERAL_EQUIPMENT_PK_ID=generalequ2_.GENERAL_EQUIPMENT_PK_ID, "
                 + " PATIENT patient3_, TRIAL_DATA_PROVENANCE trialdatap4_ "
@@ -656,9 +658,8 @@ public class StudyDAOImpl extends AbstractDAO
         // Loop through the results.  There is one result for each series
         while (iter.hasNext()) {
         	Object[] row = iter.next();
-
+            boolean excludeFlag=false;
             // Create the seriesDTO
-        	System.out.println("in series dto");
             SeriesDTO seriesDTO = new SeriesDTO();
             //modality should never be null... but currently possible
             seriesDTO.setModality(Util.nullSafeString(row[8]));
@@ -685,12 +686,18 @@ public class StudyDAOImpl extends AbstractDAO
             seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[18]));
             seriesDTO.setDescriptionURI(Util.nullSafeString(row[19]));
             seriesDTO.setProject(Util.nullSafeString(row[20]));
+            if (row[21]!=null&&row[21].toString().equalsIgnoreCase("YES")){
+            	excludeFlag=true;
+            }
             // Try to get the study if it already exists
             StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
 
             if (studyDTO != null) {
                 // Study already exists.  Just add series info
                 studyDTO.getSeriesList().add(seriesDTO);
+                if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
             } else {
                 // Create the StudyDTO
                 studyDTO = new StudyDTO();
@@ -704,6 +711,9 @@ public class StudyDAOImpl extends AbstractDAO
 
                 // Add the series to the study
                 studyDTO.getSeriesList().add(seriesDTO);
+                if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
 
                 // Add the study to the list
                 studyList.put(studyDTO.getId(), studyDTO);
@@ -723,5 +733,71 @@ public class StudyDAOImpl extends AbstractDAO
             studyDTO.setSeriesList(seriesList);
         }
         return returnList;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+	public TimePointDTO getMinMaxTimepoints(AuthorizationCriteria auth) throws DataAccessException
+	{
+		TimePointDTO returnValue=new TimePointDTO();
+		String selectFrom = "select max(study.longitudinal_temporal_offset_from_event), min(study.longitudinal_temporal_offset_from_event), study.longitudinal_temporal_event_type " + 
+				" from study, general_series gs " + 
+				" where study.study_pk_id = gs.study_pk_id " +
+				" and study.longitudinal_temporal_event_type is not null ";	
+		String authorization=processAuthorizationSites(auth);
+		String groupBy=" group by study.longitudinal_temporal_event_type ";
+		String sql = selectFrom+authorization+groupBy;
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sql)
+		        .list();
+		Map maxTimePoints=new HashMap<String, Integer>();
+		Map minTimePoints=new HashMap<String, Integer>();
+        for(Object[] row : data)
+        {
+        	if (row[0]!=null&&row[1]!=null&&row[2]!=null) {
+        		maxTimePoints.put(row[2].toString(), new Integer(((Double)row[0]).intValue()));
+        		minTimePoints.put(row[2].toString(), new Integer(((Double)row[1]).intValue()));
+        	}
+        }
+        returnValue.setMaxTimepoints(maxTimePoints);
+        returnValue.setMinTimepoints(minTimePoints);
+		return returnValue;
+	}
+    private static String processAuthorizationSites(AuthorizationCriteria authCrit)  {
+    	   
+        if (authCrit.getSites().isEmpty()) {
+            // User is not allowed to view any sites.
+            // Since all data has a site, user is not allowed to see anything
+            // Return empty list
+            //logger.info("No results returned because user does not have access to any sites");
+
+            return null;
+        }
+        else {
+            // Build HQL for sites
+        	String whereStmt = "";
+            whereStmt += " and (";
+
+            boolean first = true;
+
+            // For each site, need to include both collection and site
+            // since site names can be duplicated across collections
+            for (SiteData siteData : authCrit.getSites()) {
+                if (!first) {
+                    whereStmt += " OR ";
+                }
+
+                whereStmt += "(";
+                whereStmt += "gs.project";
+                whereStmt += " = '";
+                whereStmt += siteData.getCollection();
+                whereStmt += "' and ";
+                whereStmt += "gs.site";
+                whereStmt += " = '";
+                whereStmt += siteData.getSiteName();
+                whereStmt += "') ";
+                first = false;
+            }
+
+            whereStmt += ")";
+            return whereStmt;
+        }
     }
 }

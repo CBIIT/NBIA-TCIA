@@ -81,6 +81,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 		String queryKey=userName;
         System.out.println(inFormParams.get("criteriaType"+i).get(0));
         ImageModalityCriteria modalityCriteria=null;
+        String errorMessage=" ";
 		while (inFormParams.get("criteriaType"+i)!=null)
 		{
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("CollectionCriteria")){
@@ -215,6 +216,39 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 					queryKey+="ThirdPartyAnalysis"+inFormParams.get("value"+i).get(0);
 				}
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ExcludeCommercialCriteria")){
+				if (query.getDataLicenseCriteria() == null){
+					System.out.println("ExcludingCommercial");
+					DataLicenseCriteria criteria=new DataLicenseCriteria();
+					criteria.setExcludeCommercial(inFormParams.get("value"+i).get(0));
+					query.setCriteria(criteria);
+					queryKey+="ExcludeCommercial"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getDataLicenseCriteria().setExcludeCommercial(inFormParams.get("value"+i).get(0));
+					queryKey+="ExcludeCommercial"+inFormParams.get("value"+i).get(0);
+				}
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("TimePointCriteria")){
+				TimePointCriteria criteria=new TimePointCriteria();
+				if (inFormParams.get("fromDay"+i).get(0)!=null&inFormParams.get("fromDay"+i).get(0).length()>0) {
+			        criteria.setFromDay(Integer.parseInt(inFormParams.get("fromDay"+i).get(0)));
+				}
+				if (inFormParams.get("toDay"+i).get(0)!=null&inFormParams.get("toDay"+i).get(0).length()>0) {
+			        criteria.setToDay(Integer.parseInt(inFormParams.get("toDay"+i).get(0)));
+				}
+			    criteria.setEventType(inFormParams.get("eventType"+i).get(0));
+				query.setCriteria(criteria);
+				if (criteria.getEventType()==null) {
+					errorMessage=" time points must include event type";
+					throw new Exception();
+				}
+				if (criteria.getFromDay()==null&&criteria.getToDay()==null) {
+					errorMessage=" time points must include at least a from day or to day";
+					throw new Exception();
+				}
+				queryKey+="TimePointCriteria"+inFormParams.get("fromDay"+i).get(0)+inFormParams.get("fromDay"+i).get(0)+inFormParams.get("eventType"+i).get(0);
+			}  
+
 			i++;
 		}
 		String sortField=inFormParams.get("sortField").get(0);

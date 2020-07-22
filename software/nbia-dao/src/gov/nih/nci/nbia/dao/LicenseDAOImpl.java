@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.nbia.dto.LicenseDTO;
+import gov.nih.nci.nbia.internaldomain.CollectionDesc;
 import gov.nih.nci.nbia.internaldomain.License;
 
 /**
@@ -42,7 +44,41 @@ public class LicenseDAOImpl extends AbstractDAO
 
 		getHibernateTemplate().saveOrUpdate(license.getLicense());
 	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	public String deleteLicense(Integer id) {
+		String returnValue=null;
+        DetachedCriteria criteria2 = DetachedCriteria.forClass(License.class);
+        criteria2.add(Restrictions.eq("id", id));
+        List<License> licenses = getHibernateTemplate().findByCriteria(criteria2);
+        License licenseToDelete = null;
+        for (License license:licenses) {
+        	licenseToDelete=license;
+        }
+        if (licenseToDelete==null) {
+        	return "No license with id="+id;
+        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+        criteria.add(Restrictions.eq("license", licenseToDelete));
+        int i=0;
+        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+        for (CollectionDesc colDes : collectionDescList) {
+        	if (i==0) {
+        		returnValue="";
+        		i++;
+        	} else {
+        		returnValue=returnValue+", ";
+        	}
+        	returnValue=returnValue+colDes.getCollectionName();
+        }
+        if (returnValue!=null) {
+        	return returnValue;
+        }
+        
+        getHibernateTemplate().delete(licenseToDelete);;
 
+        
+		return returnValue;
+	}
 
 
 }
