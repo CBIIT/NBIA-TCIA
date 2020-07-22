@@ -177,7 +177,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
                 // Get the type. The first element of the queryData array is the criteria type (Collections, ImagModality, etc...)
                 let type = this.queryData[0];
-
                 // Remove the first element (which was the type) and just leave the data.
                 this.queryData.splice( 0, 1 );
 
@@ -190,6 +189,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                     ||
                     (!this.arraysIdentical( this.allData[type], this.queryData )) // Compare the query sent here as "data" to the existing query
                 ){
+                    // Add the query data for this "type" of search criteria.
                     this.allData[type] = this.queryData;
 
                     // If this was called because a URL parameter was added, don't do the search.
@@ -198,13 +198,11 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                         return;
                     }
 
-                    // We need to NOT run this if a URL query being rerun because a user logged in.
-                    if( (!this.parameterService.haveUrlSimpleSearchParameters()) || (this.commonService.getHaveUserInput()) ){  // TODO getHaveUserInput is not used as originally intended, look at refactoring.
-                        this.runSearch();
-                    }
+                    this.runSearch();
+
                     this.imageModalityAnyOrAllTrailer = this.apiServerService.getImageModalityAllOrAny();
                 }
-                // this.showAllQueryData();
+              // this.showAllQueryData();
 
             } );
 
@@ -216,7 +214,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         // Used in busyCartCheck to determine if the cart has finished updating, there is no easy way with things being updated asynchronous.
         this.cartService.cartCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                this.cartCount = data['count'];
+                this.cartCount = <any>data['count'];
             }
         );
 
@@ -631,7 +629,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      */
     runSearch() {
         let query = this.apiServerService.buildSimpleSearchQuery( this.allData );
-
         // If the query is empty
         if( query.length < 1 ){
             this.clearSearch();
@@ -857,8 +854,10 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     showAllQueryData() {
         console.log( '-------------------------------------------------------------------' );
         console.log( '-------------------------------------------------------------------' );
-        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria',
-            'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'PhantomCriteria', 'ThirdPartyAnalysis'];
+        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria',  // TODO these should be Consts
+            'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria',
+            'MinNumberOfStudiesCriteria', 'PhantomCriteria', 'ThirdPartyAnalysis',
+            'DaysFromBaselineCriteria', Consts.EXCLUDE_COMMERCIAL_CRITERIA ];
         for( let name of criteriaStr ){
             if( (!this.utilService.isNullOrUndefined( this.allData[name] )) && (this.allData[name].length > 0) ){
                 console.log( 'allQueryData[' + name + ']: ', this.allData[name] );
