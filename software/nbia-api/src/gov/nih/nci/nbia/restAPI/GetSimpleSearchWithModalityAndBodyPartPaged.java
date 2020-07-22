@@ -230,13 +230,21 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("TimePointCriteria")){
 				TimePointCriteria criteria=new TimePointCriteria();
-				if (inFormParams.get("fromDay"+i).get(0)!=null&inFormParams.get("fromDay"+i).get(0).length()>0) {
+				String fromDay="";
+				String toDay="";
+				String event="";
+				if (inFormParams.get("fromDay"+i)!=null&&inFormParams.get("fromDay"+i).get(0)!=null&inFormParams.get("fromDay"+i).get(0).length()>0) {
 			        criteria.setFromDay(Integer.parseInt(inFormParams.get("fromDay"+i).get(0)));
+			        fromDay=inFormParams.get("fromDay"+i).get(0);
 				}
-				if (inFormParams.get("toDay"+i).get(0)!=null&inFormParams.get("toDay"+i).get(0).length()>0) {
+				if (inFormParams.get("toDay"+i)!=null&&inFormParams.get("toDay"+i).get(0)!=null&inFormParams.get("toDay"+i).get(0).length()>0) {
 			        criteria.setToDay(Integer.parseInt(inFormParams.get("toDay"+i).get(0)));
+			        toDay=inFormParams.get("toDay"+i).get(0);
 				}
-			    criteria.setEventType(inFormParams.get("eventType"+i).get(0));
+				if (inFormParams.get("eventType"+i)!=null) {
+			       criteria.setEventType(inFormParams.get("eventType"+i).get(0));
+			       event=inFormParams.get("eventType"+i).get(0);
+				}
 				query.setCriteria(criteria);
 				if (criteria.getEventType()==null) {
 					errorMessage=" time points must include event type";
@@ -246,7 +254,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 					errorMessage=" time points must include at least a from day or to day";
 					throw new Exception();
 				}
-				queryKey+="TimePointCriteria"+inFormParams.get("fromDay"+i).get(0)+inFormParams.get("fromDay"+i).get(0)+inFormParams.get("eventType"+i).get(0);
+				queryKey+="TimePointCriteria"+fromDay+toDay+event;
 			}  
 
 			i++;
