@@ -27,8 +27,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +96,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	private RadioButtonPanel radioButtonPanel;
 	private TotalProgressPanel totalProgressPanel;
 	private long totalSize = 0;
+	private HashMap<String, String[]>clList = new HashMap<String, String[]>();
 
 	public DownloadManagerFrame(String userId, String password, boolean includeAnnotation, List<SeriesData> series,
 			String downloadServerUrl, Integer noOfRetry) {
@@ -104,7 +109,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		this.serverUrl = downloadServerUrl;
 		this.password = password;
 		Collections.sort(series, new SeriesComparitor());
-		//System.out.println("max threads: " + maxThreads + " serverurl " + serverUrl);
+
 		try {
 			addDownload(series);
 		} catch (Exception e) {
@@ -133,7 +138,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		Collections.sort(series, new SeriesComparitor());
 		//System.out.println("max threads: " + maxThreads + " serverurl " + serverUrl);
 		try {
-			addDownload(series);
+			addDownload(standalone, series);
 		} catch (Exception e) {
 			e.printStackTrace();
 			//System.out.println("Error adding series to data table: " + e.getMessage());
@@ -367,6 +372,85 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		System.exit(0);
 	}
 
+	private void addDownload(boolean standalone, List<SeriesData> seriesData) throws Exception {
+		Map<String, Long> studyIdToSeriesCntMap = new HashMap<String, Long>();
+
+		for (int i = 0; i < seriesData.size(); i++) {
+			AbstractSeriesDownloader seriesDownloader = SeriesDownloaderFactory
+					.createSeriesDownloader(seriesData.get(i).isLocal());
+
+			Long seriesCnt = studyIdToSeriesCntMap.get(seriesData.get(i).getStudyInstanceUid());
+			if (seriesCnt == null) {
+				seriesCnt = 0L;
+			}
+
+			String[] lInfo = {seriesData.get(i).getLicenseName(), seriesData.get(i).getLicenseUrl()};
+			clList.put(seriesData.get(i).getCollection(), lInfo);
+
+				
+			
+			seriesDownloader.start(serverUrl, seriesData.get(i).getCollection(), seriesData.get(i).getPatientId(),
+					seriesData.get(i).getStudyInstanceUid(), seriesData.get(i).getSeriesInstanceUid(),
+					this.includeAnnotation, seriesData.get(i).isHasAnnotation(), seriesData.get(i).getNumberImages(),
+					this.userId, this.password, seriesData.get(i).getImagesSize(), seriesData.get(i).getAnnoSize(),
+
+					StringUtil.displayAsSixDigitString(seriesCnt), noOfRetry, seriesData.get(i).getStudyDate(),
+					seriesData.get(i).getStudyId(), seriesData.get(i).getStudyDesc(), seriesData.get(i).getSeriesNum(),
+					seriesData.get(i).getSeriesDesc(), 
+					seriesData.get(i).getThirdPartyAnalysis(), seriesData.get(i).getDescriptionURI(),
+					seriesData.get(i).getManufacturer(), seriesData.get(i).getModality(),
+					seriesData.get(i).getSopClassUID(), seriesData.get(i).getSopClassName(),
+					seriesData.get(i).getLicenseName(), seriesData.get(i).getLicenseUrl());
+			tableModel.addDownload(seriesDownloader);
+			totalSize = seriesData.get(i).getImagesSize() + seriesData.get(i).getAnnoSize() + totalSize;
+			seriesDownloader.addObserver(totalProgressPanel);
+
+			studyIdToSeriesCntMap.put(seriesData.get(i).getStudyInstanceUid(), seriesCnt + 1);
+//			System.out.println("total size="+totalSize + " image size =" + seriesData.get(i).getImagesSize() + "annotation size = "+ seriesData.get(i).getAnnoSize());
+		}
+	}
+	
+    public void createLicenseFile (String rootDir) {
+    	File outputDir = null;
+		if (rootDir == null) {
+			outputDir = new java.io.File(".");
+		} else {
+			outputDir = new File(rootDir);
+		}
+	   for(Map.Entry m : clList.entrySet()){      
+		    String collection = (String) m.getKey();
+		    String [] mValue = (String[]) m.getValue();
+		    String licenseName = mValue[0];
+		    String licenseUrl = mValue[1];
+		    
+		    if (!licenseName.equals("null")) {
+			    String fileName = outputDir +File.separator
+						+ System.getProperty("databasketId").replace(".tcia", "")
+						+ File.separator + collection + File.separator + "license.html";
+		    
+				File file = new File(fileName);
+	
+				BufferedWriter writer;
+				try {
+					file.getParentFile().mkdirs(); 
+					if (!file.exists()) {
+					    file.createNewFile();
+					} 
+	
+					writer = new BufferedWriter(new FileWriter(file, true));
+			    	String content = new MessageFormat(DownloaderProperties.getLicenseText()).format(new String[] {licenseName, licenseUrl});
+			        writer.append(content);
+			         
+			        writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}		    
+		  } 
+	   }
+	}	
+	
+	// may not need to distinguish the JNLP download and app download	
 	private void addDownload(List<SeriesData> seriesData) throws Exception {
 		Map<String, Long> studyIdToSeriesCntMap = new HashMap<String, Long>();
 
@@ -388,13 +472,10 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 					seriesData.get(i).getStudyId(), seriesData.get(i).getStudyDesc(), seriesData.get(i).getSeriesNum(),
 					seriesData.get(i).getSeriesDesc());
 			tableModel.addDownload(seriesDownloader);
-			totalSize = seriesData.get(i).getImagesSize() + seriesData.get(i).getAnnoSize() + totalSize;
-			seriesDownloader.addObserver(totalProgressPanel);
 
 			studyIdToSeriesCntMap.put(seriesData.get(i).getStudyInstanceUid(), seriesCnt + 1);
-			System.out.println("total size="+totalSize + " image size =" + seriesData.get(i).getImagesSize() + "annotation size = "+ seriesData.get(i).getAnnoSize());
 		}
-	}
+	}	
 
 	/**
 	 * Grab the file location from the application for where to put downloaded
@@ -464,6 +545,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			}
 		});
 		pauseButton.setEnabled(true);
+		createLicenseFile(this.directoryBrowserPanel.getDirectory());
 		totalProgressPanel.actionStarted();
 	}
 

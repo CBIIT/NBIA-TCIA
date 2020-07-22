@@ -53,4 +53,7 @@ public class DownloaderProperties {
 		return NBIA_PROPERTIES.getProperty("linux_installer_type");
 	}
 
+	public static String getLicenseText() {
+		return NBIA_PROPERTIES.getProperty("license_text");
+	}	
 }

@@ -50,6 +50,9 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String study_id; //study_id
     private String thirdPartyAnalysis;
     private String descriptionURI;
+    private String sopClassUID;
+    private String licenseName;
+    private String licenseUrl;    
     
     public Date getStudyDate() {
 		return studyDate;
@@ -312,8 +315,29 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
 	public void setDescriptionURI(String descriptionURI) {
 		this.descriptionURI = descriptionURI;
 	}
-	
-	
-	
+
+	public String getSopClassUID() {
+		return sopClassUID;
+	}
+
+	public void setSopClassUID(String sopClassUID) {
+		this.sopClassUID = sopClassUID;
+	}
+
+	public String getLicenseName() {
+		return licenseName;
+	}
+
+	public void setLicenseName(String licenseName) {
+		this.licenseName = licenseName;
+	}
+
+	public String getLicenseUrl() {
+		return licenseUrl;
+	}
+
+	public void setLicenseUrl(String licenseUrl) {
+		this.licenseUrl = licenseUrl;
+	}
 }
 

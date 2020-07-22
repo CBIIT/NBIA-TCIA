@@ -130,6 +130,8 @@ L-->
 
     <copy todir="tmp.webapp/WEB-INF"
           file="config/applicationContext-service.xml"/>
+  	<copy todir="tmp.webapp/WEB-INF/classes"
+  	          file="resource/UIDNames.properties"/>
     <copy todir="tmp.webapp/WEB-INF/lib">
       <fileset dir="${project.lib.dir}/runtime">
         <include name="*.jar" />

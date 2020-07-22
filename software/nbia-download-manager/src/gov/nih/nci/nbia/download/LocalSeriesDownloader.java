@@ -8,14 +8,16 @@
 
 package gov.nih.nci.nbia.download;
 
-import gov.nih.nci.nbia.ui.DownloadsTableModel;
 import gov.nih.nci.nbia.util.NBIAIOUtils;
 import gov.nih.nci.nbia.util.StringUtil;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.ProxySelector;
 import java.net.SocketException;
@@ -24,6 +26,8 @@ import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -194,8 +198,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		postParams.add(new BasicNameValuePair("Range", "bytes=" + downloaded + "-"));
 		postParams.add(new BasicNameValuePair("password", password));		
 		postParams.add(new BasicNameValuePair("newFileNames", "Yes"));	
-		//System.out.println("requesting new file names");
-		//postParams.add(new BasicNameValuePair("dirType", Boolean.toString(this.dirType)));		
 		httpPostMethod.addHeader("password", password);
 		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
 			@Override
@@ -244,7 +246,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		try {
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-//			System.out.println(getTimeStamp() +" response code: " + responseCode + "for the seriers " + this.seriesInstanceUid + "--attempt--"+ attempt);		
+
 			/* Make sure response code is in the 200 range. */
 			if (responseCode / 100 != 2) {
 				if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -358,7 +360,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				OutputStream outputStream = null;
 				String fileName = tarArchiveEntry.getName();
 				String sop = null;
-//				System.out.println("fileName-"+fileName);
+
 				boolean annotation=true;
 				if (fileName.contains("^")) {
 					annotation=false;
@@ -414,23 +416,29 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 
 		// Begin lrt additions
 		if (status == COMPLETE) {
+			boolean pass = true;
 			if (sopUidsList.size() != Integer.valueOf(numberOfImages).intValue()) {
 				additionalInfo
 						.append("Number of image files mismatch. It Was supposed to be " + numberOfImages
 								+ " image files but we found " + sopUidsList.size() + " at server side\n");
 //				System.out.println(this.seriesInstanceUid + additionalInfo);
 				error();
+				pass = false;
 			}
-			else {
-				downloaded= size;
-	            //stateChanged();
-	            updateDownloadProgress(size);
-			}
+
 			if (downloadedImgSize != imagesSize) {
-				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
+				additionalInfo
+				.append(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
+//				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
+				error();
+				pass = false;
 			}
-			if (downloadedAnnoSize != annoSize) { 
-				System.out.println( this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
+			if (downloadedAnnoSize != annoSize) {
+				additionalInfo
+				.append(this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
+//				System.out.println( this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
+				error();
+				pass = false;
 			}
 			/*
 			 * Cannot use this sanity check, since image sizes are not always
@@ -445,9 +453,80 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			 * System.out.println(this.seriesInstanceUid + additionalInfo);
 			 * error(); }
 			 */
+			// End lrt additions			
+			if (pass) {
+				downloaded= size;
+	            //stateChanged();
+	            updateDownloadProgress(size);
+	            if (this.standalone)
+	            	writeToMetaData();
+			}
 			
 		}
-		// End lrt additions
+
+	}
+	
+	private void writeToMetaData() {
+		String fileName  = outputDirectory.getAbsolutePath() + File.separator
+				+ System.getProperty("databasketId").replace(".tcia", "")
+				+ File.separator + "metadata.csv";
+		
+		String newLine = this.seriesInstanceUid + "," +
+				 this.collection + "," + 
+				 this.thirdPartyAnalysis + "," + 
+				 this.descriptionURI + "," + 
+				 this.patientId + "," + 
+				 this.studyInstanceUid + "," + 
+				 this.studyDesc + "," + 
+				 this.studyDate + "," + 
+				 this.seriesDesc+ "," + 
+				 this.manufacturer + "," + 
+				 this.modality + "," + 
+				 this.sopClassName + "," + 
+				 this.sopClassUID + "," + 
+				 this.numberOfImages + "," + 
+				 bytesIntoHumanReadable(this.size) + "," + 
+				 this.getRelativeDownloadDir() + "," + 
+				 (LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+		
+		File file = new File(fileName); 
+		if (!file.exists()) {
+        	try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
+			{
+        		String header = "Series UID" + "," +
+       				 "Collection" + "," + 
+       				 "3rd Party Analysis" + "," + 
+       				 "Data Description URI" + "," + 
+       				 "Subject ID" + "," + 
+       				 "Study UID" + "," + 
+       				 "Study Description" + "," + 
+       				 "Study Date" + "," + 
+       				 "Series Description" + "," + 
+       				 "Manufacturer" + "," + 
+       				 "Modality" + "," + 
+       				 "SOP Class Name" + "," + 
+       				 "SOP Class UID" + "," + 
+       				 "Number of Images" + "," + 
+       				 "File Size" + "," + 
+       				 "File Location" + "," + 
+       				 "Download Timestamp";
+        		output.printf("%s\r\n", header);
+			    output.printf("%s\r\n", newLine);
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+        	
+        else {
+			try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
+			{								 
+			    output.printf("%s\r\n", newLine);
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
 	}
 
 	// static {
@@ -458,14 +537,24 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 	// }
 	private String createDownloadDir(boolean dirType){
 		String fileLoc;
+		String databasketId = System.getProperty("databasketId");
+		String downloadRootDir;
+		if (databasketId == null) {
+			downloadRootDir = "NBIADownloadDir";
+		}
+		else {
+			downloadRootDir = databasketId.replace(".tcia", "");
+		}
 		if (this.dirType) {				
-			fileLoc = outputDirectory.getAbsolutePath()
-				+ File.separator + this.collection + File.separator
-				+ this.patientId + File.separator + this.studyInstanceUid
-				+ File.separator + this.seriesInstanceUid;
+			fileLoc = outputDirectory.getAbsolutePath() + File.separator
+					+ downloadRootDir
+					+ File.separator + this.collection + File.separator
+					+ this.patientId + File.separator + this.studyInstanceUid
+					+ File.separator + this.seriesInstanceUid;
 		}
 		else {		
-			fileLoc = outputDirectory.getAbsolutePath()
+			fileLoc = outputDirectory.getAbsolutePath() + File.separator
+					+ downloadRootDir
 					+ File.separator + this.collection + File.separator
 					+ this.patientId + File.separator 
 					+ getPartOfName(this.studyDate)
@@ -480,10 +569,63 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		return fileLoc;
 	}
 	
+	private String getRelativeDownloadDir(){
+		String fileLoc;
+		if (this.dirType) {				
+			fileLoc = "." + File.separator + this.collection + File.separator
+					+ this.patientId + File.separator + this.studyInstanceUid
+					+ File.separator + this.seriesInstanceUid;
+		}
+		else {		
+			fileLoc = "." + File.separator + this.collection + File.separator
+					+ this.patientId + File.separator 
+					+ getPartOfName(this.studyDate)
+					+ getPartOfName(this.studyId)
+					+ getDescPartOfName(this.studyDesc)
+					+ this.studyInstanceUid.substring(this.studyInstanceUid.length()-5)	
+					+ File.separator 
+					+ getPartOfName(this.seriesNum)
+					+ getDescPartOfName(this.seriesDesc)
+					+ this.seriesInstanceUid.substring(this.seriesInstanceUid.length()-5);
+		}
+		return fileLoc;
+	}
+	
+	private String bytesIntoHumanReadable(long bytes) {
+        long kilobyte = 1024;
+        long megabyte = kilobyte * 1024;
+        long gigabyte = megabyte * 1024;
+        long terabyte = gigabyte * 1024;
+
+        if ((bytes >= 0) && (bytes < kilobyte)) {
+            return bytes + " B";
+
+        } else if ((bytes >= kilobyte) && (bytes < megabyte)) {
+            return String.format("%.2f", ((double)bytes / kilobyte)) + " KB";
+
+        } else if ((bytes >= megabyte) && (bytes < gigabyte)) {
+            return String.format("%.2f", ((double)bytes / megabyte)) + " MB";
+
+        } else if ((bytes >= gigabyte) && (bytes < terabyte)) {
+            return String.format("%.2f", ((double)bytes / gigabyte)) + " GB";
+
+        } else if (bytes >= terabyte) {
+            return String.format("%.2f", ((double)bytes / terabyte)) + " TB";
+
+        } else {
+            return bytes + " Bytes";
+        }
+    }	
+	
 	private String getDescPartOfName(String str) {
 		if ((str != null) && (str.length() >= 1)) {
-			if (str.equals("null"))
+			str = str.replace('/', '-');
+			if (str.equals("null") || str.equals("-"))
 				return "";
+			//Is it possible that the description will start with "/" which will be turned into "-"? It is legal but not recommanded. 
+			//Need to see the real cases to decide it we can remove or replace the first "/" in the descrition. So comment out the next two lines.
+//			else if (str.startsWith("-"))
+//				return str.substring(1, Math.min(str.length(), 54)) + "-";
 			else
 				return str.substring(0, Math.min(str.length(), 53)) + "-";
 		} else
@@ -518,5 +660,20 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
     	clearSopUidsList();
     	status = NOT_STARTED;
     	stateChanged();
-    }	        
+    }
+    
+//    public void createLicenseFile (String collection, String licenseName, String licenseUrl) {
+//    	String fileName= outputDirectory.getAbsolutePath() + File.separator + "license.html";
+//    	BufferedWriter writer;
+//		try {
+//			writer = new BufferedWriter(new FileWriter(fileName, true));
+//	    	String content = new MessageFormat(DownloaderProperties.getLicenseText()).format(new String[] {licenseName, licenseUrl});
+//	        writer.append(content);
+//	         
+//	        writer.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//    }
 }

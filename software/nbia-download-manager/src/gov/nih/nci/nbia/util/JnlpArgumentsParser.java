@@ -23,9 +23,9 @@ public class JnlpArgumentsParser {
 
     public static List<SeriesData> parse(String [] args){
         int length = args.length;
-        List<SeriesData> seriesDataList = new ArrayList<SeriesData>();
+        List<SeriesData> seriesDataList = new ArrayList<SeriesData>();     
 
-        for(int i=0; i< length; i++ ) {        	
+        for(int i=0; i< length; i++ ) {          	
             SeriesData series = new SeriesData();
             String[] result = StringUtils.split(args[i],"\\|");
             if(result != null && result.length > 0) {
@@ -51,7 +51,15 @@ public class JnlpArgumentsParser {
                 series.setStudyDesc(result[13]);
                 series.setSeriesNum(result[14]);
                 series.setSeriesDesc(result[15]);
-
+                
+                series.setThirdPartyAnalysis(result[16]);
+    	        series.setDescriptionURI(result[17]);
+    	        series.setManufacturer(result[18]);
+    	        series.setModality(result[19]);
+    	        series.setSopClassUID(result[20]);
+    	        series.setSopClassName(result[21]);
+    	        series.setLicenseName(result[22]);
+    	        series.setLicenseUrl(result[23]);
                 seriesDataList.add(series);
             }
         }

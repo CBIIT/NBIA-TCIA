@@ -269,11 +269,19 @@ public class StandaloneDMDispatcher {
 			StandaloneDMV2 sdm = new StandaloneDMV2();
 			sdm.setKey(key);
 			sdm.launch();
-		} else if (manifestVersion.startsWith("3.")) {
-			StandaloneDMV3 sdm = new StandaloneDMV3();
-			sdm.setKey(key);
-			sdm.launch(seriesList);
-		} else {
+		} 
+//		else if (manifestVersion.startsWith("3.")) {
+//			StandaloneDMV3 sdm = new StandaloneDMV3();
+//			sdm.setKey(key);
+//			sdm.launch(seriesList);
+//		} 
+		//For upcoming release, it will talk to serverletV4. StandaloneDMV3 class will not be used
+		else if (manifestVersion.startsWith("3.")) {
+		StandaloneDMV4 sdm = new StandaloneDMV4();
+		sdm.setKey(key);
+		sdm.launch(seriesList);
+	}
+		else {
 			JOptionPane.showMessageDialog(null, "The version of manifest file, " + manifestVersion
 					+ ", might be incompatible with this version of app. Please upgrade your app.");
 			return;
@@ -629,12 +637,11 @@ public class StandaloneDMDispatcher {
 			};
 			httpClient.setHttpRequestRetryHandler(myRetryHandler);
 			UrlEncodedFormEntity query = new UrlEncodedFormEntity(postParams);
-			httpPostMethod.setEntity(query);
-			
+			httpPostMethod.setEntity(query);		
 			start = System.currentTimeMillis();	        
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-
+	
 			if (responseCode == HttpStatus.SC_OK) {
 				InputStream inputStream = response.getEntity().getContent();
 				data = IOUtils.readLines(inputStream);

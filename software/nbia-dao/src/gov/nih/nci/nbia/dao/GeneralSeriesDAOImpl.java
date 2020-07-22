@@ -1056,12 +1056,20 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			List<SiteData> authorizedSites) {
 		
 		List <SeriesDTO> returnValue= new ArrayList<SeriesDTO>();
+		
 		String sQL = "select G.GENERAL_SERIES_PK_ID,  G.ANNOTATIONS_FLAG, G.BODY_PART_EXAMINED, G.PATIENT_ID, G.SERIES_DESC, G.SERIES_INSTANCE_UID, G.SERIES_NUMBER, "+
 				"G.STUDY_DATE, G.STUDY_DESC, G.STUDY_INSTANCE_UID, G.PROJECT, G.SITE, S.STUDY_ID, "+
 				"( SELECT sum(a.file_size) FROM annotation a WHERE a.general_series_pk_id = G.general_series_pk_id  ) as ANNOSIZE, "+
 				"( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID ) as IMAGESIZE, "+
-				"( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID ) as IMAGECOUNT "+
-				"from GENERAL_SERIES G, STUDY S where S.STUDY_PK_ID=G.STUDY_PK_ID ";
+				"( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, "+
+				"G.THIRD_PARTY_ANALYSIS, G.DESCRIPTION_URI, "+
+				"ge.manufacturer as MANUFACTURER, "+
+				"G.MODALITY, " +
+				"( SELECT gi.SOP_CLASS_UID FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID LIMIT 1) as SOPCLASSUID, "+
+				"( select CONCAT_WS('||', l.long_name,  l.license_url) from collection_descriptions cd, license l where G.PROJECT = cd.collection_name and cd.license_id = l.license_id) as license "+
+				"from GENERAL_SERIES G, STUDY S, general_equipment ge where S.STUDY_PK_ID=G.STUDY_PK_ID " +
+				"and ge.GENERAL_EQUIPMENT_PK_ID = G.GENERAL_EQUIPMENT_PK_ID";		
+		
 		String siteWhereClause=" AND (";
 		boolean first=true;
 		for (SiteData sd : authorizedSites) {
@@ -1079,6 +1087,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			visibilityWhereClause=" AND G.VISIBILITY IN ('1', '12') ";
 		}
 		String fullSQL=sQL+visibilityWhereClause+seriesIdWhereClause+siteWhereClause;
+		
 		List<Object[]> seriesResults= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(fullSQL).setParameterList("ids", seriesIds).list();
 	    Iterator<Object[]> iter = seriesResults.iterator();
 
@@ -1116,11 +1125,24 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	        	seriesDTO.setAnnotationsSize(0L);
 	        }
 	        seriesDTO.setNumberImages(((BigInteger)  row[15]).intValue());
+	        seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[16]));
+	        seriesDTO.setDescriptionURI(Util.nullSafeString(row[17]));
+	        seriesDTO.setManufacturer(Util.nullSafeString(row[18]));
+	        seriesDTO.setModality(Util.nullSafeString(row[19]));
+	        seriesDTO.setSopClassUID(Util.nullSafeString(row[20]));
+        	
+	        if (row[21] == null) {
+	        	seriesDTO.setLicenseName(null);
+		        seriesDTO.setLicenseUrl(null);	
+	        }
+	        else {
+	        	String[] parts = ((String)row[21]).split("\\|\\|");
+	        	seriesDTO.setLicenseName(parts[0]);
+		        seriesDTO.setLicenseUrl(parts[1]);	        
+	        }
+	        	        
 	        returnValue.add(seriesDTO);
 	    }
-		
 		return returnValue;	
-		
 	}
-
 }

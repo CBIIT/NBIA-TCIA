@@ -31,8 +31,12 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +56,26 @@ public class DownloadServletV4 extends HttpServlet {
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
 	private final static int CLIENT_NOT_AUTHORIZED = 462;
+	static Map<String, String> sopClassNameMap = new HashMap<String, String>();
+	
+	static{
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+   	 	InputStream input = classLoader.getResourceAsStream("UIDNames.properties");
+  		Properties properties= new Properties();
+
+		try {
+			properties.load(input);
+			for (final String name: properties.stringPropertyNames())
+				sopClassNameMap.put(name, properties.getProperty(name));
+		} catch (FileNotFoundException fe) {
+			// TODO Auto-generated catch block
+			logger.error("!!!!!!!!!!Cannot find UIDNames.properties");
+			fe.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
@@ -60,8 +84,10 @@ public class DownloadServletV4 extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// This servlet processes Manifest download related requests only. JNLP
 		// download related requests are processed at DownloadServlet
+
 		String numOfS = request.getParameter("numberOfSeries");
-  		if (numOfS != null) {
+
+		if (numOfS != null) {
 			int numberOfSeries = Integer.parseInt(numOfS);
 			List<String> seriesList = new ArrayList<String>();
 
@@ -108,9 +134,7 @@ public class DownloadServletV4 extends HttpServlet {
 			logger.info("sopUids:" + sopUids);
 			logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
 					+ " hasAnnotation: " + hasAnnotation);
-             boolean newFileNames=false;
-            
-            
+			boolean newFileNames=false;
             if (request.getParameter("newFileNames")!=null&&request.getParameter("newFileNames").length()>1) {
             	newFileNames=true;
             }
@@ -126,7 +150,6 @@ public class DownloadServletV4 extends HttpServlet {
 			if (mgr.login(userId, password)) {
 	            if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
 	            	mgr.syncDBWithLDAP(userId);
-					System.out.println("Sync performed");
 	            }
 				return true;
 			} else {
@@ -298,8 +321,7 @@ public class DownloadServletV4 extends HttpServlet {
 					return;
 				}
 				else if ((userId != null)  && !(userId.equals(NCIAConfig.getGuestUsername())) ){
-					String errorDetail = reportUnauthoizedInfo(userId, seriesList);
-					response.sendError(CLIENT_NOT_AUTHORIZED, "Insufficient privilege for " + errorDetail + ". Contact Helpdesk.");
+					response.sendError(CLIENT_NOT_AUTHORIZED, "Insufficient privilege.");
 					return;
 				}
 			} else {
@@ -312,38 +334,6 @@ public class DownloadServletV4 extends HttpServlet {
 		IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	String reportUnauthoizedInfo(String userId, List<String>seriesList) {
-		AuthorizationManager am;
-		List<String> requestedAccessList = null;
-		List<String> authorizedSiteData = null;
-		
-		try {
-			am = new AuthorizationManager(userId);
-			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
-			authorizedSiteData = am.getAuthorizedCollectionSites();
-			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-			requestedAccessList = generalSeriesDAO.findProjectSitesOfSeries(seriesList);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		if ((requestedAccessList != null) && (authorizedSiteData != null)) {
-			System.out.println("requestAccessList projsite count="+requestedAccessList.size());
-			System.out.println("authorized count ="+authorizedSiteData.size());
-			
-			requestedAccessList.removeAll(authorizedSiteData);
-		}
-		StringBuffer sb = new StringBuffer();
-		if (requestedAccessList != null) {
-			for (String s : requestedAccessList) {
-				sb.append(s);
-				sb.append(",");
-			}
-		}
-System.out.println("!!!unauthorized : "+ sb.toString().substring(0, sb.lastIndexOf(",")));
-		return sb.toString().substring(0, sb.lastIndexOf(","));
 	}
 
 	private static String cleanStr(String in) {
@@ -361,6 +351,7 @@ System.out.println("!!!unauthorized : "+ sb.toString().substring(0, sb.lastIndex
 			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
 
 
+
 			List<SiteData> authorizedSiteData = am.getAuthorizedSites();
 			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 			List<SeriesDTO> seriesDTOsFound = null;
@@ -376,9 +367,8 @@ System.out.println("!!!unauthorized : "+ sb.toString().substring(0, sb.lastIndex
 				//Has some unauthorized data
 				return null;
 			}
-			else if (seriesDTOsFound == null) {
+			else if (seriesDTOsFound == null)
 				return null;
-			}
 			List<String> seriesDownloadData = new ArrayList<String>();
 			for (SeriesDTO series : seriesDTOsFound) {
 				String collection = series.getProject();
@@ -403,10 +393,20 @@ System.out.println("!!!unauthorized : "+ sb.toString().substring(0, sb.lastIndex
 				String seriesDesc = cleanStr(series.getDescription());
 				String study_id = cleanStr(series.getStudy_id());
 				String seriesNumber = series.getSeriesNumber();
+				String thirdPartyAnalysis= series.getThirdPartyAnalysis();
+				String dataDescURI = series.getDescriptionURI();
+				String manufacturer = series.getManufacturer();
+				String modality = series.getModality();
+				String sopClassUid = series.getSopClassUID();
+				String sopClassName = sopClassNameMap.get(series.getSopClassUID());
+				String licenseName = series.getLicenseName();
+				String licenseUrl = series.getLicenseUrl();
+				
 				String argument = "" + collection + "|" + patientId + "|" + studyInstanceUid + "|" + seriesInstanceUid
 						+ "|" + annotation + "|" + numberImages + "|" + imagesSize + "|" + annoSize + "|" + url + "|"
 						+ displayName + "|" + true + "|" + studyDate + "|" + study_id + "|" + studyDesc + "|"
-						+ seriesNumber + "|" + seriesDesc;
+						+ seriesNumber + "|" + seriesDesc + "|" + thirdPartyAnalysis + "|" + dataDescURI + "|" + manufacturer 
+						+ "|" + modality + "|" + sopClassUid +"|" + sopClassName + "|" + licenseName + "|" + licenseUrl;
 				seriesDownloadData.add(argument);
 			}
 

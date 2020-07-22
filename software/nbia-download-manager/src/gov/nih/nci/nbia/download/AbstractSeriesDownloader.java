@@ -8,7 +8,6 @@
 
 package gov.nih.nci.nbia.download;
 
-import gov.nih.nci.nbia.ui.DownloadsTableModel;
 import gov.nih.nci.nbia.util.NBIAIOUtils;
 
 import java.beans.PropertyChangeListener;
@@ -203,6 +202,67 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
 		downloaded = 0;
 		this.additionalInfo = new StringBuffer();
     }
+    
+    /**
+     * Must be called before run in order to initialize all data structures.
+     */
+    public void start(String serverUrl,
+	                  String collection,
+	                  String patientId,
+	                  String studyInstanceUid,
+	                  String seriesInstanceUid,
+	                  boolean includeAnnotation,
+	                  boolean hasAnnotation,
+	                  String numberOfImages,
+	                  String userId,
+	                  String password,
+	                  Long imagesSize,
+	                  Long annoSize,
+	                  String seriesIdentifier, Integer noOfRetry,
+	                  String studyDate, String studyId, String studyDesc,
+	                  String seriesNum, String seriesDesc,
+	                  String thirdPartyAnalysis,
+	                  String descriptionURI,
+	                  String manufacturer,	                  
+	                  String modality,
+	                  String sopClassUID,
+	                  String sopClassName,
+	                  String licenseName,
+	                  String licenseUrl)
+    {	
+    	this.standalone = true;
+		this.serverUrl = serverUrl;
+		this.collection = collection;
+		this.patientId = patientId;
+		this.studyInstanceUid = studyInstanceUid;
+		this.seriesInstanceUid = seriesInstanceUid;
+		this.includeAnnotation = includeAnnotation;
+		this.hasAnnotation = hasAnnotation;
+		this.numberOfImages = numberOfImages;
+		this.userId = userId;
+		this.password = password;
+		this.imagesSize = imagesSize;
+		this.annoSize = annoSize;
+		this.seriesIdentifier = seriesIdentifier;
+		this.noOfRetry = noOfRetry;
+		this.studyDate = studyDate;
+		this.studyId = studyId;
+		this.studyDesc = studyDesc;
+		this.seriesNum = seriesNum;
+		this.seriesDesc = seriesDesc;
+		this.thirdPartyAnalysis = thirdPartyAnalysis;
+		this.descriptionURI = descriptionURI;
+		this.manufacturer = manufacturer;	                  
+		this.modality = modality;
+		this.sopClassUID = sopClassUID;
+		this.sopClassName = sopClassName;
+		this.licenseName = licenseName;
+		this.licenseUrl = licenseUrl;
+				
+		computeTotalSize();
+		downloaded = 0;
+		this.additionalInfo = new StringBuffer();
+    }   
 
 
     /**
@@ -287,6 +347,16 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     protected String studyDesc;
     protected String seriesNum;
     protected String seriesDesc;
+    protected String thirdPartyAnalysis;
+    protected String descriptionURI;
+    protected String sopClassUID;
+    protected String sopClassName;
+    protected String modality;
+    protected String manufacturer;
+    protected boolean standalone = false; 
+    protected String licenseName;
+    protected String licenseUrl;
+    
     protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     protected NBIAIOUtils.ProgressInterface progressUpdater = new ProgressUpdater();

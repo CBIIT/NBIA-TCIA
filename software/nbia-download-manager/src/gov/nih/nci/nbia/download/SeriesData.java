@@ -26,6 +26,14 @@ public class SeriesData {
 	private String studyDesc;
 	private String seriesNum;
 	private String seriesDesc;
+	private String thirdPartyAnalysis;
+    private String descriptionURI;
+    private String sopClassUID;
+    private String sopClassName;
+    private String modality;
+    private String manufacturer;  
+    private String licenseName;
+    private String licenseUrl;    
 	
 	public String getStudyDate() {
 		return studyDate;
@@ -123,6 +131,52 @@ public class SeriesData {
 	public void setLocal(boolean local) {
 		this.local = local;
 	}
-	
-
+	public String getThirdPartyAnalysis() {
+		return thirdPartyAnalysis;
+	}
+	public void setThirdPartyAnalysis(String thirdPartyAnalysis) {
+		this.thirdPartyAnalysis = thirdPartyAnalysis;
+	}
+	public String getDescriptionURI() {
+		return descriptionURI;
+	}
+	public void setDescriptionURI(String descriptionURI) {
+		this.descriptionURI = descriptionURI;
+	}
+	public String getSopClassUID() {
+		return sopClassUID;
+	}
+	public void setSopClassUID(String sopClassUID) {
+		this.sopClassUID = sopClassUID;
+	}
+	public String getSopClassName() {
+		return sopClassName;
+	}
+	public void setSopClassName(String sopClassName) {
+		this.sopClassName = sopClassName;
+	}
+	public String getModality() {
+		return modality;
+	}
+	public void setModality(String modality) {
+		this.modality = modality;
+	}
+	public String getManufacturer() {
+		return manufacturer;
+	}
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+	public String getLicenseName() {
+		return licenseName;
+	}
+	public void setLicenseName(String licenseName) {
+		this.licenseName = licenseName;
+	}
+	public String getLicenseUrl() {
+		return licenseUrl;
+	}
+	public void setLicenseUrl(String licenseUrl) {
+		this.licenseUrl = licenseUrl;
+	}
 }
