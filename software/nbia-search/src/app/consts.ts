@@ -52,6 +52,8 @@ export const Consts = {
         ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
         ANATOMICAL_SITE: 'AnatomicalSite',
         MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
+        DAYS_FROM_BASELINE_CRITERIA: 'TimePointCriteria',
+        EXCLUDE_COMMERCIAL_CRITERIA: 'ExcludeCommercialCriteria',
         IMAGE_MODALITY_CRITERIA: 'ImageModalityCriteria',
         IMAGE_MODALITY: 'ImageModality',
         MODALITY: 'Modality',
@@ -110,6 +112,7 @@ export const Consts = {
         DRILL_DOWN_IMAGE: 'getImageDrillDown',
         GET_THUMBNAIL: 'getThumbnail\'',
         COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
+        GET_MIN_MAX_TIME_POINTS: 'getMimMaxTimepoints',
         GET_HOST_NAME: 'hostName',
 
         // For getting subject "id" data with the subject "subjectId"  will be a simple search
@@ -138,9 +141,11 @@ export const Consts = {
         GET_SHARED_LIST: 'getSharedList',
         LOG_ENTRY: 'addClientAudit',
         GET_USER_ROLES: 'getRoles',
+        GET_COLLECTION_LICENSES: 'getLicences',
 
         SEARCH_TYPE_DEFAULT: 0,  // Simple Search = 0, Free Text = 1, Query Builder = 2
-
+    //
+        GET_SPECIES_TAX: 'getSpeciesTax',
         SEARCH_CRITERIA_VALUES: 'getSimpleSearchCriteriaValues',
         SERIES_FOR_SUBJECT: 'seriesForSubject',
         SERIES_FOR_SHARED_LIST_SUBJECT: 'seriesForSharedListSubject',
