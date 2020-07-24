@@ -393,6 +393,17 @@ public class getData {
 		}
 		return results;
 	}
+	protected List<Object[]> getSeries(String fromDate, List<String> authorizedCollections) {
+		List<Object[]> results = null;
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		try {
+			results = tDao.getSeries(fromDate, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}
 	protected List<String> getSOPUIDS(String seriesInstanceUID, List<String> authorizedCollections) {
 		List<String> results = null;
 

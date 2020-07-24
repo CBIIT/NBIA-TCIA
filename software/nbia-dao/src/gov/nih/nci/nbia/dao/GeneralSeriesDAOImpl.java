@@ -7,6 +7,10 @@
  */
 
 package gov.nih.nci.nbia.dao;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 
 import gov.nih.nci.nbia.dto.EquipmentDTO;
 import gov.nih.nci.nbia.dto.SeriesDTO;
@@ -24,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Date;
+
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -383,7 +387,51 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		return rs;
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<Object[]> getSeries(String fromDate, List<String> authorizedProjAndSites) throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		} 
+		StringBuffer where = new StringBuffer();
+		List<Object[]> rs = null;
+		String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
+				+ "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
+				+ "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount"
+				+ " from GeneralSeries s where s.visibility in ('1') ";
 
+		List<Date> paramList = new ArrayList<Date>();
+		int i = 0;
+		if (fromDate==null) {
+			fromDate="01/01/1900";
+		}
+		Date fromDayDate=null;
+		DateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			fromDayDate = new java.sql.Date(simpleDateFormat.parse(fromDate).getTime());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (fromDate != null) {
+			where = where.append(" and s.maxSubmissionTimestamp>?");
+			paramList.add(fromDayDate);
+			++i;
+		}
+
+		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+				+ hql + where.toString());
+
+		if (i > 0) {
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			rs = getHibernateTemplate().find(hql + where.toString(), values);
+		} else
+			rs = getHibernateTemplate().find(hql + where.toString());
+
+		return rs;
+	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<Object[]> getSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites)
 			throws DataAccessException {
