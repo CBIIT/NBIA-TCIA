@@ -233,7 +233,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	} 
 	private void setExcludeCommercial(GeneralSeries series, String project) throws Exception {
 	    
-        String SQLQuery="select trail_dp_pk_id from trial_data_provenance where license_id in (select license_id from license where commercial_use='YES') and project='"+project+"'";
+        String SQLQuery="select collection_descriptions_pk_id from  collection_descriptions where license_id in (select license_id from license where commercial_use='YES') and collection_name='"+project+"'";
 		List<Object[]> data= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();
 		if (!(data!=null&&data.size()>0)) {
