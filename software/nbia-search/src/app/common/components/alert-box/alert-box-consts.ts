@@ -15,8 +15,17 @@ export const AlertBoxButtonType = {
     CONTINUE: 2,
     DELETE: 4,
     SAVE: 8,
-    CANCEL: 16
+    CANCEL: 16,
+    DISABLE_COMMERCIAL: 32,
+    PROCEED: 64
 };
 
-export const AlertBoxButtonText = [, 'Okay', 'Continue', , 'Delete', , , , 'Save', , , , , , , , 'Cancel'];
+export const AlertBoxButtonText = [,
+    'Okay',
+    'Continue', ,
+    'Delete', , , ,
+    'Save', , , , , , , ,
+    'Cancel', , , , , , , , , , , , , , , ,
+    'Disable Commercial Series',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    'Proceed' ];
 

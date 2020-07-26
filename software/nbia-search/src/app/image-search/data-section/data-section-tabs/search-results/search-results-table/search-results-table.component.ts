@@ -857,7 +857,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria',  // TODO these should be Consts
             'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria',
             'MinNumberOfStudiesCriteria', 'PhantomCriteria', 'ThirdPartyAnalysis',
-            'DaysFromBaselineCriteria', Consts.EXCLUDE_COMMERCIAL_CRITERIA ];
+            Consts.DAYS_FROM_BASELINE_CRITERIA, Consts.EXCLUDE_COMMERCIAL_CRITERIA ];
         for( let name of criteriaStr ){
             if( (!this.utilService.isNullOrUndefined( this.allData[name] )) && (this.allData[name].length > 0) ){
                 console.log( 'allQueryData[' + name + ']: ', this.allData[name] );

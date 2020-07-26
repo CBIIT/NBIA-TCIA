@@ -1,0 +1,18 @@
+<div class="query-panel">
+    <div class="query-panel-heading"
+    >
+        <label
+                class="clicker unselectable"
+                for="excludeCommercialCheckbox"
+        >
+            <input id="excludeCommercialCheckbox"
+                   type="checkbox"
+                   [(ngModel)]="excludeCom"
+                   (click)="onExcludeCommercialCheckboxClick( $event.target['checked'])"
+            >&nbsp;
+            Exclude collections with
+            commercial use restrictions
+        </label>
+
+    </div>
+</div>

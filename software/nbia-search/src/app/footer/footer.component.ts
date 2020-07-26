@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Properties } from '@assets/properties';
 import { Subject } from 'rxjs';
 import { Consts } from '@app/consts';
@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./footer.component.scss'],
     encapsulation: ViewEncapsulation.None
 } )
-export class FooterComponent implements OnInit{
+export class FooterComponent implements OnInit, OnDestroy{
 
     properties = Properties;
     userRoles;
@@ -23,7 +23,6 @@ export class FooterComponent implements OnInit{
     }
 
     ngOnInit() {
-
 
         this.apiServerService.doGetNoToken( Consts.GET_HOST_NAME ).subscribe(
             data => {
@@ -44,7 +43,11 @@ export class FooterComponent implements OnInit{
                 this.user = data;
             }
         );
+    }
 
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
 }

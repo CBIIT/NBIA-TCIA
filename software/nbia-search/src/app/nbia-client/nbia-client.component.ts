@@ -173,6 +173,8 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         let showTest = this.route.snapshot.queryParams[Properties.URL_KEY_SHOW_TEST_TAB];
         let apiUrl = this.route.snapshot.queryParams[Properties.URL_KEY_API_URL];
         let textSearchInput = this.route.snapshot.queryParams[Properties.URL_KEY_TEXT_SEARCH];
+        let excludeCommercial =   this.route.snapshot.queryParams[Properties.URL_KEY_EXCLUDE_COMMERCIAL];
+        let daysFromBaseline =   this.route.snapshot.queryParams[Properties.URL_KEY_DAYS_FROM_BASELINE];
 
         if( !this.utilService.isNullOrUndefined( textSearchInput ) ){
             this.parameterService.setTextSearch( textSearchInput );
@@ -187,7 +189,15 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
             modalityAll = null;
         }
 
-        if( !this.utilService.isNullOrUndefined( dateRange ) ){
+        if( !this.utilService.isNullOrUndefined( daysFromBaseline ) ){
+            this.parameterService.setDaysFromBaseline( daysFromBaseline );
+        }
+
+        if( !this.utilService.isNullOrUndefined( excludeCommercial ) ){
+            this.parameterService.setExcludeCommercial( excludeCommercial );
+        }
+
+       if( !this.utilService.isNullOrUndefined( dateRange ) ){
             this.parameterService.setDateRange( dateRange );
         }
 
@@ -280,7 +290,6 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         while( !getTokenComplete ){
             await this.commonService.sleep( 10 );
         }
-        this.apiServerService.gotToken();
         // TODO send word to everything else that we have the token - can we access apiService.gettingAccessToken?
 
         this.loadingDisplayService.setLoading( false, 'Standby...' ); // There was a typo here in previous version.

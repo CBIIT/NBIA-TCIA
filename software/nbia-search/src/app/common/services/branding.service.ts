@@ -42,21 +42,21 @@ export class BrandingService{
     currentDate = new Date();
 
     constructor( private httpClient: HttpClient, private commonService: CommonService,
-                 private utilService: UtilService) {
+                 private utilService: UtilService ) {
     }
 
 
     /**
      * currentBrand file is a text file with the brand "name", this is the directory name within the assets/brand directory for this brand.
      */
-   async initCurrentBrand() {
+    async initCurrentBrand() {
         // Check for config file which will take precedence
         let runaway = 100; // Just in case.
         while( (!Properties.CONFIG_COMPLETE) && (runaway > 0) ){
             await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
             runaway--;
         }
-        if( this.utilService.isNullOrUndefinedOrEmpty(Properties.BRAND) || (  Properties.BRAND === '%BRAND%')){
+        if( this.utilService.isNullOrUndefinedOrEmpty( Properties.BRAND ) || (Properties.BRAND === '%BRAND%') ){
             this.readTextFile( 'assets/' + Properties.BRAND_DIR + '/currentBrand' ).subscribe(
                 data => {
 
@@ -74,10 +74,8 @@ export class BrandingService{
                     }
                     console.error( 'Could not access Brand file! ', err.status );
                 }
-
             );
-        }
-        else{
+        }else{
             this.initBrandSettings();
         }
     }
@@ -91,13 +89,13 @@ export class BrandingService{
         this.initBrandItem( this.TEXT_SEARCH_DOCUMENTATION, '/textSearchDocumentationUrl.txt' );
         this.initBrandItem( this.VERSION_SUFFIX, '/versionSuffix.txt' );
 
-       // MAKE SURE FOOTER_HTML COMES AFTER VERSION_SUFFIX!!!  FOOTER_HTML uses VERSION_SUFFIX!!!
-       let runaway = 100; // Just in case.
-       while( (Properties.VERSION_SUFFIX === 'PLACE_HOLDER' ) && ( runaway > 0)){
-           await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
-           runaway--;
-       }
-       this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
+        // MAKE SURE FOOTER_HTML COMES AFTER VERSION_SUFFIX!!!  FOOTER_HTML uses VERSION_SUFFIX!!!
+        let runaway = 100; // Just in case.
+        while( (Properties.VERSION_SUFFIX === 'PLACE_HOLDER') && (runaway > 0) ){
+            await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
+            runaway--;
+        }
+        this.initBrandItem( this.FOOTER_HTML, '/footer.html' );
 
     }
 
@@ -105,8 +103,7 @@ export class BrandingService{
     initValue( file, item = this.OTHER ) {
         if( item === this.CUSTOM_MENU_DATA ){
             return this.getJSON( 'assets/' + Properties.BRAND_DIR + '/' + file );
-        }
-        else{
+        }else{
             return this.readTextFile( 'assets/' + Properties.BRAND_DIR + '/' + file );
         }
     }
@@ -128,14 +125,11 @@ export class BrandingService{
             case this.DOWNLOADER_URL:
                 Properties.DOWNLOADER_URL = value;
                 break;
-           case this.VERSION_SUFFIX:
-               Properties.VERSION_SUFFIX = value;
-               break;
-           case this.FOOTER_HTML:
-                Properties.FOOTER_HTML = value.trim().
-                replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX).
-                replace( /%TEST_VERSION%/g, Properties.TEST_VERSION).
-                replace( /%HOST_NAME%/g, Properties.HOST_NAME);
+            case this.VERSION_SUFFIX:
+                Properties.VERSION_SUFFIX = value;
+                break;
+            case this.FOOTER_HTML:
+                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX ).replace( /%TEST_VERSION%/g, Properties.TEST_VERSION ).replace( /%HOST_NAME%/g, Properties.HOST_NAME );
                 break;
         }
     }
@@ -158,8 +152,7 @@ export class BrandingService{
                             console.error( 'Could not ' + ((err1.status === 404) ? 'find ' : 'access ') + Properties.BRAND + file + ' or ' + Properties.DEFAULT_BRAND + file );
                         }
                     );
-                }
-                else{
+                }else{
                     console.error( 'Error initBrandItem: ', err0 );
                 }
             }
@@ -189,7 +182,7 @@ export class BrandingService{
         return this.httpClient.get( file,
             {
                 responseType: 'text'
-            } ).pipe(timeout(Properties.HTTP_TIMEOUT));
+            } ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
     getJSON( file ): Observable<any> {

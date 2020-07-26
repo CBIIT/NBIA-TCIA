@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { ModalityDescriptionsService } from '@app/common/services/modality-descriptions.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import { QueryCriteriaInitService } from '@app/common/services/query-criteria-init.service';
 
 /**
  * The list of selectable criteria that make up the Image Modality part of the search query.
@@ -143,7 +144,8 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                  private sortService: SearchResultsSortService, private  persistenceService: PersistenceService,
                  private parameterService: ParameterService, private initMonitorService: InitMonitorService,
                  private queryUrlService: QueryUrlService, private utilService: UtilService,
-                 private modalityDescriptionsService: ModalityDescriptionsService, private loadingDisplayService: LoadingDisplayService ) {
+                 private modalityDescriptionsService: ModalityDescriptionsService, private loadingDisplayService: LoadingDisplayService,
+                 private queryCriteriaInitService: QueryCriteriaInitService ) {
 
         this.apiServerService.setImageModalityAllOrAny( this.allOrAnyLabels[this.allOrAnyDefault] );
 
@@ -165,7 +167,8 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getModalityValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
              data => {
-                this.completeCriteriaList = data;
+                 this.queryCriteriaInitService.endQueryCriteriaInit();
+                 this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
@@ -177,7 +180,8 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
                     this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 }
-            }
+
+             }
             );
 
 
@@ -187,12 +191,15 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
                 // alert('error: ' + err);
+                this.queryCriteriaInitService.endQueryCriteriaInit();
             }
             );
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
         this.loadingDisplayService.setLoading( true, 'Loading query data' );
+        // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
+        this.queryCriteriaInitService.startQueryCriteriaInit();
         this.apiServerService.dataGet( 'getModalityValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );

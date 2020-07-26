@@ -11,6 +11,7 @@ import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { UtilService } from '@app/common/services/util.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 import { takeUntil } from 'rxjs/operators';
+import { QueryCriteriaInitService } from '@app/common/services/query-criteria-init.service';
 
 @Component( {
     selector: 'nbia-species-query',
@@ -115,13 +116,11 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,
                  private sortService: SearchResultsSortService, private parameterService: ParameterService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
-                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService ) {
-
-
+                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService,
+                 private queryCriteriaInitService: QueryCriteriaInitService) {
     }
 
     async ngOnInit() {
-
         /**
          * Set to true when a subscribe returns an error.
          * It is used where we are waiting on subscribed data, to tell us to stop waiting, there will be no data.
@@ -132,7 +131,7 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
 
         // ----------------------------------------------------------------------------------------------------------
         // Get the list of Species descriptions.
-        // THIS MUST COME BEFORE "Get the full complete criteria list.", so the descriptions ar ready to be added.
+        // THIS MUST COME BEFORE "Get the full complete criteria list.", so the descriptions are ready to be added.
         // ----------------------------------------------------------------------------------------------------------
         this.apiServerService.getSpeciesTaxEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -144,19 +143,17 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getSpeciesTaxErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( err ) => {
                 // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
-                alert('error: ' + err);
+                alert( 'error: ' + err['message'] );
                 errorFlag = true;
 
             }
         );
-        this.apiServerService.dataGet( 'getSpeciesTax', '' );
+        this.apiServerService.dataGet( Consts.GET_SPECIES_TAX, '' );
         while( (this.utilService.isNullOrUndefined( this.speciesTaxList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
         // ----------------------------------------------------------------------------------------------------------
         // ----------------------------------------------------------------------------------------------------------
-
-
 
 
         // ----------------------------------------------------------------------------------------------------------
@@ -165,6 +162,7 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
         errorFlag = false;
         this.apiServerService.getSpeciesValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeCriteriaList = data;
                 this.addDescriptions();
 
@@ -187,12 +185,16 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
                 // alert('error: ' + err);
+                this.queryCriteriaInitService.endQueryCriteriaInit();
             }
         );
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
         this.loadingDisplayService.setLoading( true, 'Loading query data' );
+        // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
+        this.queryCriteriaInitService.startQueryCriteriaInit();
+
         this.apiServerService.dataGet( 'getSpeciesValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
@@ -246,12 +248,10 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
                 this.initMonitorService.setSpeciesRunning( true );
 
 
-
-                this.apiServerService.dataGet( 'getSpeciesTax', '' );
+                this.apiServerService.dataGet( Consts.GET_SPECIES_TAX, '' );
                 while( (this.utilService.isNullOrUndefined( this.speciesTaxList )) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );
                 }
-
 
 
                 // The complete reset we need.
@@ -681,10 +681,10 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
         this.updateCriteriaList( true );
     }
 
-    addDescriptions(){
-      for( let i = 0; i <  this.completeCriteriaList.length ; i++){
-          this.completeCriteriaList[i]['description'] = this.getSpeciesDescriptionByCode( this.completeCriteriaList[i]['criteria']);
-      }
+    addDescriptions() {
+        for( let i = 0; i < this.completeCriteriaList.length; i++ ){
+            this.completeCriteriaList[i]['description'] = this.getSpeciesDescriptionByCode( this.completeCriteriaList[i]['criteria'] );
+        }
     }
 
     getSpeciesDescriptionByCode( code ) {
@@ -693,7 +693,7 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
                 return tax['speciesDescription'];
             }
         }
-            return 'Description \"' + code + '\" not found';
+        return 'Description \"' + code + '\" not found';
     }
 
     ngOnDestroy() {

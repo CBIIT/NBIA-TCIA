@@ -21,6 +21,7 @@ export class ApiServerService implements OnDestroy{
      * @type {EventEmitter}
      */
     simpleSearchResultsEmitter = new EventEmitter();
+    simpleSearchTimePointsMinMaxEmitter = new EventEmitter();
 
     /**
      * Used to return error data from a Simple search.
@@ -174,6 +175,8 @@ export class ApiServerService implements OnDestroy{
     getSpeciesTaxErrorEmitter = new EventEmitter();
     speciesTax;
 
+    getMinMaxTimepointsEmitter = new EventEmitter();
+
     /**
      * Used by emitGetResults when dataGet is called
      * @type {EventEmitter<any>}
@@ -186,6 +189,12 @@ export class ApiServerService implements OnDestroy{
      */
     getManufacturerTreeErrorEmitter = new EventEmitter();
 
+    collectionLicenses;
+    collectionLicensesResultsEmitter = new EventEmitter();
+    collectionLicensesErrorEmitter = new EventEmitter();
+
+    getEventTypesEmitter = new EventEmitter();
+    getEventTypesErrorEmitter = new EventEmitter();
 
     getDicomTagsEmitter = new EventEmitter();
     getDicomTagsErrorEmitter = new EventEmitter();
@@ -252,7 +261,7 @@ export class ApiServerService implements OnDestroy{
 
     simpleSearchQueryTrailer = '';
 
-    public gettingAccessToken;
+    public gettingAccessToken = 0;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -290,9 +299,10 @@ export class ApiServerService implements OnDestroy{
         return this.loggingOut;
     }
 
-    getCurrentUserRoles(){
+    getCurrentUserRoles() {
         return this.currentUserRoles;
     }
+
     getSpeciesTax() {
         return this.speciesTax;
     }
@@ -341,7 +351,35 @@ export class ApiServerService implements OnDestroy{
         let searchQuery = '';
         this.queryBuilderIndex = 0;
 
-        let isSearchable = false;
+        let isSearchable = false; // CHECKME I don't think we need/use this
+
+        // Days from baseline
+        if( (allData[Consts.DAYS_FROM_BASELINE_CRITERIA] !== undefined) &&
+            (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] !== undefined) &&
+            (allData[Consts.DAYS_FROM_BASELINE_CRITERIA].length > 0) ){
+            isSearchable = true;
+
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DAYS_FROM_BASELINE_CRITERIA + '&eventType' + this.queryBuilderIndex + '=' +
+                allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0];
+            if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1].length > 0 ){
+                searchQuery += '&fromDay' + (this.queryBuilderIndex) + '=' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1];
+            }
+            if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2].length > 0 ){
+                searchQuery += '&toDay' + (this.queryBuilderIndex) + '=' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2];
+            }
+            this.queryBuilderIndex++;
+        }
+
+        // Exclude Commercial
+        if( (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA] !== undefined) &&
+            (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0] !== undefined) &&
+            (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA].length > 0) ){
+            isSearchable = true;
+
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.EXCLUDE_COMMERCIAL_CRITERIA + '&value' + this.queryBuilderIndex + '=' +
+                allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0];
+            this.queryBuilderIndex++;
+        }
 
         // Collections
         if( (allData[Consts.COLLECTION_CRITERIA] !== undefined) && (allData[Consts.COLLECTION_CRITERIA].length > 0) ){
@@ -354,6 +392,8 @@ export class ApiServerService implements OnDestroy{
 
         // Minimum Studies
         if( (allData[Consts.MINIMUM_STUDIES] !== undefined) && (allData[Consts.MINIMUM_STUDIES].length > 0) ){
+            isSearchable = true;
+
             for( let item of allData[Consts.MINIMUM_STUDIES] ){
 
                 let msCount = +item - 1;
@@ -458,12 +498,15 @@ export class ApiServerService implements OnDestroy{
                 this.queryBuilderIndex++;
             }
         }
+        // Add tool name to query so server can track usage.
+
         if( searchQuery.length > 0 ){
             searchQuery += '&tool=nbiaclient';
         }
+
         // Remove leading &
         searchQuery = searchQuery.substr( 1 );
-        this.commonService.setIsSearchable( isSearchable );
+        this.commonService.setIsSearchable( isSearchable );  // CHECKME I don't think we need/use this
 
         return searchQuery;
     }
@@ -483,6 +526,7 @@ export class ApiServerService implements OnDestroy{
             this.accessToken = null;
         }else{
             this.accessToken = t['access_token'];
+            this.gotToken();
         }
         this.persistenceService.put( this.persistenceService.Field.ACCESS_TOKEN, this.accessToken );
         this.rawAccessToken = t;
@@ -491,12 +535,12 @@ export class ApiServerService implements OnDestroy{
         this.doGet( Consts.GET_USER_ROLES, this.accessToken ).subscribe(
             ( resGetUserRoles ) => {
                 this.currentUserRoles = resGetUserRoles;
-                this.currentUserRolesEmitter.emit(this.currentUserRoles);
+                this.currentUserRolesEmitter.emit( this.currentUserRoles );
             },
             ( errGetUserRoles ) => {
                 // If we can't get the users role(s), we will give them none.
                 this.currentUserRoles = [];
-                this.currentUserRolesEmitter.emit(this.currentUserRoles);
+                this.currentUserRolesEmitter.emit( this.currentUserRoles );
             } );
 
     }
@@ -585,7 +629,6 @@ export class ApiServerService implements OnDestroy{
         this.commonService.clearSimpleSearchResults();
     }
 
-
     /**  TODO Add comments about calling components
      * Emit the API server call results.<br>
      * A different emitter is used depending on the 'searchType'.
@@ -605,13 +648,13 @@ export class ApiServerService implements OnDestroy{
         if( searchType === Consts.SIMPLE_SEARCH && Properties.PAGED_SEARCH ){
             this.currentSearchResultsData = res;
             this.currentSearchResults = res['resultSet'].slice();
-
             // Tell everyone the the search results count.
             this.commonService.updateSearchResultsCount( this.currentSearchResultsData['totalPatients'] );
 
             // TODO Explain why we need this ( for now )
             this.commonService.updateSimpleSearchResultsCount( this.currentSearchResultsData['totalPatients'] );
 
+            this.simpleSearchTimePointsMinMaxEmitter.emit( { 'minTimepoints': this.currentSearchResultsData['minTimepoints'], 'maxTimepoints': this.currentSearchResultsData['maxTimepoints']});
             // We need to add matchedStudies to the data.
             for( let row of this.currentSearchResults ){
                 let matchedSeriesCount = 0;
@@ -624,11 +667,12 @@ export class ApiServerService implements OnDestroy{
 
             }
 
+
             this.getCriteriaCounts();
             this.simpleSearchResultsEmitter.emit( this.currentSearchResults );
         }
 
-
+        // TODO we will probably never go back to non-paged results. Should start cleaning this stuff out.
         if( searchType === Consts.SIMPLE_SEARCH && (!Properties.PAGED_SEARCH) ){
 
             this.currentSearchResults = res.slice();
@@ -870,7 +914,7 @@ export class ApiServerService implements OnDestroy{
 
                                 // We have a new token, try the search one more time.
                                 this.doPost( searchService, query ).subscribe(
-                                // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
+                                    // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
                                     ( res1 ) => {
                                         this.emitPostResults( searchType, res1, id, selected );
                                     },
@@ -889,7 +933,6 @@ export class ApiServerService implements OnDestroy{
                                         this.emitPostError( searchType, err1, id );
                                     }
                                 );
-                                this.gotToken();
 
                             },
 
@@ -929,7 +972,7 @@ export class ApiServerService implements OnDestroy{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
-            console.log( 'doPost: ', curl );
+            console.log( '01 doPost: ', curl );
         }
 
         let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
@@ -984,9 +1027,13 @@ export class ApiServerService implements OnDestroy{
             this.getBodyPartValuesAndCountsEmitter.emit( res );
         }else if( queryType === 'getSpeciesValuesAndCounts' ){
             this.getSpeciesValuesAndCountsEmitter.emit( res );
-        }else if( queryType === 'getSpeciesTax' ){
+        }else if( queryType === Consts.GET_SPECIES_TAX ){
             this.speciesTax = res;
             this.getSpeciesTaxEmitter.emit( res );
+        }else if( queryType === 'getEventTypes' ){
+            this.getEventTypesEmitter.emit( res );
+        }else if( queryType === Consts.GET_MIN_MAX_TIME_POINTS ){
+            this.getMinMaxTimepointsEmitter.emit( res );
         }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeEmitter.emit( res );
         }else if( queryType === Consts.DICOM_TAGS ){
@@ -1011,8 +1058,10 @@ export class ApiServerService implements OnDestroy{
             this.getBodyPartValuesAndCountsErrorEmitter.emit( err );
         }else if( queryType === 'getSpeciesValuesAndCounts' ){
             this.getSpeciesValuesAndCountsErrorEmitter.emit( err );
-        }else if( queryType === 'getSpeciesTax' ){
+        }else if( queryType === Consts.GET_SPECIES_TAX ){
             this.getSpeciesTaxErrorEmitter.emit( err );
+        }else if( queryType === 'getEventTypes' ){
+            this.getEventTypesErrorEmitter.emit( err );
         }else if( queryType === 'getManufacturerTree' ){
             this.getManufacturerTreeErrorEmitter.emit( err );
         }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS ){
@@ -1038,7 +1087,6 @@ export class ApiServerService implements OnDestroy{
             queryType = queryType + '?' + query;
         }
         let counter = 0; // If something goes wrong, we don't want to be an endless loop
-
         // If something else is waiting for an access token, wait here
         while( this.gettingAccessToken > 0 && counter < 50 ){
             counter++;
@@ -1210,7 +1258,7 @@ export class ApiServerService implements OnDestroy{
 
         if( Properties.DEBUG_CURL ){
             let curl = ' curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/' + Consts.API_MANIFEST_URL + '\' -d \'' + query + '\'';
-            console.log( 'doPost: ', curl );
+            console.log( '03 doPost: ', curl );
         }
 
 
@@ -1234,6 +1282,19 @@ export class ApiServerService implements OnDestroy{
     getImageModalityAllOrAny() {
         return this.imageModalityAllOrAnyLabels;
     }
+
+    getCollectionLicenses() {
+        this.doGet( Consts.GET_COLLECTION_LICENSES, this.showToken() ).subscribe(
+            ( collectionLicensesData ) => {
+                this.collectionLicenses = collectionLicensesData;
+                // Emit here
+                this.collectionLicensesResultsEmitter.emit( this.collectionLicenses );
+            },
+            collectionLicensesError => {
+                this.collectionDescriptionsErrorEmitter.emit(collectionLicensesError);
+            } );
+    }
+
 
 
     deleteToken() {

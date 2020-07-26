@@ -79,8 +79,8 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
     };
 
     // We need this to access clearDate() within this.onDateRangeClearAllClick
-    @ViewChild( 'dpFrom', {static: true} ) ngxdpFrom: NgxMyDatePickerDirective;
-    @ViewChild( 'dpTo', {static: true} ) ngxdpTo: NgxMyDatePickerDirective;
+    @ViewChild( 'dpFrom', { static: true } ) ngxdpFrom: NgxMyDatePickerDirective;
+    @ViewChild( 'dpTo', { static: true } ) ngxdpTo: NgxMyDatePickerDirective;
 
     toDateModel = {};
     fromDateModel = {};
@@ -105,14 +105,14 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         }
 
         // Used when the Clear button is clicked in the Display Query
-        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.totalQueryClear();
             }
         );
 
         // Just set the dates, not the 'Apply "Available" date range'
-        this.parameterService.parameterDateRangeEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.parameterService.parameterDateRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
 
                 // Make sure the "No future dates" is update.
@@ -184,27 +184,27 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.checked = false;
         this.disableUseDateRange = true;
 
-       // this.validateDateRange();
+        // this.validateDateRange();
 
-/*
+        /*
 
-        if( this.fromDateModel !== undefined ){
-            this.fromDateModel = {};
-            this.ngxdpFrom.clearDate();
-        }
+                if( this.fromDateModel !== undefined ){
+                    this.fromDateModel = {};
+                    this.ngxdpFrom.clearDate();
+                }
 
-        if( this.toDateModel !== undefined ){
-            this.toDateModel = {};
-            this.ngxdpTo.clearDate();
-        }
+                if( this.toDateModel !== undefined ){
+                    this.toDateModel = {};
+                    this.ngxdpTo.clearDate();
+                }
 
-        if( !totalClear ){
-            let datRangeForQuery: string[] = [];
-            datRangeForQuery[0] = 'DateRangeCriteria';
-            this.commonService.updateQuery( datRangeForQuery );
-        }
+                if( !totalClear ){
+                    let datRangeForQuery: string[] = [];
+                    datRangeForQuery[0] = 'DateRangeCriteria';
+                    this.commonService.updateQuery( datRangeForQuery );
+                }
 
-*/
+        */
         this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
 
     }
@@ -309,8 +309,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
         if( this.disableUseDateRange ){
             this.checked = false;
-        }
-        else if( this.checked ){
+        }else if( this.checked ){
             // This will cause the search to be run.
             this.onApplyCheckboxClick( true );
         }
@@ -374,6 +373,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
+        this.checked = checked;
         let datRangeForQuery: string[] = [];
         datRangeForQuery[0] = 'DateRangeCriteria';
 
@@ -383,13 +383,10 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
             // To
             datRangeForQuery[2] = this.makeFormattedDate2( this.toDateModel['date'] );
 
-            this.checked = true;
-
             // Update queryUrlService
             this.queryUrlService.update( this.queryUrlService.DATE_RANGE,
                 this.makeFormattedDate( this.fromDateModel['date'] ) + '-' + this.makeFormattedDate( this.toDateModel['date'] ) );
         }else{
-            this.checked = false;
             // Remove dateRange (if any) in the queryUrlService
             this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
         }

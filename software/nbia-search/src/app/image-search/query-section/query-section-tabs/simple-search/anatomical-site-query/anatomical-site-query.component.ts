@@ -11,8 +11,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
-import { CollectionDescriptionsService } from '@app/common/services/collection-descriptions.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
+import { QueryCriteriaInitService } from '@app/common/services/query-criteria-init.service';
 
 
 /**
@@ -130,7 +130,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                  private sortService: SearchResultsSortService, private parameterService: ParameterService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
                  private utilService: UtilService, private loadingDisplayService: LoadingDisplayService,
-                 private persistenceService: PersistenceService) {
+                 private persistenceService: PersistenceService, private queryCriteriaInitService: QueryCriteriaInitService ) {
     }
 
     async ngOnInit() {
@@ -154,8 +154,9 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
         // ------------------------------------------------------------------------------------------
-        this.apiServerService.getBodyPartValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.getBodyPartValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -168,21 +169,26 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
                     this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 }
+
             }
         );
 
         // React to errors when getting the full complete criteria list.
-        this.apiServerService.getBodyPartValuesAndCountsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.getBodyPartValuesAndCountsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( err ) => {
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
                 // alert('error: ' + err);
+                this.queryCriteriaInitService.endQueryCriteriaInit();
             }
         );
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
         this.loadingDisplayService.setLoading( true, 'Loading query data' );
+
+        // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
+        this.queryCriteriaInitService.startQueryCriteriaInit();
         this.apiServerService.dataGet( 'getBodyPartValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
@@ -196,7 +202,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         // If data equals -1 there is no search, so no results.
         // If data equals 0 there is a search, but no search results.
         // If there is a search, but no search results, all counts are zeroed
-        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( this.commonService.getResultsDisplayMode() === Consts.SIMPLE_SEARCH ){
                     // data  0 = No results from a search,  -1 = No search
@@ -218,7 +224,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
 
         // When counts of occurrences in the search results changes
-        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.onCriteriaCountsChange( data );
             }
@@ -227,7 +233,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
         // Reload the list of search criteria because a user has logged in,
         // they may have different access to available search criteria.
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async() => {
                 // This is used when a query included in the URL is to be rerun when a user logs in,
                 // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
@@ -249,8 +255,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.setInitialCriteriaList();
                     this.updateCheckboxCount();
-                }
-                else{
+                }else{
                     this.resetAll();
                 }
                 this.initMonitorService.setAnatomicalSiteRunning( false );
@@ -259,7 +264,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
             }
@@ -267,7 +272,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when a query included in the URL contained one or more Anatomical sites.
-        this.parameterService.parameterAnatomicalSiteEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.parameterService.parameterAnatomicalSiteEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 // Deal with trailing (wrong) comma
                 data = (<any>data).replace( /,$/, '' );
@@ -316,8 +321,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
         if( !this.utilService.isNullOrUndefined( this.criteriaList ) ){
             this.unCheckedCount = this.criteriaList.length;
-        }
-        else{
+        }else{
             this.unCheckedCount = 0;
         }
 
@@ -383,8 +387,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
             this.criteriaList = this.criteriaListHold;
             this.setInitialCriteriaList();
-        }
-        else if( !this.utilService.isNullOrUndefined( anatomicalSiteCriteriaObj ) ){
+        }else if( !this.utilService.isNullOrUndefined( anatomicalSiteCriteriaObj ) ){
 
             while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
                 await this.commonService.sleep( Consts.waitTime );
@@ -446,7 +449,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
      * This is called when the component first loads, or when it needs to be 'cleared' back to its initial state, like when a new user logs in.
      */
     setInitialCriteriaList() {
-        this.updateCriteriaList(true );
+        this.updateCriteriaList( true );
 
         // This will tell the parameter service that it can send any query criteria that where passed in the URL
         this.initMonitorService.setAnatomicalSiteInit( true );
@@ -468,8 +471,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         if( this.resetFlag ){
             this.criteriaList = this.completeCriteriaList;
 
-        }
-        else{
+        }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
 
@@ -488,13 +490,13 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
         if( (this.resetFlag) || (initCheckBox) ){
             this.resetFlag = false;
-                this.cBox = [];
-                let len = this.criteriaList.length;
-                for( let f = 0; f < len; f++ ){
-                    this.cBox[f] = false;
-                }
-                this.updateCheckboxCount();
+            this.cBox = [];
+            let len = this.criteriaList.length;
+            for( let f = 0; f < len; f++ ){
+                this.cBox[f] = false;
             }
+            this.updateCheckboxCount();
+        }
 
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
         this.criteriaListHold = this.criteriaList;
@@ -547,8 +549,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         // Update the query URL
         if( this.checkedCount === 0 ){
             this.queryUrlService.clear( this.queryUrlService.ANATOMICAL_SITE );
-        }
-        else{
+        }else{
             this.sendSelectedCriteriaString();
         }
     }
@@ -594,8 +595,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
         if( this.searchInput.length === 0 ){
             this.searchToolTip = 'Search';
-        }
-        else{
+        }else{
             this.searchToolTip = this.searchInput;
         }
     }
@@ -649,8 +649,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         for( let f = 0; f < len; f++ ){
             if( this.cBox[f] ){
                 this.checkedCount++;
-            }
-            else{
+            }else{
                 this.unCheckedCount++;
             }
         }
@@ -711,7 +710,6 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         this.setSequenceValue();
 
     }
-
 
 
     ngOnDestroy() {

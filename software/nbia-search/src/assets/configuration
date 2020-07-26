@@ -46,6 +46,11 @@
 #########################################################################
 # API_host =https://public.cancerimagingarchive.net
 
-# SHOW_DATA_ADMIN_MENU = true
+# SHOW_DATA_ADMIN_MENU = false
+
+#######################################################
+# Turn off all Collection license related features.
+#######################################################
+# NO_LICENSE = true
 
 # SHOW_ROLES=

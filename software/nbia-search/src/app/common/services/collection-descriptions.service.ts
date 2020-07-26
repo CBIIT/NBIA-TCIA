@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 export class CollectionDescriptionsService implements OnDestroy{
 
     descriptions = null;
+    licData;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -41,15 +42,36 @@ export class CollectionDescriptionsService implements OnDestroy{
         while( this.utilService.isNullOrUndefined( this.descriptions ) ){
             await this.commonService.sleep( Consts.waitTime );
         }
+
+        // Get the list of licenses and their associated data.
+        this.apiServerService.collectionLicensesResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.licData = data;
+            } );
+        this.apiServerService.getCollectionLicenses();
+
     }
 
     getCollectionDescription( criteriaName ) {
         for( let des of this.descriptions ){
-            if( des.collectionName.toUpperCase() === criteriaName.toUpperCase() ){
-                return des.description
+            if( des['collectionName'].toUpperCase() === criteriaName.toUpperCase() ){
+                return des.description;
             }
         }
         return '';
+    }
+
+    getCollectionLicense( criteriaName ) {
+        for( let des of this.descriptions ){
+            if( des['collectionName'].toUpperCase() === criteriaName.toUpperCase() ){
+                for( let lic of this.licData ){
+                    if( lic['id'] === des['licenseId']){
+                        return lic;
+                    }
+                }
+            }
+        }
+        return {};
     }
 
     ngOnDestroy() {

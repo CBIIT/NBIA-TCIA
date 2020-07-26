@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, timeout } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Properties } from '@assets/properties';
+import { PersistenceService } from '@app/common/services/persistence.service';
 
 @Component( {
     selector: 'nbia-cart',
@@ -51,6 +52,13 @@ export class CartComponent implements OnInit, OnDestroy{
      */
     cartList = [];
 
+    excludeCommercialFlag = false;
+    excludeCommercialCount = 0;
+    showExcludeCommercialWarning = false;
+    showExcludeCommercialWarningPref = false;
+    alertId01 = 'nbia-cart-01';
+    alertBoxResults = null;
+
     /**
      * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
      * @type {[string , string , string , string , string , string , string , string , string , string]}
@@ -72,6 +80,8 @@ export class CartComponent implements OnInit, OnDestroy{
      */
     busy = false;
 
+    properties = Properties;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private cartService: CartService, private menuService: MenuService,
@@ -79,12 +89,13 @@ export class CartComponent implements OnInit, OnDestroy{
                  private sortService: CartSortService, private loadingDisplayService: LoadingDisplayService,
                  private alertBoxService: AlertBoxService, private parameterService: ParameterService,
                  private historyLogService: HistoryLogService, private utilService: UtilService,
-                 private httpClient: HttpClient ) {
+                 private httpClient: HttpClient, private persistenceService: PersistenceService ) {
     }
 
 
     ngOnInit() {
 
+        this.showExcludeCommercialWarningPref = (!this.persistenceService.get( this.persistenceService.Field.NO_COMMERCIAL_RESTRICTION_WARNING ));
         // Called when a Series is added to the cart or disabled/enabled
         // Called by
         //     CartService.cartAdd
@@ -147,6 +158,15 @@ export class CartComponent implements OnInit, OnDestroy{
         );
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        // When the alert box has closed (and returned results) store the results, and enable the menu.
+        this.alertBoxService.alertBoxReturnEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                if( data['id'] === this.alertId01 ){
+                    this.alertBoxResults = data['button'];
+                }
+            }
+        );
+
 
         // Gets subjects, adds their series to cartList.
         //
@@ -154,16 +174,33 @@ export class CartComponent implements OnInit, OnDestroy{
         //   studyDate
         //   studyDescription
         this.apiServerService.seriesForCartResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
+            async data => {
+                this.excludeCommercialCount = 0;
+                this.excludeCommercialFlag = false;
+                this.showExcludeCommercialWarning = false;
 
                 for( let item of <any>data ){
+
+                    if( this.showExcludeCommercialWarningPref ){
+                        if(
+                            (!Properties.NO_LICENSE) &&
+                            ((!this.utilService.isNullOrUndefinedOrEmpty( item['excludeCommercial'] )) && (this.utilService.isTrue( item['excludeCommercial'] )))
+                        ){
+                            this.excludeCommercialFlag = (item['excludeCommercial'] === null) ? false : this.utilService.isTrue( item['excludeCommercial'] );
+                            this.showExcludeCommercialWarning = this.excludeCommercialFlag;
+                            this.excludeCommercialCount += item['seriesList'].length;
+                        }
+                    }
+
                     for( let series of item.seriesList ){
+                        if( !Properties.NO_LICENSE ){
+                            series['exCom'] = (!this.utilService.isNullOrUndefinedOrEmpty( item['excludeCommercial'] )) && (this.utilService.isTrue( item['excludeCommercial'] ));
+                        }
                         series['studyDate'] = item.date;
                         series['studyDescription'] = item.description;
                         this.addSeriesToCartList( series );
                     }
                 }
-
                 this.commonService.updateCartCount( this.cartList.length );
                 this.sortService.doSort( this.cartList );
                 this.busy = false;
@@ -297,7 +334,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
                 let options = { headers: headers, responseType: 'text' as 'json' };
 
-                this.httpClient.post( csvDownloadUrl, query, options ).pipe(timeout(Properties.HTTP_TIMEOUT)).subscribe(
+                this.httpClient.post( csvDownloadUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
                     ( res ) => {
                         let csvFile = new Blob( [<any>res], { type: 'text/csv' } );
                         // TODO in the manifest download popup, it says 'from: blob:'  see if we can change this.
@@ -418,6 +455,21 @@ export class CartComponent implements OnInit, OnDestroy{
         this.cartList.push( series );
     }
 
+    disableCommercialSeries() {
+        let len = this.cartList.length;
+        for( let f = 0; f < len; f++ ){
+            this.cartList[f].disabled = this.cartList[f].exCom;
+        }
+        this.updateCartList();
+    }
+
+    reEnableAllSeries() {
+        let len = this.cartList.length;
+        for( let f = 0; f < len; f++ ){
+            this.cartList[f].disabled = false;
+        }
+        this.updateCartList();
+    }
 
     /**
      * Updates this.seriesListForQuery and this.seriesListForDownloadQuery Series list formatted for the Rest call.
@@ -452,6 +504,22 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.updateCartList();
         this.cartService.setCartEnableCartById( this.cart[i].id, !this.cart[i].disabled );
+    }
+
+
+    onProceedClick() {
+        this.reEnableAllSeries();
+        this.showExcludeCommercialWarning = false;
+    }
+
+    onDisableCommercialSeriesClick() {
+        this.disableCommercialSeries();
+        this.showExcludeCommercialWarning = false;
+    }
+
+    onExcludeCommercialCheckboxClick( state ) {
+        this.persistenceService.put( this.persistenceService.Field.NO_COMMERCIAL_RESTRICTION_WARNING, state );
+        this.showExcludeCommercialWarningPref = (!state);
     }
 
     ngOnDestroy() {

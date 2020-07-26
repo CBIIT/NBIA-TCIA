@@ -276,7 +276,7 @@ export class CommonService{
     }
 
     setIsSearchable( is ) {
-        this.isSearchable = is;
+        this.isSearchable = is;  // CHECKME Do we even need/use this?
     }
 
     clearMissingCriteriaArray() {
@@ -443,14 +443,14 @@ export class CommonService{
         return this.textSearchResults;
     }
 
-    setShowTextExplanation(e){
+    setShowTextExplanation( e ) {
         this.showTextExplanation = e;
-        this.showTextExplanationEmitter.emit( this.showTextExplanation);
+        this.showTextExplanationEmitter.emit( this.showTextExplanation );
     }
 
-    setShowThirdPartyExplanation(e){
+    setShowThirdPartyExplanation( e ) {
         this.showThirdPartyExplanation = e;
-        this.showThirdPartyExplanationEmitter.emit( this.showThirdPartyExplanation);
+        this.showThirdPartyExplanationEmitter.emit( this.showThirdPartyExplanation );
     }
 
     clearSimpleSearchResults() {
@@ -568,11 +568,10 @@ export class CommonService{
      * @param parameters
      */
     updateQuery( parameters: string[] ) {
-        // Rest page to beginning on a new search.
+        // Reset page to beginning on a new search.
         // -1 tells pagers to go to page zero and tells search by page not to call search service for this page change.
         this.updateCurrentSearchResultsPage( -1 );
-
-        this.updateQueryEmitter.emit( parameters );
+        this.updateQueryEmitter.emit( parameters ); // For SearchResultsTableComponent
     }
 
     // @CHECKME - this is not ready yet
@@ -610,6 +609,7 @@ export class CommonService{
         let maxCriteriaLen = 15; // FIXME make this a constant
         let displayQuery = [];
 
+
         // Collections
         if( !this.utilService.isNullOrUndefined( allData[Consts.COLLECTION_CRITERIA] ) ){
             for( let item of allData[Consts.COLLECTION_CRITERIA] ){
@@ -617,6 +617,39 @@ export class CommonService{
             }
         }
 
+        // Exclude Commercial
+        if( (!this.utilService.isNullOrUndefined( allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA] )) &&
+            (!this.utilService.isNullOrUndefined( allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0] ))
+        ){
+            displayQuery.push( {
+                [Consts.CRITERIA]: 'excludeCommercial', 'name': allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0]
+            } );
+        }
+
+        // Days from Baseline // TODO deal with missing values (to or from)
+        if( (!this.utilService.isNullOrUndefined( allData[Consts.DAYS_FROM_BASELINE_CRITERIA] )) &&
+            (!this.utilService.isNullOrUndefined( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] ))
+        ){
+            // No From
+            if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1].length < 1){
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'daysFrom', 'name': allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] + ' to ' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2]
+                } );
+            }
+
+            // No To
+            else if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2].length < 1){
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'daysFrom', 'name': allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] + ' from ' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1]
+                } );
+            }
+            else{
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'daysFrom', 'name': allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] + ' ' +
+                        allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1] + ' to ' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2]
+                } );
+            }
+        }
         // Species
         if( !this.utilService.isNullOrUndefined( allData[Consts.SPECIES_CRITERIA] ) ){
             for( let item of allData[Consts.SPECIES_CRITERIA] ){
@@ -634,7 +667,10 @@ export class CommonService{
         // Third Party
         if( !this.utilService.isNullOrUndefined( allData[Consts.THIRD_PARTY_CRITERIA] ) ){
             for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'thirdParty', 'name': (item.toUpperCase( ) === 'YES') ? 'Only' : 'Exclude' } );
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'thirdParty',
+                    'name': (item.toUpperCase() === 'YES') ? 'Only' : 'Exclude'
+                } );
             }
         }
 
@@ -689,7 +725,7 @@ export class CommonService{
         // DATE_RANGE_CRITERIA
         if( !this.utilService.isNullOrUndefined( allData[Consts.DATE_RANGE_CRITERIA] ) ){
             for( let item of allData[Consts.DATE_RANGE_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name': this.swapMonthDay(item) } );
+                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name': this.swapMonthDay( item ) } );
             }
         }
 
@@ -735,7 +771,7 @@ export class CommonService{
      * @TODO Explain why we needed this
      * @param count
      */
-   updateSimpleSearchResultsCount( count: number ) {
+    updateSimpleSearchResultsCount( count: number ) {
         if( this.simpleSearchResultsCount !== count ){
             this.simpleSearchResultsCount = count;
             this.simpleSearchResultsCountEmitter.emit( count );
@@ -921,9 +957,9 @@ export class CommonService{
      * @param dateString
      */
     swapMonthDay( dateString ) {
-       let m = dateString.substr( 3, 2 );
-       let d = dateString.substr( 0, 2 );
-        return( m + '/' + d + dateString.substr( 5, 5 ));
+        let m = dateString.substr( 3, 2 );
+        let d = dateString.substr( 0, 2 );
+        return (m + '/' + d + dateString.substr( 5, 5 ));
     }
 
 }

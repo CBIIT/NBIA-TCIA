@@ -1,15 +1,76 @@
 <div class="query-panel">
-    <div class="query-panel-heading" title={{toolTipText}}
+    <div class="query-panel-heading "
+         [ngClass]="{
+             'days-from-baseline-div': displayFromBaseLineFrom !== ''
+         }"
     >
-        <input type="checkbox">&nbsp;
-        <span>Days from Baseline </span>
-        <input type="number" class="number-spinner check-box"
-               min="1"
+        <input class="days-from-baseline-checkbox"
+               id="fromBaseLineCheckbox"
+               type="checkbox"
+               [(ngModel)]="daysFromBaseLineApply"
+               (click)="onApplyFromBaselineCheckboxClick( $event.target['checked'])"
+
         >
-        To:
-        <input type="number" class="number-spinner check-box"
-               min="1"
+        <label
+                class="clicker unselectable"
+                for="fromBaseLineCheckbox"
+        >
+            Days from </label>
+
+        <span class="dropdown menu-dropdown clicker">
+                    <span dropdown [dropdownToggle]="true">
+                        <button
+                                class="btn days-from-baseline-dropdown-button text-left"
+                                [ngClass]="{
+                                    'days-from-baseline-dropdown-empty-button': currentEventTypeIndex === 0
+                                }"
+
+                                dropdown-open
+                        >
+                            <span>
+                                {{ eventTypeList[currentEventTypeIndex] }}
+                                <span class="caret"></span>
+                            </span>
+                        </button>
+                        <ul
+                                class="dropdown-menu"
+                                role="menu"
+                        >
+                            <li
+                                    class="edit-lic-dropdown-li"
+                                    *ngFor="let eventType of eventTypeList; let c = index"
+                                    role="menuitem"
+                                    (click)="onEventTypeDropdownClick(c)"
+                            >
+                                <a class="menu-dropdown-a">
+                                    <span
+                                            *ngIf="c === currentEventTypeIndex && currentEventTypeIndex > 0"
+                                            class="glyphicon glyphicon-ok"
+                                    ></span>
+                                    {{ eventType }}
+                                </a>
+                            </li>
+                        </ul>
+                    </span>
+        </span>
+
+
+        <input class="from-base-line-number-input number-spinner"
+               id="fromBaseLineFromIntTextBox"
+               [(ngModel)]="fromBaseLineFrom"
+               (ngModelChange)="onBaseLineFromChange()"
         >
 
+        To:
+        <input class="from-base-line-number-input number-spinner"
+               id="fromBaseLineToIntTextBox"
+               [(ngModel)]="fromBaseLineTo"
+               (ngModelChange)="onBaseLineToChange()"
+
+        >
+
+    </div>
+    <div *ngIf="displayFromBaseLineFrom !== '' " class="days-from-baseline-min-max-note">
+        From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
     </div>
 </div>

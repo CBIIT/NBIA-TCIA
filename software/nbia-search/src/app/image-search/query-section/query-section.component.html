@@ -1,5 +1,9 @@
 
-<span *ngIf="show" class="glyphicon glyphicon-backward search-query-closer"
+<span *ngIf="show" class="glyphicon glyphicon-backward "
+      [ngClass]="{
+          'search-query-closer': properties.SHOW_HEADER,
+          'search-query-closer-no-header': ! properties.SHOW_HEADER
+        }"
       title="Hide Query section"
       (click)="onCloserClick(  )"></span>
 

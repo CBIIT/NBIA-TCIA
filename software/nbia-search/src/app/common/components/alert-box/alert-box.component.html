@@ -27,7 +27,7 @@
             <button
                 class="btn alert-box-button"
                 [ngClass]="{
-                    'btn-primary': (button === AlertBoxButtonT.OKAY) || (button === AlertBoxButtonT.SAVE) || (button === AlertBoxButtonT.CANCEL),
+                    'btn-primary': (button === AlertBoxButtonT.OKAY) || (button === AlertBoxButtonT.PROCEED) || (button === AlertBoxButtonT.SAVE) || (button === AlertBoxButtonT.CANCEL) || (button === AlertBoxButtonT.DISABLE_COMMERCIAL),
                     'btn-danger': (button === AlertBoxButtonT.DELETE) || (button === AlertBoxButtonT.CONTINUE)
                 }"
                 (click)="onButtonClick(button)"

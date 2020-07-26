@@ -171,6 +171,7 @@ export class LoginComponent implements OnInit, OnDestroy{
             // Successful login
             ( res ) => {
                 this.accessToken = res['access_token'];
+
                 this.apiServerService.setToken( res );
                 this.persistenceService.put( this.persistenceService.Field.USER, this.loginForm.value.username );
 
@@ -227,9 +228,6 @@ export class LoginComponent implements OnInit, OnDestroy{
 
                 // Clear the form
                 this.loginForm.reset();
-
-                this.apiServerService.gotToken();
-
             },
 
             // An error
@@ -324,14 +322,11 @@ export class LoginComponent implements OnInit, OnDestroy{
                     }, 500 );
 
                 }
-                this.apiServerService.gotToken();
             },
 
             // An error  // FIXME - What do we do if the default user can't login???
             ( err ) => {
                 this.statusMessage0 = 'Login failed: ' + err.statusText;
-                // this.apiServerService.deleteToken();
-                // this.loginForm.controls['password'].setValue( '' );
                 this.apiServerService.gotToken();
             }
         );

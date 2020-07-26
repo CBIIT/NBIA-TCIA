@@ -108,6 +108,10 @@ export class ConfigurationService{
                         Properties.SHOW_ROLES = this.utilService.isTrue( value );
                     }
 
+                    if( key === 'NO_LICENSE' ){
+                        Properties.NO_LICENSE = this.utilService.isTrue( value );
+                    }
+
                 }
             }
         }

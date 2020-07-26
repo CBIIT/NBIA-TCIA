@@ -1,4 +1,5 @@
 @import '../../../../app.component.scss';
+$query-collection-start-height: 120px;
 
 label {
   font: 15px arial, sans-serif;
@@ -213,3 +214,20 @@ label {
   font-size: 12pt;
   margin: 8px;
 }
+
+
+
+.collection-scroller-div {
+  padding-bottom: 12px;
+  resize: vertical;
+  overflow: auto;
+}
+
+.collection-scroller{
+  height: 100%;
+}
+
+.collection-scroller-content {
+  height: $query-collection-start-height;
+}
+

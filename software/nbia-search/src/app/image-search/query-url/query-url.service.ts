@@ -6,16 +6,18 @@ import { Consts } from '@app/consts';
 @Injectable()
 export class QueryUrlService{
 
-    COLLECTIONS = 7;
     IMAGE_MODALITY = 1;
     IMAGE_MODALITY_ALL = 2;
     ANATOMICAL_SITE = 3;
     MIN_STUDIES = 4;
     DATE_RANGE = 5;
     SUBJECT_ID = 6;
+    COLLECTIONS = 7;
     SPECIES = 8;
     PHANTOMS = 9;
     THIRD_PARTY = 10;
+    DAYS_FROM_BASELINE = 11;
+    EXCLUDE_COMMERCIAL = 12;
     API_URL = 0;
 
     queryUrlString = '';
@@ -27,6 +29,7 @@ export class QueryUrlService{
 
     update( criteriaType, value ) {
         this.queryData[criteriaType] = value;
+
     }
 
     clear( criteriaType ) {
@@ -133,8 +136,16 @@ export class QueryUrlService{
     getQueryUrl() {
         this.queryUrlString = '';
         for( let f = 0; f < this.queryData.length; f++ ){
+
             if( !this.utilService.isNullOrUndefined( this.queryData[f] ) ){
                 switch( f ){
+                    case this.DAYS_FROM_BASELINE:
+                        this.queryUrlString += '&' + Properties.URL_KEY_DAYS_FROM_BASELINE + '=' + this.queryData[f];
+
+                        break;
+                    case this.EXCLUDE_COMMERCIAL:
+                        this.queryUrlString += '&' + Properties.URL_KEY_EXCLUDE_COMMERCIAL + '=' + this.queryData[f];
+                        break;
 
                     case this.API_URL:
                         this.queryUrlString += '&' + Properties.URL_KEY_API_URL + '=' + this.queryData[f];

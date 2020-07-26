@@ -1,7 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Consts } from '@app/consts';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Injectable( {
@@ -15,28 +14,8 @@ export class CineModeService{
     sendCineModeDataEmitter = new EventEmitter();
     dicomData;
     showCineModeToggle = false;
-    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private apiServerService: ApiServerService ) {
-
-/*
-        this.apiServerService.getDicomTagsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
-                if( data['id'] === this.seriesUID && this.showCineModeToggle ){
-                    this.dicomData = data['res'];
-                    this.sendCineModeDataEmitter.emit( {
-                        'seriesUID': this.seriesUID,
-                        'seriesId': this.seriesId,
-                        'dicomData': this.dicomData,
-                        'seriesDescription': this.seriesDescription
-                    } ); // @FIXME  MHL do not need to pass along seriesUID?
-                }
-            }
-        );
-*/
-
-
-    }
+    constructor( private apiServerService: ApiServerService ) {}
 
     openCineMode( seriesUID, seriesId, description, studyDate ) {
         this.displayCineModeImagesEmitter.emit( true );

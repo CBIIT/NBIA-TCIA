@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CineModeService } from '@app/cine-mode/cine-mode.service';
@@ -15,7 +15,7 @@ import { UtilService } from '@app/common/services/util.service';
     templateUrl: './cine-mode.component.html',
     styleUrls: ['./cine-mode.component.scss']
 } )
-export class CineModeComponent implements OnInit{
+export class CineModeComponent implements OnInit, OnDestroy{
     dicomData = [];
     showDicomData = false;
     showCineModeViewer = false;
@@ -85,8 +85,8 @@ export class CineModeComponent implements OnInit{
         // Receive DICOM data by image.
         this.apiServerService.getDicomTagsByImageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                if( (data['id'] === 'imageID=' + this.images[this.currentImage - 1]['imagePkId'] ) ||
-                    (data['id'] === 'imageID=' + this.images[this.currentImageWiggleRoom - 1]['imagePkId'] )
+                if( (data['id'] === 'imageID=' + this.images[this.currentImage - 1]['imagePkId']) ||
+                    (data['id'] === 'imageID=' + this.images[this.currentImageWiggleRoom - 1]['imagePkId'])
                 ){
                     this.dicomData = <any>data['res'];
                     this.haveDicomData = true;
@@ -386,5 +386,9 @@ export class CineModeComponent implements OnInit{
         this.handleMoving = false;
     }
 
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
 
 }

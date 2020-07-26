@@ -103,6 +103,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
     showDataAdminViewSubmissionReports = false;
     showPerformOnlineDeletions = false;
     showEditCollectionDescriptions = false;
+    showEditLicense = false;
     showManageWorkflowItems = false;
 
     haveSimpleSearchQuery = false;
@@ -244,6 +245,9 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
                     this.showDataAdminButton = true;
                     this.showEditCollectionDescriptions = true;
                 }
+                if( this.currentUserRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+                    this.initLicenseMenuOption();
+                }
 
                 /*              NCIA.VIEW_SUBMISSION_REPORT
                                 NCIA.SUPER_CURATOR
@@ -258,6 +262,21 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         );
     }
 
+    /**
+     * We can't check  Properties.NO_LICENSE until we know the configuration file is completely parsed.
+     */
+    async initLicenseMenuOption() {
+        // Check for config file which will take precedence
+        let runaway = 100; // Just in case.
+        while( (!Properties.CONFIG_COMPLETE) && (runaway > 0) ){
+            await this.commonService.sleep( Consts.waitTime );  // Wait 50ms
+            runaway--;
+        }
+        if( ! Properties.NO_LICENSE ){
+            this.showDataAdminButton = true;
+            this.showEditLicense = true;
+        }
+    }
 
     checkShareEnabled() {
         if( this.haveSimpleSearchQuery || this.haveTextSearchQuery || this.cartCount > 0 ){
@@ -324,6 +343,14 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             case this.menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
                     '/nbia-admin/?tool=' + Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS + '&accessToken=' + this.apiServerService.showToken(),
+                    '_blank' );
+
+                break;
+
+            // Edit collection descriptions
+            case this.menuItem.DATA_ADMIN_EDIT_LICENSE_ITEMS_MENU_ITEM:
+                window.open( Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_LICENSE + '&accessToken=' + this.apiServerService.showToken(),
                     '_blank' );
 
                 break;

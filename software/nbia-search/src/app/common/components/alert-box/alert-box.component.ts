@@ -78,6 +78,12 @@ export class AlertBoxComponent implements OnInit, OnDestroy{
         if( (this.buttons & 16) === 16 ){
             this.buttonArray.push( 16 );
         }
+         if( (this.buttons & 32) === 32 ){
+            this.buttonArray.push( 32 );
+        }
+        if( (this.buttons & 64) === 64 ){
+            this.buttonArray.push( 64 );
+        }
     }
 
     /**

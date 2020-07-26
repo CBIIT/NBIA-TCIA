@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CommonService } from '@app/image-search/services/common.service';
 import { UtilService } from '@app/common/services/util.service';
@@ -13,7 +13,7 @@ import { Consts } from '@app/consts';
     templateUrl: './third-party-query.component.html',
     styleUrls: ['../../../../../app.component.scss', '../simple-search.component.scss']
 } )
-export class ThirdPartyQueryComponent implements OnInit{
+export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
 
     thirdPartyRadioLabels = ['Only 3rd-Party Results', 'Exclude 3rd-Party Results', 'Include 3rd-Party Results'];
     thirdPartyShortRadioLabels = ['Only', 'Exclude', ''];
@@ -46,7 +46,7 @@ export class ThirdPartyQueryComponent implements OnInit{
     ngOnInit() {
 
 
-        // Called when the "Clear" button on the left side of the Display query at the top.
+        // Called when the "Clear" button on the left side of the Display query at the top is clicked.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.thirdPartyApply = false;
@@ -63,7 +63,7 @@ export class ThirdPartyQueryComponent implements OnInit{
             }
         );
 
-        this.commonService.showThirdPartyExplanationEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.showThirdPartyExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.showThirdPartyExplanation = <boolean>data;
             }
@@ -93,10 +93,9 @@ export class ThirdPartyQueryComponent implements OnInit{
 
     onThirdPartyRadioChange( value ) {
         this.thirdPartyApplySelection = value;
-        if( value === 2){
+        if( value === 2 ){
             this.thirdPartyApply = false;
-        }
-        else{
+        }else{
             this.thirdPartyApply = true;
         }
         this.onApplyThirdPartyChecked( this.thirdPartyApply );
@@ -125,7 +124,13 @@ export class ThirdPartyQueryComponent implements OnInit{
 
     }
 
-    onThirdPartyExplanationClick(){
+    onThirdPartyExplanationClick() {
         this.showThirdPartyExplanation = true;
     }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

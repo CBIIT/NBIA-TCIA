@@ -1,7 +1,7 @@
 export let Properties = {
-    // 22_APR_2020
+    // 24_JUN_2020
     VERSION: '1.0.70',
-    TEST_VERSION: '1.0.7e',
+    TEST_VERSION: '1.0.7g',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -33,6 +33,9 @@ export let Properties = {
     // This value can be changed in the config file.
     SHOW_OHIF_SERIES_VIEWER: true,
 
+    NO_LICENSE: false,
+
+    // //////////////////////////////////////////////////////////////////////////
 
     /*
         Our Dev server
@@ -50,14 +53,17 @@ export let Properties = {
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
+    // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+
     // API_SERVER_URL: 'http://192.168.1.20:8080',
-    API_SERVER_URL: '',
+
+     API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
     // //////////////////////////////////////////////////////////////////////////
 
-    // We will only use this in the QC tools
+    // We will only use this in the QC tools (This may change)
     CINE_MODE: false,
 
 
@@ -129,6 +135,10 @@ export let Properties = {
 
     SHOW_ROLES: false,
 
+    SHOW_HEADER: true,
+
+    USE_COLLECTIONS_LESS_MORE: true,
+
     // If false sort just by name, this is the default for criteria sorting
     // This is the sort for "Image Modality" and "Anatomical Site" and the default sort for Collections.
     SORT_COLLECTIONS_BY_COUNT: true,
@@ -167,6 +177,8 @@ export let Properties = {
     URL_KEY_TEXT_SEARCH: 'text-search',
     URL_KEY_SHARED_LIST: 'saved-cart',
 
+    URL_KEY_EXCLUDE_COMMERCIAL: 'exclude-commercial',
+    URL_KEY_DAYS_FROM_BASELINE: 'days-from-baseline',
     URL_KEY_API_URL: 'api-url',
     URL_KEY_SHOW_TEST_TAB: 'show-settings',
 

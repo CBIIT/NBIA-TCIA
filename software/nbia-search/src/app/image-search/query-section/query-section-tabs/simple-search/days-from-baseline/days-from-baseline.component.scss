@@ -1,1 +1,36 @@
 @import '../../../../../app.component.scss';
+
+.from-base-line-from-checkbox{
+
+}
+
+.from-base-line-number-input{
+  width: 47px;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.days-from-baseline-dropdown-button{
+  padding: 4px;
+}
+
+.days-from-baseline-dropdown-empty-button{
+  color: #666;
+}
+
+.days-from-baseline-checkbox{
+  margin-right: 3px;
+}
+
+.days-from-baseline-min-max-note{
+//  float: right;
+  padding-top: 0;
+  margin-top: 0;
+  margin-bottom: 4px;
+  margin-left: 36px;
+}
+
+.days-from-baseline-div{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

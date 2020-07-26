@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import { QueryCriteriaInitService } from '@app/common/services/query-criteria-init.service';
 
 
 /**
@@ -21,7 +22,7 @@ import { LoadingDisplayService } from '@app/common/components/loading-display/lo
 @Component( {
     selector: 'nbia-collection-query',
     templateUrl: './collection-query.component.html',
-    styleUrls: ['../simple-search.component.scss']
+    styleUrls: ['../simple-search.component.scss',  './collection-query.component.scss']
 } )
 
 
@@ -140,6 +141,8 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      */
     properties = Properties;
 
+    descriptionTooltipDelay = 250;
+
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
      *
@@ -151,7 +154,8 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                  private sortService: SearchResultsSortService, private parameterService: ParameterService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
                  private collectionDescriptionsService: CollectionDescriptionsService, private persistenceService: PersistenceService,
-                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService ) {
+                 private utilService: UtilService, private loadingDisplayService: LoadingDisplayService,
+                 private queryCriteriaInitService: QueryCriteriaInitService) {
     }
 
     async ngOnInit() {
@@ -177,6 +181,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -189,6 +194,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
                     this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 }
+
             }
         );
 
@@ -198,12 +204,15 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless and shouldn't interrupt the UI flow
                 // alert( 'error: ' + err );
+                this.queryCriteriaInitService.endQueryCriteriaInit();
             }
         );
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
         this.loadingDisplayService.setLoading( true, 'Loading query data' );
+        // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
+        this.queryCriteriaInitService.startQueryCriteriaInit();
         this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
         let tempCount = 0;
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) && (tempCount < 500) ){
@@ -732,6 +741,13 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.toolTipY = e.view.pageYOffset + e.clientY;
         this.toolTipHeading = collectionName;
         this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
+        if( (! this.utilService.isNullOrUndefinedOrEmpty(this.collectionDescriptionsService.getCollectionLicense( collectionName ))) &&
+             (! this.utilService.isNullOrUndefinedOrEmpty(this.collectionDescriptionsService.getCollectionLicense( collectionName ))['longName']) &&
+            (! Properties.NO_LICENSE)
+        )
+        {
+            this.toolTipText +=  '<hr>License:<br>' + this.collectionDescriptionsService.getCollectionLicense( collectionName )['longName'];
+        }
         this.showToolTip = true;
     }
 
@@ -757,7 +773,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.toolTipCounter++;
         let count = Properties.COLLECTION_DESCRIPTION_TOOLTIP_TIME;
         while( count > 0 ){
-            await this.commonService.sleep( 1000 );
+            await this.commonService.sleep( this.descriptionTooltipDelay );
             count--;
             if( count > 0 ){
                 this.showToolTip = true;

@@ -72,6 +72,13 @@
             >
                 Edit Collection Descriptions
             </li>
+
+            <li *ngIf="showEditLicense"
+                class="application-menu-dropdown-menu-item-data-admin"
+                (click)="onMenuItemClick(menuItem.DATA_ADMIN_EDIT_LICENSE_ITEMS_MENU_ITEM)"
+            >
+                Edit Collection License
+            </li>
 <!--
 
             <li *ngIf="showManageWorkflowItems"

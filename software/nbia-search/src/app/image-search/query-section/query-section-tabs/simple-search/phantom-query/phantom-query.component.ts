@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/consts';
 import { CommonService } from '@app/image-search/services/common.service';
 import { UtilService } from '@app/common/services/util.service';
@@ -13,7 +13,7 @@ import { ParameterService } from '@app/common/services/parameter.service';
     templateUrl: './phantom-query.component.html',
     styleUrls: ['../../../../../app.component.scss', '../simple-search.component.scss']
 } )
-export class PhantomQueryComponent implements OnInit{
+export class PhantomQueryComponent implements OnInit, OnDestroy{
 
     phantomRadioLabels = ['Only Phantoms', 'Exclude Phantoms', 'Include Phantoms'];
     phantomApply = false;
@@ -97,7 +97,6 @@ export class PhantomQueryComponent implements OnInit{
         this.commonService.setHaveUserInput( true );
         this.phantomApply = status;
 
-
         // This category's data for the query, the 0th element is always the category name.
         criteriaForQuery.push( Consts.PHANTOMS_CRITERIA );
         if( status ){
@@ -106,9 +105,12 @@ export class PhantomQueryComponent implements OnInit{
         }else{
             this.queryUrlService.clear( this.queryUrlService.PHANTOMS );
         }
-
-
         this.commonService.updateQuery( criteriaForQuery );
-
     }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

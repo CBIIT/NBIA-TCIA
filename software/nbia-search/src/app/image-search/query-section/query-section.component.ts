@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '@app/image-search/services/common.service';
+import { Properties } from '@assets/properties';
 
 @Component({
     selector: 'nbia-query-section',
@@ -8,10 +9,10 @@ import {CommonService} from '@app/image-search/services/common.service';
 })
 
 /**
- * Currently this is just a wrapper around QuerySectionTabsComponent. If it does not eventually serve a purpose, I will remove it.
+ *
  */
 export class QuerySectionComponent implements OnInit {
-
+    properties = Properties;
     show = true;
 
     constructor(private commonService: CommonService) {

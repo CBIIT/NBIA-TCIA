@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { UtilService } from '@app/common/services/util.service';
-import { takeUntil } from 'rxjs/operators';
 import { Consts } from '@app/consts';
 import { CartService } from '@app/common/services/cart.service';
 import { Subject } from 'rxjs';
@@ -23,7 +22,6 @@ export class CartButtonGroupComponent implements OnInit{
     showDownloaderDownload;
 
     cartCount = 0;
-    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private cartService: CartService,
                  private utilService: UtilService ) {

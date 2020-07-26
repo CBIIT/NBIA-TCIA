@@ -5,8 +5,9 @@ import { Properties } from '@assets/properties';
 import { Consts, MenuItems } from '@app/consts';
 import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { MenuService } from '@app/common/services/menu.service';
-import { CartSortService } from '@app/cart/cart-sort.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import { Subject } from 'rxjs';
+import { QueryCriteriaInitService } from '@app/common/services/query-criteria-init.service';
 
 
 /**
@@ -24,6 +25,8 @@ export class ParameterService{
     parameterSpeciesEmitter = new EventEmitter();
     parameterPhantomsEmitter = new EventEmitter();
     parameterThirdPartyEmitter = new EventEmitter();
+    parameterExcludeCommercialEmitter = new EventEmitter();
+    parameterDaysFromBaselineEmitter = new EventEmitter();
     parameterTextSearchEmitter = new EventEmitter();
 
     // Used for determining if cart from URL should be (re)loaded
@@ -41,6 +44,8 @@ export class ParameterService{
     species = '';
     phantoms = '';
     thirdParty = '';
+    excludeCommercial = '';
+    daysFromBaseline = '';
     showTest = false;
     apiUrl = '';
 
@@ -60,7 +65,8 @@ export class ParameterService{
 
     constructor( private commonService: CommonService, private initMonitorService: InitMonitorService,
                  private queryUrlService: QueryUrlService, private menuService: MenuService,
-                 private loadingDisplayService: LoadingDisplayService ) {
+                 private loadingDisplayService: LoadingDisplayService, private queryCriteriaInitService: QueryCriteriaInitService ) {
+
     }
 
     reset() {
@@ -134,8 +140,8 @@ export class ParameterService{
         this.patientID = subjectId;
 
 
-      await this.commonService.sleep( 750 );
-      //  await this.commonService.sleep( this.waitTime );
+        await this.commonService.sleep( 750 );
+        //  await this.commonService.sleep( this.waitTime );
 
 
         this.parameterSubjectIdEmitter.emit( subjectId );
@@ -189,6 +195,14 @@ export class ParameterService{
 
         if( this.thirdParty.length > 0 ){
             this.parameterThirdPartyEmitter.emit( this.thirdParty );
+        }
+
+        if( this.excludeCommercial.length > 0 ){
+            this.parameterExcludeCommercialEmitter.emit( this.excludeCommercial );
+        }
+
+        if( this.daysFromBaseline.length > 0 ){
+            this.parameterDaysFromBaselineEmitter.emit( this.daysFromBaseline );
         }
 
         if( this.dateRange.length > 0 ){
@@ -271,11 +285,42 @@ export class ParameterService{
     }
 
 
-    getPhantoms(){
+    async setExcludeCommercial( excludeCommercial ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.excludeCommercial = excludeCommercial;
+        // Wait for the thirdParty query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getExcludeCommercialInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterExcludeCommercialEmitter.emit( excludeCommercial );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+
+    }
+
+    async setDaysFromBaseline( daysFromBaseline ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.daysFromBaseline = daysFromBaseline;
+        // Wait for the thirdParty query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getDaysFromBaselineInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterDaysFromBaselineEmitter.emit( daysFromBaseline );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+
+    }
+
+
+    getPhantoms() {
         return this.phantoms;
     }
 
-    getThirdParty(){
+    getThirdParty() {
         return this.thirdParty;
     }
 
@@ -330,8 +375,7 @@ export class ParameterService{
         let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
         if( regexp.test( dateRange ) ){
             this.parameterDateRangeEmitter.emit( dateRange );
-        }
-        else{
+        }else{
             alert( 'Bad date range:\n' + dateRange );
         }
         this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
@@ -382,9 +426,12 @@ export class ParameterService{
         }
     }
 
-    async doUrlSearch(){
+    async doUrlSearch() {
         this.loadingDisplayService.setLoading( true, 'Updating Counts' );
-        await this.commonService.sleep( 4500 ); // TODO this is a bit long - revisit  Changed from 10000 to 5000 29 APR 2020
+        while( ! this.queryCriteriaInitService.isQueryCriteriaInitComplete() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+
         this.reset();
         this.commonService.runSearchForUrlParameters();
         this.loadingDisplayService.setLoading( false );

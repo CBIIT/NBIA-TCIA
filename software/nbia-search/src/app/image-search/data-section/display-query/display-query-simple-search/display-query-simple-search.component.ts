@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonService } from '../../../services/common.service';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
@@ -7,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Properties } from '@assets/properties';
 import { MenuService } from '@app/common/services/menu.service';
+import { CommonService } from '@app/image-search/services/common.service';
 
 @Component( {
     selector: 'nbia-display-query-simple-search',
@@ -43,6 +43,7 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
 
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,
                  private menuService: MenuService) {
+        // For access to commonService in the HTML. The AOT compiler setting can't have any private objects in the HTML
         this.comService = commonService;
     }
 
@@ -68,11 +69,11 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
         this.allCriteriaList = [];
         // Populate populateCriteriaLists
         for( let criteria of this.criteriaList ){
+
             // If it's a species, we need to replace the name with the Description
             if( criteria['criteria'] === 'species'){
                 criteria.name = this.getSpeciesDescriptionByCode(criteria.name);
             }
-
 
             // The first element of each array is the category name.
             // Do we have this category of criteria one yet?
@@ -127,6 +128,9 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
      * @returns {string}  String with spaces before and after.
      */
     cleanQuery( q: string ) {
+        if( typeof q !== 'string'){
+            return q;
+        }
         return q.slice().replace( new RegExp( '\\|\\|', 'g' ), ' \|\| ' );
     }
 

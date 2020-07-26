@@ -1,160 +1,180 @@
 <!-- ----------  Shown when Cart button at the top right Header menu is clicked.  ---------- -->
 <!-- ----- Shown while the table is populate with series data, this can take a while depending on the number of series.  ----- -->
-
 <div *ngIf="busy" class="label label-primary nbia-loading-label">Loading data...</div>
-
 <div *ngIf="! busy" class="cart-list-div">
-
     <!-- Top heading:  "Showing X - Y of Z"   -->
     <span *ngIf="cartList.length > 0" class="cart-page-rows">
-        Showing <b>{{firstRow + 1}} - {{  (cartList.length > lastRow ? lastRow + 1 : cartList.length)}}</b> of <b>{{cartList.length}}</b>
-        Series
-
+    Showing <b>{{firstRow + 1}}
+        - {{  (cartList.length > lastRow ? lastRow + 1 : cartList.length)}}</b> of <b>{{cartList.length}}</b>
+    Series
     </span>
-
     <!-- Currently this is Export spreadsheet & Download button -->
     <nbia-cart-button-group
-        *ngIf="cartList.length > 0"
-        class="cart-button-group"
-        [cartList]=cartList
+            *ngIf="cartList.length > 0"
+            class="cart-button-group"
+            [cartList]=cartList
     ></nbia-cart-button-group>
-
-
     <!-- Main data display -->
     <table class="cart-list-table">
         <!--  Heading  -->
         <tr>
             <!-- The ngClass is temporary until I decide for sure which columns remain.  -->
             <td
-                *ngFor="let colName of columnHeadings; let i = index"
-                class="thead-td"
-                [ngClass]="{
-                    'hide-item': i===3 || i === 6 || i === 9 || i === 10
-                }"
+                    *ngFor="let colName of columnHeadings; let i = index"
+                    class="thead-td"
+                    [ngClass]="{
+            'hide-item': i===3 || i === 6 || i === 9 || i === 10
+            }"
             >
-
                 <!-- If it is not the first column, add the header for this column -->
                 <span *ngIf="i>0 ">
-
-                    <!-- Sorting buttons -->
-                    <span
+                <!-- Sorting buttons -->
+                <span
                         class="clicker"
                         title="Click to sort"
                         (click)="onHeadingClick(i)"
-                    >
-                        {{colName}}
-
-                        <!--  Add sorting glyphs -->
-                        <img
+                >
+                    {{colName}}
+                    <!--  Add sorting glyphs -->
+                    <img
                             *ngIf="sortService.getSortState(i) === 1"
                             class="sort-pointer"
                             src="assets/images/upTriangle2.png"
-                        >
-
-                        <img
+                    >
+                    <img
                             *ngIf="sortService.getSortState(i) === 2"
                             class="sort-pointer"
                             src="assets/images/downTriangle2.png"
-                        >
-
-                        <!-- space/place holder for when there is no Up or Down glyph -->
-                        <img
+                    >
+                    <!-- space/place holder for when there is no Up or Down glyph -->
+                    <img
                             *ngIf="sortService.getSortState(i) === 0"
                             class="sort-pointer"
                             src="assets/images/emptyTriangle2.png"
-                        >
-                    </span>
-                    <!-- End of Sorting buttons -->
-
+                    >
                 </span>
-
+                    <!-- End of Sorting buttons -->
+            </span>
                 <!-- If it is the first column add the Cart delete button -->
                 <nbia-cart-delete *ngIf="i == 0"></nbia-cart-delete>
-
             </td>
         </tr>
         <!--  End of Heading  -->
-
         <tr
-            *ngFor=" let item of cartList; let i=index; let last=last"
-            [ngClass]="{
-                'hide-item': i>lastRow || i<firstRow,
-                'dark': i%2 == 0,
-                'line-through': cartList[i].disabled
-            }"
+                *ngFor=" let item of cartList; let i=index; let last=last"
+                [ngClass]="{
+        'hide-item': i>lastRow || i<firstRow,
+        'dark': i%2 == 0,
+        'line-through': cartList[i].disabled
+        }"
         >
-
             <!-- Cart button to remove or un-remove -->
             <td
-                class="cart-button"
-                align="center"
-                width="28">
-                 <span class="btn-group">
-                     <label
-                         class="btn btn-default cart-button"
-                         [ngClass]="{
-                             'redCart': cartList[i].disabled,
-                             'greenCart': ! cartList[i].disabled
-                          }"
-                         (click)="onCartCheckClick(i)"
-                     >
-                         <span class="glyphicon glyphicon-shopping-cart"></span>
-                     </label>
-                 </span>
+                    class="cart-button"
+                    align="center"
+                    width="28">
+            <span class="btn-group">
+            <label
+                    class="btn btn-default cart-button"
+                    [ngClass]="{
+            'redCart': cartList[i].disabled,
+            'greenCart': ! cartList[i].disabled
+            }"
+                    (click)="onCartCheckClick(i)"
+            >
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            </label>
+            </span>
             </td>
-
             <td class="cart-collection">
+            <img *ngIf="(! properties.NO_LICENSE) && item['exCom']"
+                  class="cart-no-commercial-use" title="Commercial use restrictions"
+                src="assets/images/nc.svg"
+            >
                 {{item['project']}}
             </td>
-
             <td> {{item['patientId']}}</td>
-<!--
+            <!--
+                <td [title]="item['studyId']">
+                    ....{{item['studyId'] | shortenRight }}
+                </td>
 
-            <td [title]="item['studyId']">
-                ....{{item['studyId'] | shortenRight }}
-            </td>
-
--->
+                -->
             <td class="cart-date">
-               {{ item['studyDate'] | date}}
+                {{ item['studyDate'] | date}}
             </td>
-
             <td>{{item['studyDescription']}}</td>
-
-<!--
-            <td [title]="item['seriesId']">
-                ....{{item['seriesId'] | shortenRight }}
-            </td>
--->
-
+            <!--
+                <td [title]="item['seriesId']">
+                    ....{{item['seriesId'] | shortenRight }}
+                </td>
+                -->
             <td>{{item['description']}}</td>
-
             <td class="cart-number-of-images">
                 {{item['numberImages']}}
             </td>
-<!--
-
-            <td class="cart-series-file-size">
-                {{item['seriesFileSize']}}
-            </td>
--->
-
-<!--
-            <td>
-                {{item['seriesAnnotationsSize']}}
-            </td>
--->
-
+            <!--
+                <td class="cart-series-file-size">
+                    {{item['seriesFileSize']}}
+                </td>
+                -->
+            <!--
+                <td>
+                    {{item['seriesAnnotationsSize']}}
+                </td>
+                -->
         </tr>
     </table>
-
     <!--  Rows Per Page & Pager -->
     <div class="cart-footer">
-
         <!-- [displayDataType]="1" tells the rows per page component which data we are viewing.
-             @TODO use Consts.DISPLAY_DATA_TYPE_CART_LIST  -->
+            @TODO use Consts.DISPLAY_DATA_TYPE_CART_LIST  -->
         <nbia-results-per-page class="cart-per-page" [displayDataType]="1"></nbia-results-per-page>
-        <nbia-search-results-pager class="cart-pager" [displayDataType]="1" [isTopPager]="true"></nbia-search-results-pager>
-
+        <nbia-search-results-pager class="cart-pager" [displayDataType]="1"
+                                   [isTopPager]="true"></nbia-search-results-pager>
+    </div>
+</div>
+<!-- Commercial use restriction warning.-->
+<div *ngIf="showExcludeCommercialWarning"
+     class="panel panel-danger box-div alert-box-div alert-box-shadow show-exclude-commercial-warning"
+>
+    <div class="panel-heading">
+        <span class="alert-box-icon glyphicon glyphicon-exclamation-sign"></span>
+        &nbsp;
+        <span class="panel-title  alert-panel-title">
+        You have series with commercial use restrictions
+        </span>
+    </div>
+    <div style="padding-top:20px" class="panel-body">
+        {{'Your cart contains ' + excludeCommercialCount + ' series with commercial restrictions.'}}
+        <div>
+            <small><i>There is a filter available to exclude restricted series.</i></small>
+        </div>
+        <div class="exclude-commercial-warning-div">
+            <input
+                    class="clicker"
+                    type="checkbox"
+                    id="checkboxShowExcludeCommercial"
+                    (click)="onExcludeCommercialCheckboxClick( $event.target['checked'])"
+            >
+            <label
+                    class="clicker"
+                    for='checkboxShowExcludeCommercial'
+            >
+                &nbsp;Do not show this again.
+            </label>
+            <button
+                    class="btn btn-primary alert-box-button"
+                    (click)="onDisableCommercialSeriesClick()"
+            >
+                Disable Commercial Series
+            </button>
+            <button
+                    class="btn btn-primary alert-box-button"
+                    (click)="onProceedClick()"
+            >
+                Proceed
+            </button>
+        </div>
     </div>
 </div>

@@ -18,6 +18,9 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./query-url.component.scss']
 } )
 
+/**
+ * Generate the URL string that is presented when user selects Share My Query.
+ */
 export class QueryUrlComponent implements OnInit, OnDestroy{
 
     /**
@@ -43,7 +46,7 @@ export class QueryUrlComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // To know what the Text query is we can subscribe to updateTextSearchQueryForDisplayEmitter,
-        // it will update each time the Text search "Search" button is clicke.
+        // it will update each time the Text search "Search" button is clicked.
         this.commonService.updateTextSearchQueryForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.texSearchText = <string>data;

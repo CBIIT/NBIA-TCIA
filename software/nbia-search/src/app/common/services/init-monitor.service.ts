@@ -9,6 +9,8 @@ export class InitMonitorService{
     speciesInit = false;
     phantomsInit = false;
     thirdPartyInit = false;
+    excludeCommercialInit = false;
+    daysFromBaselineInit = false;
     minimumStudiesInit = false;
     dateRangeInit = false;
 
@@ -18,6 +20,8 @@ export class InitMonitorService{
     speciesRunning = false;
     phantomsRunning = false;
     thirdPartyRunning = false;
+    excludeCommercialRunning = false;
+    daysFromBaselineRunning = false;
     minimumStudiesRunning = false;
     dateRangeRunning = false;
 
@@ -57,28 +61,45 @@ export class InitMonitorService{
         return this.anatomicalSiteInit;
     }
 
-    setSpeciesInit(status) {
+    setSpeciesInit( status ) {
         this.speciesInit = status;
     }
 
-    getSpeciesInit(){
+    getSpeciesInit() {
         return this.speciesInit;
     }
 
-    setPhantomsInit(status) {
+    setPhantomsInit( status ) {
         this.phantomsInit = status;
     }
 
-    getPhantomsInit(){
+    getPhantomsInit() {
         return this.phantomsInit;
     }
 
-    setThirdPartyInit(status) {
+    setThirdPartyInit( status ) {
         this.thirdPartyInit = status;
     }
 
-    getThirdPartyInit(){
+    getThirdPartyInit() {
         return this.thirdPartyInit;
+    }
+
+    setExcludeCommercialInit( status ) {
+        this.excludeCommercialInit = status;
+    }
+
+    getExcludeCommercialInit() {
+        return this.excludeCommercialInit;
+    }
+
+
+    setDaysFromBaselineInit( status ) {
+        this.daysFromBaselineInit = status;
+    }
+
+    getDaysFromBaselineInit() {
+        return this.daysFromBaselineInit;
     }
 
     setMinimumStudiesInit( status ) {
@@ -92,30 +113,36 @@ export class InitMonitorService{
     getAnyInit() {
         let res = false;
         if( this.collectionsInit ){
-            res =  true;
+            res = true;
         }
         if( this.modalityInit ){
-            res =  true;
+            res = true;
         }
         if( this.anatomicalSiteInit ){
-            res =  true;
+            res = true;
         }
         if( this.speciesInit ){
-            res =  true;
+            res = true;
         }
-         if( this.phantomsInit ){
-            res =  true;
+        if( this.phantomsInit ){
+            res = true;
         }
-         if( this.thirdPartyInit ){
-            res =  true;
+        if( this.thirdPartyInit ){
+            res = true;
+        }
+        if( this.excludeCommercialInit ){
+            res = true;
+        }
+        if( this.daysFromBaselineInit ){
+            res = true;
         }
         if( this.minimumStudiesInit ){
-            res =  true;
+            res = true;
         }
         if( this.dateRangeInit ){
-            res =  true;
+            res = true;
         }
-    return res;
+        return res;
     }
 
 
@@ -152,27 +179,27 @@ export class InitMonitorService{
         return this.anatomicalSiteRunning;
     }
 
-    setSpeciesRunning( status){
+    setSpeciesRunning( status ) {
         this.speciesRunning = status;
     }
 
-    get getSpeciesRunning(){
+    get getSpeciesRunning() {
         return this.speciesRunning;
     }
 
-    setPhantomsRunning( status){
+    setPhantomsRunning( status ) {
         this.phantomsRunning = status;
     }
 
-    get getPhantomsRunning(){
+    get getPhantomsRunning() {
         return this.phantomsRunning;
     }
 
-    setThirdPartyRunning( status){
+    setThirdPartyRunning( status ) {
         this.thirdPartyRunning = status;
     }
 
-    get getThirdPartyRunning(){
+    get getThirdPartyRunning() {
         return this.thirdPartyRunning;
     }
 
@@ -187,29 +214,35 @@ export class InitMonitorService{
     getAnyRunning() {
         let res = false;
         if( this.collectionsRunning ){
-            res =  true;
+            res = true;
         }
         if( this.modalityRunning ){
-            res =  true;
+            res = true;
         }
         if( this.anatomicalSiteRunning ){
-            res =  true;
+            res = true;
         }
-         if( this.speciesRunning ){
-            res =  true;
+        if( this.speciesRunning ){
+            res = true;
         }
-         if( this.phantomsRunning ){
-            res =  true;
+        if( this.phantomsRunning ){
+            res = true;
         }
-         if( this.thirdPartyRunning ){
-            res =  true;
+        if( this.thirdPartyRunning ){
+            res = true;
+        }
+        if( this.excludeCommercialRunning ){
+            res = true;
+        }
+        if( this.daysFromBaselineRunning ){
+            res = true;
         }
         if( this.minimumStudiesRunning ){
-            res =  true;
+            res = true;
         }
         if( this.dateRangeRunning ){
-            res =  true;
+            res = true;
         }
-    return res;
+        return res;
     }
 }

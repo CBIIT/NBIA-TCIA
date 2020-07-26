@@ -13,7 +13,7 @@
         <span *ngIf="(totalCount > 0) && ( properties.PAGED_SEARCH)">
            Showing <b>{{(rowsPerPage * currentPage) + 1}} - {{(((rowsPerPage * currentPage) + rowsPerPage) > totalCount )?  totalCount : (rowsPerPage * currentPage) + rowsPerPage}}</b> of <b>{{totalCount}}</b> Subjects
         </span>
-        <span *ngIf="totalCount == 0">
+        <span *ngIf="totalCount === 0">
           No results found
         </span>
 
