@@ -32,3 +32,8 @@ OHIF_viewer = true
 # This will show the current user's roles which grant access to the different Admin tools.
 #########################################################################
 # SHOW_ROLES=true
+
+#######################################################
+# Turn off all Collection license related features.
+#######################################################
+# NO_LICENSE = true

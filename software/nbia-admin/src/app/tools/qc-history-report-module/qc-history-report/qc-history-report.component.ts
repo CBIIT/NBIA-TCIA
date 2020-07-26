@@ -14,7 +14,7 @@ export class QcHistoryReportComponent implements OnInit, OnDestroy{
     qcStatusReportResults = [];
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private apiService: ApiService) {
+    constructor( private apiService: ApiService ) {
     }
 
     ngOnInit() {
@@ -24,10 +24,11 @@ export class QcHistoryReportComponent implements OnInit, OnDestroy{
 
                 // Sort by Series Id then Time Stamp
                 this.qcStatusReportResults.sort( ( row1, row2 ) =>
-                    row1['series'] < row2['series'] ? 1 : row1['series'] > row2['series'] ? 1 : row1['timeStamp'] < row2['timeStamp'] ? -1 : 1);
+                    row1['series'] < row2['series'] ? 1 : row1['series'] > row2['series'] ? 1 : row1['timeStamp'] < row2['timeStamp'] ? -1 : 1 );
 
                 this.showReport = true;
             } );
+
 
     }
 

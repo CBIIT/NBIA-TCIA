@@ -24,6 +24,8 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     collections;
     currentCollection;
+    currentLicenseIndex = 0;
+    currentLicenseIndexTrailer = 0;
     currentCollectionIndex = 0;
     showHtml = false;
     consts = Consts;
@@ -32,6 +34,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
     // @TODO Most of these configuration values came from a demo.  Look them over, make sure they are good.
     htmlContent = 'The <b>Description</b> text will go here.';
     textTrailer = '';
+    licenseIndexTrailer = 0;
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -64,9 +67,15 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         ]
     };
 
+    /**
+     * The list of licenses we are working with.
+     * This one object/license is a place holder for the HTML until the license data makes its way back from the server.
+     */
+    licData = [{ 'shortName': '', 'longName': '', 'licenseURL': '', 'commercialUse': true, 'id': -1 }];
+
 
     /*
-    These are tool bar items that can be hidden wit toolbarHiddenButtons:
+    These are tool bar items that can be hidden with toolbarHiddenButtons:
     backgroundColor
     bold
     customClasses
@@ -96,6 +105,8 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
     unlink
     */
 
+    properties = Properties;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiService: ApiService, private utilService: UtilService,
@@ -104,13 +115,14 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
 
-        // Receive the Collection names and descriptions. // TODO
+        // Receive the Collection names and descriptions.
         this.apiService.collectionsAndDescriptionEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.collections = data;
-
                 if( !this.utilService.isNullOrUndefinedOrEmpty( this.collections ) ){
                     this.currentCollection = this.collections[0]['name'];
+                    this.currentLicenseIndex = this.getLicIndexById(this.collections[0]['licenseId']);
+                    this.currentLicenseIndexTrailer = this.currentLicenseIndex;
                     this.htmlContent = this.collections[0]['description'];
                     this.textTrailer = this.htmlContent;
                 }
@@ -135,11 +147,22 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
             });
         this.apiService.getRoles();
 
+        // Get the list of licenses and their associated data.
+        this.apiService.collectionLicensesResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.licData = data;
+                this.licData.sort( ( a, b ) => a['longName'].toUpperCase().localeCompare( b['longName'].toUpperCase() ) );
+
+            } );
+        this.apiService.getCollectionLicenses();
+
 
     }
 
     onCollectionClick( i ) {
         this.currentCollection = this.collections[i]['name'];
+        this.currentLicenseIndex = this.getLicIndexById(this.collections[i]['licenseId']);
+        this.currentLicenseIndexTrailer = this.currentLicenseIndex;
         this.htmlContent = this.collections[i]['description'];
         this.textTrailer = this.htmlContent;
         this.currentCollectionIndex = i;
@@ -150,17 +173,35 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
             console.log('Demo Mode Update Collection description ', this.htmlContent);
         }
         else{
-            if( this.textTrailer !== this.htmlContent ){
-                this.apiService.updateCollectionDescription( this.currentCollection.replace( /\/\/.*/, '' ), this.htmlContent );
+            if( this.textTrailer !== this.htmlContent || this.currentLicenseIndexTrailer !== this.currentLicenseIndex){
+                this.apiService.updateCollectionDescription(
+                    this.currentCollection.replace( /\/\/.*/, '' ),
+                    this.htmlContent,
+                    this.licData[this.currentLicenseIndex]['id']
+                    );
                 this.textTrailer = this.htmlContent;
-
+                this.currentLicenseIndexTrailer = this.currentLicenseIndex;
                 this.collections[this.currentCollectionIndex]['description'] = this.htmlContent;
             }
         }
     }
 
+    onLicenseDropdownClick(i){
+        this.currentLicenseIndex = i;
+    }
+
     onToggleShowHtml() {
         this.showHtml = (!this.showHtml);
+    }
+
+    getLicIndexById( id ) {
+        let len = this.licData.length;
+        for( let i = 0; i < len; i++ ){
+            if( this.licData[i]['id'] === id ){
+                return i;
+            }
+        }
+        return 0;
     }
 
     ngOnDestroy(): void {

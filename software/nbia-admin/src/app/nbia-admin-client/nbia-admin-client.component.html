@@ -35,6 +35,10 @@
         </nbia-view-submission-reports>
 -->
 
+        <nbia-edit-license
+            *ngIf="currentTool === consts.TOOL_EDIT_LICENSE">
+        </nbia-edit-license>
+
         <nbia-perform-online-deletion
             *ngIf="currentTool === consts.TOOL_PERFORM_ONLINE_DELETION">
         </nbia-perform-online-deletion>
@@ -100,6 +104,16 @@
     >
         Edit Collection Descriptions&nbsp;
         <p class="required-role" *ngIf="! showEditCollectionDescriptions">(Required role: MANAGE_COLLECTION_DESCRIPTION)</p>
+    </span>
+
+    <span *ngIf="! properties.NO_LICENSE" class="row label label-primary admin-tool-button nbia-button col-md-12"
+        [ngClass]="{
+            'disabled-tool nbia-button-disabled': ! showEditLicense
+        }"
+        (click)="onToolItemClicked(toolItems.DATA_ADMIN_EDIT_LICENSE, showEditLicense)"
+    >
+        Edit Collection License&nbsp;
+        <p class="required-role" *ngIf="! showEditLicense">(Required role: MANAGE_COLLECTION_DESCRIPTION)</p> <!-- TODO Make sure this is the right role!!!  -->
     </span>
 
  </div>

@@ -1,26 +1,21 @@
-<div  *ngIf="roleIsGood"
-      class="edit-collection-description-tool">
-
+<div *ngIf="roleIsGood" class="edit-collection-description-tool">
     <nbia-query-section
         [currentTool]="consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
-
     ></nbia-query-section>
 
     <div class="container data-section">
-
         <div class="row edit-collection-description-edit">
-            <angular-editor
-                [(ngModel)]="htmlContent"
-                [config]="editorConfig">
+            <angular-editor [(ngModel)]="htmlContent" [config]="editorConfig">
             </angular-editor>
         </div>
 
-        <div  class="row edit-collection-description-edit">
+        <div class="row edit-collection-description-edit">
             <div>
                 <label
                     class="label label-primary"
                     for="edit-collection-description-html-text"
-                >HTML:</label>
+                >HTML:</label
+                >
             </div>
 
             <textarea
@@ -29,30 +24,75 @@
                 id="edit-collection-description-html-text"
                 [(ngModel)]="htmlContent"
             ></textarea>
-
         </div>
 
-        <!--  Save button  -->
-        <div class="row ">
+        <div *ngIf="! properties.NO_LICENSE" class="row lic-and-save-div">
+            <span class="license-heading">License</span>
+            <br/>
+            <!--  License  -->
+            <span class="dropdown menu-dropdown">
+                    <span dropdown [dropdownToggle]="true">
+                        <button
+                            class="btn edit-lic-dropdown-button text-left"
+                            dropdown-open
+                        >
+                            <span>
+                                {{ licData[currentLicenseIndex].longName }}
+                                <span class="caret"></span>
+                            </span>
+                        </button>
+                        <ul
+                            class="dropdown-menu edit-lic-dropdown-ul"
+                            role="menu"
+                        >
+                            <li
+                                class="edit-lic-dropdown-li"
+                                *ngFor="let lic of licData; let c = index"
+                                role="menuitem"
+                                (click)="onLicenseDropdownClick(c)"
+                            >
+                                <a class="menu-dropdown-a">
+                                    <span
+                                        *ngIf="c === currentLicenseIndex"
+                                        class="glyphicon glyphicon-ok"
+                                    ></span>
+                                    {{ lic.longName }}
+                                </a>
+                            </li>
+                        </ul>
+                    </span>
+                </span>
+            <!--  Save button  -->
+
+        </div>
+        <div>
             <button
                 [ngClass]="{
-                     'disabled': this.textTrailer === this.htmlContent,
-                     'nbia-button-disabled': this.textTrailer === this.htmlContent
-                 }"
-
+                        disabled:
+                            textTrailer === htmlContent &&
+                            currentLicenseIndexTrailer === currentLicenseIndex,
+                        'nbia-button-disabled':
+                            textTrailer === htmlContent &&
+                            currentLicenseIndexTrailer === currentLicenseIndex
+                    }"
                 (click)="onSave()"
-                class="btn nbia-button edit-collection-button"
+                class="btn nbia-button edit-collection-button edit-collection-save-button"
             >
                 Save
             </button>
         </div>
-
     </div>
 </div>
 
 
-<h4 *ngIf="! roleIsGood && ( userRoles !== undefined)">
-    <p>User does not have authorization required for "<b>Edit Collection Description</b>"</p>
-    <p>Users role(s): <b>{{userRoles}}</b></p>
+<h4 *ngIf="!roleIsGood && userRoles !== undefined">
+    <p>
+        User does not have authorization required for "<b
+    >Edit Collection Description</b
+    >"
+    </p>
+    <p>
+        Users role(s): <b>{{ userRoles }}</b>
+    </p>
     Required role: <b>NCIA.MANAGE_COLLECTION_DESCRIPTION</b>
 </h4>

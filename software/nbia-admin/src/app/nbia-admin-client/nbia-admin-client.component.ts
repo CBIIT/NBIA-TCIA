@@ -31,6 +31,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     showPerformOnlineDeletions = false;
     showDataAdminPerformQcButton = false;
     showEditCollectionDescriptions = false;
+    showEditLicense = false;
 
     loginMode;
     consts = Consts;
@@ -38,6 +39,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
 
     tokenStatus = TokenStatus;
     accessTokenStatus;
+    properties = Properties;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -132,20 +134,23 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     // This is called when a user selects a tool.
     onToolItemClicked( tool, enabled ) {
         if( enabled ){
-            if( tool === 0 ){
+            if( tool === ToolItems.DATA_ADMIN_PERFORM_QC_MENU_ITEM ){
                 this.currentTool = Consts.TOOL_PERFORM_QC;
             }
-            if( tool === 1 ){
+            if( tool === ToolItems.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM ){
                 this.currentTool = Consts.TOOL_APPROVE_DELETIONS;
             }
-            if( tool === 2 ){
+            if( tool === ToolItems.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM){
                 this.currentTool = Consts.TOOL_VIEW_SUBMISSION_REPORTS;
             }
-            if( tool === 3 ){
+            if( tool === ToolItems.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM ){
                 this.currentTool = Consts.TOOL_PERFORM_ONLINE_DELETION;
             }
-            if( tool === 4 ){
+            if( tool === ToolItems.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM  ){
                 this.currentTool = Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS;
+            }
+           if( tool === ToolItems.DATA_ADMIN_EDIT_LICENSE ){
+                this.currentTool = Consts.TOOL_EDIT_LICENSE;
             }
         }
     }
@@ -171,8 +176,13 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         if( this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1 ){
             this.showDataAdminPerformQcButton = true;
         }
+
         if( this.userRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
             this.showEditCollectionDescriptions = true;
+        }
+
+        if( this.userRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+            this.showEditLicense = true;
         }
     }
 

@@ -4,7 +4,8 @@ export enum ToolItems{
     DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM,
     DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM,
     DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM,
-    DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM
+    DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM,
+    DATA_ADMIN_EDIT_LICENSE
 }
 export enum TokenStatus{
     NO_TOKEN,
@@ -25,6 +26,7 @@ export const Consts = {
     TOOL_EDIT_COLLECTION_DESCRIPTIONS: 'edit-collection-descriptions',
     TOOL_PERFORM_ONLINE_DELETION: 'perform-online-deletion',
     TOOL_VIEW_SUBMISSION_REPORTS: 'view-submission-reports',
+    TOOL_EDIT_LICENSE: 'edit-license',
     TOOL_NONE: 'no-tool',
 
     // For Query section
@@ -45,6 +47,7 @@ export const Consts = {
     GET_COLLECTION_NAMES: 'getCollectionValuesAndCounts',
     GET_COLLECTION_NAMES_AND_SITES: 'getCollectionSite',
     GET_COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
+    GET_COLLECTION_LICENSES: 'getLicences',
     GET_CONFIG_PARAMS: 'v3/getConfigParams',
     GET_SEARCH_FOR_APPROVE_DELETIONS: 'getQCSearchForDeletion',
     GET_HISTORY_REPORT: 'getQCHistoryReport',
@@ -55,6 +58,8 @@ export const Consts = {
     UPDATE_COLLECTION_DESCRIPTION: 'submitCollectionDescription',
     GET_HOST_NAME: 'hostName',
 
+    SUBMIT_COLLECTION_LICENSES: 'submitLicense',
+    SUBMIT_DELETE_COLLECTION_LICENSES: 'deleteLicense',
     SUBMIT_QC_STATUS_UPDATE: 'submitQCVisibilityForDataAdmin',
     SUBMIT_SERIES_DELETION: 'submitDeleteVisibility',
     SUBMIT_ONLINE_DELETION: 'submitOnlineDeletion',

@@ -24,6 +24,7 @@ import { ManageWorkflowItemsModule } from './tools/manage-workflow-items-module/
 import { CookieService } from 'angular2-cookie/core';
 import { LoadingDisplayComponent } from './admin-common/components/loading-display/loading-display.component';
 import { FooterComponent } from './footer/footer.component';
+import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';
 
 @NgModule( {
     declarations: [
@@ -53,7 +54,8 @@ import { FooterComponent } from './footer/footer.component';
         ApproveDeletionsModule,
         PerformQcModule,
         CineModeModule,
-        ManageWorkflowItemsModule
+        ManageWorkflowItemsModule,
+        EditLicenseModule
     ],
     providers: [
         AccessTokenService,

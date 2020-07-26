@@ -16,6 +16,7 @@ export class ApiService{
     collectionSiteNames;
     collectionNames;
     collectionDescriptions;
+    collectionLicenses;
     collectionSitesAndDescriptions = [];
     collectionsAndDescriptions = [];
 
@@ -30,6 +31,9 @@ export class ApiService{
     searchResultsEmitter = new EventEmitter();
     resultsErrorEmitter = new EventEmitter();
 
+    collectionLicensesResultsEmitter = new EventEmitter();
+    collectionLicensesErrorEmitter = new EventEmitter();
+
     qcHistoryResultsEmitter = new EventEmitter();
     qcHistoryErrorEmitter = new EventEmitter();
 
@@ -41,6 +45,12 @@ export class ApiService{
 
     seriesForDeletionEmitter = new EventEmitter();
     seriesForDeletionErrorEmitter = new EventEmitter();
+
+    submitCollectionLicenseResultsEmitter = new EventEmitter();
+    submitCollectionLicenseErrorEmitter = new EventEmitter();
+
+    submitDeleteLicenseResultsEmitter = new EventEmitter();
+    submitDeleteLicenseErrorEmitter = new EventEmitter();
 
     submitBulkQcResultsEmitter = new EventEmitter();
     submitBulkQcErrorEmitter = new EventEmitter();
@@ -78,10 +88,19 @@ export class ApiService{
     }
 
     // TODO rename this, we use it for queries too that are not from that left side Criteria search.
+    // This method is not really necessary
     doSubmit( tool, submitData ) {
         switch( tool ){
             case Consts.TOOL_BULK_QC:
                 this.submitBulkQc( submitData );
+                break;
+
+            case Consts.TOOL_EDIT_LICENSE:
+                this.submitCollectionLicense( submitData );
+                break;
+
+            case Consts.SUBMIT_DELETE_COLLECTION_LICENSES:
+                this.submitDeleteLicense( submitData );
                 break;
 
             case Consts.GET_HISTORY_REPORT:
@@ -213,6 +232,29 @@ export class ApiService{
                 this.submitBulkQcErrorEmitter.emit( err );
                 console.error( 'submitBulkQc err: ', err['error'] );
                 console.error( 'submitBulkQc err: ', err );
+            } );
+    }
+
+    submitCollectionLicense( query ) {
+        this.doPost( Consts.SUBMIT_COLLECTION_LICENSES, query ).subscribe(
+            ( data ) => {
+                this.submitCollectionLicenseResultsEmitter.emit( data );
+            },
+            ( err ) => {
+                this.submitCollectionLicenseErrorEmitter.emit( err );
+                console.error( 'submitCollectionLicense err: ', err['error'] );
+                console.error( 'submitCollectionLicense err: ', err );
+            } );
+    }
+
+    submitDeleteLicense( lic ){
+        let deleteLicenseQuery = 'id=' + lic;
+        this.doPost( Consts.SUBMIT_DELETE_COLLECTION_LICENSES, deleteLicenseQuery ).subscribe(
+            ( data ) => {
+                this.submitDeleteLicenseResultsEmitter.emit( data );
+            },
+            ( err ) => {
+                this.submitDeleteLicenseErrorEmitter.emit( err );
             } );
     }
 
@@ -406,11 +448,28 @@ export class ApiService{
             } );
     }
 
+    getCollectionLicenses() {
+        this.doGet( Consts.GET_COLLECTION_LICENSES ).subscribe(
+            ( collectionLicensesData ) => {
+                this.collectionLicenses = collectionLicensesData;
+                // Emit here
+                this.collectionLicensesResultsEmitter.emit( this.collectionLicenses );
+            },
+            collectionLicensesError => {
+                if( collectionLicensesError.status === 401 ){
+                    this.userRoles = [Consts.ERROR_401];
+                }else{
+                    console.error( 'Could not get Collection licenses from server: ', collectionLicensesError );
+                    this.userRoles = [Consts.ERROR, collectionLicensesError.status];
+                }
+
+            } );
+    }
+
     getCollectionSitesAndDescription() {
         this.doGet( Consts.GET_COLLECTION_NAMES_AND_SITES ).subscribe(
             collectionNamesData => {
                 this.collectionSiteNames = collectionNamesData;
-
                 this.mergeCollectionSitesAndDescriptions();
             },
             ( collectionNamesError ) => {
@@ -451,16 +510,17 @@ export class ApiService{
     }
 
     mergeCollectionsAndDescriptions() {
-
         for( let name of this.collectionNames ){
             let temp = { 'name': name['criteria'] };
             temp['description'] = '';
             temp['id'] = -1;
+
             // See if we can find a description for the collection name
             for( let description of this.collectionDescriptions ){
                 if( description['collectionName'] === temp['name'] ){
                     temp['description'] = description['description'];
                     temp['id'] = description['id'];
+                    temp['licenseId'] = description['licenseId'];
                 }
             }
             this.collectionsAndDescriptions.push( temp );
@@ -484,6 +544,7 @@ export class ApiService{
                     // if( temp['name'].localeCompare( description['collectionName'] ) === 0 ){
                     temp['description'] = description['description'];
                     temp['id'] = description['id'];
+                    temp['licenseId'] = description['licenseId'];
                 }
             }
             this.collectionSitesAndDescriptions.push( temp );
@@ -657,6 +718,8 @@ export class ApiService{
         if( queryType === Consts.UPDATE_COLLECTION_DESCRIPTION ||
             queryType === Consts.SUBMIT_SERIES_DELETION ||
             queryType === Consts.SUBMIT_ONLINE_DELETION ||
+            queryType === Consts.SUBMIT_COLLECTION_LICENSES ||
+            queryType === Consts.SUBMIT_DELETE_COLLECTION_LICENSES ||
             queryType === Consts.SUBMIT_QC_STATUS_UPDATE
         ){
             options = {
@@ -671,8 +734,12 @@ export class ApiService{
         return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
-    updateCollectionDescription( name, description ) {
-         this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURIComponent( description ) ).subscribe(
+    // CHECKME Should a license be optional?
+    updateCollectionDescription( name, description, licenseId ) {
+        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name +
+            '&description=' + encodeURIComponent( description ) +
+            '&license=' + licenseId
+        ).subscribe(
             data => {
                 console.log( 'updateCollectionDescription response: ', data );
             },

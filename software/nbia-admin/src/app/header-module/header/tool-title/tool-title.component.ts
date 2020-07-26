@@ -49,6 +49,9 @@ export class ToolTitleComponent implements OnInit{
         }else if( this.currentTool === Consts.TOOL_PERFORM_ONLINE_DELETION ){
             this.currentToolTitle = 'Perform Online Deletion';
             this.helpUrl += '#DataAdministrationToolGuide-PerformOnlineDeletions';
+        }else if( this.currentTool === Consts.TOOL_EDIT_LICENSE ){
+            this.currentToolTitle = 'Add/Edit License';
+            this.helpUrl += '#DataAdministrationToolGuide-EditLicense';
         }else{
             this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
         }

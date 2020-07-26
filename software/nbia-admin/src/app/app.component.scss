@@ -10,6 +10,7 @@ $top-logo-height: 41px;
 $heading-height: 110px;
 $heading-margin-bottom: 8px;   /* Space between menu bar and top of content */
 $disabled-text: #acacac; // TODO rename & explain
+$disabled-dark-text: #9c9c9c; // TODO rename & explain
 
 
 table {
@@ -61,6 +62,9 @@ table {
     cursor: pointer;
 }
 
+.text-left {
+    text-align: left !important;
+}
 
 .dropdown-menu-item-data-admin {
     color: #fff;
@@ -89,3 +93,11 @@ table {
     user-select: none;
 }
 
+
+.black-text{
+    color: #000000;
+}
+
+.disabled-text{
+    color: $disabled-dark-text;
+}
