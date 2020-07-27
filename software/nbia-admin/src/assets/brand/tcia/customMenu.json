@@ -61,6 +61,10 @@
                 "target": "https://public.cancerimagingarchive.net/ncia"
             },
             {
+                "menuText": "Browse Analysis Results",
+                "target": "https://www.cancerimagingarchive.net/tcia-analysis-results"
+            },
+            {
                 "menuText": "REST API",
                 "target": "https://wiki.cancerimagingarchive.net/x/NIIiAQ"
             },
@@ -96,6 +100,10 @@
             {
                 "menuText": "Challenge Competitions",
                 "target": "https://wiki.cancerimagingarchive.net/x/nYIaAQ"
+            },
+            {
+                "menuText": "COVID-19",
+                "target": "https://wiki.cancerimagingarchive.net/x/aI0vB"
             }
         ]
     },
