@@ -57,6 +57,7 @@ public class V3_getAvailablePEsForPG extends getData{
 				System.out.println("Get project site combination="+ projSiteName);
 
 			allPENames = new HashSet<String>(results);
+			allPENames.remove(null);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();

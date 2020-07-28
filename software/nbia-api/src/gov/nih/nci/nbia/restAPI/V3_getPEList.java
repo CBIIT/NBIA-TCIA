@@ -53,10 +53,12 @@ public class V3_getPEList extends getData{
 			if (results != null) {
 				data = new ArrayList<Object []>();
 				for (String projSiteName : results) {
-					System.out.println("Get project site combination="+ projSiteName);
-					String [] s = projSiteName.split("//");
-					Object [] objs = {s[0], s[1]};
-					data.add(objs);
+						System.out.println("Get project site combination="+ projSiteName);
+						if (projSiteName != null) {
+						String [] s = projSiteName.split("//");
+						Object [] objs = {s[0], s[1]};
+						data.add(objs);
+					}
 				}
 			}
 			else {
