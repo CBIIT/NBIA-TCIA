@@ -79,8 +79,11 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			dto.setDescription(collectionDesc.getDescription());
 			dto.setId(collectionDesc.getId());
 			dto.setCollectionName(collectionDesc.getCollectionName());
-			dto.setLicenseId(collectionDesc.getLicense().getId());
-
+			
+			if (collectionDesc.getLicense()== null)
+				dto.setLicenseId(null);
+			else 
+				dto.setLicenseId(collectionDesc.getLicense().getId());
 			returnValue.add(dto);
 		}
 		return returnValue;
