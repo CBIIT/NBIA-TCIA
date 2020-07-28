@@ -51,15 +51,16 @@ public class JnlpArgumentsParser {
                 series.setStudyDesc(result[13]);
                 series.setSeriesNum(result[14]);
                 series.setSeriesDesc(result[15]);
-                
-                series.setThirdPartyAnalysis(result[16]);
-    	        series.setDescriptionURI(result[17]);
-    	        series.setManufacturer(result[18]);
-    	        series.setModality(result[19]);
-    	        series.setSopClassUID(result[20]);
-    	        series.setSopClassName(result[21]);
-    	        series.setLicenseName(result[22]);
-    	        series.setLicenseUrl(result[23]);
+                if (result.length >= 24) {
+	                series.setThirdPartyAnalysis(result[16]);
+	    	        series.setDescriptionURI(result[17]);
+	    	        series.setManufacturer(result[18]);
+	    	        series.setModality(result[19]);
+	    	        series.setSopClassUID(result[20]);
+	    	        series.setSopClassName(result[21]);
+	    	        series.setLicenseName(result[22]);
+	    	        series.setLicenseUrl(result[23]);
+                }
                 seriesDataList.add(series);
             }
         }

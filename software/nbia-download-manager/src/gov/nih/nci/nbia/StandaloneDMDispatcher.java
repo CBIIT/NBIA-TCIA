@@ -117,6 +117,7 @@ public class StandaloneDMDispatcher {
 	private boolean nogo = false;
 	private List seriesList = null;
 	private boolean majorityPublic = true;
+	private double serverVersion = 0.0;
 
 	/**
 	 * @param args
@@ -240,6 +241,7 @@ public class StandaloneDMDispatcher {
 		}
 		if ((resp != null) && (resp.size() >= 3)) {
 			key = resp.get(2);
+			serverVersion = Double.parseDouble(resp.get(0));
 		}
 		
 		
@@ -274,8 +276,13 @@ public class StandaloneDMDispatcher {
 //			StandaloneDMV3 sdm = new StandaloneDMV3();
 //			sdm.setKey(key);
 //			sdm.launch(seriesList);
-//		} 
-		//For upcoming release, it will talk to serverletV4. StandaloneDMV3 class will not be used
+//		}
+		//For upcoming release, if the server is not updated to version 4
+		else if ((manifestVersion.startsWith("3.")) && (serverVersion < 4.0)) {
+			StandaloneDMV3 sdm = new StandaloneDMV3();
+			sdm.setKey(key);
+			sdm.launch(seriesList);
+		}
 		else if (manifestVersion.startsWith("3.")) {
 		StandaloneDMV4 sdm = new StandaloneDMV4();
 		sdm.setKey(key);
