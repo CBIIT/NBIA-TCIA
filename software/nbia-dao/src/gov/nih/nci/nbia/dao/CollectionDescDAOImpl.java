@@ -58,7 +58,9 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			dto.setId(c.getId());
 			dto.setUserName(c.getUserName());
 			dto.setCollectionName(c.getCollectionName());
-			dto.setLicenseId(c.getLicense().getId());
+			if (c.getLicense() != null)
+				dto.setLicenseId(c.getLicense().getId());
+			else dto.setLicenseId(null);
 			//calling this from save() causes duplicate object in session
 			//might be better to rework this so the find can just return
 			//that object and save update that instead of re-creating
