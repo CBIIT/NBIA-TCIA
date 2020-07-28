@@ -545,7 +545,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			}
 		});
 		pauseButton.setEnabled(true);
-		if (this.serverUrl.endsWith("v4"))
+		if (this.serverUrl.endsWith("V4"))
 			createLicenseFile(this.directoryBrowserPanel.getDirectory());
 		totalProgressPanel.actionStarted();
 	}

@@ -45,7 +45,6 @@ public class TotalProgressPanel extends JPanel implements Observer {
 			System.out.println("@@@@@sid =" + downloader.getSeriesInstanceUid() + " size = " + downloader.getSize()
 					+ " subtotal now = " + subTotal + " totalSize =" + totalSize);
 			double progress = ((double) subTotal / totalSize) * 100;
-			System.out.println("!!@@@@@progress= " + progress);
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					progressBar.setValue((int) progress);
