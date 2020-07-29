@@ -77,8 +77,12 @@
                 "target": "https://wiki.cancerimagingarchive.net/x/x49XAQ"
             },
             {
+                "menuText": "Analysis Results Directory",
+                "target": "https://wiki.cancerimagingarchive.net/x/sgH1"
+            },
+            {
                 "menuText": "Data Usage Statistics",
-                "target": "https://www.cancerimagingarchive.net/stats"
+                "target": "https://cancerimagingarchive.net/dashboard2"
             }
         ]
     },
@@ -100,6 +104,10 @@
             {
                 "menuText": "Challenge Competitions",
                 "target": "https://wiki.cancerimagingarchive.net/x/nYIaAQ"
+            },
+            {
+                "menuText": "COVID-19",
+                "target": "https://wiki.cancerimagingarchive.net/x/aI0vB"
             }
         ]
     },
