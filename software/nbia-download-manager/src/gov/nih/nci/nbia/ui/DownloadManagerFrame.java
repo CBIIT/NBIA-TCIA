@@ -438,7 +438,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 					} 
 	
 					writer = new BufferedWriter(new FileWriter(file, true));
-			    	String content = new MessageFormat(DownloaderProperties.getLicenseText()).format(new String[] {licenseName, licenseUrl});
+			    	String content = new MessageFormat(DownloaderProperties.getLicenseText()).format(new String[] {collection, licenseName, licenseUrl});
 			        writer.append(content);
 			         
 			        writer.close();
