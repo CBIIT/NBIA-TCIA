@@ -11,6 +11,7 @@ package gov.nih.nci.nbia.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
@@ -43,6 +44,7 @@ public class LicenseDAOImpl extends AbstractDAO
 	public void save(LicenseDTO license) throws DataAccessException {
 
 		getHibernateTemplate().saveOrUpdate(license.getLicense());
+		setExcludeCommercialForSeries(license);
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	public String deleteLicense(Integer id) {
@@ -79,6 +81,18 @@ public class LicenseDAOImpl extends AbstractDAO
         
 		return returnValue;
 	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	private void setExcludeCommercialForSeries(LicenseDTO license)  {
+		
+       
+		if (license.getCommercialUse().equalsIgnoreCase("YES")) {
+			String queryString = "update general_series s set exclude_commercial=null where project in (select collection_name from collection_descriptions where license_id="+license.getId()+")";
+			int result= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(queryString).executeUpdate();
+		}  else {
+			String queryString = "update general_series s set exclude_commercial='YES' where project in (select  collection_name from collection_descriptions where license_id="+license.getId()+")";
+			int result= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(queryString).executeUpdate();
+		}
 
+	} 
 
 }
