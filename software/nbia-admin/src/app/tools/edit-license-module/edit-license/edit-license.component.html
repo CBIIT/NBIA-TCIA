@@ -205,7 +205,9 @@
     [ngDraggable]="true"
     (started)="onDragBegin($event)"
     (endOffset)="onMoveEnd($event)"
+    [style.left.px]="confirmDeleteLeft"
 >
+
     <!-- -----  Delete Licence  ----- -->
     <div
         #PanelHandle
@@ -257,6 +259,7 @@
         </div>
     </div>
 </div>
+<!-- END Confirm Delete Popup.  -->
 
 <h4 *ngIf="!roleIsGood && userRoles !== undefined">
     <p>

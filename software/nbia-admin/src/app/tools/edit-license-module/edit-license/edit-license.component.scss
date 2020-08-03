@@ -32,6 +32,7 @@ td {
 .edit-lic-button {
     margin-left: 5px;
 }
+
 .edit-lic-button:disabled {
     margin-left: 5px;
     cursor: not-allowed;
@@ -45,7 +46,8 @@ td {
 .edit-lic-right-td {
     margin: 3px;
 }
-.edit-lic-checkbox-label{
+
+.edit-lic-checkbox-label {
     float: right;
     font-weight: normal;
 }
@@ -56,7 +58,7 @@ td {
 }
 
 // Text input on the right
-.edit-lic-input{
+.edit-lic-input {
     min-width: 540px;
 }
 
@@ -65,7 +67,7 @@ td {
 }
 
 .edit-lic-dropdown-span:hover {
-     background-color: #286090;
+    background-color: #286090;
 }
 
 .edit-lic-dropdown-button {
@@ -86,7 +88,7 @@ td {
 }
 
 .edit-lic-dropdown-li:hover {
-   // background-color: #286090;
+    // background-color: #286090;
     color: #fff;
 }
 
@@ -113,16 +115,17 @@ td {
     text-decoration: none;
 }
 
-.delete-box{
-position: absolute;
-        width: $edit-lic-delete-confirm-min-width;
-        left: calc(50% - #{($edit-lic-delete-confirm-min-width / 2)});
+.delete-box {
+    position: absolute;
+    // width: $edit-lic-delete-confirm-min-width;
+    // width: auto;
+    // left: calc(50% - #{($edit-lic-delete-confirm-min-width / 2)});
     top: 200px;
-        padding: 0;
+    padding: 0;
 }
 
 
-.edit-license-heading{
+.edit-license-heading {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -145,19 +148,20 @@ position: absolute;
     cursor: grabbing;
 }
 
-.edit-license-confirm-delete-buttons-div{
+.edit-license-confirm-delete-buttons-div {
     float: right;;
 }
 
-.edit-license-confirm-delete-text0{
+.edit-license-confirm-delete-text0 {
     font-size: large;
 }
-.edit-license-confirm-delete-text1{
+
+.edit-license-confirm-delete-text1 {
     font-size: large;
     color: $close-x-red;
 }
 
-.edit-lic-unsaved-changes-text{
+.edit-lic-unsaved-changes-text {
     color: $close-x-red;
     font-weight: bold;
     padding-bottom: 0;
@@ -165,19 +169,22 @@ position: absolute;
 }
 
 
-.top-edit-lic-radio-tr{
+.top-edit-lic-radio-tr {
     margin-bottom: 0;
     padding-bottom: 0;
 }
-.bottom-edit-lic-radio-tr{
+
+.bottom-edit-lic-radio-tr {
     margin-top: 0px;
     padding-top: 0px;
 }
-.top-edit-lic-radio-td{
+
+.top-edit-lic-radio-td {
     margin-bottom: 0;
     padding-bottom: 0;
 }
-.bottom-edit-lic-radio-td{
+
+.bottom-edit-lic-radio-td {
     margin-top: 0px;
     padding-top: 0px;
 
