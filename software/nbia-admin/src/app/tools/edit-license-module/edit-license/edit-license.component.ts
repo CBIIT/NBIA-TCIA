@@ -58,6 +58,8 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     commercialTestHold = true;
     commercialLicAllowedDefault = true;  // The default for new License.
 
+    confirmDeleteLeft = 200;
+    popupWidth;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiService: ApiService, private utilService: UtilService ) {
@@ -269,8 +271,8 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     }
 
     addLic( i ) {
-        let submitData = 'longName=' + this.licData[i]['longName'].replace('%', '%25') +
-            '&shortName=' + this.licData[i]['shortName'].replace('%', '%25') +
+        let submitData = 'longName=' + this.licData[i]['longName'].replace( '%', '%25' ) +
+            '&shortName=' + this.licData[i]['shortName'].replace( '%', '%25' ) +
             '&licenseURL=' + this.licData[i]['licenseURL'] +
             '&commercialUse=' + <string>((this.licData[i]['commercialUse']) ? 'YES' : 'NO');
 
@@ -278,9 +280,9 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     }
 
     saveLic( i ) {
-        let submitData = 'longName=' + this.licData[i]['longName'].replace('%', '%25') +
-            '&shortName=' + this.licData[i]['shortName'].replace('%', '%25')  +
-            '&licenseURL=' + this.licData[i]['licenseURL']  +
+        let submitData = 'longName=' + this.licData[i]['longName'].replace( '%', '%25' ) +
+            '&shortName=' + this.licData[i]['shortName'].replace( '%', '%25' ) +
+            '&licenseURL=' + this.licData[i]['licenseURL'] +
             '&id=' + this.licData[i]['id']
             + '&commercialUse=' + <string>((this.licData[i]['commercialUse']) ? 'YES' : 'NO');
         this.apiService.doSubmit( Consts.TOOL_EDIT_LICENSE, submitData );
@@ -288,6 +290,9 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
 
     onLicEditDeleteClick() {
         this.showConfirmDelete = true;
+        // TODO Explain this
+        this.popupWidth = Math.max( 63, this.licData[this.currentLic]['longName'].length);
+        this.confirmDeleteLeft = (window.innerWidth / 2) - (this.popupWidth * 6);
     }
 
     onLicEditConfirmDeleteClick() {
