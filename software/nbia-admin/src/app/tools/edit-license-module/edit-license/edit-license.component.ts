@@ -269,8 +269,8 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     }
 
     addLic( i ) {
-        let submitData = 'longName=' + this.licData[i]['longName'] +
-            '&shortName=' + this.licData[i]['shortName'] +
+        let submitData = 'longName=' + this.licData[i]['longName'].replace('%', '%25') +
+            '&shortName=' + this.licData[i]['shortName'].replace('%', '%25') +
             '&licenseURL=' + this.licData[i]['licenseURL'] +
             '&commercialUse=' + <string>((this.licData[i]['commercialUse']) ? 'YES' : 'NO');
 
@@ -278,9 +278,9 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     }
 
     saveLic( i ) {
-        let submitData = 'longName=' + this.licData[i]['longName'] +
-            '&shortName=' + this.licData[i]['shortName'] +
-            '&licenseURL=' + this.licData[i]['licenseURL'] +
+        let submitData = 'longName=' + this.licData[i]['longName'].replace('%', '%25') +
+            '&shortName=' + this.licData[i]['shortName'].replace('%', '%25')  +
+            '&licenseURL=' + this.licData[i]['licenseURL']  +
             '&id=' + this.licData[i]['id']
             + '&commercialUse=' + <string>((this.licData[i]['commercialUse']) ? 'YES' : 'NO');
         this.apiService.doSubmit( Consts.TOOL_EDIT_LICENSE, submitData );
