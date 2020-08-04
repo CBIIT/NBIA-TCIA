@@ -60,6 +60,8 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
 
     confirmDeleteLeft = 200;
     popupWidth;
+    shortNameTooLong = false;
+    shortNameMaxLen = 50;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private apiService: ApiService, private utilService: UtilService ) {
@@ -200,6 +202,32 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         };
     }
 
+
+    shortNameKeypress( e ) {
+        if( (this.licData[this.currentLic]['shortName'].length === this.shortNameMaxLen) &&
+            (e['key'] !== 'ArrowLeft') &&
+            (e['key'] !== 'ArrowRight')
+        ){
+            this.shortNameTooLong = true;
+        }
+    }
+
+    shortNameKeyup( e ) {
+        if(
+            (this.licData[this.currentLic]['shortName'].length <= this.shortNameMaxLen) &&
+            ((e['key'] === 'ArrowLeft') || (e['key'] === 'ArrowRight'))
+        ){
+            this.shortNameTooLong = false;
+        }
+    }
+
+    onShortNameChange() {
+        if( this.licData[this.currentLic]['shortName'].length <= this.shortNameMaxLen ){
+            this.shortNameTooLong = false;
+        }
+        this.onLicChange();
+    }
+
     onLicChange() {
         this.isChanged = this.haveChanges();
     }
@@ -291,7 +319,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     onLicEditDeleteClick() {
         this.showConfirmDelete = true;
         // TODO Explain this
-        this.popupWidth = Math.max( 63, this.licData[this.currentLic]['longName'].length);
+        this.popupWidth = Math.max( 63, this.licData[this.currentLic]['longName'].length );
         this.confirmDeleteLeft = (window.innerWidth / 2) - (this.popupWidth * 6);
     }
 

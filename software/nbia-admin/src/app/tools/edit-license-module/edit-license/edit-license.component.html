@@ -66,10 +66,17 @@
                     <input
                         type="text"
                         class="edit-lic-input"
+                        maxlength="50"
                         [(ngModel)]="licData[currentLic].shortName"
-                        (ngModelChange)="onLicChange()"
+                        (ngModelChange)="onShortNameChange()"
+                        (keydown)="shortNameKeypress($event)"
+                        (keyup)="shortNameKeyup($event)"
                     />
                 </td>
+            </tr>
+            <tr *ngIf="shortNameTooLong">
+                <td></td>
+                <td class="edit-lic-warning">Short name can not be longer than 50 characters.</td>
             </tr>
             <tr>
                 <td class="edit-lic-left-td">
@@ -132,7 +139,7 @@
                     <!--  ----- Buttons "Delete", "New", "Save", "Add", and "Cancel" -----  -->
                     <span
                         *ngIf="isChanged"
-                        class="edit-lic-unsaved-changes-text"
+                        class="edit-lic-warning"
                     >
                         There are unsaved changes!
                     </span>
