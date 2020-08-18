@@ -212,6 +212,23 @@ tr:nth-child(2n+3) {
     background-color: #1e5975;
 }
 
+.nbia-button-disabled:active {
+  cursor: not-allowed;
+  background-color: #70a4bd;
+  color: #f5fafa;
+}
+
+.nbia-button-disabled:hover {
+  cursor: not-allowed;
+  background-color: #70a4bd;
+}
+
+.nbia-button-disabled {
+  cursor: not-allowed;
+  background-color: #70a4bd;
+}
+
+
 .clicker {
     cursor: pointer;
 }

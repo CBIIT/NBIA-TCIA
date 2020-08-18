@@ -17,17 +17,24 @@ import { Subject } from 'rxjs';
 export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
     fromBaseLineFrom = '';
+    fromBaseLineFromHold = '';
+    fromBaseLineFromTrailer = '';
     displayFromBaseLineFrom = '';
     fromBaseLineTo = '';
+    fromBaseLineToHold = '';
+    fromBaseLineToTrailer = '';
     displayFromBaseLineTo = '';
     eventTypeList = [];
     errorFlag = false;
     currentEventTypeIndex = 0;
-    currentEventTypeTrailer = '';
-    daysFromBaseLineApply = false;
+    currentEventTypeTrailer = 0;
     minMaxTimePoints;
-    searchResultsMaxTimePoints = {};
+    searchResultsMinMaxTimePoints = {};
+    searchResultsMinMaxTimePointsOrig = {};
+    showClinicalTimepoints = true;
+    resultsCount = -1;
 
+    tempTest0 = 0;
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
      * @type {Subject<boolean>}
@@ -41,12 +48,14 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-
         // Get initial values before any query is run.
         this.apiServerService.getMinMaxTimepointsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                this.searchResultsMaxTimePoints = <any>data;
+                this.searchResultsMinMaxTimePoints = <any>data;
+                this.searchResultsMinMaxTimePointsOrig = <any>data;
                 this.buildDropDownList();
+                // Set the values that are displayed under the user input boxes
+                this.updateDisplayMinMax();
             }
         );
         this.getInitialMinMaxTimePoints();
@@ -55,32 +64,32 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         // Every time a new query returns results.
         this.apiServerService.simpleSearchTimePointsMinMaxEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                this.searchResultsMaxTimePoints = <any>data;
-                this.buildDropDownList();
+                this.searchResultsMinMaxTimePoints = <any>data;
+                this.updateDisplayMinMax();
             }
         );
 
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.fromBaseLineFrom = '';
-                this.fromBaseLineTo = '';
-                this.currentEventTypeIndex = 0;
-                this.daysFromBaseLineApply = false;
-
-                this.initMonitorService.setExcludeCommercialInit( true );
-                this.getInitialMinMaxTimePoints();
-                this.currentEventTypeIndex = 0;
-
+                this.onClinicalTimepointsClearAllClick();
             }
         );
 
         // This will receive -1 if there is now no query, need to treat this same as "clear" or start state.
         this.commonService.searchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                this.resultsCount = <any>data;
+                //  if( data === -1 || data === 0 ){
                 if( data === -1 ){
                     this.getInitialMinMaxTimePoints();
                 }
+            } );
+
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            () => {
+                this.getInitialMinMaxTimePoints();
+                this.onClinicalTimepointsClearAllClick();
             } );
 
         // Used when there are query parameters in the URL.
@@ -91,7 +100,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
                     await this.commonService.sleep( Consts.waitTime );
                 }
 
-
                 let to = <string>data;
                 let from = <string>data;
                 let event = <string>data;
@@ -100,40 +108,28 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
                 from = from.replace( /^.*:/, '' ).replace( /-.*/, '' );
                 event = event.replace( /:.*/, '' );
                 this.fromBaseLineFrom = from;
+                this.fromBaseLineFromTrailer = from;
                 this.fromBaseLineTo = to;
+                this.fromBaseLineFromTrailer = to;
+                this.fromBaseLineToTrailer = to;
                 this.currentEventTypeIndex = this.getEventIndexByName( event );
-                this.currentEventTypeTrailer = event;
-                this.daysFromBaseLineApply = true;
+                this.currentEventTypeTrailer = this.currentEventTypeIndex;
                 this.onApplyFromBaselineCheckboxClick( true );
-
                 this.commonService.setHaveUserInput( false );
             }
         );
-        /*
 
-                // TODO We won't be using this
-                this.apiServerService.getEventTypesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                    data => {
-                        this.eventTypeList = <any>data;
-                        this.eventTypeList.unshift( 'Select' );
-                    }
-                );
+        this.initFilters();
+        this.initMonitorService.setDaysFromBaselineInit( true );
 
-                // React to errors
-                this.apiServerService.getEventTypesErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                    ( err ) => {
-                        // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
-                        console.log( 'MHL error: ', err );
-                        alert( 'error: ' + err['message'] );
-                        this.errorFlag = true;
-                    }
-                );
+    }
 
-        */
-        //   this.apiServerService.dataGet( 'getEventTypes', '' );
+    async initFilters() {
 
-        //   this.testForList();
-
+        // This wait will make give the html elements time to "exist"
+        while( this.utilService.isEmpty( this.eventTypeList ) ){
+            await this.commonService.sleep( Consts.waitTime );
+        }
         this.utilService.setInputFilter( document.getElementById( 'fromBaseLineFromIntTextBox' ), function( value ) {
             return /^-?\d*$/.test( value );
         } );
@@ -141,22 +137,53 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             return /^-?\d*$/.test( value );
         } );
 
-        this.initMonitorService.setDaysFromBaselineInit( true );
-
     }
 
-    async testForList() {  // TODO - this is only for testing, delete eventually
-        console.log( 'MHL IN testForList' );
-        while( this.utilService.isEmpty( this.eventTypeList ) ){
-            await this.commonService.sleep( Consts.waitTime );
+
+    onShowClinicalTimepointsClick( state ) {
+        this.showClinicalTimepoints = state;
+    }
+
+    onClinicalTimepointsClearAllClick() {
+        this.fromBaseLineFrom = '';
+        this.fromBaseLineFromTrailer = '';
+        this.displayFromBaseLineFrom = '';
+        this.fromBaseLineFromHold = '';
+
+        this.fromBaseLineTo = '';
+        this.fromBaseLineToTrailer = '';
+        this.displayFromBaseLineTo = '';
+        this.fromBaseLineToHold = '';
+
+        this.currentEventTypeIndex = 0;
+        this.currentEventTypeTrailer = 0;
+        this.onApplyFromBaselineCheckboxClick( false );
+    }
+
+    /**
+     * Set the values that are displayed under the user input boxes.
+     */
+    updateDisplayMinMax() {
+        this.displayFromBaseLineFrom = this.getMinByEvent( this.eventTypeList[this.currentEventTypeIndex] );
+        this.displayFromBaseLineTo = this.getMaxByEvent( this.eventTypeList[this.currentEventTypeIndex] );
+    }
+
+    /**
+     * If the user input values have changed, update the query.
+     */
+    onDaysFromBaseLineApply() {
+        if( this.fromBaseLineFromTrailer !== this.fromBaseLineFrom ||
+            this.fromBaseLineToTrailer !== this.fromBaseLineTo ||
+            this.currentEventTypeTrailer !== this.currentEventTypeIndex
+        ){
+            this.onApplyFromBaselineCheckboxClick( true );
         }
-        console.log( 'MHL GOT: ', this.eventTypeList );
     }
 
     buildDropDownList() {
         this.eventTypeList = [];
-        for( let key in this.searchResultsMaxTimePoints['maxTimepoints'] ){
-            if( this.searchResultsMaxTimePoints['maxTimepoints'].hasOwnProperty( key ) ){
+        for( let key in this.searchResultsMinMaxTimePoints['maxTimepoints'] ){
+            if( this.searchResultsMinMaxTimePoints['maxTimepoints'].hasOwnProperty( key ) ){
                 this.eventTypeList.push( key );
             }
         }
@@ -165,15 +192,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.eventTypeList.sort( ( row1, row2 ) => row1.localeCompare( row2 ) );
 
         // Add the empty one at the top
-        this.eventTypeList.unshift( 'select' );
-
-        // See if there is a previous event that we should try to select.
-        let i = this.getEventIndexByName( this.currentEventTypeTrailer );
-        if( i > 0 ){
-            this.currentEventTypeIndex = i;
-        }else{
-            this.currentEventTypeIndex = 0;
-        }
+        this.eventTypeList.unshift( 'none' );
     }
 
     getInitialMinMaxTimePoints() {
@@ -191,19 +210,27 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         return -1;
     }
 
+    /**
+     * Updates the query.
+     * TODO Rename this, there is no longer a checkbox
+     *
+     * @param checked
+     */
     onApplyFromBaselineCheckboxClick( checked ) {
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
+        // Build the query.
         let daysFromBaselineForQuery: string[] = [];
         daysFromBaselineForQuery[0] = Consts.DAYS_FROM_BASELINE_CRITERIA;
-
         // Checked, an event is selected, and we have at least To or From input
-        if( checked && this.currentEventTypeIndex !== 0 && ((this.fromBaseLineFrom.length > 0) || (this.fromBaseLineTo.length > 0)) ){
+        if(
+            checked && (this.currentEventTypeIndex !== 0) && (this.fromBaseLineFrom !== '-') && (this.fromBaseLineTo !== '-') &&
+            ((this.fromBaseLineFrom.length > 0) || (this.fromBaseLineTo.length > 0))
+        ){
 
             // Event Type
-            let eventType = this.eventTypeList[this.currentEventTypeIndex];
-            daysFromBaselineForQuery[1] = eventType;
+            daysFromBaselineForQuery[1] = this.eventTypeList[this.currentEventTypeIndex];
 
             // From
             if( this.fromBaseLineFrom.length > 0 ){
@@ -234,31 +261,35 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
             // If user has unchecked or have changed the event to none ("Select") or has no To AND From values, remove Days from baseline from the query
             daysFromBaselineForQuery.slice( 0, 1 );
-
         }
+        this.fromBaseLineFromTrailer = this.fromBaseLineFrom;
+        this.fromBaseLineToTrailer = this.fromBaseLineTo;
+        this.currentEventTypeTrailer = this.currentEventTypeIndex;
+
         this.commonService.updateQuery( daysFromBaselineForQuery );
 
     }
 
     onEventTypeDropdownClick( i ) {
 
+        if( (this.getMinByEvent( this.eventTypeList[i] ) === '') &&
+            (this.getMaxByEvent( this.eventTypeList[i] ) === '')
+        ){
+            return;
+        }
+
         this.currentEventTypeIndex = i;
-        this.currentEventTypeTrailer = this.eventTypeList[i];
         this.displayFromBaseLineFrom = this.getMinByEvent( this.eventTypeList[i] );
         this.displayFromBaseLineTo = this.getMaxByEvent( this.eventTypeList[i] );
 
-        if( this.daysFromBaseLineApply && (this.currentEventTypeIndex > 0) ){
-            this.onApplyFromBaselineCheckboxClick( true );
-        }
+        // this.onApplyFromBaselineCheckboxClick( true );
+        this.currentEventTypeTrailer = this.eventTypeList[i];
         // If no event is selected
-        if( this.daysFromBaseLineApply && (this.currentEventTypeIndex === 0) ){
+        if( this.currentEventTypeIndex === 0 ){
             this.onApplyFromBaselineCheckboxClick( false );
-            this.currentEventTypeTrailer = '';
+            this.currentEventTypeTrailer = 0;
         }
     }
-
-    /**
-     */
 
     /**
      * Get the dropdown index of an event by it's name.
@@ -277,7 +308,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
 
     getMinByEvent( event ) {
-        let val = this.searchResultsMaxTimePoints['minTimepoints'][event];
+        let val = this.searchResultsMinMaxTimePoints['minTimepoints'][event];
         if( val !== undefined ){
             return val;
         }
@@ -285,7 +316,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     }
 
     getMaxByEvent( event ) {
-        let val = this.searchResultsMaxTimePoints['maxTimepoints'][event];
+        let val = this.searchResultsMinMaxTimePoints['maxTimepoints'][event];
         if( val !== undefined ){
             return val;
         }
@@ -293,15 +324,17 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     }
 
     onBaseLineFromChange() {
-        if( this.daysFromBaseLineApply ){
-            this.onApplyFromBaselineCheckboxClick( true );
+        if( !/^-?\d*$/.test( this.fromBaseLineFrom ) ){
+            this.fromBaseLineFrom = this.fromBaseLineFromHold;
         }
+        this.fromBaseLineFromHold = this.fromBaseLineFrom;
     }
 
     onBaseLineToChange() {
-        if( this.daysFromBaseLineApply ){
-            this.onApplyFromBaselineCheckboxClick( true );
+        if( !/^-?\d*$/.test( this.fromBaseLineTo ) ){
+            this.fromBaseLineTo = this.fromBaseLineToHold;
         }
+        this.fromBaseLineFromHold = this.fromBaseLineTo;
     }
 
     ngOnDestroy() {

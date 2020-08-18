@@ -56,11 +56,14 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
                 this.updateSearchType();
             }
         );
+
+        /*  No need for this, we react to this error in search-results-table.component.ts
         this.apiServerService.simpleSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             err => {
                 console.error( 'DataSectionTabsComponent simpleSearchErrorEmitter.subscribe: ', err );
             }
         );
+        */
 
         // If we are doing a text search, make sure we are not showing the charts 'Summary' tab.
         this.apiServerService.textSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(

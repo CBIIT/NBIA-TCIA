@@ -22,15 +22,35 @@
   margin-right: 3px;
 }
 
-.days-from-baseline-min-max-note{
-//  float: right;
-  padding-top: 0;
-  margin-top: 0;
-  margin-bottom: 4px;
-  margin-left: 36px;
-}
-
 .days-from-baseline-div{
   margin-bottom: 0;
   padding-bottom: 0;
+}
+
+.days-from-baseline-update-button{
+  float: right;
+  margin-right: 10px;
+//  margin-top: -3px;
+  margin-bottom: 10px;
+  height: 30px;
+  padding-top: 3px;
+}
+
+.days-from-baseline-min-max-note{
+  //  float: right;
+  padding-top: 0;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  margin-left: 36px;
+  height: 20px;
+}
+
+.clinical-time-points-heading{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.clinical-time-points-input-div{
+  margin-top: 0;
+  padding-top: 0;
 }

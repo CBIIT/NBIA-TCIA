@@ -1,22 +1,54 @@
-<div class="query-panel">
-    <div class="query-panel-heading "
+<div class="query-panel clinical-time-points-query-panel">
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading clinical-time-points-heading">
+
+        <!-- Hide the Species list.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showClinicalTimepoints"
+                class="clicker unselectable"
+                (click)="onShowClinicalTimepointsClick(false)"
+        >
+            <img src="assets/images/down_V01.png">
+            Clinical Time Points
+        </span>
+
+        <!-- Show the Species list -->
+        <span
+                *ngIf="!showClinicalTimepoints"
+                class="clicker"
+                (click)="onShowClinicalTimepointsClick(true)"
+        >
+            <img src="assets/images/right_V01.png">
+            Clinical Time Points
+        </span>
+
+
+        <label *ngIf="currentEventTypeIndex !== 0 || fromBaseLineFrom !== '' || fromBaseLineTo !== '' "
+               class="red-clear"
+        >
+            <img
+                    class=" clicker"
+                    src="assets/images/redClear.png"
+                    alt="Search"
+                    (click)="onClinicalTimepointsClearAllClick()"
+            >
+        </label>
+
+
+    </div>
+
+    <div *ngIf="showClinicalTimepoints"
+         class="query-panel-heading clinical-time-points-input-div"
          [ngClass]="{
              'days-from-baseline-div': displayFromBaseLineFrom !== ''
          }"
     >
-        <input class="days-from-baseline-checkbox"
-               id="fromBaseLineCheckbox"
-               type="checkbox"
-               [(ngModel)]="daysFromBaseLineApply"
-               (click)="onApplyFromBaselineCheckboxClick( $event.target['checked'])"
 
-        >
-        <label
-                class="clicker unselectable"
-                for="fromBaseLineCheckbox"
-        >
-            Days from </label>
+        <span class="clicker unselectable">
+            Days from
+        </span>
 
+        <!-- Event choice dropdown -->
         <span class="dropdown menu-dropdown clicker">
                     <span dropdown [dropdownToggle]="true">
                         <button
@@ -27,7 +59,11 @@
 
                                 dropdown-open
                         >
-                            <span>
+                            <span *ngIf="currentEventTypeIndex === 0">
+                                select
+                                <span class="caret"></span>
+                            </span>
+                            <span *ngIf="currentEventTypeIndex !== 0">
                                 {{ eventTypeList[currentEventTypeIndex] }}
                                 <span class="caret"></span>
                             </span>
@@ -38,39 +74,82 @@
                         >
                             <li
                                     class="edit-lic-dropdown-li"
+
                                     *ngFor="let eventType of eventTypeList; let c = index"
+                                    [ngClass]="{
+                                        'disabled': searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined &&
+                                         searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined &&
+                                         c > 0
+                                    }"
                                     role="menuitem"
                                     (click)="onEventTypeDropdownClick(c)"
                             >
-                                <a class="menu-dropdown-a">
+                                <a class="menu-dropdown-a" >
                                     <span
                                             *ngIf="c === currentEventTypeIndex && currentEventTypeIndex > 0"
                                             class="glyphicon glyphicon-ok"
                                     ></span>
                                     {{ eventType }}
-                                </a>
+                                    <span *ngIf="searchResultsMinMaxTimePoints['minTimepoints'][eventType] !== undefined &&
+                                     searchResultsMinMaxTimePoints['maxTimepoints'][eventType] !== undefined ">
+                                        &nbsp;Available range: {{searchResultsMinMaxTimePoints['minTimepoints'][eventType]}}&nbsp;To&nbsp;{{searchResultsMinMaxTimePoints['maxTimepoints'][eventType]}}
+                                    </span>
+                                    <span
+                                            *ngIf="searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined && searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined &&
+                                      c > 0">
+                                        &nbsp;Available range:&nbsp;N/A
+                                    </span>
+                                 </a>
                             </li>
                         </ul>
                     </span>
         </span>
 
 
+        <!-- "From" User input -->
         <input class="from-base-line-number-input number-spinner"
                id="fromBaseLineFromIntTextBox"
                [(ngModel)]="fromBaseLineFrom"
                (ngModelChange)="onBaseLineFromChange()"
         >
 
+        <!-- "To" User input -->
         To:
         <input class="from-base-line-number-input number-spinner"
                id="fromBaseLineToIntTextBox"
                [(ngModel)]="fromBaseLineTo"
                (ngModelChange)="onBaseLineToChange()"
-
         >
 
     </div>
-    <div *ngIf="displayFromBaseLineFrom !== '' " class="days-from-baseline-min-max-note">
-        From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
+    <div *ngIf="currentEventTypeIndex > 0  && showClinicalTimepoints" class="days-from-baseline-min-max-note">
+
+        <!-- Display To and/or From Range -->
+        <!--   It was decided this was not needed now that the same data is provided in the dropdown  (13_AUG_2020)
+               <span *ngIf="displayFromBaseLineFrom !== '' || displayFromBaseLineTo !== ''">
+                   From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
+               </span>
+               <span *ngIf="displayFromBaseLineFrom === '' && displayFromBaseLineTo === ''">
+                   None
+               </span>
+       -->
+        <input [ngClass]="{
+                   disabled: (fromBaseLineFromTrailer === fromBaseLineFrom &&
+                   fromBaseLineToTrailer === fromBaseLineTo &&
+                   currentEventTypeTrailer === currentEventTypeIndex
+                   ) ||
+                   ( fromBaseLineTo === '' &&  fromBaseLineFrom === ''),
+
+                   'nbia-button-disabled': (fromBaseLineFromTrailer === fromBaseLineFrom &&
+                   fromBaseLineToTrailer === fromBaseLineTo &&
+                   currentEventTypeTrailer === currentEventTypeIndex
+                   ) ||
+                   ( fromBaseLineTo === '' &&  fromBaseLineFrom === '')
+               }"
+               type="button"
+               class="btn btn-default nbia-button days-from-baseline-update-button "
+               value="Apply Time Points"
+               (click)="onDaysFromBaseLineApply()"
+        >
     </div>
 </div>
