@@ -77,8 +77,8 @@
 
                                     *ngFor="let eventType of eventTypeList; let c = index"
                                     [ngClass]="{
-                                        'disabled': searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined &&
-                                         searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined &&
+                                        'disabled': (searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined) &&
+                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined) &&
                                          c > 0
                                     }"
                                     role="menuitem"
@@ -90,12 +90,13 @@
                                             class="glyphicon glyphicon-ok"
                                     ></span>
                                     {{ eventType }}
-                                    <span *ngIf="searchResultsMinMaxTimePoints['minTimepoints'][eventType] !== undefined &&
-                                     searchResultsMinMaxTimePoints['maxTimepoints'][eventType] !== undefined ">
+                                    <span *ngIf="searchResultsMinMaxTimePoints['minTimepoints'] !== null && searchResultsMinMaxTimePoints['minTimepoints'][eventType] !== undefined &&
+                                     searchResultsMinMaxTimePoints['maxTimepoints'] !== null && searchResultsMinMaxTimePoints['maxTimepoints'][eventType] !== undefined ">
                                         &nbsp;Available range: {{searchResultsMinMaxTimePoints['minTimepoints'][eventType]}}&nbsp;To&nbsp;{{searchResultsMinMaxTimePoints['maxTimepoints'][eventType]}}
                                     </span>
                                     <span
-                                            *ngIf="searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined && searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined &&
+                                            *ngIf="(searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined) &&
+                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined) &&
                                       c > 0">
                                         &nbsp;Available range:&nbsp;N/A
                                     </span>

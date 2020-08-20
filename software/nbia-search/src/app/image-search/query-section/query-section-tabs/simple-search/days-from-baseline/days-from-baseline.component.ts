@@ -308,6 +308,9 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
 
     getMinByEvent( event ) {
+        if( this.searchResultsMinMaxTimePoints['minTimepoints'] === null ){
+            return '';
+        }
         let val = this.searchResultsMinMaxTimePoints['minTimepoints'][event];
         if( val !== undefined ){
             return val;
@@ -316,6 +319,9 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     }
 
     getMaxByEvent( event ) {
+        if( this.searchResultsMinMaxTimePoints['maxTimepoints'] === null ){
+            return '';
+        }
         let val = this.searchResultsMinMaxTimePoints['maxTimepoints'][event];
         if( val !== undefined ){
             return val;

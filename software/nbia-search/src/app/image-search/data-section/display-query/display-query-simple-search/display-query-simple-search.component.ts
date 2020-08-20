@@ -7,6 +7,7 @@ import { ApiServerService } from '@app/image-search/services/api-server.service'
 import { Properties } from '@assets/properties';
 import { MenuService } from '@app/common/services/menu.service';
 import { CommonService } from '@app/image-search/services/common.service';
+import { Consts } from '@app/consts';
 
 @Component( {
     selector: 'nbia-display-query-simple-search',
@@ -115,10 +116,15 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
     }
 
 
-    onClearSimpleSearchQueryClick() {
+    async onClearSimpleSearchQueryClick() {
         this.apiServerService.setSimpleSearchQueryHold( null );
         this.commonService.updateSearchResultsCount( -1 );
         this.commonService.resetAllSimpleSearch();
+
+        // TODO This is very hasty, ugly, work around
+        await this.commonService.sleep( 250 );
+        this.commonService.resetAllSimpleSearch();
+        // END very hasty, ugly, work around
     }
 
     /**
