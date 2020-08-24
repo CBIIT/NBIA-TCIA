@@ -98,7 +98,7 @@ export class QueryMostRecentSubmissionDateComponent implements OnInit, OnDestroy
     onApplyCheckboxChange() {
         let datRangeForQuery;
         if( this.checked ){
-            datRangeForQuery = this.fromDateModel['formatted'] + ',' + this.toDateModel['formatted'];
+            datRangeForQuery = (this.fromDateModel['formatted'] + ',' + this.toDateModel['formatted']).replace( /\//g, '-');
             this.updateQuery( datRangeForQuery );
         }else{
             this.updateQuery( null );

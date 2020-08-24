@@ -322,7 +322,7 @@
 
     <!-- ----- Series data display ----- -->
     <div *ngIf="progress > 99">
-        <div class="section-div">
+        <div class="section-div series-data-table">
 
             <!-- The heading with show/hide clicker. -->
             <span
@@ -331,7 +331,7 @@
                 (click)="onShowSeriesDataClick(false)"
             >
                 <img src="assets/images/down_V01.png"/>
-                Series Data
+                Series Data MHL 0
             </span>
 
             <!-- The data table. -->
@@ -343,7 +343,7 @@
                 <img src="assets/images/right_V01.png"/>
                 Series Data
             </span>
-            <table *ngIf="showSeriesData">
+            <table  *ngIf="showSeriesData">
                 <thead>
                 <tr class="data-table-thead-tr">
                     <th class="data-table-thead-th">Collection//Site</th>

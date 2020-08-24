@@ -10,6 +10,9 @@ $cineModePadding: 6px;
 $cineModeTop: 40px;
 $cineModeLoadingMessageTop: 250px;
 
+.series-data-table{
+    overflow: scroll;
+}
 
 .cine-mode-div {
     z-index: 4;
