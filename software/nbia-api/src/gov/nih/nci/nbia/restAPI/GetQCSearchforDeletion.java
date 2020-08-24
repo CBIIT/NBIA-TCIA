@@ -83,7 +83,10 @@ public class GetQCSearchforDeletion extends getData{
 			   }
         String[] additionalQcFlagList = new String[3];
         additionalQcFlagList[0] = batch;
-        additionalQcFlagList[1] = null;
+        if (confirmedComplete!=null&&confirmedComplete.equalsIgnoreCase("Complete")) {
+        	confirmedComplete="yes";
+        }
+        additionalQcFlagList[1] = confirmedComplete;
         additionalQcFlagList[2] = released;
         String [] qcStatus = {"To Be Deleted"};
         Date fromDateValue=null;
