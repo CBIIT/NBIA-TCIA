@@ -100,13 +100,29 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
                     await this.commonService.sleep( Consts.waitTime );
                 }
 
-                let to = <string>data;
-                let from = <string>data;
-                let event = <string>data;
+                let dateString = <string>data;
+                let to = dateString;
+                let from = dateString;
+                let event = dateString;
 
-                to = to.replace( /.*-/, '' );
-                from = from.replace( /^.*:/, '' ).replace( /-.*/, '' );
+                if( dateString.includes('--')){
+                    to = to.replace( /.*--/, '-' );
+                }
+                else{
+                    to = to.replace( /.*-/, '' );
+                }
+
+
+                from = from.replace( /^.*:/, '' )
+                if( from.indexOf('-') > 0 ){
+                    from = from.replace( /-.*/, '' );
+                }
+                else{
+                    from = from.slice(1);
+                    from = '-' + from.replace( /-.*/, '' );
+                }
                 event = event.replace( /:.*/, '' );
+
                 this.fromBaseLineFrom = from;
                 this.fromBaseLineFromTrailer = from;
                 this.fromBaseLineTo = to;
@@ -157,7 +173,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
         this.currentEventTypeIndex = 0;
         this.currentEventTypeTrailer = 0;
-        this.onApplyFromBaselineCheckboxClick( false );
     }
 
     /**

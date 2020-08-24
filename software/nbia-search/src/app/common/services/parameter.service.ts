@@ -301,6 +301,7 @@ export class ParameterService{
     }
 
     async setDaysFromBaseline( daysFromBaseline ) {
+
         this.incStillWaitingOnAtLeastOneComponent();
         this.haveParametersToService = true;
         this.wereAnySimpleSearchParametersSent = true;
@@ -368,10 +369,12 @@ export class ParameterService{
         this.wereAnySimpleSearchParametersSent = true;
         this.dateRange = dateRange;
 
-        // Wait for the Anatomical query component to be initialized so it can use this parameter.
+        // Wait for the DateRange query component to be initialized so it can use this parameter.
         while( !this.initMonitorService.getDateRangeInit() ){
             await this.commonService.sleep( this.waitTime );
         }
+
+
         let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
         if( regexp.test( dateRange ) ){
             this.parameterDateRangeEmitter.emit( dateRange );
