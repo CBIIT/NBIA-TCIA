@@ -91,6 +91,8 @@ public class SetQCVisibilityForDataAdmin extends getData{
 				String releasedYesNo=null;
 				if (released!=null&&released.equalsIgnoreCase("released")) {
 					releasedYesNo="Yes";
+				}  else {
+					releasedYesNo="No";
 				}
 				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
 				try {

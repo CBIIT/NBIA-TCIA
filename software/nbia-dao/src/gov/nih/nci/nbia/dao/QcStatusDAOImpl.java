@@ -557,7 +557,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 				}
 				if (releasedStatus!=null) {
 					gs.setReleasedStatus(releasedStatus);
-					qsh.setOldReleasedStatus(releasedStatus);
+					qsh.setNewReleasedStatus(releasedStatus);
 				}
 					
 				getHibernateTemplate().update(gs);
