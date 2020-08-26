@@ -146,12 +146,16 @@ public class GetQCSearch extends getData{
 		{
 			return Calendar.getInstance().getTime();
 		}
-		DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 		try {
 		returnValue=format.parse(date);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			format = new SimpleDateFormat("MM/dd/yyyy");
+			try {
+				returnValue=format.parse(date);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
 		}
 		return returnValue;
 	}
