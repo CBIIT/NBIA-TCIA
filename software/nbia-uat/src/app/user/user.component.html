@@ -69,7 +69,7 @@
 			  <td>
 			    <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <p-dropdown [options]="activeStatus" [(ngModel)]="rowData.active" [style]="{'width':'100%'}" required></p-dropdown>
+                        <p-dropdown [options]="activeStatus" [(ngModel)]="rowData.active" [style]="{'width':'100%'}" appendTo="body" required></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{!!rowData.active}}
