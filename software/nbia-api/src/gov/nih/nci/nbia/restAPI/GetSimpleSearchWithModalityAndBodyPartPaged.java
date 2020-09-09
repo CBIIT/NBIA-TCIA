@@ -267,7 +267,7 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 		int size = Integer.parseInt(sizeString);
 		String sort = sortField+"-"+sortDirection;
 		List<PatientSearchResultWithModilityAndBodyPart> patients = null;
-		PatientResultSetCache cache = new PatientResultSetCache();
+		PatientResultSetCache cache = PatientResultSetCache.getInstance();
 		PatientSearchSummary  patientSearchSummary=cache.getPatientSearchSummary(queryKey);
 		PatientSearchSummary  returnValue=null;
 		if (patientSearchSummary==null) {
