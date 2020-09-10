@@ -12,6 +12,7 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.List;
 import org.springframework.dao.DataAccessException;
@@ -30,4 +31,5 @@ public interface ImageDAO2 {
     		                                    String exclusionSopUidList) throws DataAccessException;
     
     public List<String> getImage(String seriesInstanceUid) throws DataAccessException;
+    public String getImage(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;
 }
