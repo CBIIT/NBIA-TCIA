@@ -84,6 +84,7 @@ export class SearchResultsColumnSelectorComponent implements OnInit, OnDestroy{
         this.commonService.showSearchResultsColumnEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.setShowSelector( <boolean>data );
+               // this.setShowSelector( true );
             }
         );
 
@@ -149,9 +150,12 @@ export class SearchResultsColumnSelectorComponent implements OnInit, OnDestroy{
      * @param e
      */
     onClickedOutside( e ) {
-
-        // FIXME  this should be a constant - needs to match button ID in TopRightButtonGroupComponent
-        if( e.target['id'] !== 'selectDisplayColumnsButton' ){
+        // FIXME  these should be constants - needs to match button IDs in TopRightButtonGroupComponent
+        //  SEE search-results/top-right-button-group/top-right-button-group.component.html
+        if(
+            (e.target['id'] !== 'selectDisplayColumnsButton' ) &&
+            (e.target['id'] !== 'selectDisplayColumnsButtonImage' )
+        ){
             this.commonService.setShowSearchResultsColumn( false );
         }
     }

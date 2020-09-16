@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.72',
-    // 19_AUG_2020
-    TEST_VERSION: '1.0.72h',
+    // 16_SEP_2020
+    TEST_VERSION: '1.0.72i',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -130,7 +130,7 @@ export let Properties = {
 
     SHOW_SUMMARY_TAB: true,
 
-    SHOW_CUSTOM_MENU: true,
+    SHOW_CUSTOM_MENU: false,
 
     CONFIRM_EXIT: true,
 
@@ -221,6 +221,6 @@ export let Properties = {
     DISPLAY_QUERY_ELEMENTS_MAX: 4,
 
     // How long to show Collection descriptions after mouse leaves the Collection, in seconds.
-    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 2
+    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 1
 };
 

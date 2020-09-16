@@ -13,7 +13,6 @@
 }
 
 .main-panel-heading {
-    background-color: #fff;
     border-bottom: solid 1px #c4c4c4;
     border-left: solid 1px #c4c4c4;
     border-right: solid 1px #c4c4c4;
@@ -23,6 +22,7 @@
     /*Push the charts down a little*/
     margin-bottom: 20px;
     height: 62px;
+    width:100%;
     font-size: 18pt;
 }
 
@@ -103,7 +103,7 @@
     padding-top:0;
     padding-bottom: 0;
     height: 182px;
-    background-color: #0f65a1;
+    background-color: #7029e2;
     /*background-color: #fff;*/
 }
 

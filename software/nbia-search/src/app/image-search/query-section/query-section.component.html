@@ -1,15 +1,27 @@
-
+<!--
 <span *ngIf="show" class="glyphicon glyphicon-backward "
+-->
+
+
+<span *ngIf="show"
       [ngClass]="{
           'search-query-closer': properties.SHOW_HEADER,
           'search-query-closer-no-header': ! properties.SHOW_HEADER
         }"
       title="Hide Query section"
-      (click)="onCloserClick(  )"></span>
+      (click)="onCloserClick(  )">
+    <img  class="search-query-opener-icon"  src="assets/images/TOOLS/close_left_red.png">
+</span>
 
+<!--
 <span *ngIf="!show" class="glyphicon glyphicon-forward search-query-opener"
+-->
+<span *ngIf="!show" class="search-query-opener"
       title="Show Query section"
-      (click)="onCloserClick(  )"></span>
+      (click)="onCloserClick(  )">
+        <img class="search-query-opener-icon" src="assets/images/TOOLS/open_right_red.png">
+
+</span>
 
 
 <div class="query-section" [ngClass]="{

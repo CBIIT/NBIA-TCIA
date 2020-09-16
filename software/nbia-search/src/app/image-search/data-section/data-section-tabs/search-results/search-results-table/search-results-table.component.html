@@ -60,14 +60,14 @@
                     <!--  Add sorting glyphs -->
                     <img
                             *ngIf="sortService.getSortState(i) === 1 && colName['name'] !== 'Cart'"
-                            class="sort-pointer"
-                            src="assets/images/upTriangle2.png"
+                            class="sort-pointer sort-triangle"
+                            src="assets/images/TOOLS/up_triangle.png"
                     >
 
                     <img
                             *ngIf="sortService.getSortState(i) === 2"
-                            class="sort-pointer"
-                            src="assets/images/downTriangle2.png"
+                            class="sort-pointer sort-triangle"
+                            src="assets/images/TOOLS/down_triangle.png"
                     >
 
                     <!-- space/place holder  -->
@@ -82,6 +82,7 @@
 
                 <!-- "Add All or These X" to select for cart -->
                 <!-- Couldn't do "All" now that we get search results one page at a time, so this is "Just these" now. -->
+<!--  commented out for bootstrap 4 testing
                 <span *ngIf="colName['name'] === 'Cart'" class="dropdown top-cart-select-dropdown">
 
                     <span
@@ -95,10 +96,29 @@
                                 dropdown-open
                                 (click)="onCartCheckClick(  0 )"
                         >
-                            <span class="glyphicon glyphicon-shopping-cart "></span>
+                            <img src="assets/images/icons/cart.png"  >
+
                         </button>
                     </span>
                 </span>
+-->
+
+                <span *ngIf="colName['name'] === 'Cart'" class="dropdown top-cart-select-dropdown">
+
+                    <span
+                            class=" clicker top-cart-select-dropdown"
+                    >
+                        <button
+                                class="btn btn-nbia-i-default d-inline-flex align-items-center"
+                                [disabled]="thisPageRowCount < 0"
+                                (click)="onCartCheckClick(  0 )"
+                        >
+                           <img class="cart-button-icon" src="assets/images/TOOLS/cart_black.png">
+
+                        </button>
+                    </span>
+                </span>
+
                 <!-- End of top Cart button in the header  -->
 
 
@@ -144,20 +164,17 @@
                     (click)="onSubjectIdClick(i)"
                     (mouseover)="onArrowMouseOver(i)"
                     (mouseleave)="onArrowMouseOut(i)"
-                    (mouseOut)="onArrowMouseOut(i)"
+                    (mouseout)="onArrowMouseOut(i)"
             >
 
-
-
                 <span
-                        class="show-subject-details"
+                    class="show-subject-details"
                 >
-                    <img *ngIf="! subjectDataShow[i + 1] && ! arrowMouseOver[i]" src="assets/images/right_V01.png">
-                    <img *ngIf="subjectDataShow[i + 1]  && ! arrowMouseOver[i]" src="assets/images/down_V01.png">
-                    <img *ngIf="! subjectDataShow[i + 1] &&  arrowMouseOver[i]" src="assets/images/right_V01_dark.png">
-                    <img *ngIf="subjectDataShow[i + 1]  &&  arrowMouseOver[i]" src="assets/images/down_V01_dark.png">
+                    <img *ngIf="! subjectDataShow[i + 1] && ! arrowMouseOver[i]" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+                    <img *ngIf="subjectDataShow[i + 1]  && ! arrowMouseOver[i]" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+                    <img *ngIf="! subjectDataShow[i + 1] &&  arrowMouseOver[i]" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+                    <img *ngIf="subjectDataShow[i + 1]  &&  arrowMouseOver[i]" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
                 </span>
-
 
             </td>
             <!-- Cart -->
@@ -288,10 +305,11 @@
                 }"
             >
                 <label
-                        class="btn btn-default col-xs-1 ohif-subject-button"
-                        title="OHIF Vewer"
+                        class="btn btn-nbia-i-default col-xs-1 ohif-subject-button d-inline-flex align-items-center"
+                        title="OHIF Viewer"
                         (click)="onSubjectOhifViewerClick(row['subjectId'])">
-                    <span class="glyphicon glyphicon-facetime-video"></span>
+                    <img src="assets/images/facetime-video.png"  >
+
                 </label>
             </td>
         </tr>

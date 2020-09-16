@@ -1,0 +1,124 @@
+@import "variables";
+@import "buttons";
+@import "clipboard-js";
+@import "navbar";
+@import "skippy";
+@import "footer";
+@import "syntax";
+@import "ads";
+
+.highlight {
+  pre {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    background-color: rgba(0, 0, 0, .025);
+    border-radius: .25rem;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    code {
+      word-wrap: normal;
+    }
+  }
+}
+
+.bd-example {
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+
+  + .highlight pre {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.f0 {
+  font-size: 2rem;
+
+  @media (min-width: 520px) {
+    font-size: 3rem;
+  }
+}
+.f3 {
+  font-size: 1.25rem;
+
+  @media (min-width: 520px) {
+    font-size: 1.5rem;
+  }
+}
+.f5 {
+  font-size: 1rem;
+}
+
+.hero {
+  border-bottom: 1px solid rgba(0, 0, 0, .05);
+
+  .f3 {
+    max-width: 680px;
+  }
+
+  hr {
+    max-width: 100px;
+
+  }
+}
+
+.icon-search {
+  @media (min-width: 768px) {
+    width: 35%;
+  }
+}
+
+.bi {
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+.list:empty::before {
+  display: block;
+  width: 100%;
+  padding: 100px 2rem;
+  margin-right: 15px;
+  margin-left: 15px;
+  color: $gray-500;
+  text-align: center;
+  content: "Nothing found, try searching again.";
+  background-color: $gray-100;
+  border-radius: .5rem;
+}
+
+.list {
+  font-size: 2rem;
+
+  // stylelint-disable  declaration-no-important
+  a:hover,
+  a:focus {
+    &,
+    .name {
+      color: var(--bs-blue) !important;
+    }
+  }
+  // stylelint-enable  declaration-no-important
+}
+
+.btn-group > .btn {
+  flex-shrink: 0;
+}
+
+.name {
+  font-size: .8125rem;
+}
+
+@media (min-width: 1200px) {
+  .row-cols-xl-8 {
+    & > * {
+      flex: 0 0 12.5%;
+      max-width: 12.5%;
+    }
+  }
+}

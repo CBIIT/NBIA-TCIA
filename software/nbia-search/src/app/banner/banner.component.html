@@ -1,4 +1,7 @@
 <div *ngIf="showBanner"  class="banner-div  ">
    <span class="banner-text">{{properties.BANNER_TEXT}}</span>
-   <span class="clicker glyphicon glyphicon-remove close-x banner-close" (click)="onCloseBanner()"></span>
+    <span class=" close-x clicker unselectable banner-close" (click)="onCloseBanner()">
+            X
+        </span>
+
 </div>

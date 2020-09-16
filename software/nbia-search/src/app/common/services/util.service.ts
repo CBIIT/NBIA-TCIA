@@ -72,6 +72,7 @@ export class UtilService{
         for( let criteria of origObject ){
             copyObj.push( this.copyCriteriaObject( criteria ) );
         }
+
         return copyObj;
     }
 

@@ -888,6 +888,7 @@ export class ApiServerService implements OnDestroy{
         }
 
         // Run the query
+        // console.log('MHL CALLING doPost: ', query);
         this.doPost( searchService, query ).subscribe(
             // Good results, emit the search results.
             ( res ) => {

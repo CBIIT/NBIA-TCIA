@@ -43,11 +43,13 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
     STUDY = 4;
 
     /**
-     * This is quick needed for now as we transition to Pages Search.
+     * This is a quick fix needed for now as we transition to Pages Search.
      * Currently paged search breaks Text search, so we will set PAGED_SEARCH to false while in Text Search.
      * This will hold the value we will switch back to when leaving Text Search.
      */
     pagedSearchHold = Properties.PAGED_SEARCH;
+
+    activeTab = 0;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -129,6 +131,7 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
      * @param i
      */
     onTabClick( i ) {
+        this.activeTab = i;
         this.setTab( i );
         switch( i ){
             case 0: // 'Simple Search'
@@ -160,9 +163,8 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                 if( (this.utilService.isNullOrUndefined( this.commonService.getCurrentTextSearchQuery() )) || (this.commonService.getCurrentTextSearchQuery().length < 1) ){
                     this.commonService.updateSearchResultsCount( -1 );
                 }
-
-
                 break;
+/*
 
             case 2: // 'Criteria Search'
                 // Change the table display.
@@ -187,6 +189,7 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                 // Change/Update the results to display
                 // this.apiServerService.criteriaSearchResultsEmitter.emit( this.commonService.getCriteriaSearchResults() );
                 break;
+*/
         }
     }
 

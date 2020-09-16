@@ -2,21 +2,35 @@
 
 <div
     *ngIf="showAlertBox"
-    class="panel panel-danger box-div alert-box-div alert-box-shadow"
+    class="card card-nbia-default box-div alert-box-div alert-box-shadow"
+    [ngClass]="{
+        'card-nbia-danger': type === AlertBoxT.ERROR || type === AlertBoxT.WARN,
+        'card-nbia-default': type !== AlertBoxT.ERROR && type !== AlertBoxT.WARN
+    }"
     [style.width.px]="boxWidth"
 >
-    <div class="panel-heading">
+    <div class="card-heading"
+         [ngClass]="{
+            'card-nbia-header-danger': type === AlertBoxT.ERROR || type === AlertBoxT.WARN,
+            'card-nbia-header-default': type !== AlertBoxT.ERROR && type !== AlertBoxT.WARN
+         }"
+    >
+
+        <!-- TODO These top two-->
         <span *ngIf="type === AlertBoxT.INFO" class="alert-box-icon glyphicon glyphicon-info-sign"></span>
-        <span *ngIf="type === AlertBoxT.WARN" class="alert-box-icon glyphicon glyphicon-exclamation-sign"></span>
-        <span *ngIf="type === AlertBoxT.CONFIRM" class="alert-box-icon glyphicon glyphicon-question-sign"></span>
-        <span *ngIf="type === AlertBoxT.ERROR" class="alert-box-icon glyphicon glyphicon-exclamation-sign"></span>
+        <img class="mt-2 ml-3" *ngIf="type === AlertBoxT.WARN" src="assets/images/icons/question_red_32px.png">
+
+
+        <img class="mt-2 ml-3 alert-box-icon" *ngIf="type === AlertBoxT.CONFIRM" src="assets/images/icons/question_red_32px.png">
+        <img class="mt-2 ml-3 alert-box-icon" *ngIf="type === AlertBoxT.ERROR" src="assets/images/TOOLS/exclamation_red.png">
+
         &nbsp;
-        <span class="panel-title  alert-panel-title">
-            {{title}}
+        <span class="card-title">
+           <span class="alert-box-header-text">{{title}}</span>
         </span>
     </div>
 
-    <div style="padding-top:20px" class="panel-body">
+    <div style="padding-top:20px" class="card-body bg-white">
         <!-- Use <span> with <br> instead of <div> so we can include blank lines.  -->
         <span *ngFor="let textLine of text">
             {{textLine}}

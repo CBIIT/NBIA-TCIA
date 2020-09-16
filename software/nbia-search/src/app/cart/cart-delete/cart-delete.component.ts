@@ -43,8 +43,8 @@ export class CartDeleteComponent implements OnInit, OnDestroy{
     }
 
     onDeleteCartClick() {
-        this.alertBoxService.alertBoxDisplay( this.alertId, AlertBoxType.CONFIRM, 'Delete Cart',
-            ['Delete all Cart contents?'], AlertBoxButtonType.CANCEL | AlertBoxButtonType.DELETE, 200 );
+        this.alertBoxService.alertBoxDisplay( this.alertId, AlertBoxType.ERROR, 'Delete Cart',
+            ['Delete all Cart contents?'], AlertBoxButtonType.CANCEL | AlertBoxButtonType.DELETE, 300 );
     }
 
     ngOnDestroy() {

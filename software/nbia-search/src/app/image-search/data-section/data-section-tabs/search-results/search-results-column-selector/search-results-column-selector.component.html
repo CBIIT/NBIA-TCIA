@@ -4,13 +4,13 @@
 
 <div
     *ngIf="showSelector"
-    class="panel panel-default column-selector"
+    class="card card-default column-selector"
     (clickOutside)="onClickedOutside($event)"
 >
-    <div class="panel-heading">
+    <div class="card-heading card-nbia-header-default pt-2 pl-3">
         Pick columns
     </div>
-    <div class="panel-body">
+    <div class="card-body c">
         <div *ngFor="let colName of colNames; let i = index">
             <span
                 *ngIf="(

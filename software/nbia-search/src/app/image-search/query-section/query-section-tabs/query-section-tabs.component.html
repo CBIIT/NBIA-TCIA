@@ -1,4 +1,42 @@
-<div class="tab-div">
+<div class="tab-div unselectable">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 0
+               }"
+                  (click)="onTabClick(0 )"
+            >Simple Search</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 1
+               }"
+                  (click)="onTabClick(1 )"
+            >Text Search</span>
+        </li>
+
+    </ul>
+</div>
+
+
+<nbia-simple-search
+        [ngClass]="{
+        'active': activeTab === 0,
+        'hide': activeTab !== 0
+    }"
+></nbia-simple-search>
+
+<nbia-text-search
+        [ngClass]="{
+        'active': activeTab === 1,
+        'hide': activeTab !== 1
+    }"
+></nbia-text-search>
+
+<!--
+
     <tabset (onSelect)="onTabClick($event)">
         <tab [active]='tabIsActive[SIMPLE_SEARCH]'>
             <span *tabHeading class="tab-text-span">
@@ -15,10 +53,12 @@
             <nbia-text-search></nbia-text-search>
         </tab>
 
+-->
 
 
+<!--
 
-        <!--  This is/was a replacement for Advanced search.  The UI is a good start...  -->
+        &lt;!&ndash;  This is/was a replacement for Advanced search.  The UI is a good start...  &ndash;&gt;
         <tab [active]='tabIsActive[QUERY_BUILDER]'  *ngIf="showQueryBuilder">
             <span *tabHeading class="tab-text-span">
                  Query Builder
@@ -27,7 +67,7 @@
         </tab>
 
 
-        <!--  This is/was a start of Shared list search.  Was decided this would not be part of new UI.  -->
+        &lt;!&ndash;  This is/was a start of Shared list search.  Was decided this would not be part of new UI.  &ndash;&gt;
         <tab [active]='tabIsActive[SHARED_LISTS]'  *ngIf="showSearchSharedListSearch">
             <span *tabHeading class="tab-text-span">
                  Lists
@@ -36,7 +76,7 @@
         </tab>
 
 
-        <!--  This was going to be search by Study abandoned.  -->
+        &lt;!&ndash;  This was going to be search by Study abandoned.  &ndash;&gt;
         <tab [active]='tabIsActive[STUDY]'  *ngIf="showSearchStudySearch">
             <span *tabHeading class="tab-text-span">
                  Study
@@ -44,5 +84,7 @@
             <nbia-study-search></nbia-study-search>
         </tab>
 
-    </tabset>
+-->
+ <!--   </tabset>
 </div>
+-->

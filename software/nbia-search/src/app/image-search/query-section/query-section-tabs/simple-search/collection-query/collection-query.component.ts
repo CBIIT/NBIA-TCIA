@@ -22,7 +22,7 @@ import { QueryCriteriaInitService } from '@app/common/services/query-criteria-in
 @Component( {
     selector: 'nbia-collection-query',
     templateUrl: './collection-query.component.html',
-    styleUrls: ['../simple-search.component.scss',  './collection-query.component.scss']
+    styleUrls: ['../simple-search.component.scss', './collection-query.component.scss']
 } )
 
 
@@ -100,6 +100,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
     toolTipStayOn = false;
     toolTipHeading = '';
     toolTipCounter = 0;
+    toolTipStartDelay = 700; // in 1/1000 of a second
 
     /**
      * For sorting of Collections.
@@ -141,7 +142,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      */
     properties = Properties;
 
-    descriptionTooltipDelay = 250;
+    descriptionTooltipDelay = 1000;
 
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
@@ -155,7 +156,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
                  private collectionDescriptionsService: CollectionDescriptionsService, private persistenceService: PersistenceService,
                  private utilService: UtilService, private loadingDisplayService: LoadingDisplayService,
-                 private queryCriteriaInitService: QueryCriteriaInitService) {
+                 private queryCriteriaInitService: QueryCriteriaInitService ) {
     }
 
     async ngOnInit() {
@@ -738,17 +739,24 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      */
     getPos( e, collectionName ) {
         this.inCollection = true;
+
+        // Set position
         this.toolTipY = e.view.pageYOffset + e.clientY;
+
+        // Populate
         this.toolTipHeading = collectionName;
         this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
-        if( (! this.utilService.isNullOrUndefinedOrEmpty(this.collectionDescriptionsService.getCollectionLicense( collectionName ))) &&
-             (! this.utilService.isNullOrUndefinedOrEmpty(this.collectionDescriptionsService.getCollectionLicense( collectionName ))['longName']) &&
-            (! Properties.NO_LICENSE)
-        )
-        {
-            this.toolTipText +=  '<hr>License:<br>' + this.collectionDescriptionsService.getCollectionLicense( collectionName )['longName'];
+        if( (!this.utilService.isNullOrUndefinedOrEmpty( this.collectionDescriptionsService.getCollectionLicense( collectionName ) )) &&
+            (!this.utilService.isNullOrUndefinedOrEmpty( this.collectionDescriptionsService.getCollectionLicense( collectionName ) )['longName']) &&
+            (!Properties.NO_LICENSE)
+        ){
+            this.toolTipText += '<hr>License:<br>' + this.collectionDescriptionsService.getCollectionLicense( collectionName )['longName'];
         }
-        this.showToolTip = true;
+
+        setTimeout( () => {
+            this.showToolTip = true;
+        }, this.toolTipStartDelay );
+
     }
 
     /**
@@ -772,15 +780,13 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.inCollection = false;
         this.toolTipCounter++;
         let count = Properties.COLLECTION_DESCRIPTION_TOOLTIP_TIME;
+
         while( count > 0 ){
             await this.commonService.sleep( this.descriptionTooltipDelay );
             count--;
-            if( count > 0 ){
-                this.showToolTip = true;
-            }
         }
         this.toolTipCounter--;
-        if( count <= 0 && this.toolTipCounter <= 0 && ( ! this.toolTipStayOn ) && ( ! this.inCollection) ){
+        if( count <= 0 && this.toolTipCounter <= 0 && (!this.toolTipStayOn) && (!this.inCollection) ){
             this.showToolTip = false;
         }
     }

@@ -1,23 +1,25 @@
 <!-- ----------  A row of study data that is displayed within a row of Subject data on the Search results screen  ---------- -->
 
 <div class="child-data-display">
-    <span class="clicker glyphicon glyphicon-remove close-x" (click)="onCloseSubjecStudyDetailsClick()"></span>
+            <span class=" close-x clicker unselectable" (click)="onCloseSubjecStudyDetailsClick()">
+            X
+        </span>
     &nbsp;<b><i>{{subjectDetailData.subjectId}}</i></b>
 
     <div *ngFor="let study of resultsArray; let i = index">
         <div class="series-results-set">
 
-            <div class="container subject-details-header">
+            <div class="container-fluid subject-details-header">
 
                 <div class="row">
-                    <div class="col-xs-2">
+                    <div class="col-2">
                         <!-- Show/Collapse Series table  -->
                         <span
                                 *ngIf="toggleSeriesVisibleArray[i]"
                                 class="clicker arrow-span"
                                 (click)="onShowSeriesClick(i, false)"
                         >
-                             <img src="assets/images/down_V01.png">
+                             <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
                         </span>
 
                         <span
@@ -25,7 +27,7 @@
                                 class="clicker arrow-span"
                                 (click)="onShowSeriesClick(i, true)"
                         >
-                             <img src="assets/images/right_V01.png">
+                             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
                         </span>
 
                         <!-- Select/unselect all Series for this Subject  -->
@@ -35,44 +37,51 @@
                     </div>
 
 
-                    <div class="col-xs-2">
+                    <div class="col-2">
                         <!-- Show/Collapse Series table  -->
                         <span class="clicker">
                             <a class="study-date-clicker" (click)="onShowSeriesClick(i, !toggleSeriesVisibleArray[i])">
                             <!-- Format the date from Epoch -->
-                                {{study.date | date: 'MMM dd, yyyy'}}<span
-                                    class="glyphicon glyphicon-asterisk date-asterisk "
-                                    title={{SUBJECT_DATE_TOOLTIP}}></span>
+                                {{study.date | date: 'MMM dd, yyyy'}}
                             </a>
+                            <span
+                                    class="red-asterisk"
+                                    title={{SUBJECT_DATE_TOOLTIP}}
+                            >
+                                *
+<!--
+                                <img src="assets/images/icons/star_red_9.png" alt="">
+-->
+                            </span>
                         </span>
                     </div>
 
-                    <div class="col-xs-3">
+                    <div class="col-3">
                         <b>{{study.description}}</b>
                     </div>
 
-                    <div class="col-xs-2">
+                    <div class="col-2">
                         {{study.seriesList.length}} Series
                     </div>
 
                     <div *ngIf="properties.SHOW_OHIF_VIEWER"
-                         class="col-xs-2"
+                         class="col-2"
                          title={{study.studyId}}>
                         Study UID: ...{{ study.studyId | shortenRight }}
                     </div>
 
                     <!-- TODO Remove this when OHIF Viewer is working.  -->
                     <div *ngIf="! properties.SHOW_OHIF_VIEWER"
-                         class="col-xs-3"
+                         class="col-3"
                          title={{study.studyId}}>
                         Study UID: ...{{ study.studyId | shortenRight }}
                     </div>
 
                     <label *ngIf="properties.SHOW_OHIF_VIEWER"
-                           class="btn btn-default col-xs-1 ohif-study-button"
-                           title="OHIF Vewer"
-                           (click)="onStudyOhifViewerClick(study.studyId)">
-                        <span class="glyphicon glyphicon-facetime-video"></span>
+                        class="btn btn-nbia-i-default series-data-button d-inline-flex align-items-center"
+                        title="OHIF Vewer"
+                        (click)="onStudyOhifViewerClick(study.studyId)">
+                        <img src="assets/images/facetime-video.png">
                     </label>
 
                 </div>

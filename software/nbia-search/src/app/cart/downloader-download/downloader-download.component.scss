@@ -1,9 +1,8 @@
 .downloader-download-div {
 
-    height: 210px;
+    height: 250px;
     width: 500px;
     left: calc(50% - 250px);
-    background-color: #fff;
 }
 
 .download-text {
@@ -24,4 +23,9 @@
 
 .download-checkbox {
     margin: 14px 0px 0px 10px;
+}
+
+.data-retriever-info-text{
+    position: absolute;
+    top: 15px;
 }

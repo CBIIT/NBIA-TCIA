@@ -685,7 +685,6 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      */
     // FIXME rename this
     onCartCheckClick( i ) {
-
         // Don't do anything if we are still busy
         if( this.busy || (i === -1) ){
             return;

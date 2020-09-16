@@ -1,3 +1,6 @@
+@import './btn-nbia';
+@import './card-nbia';
+
 $left-section-width: 390px;
 
 $query-criteria-heading-text-color: #bb0e3d;
@@ -8,13 +11,13 @@ $dark-row-color: #f4f4f4;
 
 $alert-top: 100px;
 
-$close-x-red: #700;
+$close-x-red: #800;
 
 // $heading-height: 122px;
 // $heading-height: 127px;
 $heading-height: 110px;
 
-$heading-margin-bottom: 8px;   /* Space between menu bar and top of content */
+$heading-margin-bottom: 8px; /* Space between menu bar and top of content */
 
 $header-background-color: #013856;
 
@@ -23,17 +26,18 @@ $legacy-feedback-left: 182px;
 $top-logo-height: 41px;
 
 $banner-font-size: 20pt;
-$display-query-top:22px;
+$display-query-top: 22px;
 
 $popup-z-index: 21;
 $loading-screen-z-index: 5;
 $tool-tip-z-index: 2;
-$display-query-z-index: 0;  // @TODO explain
+$display-query-z-index: 0; // @TODO explain
 $pie-char-description-popup-z-index: 2;
 $missing-criteria-z-index: 2;
 $search-results-column-selector-z-index: 2;
 $intro-z-index: 3;
 $banner-z-index: 6;
+
 
 %panel-heading-text-color {
     color: $query-criteria-heading-text-color;
@@ -50,21 +54,20 @@ $banner-z-index: 6;
 }
 
 
-
-.dark-row{
+.dark-row {
     background-color: $dark-row-color;
 }
 
 .cart-child-selected {
-    background-color: #ff7;
+    background-color: #ff7 !important;
 }
 
 .redCart {
     background-color: lightcoral;
 }
 
-.greenCart, .cart-selected{
-    background-color: aquamarine;
+.greenCart, .cart-selected {
+    background-color: aquamarine !important;
 }
 
 /* Cart button on Cart screen */
@@ -72,7 +75,6 @@ $banner-z-index: 6;
     padding: 2px 7px 1px 7px;
     margin: 0 7px 0 7px;
 }
-
 
 
 /* Trying to clean this up for Chrome */
@@ -117,12 +119,6 @@ $banner-z-index: 6;
 .alert-box-button {
     float: right;
     margin-left: 4px;
-}
-
-.alert-panel-title {
-    /* Looks better without this.
-    font-weight: bold;
-    */
 }
 
 .alert-box-icon {
@@ -182,7 +178,7 @@ tr:nth-child(2n+3) {
 .cart-td {
     width: 94px;
 
-//    border-color: #ff00dd;
+    //    border-color: #ff00dd;
     border-left: none;
 
 
@@ -213,19 +209,19 @@ tr:nth-child(2n+3) {
 }
 
 .nbia-button-disabled:active {
-  cursor: not-allowed;
-  background-color: #70a4bd;
-  color: #f5fafa;
+    cursor: not-allowed;
+    background-color: #70a4bd;
+    color: #f5fafa;
 }
 
 .nbia-button-disabled:hover {
-  cursor: not-allowed;
-  background-color: #70a4bd;
+    cursor: not-allowed;
+    background-color: #70a4bd;
 }
 
 .nbia-button-disabled {
-  cursor: not-allowed;
-  background-color: #70a4bd;
+    cursor: not-allowed;
+    background-color: #70a4bd;
 }
 
 
@@ -241,7 +237,7 @@ tr:nth-child(2n+3) {
     padding: 3px 6px 3px 6px;
     /*margin-left: 2px;*/
     margin-left: -5px;
-  //  margin-right: -25px;
+    //  margin-right: -25px;
 
     margin-bottom: 2px;
 
@@ -287,16 +283,49 @@ tr:nth-child(2n+3) {
 }
 
 .close-x {
-   color: $close-x-red;
-   float: right;
+    font-weight: bold;
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: $close-x-red;
+    float: right;
 }
 
 
 .unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.application-menu-icon{
+    width: 14px;
+    height: 14px;
+}
+
+
+.cart-button-icon{
+    width: 14px;
+    height: 14px;
+}
+
+.cart-delete-button-icon{
+    // width: 14px;
+    height: 20px;
+    padding: 0 3px 1px 0;
+}
+
+
+.chevron-right-icon{
+    height: 14px;
+}
+
+.chevron-down-icon{
+    width: 14px;
+}
+
+.sort-triangle{
+    height: 14px;
 }

@@ -19,7 +19,8 @@ $application-menu-mouse-over-text: #000;
 $application-menu-background: #ccc;
 $application-menu-text: #222;
 
-$application-menu-button-section-height: 22px;
+// This is the bit of background behind the top right tabs (Search, Login, etc.)
+$application-menu-button-section-height: 25px;
 
 $application-menu-button-border-width: 1px;
 
@@ -134,6 +135,7 @@ $application-menu-spacing: 1px; // These are times 2
     margin-left: 10px;
     // margin-left:  calc(100% - 200px);
     padding: 0;
+    cursor: default;
 }
 .application-menu-dropdown-menu-item-data-admin {
     color: #fff;
@@ -160,7 +162,6 @@ $application-menu-spacing: 1px; // These are times 2
 .application-menu-with-no-cart-count{
     margin-right: 20px;
 }
-
 
 .cart-count-zero {
     background-color: #888888;

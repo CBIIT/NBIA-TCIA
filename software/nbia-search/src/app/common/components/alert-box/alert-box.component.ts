@@ -43,15 +43,15 @@ export class AlertBoxComponent implements OnInit, OnDestroy{
             data => {
                 this.id = data['id'];
                 this.type = data['type'];
-                this.title = data['title'];
-                this.text = data['text'];
-                this.buttons = data['buttons'];
+                this.title = <any>data['title'];
+                this.text = <any>data['text'];
+                this.buttons = <any>data['buttons'];
                 this.initButtons();
                 if( this.utilService.isNullOrUndefined( data['width'] ) ){
                     this.boxWidth = Consts.ALERT_BOX_WIDTH_DEFAULT;
                 }
                 else{
-                    this.boxWidth = data['width'];
+                    this.boxWidth = <any>data['width'];
                 }
                 this.showAlertBox = true;
             }

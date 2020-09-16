@@ -101,36 +101,35 @@ $loading-message-top: 250px;
   min-width: $cineModeMinWidth;
 }
 
-.cine-mode-buttons{
-  margin: 6px 0 0 0;
-}
-
-.cine-mode-button-icon{
-  font-size: 20px;
-  padding: 0;
-  margin: 0;
-
-}
-
 .cine-mode-button-bar{
   margin-left: 40px;
   margin-bottom: 20px;
-  width: $imageWidth+$cineModePadding - 50px;
+  // width: $imageWidth+$cineModePadding - 50px;
+  //  border: solid #8106fc 1px;
+
+}
+
+.cine-mode-button{
+    @extend .btn-nbia-li-default;
+    width: 42px;
+    height: 39px;
+    margin: 0;
 }
 
 .play-back-image{
-  height: 25px;
-  padding: 3px 0 3px 0;
+  height: 18px;
+  padding: 0;
+    margin: 0;
 }
 
-/*
+
 
 
 .cine-mode-dicom-col {
   border: solid #c9302c 5px;
 }
 
-*/
+
 
 
 //////////////////////////

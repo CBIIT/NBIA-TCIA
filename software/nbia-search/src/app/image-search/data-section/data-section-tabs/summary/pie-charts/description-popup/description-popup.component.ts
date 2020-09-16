@@ -73,6 +73,31 @@ export class DescriptionPopupComponent implements OnInit{
     ngOnInit() {
     }
 
+
+
+    /**
+     * Hides this popup, if the user clicks outside of the popup.
+     *
+     * @param e
+     */
+/*
+    onClickedOutside( e ) {
+        console.log('MHL >>>>>>>>>>>>>>>>>>');
+        console.log('MHL chartType: ', this.chartType);
+        console.log('MHL e.target[\'id\']:', e.target['id']);
+        console.log('MHL <<<<<<<<<<<<<<<<<<');
+        // FIXME  these should be constants - needs to match button IDs in TopRightButtonGroupComponent
+        //  SEE search-results/top-right-button-group/top-right-button-group.component.html
+        if(
+            ( ! e.target['id'].contains('path-collections')) ||
+            ( e.target['id'].contains('path-image-modality'))
+        ){
+            this.onHideShowAnimationClick();
+        }
+    }
+*/
+
+    // TODO rename this.
     onHideShowAnimationClick() {
         this.showModalityDescription = false;
 

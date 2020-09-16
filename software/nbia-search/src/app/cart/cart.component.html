@@ -75,14 +75,15 @@
                     width="28">
             <span class="btn-group">
             <label
-                    class="btn btn-default cart-button"
-                    [ngClass]="{
-            'redCart': cartList[i].disabled,
-            'greenCart': ! cartList[i].disabled
-            }"
+                class="btn btn-nbia-i-cart cart-button d-inline-flex align-items-center"
+
+                [ngClass]="{
+                   'redCart': cartList[i].disabled,
+                   'greenCart': ! cartList[i].disabled
+                }"
                     (click)="onCartCheckClick(i)"
             >
-            <span class="glyphicon glyphicon-shopping-cart"></span>
+                <img class="cart-button-icon" src="assets/images/TOOLS/cart_black.png">
             </label>
             </span>
             </td>
@@ -136,20 +137,24 @@
 </div>
 <!-- Commercial use restriction warning.-->
 <div *ngIf="showExcludeCommercialWarning"
-     class="panel panel-danger box-div alert-box-div alert-box-shadow show-exclude-commercial-warning"
+     class="card card-nbia-danger alert-box-div alert-box-shadow show-exclude-commercial-warning"
 >
-    <div class="panel-heading">
-        <span class="alert-box-icon glyphicon glyphicon-exclamation-sign"></span>
+    <div class="card-heading card-nbia-header-danger">
+        <img class=" mt-2 ml-3" src="assets/images/icons/exclamation_red_32px.png">
+
         &nbsp;
-        <span class="panel-title  alert-panel-title">
-        You have series with commercial use restrictions
+        <span class="card-title">
+            <span class="exclude-commercial-warning-text">You have series with commercial use restrictions</span>
         </span>
     </div>
-    <div style="padding-top:20px" class="panel-body">
+    <div style="padding-top:20px" class="card-body">
         {{'Your cart contains ' + excludeCommercialCount + ' series with commercial restrictions.'}}
         <div>
             <small><i>There is a filter available to exclude restricted series.</i></small>
         </div>
+
+
+        <!-- Checkbox and buttons -->
         <div class="exclude-commercial-warning-div">
             <input
                     class="clicker"
@@ -176,5 +181,8 @@
                 Proceed
             </button>
         </div>
+        <!-- END Checkbox and buttons -->
+
+
     </div>
 </div>

@@ -17,7 +17,7 @@ import { UtilService } from '@app/common/services/util.service';
 } )
 export class CineModeComponent implements OnInit, OnDestroy{
     dicomData = [];
-    showDicomData = false;
+    showDicomData = true;
     showCineModeViewer = false;
     // currentImage is 1 rather than 0 for the benefit of the user who does not expect the first image to be zero.
     currentImage = 1;

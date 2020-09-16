@@ -213,13 +213,12 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
      * @param pageNum  The page to display.
      */
     onClick( pageNum ) {
-        this.currentPage = pageNum;
-        if( this.displayDataType === Consts.DISPLAY_DATA_TYPE_SEARCH_RESULTS ){
-            this.commonService.updateCurrentSearchResultsPage( this.currentPage );
-        }
-        else if( this.displayDataType === Consts.DISPLAY_DATA_TYPE_CART_LIST ){
-            this.commonService.updateCurrentCartPage( this.currentPage );
-        }
+            this.currentPage = pageNum;
+            if( this.displayDataType === Consts.DISPLAY_DATA_TYPE_SEARCH_RESULTS ){
+                this.commonService.updateCurrentSearchResultsPage( this.currentPage );
+            }else if( this.displayDataType === Consts.DISPLAY_DATA_TYPE_CART_LIST ){
+                this.commonService.updateCurrentCartPage( this.currentPage );
+            }
     }
 
     onGoFirstClickClick() {

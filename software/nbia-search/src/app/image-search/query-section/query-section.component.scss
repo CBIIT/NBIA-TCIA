@@ -20,14 +20,20 @@
 
 .search-query-opener{
     @extend %panel-heading-text-color;
-    left: -26px;
+     position: absolute;
+    left: 0;
     cursor: pointer;
     padding: 12px 10px 14px 0;
+    margin-top: 0;
 
     border-right: solid 1px #ddd;
     border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     border-radius: 4px;
+}
+
+.search-query-opener-icon{
+    height:14px;
 }
 
 .hide {
