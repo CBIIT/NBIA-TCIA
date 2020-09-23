@@ -227,6 +227,12 @@ public class DownloadServletV3 extends HttpServlet {
 					tos.closeArchiveEntry();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
+					try {
+						tos.closeArchiveEntry();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					// just print the exception and continue the loop so rest of
 					// images will get download.
 				} finally {
