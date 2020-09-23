@@ -253,6 +253,12 @@ public class DownloadServletV4 extends HttpServlet {
 					e.printStackTrace();
 					// just print the exception and continue the loop so rest of
 					// images will get download.
+					try {
+						tos.closeArchiveEntry();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				} finally {
 					IOUtils.closeQuietly(dicomIn);
 					logger.info("DownloadServlet Image transferred at " + new Date().getTime());
