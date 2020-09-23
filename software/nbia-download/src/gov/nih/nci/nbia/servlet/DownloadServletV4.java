@@ -256,8 +256,6 @@ public class DownloadServletV4 extends HttpServlet {
 					try {
 						tos.closeArchiveEntry();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
 					}
 				} finally {
 					IOUtils.closeQuietly(dicomIn);
