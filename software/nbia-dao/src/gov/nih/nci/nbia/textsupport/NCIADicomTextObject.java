@@ -68,8 +68,7 @@ public class NCIADicomTextObject{
 			instance = new NCIADicomTextObject();
 		}
 		return instance;
-	}
-    
+	}    
     public List<DicomTagDTO> getTagElements(File file) throws Exception {
         DcmParserFactory pFact = DcmParserFactory.getInstance();
         DcmObjectFactory oFact = DcmObjectFactory.getInstance();
