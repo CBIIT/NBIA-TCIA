@@ -69,8 +69,8 @@ public class NCIADicomTextObject{
 		}
 		return instance;
 	}
-    // synchronized because it can be a resource hog if called thousands of times
-    public synchronized List<DicomTagDTO> getTagElements(File file) throws Exception {
+    
+    public List<DicomTagDTO> getTagElements(File file) throws Exception {
         DcmParserFactory pFact = DcmParserFactory.getInstance();
         DcmObjectFactory oFact = DcmObjectFactory.getInstance();
         BufferedInputStream in = null;
