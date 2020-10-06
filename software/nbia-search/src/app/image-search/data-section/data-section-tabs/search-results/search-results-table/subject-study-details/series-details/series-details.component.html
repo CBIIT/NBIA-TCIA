@@ -26,7 +26,12 @@
         <th>
             Series
         </th>
-        <th class="thumbnail-th">Viewer<span *ngIf="properties.SHOW_OHIF_SERIES_VIEWER || properties.CINE_MODE">s</span>
+        <th class="thumbnail-th"
+            [ngClass]="{
+            'thumbnail-th' : ! properties.CINE_MODE,
+            'thumbnail-cine-th' :  properties.CINE_MODE
+        }">
+            Viewer<span *ngIf="properties.SHOW_OHIF_SERIES_VIEWER || properties.CINE_MODE">s</span>
         </th>
         <th>
             DICOM

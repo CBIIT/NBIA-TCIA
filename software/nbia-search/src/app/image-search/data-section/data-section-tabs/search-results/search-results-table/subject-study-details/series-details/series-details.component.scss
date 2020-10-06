@@ -29,7 +29,10 @@ th{
   margin-left: 0;
   margin-right: 0;
 }
-
+.thumbnail-cine-th {
+    @extend .thumbnail-th;
+    width: 118px;
+}
 
 
 /* A little space for the Subject details table.
