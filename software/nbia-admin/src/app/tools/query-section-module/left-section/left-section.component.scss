@@ -1,20 +1,54 @@
+// -------------------------------------------------------------------------------------------
+// -----------------  The left vertical section containing all the search criteria  ----------
+// -------------------------------------------------------------------------------------------
 
-@import 'src/app/tools/query-section-module/query-section/query-section.component';
+@import '../query-section/query-section.component';
 
+// Positioning of the "Clear" icon/button depending on the font and section width.
 .red-clear {
     position: absolute;
-    left: $left-section-width - 47px;
+}
+.red-clear-extra-small{
+    @extend .red-clear;
+    left: $left-section-width-extra-small - 150px;
+}
+.red-clear-small{
+    @extend .red-clear;
+    left: $left-section-width-small - 144px;
+}
+.red-clear-medium{
+    @extend .red-clear;
+    left: $left-section-width-medium - 170px;
+}
+.red-clear-large{
+    @extend .red-clear;
+    left: $left-section-width-large - 176px;
 }
 
+.date-red-clear-extra-small{
+    @extend .red-clear;
+    left: $left-section-width-extra-small - 184px;
+}
+.date-red-clear-small{
+    @extend .red-clear;
+    left: $left-section-width-small - 208px;
+}
+.date-red-clear-medium{
+    @extend .red-clear;
+    left: $left-section-width-medium - 234px;
+}
+.date-red-clear-large{
+    @extend .red-clear;
+    left: $left-section-width-large - 346px;
+}
 
 .query-panel-checkboxes {
     color: #3a3a3a;
-    margin-left: $query-criteria-content-left-margin;
-    margin-bottom: 2px;
+    margin: 0 0 2px $query-criteria-content-left-margin;
 }
 
 // TODO rename
-.check-box{
+.check-box {
     margin-right: 4px;
 }
 
@@ -24,30 +58,26 @@
     margin-bottom: 2px;
 }
 
+// TODO rename
 .radio-button {
     margin-right: 4px;
 }
 
-
-
-.left-section-div{
-    margin:  0;
-
+.left-section-div {
+    margin: 0;
 }
 
-
-
 // For the top query panel, all the lower ones have no top border
-.top-query-panel{
-    border-top: solid 1px #cfcfcf;
+.top-query-panel {
+    border-top: solid 1px $criteriaQueryBorderColor;
 }
 
 .query-panel {
-    //  background-color: #fff;
-    border-bottom: solid 1px #cfcfcf;
-    border-left: solid 1px #cfcfcf;
-    border-right: solid 1px #cfcfcf;
-    // padding-bottom: 8px;
+    border-bottom: solid 1px $criteriaQueryBorderColor;
+    border-left: solid 1px $criteriaQueryBorderColor;
+    border-right: solid 1px $criteriaQueryBorderColor;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 /*For the individual query entry panels */
@@ -57,14 +87,11 @@
     padding: 7px 0 0 0;
     margin-left: $query-criteria-content-left-margin;
     margin-bottom: 11px;
-    // font-size: 12pt;
-    font: 16px arial, sans-serif;
 }
 
-.criteria-text{
+.criteria-text {
     font: 15px arial, sans-serif;
 }
-
 
 
 .number-spinner {
@@ -79,7 +106,11 @@
     height: 28px;
 }
 
-.disabled-spinner{
+.disabled-spinner {
     color: #999;
     cursor: not-allowed;
+}
+
+.checkbox-label-text {
+    font-weight: normal;
 }

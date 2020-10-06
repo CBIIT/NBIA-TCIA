@@ -4,23 +4,29 @@ import { SearchResultsSectionComponent } from './search-results-section/search-r
 import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-module/admin-common-pipe.module';
 import { FormsModule } from '@angular/forms';
 import { SearchResultsSectionBravoComponent } from './search-results-section-bravo/search-results-section-bravo.component';
+import { SearchResultsSectionCharlieComponent } from './search-results-section-charlie/search-results-section-charlie.component';
+import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';
+import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 
 
 @NgModule( {
     declarations: [
         SearchResultsSectionComponent,
-        SearchResultsSectionBravoComponent
+        SearchResultsSectionBravoComponent,
+        SearchResultsSectionCharlieComponent
     ],
 
     exports: [
         SearchResultsSectionComponent,
-        SearchResultsSectionBravoComponent
+        SearchResultsSectionBravoComponent,
+        SearchResultsSectionCharlieComponent
     ],
 
     imports: [
         CommonModule,
         FormsModule,
-        AdminCommonPipeModule
+        AdminCommonPipeModule,
+        NgxKeyboardShortcutModule.forRoot()
     ]
 } )
 export class SearchResultsSectionModule{

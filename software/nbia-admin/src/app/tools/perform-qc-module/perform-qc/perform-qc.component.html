@@ -1,3 +1,7 @@
+<!---------------------------------------------------------------------------------------->
+<!----------------------        "Perform Quality Control"         ------------------------>
+<!---------------------------------------------------------------------------------------->
+
 <div *ngIf="roleIsGood"
      class="perform-qc"
 >
@@ -8,32 +12,27 @@
     >
     </nbia-query-section>
 
-    <!-- ----------  The search results with the checkboxes  ---------- -->
-    <div class="container data-section">
+    <!-- ----------  The results and editing section on the right  ---------- -->
+    <div class="container-fluid data-section">
 
         <!-- Display Query -->
-        <div class="row ">
-            <nbia-display-query
-                [currentTool]="consts.TOOL_PERFORM_QC"
-            ></nbia-display-query>
+        <div class="row query-display-row">
+            <div class="display-query-wrapper">
+                <nbia-display-query
+                    [currentTool]="consts.TOOL_PERFORM_QC"
+                ></nbia-display-query>
+            </div>
         </div>
 
-        <!-- Search Results -->
-<!--
-        <div class="row">
-            <nbia-search-results-section
-                (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
-                (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
-            ></nbia-search-results-section>
-        </div>
--->
-        <div class="row">
-            <nbia-search-results-section-bravo
-                (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
-                (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
-            >
-
-            </nbia-search-results-section-bravo>
+        <!-- List of search results with the checkboxes -->
+        <div class="row query-display-row">
+            <div class="display-query-wrapper">
+                <nbia-search-results-section-bravo
+                    (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
+                    (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
+                >
+                </nbia-search-results-section-bravo>
+            </div>
         </div>
 
         <!-- Bulk Operations -->
@@ -47,11 +46,10 @@
             ></nbia-perform-qc-bulk-operations>
         </div>
 
-    </div>
+    </div> <!-- END container-fluid -->
 
     <nbia-qc-history-report></nbia-qc-history-report>
 </div>
-
 
 
 <h4 *ngIf="! roleIsGood && ( userRoles !== undefined)">

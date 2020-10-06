@@ -3,6 +3,7 @@ import { Consts } from '@app/constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QuerySectionService } from '../services/query-section.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -26,6 +27,7 @@ export class LeftSectionComponent implements OnInit, OnDestroy{
      */
     searchType = Consts.CRITERIA_SEARCH;
 
+    properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private querySectionService: QuerySectionService ) {

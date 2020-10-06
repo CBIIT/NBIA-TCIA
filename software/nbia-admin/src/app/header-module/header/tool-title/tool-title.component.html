@@ -1,6 +1,24 @@
 <div class="alert alert-info tool-heading">
     <span class="current-tool-text"><b>{{currentToolTitle}}</b></span>
-    <span class="clicker glyphicon glyphicon-question-sign tool-help-clicker" (click)="onCurrentToolClickClick()"></span>
-    <span class="clicker glyphicon glyphicon-home home-menu-clicker" (click)="onHomeMenuClick()"></span>
+    <img
+        src="assets/images/TOOLS/question_red_small.png"
+        alt="question_red_small"
+        class="clicker tool-help-clicker"
+        (click)="onCurrentToolClickClick()"
+    >
+
+    <img
+        src="assets/images/TOOLS/wrench_black_43px.png"
+        alt="home menu button"
+        class="clicker home-menu-clicker"
+        (click)="onPreferencesClick()"
+    >
+
+    <img
+        src="assets/images/TOOLS/home_black.png"
+        alt="home menu button"
+        class="clicker home-menu-clicker"
+        (click)="onHomeMenuClick()"
+    >
 
 </div>

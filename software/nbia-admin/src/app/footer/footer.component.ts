@@ -7,12 +7,14 @@ import { takeUntil } from 'rxjs/operators';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 import { UtilService } from '@app/admin-common/services/util.service';
 
+
 @Component( {
     selector: 'nbia-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.scss'],
     encapsulation: ViewEncapsulation.None
 } )
+
 export class FooterComponent implements OnInit, OnDestroy{
     userRoles;
     userRolesCount = 0;

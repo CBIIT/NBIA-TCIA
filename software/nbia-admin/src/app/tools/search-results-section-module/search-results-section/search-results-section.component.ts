@@ -12,11 +12,13 @@ import { LoadingDisplayService } from '@app/admin-common/components/loading-disp
 import { ModalityDescriptionsService } from '@app/tools/search-results-section-module/services/modality-descriptions.service';
 import { SearchResultByIndexService } from '@app/tools/search-results-section-module/services/search-result-by-index.service';
 
+
 @Component( {
     selector: 'nbia-search-results-section',
     templateUrl: './search-results-section.component.html',
     styleUrls: ['./search-results-section.component.scss']
 } )
+
 export class SearchResultsSectionComponent implements OnInit, OnDestroy{
 
     searchResults = [];

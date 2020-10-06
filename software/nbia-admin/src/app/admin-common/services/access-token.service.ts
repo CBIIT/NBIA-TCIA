@@ -35,12 +35,10 @@ export class AccessTokenService{
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
         let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + Consts.API_CLIENT_SECRET_DEFAULT + '&grant_type=password';
 
-/*  Don't show user and password
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
             console.log( 'getAccessToken: ' + curl );
         }
-*/
 
         let options =
             {
@@ -56,7 +54,13 @@ export class AccessTokenService{
 
                 this.setCurrentUser( user );
                 this.setCurrentPassword( password );
+
+                /* Changing this because the test for good token is not needed
                 this.setAccessTokenStatus( TokenStatus.HAVE_TOKEN );
+                */
+                this.setAccessTokenStatus( TokenStatus.GOOD_TOKEN );
+
+
             },
             err => {
                 console.error( 'Get new token error: ', err );

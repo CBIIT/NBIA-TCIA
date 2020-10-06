@@ -18,13 +18,14 @@ import { AccessTokenService } from './admin-common/services/access-token.service
 import { ApproveDeletionsModule } from './tools/approve-deletions-module/approve-deletions.module';
 import { PerformQcModule } from './tools/perform-qc-module/perform-qc.module';
 import { QuerySectionModule } from './tools/query-section-module/query-section.module';
-import { CineModeComponent } from './tools/cine-mode-module/cine-mode/cine-mode.component';
-import { CineModeModule } from './tools/cine-mode-module/cine-mode.module';
 import { ManageWorkflowItemsModule } from './tools/manage-workflow-items-module/manage-workflow-items.module';
 import { CookieService } from 'angular2-cookie/core';
 import { LoadingDisplayComponent } from './admin-common/components/loading-display/loading-display.component';
 import { FooterComponent } from './footer/footer.component';
 import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';
+import { CineModeModule } from '@app/tools/cine-mode-module/cine-mode.module';
+import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 @NgModule( {
     declarations: [
@@ -32,7 +33,8 @@ import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.m
         NbiaAdminClientComponent,
         LoginComponent,
         LoadingDisplayComponent,
-        FooterComponent
+        FooterComponent,
+        PreferencesComponent
     ],
     exports: [
 
@@ -49,13 +51,13 @@ import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.m
         PerformOnlineDeletionModule,
         MomentModule,
         AngularDraggableModule,
-
+        CineModeModule,
         QuerySectionModule,
         ApproveDeletionsModule,
         PerformQcModule,
-        CineModeModule,
         ManageWorkflowItemsModule,
-        EditLicenseModule
+        EditLicenseModule,
+        NgxKeyboardShortcutModule.forRoot()
     ],
     providers: [
         AccessTokenService,

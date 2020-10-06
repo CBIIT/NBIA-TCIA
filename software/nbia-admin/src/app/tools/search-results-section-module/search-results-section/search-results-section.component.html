@@ -32,7 +32,7 @@
                     *ngFor="let colName of columnHeadings; let i = index"
                     [ngClass]=" {
                         'search-results-submission-date-td' : i === 0,
-                        'search-results-series-viewer-td': columnHeadings[i]['name'] === 'Viewers',
+                        'search-results-series-viewer-td': columnHeadings[i]['name'] === 'View',
                         'search-results-series-visibility-td': columnHeadings[i]['name'] === 'Visibility',
                         'search-results-series-modality-td': columnHeadings[i]['name'] === 'Modality'
                     }"
@@ -134,7 +134,7 @@
                 <td class="data-table-body-td">
                     {{dataRow['visibilityStatus']}}
                 </td>
-                <td class="search-results-series-viewers-td data-table-body-td">
+                <td class="search-results-series-viewers-td">
                     <label
                         class="btn btn-default search-results-series-viewer-button"
                         title="Thumbnail Viewer"

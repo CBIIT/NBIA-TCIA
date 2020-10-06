@@ -1,33 +1,33 @@
-@import '../../../app.component';
-@import 'src/app/tools/query-section-module/query-section/query-section.component';
+// -------------------------------------------------------------------------------------------
+// -------------------------      Patient ID a.k.a Subject ID      ---------------------------
+// -------------------------------------------------------------------------------------------
 
-.text-input-div
-{
-    height:250px;
+@import "../../../app.component";
+@import "src/app/tools/query-section-module/query-section/query-section.component";
+
+.text-input-div {
+    height: 250px;
 }
 
-.subject-id-text{
-    border: solid 1px #cfcfcf;
+.subject-id-text {
+    border: solid 1px $criteriaQueryBorderColor;
     border-radius: 4px;
-    margin-left:18px;
+    margin-left: 18px;
     margin-right: 18px;
     width: calc(100% - 40px);
-    height: calc(100% - 40px);
+    height: calc(100% - 70px);
     overflow-y: scroll;
     resize: none;
 }
 
-.subject-id-query-button{
-    position:relative;
-    right: ($left-section-width * -1) + 206px;
-    top: 4px;
+.subject-id-query-button {
+    margin-left: $query-criteria-content-left-margin;
 }
 
-.subject-id-prompt{
-    margin-left:18px;
+.subject-id-prompt {
+    margin-left: $query-criteria-content-left-margin;
 }
 
-
-.query-panel-long{
-    padding-bottom:30px;
+.subject-id-button-box {
+    width: calc(100% - 20px);
 }

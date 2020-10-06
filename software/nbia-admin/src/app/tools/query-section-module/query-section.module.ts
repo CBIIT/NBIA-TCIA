@@ -11,9 +11,9 @@ import { QueryReleasedComponent } from './query-released/query-released.componen
 import { QuerySectionComponent } from './query-section/query-section.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from '../../app-routing.module';
+import { AppRoutingModule } from '@app/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { HeaderModule } from '../../header-module/header.module';
+import { HeaderModule } from '@app/header-module/header.module';
 import { ViewSubmissionReportsModule } from '../view-submission-reports-module/view-submission-reports.module';
 import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { PerformOnlineDeletionModule } from '../perform-online-deletion-module/perform-online-deletion.module';
@@ -21,6 +21,14 @@ import { MomentModule } from 'ngx-moment';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { TabsModule } from 'ngx-tabs';
+import { DynamicQueryCriteriaComponent } from './dynamic-query-criteria/dynamic-query-criteria.component';
+import { LargeTextInputComponent } from '@app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component';
+import { SmallTextInputComponent } from './dynamic-query-criteria/small-text-input/small-text-input.component';
+import { DateRangeComponent } from './dynamic-query-criteria/date-range/date-range.component';
+import { MultiChoiceListComponent } from './dynamic-query-criteria/multi-choice-list/multi-choice-list.component';
+import { SingleChoiceListComponent } from './dynamic-query-criteria/single-choice-list/single-choice-list.component';
+import { SingleCheckboxComponent } from './dynamic-query-criteria/single-checkbox/single-checkbox.component';
+import { SingleChoiceOneLineComponent } from './dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component';
 
 
 
@@ -34,7 +42,15 @@ import { TabsModule } from 'ngx-tabs';
         QueryPatientIdComponent,
         QueryQcStatusComponent,
         QueryReleasedComponent,
-        QuerySectionComponent
+        QuerySectionComponent,
+        LargeTextInputComponent,
+        DynamicQueryCriteriaComponent,
+        SmallTextInputComponent,
+        DateRangeComponent,
+        MultiChoiceListComponent,
+        SingleChoiceListComponent,
+        SingleCheckboxComponent,
+        SingleChoiceOneLineComponent
     ],
     exports: [
         LeftSectionComponent,

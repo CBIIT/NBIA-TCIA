@@ -1,0 +1,19 @@
+@import '../app.component';
+@import '../popup.scss';
+
+$preferences-width: 500px;
+
+.preferences-div{
+    z-index: $popup-z-index;
+    width: $preferences-width;
+    left: calc(50% - #{$preferences-width / 2 });
+
+}
+
+.font-size-table{
+    border: #dc3545;
+}
+
+.font-button{
+    // border: solid #00ff5d 1px;
+}

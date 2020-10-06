@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LoginService } from './login.service';
 import { takeUntil } from 'rxjs/operators';
@@ -6,14 +6,15 @@ import { Consts, TokenStatus } from '@app/constants';
 import { AccessTokenService } from '../admin-common/services/access-token.service';
 import { UtilService } from '../admin-common/services/util.service';
 import { ApiService } from '../admin-common/services/api.service';
+import { NgForm } from '@angular/forms';
 
 @Component( {
     selector: 'nbia-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
 } )
 export class LoginComponent implements OnInit, OnDestroy{
-
+    @ViewChild( 'f', { static: true } ) loginForm: NgForm;
     showLogin = false;
     loginType;
     handleMoving = false;
@@ -25,14 +26,18 @@ export class LoginComponent implements OnInit, OnDestroy{
     consts = Consts;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private loginService: LoginService, private accessTokenService: AccessTokenService,
-                 private utilService: UtilService,
-                 private apiService: ApiService ) {
+    constructor(
+        private loginService: LoginService,
+        private accessTokenService: AccessTokenService,
+        private utilService: UtilService,
+        private apiService: ApiService
+    ) {
     }
 
     ngOnInit() {
-        this.loginService.loginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
+        this.loginService.loginEmitter
+            .pipe( takeUntil( this.ngUnsubscribe ) )
+            .subscribe( ( data ) => {
                 this.showLogin = true;
                 // No token, expired token.  So we can display reason for login at the top of the login screen
                 this.loginType = data;
@@ -40,24 +45,35 @@ export class LoginComponent implements OnInit, OnDestroy{
     }
 
     async onSubmit() {
-        this.accessTokenService.getAccessTokenFromServer( this.username, this.password );
-        while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
-            await this.utilService.sleep( Consts.waitTime );
-        }
-        this.apiService.getWikiUrlParam();
+         this.accessTokenService.getAccessTokenFromServer(
+            this.loginForm.value.username,
+            this.loginForm.value.password
+        );
 
-
-        // Test the new token
-        this.accessTokenService.testToken();
-
-        // Wait for the token to finish being tested.
-        while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
+        while(
+            this.accessTokenService.getAccessTokenStatus() ===
+            TokenStatus.NO_TOKEN_YET
+            ){
             await this.utilService.sleep( Consts.waitTime );
         }
 
-        if( this.accessTokenService.getAccessTokenStatus() === TokenStatus.GOOD_TOKEN ){
-            // Update roles
-            this.apiService.getRoles();
+        switch( this.accessTokenService.getAccessTokenStatus() ){
+            case TokenStatus.BAD_TOKEN:
+                console.error( 'BAD_TOKEN' );
+                this.statusMessage0 = 'Bad Username/Password';
+
+                break;
+            case TokenStatus.EXP_TOKEN:
+                console.error( 'EXP_TOKEN' );
+                this.statusMessage0 = 'Expired access token';
+                break;
+            case TokenStatus.HAVE_TOKEN:
+                // We don't use this here anymore.
+                break;
+            case TokenStatus.GOOD_TOKEN:
+                // Update roles
+                this.apiService.getRoles();
+                break;
         }
     }
 
@@ -67,10 +83,8 @@ export class LoginComponent implements OnInit, OnDestroy{
         }
     }
 
-
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }
-
 }

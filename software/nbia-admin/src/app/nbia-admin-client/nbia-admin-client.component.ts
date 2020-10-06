@@ -41,7 +41,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     accessTokenStatus;
     properties = Properties;
 
-    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private parameterService: ParameterService, private apiService: ApiService,
                  private utilService: UtilService, private loginService: LoginService,
@@ -185,6 +185,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             this.showEditLicense = true;
         }
     }
+
 
     ngOnDestroy()
         :

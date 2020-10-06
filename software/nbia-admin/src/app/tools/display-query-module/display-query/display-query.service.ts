@@ -1,7 +1,11 @@
+// ----------------------------------------------------------------------------------------
+// ----------  Service to update Display Query and clear all query criteria    ------------
+// ----------------------------------------------------------------------------------------
+
 import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable( {
-    providedIn: 'root'
+    providedIn: 'root',
 } )
 export class DisplayQueryService{
     displayQueryEmitter = new EventEmitter();
@@ -13,11 +17,9 @@ export class DisplayQueryService{
 
     query( q ) {
         this.displayQueryEmitter.emit( q );
-
     }
 
-    clearQuerySectionQuery(){
+    clearQuerySectionQuery() {
         this.clearQuerySectionQueryEmitter.emit();
     }
-
 }

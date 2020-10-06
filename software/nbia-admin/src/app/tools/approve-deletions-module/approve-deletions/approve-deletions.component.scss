@@ -1,3 +1,7 @@
+// -------------------------------------------------------------------------
+// ----------                 "Approve Deletions"                 ----------
+// -------------------------------------------------------------------------
+
 @import '../../../app.component';
 
 .approve-deletions-tool{
@@ -7,8 +11,7 @@
     flex-direction: row;
 }
 
-// Includes Display query and search results
-// TODO rename this
-.data-section{
+// Includes search results, Delete button and log text area
+.approve-deletions-search-results-section{
     width: 100%;
 }

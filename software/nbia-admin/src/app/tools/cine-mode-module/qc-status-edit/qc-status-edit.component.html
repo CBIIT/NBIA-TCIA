@@ -1,149 +1,160 @@
-<!-- ----------  QC Edit for Cine mode only  ---------- -->
+<!---------------------------------------------------------------------------------------->
+<!----------                    QC Edit for Cine mode only                    ------------>
+<!----------  Used in the bottom section of "Perform Quality Control" cine mode  --------->
+<!---------------------------------------------------------------------------------------->
+
+<!-- Row of radio buttons across the top with each of the possible statuses. -->
 <div class="qc-status-outer-div">
     <div class="bulk-qc-status-table-frame">
-        <table>
-            <tr>
-                <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-status-radios"
-                    [ngClass]="{
-                'hide': n > 11
-                }"
+        <div class="container-fluid">
+            <div class="row">
+                <!-- qcStatuses is the list of possible statuses sent from the server -->
+                <div
+                    *ngFor="let criteria of qcStatuses; let n = index"
+                    class="qc-status-radios"
                 >
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-status{{n}}"
-                           name="qcBulkRadio"
-                           (click)="onQcBulkStatusClick(n)">
-                    <label [attr.for]="'radio-qc-status-status'+n"
-                           class="qc-status-radio-label clicker"
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-status{{ n }}"
+                        name="qcBulkRadio"
+                        (click)="onQcBulkStatusClick(n)"
+                    />
+                    <label
+                        class="qc-status-radio-label clicker"
+                        [ngClass]="{
+                            'font-extra-small': currentFont === '0',
+                            'font-small': currentFont === '1',
+                            'font-medium': currentFont === '2',
+                            'font-large': currentFont === '3'
+                        }"
+                        [attr.for]="'radio-qc-status-status' + n"
                     >
-                        {{criteria}}
+                        {{ criteria }}
                     </label>
-                </td>
-            </tr>
-            <tr>
-                <td *ngFor="let criteria of qcStatuses ; let n = index" class="qc-status-radios"
-                    [ngClass]="{
-                'hide': n < 12
-                }"
-                >
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-status2{{n}}"
-                           name="qcBulkRadio"
-                           (click)="onQcBulkStatusClick(n)">
-                    <label [attr.for]="'radio-qc-status-status2'+n"
-                           class="qc-status-radio-label clicker"
-                    >
-                        {{criteria}}
-                    </label>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
+        <!-- END container-fluid -->
     </div>
-    <!--
-        <div class="qc-status-section-2">
-        -->
+
+    <!-- Second row: "Batch Number", "Confirmed as Complete", and "Released". -->
     <div class="bulk-qc-status-table-frame">
         <table class="bulk-qc-status-table">
             <tr>
                 <!-- ----- Batch number  ----- -->
                 <td class="qc-status-radios">
-                    <input type="checkbox"
-                           class="clicker"
-                           id="qc-status-batch-checkbox"
-                           [(ngModel)]="useBatchNumber"
-                    >
+                    <input
+                        class="clicker"
+                        type="checkbox"
+                        id="qc-status-batch-checkbox"
+                        [(ngModel)]="useBatchNumber"
+                    />
                     <label
                         class="qc-status-radio-label clicker"
                         for="qc-status-batch-checkbox"
                     >
                         Batch Number
                     </label>
-                    <input type="number" class="qc-status-batch-number-spinner"
-                           min="1"
-                           [ngClass]="{
-                    'disabled-spinner': ! useBatchNumber
-                    }"
-                           [disabled]="! useBatchNumber"
-                           [(ngModel)]="batchNumber"
-                    >
+                    <input
+                        class="qc-status-batch-number-spinner"
+                        [ngClass]="{
+                            'disabled-spinner': !useBatchNumber
+                        }"
+                        type="number"
+                        min="1"
+                        [disabled]="!useBatchNumber"
+                        [(ngModel)]="batchNumber"
+                    />
                 </td>
                 <!-- ----- Confirmed as Complete  ----- -->
                 <td class="qc-status-complete-radios">
-                    Confirmed as Complete<br>
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-complete-yes"
-                           name="qcBulkRadioComplete"
-                           (click)="onQcBulkStatusCompleteClick(YES)"
-                    >
-                    <label [attr.for]="'radio-qc-status-complete-yes'"
-                           class="qc-status-radio-label clicker"
+                    Confirmed as Complete<br/>
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-complete-yes"
+                        name="qcBulkRadioComplete"
+                        (click)="onQcBulkStatusCompleteClick(YES)"
+                    />
+                    <label
+                        class="qc-status-radio-label clicker"
+                        [attr.for]="'radio-qc-status-complete-yes'"
                     >
                         Yes
                     </label>
                     &nbsp;&nbsp;
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-complete-no"
-                           name="qcBulkRadioComplete"
-                           (click)="onQcBulkStatusCompleteClick(NO)"
-                    >
-                    <label [attr.for]="'radio-qc-status-complete-no'"
-                           class="qc-status-radio-label clicker"
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-complete-no"
+                        name="qcBulkRadioComplete"
+                        (click)="onQcBulkStatusCompleteClick(NO)"
+                    />
+                    <label
+                        [attr.for]="'radio-qc-status-complete-no'"
+                        class="qc-status-radio-label clicker"
                     >
                         No
                     </label>
                     &nbsp;&nbsp;
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-complete-no-change"
-                           name="qcBulkRadioComplete"
-                           [checked]="true"
-                           (click)="onQcBulkStatusCompleteClick(NO_CHANGE)"
-                    >
-                    <label [attr.for]="'radio-qc-status-complete-no-change'"
-                           class="qc-status-radio-label clicker"
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-complete-no-change"
+                        name="qcBulkRadioComplete"
+                        [checked]="true"
+                        (click)="onQcBulkStatusCompleteClick(NO_CHANGE)"
+                    />
+                    <label
+                        class="qc-status-radio-label clicker"
+                        [attr.for]="'radio-qc-status-complete-no-change'"
                     >
                         No Change
                     </label>
                 </td>
                 <!-- ----- Released  ----- -->
                 <td class="qc-status-complete-radios">
-                    Released<br>
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-released-yes"
-                           name="qcBulkRadioReleased"
-                           (click)="onQcBulkStatusReleasedClick(YES)"
-                    >
-                    <label [attr.for]="'radio-qc-status-released-yes'"
-                           class="qc-status-radio-label clicker"
+                    Released<br/>
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-released-yes"
+                        name="qcBulkRadioReleased"
+                        (click)="onQcBulkStatusReleasedClick(YES)"
+                    />
+                    <label
+                        class="qc-status-radio-label clicker"
+                        [attr.for]="'radio-qc-status-released-yes'"
                     >
                         Yes
                     </label>
                     &nbsp;&nbsp;
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-released-no"
-                           name="qcBulkRadioReleased"
-                           (click)="onQcBulkStatusReleasedClick(NO)"
-                    >
-                    <label [attr.for]="'radio-qc-status-released-no'"
-                           class="qc-status-radio-label clicker"
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-released-no"
+                        name="qcBulkRadioReleased"
+                        (click)="onQcBulkStatusReleasedClick(NO)"
+                    />
+                    <label
+                        class="qc-status-radio-label clicker"
+                        [attr.for]="'radio-qc-status-released-no'"
                     >
                         No
                     </label>
                     &nbsp;&nbsp;
-                    <input type="radio"
-                           class="clicker"
-                           id="radio-qc-status-released-no-change"
-                           name="qcBulkRadioReleased"
-                           [checked]="true"
-                           (click)="onQcBulkStatusReleasedClick(NO_CHANGE)"
-                    >
-                    <label [attr.for]="'radio-qc-status-released-no-change'"
-                           class="qc-status-radio-label clicker"
+                    <input
+                        class="clicker"
+                        type="radio"
+                        id="radio-qc-status-released-no-change"
+                        name="qcBulkRadioReleased"
+                        [checked]="true"
+                        (click)="onQcBulkStatusReleasedClick(NO_CHANGE)"
+                    />
+                    <label
+                        class="qc-status-radio-label clicker"
+                        [attr.for]="'radio-qc-status-released-no-change'"
                     >
                         No Change
                     </label>
@@ -160,23 +171,37 @@
                     ></textarea>
                 </td>
             </tr>
-                <tr>
+            <tr>
                 <td colspan="2">
                     <span>
-                        <button class="btn nbia-button qc-status-update-button"
-                                [ngClass]="{
-                                   'nbia-button-disabled': visible < 0
-                                }"
-                                [disabled]="visible < 0 "
-                                type="button"
-                                (click)="onQcUpdateNextClick()">
+                        <button
+                            class="btn nbia-button qc-status-update-button"
+                            [ngClass]="{
+                                'nbia-button-disabled': visible < 0,
+                                'font-extra-small': currentFont === '0',
+                                'font-small': currentFont === '1',
+                                'font-medium': currentFont === '2',
+                                'font-large': currentFont === '3'
+                            }"
+                            [disabled]="visible < 0"
+                            type="button"
+                            (click)="onQcUpdateNextClick()"
+                        >
                             Update / Next Series
                         </button>
                     </span>
                     <span>
-                        <button class="btn nbia-button qc-status-update-button"
-                                type="button"
-                                (click)="onQcSkipNextClick()">
+                        <button
+                            class="btn nbia-button qc-status-update-button"
+                            [ngClass]="{
+                                'font-extra-small': currentFont === '0',
+                                'font-small': currentFont === '1',
+                                'font-medium': currentFont === '2',
+                                'font-large': currentFont === '3'
+                            }"
+                            type="button"
+                            (click)="onQcSkipNextClick()"
+                        >
                             Skip / Next Series
                         </button>
                     </span>

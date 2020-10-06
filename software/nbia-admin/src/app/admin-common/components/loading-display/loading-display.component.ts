@@ -4,11 +4,13 @@ import { Subject } from 'rxjs';
 import { LoadingDisplayService } from './loading-display.service';
 import { UtilService } from '../../services/util.service';
 
+
 @Component({
   selector: 'nbia-loading-display',
   templateUrl: './loading-display.component.html',
   styleUrls: ['./loading-display.component.scss']
 })
+
 export class LoadingDisplayComponent implements OnInit, OnDestroy{
     showBusy = true;
     message = 'Initializing';

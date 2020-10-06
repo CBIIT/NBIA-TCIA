@@ -1,22 +1,33 @@
+<!------------------------------------------------------------------------->
+<!-------                    "Approve Deletion"                      ------>
+<!-------       Used in "Approve Deletion" when in Cine mode.        ------>
+<!------------------------------------------------------------------------->
+
+<!-- Log entry Text input -->
 <div>
-<textarea
-    class="delete-cine-mode-edit-log-text"
-    [(ngModel)]="logText"
-    placeholder="Enter change log here..."
-></textarea>
+    <textarea
+        class="delete-cine-mode-edit-log-text"
+        [(ngModel)]="logText"
+        placeholder="Enter change log here..."
+    ></textarea>
 </div>
 
+<!-- Delete and Skip buttons -->
 <div>
     <span>
-    <button class="btn nbia-button delete-cine-mode-button"
+        <button
+            class="btn nbia-button delete-cine-mode-button"
             type="button"
-            (click)="onDeleteSeriesNextClick()">
-        Delete / Next Series
-    </button>
-    <button class="btn nbia-button delete-cine-mode-button"
+            (click)="onDeleteSeriesNextClick()"
+        >
+            Delete / Next Series
+        </button>
+        <button
+            class="btn nbia-button delete-cine-mode-button"
             type="button"
-            (click)="onDeleteSeriesSkipNextClick()">
-        Skip / Next Series
-    </button>
-        </span>
+            (click)="onDeleteSeriesSkipNextClick()"
+        >
+            Skip / Next Series
+        </button>
+    </span>
 </div>

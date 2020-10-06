@@ -1,40 +1,100 @@
-<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
-            currentTool===consts.TOOL_APPROVE_DELETIONS"
-     class="query-panel"
-     [ngClass]=" {
-            'query-panel-long': showSubjectIds
-      }"
->
+<!------------------------------------------------------------------------------------------->
+<!-------------------------      Patient ID a.k.a Subject ID      --------------------------->
+<!------------------------------------------------------------------------------------------->
 
-    <div class="query-panel-heading">
+<div
+    *ngIf="
+        currentTool === consts.TOOL_PERFORM_QC ||
+        currentTool === consts.TOOL_APPROVE_DELETIONS
+    "
+    class="query-panel"
+>
+    <div
+        class="query-panel-heading"
+        [ngClass]="{
+            'heading-font-extra-small': currentFont === '0',
+            'heading-font-small': currentFont === '1',
+            'heading-font-medium': currentFont === '2',
+            'heading-font-large': currentFont === '3'
+        }"
+    >
         <label *ngIf="subjectText.length > 0" class="red-clear">
-            <img class=" clicker" src="assets/images/redClear.png" alt="Search" (click)="onClearClick()">
+            <img
+                class="clicker"
+                [ngClass]="{
+                    'red-clear-extra-small': currentFont === '0',
+                    'red-clear-small': currentFont === '1',
+                    'red-clear-medium': currentFont === '2',
+                    'red-clear-large': currentFont === '3'
+                }"
+                src="assets/images/redClear.png"
+                alt="Clear"
+                (click)="onClearClick()"
+            />
         </label>
 
-        <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
-                <img src="assets/images/down_V01.png">
-                Subject IDs
-            </span>
+        <span
+            *ngIf="showSubjectIds"
+            class="clicker"
+            (click)="onShowSubjectIdsClick(false)"
+        >
+            <img src="assets/images/down_V01.png" />
+            Subject IDs
+        </span>
 
-        <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
-                <img src="assets/images/right_V01.png">
-                Subject IDs
-            </span>
-
+        <span
+            *ngIf="!showSubjectIds"
+            class="clicker"
+            (click)="onShowSubjectIdsClick(true)"
+        >
+            <img src="assets/images/right_V01.png" />
+            Subject IDs
+        </span>
     </div>
 
-    <div class="text-input-div"
-         [ngClass]="{
-                'hide': !showSubjectIds
-            }"
+    <div
+        class="text-input-div"
+        [ngClass]="{
+            hide: !showSubjectIds
+        }"
     >
-        <span class="subject-id-prompt">Enter comma separated ID(s)</span>
-        <textarea ref-textarea [(ngModel)]="subjectText" class="subject-id-text"></textarea>
+        <span
+            class="subject-id-prompt"
+            [ngClass]="{
+                'font-extra-small': currentFont === '0',
+                'font-small': currentFont === '1',
+                'font-medium': currentFont === '2',
+                'font-large': currentFont === '3'
+            }"
+            >Enter comma separated ID(s)
+        </span>
+        <textarea
+            [(ngModel)]="subjectText"
+            class="subject-id-text"
+            [ngClass]="{
+                'font-extra-small': currentFont === '0',
+                'font-small': currentFont === '1',
+                'font-medium': currentFont === '2',
+                'font-large': currentFont === '3'
+            }"
+        ></textarea>
 
-        <button class="btn nbia-button subject-id-query-button"
-                type="button"
-                (click)="onSearchClick()">
-            Apply Subject IDs
-        </button>
+        <div class="subject-id-button-box">
+            <div class="float-right">
+                <button
+                    class="btn nbia-button subject-id-query-button"
+                    [ngClass]="{
+                        'font-extra-small': currentFont === '0',
+                        'font-small': currentFont === '1',
+                        'font-medium': currentFont === '2',
+                        'font-large': currentFont === '3'
+                    }"
+                    type="button"
+                    (click)="onSearchClick()"
+                >
+                    Apply Subject IDs
+                </button>
+            </div> <!-- END The inner button box that floats right. -->
+        </div> <!-- END "subject-id-button-box" - The outer button box. -->
     </div>
 </div>

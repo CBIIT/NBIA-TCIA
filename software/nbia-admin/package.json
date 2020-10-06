@@ -19,6 +19,7 @@
         "@angular/platform-browser": "~8.2.14",
         "@angular/platform-browser-dynamic": "~8.2.14",
         "@angular/router": "~8.2.14",
+        "ngx-keyboard-shortcuts": "^1.0.1",
         "@kolkov/angular-editor": "^1.0.2",
         "angular-progress-bar": "^1.0.9",
         "angular-resize-event": "^1.2.1",

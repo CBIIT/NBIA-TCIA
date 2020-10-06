@@ -1,8 +1,13 @@
+<!------------------------------------------------------------------------------------------->
+<!------------  Series History - popup in "Perform Quality Control"  not Cine mode  --------->
+<!------------------------------------------------------------------------------------------->
+
+
 <!--The parent div/ bootstrap panel-->
 <div id="historyDragPanel"
     *ngIf="showReport"
      ngDraggable [handle]="PanelHandle"
-     class="panel panel-info  alert-box-div alert-box-shadow unselectable perform-qc-history-report-div"
+     class="card card-nbia-default  alert-box-div alert-box-shadow unselectable perform-qc-history-report-div"
      [ngClass]="{
         'alert-box-heading-moving': handleMoving
     }"
@@ -13,17 +18,21 @@
 >
 
     <!-- The panel heading, this is the draggable part -->
-    <div #PanelHandle class="panel-heading unselectable alert-box-heading" >
-        <span class="panel-title">QC Status History</span>
-        <span class="clicker glyphicon glyphicon-remove close-x" (click)="closeQcHistoryReportClick()"></span>
+    <div #PanelHandle class="card-header card-nbia-header-default unselectable alert-box-heading" >
+        <span class="card-title">QC Status History</span>
+        <span class="close-x clicker unselectable" (click)="closeQcHistoryReportClick()">
+            X
+        </span>
     </div>
 
     <nbia-qc-history-report-table
         [qcStatusReportResults]="qcStatusReportResults"
     ></nbia-qc-history-report-table>
 
-    <div class="panel-heading unselectable qc-history-footer">
-        <span class="clicker glyphicon glyphicon-remove close-x" (click)="closeQcHistoryReportClick()"></span>
+    <div class="card-header card-nbia-header-default m-0 p-0">
+        <span class="close-x clicker unselectable" (click)="closeQcHistoryReportClick()">
+            X
+        </span>
     </div>
 
 </div>

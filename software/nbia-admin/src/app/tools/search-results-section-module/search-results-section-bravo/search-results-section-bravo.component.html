@@ -1,163 +1,254 @@
-    <div *ngIf="! noSearch"
-         class="results-heading-text">
-        <b>{{searchResultsCount}}</b>
-        &nbsp;Series&nbsp;&nbsp;&nbsp;
-        <b>{{checkboxCount}}</b>
-        &nbsp;Selected&nbsp;&nbsp;&nbsp;
-        <b>{{collectionSite}}</b>
-    </div>
+<button class="hide" [keyboardShortcut]="keyboardShortcutDef" (click)="hideShowCineMode()">
+    hideShowCineMode
+</button>
 
-    <div class="data-tableFixHead search-results-scroller-div"
-         [ngClass]="{
-        'search-results-outer-div': searchResultsCount> 0
+<div
+    *ngIf="!noSearch"
+    [ngClass]="{
+        'heading-font-extra-small': currentFont === '0',
+        'heading-font-small': currentFont === '1',
+        'heading-font-medium': currentFont === '2',
+        'heading-font-large': currentFont === '3'
     }"
+>
+    <b>{{ searchResultsCount }}</b>
+    &nbsp;Series&nbsp;&nbsp;&nbsp;
+    <b>{{ checkboxCount }}</b>
+    &nbsp;Selected&nbsp;&nbsp;&nbsp;
+    <b>{{ collectionSite }}</b>
+</div>
+
+<div
+    class="data-tableFixHead search-results-scroller-div"
+    [ngClass]="{
+        'search-results-outer-div': searchResultsCount > 0
+    }"
+>
+    <span
+        class="search-results-table"
+        [ngClass]="{
+            'font-extra-small': currentFont === '0',
+            'font-small': currentFont === '1',
+            'font-medium': currentFont === '2',
+            'font-large': currentFont === '3'
+        }"
     >
-
-
-    <table class="search-results-table">
-        <thead>
-
-        <tr class="data-table-thead-tr">
-            <!-- Top Checkbox -->
-            <th class="data-table-thead-th search-results-table-thead-th-checkbox">
-                <input
-                    type="checkbox"
-                    [(ngModel)]="masterSearchResultsCheckbox"
-                    (click)="toggleTopSearchResultsCheckbox( $event.target.checked )"
-                >
-            </th>
-            <!-- ----- The Column name ----- -->
-            <th
-                class="data-table-thead-th"
-                *ngFor="let colName of columnHeadings; let i = index"
-                [ngClass]=" {
-                        'search-results-submission-date-td' : i === 0,
-                        'search-results-series-viewer-td': columnHeadings[i]['name'] === 'Viewers'
-                    }"
-            >
-
-                    <span
-                        [ngClass]=" {
-                    'clicker': (searchResultsCount > 0 ) && (columnHeadings[i]['name'] !== 'Collection//Site' && columnHeadings[i]['name'] !== 'Viewers')
-                    }"
-                        title="Click to sort"
-                        (click)="onHeadingClick(i)"
+        <!-- Heading row -->
+        <table class="table">
+            <thead>
+                <tr class="data-table-thead-tr">
+                    <!-- Top Checkbox -->
+                    <th
+                        class="data-table-thead-th search-results-table-thead-th-checkbox"
                     >
-                        {{colName['name']}}
-                        <!-- 'Collection//Site' and'Viewers' do not need sort clickers.  -->
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="masterSearchResultsCheckbox"
+                            (click)="
+                                toggleTopSearchResultsCheckbox(
+                                    $event.target['checked']
+                                )
+                            "
+                        />
+                    </th>
+
+                    <!-- ----- The Column name ----- -->
+                    <!-- Set heading width for font size for the columns that need it (Description, Modality and visibility -->
+                    <!-- TODO Explain why these columns need a width set. -->
+                    <th
+                        class="data-table-thead-th"
+                        *ngFor="let colName of columnHeadings; let i = index"
+                        [ngClass]="{
+                            'search-results-description-td-0':
+                                i === 4 && currentFont === '0',
+                            'search-results-description-td-1':
+                                i === 4 && currentFont === '1',
+                            'search-results-description-td-2':
+                                i === 4 && currentFont === '2',
+                            'search-results-description-td-3':
+                                i === 4 && currentFont === '3',
+
+                            'search-results-modality-td-0':
+                                i === 5 && currentFont === '0',
+                            'search-results-modality-td-1':
+                                i === 5 && currentFont === '1',
+                            'search-results-modality-td-2':
+                                i === 5 && currentFont === '2',
+                            'search-results-modality-td-3':
+                                i === 5 && currentFont === '3',
+
+                            'search-results-visibility-td-0':
+                                i === 6 && currentFont === '0',
+                            'search-results-visibility-td-1':
+                                i === 6 && currentFont === '1',
+                            'search-results-visibility-td-2':
+                                i === 6 && currentFont === '2',
+                            'search-results-visibility-td-3':
+                                i === 6 && currentFont === '3'
+                        }"
+                    >
+                        <!-- Heading content and sorting icon/buttons -->
                         <span
-                            *ngIf="(searchResultsCount > 0 ) && (columnHeadings[i]['name'] !== 'Collection//Site' && columnHeadings[i]['name'] !== 'Viewers')"
+                            [ngClass]="{
+                                clicker:
+                                    searchResultsCount > 0 &&
+                                    columnHeadings[i]['name'] !==
+                                        'Collection//Site' &&
+                                    columnHeadings[i]['name'] !== 'Viewers'
+                            }"
+                            title="Click to sort"
+                            (click)="onHeadingClick(i)"
                         >
-                            <!--  Add sorting glyphs -->
-                            <img
-                                *ngIf="columnHeadings[i]['sortState'] === sortState.SORT_UP"
-                                class="sort-pointer"
-                                src="assets/images/upTriangle2.png"
+                            {{ colName["name"] }}
+                            <!-- 'Collection//Site' and 'Viewers' do not need sort clickers.  -->
+                            <span
+                                *ngIf="
+                                    searchResultsCount > 0 &&
+                                    columnHeadings[i]['name'] !==
+                                        'Collection//Site' &&
+                                    columnHeadings[i]['name'] !== 'View'
+                                "
                             >
-                            <img
-                                *ngIf="columnHeadings[i]['sortState'] === sortState.SORT_DOWN"
-                                class="sort-pointer"
-                                src="assets/images/downTriangle2.png"
-                            >
-                            <!-- space/place holder  -->
-                            <img
-                                *ngIf="columnHeadings[i]['sortState'] === sortState.NO_SORT"
-                                class="sort-pointer"
-                                src="assets/images/emptyTriangle2.png"
-                            >
+                                <!--  Add sorting icons -->
+                                <img
+                                    *ngIf="
+                                        columnHeadings[i]['sortState'] ===
+                                        sortState.SORT_UP
+                                    "
+                                    src="assets/images/upTriangle2.png"
+                                />
+                                <img
+                                    *ngIf="
+                                        columnHeadings[i]['sortState'] ===
+                                        sortState.SORT_DOWN
+                                    "
+                                    src="assets/images/downTriangle2.png"
+                                />
+                                <!-- space/place holder  -->
+                                <img
+                                    *ngIf="
+                                        columnHeadings[i]['sortState'] ===
+                                        sortState.NO_SORT
+                                    "
+                                    src="assets/images/place_holder.png"
+                                />
+                            </span>
                         </span>
-                    </span>
-                <!-- End of Sort buttons for each TD  -->
-            </th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-        <tr *ngFor="let dataRow of searchResults ; let i=index; let even = even; let odd = odd"
-            class="data-table-body-tr"
-            [ngClass]="{
-                    'data-table-body-dark-tr': odd && i !== currentCineModeSeriesIndex,
-                    'data-table-body-high-light-tr': i === currentCineModeSeriesIndex
-                }"
-        >
-            <td class="data-table-body-td">
-                <input type="checkbox"
-                       [(ngModel)]="dataRow['selected']"
-                       (change)="toggleSearchResultsCheckbox( i, $event.target.checked)"
+                        <!-- End of Sort buttons for each TD  -->
+                    </th>
+                </tr>
+                <!-- END Heading row -->
+            </thead>
+            <!-- END Heading -->
+            <tbody>
+                <tr
+                    *ngFor="
+                        let dataRow of searchResults;
+                        let i = index;
+                        let odd = odd
+                    "
+                    class="data-table-body-tr"
+                    [ngClass]="{
+                        'data-table-body-dark-tr':
+                            odd && i !== currentCineModeSeriesIndex,
+                        'data-table-body-high-light-tr':
+                            i === currentCineModeSeriesIndex
+                    }"
                 >
-            </td>
-            <td class="data-table-body-td">
-                {{dataRow['dateTime']}}
-            </td>
-            <!--
-                <td class="data-table-body-td">
+                    <td class="data-table-body-td">
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="dataRow['selected']"
+                            (change)="
+                                toggleSearchResultsCheckbox(
+                                    i,
+                                    $event.target['checked']
+                                )
+                            "
+                        />
+                    </td>
+                    <td class="data-table-body-td">
+                        {{ dataRow["dateTime"] }}
+                    </td>
+                    <!--
+                        <td class="data-table-body-td">
 
-                    {{dataRow['trialDpPkId']}}
-                </td>
-                -->
-            <!--
-                <td>
-                    {{dataRow['collectionSite']}}
-                </td>
-                -->
-            <td class="data-table-body-td">
-                {{dataRow['patientId']}}
-            </td>
-            <td
-                class="data-table-body-td"
-                title="{{dataRow['study']}}">
-                {{dataRow['study']}}
-                <!--
-                    ...{{dataRow['study']|shortenRight}}
-                    -->
-            </td>
-            <td
-                class="data-table-body-td"
-                title="{{dataRow['series']}}">
-                <!--
-                    ...{{dataRow['series']|shortenRight}}
-                    -->
-                {{dataRow['series']}}
-            </td>
-            <td class="data-table-body-td"
-                title="{{dataRow['seriesDescription']}}" >
-                {{dataRow['seriesDescription']}}
-            </td>
-            <td class="data-table-body-td"
-                title="{{dataRow['modalityDescription']}}"
-            >
-                {{dataRow['modality']}}
-            </td>
-            <td class="data-table-body-td">
-                {{dataRow['visibilityStatus']}}
-            </td>
-            <td class="search-results-series-viewers-td data-table-body-td">
-                <label
-                    class="btn btn-default search-results-series-viewer-button"
-                    title="Thumbnail Viewer"
-                    (click)="onThumbnailClick(i)"
-                >
-                    <span class="glyphicon glyphicon-search" title="Thumbnail Viewer"></span>
-                </label>
-                <!-- -----  The OHIF viewer button  ----- -->
-                <label
-                    *ngIf="searchResults[i]['showOhif']"
-                    class="btn btn-default search-results-series-viewer-button"
-                    title="OHIF Vewer"
-                    (click)="onOhifViewerClick(i)">
-                    <span class="glyphicon glyphicon-facetime-video"></span>
-                </label>
-                <!-- -----  The Cine mode button  ----- -->
-                <label
-                    class="btn btn-default search-results-series-viewer-button"
-                    title="Cine mode"
-                    (click)="onClickCineMode(i)">
-                    <span class="glyphicon glyphicon-eye-open"></span>
-                </label>
-            </td>
-        </tr>
+                            {{dataRow['trialDpPkId']}}
+                        </td>
+                        <td>
+                            {{dataRow['collectionSite']}}
+                        </td>
+                        -->
+                    <td class="data-table-body-td">
+                        {{ dataRow["patientId"] }}
+                    </td>
+                    <td
+                        class="data-table-body-td"
+                        title="{{ dataRow['study'] }}"
+                    >
+                        {{ dataRow["study"] }}
+                        <!--
+                            ...{{dataRow['study']|shortenRight}}
+                            -->
+                    </td>
+                    <td
+                        class="data-table-body-td"
+                        title="{{ dataRow['series'] }}"
+                    >
+                        <!--
+                            ...{{dataRow['series']|shortenRight}}
+                            -->
+                        {{ dataRow["series"] }}
+                    </td>
+                    <td
+                        class="data-table-body-td"
+                        title="{{ dataRow['seriesDescription'] }}"
+                    >
+                        {{ dataRow["seriesDescription"] }}
+                    </td>
+                    <td
+                        class="data-table-body-td"
+                        title="{{ dataRow['modalityDescription'] }}"
+                    >
+                        {{ dataRow["modality"] }}
+                    </td>
+                    <td class="data-table-body-td">
+                        {{ dataRow["visibilityStatus"] }}
+                    </td>
+                    <td class="p-0 m-0">
+                        <label
+                            class="btn btn-nbia-viewer-button d-inline-flex align-items-center"
+                            title="Thumbnail Viewer"
+                            (click)="onThumbnailClick(i)"
+                        >
+                            <img
+                                src="assets/images/search0_14px.png"
+                                alt="Thumbnail Viewer"
+                                title="Thumbnail Viewer"
+                            />
+                        </label>
 
-        </tbody>
-    </table>
+                        <!-- -----  The OHIF viewer button  ----- -->
+                        <label
+                            *ngIf="searchResults[i]['showOhif']"
+                            class="btn btn-nbia-viewer-button d-inline-flex align-items-center"
+                            title="OHIF Viewer"
+                            (click)="onOhifViewerClick(i)"
+                        >
+                            <img src="assets/images/facetime-video.png" />
+                        </label>
+
+                        <!-- -----  The Cine mode button  ----- -->
+                        <label
+                            class="btn btn-nbia-viewer-button d-inline-flex align-items-center"
+                            title="Cine mode"
+                            (click)="onClickCineMode(i)"
+                        >
+                            <img src="assets/images/eye.png" />
+                        </label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </span>
 </div>

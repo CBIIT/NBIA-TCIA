@@ -1,12 +1,18 @@
+// ----------------------------------------------------------------------------------------
+// ----------                       Display Query at top                       ------------
+// ----------     This is updated as criteria are selected from the left side     ---------
+// ----------------------------------------------------------------------------------------
+
+@import '../../../app.component';
 $display-query-top: 0;
 $display-query-right-margin: 10px;
-$display-query-z-index: 0;  // @TODO explain
 
 
 .display-query {
     background-color: #edf8fb;
     border: solid 1px #c9dce0;
     border-radius: 4px;
+    width: 100%;
 
     min-height: 66px;
     // margin-right: $display-query-right-margin;
@@ -23,14 +29,12 @@ $display-query-z-index: 0;  // @TODO explain
 
 .display-on-top{
     position: relative;
-    left: 0px;
-    top: 0px;
-    z-index: $display-query-z-index;
+    left: 0;
+    top: 0;
 }
 
 .display-wrap{
     display: inline-block;
-    // word-wrap: break-word;
 }
 
 
@@ -44,28 +48,24 @@ $display-query-z-index: 0;  // @TODO explain
 }
 
 .criteria-display-title {
+    @extend .criteria-display;
     background-color: #5b5151;
     margin: 0 1px 0 4px;
 }
 
 .criteria-display-name {
+    @extend .criteria-display;
     background-color: #255425;
-    padding: 6px 8px 6px 8px;
     margin: 0 2px 0 2px;
 }
 
 .criteria-and {
+    @extend .criteria-display;
     background-color: #955c0d;
-    font-weight: normal;
     margin: 0 2px 0 4px;
 }
 
-.criteria-and-or {
-    background-color: #955c0d;
-    margin-left: 5px;
-    font-weight: normal;
-}
-.criteria-display-peren{
+.criteria-display-parent{
     padding: 0;
     margin: 0;
 }
@@ -77,4 +77,9 @@ $display-query-z-index: 0;  // @TODO explain
 
 .show-all-criteria-button-span{
     float: right;
+}
+
+
+.display-query-clear-icon{
+    height: 14px;
 }

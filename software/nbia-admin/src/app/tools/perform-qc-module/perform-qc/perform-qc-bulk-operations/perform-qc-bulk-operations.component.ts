@@ -1,16 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+// ----------------------------------------------------------------------------------------
+// ----------             New Status for Perform Quality Control                  ---------
+// ----------------------------------------------------------------------------------------
+// ----------       @TODO This is very similar to QcStatusEditComponent           ---------
+//  ---------            "Perform Quality Control" cine mode.                     ---------
+//  ---------             Can these be combined into one component?               ---------
+// ----------------------------------------------------------------------------------------
+
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { ApiService } from '@app/admin-common/services/api.service';
-import { PerformQcService } from '../../services/perform-qc.service';
 import { Properties } from '@assets/properties';
+import { takeUntil } from 'rxjs/operators';
+import { PreferencesService } from '@app/preferences/preferences.service';
+import { Subject } from 'rxjs';
+
 
 @Component( {
     selector: 'nbia-perform-qc-bulk-operations',
     templateUrl: './perform-qc-bulk-operations.component.html',
     styleUrls: ['./perform-qc-bulk-operations.component.scss']
 } )
-export class PerformQcBulkOperationsComponent implements OnInit{
+
+export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     @Input() searchResults;
     @Input() searchResultsSelectedCount = 0;
     @Input() collectionSite = '';
@@ -26,14 +38,24 @@ export class PerformQcBulkOperationsComponent implements OnInit{
     visible = -1;
 
     qcStatuses = Consts.QC_STATUSES;
+    currentFont;
 
     cBox = [];
 
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
     constructor( private utilService: UtilService, private apiService: ApiService,
-                 private performQcService: PerformQcService) {
+                 private preferencesService: PreferencesService) {
     }
 
     ngOnInit() {
+
+        this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.currentFont = data;
+            } );
+
+        // Get the initial value
+        this.currentFont = this.preferencesService.getFontSize();
     }
 
     onQcBulkStatusClick( i ) {
@@ -59,13 +81,13 @@ export class PerformQcBulkOperationsComponent implements OnInit{
             query += '&complete=Complete';
         }
         if(  this.isComplete === this.NO ){
-            query += '&complete=NotComplete'; // TODO Get the correct arg from Scott.
+            query += '&complete=NotComplete';
         }
         if(  this.isReleased === this.YES ){
             query += '&released=released';
         }
         if(  this.isReleased === this.NO ){
-            query += '&released=NotReleased'; // TODO Get the correct arg from Scott.
+            query += '&released=NotReleased';
         }
 
         if( this.useBatchNumber ){
@@ -138,4 +160,11 @@ export class PerformQcBulkOperationsComponent implements OnInit{
             }
         );
     }
+
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

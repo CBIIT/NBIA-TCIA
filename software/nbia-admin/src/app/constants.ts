@@ -38,6 +38,17 @@ export const Consts = {
     QUERY_CRITERIA_SUBJECT_ID: 'queryCriteriaSubjectId',
     QUERY_CRITERIA_MOST_RECENT_SUBMISSION: 'queryCriteriaMostRecentSubmission',
 
+    // For Display Query
+    DISPLAY_QUERY_CRITERIA_QC_STATUS: 'QC Status',
+    DISPLAY_QUERY_CRITERIA_COLLECTION: 'Collection',
+    DISPLAY_QUERY_CRITERIA_RELEASED: 'Released',
+    DISPLAY_QUERY_CRITERIA_BATCH_NUMBER: 'Batch num.',
+    DISPLAY_QUERY_CRITERIA_CONFIRMED_COMPLETE: 'Confirmed as Complete',
+    DISPLAY_QUERY_CRITERIA_SUBJECT_ID: 'Subject Ids',
+    DISPLAY_QUERY_CRITERIA_MOST_RECENT_SUBMISSION: 'Most recent submission',
+
+
+
     CRITERIA_SEARCH: 0,
     TEXT_SEARCH: 1,
 
@@ -93,3 +104,4 @@ export enum SortState{
     SORT_UP,
     SORT_DOWN
 }
+

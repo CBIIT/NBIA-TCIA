@@ -1,31 +1,46 @@
-@import 'src/app/tools/query-section-module/query-section/query-section.component';
+// -------------------------------------------------------------------------------------------
+// -------------------------     Collection search criteria        ---------------------------
+// -------------------------------------------------------------------------------------------
 
+@import 'src/app/tools/query-section-module/query-section/query-section.component';
 
 .query-collection-search{
     position: absolute;
-    left: $left-section-width - 47px;
-
 }
 
-/* Trying to clean this up for Chrome */
+// Position the magnifying glass search icon/button.
+.query-collection-search-extra-small{
+    @extend .query-collection-search;
+    left: $left-section-width-extra-small - 47px;
+}
+.query-collection-search-small{
+    @extend .query-collection-search;
+    left: $left-section-width-small - 47px;
+}
+.query-collection-search-medium{
+    @extend .query-collection-search;
+    left: $left-section-width-medium - 47px;
+}
+.query-collection-search-large{
+    @extend .query-collection-search;
+    left: $left-section-width-large - 47px;
+}
+
+
+/* Trying to clean this up for Chrome @CHECKME do we still need this?*/
 .box-with-focus {
     outline: none;
 }
 
-
+// For searching/filtering the list of collections.
 .search-box {
-    border: solid 1px #cfcfcf;
+    border: solid 1px $criteriaQueryBorderColor;
     border-radius: 4px;
     padding: 0 0 0 12px;
     margin-left: 15pt;
     margin-bottom: 10pt;
     height: 34px;
     width: calc(100% - 35px);
-}
-
-/* Trying to clean this up for Chrome */
-.box-with-focus {
-    outline: none;
 }
 
 .search-text-area {
@@ -35,11 +50,11 @@
 }
 
 .search-text-area-x {
-    margin: 6px 6px 0px 0px;
+    margin: 6px 6px 0 0;
     cursor: pointer;
 }
 
-.collection-scroller-div {
+.collection-list-div {
     padding-bottom: 12px;
     resize: vertical;
     overflow: auto;

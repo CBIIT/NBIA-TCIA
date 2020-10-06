@@ -1,65 +1,88 @@
-<div *ngIf="currentTool===consts.TOOL_PERFORM_QC"
-       class="query-panel"
-       [ngClass]=" {
-           'top-query-panel': isTop
-       }"
+<!------------------------------------------------------------------------------------------->
+<!----------------------      QC Status criteria (list of checkboxes)       ----------------->
+<!------------------------------------------------------------------------------------------->
+
+<div
+    *ngIf="currentTool === consts.TOOL_PERFORM_QC"
+    class="query-panel"
+    [ngClass]="{
+        'top-query-panel': isTop
+    }"
 >
-<!-- ----------  Heading & hide/show buttons  ---------- -->
-<div class="query-panel-heading">
-
-    <!-- Hide the Status list.  Still show the heading (with this img to its left) -->
-    <span
-        *ngIf="showCriteriaList"
-        class="clicker"
-        (click)="onShowCriteriaListClick(false)"
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div
+        class="query-panel-heading"
+        [ngClass]="{
+            'heading-font-extra-small': currentFont === '0',
+            'heading-font-small': currentFont === '1',
+            'heading-font-medium': currentFont === '2',
+            'heading-font-large': currentFont === '3'
+        }"
     >
-            <img src="assets/images/down_V01.png">
-            QC Status
-        </span>
-
-    <!-- Show the Status list list -->
-    <span
-        *ngIf="!showCriteriaList"
-        class="clicker"
-        (click)="onShowCriteriaListClick(true)"
-    >
-            <img src="assets/images/right_V01.png">
-            QC Status
-        </span>
-
-
-    <!-- Uncheck all the Status list criteria and restore their counts back to the full count in the database. -->
-    <label
-        *ngIf="hasChecked"
-        class="red-clear"
-    >
-        <img
+        <!-- Hide the Status list.  Still show the heading (with this img to its left) -->
+        <span
+            *ngIf="showCriteriaList"
             class="clicker"
-            src="assets/images/redClear.png"
-            alt="Clear checks"
-            (click)="onQcStatusClearAllClick()"
+            (click)="onShowCriteriaListClick(false)"
         >
-    </label>
+            <img src="assets/images/down_V01.png"/>
+            QC Status
+        </span>
 
-</div>
+        <!-- Show the Status list list -->
+        <span
+            *ngIf="!showCriteriaList"
+            class="clicker"
+            (click)="onShowCriteriaListClick(true)"
+        >
+            <img src="assets/images/right_V01.png"/>
+            QC Status
+        </span>
 
-<span *ngIf="showCriteriaList">
-        <div *ngFor="let criteria of qcStatuses ; let i = index" class="query-panel-checkboxes">
-                <input type="checkbox"
-                       class="check-box"
-                       id="checkbox-qc-status{{i}}"
-                       [(ngModel)]="cBox[i]"
-                       (click)="onCheckboxClick(i)">
+        <!-- Uncheck all the Status list criteria -->
+        <label *ngIf="hasChecked" class="red-clear">
+            <img
+                class="clicker"
+                [ngClass]="{
+                    'red-clear-extra-small': currentFont === '0',
+                    'red-clear-small': currentFont === '1',
+                    'red-clear-medium': currentFont === '2',
+                    'red-clear-large': currentFont === '3'
+                }"
+                src="assets/images/redClear.png"
+                alt="Clear checks"
+                (click)="onQcStatusClearAllClick()"
+            />
+        </label>
+    </div>
 
-                <label [attr.for]="'checkbox-status-site'+i"
-                       class="criteria-text"
-                       (click)="onCheckboxClick(i)">
+    <span *ngIf="showCriteriaList">
+        <div
+            *ngFor="let criteria of qcStatuses; let i = index"
+            class="query-panel-checkboxes"
+        >
+            <input
+                class="check-box"
+                type="checkbox"
+                id="checkbox-qc-status{{ i }}"
+                [(ngModel)]="cBox[i]"
+                (click)="onCheckboxClick(i)"
+            />
 
-                    {{criteria}}
-                </label>
-
+            <label
+                class="mt-0 mb-1"
+                [attr.for]="'checkbox-status-site' + i"
+                [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+                (click)="onCheckboxClick(i)"
+            >
+                {{ criteria }}
+            </label>
         </div>
+        <!-- END List of checkboxes -->
     </span>
-
-
 </div>

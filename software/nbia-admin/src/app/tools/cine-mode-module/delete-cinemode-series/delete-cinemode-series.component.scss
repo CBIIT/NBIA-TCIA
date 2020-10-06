@@ -1,14 +1,17 @@
-@import '../../../app.component';
-@import '../../../data-table';
+// -------------------------------------------------------------------------
+// -------                    "Approve Deletion"                      ------
+// -------       Used in "Approve Deletion" when in Cine mode.        ------
+// -------------------------------------------------------------------------
 
-.delete-cine-mode-button{
+@import "../../../app.component";
+@import "../../../data-table";
+
+.delete-cine-mode-button {
     margin: 4px 0 0 4px;
 }
 
-
-.delete-cine-mode-edit-log-text{
-    width: calc(100% - 10px);
+.delete-cine-mode-edit-log-text {
     border: solid $data-table-body-border-color 1px;
     margin: 14px 0 0 4px;
+    width: calc(100% - 10px);
 }
-
