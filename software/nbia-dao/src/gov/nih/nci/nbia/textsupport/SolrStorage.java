@@ -219,14 +219,14 @@ public class SolrStorage {
 			// moved over from the orginal DAO to deal with memory issues
             if (image.getFilename()!=null)
             {
-            	NCIADicomTextObject dicomObject;
+            	NCIADicomTextObject dicomObject=NCIADicomTextObject.getInstance();
             	//if (dicomFileCount<maxDicomFiles)
             	//{
 				  try {
 					File dicomFile = new File(image.getFilename());
 					if (dicomFile.exists())
 					{
-					   List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
+					   List<DicomTagDTO> tags=dicomObject.getTagElements(dicomFile);
 					   if (tags!=null)
 						{
 							for (DicomTagDTO tag : tags)

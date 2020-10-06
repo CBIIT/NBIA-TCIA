@@ -226,7 +226,12 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	    
 		String thirdPartyAnalysis = (String) numbers.get(DicomConstants.THIRD_PARTY_ANALYSIS);
 		String descriptionURI = (String) numbers.get(DicomConstants.DESCRIPTION_URI);
-		
+		if (thirdPartyAnalysis!=null&&thirdPartyAnalysis=="") {
+			thirdPartyAnalysis=null;
+		}
+		if (descriptionURI!=null&&descriptionURI=="") {
+			descriptionURI=null;
+		}
 		series.setThirdPartyAnalysis(thirdPartyAnalysis);
 		series.setDescriptionURI(descriptionURI);
              

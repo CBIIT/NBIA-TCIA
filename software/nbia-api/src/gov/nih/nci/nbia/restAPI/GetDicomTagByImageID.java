@@ -47,7 +47,7 @@ import gov.nih.nci.nbia.dto.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-@Path("/getDicomTagsByImageID")
+@Path("/getDicomTagsByImageIDno")
 public class GetDicomTagByImageID extends getData{
 
 
@@ -79,11 +79,11 @@ public class GetDicomTagByImageID extends getData{
 	        	if (image!=null){
 	        		String dicomFilePath = image.getFileURI();
 	        		System.out.println(dicomFilePath);
-	            	NCIADicomTextObject dicomObject;
+	            	NCIADicomTextObject dicomObject=NCIADicomTextObject.getInstance();
 					File dicomFile = new File(dicomFilePath);
 					if (dicomFile.exists())
 					{
-   				        List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
+   				        List<DicomTagDTO> tags=dicomObject.getTagElements(dicomFile);
 				        return Response.ok(JSONUtil.getJSONforDicomTagDTOs(tags)).type("application/json")
 						.build();
 	        	    }  else  {

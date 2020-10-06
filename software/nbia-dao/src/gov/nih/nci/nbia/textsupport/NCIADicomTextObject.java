@@ -58,8 +58,18 @@ import org.apache.commons.io.IOUtils;
  */
 public class NCIADicomTextObject{
 
-    
-    public static List<DicomTagDTO> getTagElements(File file) throws Exception {
+	private static NCIADicomTextObject instance;
+	private NCIADicomTextObject() {
+		
+	}
+	public static NCIADicomTextObject getInstance() {
+		synchronized (NCIADicomTextObject.class)
+		{
+			instance = new NCIADicomTextObject();
+		}
+		return instance;
+	}    
+    public List<DicomTagDTO> getTagElements(File file) throws Exception {
         DcmParserFactory pFact = DcmParserFactory.getInstance();
         DcmObjectFactory oFact = DcmObjectFactory.getInstance();
         BufferedInputStream in = null;

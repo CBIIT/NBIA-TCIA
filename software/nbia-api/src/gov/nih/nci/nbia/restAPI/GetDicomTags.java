@@ -80,11 +80,11 @@ public class GetDicomTags extends getData{
 	        	if (images!=null&&images.size()>0){
 	        		ImageDTO idto=images.get(0);
 	        		String dicomFilePath = idto.getFileURI();
-	            	NCIADicomTextObject dicomObject;
+	        		NCIADicomTextObject dicomObject=NCIADicomTextObject.getInstance();
 					File dicomFile = new File(dicomFilePath);
 					if (dicomFile.exists())
 					{
-   				        List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
+   				        List<DicomTagDTO> tags=dicomObject.getTagElements(dicomFile);
 				        return Response.ok(JSONUtil.getJSONforDicomTagDTOs(tags)).type("application/json")
 						.build();
 	        	    }  else  {
