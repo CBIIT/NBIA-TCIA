@@ -31,6 +31,9 @@ public class ResultSetSorter {
         if (comp==null) {
         	comp=new PSRMBCollectionCompare();
         }
+        if (sortDirection==null) {
+        	sortDirection="ascending";
+        }
         if (sortDirection.equalsIgnoreCase("ascending")) {
             Collections.sort(copy, comp);
         } else {
