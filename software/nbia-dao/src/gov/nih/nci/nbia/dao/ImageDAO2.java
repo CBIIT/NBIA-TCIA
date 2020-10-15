@@ -12,6 +12,7 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.List;
 import org.springframework.dao.DataAccessException;
