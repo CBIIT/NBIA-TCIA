@@ -14,7 +14,13 @@ package gov.nih.nci.nbia.dao;
 import gov.nih.nci.nbia.dto.ImageDTO2;
 import gov.nih.nci.nbia.internaldomain.GeneralImage;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
+import gov.nih.nci.nbia.util.SiteData;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -173,6 +179,51 @@ public class ImageDAO2Impl extends AbstractDAO
 
         return rs;
 	}
+	/**
+	 * Get md5 hash for sopinstanceuid 
+	 * This method is used for NBIA Rest API.
+	 * @param seriesInstanceUid series instance UID
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)	
+	public String getImage(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException {
+		String returnValue=null;
+		String hql = "select gi.filename, gs.project, gs.site "
+				+ "from  GeneralImage gi join gi.generalSeries gs "
+				+ "where gs.visibility in ('1')"
+				+ " and gi.SOPInstanceUID = ? ";
+		
+		//System.out.println("===== In nbia-dao, ImageDAO2Impl:getImage(..) - hql statement call with where visibility in ('1'): " + hql);
+		List<Object[]> searchResults = getHibernateTemplate().find(hql, sopInstanceUid); // protect against sql injection
+		if (searchResults!=null) {
+			for (Object[] row : searchResults) {
+				String fileName=row[0].toString();
+				String project=row[1].toString();
+				String site=row[2].toString();
+				if (isAuthorized(project, site, siteDataList)) {
+					String md5digest = digest(new File(fileName));
+					return md5digest;
+				}
+			}
+
+		}
+
+        return returnValue;
+	}
+	
+	private boolean isAuthorized(String project, String site, List<SiteData> siteDataList) {
+		boolean returnValue=false;
+		for (SiteData siteData: siteDataList) {
+			if (siteData.getCollection().equalsIgnoreCase(project)) {
+				if (siteData.getSiteName().equalsIgnoreCase(site)) {
+					return true;
+				}
+			}
+		}
+		
+		return returnValue;
+		
+	}
+	
 	
 	private void setNewFileNames(List<ImageDTO2> imageResults)
 	{
@@ -249,4 +300,24 @@ public class ImageDAO2Impl extends AbstractDAO
 			dto.setNewFilename(newFileName);
 		}				
 	}
+	private static String digest(File file) {
+		String result;
+		BufferedInputStream bis = null;
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			bis = new BufferedInputStream( new FileInputStream( file ) );
+			byte[] buffer = new byte[8192];
+			int n;
+			while ( (n=bis.read(buffer)) != -1) messageDigest.update(buffer, 0, n);
+			byte[] hashed = messageDigest.digest();
+			BigInteger bi = new BigInteger(1, hashed);
+			result = bi.toString(16);
+		}
+		catch (Exception ex) { result = ""; }
+		finally {
+			try { bis.close(); }
+			catch (Exception ignore) { }
+		}
+		return result;
+    }
 }

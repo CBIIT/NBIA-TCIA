@@ -18,6 +18,9 @@ import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
+import org.hibernate.Query;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -1301,5 +1304,20 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	        returnValue.add(seriesDTO);
 	    }
 		return returnValue;	
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int updateDOIForSeries(String project, String doi)throws DataAccessException {
+		int returnValue=0;
+		String sqlString = "update general_series set description_uri=? where (upper(third_party_analysis)<>'YES' or third_party_analysis is null) and upper(project)=?";
+		Query query = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
+		System.out.println("uri-"+doi+"-collection-"+project);
+		query.setParameter(0, doi, Hibernate.STRING);
+		query.setParameter(1, project, Hibernate.STRING);
+		try {
+			returnValue=query.executeUpdate();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return returnValue;
 	}
 }

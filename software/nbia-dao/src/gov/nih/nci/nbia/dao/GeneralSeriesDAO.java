@@ -104,4 +104,5 @@ public interface GeneralSeriesDAO  {
 	public Object [] findSeriesBySeriesInstanceUIDAllVisibilitiesLight(boolean allVisibilities, String seriesId,
 			List<String> authorizedCollections) throws DataAccessException;
 	public List<String> getDeniedSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
+	public int updateDOIForSeries(String project, String doi)throws DataAccessException;
 }
