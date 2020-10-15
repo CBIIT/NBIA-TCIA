@@ -416,29 +416,30 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 
 		// Begin lrt additions
 		if (status == COMPLETE) {
-			boolean pass = true;
 			if (sopUidsList.size() != Integer.valueOf(numberOfImages).intValue()) {
 				additionalInfo
 						.append("Number of image files mismatch. It Was supposed to be " + numberOfImages
 								+ " image files but we found " + sopUidsList.size() + " at server side\n");
 //				System.out.println(this.seriesInstanceUid + additionalInfo);
 				error();
-				pass = false;
 			}
+			else {
+				downloaded= size;
+	            //stateChanged();
+	            updateDownloadProgress(size);
 
+	            if (this.standalone)
+	            	writeToMetaData();	            
+			}
 			if (downloadedImgSize != imagesSize) {
 				additionalInfo
 				.append(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
-//				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
-				error();
-				pass = false;
+				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
 			}
 			if (downloadedAnnoSize != annoSize) {
 				additionalInfo
 				.append(this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
-//				System.out.println( this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
-				error();
-				pass = false;
+				System.out.println( this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
 			}
 			/*
 			 * Cannot use this sanity check, since image sizes are not always
@@ -454,16 +455,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			 * error(); }
 			 */
 			// End lrt additions			
-			if (pass) {
-				downloaded= size;
-	            //stateChanged();
-	            updateDownloadProgress(size);
-	            if (this.standalone)
-	            	writeToMetaData();
-			}
-			
 		}
-
 	}
 	
 	private void writeToMetaData() {
@@ -622,8 +614,8 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 			str = str.replace('/', '-');
 			if (str.equals("null") || str.equals("-"))
 				return "";
-			//Is it possible that the description will start with "/" which will be turned into "-"? It is legal but not recommanded. 
-			//Need to see the real cases to decide it we can remove or replace the first "/" in the descrition. So comment out the next two lines.
+			//Is it possible that the description will start with "/" which will be turned into "-"? It is legal but not recommended. 
+			//Need to see the real cases to decide it we can remove or replace the first "/" in the description. So comment out the next two lines.
 //			else if (str.startsWith("-"))
 //				return str.substring(1, Math.min(str.length(), 54)) + "-";
 			else
@@ -661,19 +653,4 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
     	status = NOT_STARTED;
     	stateChanged();
     }
-    
-//    public void createLicenseFile (String collection, String licenseName, String licenseUrl) {
-//    	String fileName= outputDirectory.getAbsolutePath() + File.separator + "license.html";
-//    	BufferedWriter writer;
-//		try {
-//			writer = new BufferedWriter(new FileWriter(fileName, true));
-//	    	String content = new MessageFormat(DownloaderProperties.getLicenseText()).format(new String[] {licenseName, licenseUrl});
-//	        writer.append(content);
-//	         
-//	        writer.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    }
 }
