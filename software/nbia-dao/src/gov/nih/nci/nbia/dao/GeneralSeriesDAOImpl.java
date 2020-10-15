@@ -457,6 +457,39 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		return rs;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<String> getDeniedSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites)
+			throws DataAccessException {
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}		
+		StringBuffer where = new StringBuffer();
+		List<String> rs = null;
+		String hql = "select s.seriesInstanceUID"
+				+ " from GeneralSeries s where s.visibility in ('1', '12') ";
+
+		where = where.append(" and s.seriesInstanceUID in (:ids)");
+
+		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+				+ hql + where.toString());
+
+		rs = getHibernateTemplate().findByNamedParam(hql + where.toString(), "ids", seriesInstanceUids);
+		
+		if (rs != null) {
+			System.out.println(" get acceptable series size=" +rs.size());
+			if (rs.size() == seriesInstanceUids.size()) //all accepted
+				return null;
+			else {
+				seriesInstanceUids.removeAll(rs);
+				return seriesInstanceUids;
+			}
+		}
+		else return seriesInstanceUids; //all denied
+	}	
 
 	public List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedProjAndSites)
 			throws DataAccessException {
@@ -1099,6 +1132,82 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		seriesDTOList = getSeriesDTOs(true, seriesIds, authorizedSites);
 		return seriesDTOList;
 	}
+	
+	/**
+	 * Return the metadata for a series instance UIDs in selected visibilties (only 1 and 12 or all), but only when
+	 * the series are authorized.
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Object[] findSeriesBySeriesInstanceUIDAllVisibilitiesLight(boolean allVisibilities, String seriesId,
+			List<String> authorizedCollections) throws DataAccessException {
+		List<SeriesDTO> seriesDTOList = null;
+		List<String> seriesIds = new ArrayList<String>();
+
+		if (seriesId != null) {
+			seriesIds.add(seriesId);
+		}
+		else return null;
+		
+		List <SiteData> authorizedSites = new ArrayList<SiteData>();
+		if (authorizedCollections != null && authorizedCollections.size() > 0) {
+			for (String ac : authorizedCollections) {
+				if (ac.endsWith("'") && ac.startsWith("'")) {
+					int len = ac.length() - 1;
+					ac = ac.substring(1, len);
+				}
+				SiteData sd = new SiteData(ac);
+				System.out.println("dao get projecttttt="+sd.getCollection() + " site="+ sd.getSiteName());
+				authorizedSites.add(sd);
+			}
+		}
+		else return null;
+
+		seriesDTOList = getSeriesDTOs(allVisibilities, seriesIds, authorizedSites);
+		System.out.println(" get sdto size =" +seriesDTOList.size());
+		if (seriesDTOList != null  && seriesDTOList.size() > 0) {
+			SeriesDTO sdto = seriesDTOList.get(0);
+
+			Object[] result = {
+					seriesId,
+//					Util.nullToNAString(sdto.getProject()),
+//					Util.nullToNAString(sdto.getThirdPartyAnalysis()),
+//					Util.nullToNAString(sdto.getDescriptionURI()),
+//					Util.nullToNAString(sdto.getPatientId()),
+//					Util.nullToNAString(sdto.getStudyId()),
+//					Util.nullToNAString(sdto.getStudyDesc()),
+//					Util.nullToNAString(sdto.getStudyDateString()),		
+//					Util.nullToNAString(sdto.getDescription()),
+//					Util.nullToNAString(sdto.getManufacturer()),
+//					Util.nullToNAString(sdto.getModality()),
+//					"UnknownSOPClassName",
+//					Util.nullToNAString(sdto.getSopClassUID()),
+//					Util.nullToNAString(sdto.getNumberImages().toString()),
+//					Util.nullToNAString(sdto.getTotalSizeForAllImagesInSeries().toString()),
+//					Util.nullToNAString(sdto.getStudy_id()),
+//					Util.nullToNAString(sdto.getSeriesNumber())};
+			Util.nullSafeString(sdto.getProject()),
+			Util.nullSafeString(sdto.getThirdPartyAnalysis()),
+			Util.nullSafeString(sdto.getDescriptionURI()),
+			Util.nullSafeString(sdto.getPatientId()),
+			Util.nullSafeString(sdto.getStudyId()),
+			Util.nullSafeString(sdto.getStudyDesc()),
+			Util.nullSafeString(sdto.getStudyDateString()),		
+			Util.nullSafeString(sdto.getDescription()),
+			Util.nullSafeString(sdto.getManufacturer()),
+			Util.nullSafeString(sdto.getModality()),
+//			"UnknownSOPClassName",
+			Util.nullSafeString(sdto.getSopClassUID()),
+			Util.nullSafeString(sdto.getNumberImages().toString()),
+			Util.nullSafeString(sdto.getTotalSizeForAllImagesInSeries().toString()),
+			Util.nullSafeString(sdto.getStudy_id()),
+			Util.nullSafeString(sdto.getSeriesNumber()),	
+			Util.nullSafeString(sdto.getLicenseName()),
+			Util.nullSafeString(sdto.getLicenseUrl()),
+			Util.nullSafeString(sdto.getAnnotationsSize())};
+			
+			return result;
+		} else return null;
+	}	
 	
 	private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seriesIds,
 			List<SiteData> authorizedSites) {

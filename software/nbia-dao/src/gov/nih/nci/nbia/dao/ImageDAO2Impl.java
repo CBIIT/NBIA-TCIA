@@ -95,6 +95,67 @@ public class ImageDAO2Impl extends AbstractDAO
         return imageResults;
     }
 	
+    /**
+     * Return all the images names for a given series.  
+     */
+	@Transactional(propagation=Propagation.REQUIRED)
+    public List<String []> getImageNamesBySeriesUid(String seriesUid) throws DataAccessException {
+    	String query="";
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
+    				"from GeneralImage gimg join gimg.generalSeries gs " +
+    				"where gimg.seriesInstanceUID = '"+
+                    seriesUid + "'" + " and gs.visibility in ('1','12')";
+    	// Submit the search
+        long start = System.currentTimeMillis();
+    	logger.info("Issuing query: ");
+        List results = getHibernateTemplate().find(query);
+        long end = System.currentTimeMillis();
+        logger.info("total query time: " + (end - start) + " ms");
+        List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
+        List<String []> fileNames = new ArrayList<String[]>();
+
+        if(results == null || results.isEmpty()){
+        	logger.info("No image found for request seriesuid="+seriesUid);
+        	return fileNames;
+        }
+//        TrialDataProvenance tdp = results.get(0).getDataProvenance();
+//        String ssg = results.get(0).getGeneralSeries().getSecurityGroup();
+        for(Object item: results){
+        	Object[] row = (Object[]) item;
+
+//        	ImageDTO2 image = new ImageDTO2(gi.getSOPInstanceUID(),
+//        			gi.getFilename(),
+//        			gi.getDicomSize(),
+//        			tdp.getProject(),
+//        			tdp.getDpSiteName(),
+//        			ssg, gi.getUsFrameNum());
+        	ImageDTO2 image = new ImageDTO2((String)row[0],
+        			(String)row[1],
+        			(Long)row[2],
+        			(String)row[4],
+        			(String)row[5],
+        			(String)row[6], 
+        			(String)row[3],
+        			(Integer)row[7],
+        			(Integer)row[8]);
+        	imageResults.add(image);
+        }
+        Collections.sort(imageResults);
+        setNewFileNames(imageResults);
+        
+        for (ImageDTO2 obj: imageResults) {
+        	String newName = obj.getNewFilename();
+        	String newFileName = newName.substring(newName.indexOf("^")+1);
+        	String [] twoNames = {obj.getFileName(),  newFileName}; 
+        	System.out.println("@@@@@@@@@@@@@file name = "+obj.getFileName() + " new name="+ newFileName);
+        	fileNames.add(twoNames);
+        }
+
+        return fileNames;
+    }
+	
+	
+	
 	/**
 	 * Fetch set of list of file path/name for given the series instance uid
 	 * This method is used for NBIA Rest API.
@@ -186,8 +247,6 @@ public class ImageDAO2Impl extends AbstractDAO
 			
 			String newFileName=dto.getSOPInstanceUID()+"^"+accNumberPart+"-"+insNumberPart+".dcm";
 			dto.setNewFilename(newFileName);
-		}
-		
-		
+		}				
 	}
 }
