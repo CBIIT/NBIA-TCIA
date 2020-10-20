@@ -1,10 +1,12 @@
-<img class="background-image"  src={{properties.LOGO_FILE}} alt="Logo">
+<nbia-universal-menu *ngIf="properties.SHOW_UNIVERSAL_MENU"></nbia-universal-menu>
+
+<img  *ngIf="!properties.SHOW_UNIVERSAL_MENU" class="background-image"  src={{properties.LOGO_FILE}} alt="Logo">
 
 
-<nav class="menu-header">
+<nav  *ngIf="!properties.SHOW_UNIVERSAL_MENU" class="menu-header">
     <div class="container-fluid">
 
-        <nbia-custom-menu *ngIf="properties.SHOW_CUSTOM_MENU"></nbia-custom-menu>
+        <nbia-custom-menu></nbia-custom-menu>
 
     </div>
 </nav>

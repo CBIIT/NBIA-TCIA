@@ -80,10 +80,27 @@ export class ConfigurationService {
                             Properties.BRAND = value;
                         }
                     }
+
+                    if( key === 'CINE_MODE_TOGGLE_KEY' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.CINE_MODE_TOGGLE_KEY = value;
+                        }
+                    }
+
+                    if( key === 'SHOW_UNIVERSAL_MENU' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.SHOW_UNIVERSAL_MENU = value;
+                        }
+                    }
+
                     if( key === 'HELP_BASE_URL' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.HELP_BASE_URL = value;
                         }
+                    }
+
+                    if( key === 'UNIVERSAL_HEADING_AND_MENU' ){
+                        Properties.SHOW_UNIVERSAL_MENU = this.utilService.isTrue( value );
                     }
 
                     if( key === 'SHOW_ROLES' ){

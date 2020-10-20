@@ -20,7 +20,7 @@ OHIF_viewer = true
 #########################################################################
 # This will over ride the brand set in assets/brand/currentBrand
 #########################################################################
-# brand=nbia
+# brand=tcia
 
 #########################################################################
 # This is the URL for the tool help website that is launched by clicking the "?" next to the tool heading.
@@ -37,3 +37,10 @@ OHIF_viewer = true
 # Turn off all Collection license related features.
 #######################################################
 # NO_LICENSE = true
+
+# UNIVERSAL_HEADING_AND_MENU = false
+
+#######################################################
+# Ctrl + <CINE_MODE_TOGGLE_KEY>
+#######################################################
+# CINE_MODE_TOGGLE_KEY = 2

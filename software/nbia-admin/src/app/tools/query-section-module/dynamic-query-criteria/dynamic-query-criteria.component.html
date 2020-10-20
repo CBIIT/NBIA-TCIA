@@ -1,0 +1,38 @@
+<span *ngFor="let criteria of queryCriteriaData">
+<nbia-two-level-multi-choice
+    *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.TWO_LEVEL_MULTIPLE_SELECTION"
+    [queryCriteriaData]="criteria"
+>
+</nbia-two-level-multi-choice>
+
+
+
+
+ <nbia-large-text-input *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.LARGE_TEXT_INPUT"
+                        [queryCriteriaData]="criteria"
+ ></nbia-large-text-input>
+
+    <nbia-small-text-input *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.SMALL_TEXT_INPUT"
+                           [queryCriteriaData]="criteria"
+    ></nbia-small-text-input>
+
+    <nbia-date-range *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.DATE_RANGE"
+                     [queryCriteriaData]="criteria"
+    ></nbia-date-range>
+
+    <nbia-single-checkbox *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.SINGLE_CHECKBOX"
+                          [queryCriteriaData]="criteria"
+    ></nbia-single-checkbox>
+
+    <nbia-single-choice-list
+        *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.LIST_ONE_SELECTION"
+        [queryCriteriaData]="criteria"
+    ></nbia-single-choice-list>
+
+    <nbia-multi-choice-list
+        *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.LIST_MULTIPLE_SELECTION"
+        [queryCriteriaData]="criteria"
+    ></nbia-multi-choice-list>
+
+
+</span>

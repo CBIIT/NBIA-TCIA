@@ -5,10 +5,11 @@ import { ToolTitleComponent } from './header/tool-title/tool-title.component';
 import { AppModule } from '@app/app.module';
 import { CustomMenuComponent } from './header/custom-menu/custom-menu.component';
 import { DropdownModule } from 'ngx-dropdown';
+import { UniversalMenuComponent } from './header/universal-menu/universal-menu.component';
 
 
 @NgModule( {
-    declarations: [HeaderComponent, ToolTitleComponent, CustomMenuComponent],
+    declarations: [HeaderComponent, ToolTitleComponent, CustomMenuComponent, UniversalMenuComponent],
     exports: [
         HeaderComponent,
         ToolTitleComponent

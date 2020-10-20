@@ -1,36 +1,52 @@
+<!------------------------------------------------------------------------------------------->
+<!-----------------  The left vertical section containing all the search criteria  ---------->
+<!------------------------------------------------------------------------------------------->
+
 <div class="left-section-div">
-    <div *ngIf="searchType===consts.CRITERIA_SEARCH">
+    <div *ngIf="searchType === consts.CRITERIA_SEARCH">
         <nbia-query-qc-status
             [currentTool]="currentTool"
         ></nbia-query-qc-status>
 
         <nbia-query-collection
-            *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
-            currentTool===consts.TOOL_APPROVE_DELETIONS ||
-            currentTool===consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS
-"
+            *ngIf="
+                currentTool === consts.TOOL_PERFORM_QC ||
+                currentTool === consts.TOOL_APPROVE_DELETIONS ||
+                currentTool === consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS
+            "
             [currentTool]="currentTool"
         ></nbia-query-collection>
 
-        <nbia-query-released
-            [currentTool]="currentTool"
-        >
-        </nbia-query-released>
+        <!-- These are still in their early stages of development -->
+<!--
+        <hr>
+        <hr>
+        <nbia-dynamic-query-criteria
+            *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA"
+        ></nbia-dynamic-query-criteria>
+        <hr>
+        <hr>
+-->
 
-        <nbia-query-batch [currentTool]="currentTool"
-        ></nbia-query-batch>
-        <nbia-query-confirmed [currentTool]="currentTool"
+        <nbia-query-released [currentTool]="currentTool"></nbia-query-released>
+
+        <nbia-query-batch [currentTool]="currentTool"></nbia-query-batch>
+
+        <nbia-query-confirmed
+            [currentTool]="currentTool"
         ></nbia-query-confirmed>
-        <nbia-query-patient-id [currentTool]="currentTool"
+
+        <nbia-query-patient-id
+            [currentTool]="currentTool"
         ></nbia-query-patient-id>
-        <nbia-query-most-recent-submission-date [currentTool]="currentTool"
+
+        <nbia-query-most-recent-submission-date
+            [currentTool]="currentTool"
         ></nbia-query-most-recent-submission-date>
     </div>
-<!--
+    <!--
     We are not sure yet what kind of search we will put here.
     <div *ngIf="searchType===consts.TEXT_SEARCH">
         Text Search
     </div>
--->
-
-</div>
+--></div>
