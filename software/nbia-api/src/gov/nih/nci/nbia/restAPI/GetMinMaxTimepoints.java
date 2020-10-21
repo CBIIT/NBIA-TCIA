@@ -42,7 +42,7 @@ import gov.nih.nci.nbia.dto.TimePointDTO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-@Path("/getMimMaxTimepoints")
+@Path("/getMinMaxTimepoints")
 public class GetMinMaxTimepoints extends getData{
 
 

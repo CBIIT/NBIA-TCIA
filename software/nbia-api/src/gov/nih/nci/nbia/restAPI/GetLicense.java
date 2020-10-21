@@ -45,7 +45,7 @@ import gov.nih.nci.nbia.dto.LicenseDTO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-@Path("/getLicences")
+@Path("/getLicenses")
 public class GetLicense extends getData{
 	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
