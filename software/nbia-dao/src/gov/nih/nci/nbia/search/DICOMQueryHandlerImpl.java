@@ -323,7 +323,12 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	                         if (ids.length>6&&ids[6]!=null) {
 	                	       prs.setEventType(ids[6]);
 		                         if (ids.length>7&&ids[7]!=null) {
-			                	       prs.setEventOffset(Integer.parseInt(ids[7]));
+			                	       try {
+										prs.setEventOffset(Integer.parseInt(ids[7]));
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 		                         }
 	                          }
 	                    }
