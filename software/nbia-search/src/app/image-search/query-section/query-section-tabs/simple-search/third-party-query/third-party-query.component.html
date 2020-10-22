@@ -9,19 +9,14 @@
                 class="clicker"
                 (click)="onShowCriteriaListClick(false)"
         >
-            <img src="assets/images/down_V01.png">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             3<small>rd</small>-Party Analysis Results
             <span
                     *ngIf="thirdPartyApply"
                     class="thirdParty-status"
             > ({{thirdPartyShortRadioLabels[thirdPartyApplySelection]}})</span>
         </span>
-
-        <span class="clicker glyphicon glyphicon-question-sign close-third-party-explanation-x" (click)="onThirdPartyExplanationClick()"></span>
-
-<!--
-        <img src="assets/images/NBIA_Q_Mark.svg" class="close-third-party-explanation-x clicker" alt=""  (click)="onThirdPartyExplanationClick()">
--->
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onThirdPartyExplanationClick()">
 
         <!-- Show the ThirdParty Radio buttons -->
         <span
@@ -29,7 +24,7 @@
                 class="clicker"
                 (click)="onShowCriteriaListClick(true)"
         >
-            <img src="assets/images/right_V01.png">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             3<small>rd</small>-Party Analysis Results
             <span
                     *ngIf="thirdPartyApply"

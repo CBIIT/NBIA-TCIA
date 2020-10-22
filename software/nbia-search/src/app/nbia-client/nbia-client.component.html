@@ -8,7 +8,6 @@
         'hide-item':currentMenuItem === menuItems.HIDE_ALL
     }"
     #parentSpan
-    class="main-parent-span"
 >
 
 
@@ -20,10 +19,10 @@
         <nbia-legacy-app></nbia-legacy-app>
 -->
 
-        <!-- The top logo, custom menu, and application menu. -->
+        <!-- The top logo, custom menu. -->
         <nbia-header></nbia-header>
 
-        <nbia-image-search
+        <nbia-image-search style="background-color: #00cc00"
             [ngClass]="{'hide-item':currentMenuItem !== menuItems.IMAGE_SEARCH_MENU_ITEM }"></nbia-image-search>
 
         <!--  If a user other than the default user is logged in, don't switch to the login screen, instead just log them out, and login the default user.  -->

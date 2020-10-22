@@ -1,0 +1,45 @@
+@import 'src/app/app.component';
+@import 'src/app/tools/query-section-module/query-section/query-section.component';
+@import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
+
+
+.large-text-input-div {
+    height: 250px;
+}
+
+.large-text-input-text {
+    border: solid 1px $criteriaQueryBorderColor;
+    border-radius: 4px;
+    margin-left: 18px;
+    margin-right: 18px;
+    width: calc(100% - 40px);
+    // height: calc(100% - 40px);
+    height: calc(100% - 70px);
+    overflow-y: scroll;
+    resize: none;
+}
+
+.large-text-input-apply-button {
+    float: right;
+    margin-right: 22px;
+    margin-top: 6px;
+}
+
+.large-text-input-subheading {
+    margin-left: 18px;
+}
+
+
+.query-panel-long {
+    padding-bottom: 30px;
+}
+
+.large-text-input-and-or {
+    background-color: #2aabd2;
+    color: #985f0d;
+}
+
+.large-text-input-and-or-radio-button {
+    margin-right: 3px;
+    margin-left: 8px;
+}

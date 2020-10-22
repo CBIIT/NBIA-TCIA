@@ -1,0 +1,95 @@
+<div *ngIf="roleIsGood" class="edit-collection-description-tool">
+    <nbia-query-section
+        [currentTool]="consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
+    ></nbia-query-section>
+
+    <div class="container data-section">
+        <div class="row edit-collection-description-edit">
+            <angular-editor [(ngModel)]="htmlContent" [config]="editorConfig">
+            </angular-editor>
+        </div>
+
+        <div class="row edit-collection-description-edit">
+            <div>
+                <label
+                    class="label label-primary"
+                    for="edit-collection-description-html-text"
+                >HTML:</label
+                >
+            </div>
+
+            <textarea
+                class="collection-description-div-html"
+                placeholder="Enter HTML here..."
+                id="edit-collection-description-html-text"
+                [(ngModel)]="htmlContent"
+            ></textarea>
+        </div>
+
+        <div *ngIf="! properties.NO_LICENSE" class="row lic-and-save-div">
+            <div>License:</div>
+
+            <!-- -----  Dropdown menu of Long names  -----  -->
+            <span class="dropdown clicker">
+                <button
+                    type="button"
+                    class="btn admin-dropdown-button text-left dropdown-toggle"
+                    data-toggle="dropdown"
+                >
+                    <span>
+                        {{ licData[currentLicenseIndex].longName }}
+                   </span>
+                </button>
+
+
+
+                <div class="dropdown-menu pb-0">
+                    <a class="dropdown-item  admin-dropdown-outline"
+                       *ngFor="let lic of licData; let c = index"
+                       (click)="onLicenseDropdownClick(c)"
+                    >
+                        <span>
+                           <img   *ngIf="c === currentLicenseIndex"
+                               src="assets/images/check.png" alt=""
+                           >
+                           {{ lic.longName }}
+                        </span>
+                    </a>
+                </div>
+            </span>
+            <!--  END Dropdown of License longname's  -->
+
+
+            <!--  Save button  -->
+        </div>
+        <div>
+            <button
+                [ngClass]="{
+                        disabled:
+                            textTrailer === htmlContent &&
+                            currentLicenseIndexTrailer === currentLicenseIndex,
+                        'nbia-button-disabled':
+                            textTrailer === htmlContent &&
+                            currentLicenseIndexTrailer === currentLicenseIndex
+                    }"
+                (click)="onSave()"
+                class="btn nbia-button edit-collection-button edit-collection-save-button"
+            >
+                Save
+            </button>
+        </div>
+        </div>
+    </div>
+
+
+    <h4 *ngIf="!roleIsGood && userRoles !== undefined">
+        <p>
+            User does not have authorization required for "<b
+        >Edit Collection Description</b
+        >"
+        </p>
+        <p>
+            Users role(s): <b>{{ userRoles }}</b>
+        </p>
+        Required role: <b>NCIA.MANAGE_COLLECTION_DESCRIPTION</b>
+    </h4>

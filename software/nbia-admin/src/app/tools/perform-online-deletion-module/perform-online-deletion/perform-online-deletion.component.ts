@@ -3,18 +3,22 @@ import { ApiService } from '@app/admin-common/services/api.service';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PreferencesService } from '@app/preferences/preferences.service';
+
 
 @Component( {
     selector: 'nbia-perform-online-deletion',
     templateUrl: './perform-online-deletion.component.html',
     styleUrls: ['./perform-online-deletion.component.scss']
 } )
+
 export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
     userRoles;
     roleIsGood = false;
     seriesCount = -1;
     deletedFlag = false;
     seriesForDeletion;
+ currentFont;
 
     /*
         testData =  [
@@ -31,7 +35,8 @@ export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private apiService: ApiService, private utilService: UtilService ) {
+    constructor( private apiService: ApiService, private utilService: UtilService,
+                 private preferencesService: PreferencesService ) {
     }
 
     ngOnInit() {
@@ -59,6 +64,14 @@ export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
             } );
 
         this.apiService.getSeriesForDeletion();
+
+        this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.currentFont = data;
+            } );
+
+        // Get the initial value
+        this.currentFont = this.preferencesService.getFontSize();
     }
 
     onPerformOnlineDeletionClick() {

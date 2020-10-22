@@ -1,0 +1,176 @@
+// -------------------------------------------------------------------------
+// -------                    "Cine Mode viewer"                      ------
+// -------  Used in "Approve Deletion" and "Perform Quality Control"  ------
+// -------------------------------------------------------------------------
+
+@import "../../../app.component";
+@import "../../../../app/data-table";
+@import "../../../popup";
+
+$cineModeWidth: 90%;
+$cineModeHeight: 90%;
+$cineModeImageWidth: 512px;
+$cineModeImageHeight: 512px;
+$cineModeImageTdWidth: 538px;
+$cineModeLoadingMessageTop: 250px;
+$cineModeProgressWidth: 600px;
+$cineModeProgressHeight: 100px;
+$cineModeSeriesDataHeight: 200px;
+
+.cine-mode-div-with-dicom {
+    z-index: 4;
+    position: absolute;
+    width: $cineModeWidth;
+    height: $cineModeHeight;
+
+    top: calc((100% - #{$cineModeHeight}) / 2);
+    left: calc((100% - #{$cineModeWidth}) / 2);
+    padding: 0;
+    margin: 0;
+    resize: both;
+    overflow: auto;
+}
+
+.scroller-div {
+    // overflow: auto; // TODO
+}
+
+.series-section-div {
+    border: solid 1px $data-table-header-border-color;
+    margin: 4px 4px 4px 0;
+    padding: 4px;
+}
+
+.section-div {
+    border: solid 1px $data-table-header-border-color;
+    margin: 4px;
+    padding: 4px 0 0 4px;
+}
+
+.series-data-header {
+    background-color: $data-table-header-background-color;
+    margin: 2px;
+}
+
+.series-data-data {
+    border: solid #e7e7e7 1px;
+    margin: 2px;
+    padding: $data-table-cell-padding;
+}
+
+.image {
+    height: $cineModeImageHeight;
+    width: $cineModeImageWidth;
+    padding: 0;
+    margin: 0;
+}
+
+.cine-mode-slider {
+    width: $cineModeImageWidth;
+}
+
+.cine-mode-image-number-input {
+    width: 40px;
+    border: solid 1px #ccc;
+}
+
+.cine-mode-frame-rate-number {
+    margin: 0;
+    padding-bottom: 0;
+    height: 26px;
+    width: 40px;
+    font-size: 16px;
+    border-style: hidden;
+}
+
+.cine-mode-frame-rate-number-text {
+    font-size: 10px;
+    height: 12px;
+    width: 40px;
+}
+
+.cine-mode-frame-rate-table {
+    float: right;
+    border: solid 1px #ccc;
+}
+
+.image-count-display {
+    font-size: 10pt;
+}
+
+.current-image-input {
+    padding: 6px;
+}
+
+.show-dicom-checkbox {
+    font-size: 12pt;
+    float: right;
+}
+
+.cine-mode-button-icon {
+    height: 18px;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.play-back-image {
+    height: 25px;
+    padding: 3px 0 3px 0;
+}
+
+.cine-mode-dicom-tr {
+    height: 30px;
+}
+
+// The + 80px extends the dicom data to go down as far as the Image plus play video control buttons.
+.dicom-scroll-area {
+    height: calc(#{$cineModeImageHeight} + 80px);
+    padding-bottom: 0;
+    margin-bottom: 0;
+    overflow-y: auto;
+}
+
+.dicom-data-table {
+    width: 100%;
+}
+
+.section-heading {
+    color: $heading-text-color;
+    padding: 7px 0 0 0;
+}
+
+// .cursor-draggable isn't working for me, this is a workaround.
+.cine-panel-heading:hover {
+    cursor: grab;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading:active {
+    cursor: grabbing;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading-moving {
+    cursor: grabbing;
+}
+
+.image-viewer-td {
+    width: $cineModeImageTdWidth;
+}
+
+.cine-mode-progress-bar {
+    z-index: 30;
+    width: $cineModeProgressWidth;
+    height: $cineModeProgressHeight;
+    position: absolute;
+    left: calc(50% - #{$cineModeProgressWidth / 2});
+    top: calc(40% - #{$cineModeProgressHeight / 2});
+    padding: 0;
+    margin: 0;
+}
+
+// This was part of a failed attempt to have a full size toggle. We will revisit when time permits.
+.full-size-div {
+    width: 100%;
+    height: 100%;
+}

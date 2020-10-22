@@ -62,7 +62,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         description: 'save',
         // keyBinding: [KeyboardKeys.Ctrl, KeyboardKeys.Shift, 'q']
         // keyBinding: [KeyboardKeys.Ctrl, '1'],
-        keyBinding: [KeyboardKeys.Ctrl, '\'' + Properties.CINE_MODE_TOGGLE_KEY + '\''],
+        keyBinding: [KeyboardKeys.Ctrl, Properties.CINE_MODE_TOGGLE_KEY],
     };
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
@@ -84,7 +84,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
     async ngOnInit() {
-
         // Check for config file which will take precedence
         let runaway = 100; // Just in case.
         while( !Properties.CONFIG_COMPLETE && runaway > 0 ){
@@ -212,13 +211,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
-
-        this.keyboardShortcutDef = {
-            description: 'save',
-            // keyBinding: [KeyboardKeys.Ctrl, KeyboardKeys.Shift, 'q']
-            // keyBinding: [KeyboardKeys.Ctrl, '1'],
-            keyBinding: [KeyboardKeys.Ctrl,  Properties.CINE_MODE_TOGGLE_KEY ],
-        };
     }
 
     toggleTopSearchResultsCheckbox( c ) {

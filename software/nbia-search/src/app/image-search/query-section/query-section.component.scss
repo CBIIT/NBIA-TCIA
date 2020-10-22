@@ -1,12 +1,19 @@
 @import '../../app.component.scss';
 
-.search-query-closer{
+.search-query-closer-with-header{
     @extend %panel-heading-text-color;
 //    z-index: 1;
+
+    /*
     position: absolute;
     top: 14px + $heading-height + $heading-margin-bottom;
-    left: $left-section-width - 47px;
+    */
+  //  left: $left-section-width - 47px;
+
+    margin-top: -30px;
+    float: right;
     cursor: pointer;
+
 }
 
 .search-query-closer-no-header{
@@ -20,14 +27,20 @@
 
 .search-query-opener{
     @extend %panel-heading-text-color;
-    left: -26px;
+     position: absolute;
+    left: 0;
     cursor: pointer;
     padding: 12px 10px 14px 0;
+    margin-top: 0;
 
     border-right: solid 1px #ddd;
     border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     border-radius: 4px;
+}
+
+.search-query-opener-icon{
+    height:14px;
 }
 
 .hide {

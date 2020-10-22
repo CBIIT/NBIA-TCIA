@@ -1,3 +1,14 @@
+@import "../../query-section/query-section.component.scss";
 .tab-text-span{
     margin: -2px;
+}
+
+
+// FIXME this is a dup
+.hide {
+    display: none;
+}
+
+.search-criteria-tabs{
+    background-color: $dark-row-color;
 }

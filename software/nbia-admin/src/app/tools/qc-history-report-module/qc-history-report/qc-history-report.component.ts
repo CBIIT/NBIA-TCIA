@@ -1,13 +1,19 @@
+// -------------------------------------------------------------------------------------------
+// ------------  Series History - popup in "Perform Quality Control"  not Cine mode  ---------
+// -------------------------------------------------------------------------------------------
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ApiService } from '@app/admin-common/services/api.service';
+
 
 @Component( {
     selector: 'nbia-qc-history-report',
     templateUrl: './qc-history-report.component.html',
     styleUrls: ['./qc-history-report.component.scss']
 } )
+
 export class QcHistoryReportComponent implements OnInit, OnDestroy{
     handleMoving = false;
     showReport = false;

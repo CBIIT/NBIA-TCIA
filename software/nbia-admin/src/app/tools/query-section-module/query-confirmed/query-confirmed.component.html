@@ -1,17 +1,27 @@
-<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
-            currentTool===consts.TOOL_APPROVE_DELETIONS"
-     class="query-panel"
+<div
+    *ngIf="
+        currentTool === consts.TOOL_PERFORM_QC ||
+        currentTool === consts.TOOL_APPROVE_DELETIONS
+    "
+    class="query-panel"
 >
     <!-- ----------  Heading & hide/show buttons  ---------- -->
-    <div class="query-panel-heading">
-
+    <div
+        class="query-panel-heading"
+        [ngClass]="{
+            'heading-font-extra-small': currentFont === '0',
+            'heading-font-small': currentFont === '1',
+            'heading-font-medium': currentFont === '2',
+            'heading-font-large': currentFont === '3'
+        }"
+    >
         <!-- Hide the Confirmed options list.  Still show the heading (with this img to its left) -->
         <span
             *ngIf="showCriteriaList"
             class="clicker"
             (click)="onShowCriteriaListClick(false)"
         >
-            <img src="assets/images/down_V01.png">
+            <img src="assets/images/down_V01.png" />
             Confirmed as Complete
         </span>
 
@@ -21,33 +31,42 @@
             class="clicker"
             (click)="onShowCriteriaListClick(true)"
         >
-            <img src="assets/images/right_V01.png">
-            Confirmed as Complete&nbsp;&nbsp;<small>({{options[currentOption]}})</small>
+            <img src="assets/images/right_V01.png" />
+            Confirmed as Complete&nbsp;&nbsp;<small
+                >({{ options[currentOption] }})</small
+            >
         </span>
-
     </div>
 
     <div
         [ngClass]="{
-           'hide': ! showCriteriaList
-       }"
+            hide: !showCriteriaList
+        }"
     >
-        <span *ngFor="let option of options; let i = index"
-             class="query-panel-radio-button">
-            <input type="radio"
-                   class="radio-button"
-                   name="qc-confirmed-complete-radio"
-                   id="qc-confirmed-complete-radio{{i}}"
-                   (change)="onClick(i)"
-                   [checked]="cBox[i]"
-            >
+        <span
+            *ngFor="let option of options; let i = index"
+            class="query-panel-radio-button"
+        >
+            <input
+                class="radio-button"
+                type="radio"
+                name="qc-confirmed-complete-radio"
+                id="qc-confirmed-complete-radio{{ i }}"
+                (change)="onClick(i)"
+                [checked]="cBox[i]"
+            />
 
-            <label [attr.for]="'qc-confirmed-complete-radio'+i"
-                   class="criteria-text"
+            <label
+                [attr.for]="'qc-confirmed-complete-radio' + i"
+                [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
             >
-                {{option}}
+                {{ option }}
             </label>
         </span>
     </div>
-
 </div>

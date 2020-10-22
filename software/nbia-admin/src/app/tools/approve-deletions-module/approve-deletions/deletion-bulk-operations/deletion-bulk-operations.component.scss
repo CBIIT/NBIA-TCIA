@@ -1,5 +1,9 @@
-@import '../../../../app.component';
-@import '../../../../data-table';
+// --------------------------------------------------------------------------
+// ----------  Used for the bottom section of "Approve Deletions"  ----------
+// --------------------------------------------------------------------------
+
+@import "../../../../app.component";
+@import "../../../../data-table";
 
 .deletion-bulk-outer-div {
     border: solid $data-table-body-border-color;
@@ -9,18 +13,15 @@
 .deletion-bulk-heading {
     color: $heading-text-color;
     background-color: #fff;
-    font: 16px arial, sans-serif;
     margin: 6px 0 0 6px;
 }
 
-
-.log-text{
-    margin: 14px 10px 10px 10px;
+.log-text {
     border: solid $data-table-body-border-color 1px;
+    margin: 14px 10px 10px 10px;
     width: calc(100% - 20px);
 }
 
-
-.deletion-bulk-update-button{
+.deletion-bulk-update-button {
     margin: 0 0 10px 10px;
 }

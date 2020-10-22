@@ -81,6 +81,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
     searchToolTip = 'Search';
     showSearch = false;
+    inModality = false;
 
 
     /**
@@ -89,12 +90,13 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      * @type {boolean}
      */
     showToolTip = false;
-    showToolTipTrailer = false;
     toolTipText = '';
     toolTipY = 0;
-    toolTipDelay = 900; // in 1/1000 of a second
-    toolTipHeading = '';
+    toolTipStayOn = false;
+    toolTipCounter = 0;
 
+    toolTipStartDelay = 700; // in 1/1000 of a second
+    toolTipHeading = '';
 
 
     /**
@@ -133,6 +135,8 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      */
     properties = Properties;
 
+    descriptionTooltipDelay = 1000;
+
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
      *
@@ -165,10 +169,10 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         // Get the full complete criteria list.
         // ------------------------------------------------------------------------------------------
-        this.apiServerService.getModalityValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-             data => {
-                 this.queryCriteriaInitService.endQueryCriteriaInit();
-                 this.completeCriteriaList = data;
+        this.apiServerService.getModalityValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.queryCriteriaInitService.endQueryCriteriaInit();
+                this.completeCriteriaList = data;
 
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
@@ -181,19 +185,19 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                     this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 }
 
-             }
-            );
+            }
+        );
 
 
         // React to errors when getting the full complete criteria list.
-        this.apiServerService.getModalityValuesAndCountsErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.getModalityValuesAndCountsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( err ) => {
                 errorFlag = true;
                 // TODO these errors need to be vetted, some are harmless, and shouldn't interrupt the UI flow
                 // alert('error: ' + err);
                 this.queryCriteriaInitService.endQueryCriteriaInit();
             }
-            );
+        );
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
@@ -212,7 +216,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // If data equals -1 there is no search, so no results.
         // If data equals 0 there is a search, but no search results.
         // If there is a search, but no search results, all counts are zeroed
-        this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.searchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( this.commonService.getResultsDisplayMode() === Consts.SIMPLE_SEARCH ){
                     // data  0 = No results from a search,  -1 = No search
@@ -234,7 +238,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
 
         // When counts of occurrences in the search results changes
-        this.apiServerService.criteriaCountUpdateEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.criteriaCountUpdateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.onCriteriaCountsChange( data );
             }
@@ -243,8 +247,8 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         // Reload the list of search criteria because a user has logged in,
         // they may have different access to available search criteria.
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            async () => {
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            async() => {
                 // This is used when a query included in the URL is to be rerun when a user logs in,
                 // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
 
@@ -265,8 +269,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.setInitialCriteriaList();
                     this.updateCheckboxCount();
-                }
-                else{
+                }else{
                     this.resetAll();
                 }
                 this.initMonitorService.setModalityRunning( false );
@@ -275,20 +278,19 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
             }
         );
 
         // Called when a query included in the URL contained one or more Image Modalities.
-        this.parameterService.parameterModalityEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.parameterService.parameterModalityEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
 
                 if( data['modalityAll'] ){
                     this.allOrAnyDefault = 0;
-                }
-                else{
+                }else{
                     this.allOrAnyDefault = 1;
                 }
 
@@ -300,8 +302,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                         this.apiServerService.setImageModalityAllOrAny( this.allOrAnyLabels[0] );
                         this.allOrAnyDefault = 0;
                         this.persistenceService.put( this.persistenceService.Field.IMAGE_MODALITY_ANY_ALL, 0 );
-                    }
-                    else{
+                    }else{
                         this.apiServerService.setImageModalityAllOrAny( this.allOrAnyLabels[1] );
                         this.allOrAnyDefault = 1;
                         this.persistenceService.put( this.persistenceService.Field.IMAGE_MODALITY_ANY_ALL, 1 );
@@ -347,8 +348,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         if( !this.utilService.isNullOrUndefined( this.criteriaList ) ){
             this.unCheckedCount = this.criteriaList.length;
-        }
-        else{
+        }else{
             this.unCheckedCount = 0;
         }
 
@@ -394,11 +394,11 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         let imageModalityCriteriaObj;
 
         // data.res is an array of Objects,  each object is one criteria's data.
-            for( let criteria of data.res ){
-                if( criteria.criteria === 'Image Modality' ){
-                    imageModalityCriteriaObj = criteria.values;
-                }
+        for( let criteria of data.res ){
+            if( criteria.criteria === 'Image Modality' ){
+                imageModalityCriteriaObj = criteria.values;
             }
+        }
 
         // Before we update the list, save the original list so we can restore checkboxes by criteria name.
         let criteriaListTemp = this.criteriaList;
@@ -414,8 +414,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
             this.criteriaList = this.criteriaListHold;
             this.setInitialCriteriaList();
-        }
-        else if( !this.utilService.isNullOrUndefined( imageModalityCriteriaObj ) ){
+        }else if( !this.utilService.isNullOrUndefined( imageModalityCriteriaObj ) ){
 
             while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
                 await this.commonService.sleep( Consts.waitTime );
@@ -478,7 +477,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      * This is called when the component first loads, or when it needs to be 'cleared' back to its initial state, like when a new user logs in.
      */
     setInitialCriteriaList() {
-        this.updateCriteriaList(true );
+        this.updateCriteriaList( true );
 
         // This will tell the parameter service that it can send any query criteria that where passed in the URL
         this.initMonitorService.setModalityInit( true );
@@ -500,8 +499,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // If this is the first time this is running just copy the data to the criteriaList
         if( this.resetFlag ){
             this.criteriaList = this.completeCriteriaList;
-        }
-        else{
+        }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
 
@@ -520,13 +518,13 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         if( (this.resetFlag) || (initCheckBox) ){
             this.resetFlag = false;
-                this.cBox = [];
-                let len = this.criteriaList.length;
-                for( let f = 0; f < len; f++ ){
-                    this.cBox[f] = false;
-                }
-                this.updateCheckboxCount();
+            this.cBox = [];
+            let len = this.criteriaList.length;
+            for( let f = 0; f < len; f++ ){
+                this.cBox[f] = false;
             }
+            this.updateCheckboxCount();
+        }
 
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
         this.criteriaListHold = this.criteriaList;
@@ -572,8 +570,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // Update the query URL
         if( this.checkedCount === 0 ){
             this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );
-        }
-        else{
+        }else{
             this.sendSelectedCriteriaString();
         }
     }
@@ -618,8 +615,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
         if( this.searchInput.length === 0 ){
             this.searchToolTip = 'Search';
-        }
-        else{
+        }else{
             this.searchToolTip = this.searchInput;
         }
     }
@@ -672,8 +668,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         for( let f = 0; f < len; f++ ){
             if( this.cBox[f] ){
                 this.checkedCount++;
-            }
-            else{
+            }else{
                 this.unCheckedCount++;
             }
         }
@@ -718,11 +713,11 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         // Restore original criteria list and counts.
         this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
-        this.updateCriteriaList(  true );
+        this.updateCriteriaList( true );
     }
 
 
-    modalityQueryBuilder(){
+    modalityQueryBuilder() {
         let criteriaForQuery: string[] = [];
         // This category's data for the query, the 0th element is always the category name.
         criteriaForQuery.push( Consts.IMAGE_MODALITY_CRITERIA );
@@ -734,6 +729,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         return criteriaForQuery;
     }
+
     onAnyOrAllChange( value ) {
         let criteriaForQuery = this.modalityQueryBuilder();
         this.apiServerService.setImageModalityAllOrAny( value );
@@ -751,8 +747,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         if( value === this.allOrAnyLabels[0] ){
             this.queryUrlService.update( this.queryUrlService.IMAGE_MODALITY_ALL, 0 );
-        }
-        else{
+        }else{
             this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY_ALL );
         }
     }
@@ -764,32 +759,54 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      * @param modalityName Image Modality name used to retrieve the description.
      */
     getPos( e, modalityName ) {
+        this.inModality = true;
 
-
-        this.showToolTipTrailer = true;
-        // this.toolTipY = e.clientY;
+        // Set position
         this.toolTipY = e.view.pageYOffset + e.clientY;
+
+        // Populate
         this.toolTipHeading = modalityName;
+        if( (!this.utilService.isNullOrUndefinedOrEmpty( this.toolTipHeading )) ){
+            this.toolTipText = this.modalityDescriptionsService.getModalityDescription( modalityName );
+        }
 
         setTimeout( () => {
-            if( this.showToolTipTrailer ){
-                this.toolTipText = this.modalityDescriptionsService.getModalityDescription( modalityName );
-                this.showToolTip = true;
-            }
-            else{
-                this.showToolTip = false;
-            }
-
-        }, this.toolTipDelay );
+            this.showToolTip = true;
+        }, this.toolTipStartDelay );
 
     }
 
-
-    hideToolTip() {
-        this.showToolTip = false;
-        this.showToolTipTrailer = false;
+    /**
+     * If the user has their mouse over the tool tip don't let it fade out.
+     */
+    mouseOverToolTip() {
+        this.inModality = true;
+        this.toolTipStayOn = true;
     }
 
+    /**
+     * If the user moved the mouse over the tool tip, fade out as soon as the mouse leaves.
+     */
+    mouseleaveToolTip() {
+        this.inModality = false;
+        this.toolTipStayOn = false;
+        this.hideToolTip();
+    }
+
+    async hideToolTip() {
+        this.inModality = false;
+        this.toolTipCounter++;
+        let count = Properties.COLLECTION_DESCRIPTION_TOOLTIP_TIME;
+
+        while( count > 0 ){
+            await this.commonService.sleep( this.descriptionTooltipDelay );
+            count--;
+        }
+        this.toolTipCounter--;
+        if( count <= 0 && this.toolTipCounter <= 0 && (!this.toolTipStayOn) && (!this.inModality) ){
+            this.showToolTip = false;
+        }
+    }
 
 
     ngOnDestroy() {

@@ -1,0 +1,43 @@
+@import '../../../app.component';
+
+.perform-qc{
+    /* keep the Query section and the Display section side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}
+
+.data-section{
+    width: 100%;
+}
+
+.bulk-operations-section{
+    border: solid #4fa;
+}
+
+
+// MHL testing delete me.
+.query-display-row2{
+    background-color: #8d4a5f;
+    width: calc(100% + 30px);
+    padding: 0;
+}
+.query-display-row3{
+    background-color: #ffc100;
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+}
+
+.test-wrapper{
+    background-color: #985f0d;
+    width: 100%;
+
+}
+
+.test-wrapper2{
+      background-color: #08995e;
+    width: 100%;
+
+}

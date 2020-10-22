@@ -1,78 +1,91 @@
+// -------------------------------------------------------------------------------------------
+// ------------  The parent component of the left side criteria selecting components  --------
+// -------------------------------------------------------------------------------------------
+
+
 @import 'src/app/app.component';
 
 $query-section-left-pad: 10px;
 $query-section-right-pad: 15px;
 
-$left-section-width: 380px;
-$left-section-right-margin: 15px;
-$query-criteria-content-left-margin: 18px;
+$left-section-width: 370px;
+$left-section-width-extra-small: 300px;
+$left-section-width-small: 318px;
+$left-section-width-medium: 370px;
+$left-section-width-large: 480px;
 
+$query-criteria-content-left-margin: 18px;
 $query-collection-start-height: 420px;
 
+$tab-selected-border-color: #ddd;
+
 .query-section {
-    // padding-left: $query-section-left-pad;
     padding-right: $query-section-right-pad;
-    width: $left-section-width;
+}
+.query-section-extra-small {
+   @extend .query-section;
+    width: $left-section-width-extra-small;
+}
+.query-section-small {
+   @extend .query-section;
+    width: $left-section-width-small;
+}
+.query-section-medium {
+   @extend .query-section;
+    width: $left-section-width-medium;
+}
+.query-section-large {
+   @extend .query-section;
+    width: $left-section-width-large;
+}
+
+.search-query-opener-icon, .search-query-closer-icon{
+    height: 14px;
 }
 
 .search-query-closer {
-    margin: 0 16px 0 0;
-    height: 31px;
-    padding: 8px 3px 10px 0;
-    color: $heading-text-color;
     background-color: #f4f4f4;
-
-    //  left: $left-section-width - 47px;
+    margin: 0 16px 0 0;
+    padding: 8px 3px 4px 0;
     cursor: pointer;
-    /*
-    background-color: #fff;
-    padding: 4px 8px 4px 4px;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    border-left: solid 1px #ddd;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    */
 }
 
 .search-query-opener {
-    //  top: -33px;
     color: $heading-text-color;
     cursor: pointer;
-    // padding: 4px 4px 4px 8px;
     float: right;
     border-right: solid 1px #ddd;
     border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     border-radius: 4px;
-    /*
-    color: $query-criteria-heading-text-color;
-    cursor: pointer;
-    padding: 4px 4px 4px 8px;
-
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    border-radius: 4px;
-    */
 }
 
 // Tab stuff - TODO move to its own scss file
 .tab-div {
-
     height: 10px;
-    //   background-color: #0af;
     background-color: #f4f4f4;
-    width: $left-section-width - $query-section-right-pad;
-    // height: 10px;
     margin: 0;
-    // t r b L
     padding: 6px 6px 6px 0;
     vertical-align: bottom;
     display: table-cell;
 }
+.tab-div-extra-small{
+    @extend .tab-div;
+    width: $left-section-width-extra-small - $query-section-right-pad;
+}
+.tab-div-small{
+    @extend .tab-div;
+    width: $left-section-width-small - $query-section-right-pad;
+}
+.tab-div-medium{
+    @extend .tab-div;
+    width: $left-section-width-medium - $query-section-right-pad;
+}
+.tab-div-large{
+    @extend .tab-div;
+    width: $left-section-width-large - $query-section-right-pad;
+}
 
-$tab-selected-border-color: #ddd;
 .tab {
     padding: 8px 8px 8px 8px;
     height: 100%;
@@ -97,48 +110,11 @@ $tab-selected-border-color: #ddd;
     background-color: #eee;
     border-color: #eee;
     cursor: pointer;
-
 }
-
 
 .tab-not-selected {
     padding: 8px 8px 7px 8px;
     color: #337ab7;
     background-color: #f4f4f4;
     border-color: #f4f4f4;
-}
-
-.search-query-closer2 {
-    float: right;
-    margin: 0 0 0 0;
-    padding: 8px 8px 8px 8px;
-
-    border-top: solid $tab-selected-border-color 1px;
-    border-left: solid $tab-selected-border-color 1px;
-    border-right: solid $tab-selected-border-color 1px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-
-    color: $heading-text-color;
-
-    background-color: #0f0;
-    cursor: default;
-
-}
-
-.search-query-closer3 {
-    padding: 8px 8px 8px 8px;
-    // height: 100%;
-    // float: right;
-    margin: 0 0 0 0;
-    border-top: solid $tab-selected-border-color 1px;
-    border-left: solid $tab-selected-border-color 1px;
-    border-right: solid $tab-selected-border-color 1px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    color: $heading-text-color;
-
-    background-color: #fff;
-    cursor: default;
-
 }

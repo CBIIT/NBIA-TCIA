@@ -1,73 +1,124 @@
+<!---------------------------------------------------------------------------------------->
+<!----------        "Edit Collection Descriptions" and select License         ------------>
+<!---------------------------------------------------------------------------------------->
+
+<!-----  Left side search criteria.  Only gets "Collection"  ----->
 <div *ngIf="roleIsGood" class="edit-collection-description-tool">
     <nbia-query-section
         [currentTool]="consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
     ></nbia-query-section>
 
-    <div class="container data-section">
+    <!-- Right side, user input section -->
+    <div class="container-fluid input-section">
+        <!-- Third party WYSIWYG HTM text editor  https://www.npmjs.com/package/@kolkov/angular-editor -->
         <div class="row edit-collection-description-edit">
-            <angular-editor [(ngModel)]="htmlContent" [config]="editorConfig">
+            <angular-editor
+                [(ngModel)]="htmlContent"
+                [config]="editorConfig"
+                [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+            >
             </angular-editor>
         </div>
 
+        <!-- Plain text version showing HTML tags -->
         <div class="row edit-collection-description-edit">
             <div>
                 <label
                     class="label label-primary"
+                    [ngClass]="{
+                        'heading-font-extra-small': currentFont === '0',
+                        'heading-font-small': currentFont === '1',
+                        'heading-font-medium': currentFont === '2',
+                        'heading-font-large': currentFont === '3'
+                    }"
                     for="edit-collection-description-html-text"
                 >HTML:</label
                 >
             </div>
 
+            <!-- This plain text editor is bound to the WYSIWYG editor above (very cool) -->
             <textarea
                 class="collection-description-div-html"
+                [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
                 placeholder="Enter HTML here..."
                 id="edit-collection-description-html-text"
                 [(ngModel)]="htmlContent"
             ></textarea>
         </div>
 
-        <div *ngIf="! properties.NO_LICENSE" class="row lic-and-save-div">
-            <span class="license-heading">License</span>
-            <br/>
-            <!--  License  -->
-            <span class="dropdown menu-dropdown">
-                    <span dropdown [dropdownToggle]="true">
-                        <button
-                            class="btn edit-lic-dropdown-button text-left"
-                            dropdown-open
-                        >
-                            <span>
-                                {{ licData[currentLicenseIndex].longName }}
-                                <span class="caret"></span>
-                            </span>
-                        </button>
-                        <ul
-                            class="dropdown-menu edit-lic-dropdown-ul"
-                            role="menu"
-                        >
-                            <li
-                                class="edit-lic-dropdown-li"
-                                *ngFor="let lic of licData; let c = index"
-                                role="menuitem"
-                                (click)="onLicenseDropdownClick(c)"
-                            >
-                                <a class="menu-dropdown-a">
-                                    <span
-                                        *ngIf="c === currentLicenseIndex"
-                                        class="glyphicon glyphicon-ok"
-                                    ></span>
-                                    {{ lic.longName }}
-                                </a>
-                            </li>
-                        </ul>
-                    </span>
-                </span>
-            <!--  Save button  -->
-
-        </div>
-        <div>
-            <button
+        <!-- License selection section -->
+        <div *ngIf="!properties.NO_LICENSE" class="row lic-and-save-div">
+            <div
                 [ngClass]="{
+                    'heading-font-extra-small': currentFont === '0',
+                    'heading-font-small': currentFont === '1',
+                    'heading-font-medium': currentFont === '2',
+                    'heading-font-large': currentFont === '3'
+                }"
+            >
+                License:
+            </div>
+
+            <!-- -----  Dropdown menu of Long names  -----  -->
+            <span class="dropdown clicker">
+                <button
+                    class="btn admin-dropdown-button text-left dropdown-toggle"
+                    data-toggle="dropdown"
+                    type="button"
+                >
+                    <span
+                        [ngClass]="{
+                            'font-extra-small': currentFont === '0',
+                            'font-small': currentFont === '1',
+                            'font-medium': currentFont === '2',
+                            'font-large': currentFont === '3'
+                        }"
+                    >
+                        {{ licData[currentLicenseIndex].longName }}
+                    </span>
+                </button>
+
+                <div class="dropdown-menu pb-0">
+                    <a
+                        class="dropdown-item admin-dropdown-outline"
+                        *ngFor="let lic of licData; let c = index"
+                        (click)="onLicenseDropdownClick(c)"
+                    >
+                        <span
+                            [ngClass]="{
+                                'font-extra-small': currentFont === '0',
+                                'font-small': currentFont === '1',
+                                'font-medium': currentFont === '2',
+                                'font-large': currentFont === '3'
+                            }"
+                        >
+                            <img
+                                *ngIf="c === currentLicenseIndex"
+                                src="assets/images/check.png"
+                                alt=""
+                            />
+                            {{ lic.longName }}
+                        </span>
+                    </a>
+                </div>
+            </span>
+            <!--  END Dropdown of License longname(s)  -->
+
+            <!--  Save button  -->
+            <span>
+                <button
+                    class="btn nbia-button ml-2"
+                    [ngClass]="{
                         disabled:
                             textTrailer === htmlContent &&
                             currentLicenseIndexTrailer === currentLicenseIndex,
@@ -75,21 +126,18 @@
                             textTrailer === htmlContent &&
                             currentLicenseIndexTrailer === currentLicenseIndex
                     }"
-                (click)="onSave()"
-                class="btn nbia-button edit-collection-button edit-collection-save-button"
-            >
-                Save
-            </button>
+                    (click)="onSave()"
+                >
+                    Save
+                </button>
+            </span>
         </div>
     </div>
 </div>
 
-
 <h4 *ngIf="!roleIsGood && userRoles !== undefined">
     <p>
-        User does not have authorization required for "<b
-    >Edit Collection Description</b
-    >"
+        User does not have authorization required for "<b>Edit Collection Description</b>"
     </p>
     <p>
         Users role(s): <b>{{ userRoles }}</b>

@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '../../services/common.service';
 import { ApiServerService } from '../../services/api-server.service';
-import { PersistenceService } from '../../../common/services/persistence.service';
+import { PersistenceService } from '@app/common/services/persistence.service';
 import { Properties } from '@assets/properties';
-import { Consts } from '../../../consts';
+import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 
 import { Subject } from 'rxjs';
@@ -18,32 +18,27 @@ import { takeUntil } from 'rxjs/operators';
 } )
 
 export class DataSectionTabsComponent implements OnInit, OnDestroy{
-    tabIsActive: boolean[] = [];
     properties = Properties;
     /**
      * Currently only used by the HTML to know when to disable the "Summary" tab/
      *
      * @type {number}
      */
-    @Input() displayType; // FIXME should be constants.
+    @Input() displayType; // FIXME We don't need this anymore
     searchType;
     showTestTab;
 
+    activeTab = 1;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,
                  private persistenceService: PersistenceService, private utilService: UtilService ) {
-
-        // Create and initialize
-        this.tabIsActive[0] = true;
-        this.tabIsActive[1] = true;
-        this.tabIsActive[2] = true;
     }
 
     ngOnInit() {
 
         // For when we need to change the tab without the user clicking on it.
-        this.commonService.selectDataTabEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonService.selectDataTabEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.setTab( data );
                 // this.searchType = data;
@@ -51,7 +46,7 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
         );
 
         // If Simple Search Results are emitted, we know the search type is Simple Search.
-        this.apiServerService.simpleSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.simpleSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.updateSearchType();
             }
@@ -66,7 +61,7 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
         */
 
         // If we are doing a text search, make sure we are not showing the charts 'Summary' tab.
-        this.apiServerService.textSearchResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.textSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.updateSearchType();
 
@@ -75,13 +70,14 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
                 }
             }
         );
-        this.apiServerService.textSearchErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.textSearchErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'DataSectionTabsComponent textSearchErrorEmitter.subscribe: ', err );
             }
         );
 
         this.updateSearchType();
+        this.initTabSelection();
 
         this.showTestTab = Properties.SHOW_TEST_TAB;
     }
@@ -96,24 +92,30 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
                 this.searchType = 1;
                 break;
         }
-
     }
 
+    /**
+     * Get the users previously selected tab form the browser cookie if there is one.
+     */
+    initTabSelection() {
+        let previousTab = this.persistenceService.get( this.persistenceService.Field.DATA_DISPLAY_TAB );
+        if( previousTab !== undefined ){
+            this.activeTab = this.persistenceService.get( this.persistenceService.Field.DATA_DISPLAY_TAB );
+        }
+    }
 
-    // For when we need to change the tab without the user clicking on it.  FIXME this does not (totally) work
+    // For when we need to change the tab without the user clicking on it.  FIXME this does not (totally) work to change the tab without the user clicking on it.
     setTab( i ) {
         // Save this tab, we will return to this same tab when the site is reloaded/restarted
         if( this.commonService.getResultsDisplayMode() === Consts.SIMPLE_SEARCH ){
             this.commonService.setSimpleSearchDataTab( i );
         }
         this.persistenceService.put( this.persistenceService.Field.DATA_DISPLAY_TAB, i );
-        for( let f = 0; f < this.tabIsActive.length; f++ ){
-            this.tabIsActive[f] = (f === +i);
-        }
     }
 
     async onTabClick( i ) {
         this.setTab( i );
+        this.activeTab = i;
         // TODO explain why we need this
         // Give the charts time to draw, they don't need much
         await this.commonService.sleep( 1 );

@@ -5,9 +5,9 @@
 $parentToolPadding: 10px;
 
 .parent-tool-div{
- //   border: solid #795709 6px;
     padding: $parentToolPadding $parentToolPadding 0 $parentToolPadding;
 }
+
 
 .disabled-tool{
     color: #999;
@@ -25,6 +25,7 @@ $parentToolPadding: 10px;
     font-size: 18px;
     padding: 8px;
     margin-top: 4px;
+    width: 100%;
 
 }
 

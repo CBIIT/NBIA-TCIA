@@ -107,7 +107,7 @@ export class PieChartCollectionsComponent implements OnInit, OnDestroy{
     // Pixels from top
     descriptionPopupY = 64;
     descriptionPopupHeading = '';
-    descriptionPopupWidth = 224;
+    descriptionPopupWidth = 260;
 
 
     g;

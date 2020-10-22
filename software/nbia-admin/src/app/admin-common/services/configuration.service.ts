@@ -81,12 +81,6 @@ export class ConfigurationService {
                         }
                     }
 
-                    if( key === 'CINE_MODE_TOGGLE_KEY' ){
-                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
-                            Properties.CINE_MODE_TOGGLE_KEY = value;
-                        }
-                    }
-
                     if( key === 'SHOW_UNIVERSAL_MENU' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.SHOW_UNIVERSAL_MENU = value;

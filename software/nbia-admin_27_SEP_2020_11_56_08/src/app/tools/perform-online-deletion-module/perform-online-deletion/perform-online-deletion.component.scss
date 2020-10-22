@@ -1,0 +1,68 @@
+@import '../../../app.component';
+@import '../../../data-table';
+@import '../../../popup';
+
+$perform-online-deletion-results-table-starting-height: 400px;
+$perform-online-deletion-results-table-starting-width: 960px;
+.perform-online-deletion-number-column{
+    width: 30px;
+    padding-left: 10px;
+}
+
+.online-deletion-message-div{
+    width: 100%;
+    text-align: center;
+}
+
+.online-deletion-message{
+    font-size: 20px;
+    padding: 12px;
+    max-width: 1000px;
+    width: calc(100% - 25px);
+    display: inline-block;
+}
+
+.perform-online-deletion-button{
+    margin-top: 4px;
+    margin-left: 30px;
+}
+
+.perform-online-deletion-no-series{
+    width: 400px;
+    height: 100px;
+
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.perform-online-deletion-caption{
+    height: 50px;
+}
+
+.perform-online-deletion-results-table {
+    width: 100%;
+}
+
+.perform-online-deletion-main-div {
+    border: solid #e7e7e7;
+
+    margin-bottom: 12px;
+    resize: both;
+    overflow: auto;
+    height: $perform-online-deletion-results-table-starting-height;
+    width: $perform-online-deletion-results-table-starting-width;
+}
+
+
+// Starting/Default height
+.perform-online-deletion-results-scroller-div {
+    padding: 0;
+}
+
+.perform-online-deletion-results-outer-div {
+    border: solid #e7e7e7;
+    padding-bottom: 12px;
+    resize: vertical;
+    overflow: auto;
+}

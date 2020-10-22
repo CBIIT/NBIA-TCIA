@@ -1,0 +1,79 @@
+<div class="query-panel">
+    <div class="query-panel-heading">
+        <label *ngIf="criteriaLargeTextInputText.length > 0" class="red-clear">
+            <img class="clicker" src="../../../../../assets/images/redClear.png" alt="Clear" (click)="onClearClick()">
+        </label>
+        <label class="close-x-icon">
+        <span class="clicker glyphicon glyphicon-remove  "
+              (click)="onRemoveCriteriaClick()"
+        ></span>
+        </label>
+
+        <!-- No close/open icon, just show th Heading. -->
+        <span *ngIf="! queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']" >
+            {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
+        </span>
+
+
+        <span *ngIf="queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']" >
+            <span *ngIf="criteriaLargeTextInputShowCriteria" class="clicker" (click)="onShowCriteriaClick(false)">
+                <img src="../../../../../assets/images/down_V01.png">
+                {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
+            </span>
+            <span *ngIf="!criteriaLargeTextInputShowCriteria" class="clicker" (click)="onShowCriteriaClick(true)">
+                <img src="../../../../../assets/images/right_V01.png">
+                {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
+            </span>
+        </span>
+
+        <!-- And / Or  -->
+        <span>
+            <!-- This user input includes And/Or radio buttons -->
+            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaAndOrType'] === andOrTypes.AND_OR">
+            &nbsp;
+                <span *ngFor="let option of options; let i = index">
+                    <input type="radio"
+                           class="large-text-input-and-or-radio-button"
+                           name="large-text-input-and-or-radio-button-name{{sequenceNumber}}"
+                           id="large-text-input-and-or-radio-button-id-{{i}}-{{sequenceNumber}}"
+                           (change)="onLargeTextRadioClick(i)"
+                           [checked]="cBox[i]"
+                    >
+                    <label [attr.for]="'large-text-input-and-or-radio-button-id-'+i+'-'+sequenceNumber"
+                           class="criteria-text"
+                    >
+                        {{option}}
+                    </label>
+                </span>
+            </span>
+            <!--  End of criteriaLargeTextInputAndOrType === andOrTypes.andOr  -->
+            <!-- If server says: This is an "And"  -->
+            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaAndOrType'] === andOrTypes.ONLY_AND">
+                &nbsp;&nbsp;&nbsp;(And)
+            </span>
+            <!-- If server says: This is an "Or"  -->
+            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaAndOrType'] === andOrTypes.ONLY_OR">
+                &nbsp;&nbsp;&nbsp;(Or)
+            </span>
+            <!-- If server says: Don't display an And/Or  -->
+            <!--
+                <span *ngIf="criteriaLargeTextInputAndOrType === andOrTypes.none">
+                    Nothing
+                </span>
+                -->
+        </span>
+    </div>
+    <div class="large-text-input-div"
+         [ngClass]="{
+        'hide': !criteriaLargeTextInputShowCriteria
+        }"
+    >
+        <span class="large-text-input-subheading">{{queryCriteriaData['dynamicQueryCriteriaSubheading']}}</span>
+        <textarea [(ngModel)]="criteriaLargeTextInputText" class="large-text-input-text"></textarea>
+        <button class="btn nbia-button large-text-input-apply-button"
+                type="button"
+                (click)="onApplyCriteriaClick()">
+            {{queryCriteriaData['dynamicQueryCriteriaApplyButtonText']}}
+        </button>
+    </div>
+</div>

@@ -114,7 +114,7 @@ export const Consts = {
         DRILL_DOWN_IMAGE: 'getImageDrillDown',
         GET_THUMBNAIL: 'getThumbnail\'',
         COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
-        GET_MIN_MAX_TIME_POINTS: 'getMimMaxTimepoints',
+        GET_MIN_MAX_TIME_POINTS: 'getMinMaxTimepoints',
         GET_HOST_NAME: 'hostName',
 
         // For getting subject "id" data with the subject "subjectId"  will be a simple search
@@ -143,7 +143,7 @@ export const Consts = {
         GET_SHARED_LIST: 'getSharedList',
         LOG_ENTRY: 'addClientAudit',
         GET_USER_ROLES: 'getRoles',
-        GET_COLLECTION_LICENSES: 'getLicences',
+        GET_COLLECTION_LICENSES: 'getLicenses',
 
         SEARCH_TYPE_DEFAULT: 0,  // Simple Search = 0, Free Text = 1, Query Builder = 2
     //

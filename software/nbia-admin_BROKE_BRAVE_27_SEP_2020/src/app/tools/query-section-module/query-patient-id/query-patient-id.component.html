@@ -1,0 +1,40 @@
+<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
+            currentTool===consts.TOOL_APPROVE_DELETIONS"
+     class="query-panel"
+     [ngClass]=" {
+            'query-panel-long': showSubjectIds
+      }"
+>
+
+    <div class="query-panel-heading">
+        <label *ngIf="subjectText.length > 0" class="red-clear">
+            <img class=" clicker" src="assets/images/redClear.png" alt="Clear" (click)="onClearClick()">
+        </label>
+
+        <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
+                <img src="assets/images/down_V01.png">
+                Subject IDs
+            </span>
+
+        <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
+                <img src="assets/images/right_V01.png">
+                Subject IDs
+            </span>
+
+    </div>
+
+    <div class="text-input-div"
+         [ngClass]="{
+                'hide': !showSubjectIds
+            }"
+    >
+        <span class="subject-id-prompt">Enter comma separated ID(s)</span>
+        <textarea ref-textarea [(ngModel)]="subjectText" class="subject-id-text"></textarea>
+
+        <button class="btn nbia-button subject-id-query-button"
+                type="button"
+                (click)="onSearchClick()">
+            Apply Subject IDs
+        </button>
+    </div>
+</div>

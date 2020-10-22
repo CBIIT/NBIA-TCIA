@@ -1,3 +1,5 @@
+// ----------  This component is no longer used.  @SEE cine-mode-bravo  ----------
+
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CineModeService } from './cine-mode.service';
@@ -11,11 +13,13 @@ import { Consts } from '@app/constants';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 import { QuerySectionService } from '@app/tools/query-section-module/services/query-section.service';
 
+
 @Component( {
     selector: 'nbia-cine-mode',
     templateUrl: './cine-mode.component.html',
     styleUrls: ['./cine-mode.component.scss']
 } )
+
 export class CineModeComponent implements OnInit, OnDestroy{
     @Input() currentTool = '';
     dicomData = [];
@@ -61,13 +65,13 @@ export class CineModeComponent implements OnInit, OnDestroy{
     sectionHeading = '';
     sectionHeadings = ['Change QC Status', 'Delete Series'];
 
+    currentFont = '3';
     properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private cineModeService: CineModeService, private apiService: ApiService, private httpClient: HttpClient,
                  private sanitizer: DomSanitizer, private utilService: UtilService,
                  private accessTokenService: AccessTokenService, private querySectionService: QuerySectionService ) {
-
     }
 
     ngOnInit() {
@@ -89,6 +93,7 @@ export class CineModeComponent implements OnInit, OnDestroy{
                 this.apiService.doSubmit( Consts.GET_HISTORY_REPORT_TABLE, '&seriesId=' + this.seriesData['series'] );
 
             } );
+
 
 
         this.apiService.qcHistoryResultsTableEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -120,6 +125,8 @@ export class CineModeComponent implements OnInit, OnDestroy{
             data => {
                 this.collectionSite = data;
             } );
+
+
 
     }
 

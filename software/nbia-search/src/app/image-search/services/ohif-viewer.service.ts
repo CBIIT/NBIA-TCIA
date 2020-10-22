@@ -24,7 +24,7 @@ export class OhifViewerService{
     }
 
     launchOhifViewerSubject( subject ) {
-        let ohifUrl = Properties.OHIF_SERVER_URL + '/viewer?patient=' + subject + '&token=' + this.apiServerService.showToken();
+        let ohifUrl = Properties.OHIF_SERVER_URL + '/viewer?patientID=' + subject + '&token=' + this.apiServerService.showToken();
         console.log( 'ohifUrl: ', ohifUrl );
         window.open( ohifUrl, '_blank' );
     }

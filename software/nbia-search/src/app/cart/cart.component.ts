@@ -372,6 +372,10 @@ export class CartComponent implements OnInit, OnDestroy{
                 // Call Rest service to generate the '.tcia download manifest file.
                 this.apiServerService.downloadSeriesList( this.seriesListForDownloadQuery ).subscribe(
                     data => {
+                        let databasketId = data.match(/databasketId=(.*)/);
+                        if( databasketId[1] === undefined ){
+                            console.error('Error can not get databasketId from manifest data.');
+                        }
                         let tciaManifestFile = new Blob( [data], { type: 'application/x-nbia-manifest-file' } );
 
                         //  This worked, but I could not figure out how to set the file name.
@@ -384,7 +388,7 @@ export class CartComponent implements OnInit, OnDestroy{
                         let a = (<any>window).document.createElement( 'a' );
                         a.href = objectUrl;
                         // Use epoch for unique file name
-                        a.download = 'NBIA-manifest-' + new Date().getTime() + '.tcia';
+                        a.download = databasketId[1];
                         (<any>window).document.body.appendChild( a );
                         a.click();
                         (<any>window).document.body.removeChild( a );

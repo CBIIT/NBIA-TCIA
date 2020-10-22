@@ -1,17 +1,13 @@
 <!-- ----------  Parent container for three Pie charts  ---------- -->
 
-<div class="container-fluid summary-main-panel ">
-
+<div class="container-fluid summary-main-panel "
+>
     <!-- -----  Results count at the top  ----- -->
     <div class="row">
-        <div class="main-panel-heading">
-            <span
-                *ngIf="searchResultsCount > -1"
-                class="label label-default"
-                style=" background-color: #0d95a1;"
-            >
-                Search results count:
-
+        <div class="main-panel-heading"
+        >
+            <span *ngIf="searchResultsCount > -1"
+                    class="badge badge-info p-2">Search results count:
                 <!-- -1 is no search, 0 is no results -->
                 <span>{{searchResultsCount}}</span>
             </span>

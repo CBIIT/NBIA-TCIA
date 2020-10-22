@@ -76,7 +76,7 @@ export let Properties = {
     // This value can be changed in the config file.  FIXME  No this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
 
-    DEV_MODE: false,
+    DEV_MODE: true,
     DEV_PASSWORD: 'changeme',
     DEV_USER: 'mlerner',
 

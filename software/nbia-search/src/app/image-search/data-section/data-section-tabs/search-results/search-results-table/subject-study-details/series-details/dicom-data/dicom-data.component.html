@@ -3,7 +3,10 @@
 <div class="child-data-display">
 
     <!-- ----- Title with image ID  ----- -->
-    <span class="clicker glyphicon glyphicon-remove close-x" (click)="onDicomDataCloseClick()"></span>
+    <span class=" close-x clicker unselectable" (click)="onDicomDataCloseClick()">
+            X
+        </span>
+
     &nbsp;&nbsp;<b>&nbsp;&nbsp;DICOM Tags for Image: &nbsp;&nbsp;<i>{{seriesId}}</i></b>
 
     <div class="dicom-scroll-area">

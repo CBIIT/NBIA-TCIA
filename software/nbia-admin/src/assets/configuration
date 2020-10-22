@@ -42,5 +42,6 @@ OHIF_viewer = true
 
 #######################################################
 # Ctrl + <CINE_MODE_TOGGLE_KEY>
+# Wrap it in single quotes.
 #######################################################
-# CINE_MODE_TOGGLE_KEY = 2
+CINE_MODE_TOGGLE_KEY = '2'

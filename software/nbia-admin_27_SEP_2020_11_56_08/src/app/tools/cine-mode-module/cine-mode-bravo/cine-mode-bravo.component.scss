@@ -1,0 +1,227 @@
+@import '../../../app.component';
+@import '../../../../app/data-table';
+@import '../../../popup';
+
+$cineModeImageWidth: 512px;
+$cineModeImageHeight: 512px;
+$cineModeMinWidth: 350px; // A good width for when we just have the loading progress bar.
+$cineModeMinWidthWithDicom: 1400px;
+$cineModeImageTdWidth: 538px;
+$cineModePadding: 6px;
+$cineModeTop: 40px;
+$cineModeLoadingMessageTop: 250px;
+
+
+.series-data-table {
+    overflow: scroll;
+}
+
+.series-data-header {
+    background-color: $data-table-header-background-color;
+    margin: 2px;
+    height: 58px;
+}
+
+.series-data-data {
+    border: solid #e7e7e7 1px;
+    margin: 2px;
+    padding: $data-table-cell-padding;
+
+
+}
+
+.cine-mode-div {
+    z-index: 20;
+    position: absolute;
+    top: $cineModeTop;
+    left: calc(50% - #{($cineModeImageWidth+$cineModePadding) / 2 });
+    padding: 0;
+    margin: 0;
+    resize: both;
+    overflow: auto;
+
+}
+
+.cine-mode-loading {
+    min-width: $cineModeMinWidth;
+    left: calc(50% - #{$cineModeMinWidth / 2 });
+    top: $cineModeLoadingMessageTop;
+}
+
+.cine-mode-div-with-dicom {
+    z-index: 4;
+    position: absolute;
+    top: $cineModeTop;
+   // left: calc(50% - #{($cineModeMinWidthWithDicom+$cineModePadding) / 2 });
+    width: 90%;
+    // width: $cineModeMinWidthWithDicom+$cineModePadding;
+    padding: 0;
+    margin: 0;
+    resize: both;
+    overflow: auto;
+
+}
+
+.cine-mode-progress-bar-data-loading-text {
+    font-size: 12pt;
+}
+
+.image {
+    height: $cineModeImageHeight;
+    width: $cineModeImageWidth;
+    padding: 0;
+    margin: 0;
+}
+
+.cine-mode-content {
+    padding: $cineModePadding;
+}
+
+.cine-mode-scroller {
+    width: $cineModeImageWidth;
+}
+
+.cine-mode-image-number-input {
+    width: 40px;
+    border: solid 1px #ccc;
+
+}
+
+.cine-mode-frame-rate-number {
+    margin: 0;
+    padding-bottom: 0;
+    height: 26px;
+    width: 40px;
+    font-size: 16px;
+    border-style: hidden;
+}
+
+.cine-mode-frame-rate-number-text {
+    font-size: 10px;
+    height: 12px;
+    width: 40px;
+}
+
+.cine-mode-frame-rate-table {
+    float: right;
+    border: solid 1px #ccc;
+
+}
+
+
+.image-count-display {
+    font-size: 10pt;
+}
+
+.current-image-input {
+    padding: 6px;
+}
+
+.show-dicom-checkbox {
+    font-size: 12pt;
+    float: right;
+}
+
+
+.cine-mode-buttons {
+    /*
+    margin: 6px 0 0 0;
+    padding: 0;
+    */
+}
+
+.cine-mode-button-icon {
+    height: 18px;
+    padding: 0;
+    margin-right: 10px;
+    //    background-color: #20c997;
+
+}
+
+.test-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.test-table {
+    table-layout: fixed;
+    white-space: nowrap;
+}
+
+.cine-mode-button-bar {
+    margin-left: 4px;
+    margin-bottom: 20px;
+    width: $cineModeImageWidth+$cineModePadding - 40px;
+}
+
+
+.play-back-image {
+    height: 25px;
+    padding: 3px 0 3px 0;
+}
+
+
+.cine-mode-dicom-tr {
+    height: 30px;
+}
+
+
+.dicom-scroll-area {
+    height: calc(#{ $cineModeImageHeight } + 80px);
+    overflow-y: auto;
+}
+
+.dicom-data-table {
+    width: 100%;
+}
+
+.dicom-data-column {
+    width: calc(75% - 140px);
+}
+
+.dicom-element-column {
+    width: 140px;
+}
+
+.dicom-name-column {
+    width: 25%;
+}
+
+.section-heading {
+    color: $heading-text-color;
+    padding: 7px 0 0 0;
+    font: 16px arial, sans-serif;
+}
+
+.section-div {
+    border: solid 1px $data-table-header-border-color;
+    margin: 4px;
+    padding: 4px;
+}
+
+
+// .cursor-draggable isn't working for me, this is a workaround.
+.cine-panel-heading:hover {
+    cursor: grab;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading:active {
+    cursor: grabbing;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading-moving {
+    cursor: grabbing;
+}
+
+.image-viewer-td {
+    width: $cineModeImageTdWidth;
+    border: solid #6610f2 1px;
+}
+
+.full-size-div {
+    width: 100%;
+    height: 100%;
+}

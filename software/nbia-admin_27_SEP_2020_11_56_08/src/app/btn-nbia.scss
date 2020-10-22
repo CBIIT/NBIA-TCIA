@@ -1,0 +1,101 @@
+$default-border-color: #cccccc;
+$default-border-hover-color: #adadad;
+$default-border-disabled-color: #d3d2d2;
+
+$default-background-color: #ffffff;
+$default-background-hover-color: #e6e6e6;
+$default-background-disabled-color: #f4f3f3;
+
+$default-height: 32px;
+$default-border-line-width: 1px;
+
+$cine-button-height: 30px;
+$cine-button-width: 46px;
+
+.btn-nbia-default {
+    border: solid $default-border-color $default-border-line-width;
+    background-color: $default-background-color;
+    height: calc(#{$default-height} + #{$default-border-line-width * 2 });
+
+    outline: none;
+    user-select: none;
+    box-shadow: none !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.btn-nbia-default:hover {
+    border: solid $default-border-hover-color $default-border-line-width;
+    background-color: $default-background-hover-color;
+}
+
+.btn-nbia-default:disabled {
+    border: solid $default-border-disabled-color $default-border-line-width;
+    background-color: $default-background-disabled-color;
+}
+
+// For buttons with just a larger image/icon Cine mode
+.btn-nbia-li-default {
+    @extend .btn-nbia-default;
+    /* T R B L */
+    padding: 0px 7px 1px 7px;
+    margin: 0 7px 0 7px;
+    max-height: 45px;
+}
+
+// For buttons with just an image/icon
+.btn-nbia-i-default {
+    @extend .btn-nbia-default;
+    /* T R B L */
+    padding: 2px 7px 1px 7px;
+    margin: 0 7px 0 7px;
+    max-width: 30px;
+    max-height: 25px;
+}
+
+.btn-nbia-viewer-button{
+    @extend .btn-nbia-default;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+    height: 22px;
+    width: 22px;
+}
+
+.btn-nbia-cine {
+    @extend .btn-nbia-default;
+    border-radius: 4px;
+    margin: 0;
+    width: $cine-button-width;
+    height: $cine-button-width;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.btn:disabled{
+    cursor: not-allowed;
+}
+
+
+
+// This for the "Cart" page
+.btn-nbia-i-cart {
+    @extend .btn-nbia-default;
+    /* T R B L */
+    padding: 2px 7px 1px 7px;
+    margin: 0 7px 0 7px;
+    max-width: 30px;
+    max-height: 25px;
+}
+
+.btn-nbia-i-cart:hover {
+    background-color: lightcoral;
+}
+

@@ -2,12 +2,19 @@
 <!-- ----------  The Clear the complete query button on the left.                                      ---------- -->
 <div class="alert alert-info display-query">
     <!--Clear button-->
-    <button class="btn btn-default no-outline" title="Clear query"
-        (click)="onClearTextQueryClick()">
-        <img src="assets/images/clear-icon1.png">
-        Clear
-    </button>
+    <button
+            class="btn btn-nbia-default  d-inline-flex align-items-center "
+            title="Clear query"
+            (click)="onClearTextQueryClick()"
+    >
+        <img  class="display-query-clear-icon" src="assets/images/TOOLS/clear_black.png">
 
+        <!--       class="clicker cart-button-icon"
+               src="assets/images/TOOLS/clear_red.png"
+        -->
+
+        <span>&nbsp;Clear</span>
+    </button>
     {{displayText}}
 
 </div>

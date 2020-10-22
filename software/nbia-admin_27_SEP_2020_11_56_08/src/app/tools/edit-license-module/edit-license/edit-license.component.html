@@ -1,0 +1,277 @@
+<div *ngIf="roleIsGood" class="edit-license-description-tool edit-lic-div">
+    <!-- -----  Dropdown menu of Long names  -----  -->
+    <div class="admin-dropdown-div">
+        <span class="dropdown clicker"
+        >
+                <button
+                    class="btn admin-dropdown-button text-left dropdown-toggle"
+                    [disabled]="licData[currentLic].longName.length < 1"
+
+                    [ngClass]="{
+                        'black-text': licData[currentLic].longName.length > 0,
+                        'disabled-text': licData[currentLic].longName.length < 1
+                    }"
+                    data-toggle="dropdown"
+                >
+                    <span *ngIf="licData[currentLic].longName.length > 0">
+                        {{ licData[currentLic].longName }}
+                    </span>
+                    <span *ngIf="licData[currentLic].longName.length < 1">
+                        New License
+                    </span>
+                </button>
+
+
+               <div class="dropdown-menu pb-0">
+                    <a class="dropdown-item admin-dropdown-outline"
+                       *ngFor="let lic of licData; let c = index"
+                       (click)="onLicenseDropdownClick(c)"
+                    >
+                        <span>
+                           <img *ngIf="c === currentLic"
+                                src="assets/images/check.png" alt=""
+                           >
+                            {{ lic.longName }}
+                        </span>
+                    </a>
+                </div>
+            </span>
+    </div>
+    <!-- ----- END Dropdown menu of Long names  -----  -->
+
+    <!-- Right side -->
+    <div>
+        <!-- -----  Table with labels and editable fields  -----  -->
+        <table class="card card-nbia-default alert-box-shadow">
+            <tr class="edit-lic-tr">
+                <td class="edit-lic-left-td">
+                    Long Name:
+                </td>
+                <td class="edit-lic-right-td">
+                    <input
+                        type="text"
+                        class="edit-lic-input"
+                        [(ngModel)]="licData[currentLic].longName"
+                        (keyup)="onLicChange()"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td class="edit-lic-left-td">
+                    Short Name:
+                </td>
+                <td class="edit-lic-right-td">
+                    <input
+                        type="text"
+                        class="edit-lic-input"
+                        maxlength="50"
+                        [(ngModel)]="licData[currentLic].shortName"
+                        (ngModelChange)="onShortNameChange()"
+                        (keydown)="shortNameKeypress($event)"
+                        (keyup)="shortNameKeyup($event)"
+                    />
+                </td>
+            </tr>
+            <tr *ngIf="shortNameTooLong">
+                <td></td>
+                <td class="edit-lic-warning">Short name can not be longer than 50 characters.</td>
+            </tr>
+            <tr>
+                <td class="edit-lic-left-td">
+                    License URL:
+                </td>
+                <td class="edit-lic-right-td">
+                    <input
+                        type="text"
+                        class="edit-lic-input"
+                        [(ngModel)]="licData[currentLic].licenseURL"
+                        (ngModelChange)="onLicChange()"
+                    />
+                </td>
+            </tr>
+
+            <!-- radio buttons -->
+            <tr class="top-edit-lic-radio-tr">
+                <td class="top-edit-lic-radio-td">
+                    <input
+                        type="radio"
+                        name="editLicCommercialRadio"
+                        class="clicker ml-3"
+                        id="commercialUseCheckbox0"
+                        [value]="true"
+                        [(ngModel)]="commercialTest"
+                        (change)="onCommercialRadioChange(0)"
+                    />
+                    <label
+                        class="edit-lic-checkbox-label clicker unselectable"
+                        for="commercialUseCheckbox0"
+                    >&nbsp;Commercial Use Allowed</label
+                    >
+                </td>
+            </tr>
+            <tr class="bottom-edit-lic-radio-tr">
+                <td class="bottom-edit-lic-radio-td">
+                    <input
+                        type="radio"
+                        name="editLicCommercialRadio"
+                        class="clicker ml-3"
+                        id="commercialUseCheckbox1"
+                        [value]="false"
+                        [(ngModel)]="commercialTest"
+                        (click)="onCommercialRadioChange(1)"
+                    />
+
+                    <label
+                        class="edit-lic-checkbox-label clicker unselectable"
+                        for="commercialUseCheckbox1"
+                    >&nbsp;Commercial Use <b>NOT</b> Allowed</label
+                    >
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="float-right">
+                    <!--  ----- Buttons "Delete", "New", "Save", "Add", and "Cancel" -----  -->
+                    <span
+                        *ngIf="isChanged"
+                        class="edit-lic-warning"
+                    >
+                        There are unsaved changes!
+                    </span>
+
+                    <div class="edit-lic-button-div">
+                        <input
+                            *ngIf="!isEditing"
+                            type="button"
+                            class="btn btn-danger edit-lic-button"
+                            value="Delete"
+                            (click)="onLicEditDeleteClick()"
+                        />
+                        <input
+                            *ngIf="!isEditing"
+                            type="button"
+                            class="btn nbia-button edit-lic-button"
+                            value="New"
+                            (click)="onLicEditNewClick()"
+                        />
+                        <input
+                            *ngIf="isEditing"
+                            type="button"
+                            class="btn nbia-button edit-lic-button"
+                            value="Cancel"
+                            (click)="onLicEditCancelClick()"
+                        />
+                        <input
+                            *ngIf="isEditing"
+                            type="button"
+                            class="btn nbia-button edit-lic-button"
+                            value="Add"
+                            (click)="onLicEditAddClick()"
+                            [disabled]="
+                                licData[0].licenseURL.length < 1 ||
+                                licData[0].shortName.length < 1 ||
+                                licData[0].longName.length < 1
+                            "
+                        />
+                        <input
+                            *ngIf="!isEditing"
+                            type="button"
+                            class="btn nbia-button edit-lic-button"
+                            value="Save"
+                            (click)="onLicEditSaveClick()"
+                            [disabled]="
+                                licData[0].licenseURL.length < 1 ||
+                                licData[0].shortName.length < 1 ||
+                                licData[0].longName.length < 1 ||
+                                (!isEditing && !isChanged)
+                            "
+                        />
+                    </div>
+                    <!--  ----- END Buttons "Delete", "New", "Save", "Add", and "Cancel" -----  -->
+                </td>
+            </tr>
+        </table>
+        <!-- -----  END Table with labels and editable fields  -----  -->
+    </div>
+</div>
+
+<!-- The Confirm Delete Popup.  -->
+<div
+    *ngIf="showConfirmDelete"
+    ngDraggable
+    [handle]="PanelHandle"
+    class="card delete-box alert-box-div alert-box-shadow"
+    [ngClass]="{
+        'edit-license-panel-heading-moving': handleMoving
+    }"
+    [ngDraggable]="true"
+    (started)="onDragBegin($event)"
+    (endOffset)="onMoveEnd($event)"
+    [style.left.px]="confirmDeleteLeft"
+>
+
+    <!-- -----  Delete Licence  ----- -->
+    <div
+        #PanelHandle
+        class="card-nbia-header-danger edit-license-panel-heading unselectable p-2"
+    >
+        <div>
+            <img src="assets/images/TOOLS/exclamation_red.png" height="24px" alt="exclamation_red.png">
+            Delete License: <b>{{ licData[currentLic]["shortName"] }}</b>
+        </div>
+    </div>
+    <div style="padding-top: 30px;">
+        <div class="edit-license-confirm-delete-text0 p-2">
+            <b>{{ licData[currentLic]["longName"] }}</b>
+            <div *ngIf="editLicErrorNote.length > 0">
+                <br/>
+                <span *ngIf="editLicErrorNote.length > 1" class="edit-license-confirm-delete-text1">
+                    Could not delete this license, it is used by these collections:
+                </span>
+                <span *ngIf="editLicErrorNote.length < 2" class="edit-license-confirm-delete-text1">
+                    Could not delete this license, it is used by this collection:
+                </span>
+
+                <div>{{ editLicErrorNote }}</div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="edit-license-confirm-delete-buttons-div p-2">
+            <input
+                *ngIf="editLicErrorNote.length < 1"
+                type="button"
+                class="btn btn-danger edit-lic-button"
+                value="Delete"
+                (click)="onLicEditConfirmDeleteClick()"
+            />
+            <input
+                *ngIf="editLicErrorNote.length < 1"
+                type="button"
+                class="btn nbia-button edit-lic-button"
+                value="Cancel"
+                (click)="onLicEditCancelDeleteClick()"
+            />
+            <input
+                *ngIf="editLicErrorNote.length > 0"
+                type="button"
+                class="btn nbia-button edit-lic-button"
+                value="Okay"
+                (click)="onLicEditCancelDeleteClick()"
+            />
+        </div>
+    </div>
+</div>
+<!-- END Confirm Delete Popup.  -->
+
+<h4 *ngIf="!roleIsGood && userRoles !== undefined">
+    <p>
+        User does not have authorization required for "<b
+    >Edit Collection Description</b
+    >"
+    </p>
+    <p>
+        Users role(s): <b>{{ userRoles }}</b>
+    </p>
+    Required role: <b>NCIA.MANAGE_COLLECTION_DESCRIPTION</b>
+</h4>

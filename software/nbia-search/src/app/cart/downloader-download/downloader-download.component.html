@@ -5,17 +5,19 @@
 <!-- ----------     Download - Download the manifest file, its mime type should trigger the Downloader app.  ---------- -->
 <!-- ----------     Get TCIA Downloader App - Opens the website where the Downloader can be downloaded.      ---------- -->
 
-<div *ngIf="showDownloaderDownload" class="alert-box-div downloader-download-div ">
-    <div class="panel panel-info alert-box-shadow">
-        <div class="panel-heading">
-            <span class="alert-box-icon glyphicon glyphicon-info-sign"></span>
+<div *ngIf="showDownloaderDownload" class="card card-nbia-default alert-box-div alert-box-shadow downloader-download-div ">
+        <div class="card-heading card-nbia-header-with-icon-default">
+            <img class="mt-2 ml-3"  src="assets/images/icons/info_blue_32px.png">
+
             &nbsp;
-            <span class="panel-title">
-                NBIA Data Retriever
+            <span class="card-title">
+                <span class="data-retriever-info-text">
+                    NBIA Data Retriever
+                </span>
             </span>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
             <div>
                 Before clicking the Download button you must install
                 <br>
@@ -48,7 +50,7 @@
 
                 <!-- "Continue Cart Download" button  -->
                 <button class="btn  btn-default nbia-button alert-box-button" (click)="onContinueCartDownloadClick()">
-                    <span class="glyphicon glyphicon-download-alt"></span>
+                    <img class="application-menu-icon" src="assets/images/TOOLS/download_white.png">
                     &nbsp;Download
                 </button>
                 &nbsp;
@@ -62,12 +64,11 @@
                     TARGET="_blank"
                     (click)="onTciaDownloaderClick()"
                 >
-                    <span class="glyphicon glyphicon-download-alt"></span>
+                    <img class="application-menu-icon" src="assets/images/TOOLS/download_white.png">
                     &nbsp;Get NBIA Data Retriever
                 </a>
 
             </div>
 
         </div>
-    </div>
 </div>

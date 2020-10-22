@@ -1,14 +1,18 @@
+@import './btn-nbia';
+@import './card-nbia';
+
 $toolHeadingFontSize: 16pt;
 $header-background-color: #013856;
 $popup-z-index: 91;
 $alert-top: 100px;
-$close-x-red: #700;
+$close-x-red: #800;
 $loading-screen-z-index: 5;
 $heading-text-color: #bb0e3d;
+$criteriaQueryBorderColor: #cfcfcf;
 
 $top-logo-height: 41px;
 $heading-height: 110px;
-$heading-margin-bottom: 8px;   /* Space between menu bar and top of content */
+$heading-margin-bottom: 8px; /* Space between menu bar and top of content */
 $disabled-text: #acacac; // TODO rename & explain
 $disabled-dark-text: #9c9c9c; // TODO rename & explain
 
@@ -62,27 +66,9 @@ table {
     cursor: pointer;
 }
 
-.text-left {
-    text-align: left !important;
-}
-
-.dropdown-menu-item-data-admin {
-    color: #fff;
-    padding: 1px 0px 4px 14px;
-    background-color: #337ab7;
-    border: solid 1px #828282;
-}
-
-.dropdown-menu-item-data-admin:hover {
-    color: #fff;
-    background-color: #286090;
-}
-
-
 .display-query-div {
     width: 100%;
 }
-
 
 .unselectable {
     -webkit-touch-callout: none;
@@ -93,11 +79,87 @@ table {
     user-select: none;
 }
 
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid \9
+;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
 
-.black-text{
+.black-text {
     color: #000000;
 }
 
-.disabled-text{
+.disabled-text {
     color: $disabled-dark-text;
+}
+
+
+.admin-dropdown-outline {
+    border-bottom: solid #d9d9d9 1px;
+    margin-bottom: 0;
+}
+
+.admin-dropdown-span {
+    cursor: pointer;
+}
+
+.admin-dropdown-span:hover {
+    background-color: #286090;
+}
+
+.admin-dropdown-button {
+    padding-top: 10px;
+    min-width: 540px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+
+.admin-dropdown-button:disabled {
+    cursor: default;
+}
+
+.display-query-wrapper{
+    width: 100%;
+}
+
+.query-display-row{
+    // This should not be needed, but...
+    width: calc(100% + 30px);
+}
+
+.parent-font{
+    font-size: 10px;
+}
+
+.heading-font-extra-small{
+    font: 13px arial, sans-serif;
+}
+.heading-font-small{
+    font: 14px arial, sans-serif;
+}
+.heading-font-medium{
+    font: 17px arial, sans-serif;
+}
+.heading-font-large{
+    font: 20px arial, sans-serif;
+}
+
+.font-extra-small{
+    font: 11px arial, sans-serif;
+}
+.font-small{
+    font: 12px arial, sans-serif;
+}
+.font-medium{
+    font: 14px arial, sans-serif;
+}
+.font-large{
+    font: 18px arial, sans-serif;
 }

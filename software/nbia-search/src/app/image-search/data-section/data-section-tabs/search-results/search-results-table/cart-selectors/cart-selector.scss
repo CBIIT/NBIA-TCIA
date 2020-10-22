@@ -1,4 +1,5 @@
 @import '../../../../../../app.component.scss';
+@import '../../../../../../btn-nbia.scss';
 
 
 .cart-with-count {
@@ -16,4 +17,11 @@
     margin-right: 0px;
     margin-left: 0px;
 
+}
+
+
+
+.cart-delete-button-icon{
+    width: 14px !important;
+    height: 14px !important;
 }

@@ -104,6 +104,10 @@ export class ConfigurationService{
                         }
                     }
 
+                    if( key === 'UNIVERSAL_HEADING_AND_MENU' ){
+                        Properties.SHOW_UNIVERSAL_MENU = this.utilService.isTrue( value );
+                    }
+
                     if( key === 'SHOW_ROLES' ){
                         Properties.SHOW_ROLES = this.utilService.isTrue( value );
                     }

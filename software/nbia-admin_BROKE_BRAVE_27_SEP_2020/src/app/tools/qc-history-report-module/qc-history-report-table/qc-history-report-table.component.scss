@@ -1,0 +1,27 @@
+@import '../../../app.component';
+@import 'src/app/data-table';
+@import '../../../tools/search-results-section-module/search-results-section/search-results-section.component.scss';
+
+.qc-history-report-table {
+    width: 100%;
+}
+
+.tableFixHead {
+    overflow-y: auto;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+}
+
+.outer-div {
+    height: 300px;
+    padding-bottom: 12px;
+
+    resize: vertical;
+    overflow: auto;
+    cursor: default;
+}
+
+

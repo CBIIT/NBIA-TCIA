@@ -5,16 +5,16 @@
 
     <div class="query-panel-heading">
         <label *ngIf="subjectText.length > 0" class="red-clear">
-            <img class=" clicker" src="assets/images/redClear.png" alt="Search" (click)="onClearClick()">
+            <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="Search" (click)="onClearClick()">
         </label>
 
         <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
-            <img src="assets/images/down_V01.png">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Subject IDs
         </span>
 
         <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
-            <img src="assets/images/right_V01.png">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Subject IDs
         </span>
 

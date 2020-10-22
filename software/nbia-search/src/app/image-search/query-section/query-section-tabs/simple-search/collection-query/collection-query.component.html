@@ -5,6 +5,7 @@
 
         (mouseover)="mouseOverToolTip()"
         (mouseleave)="mouseleaveToolTip()"
+        (mouseout)="mouseleaveToolTip()"
 
         [showToolTip]=showToolTip
         [toolTipY]=toolTipY
@@ -23,7 +24,7 @@
                 class="clicker"
                 (click)="onShowCriteriaListClick(false)"
         >
-            <img src="assets/images/down_V01.png">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Collections
         </span>
 
@@ -32,7 +33,7 @@
                 class="clicker"
                 (click)="onShowCriteriaListClick(true)"
         >
-            <img src="assets/images/right_V01.png">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Collections
         </span>
 
@@ -76,8 +77,8 @@
         >
 
             <img
-                    class="clicker"
-                    src="assets/images/search.png"
+                    class="clicker application-menu-icon"
+                    src="assets/images/TOOLS/search_red_43px.png"
                     alt="Search"
                     (click)="onSearchGlassClick()"
             >
@@ -86,8 +87,8 @@
         <!-- Uncheck all the Collection criteria and restore their counts back to the full count in the database. -->
         <label *ngIf="checkedCount > 0" class="red-clear">
             <img
-                    class=" clicker"
-                    src="assets/images/redClear.png"
+                    class="clicker cart-button-icon"
+                    src="assets/images/TOOLS/clear_red.png"
                     alt="Search"
                     (click)="onCollectionsClearAllClick(false)"
             >
@@ -110,15 +111,14 @@
                    [(ngModel)]="searchInput"
                    (blur)="onSearchTextOutFocus(0)"
                    (focus)="onSearchTextFocus(0)"
-                   (ngModelChange)="onSearchChange($event)">
+                   (ngModelChange)="onSearchChange()">
 
-            <!-- This needs to be "for", not "ngFor", it needs to be hidden, not removed from the DOM -->
             <!-- The "X" to clear the search text -->
             <span *ngIf="searchInput.length > 0"
-                  class="glyphicon glyphicon-remove search-text-area-x close-x"
+                  class="search-text-area-x close-x"
                   (blur)="onSearchTextOutFocus(1)"
                   (focus)="onSearchTextFocus(1)"
-                  (click)="onClearSearchInputClick()">
+                  (click)="onClearSearchInputClick()">X
             </span>
         </div>
         <!-- -----  End Search input  ----- -->
@@ -140,6 +140,13 @@
                 'collection-scroller-div': (! properties.USE_COLLECTIONS_LESS_MORE)
             }"
         >
+
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+
+
             <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
             <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
 
@@ -154,29 +161,30 @@
                     (mouseleave)="hideToolTip()"
             >
 
-
-                <span
-                        (mouseover)="getPos($event, criteria['criteria'])"
-                >
+                <span>
                     <input type="checkbox"
-                           class="check-box"
-                           id="checkbox-collection{{i}}"
-                           [(ngModel)]="cBox[i]"
-                           (click)="onCheckboxClick(i, $event.target.checked)"
+                        class="check-box"
+                        id="checkbox-collection{{i}}"
+                        [(ngModel)]="cBox[i]"
+                        (click)="onCheckboxClick(i, $event.target['checked'])"
                     >
-                    <label [attr.for]="'checkbox-collection'+i">
-                            {{criteria['criteria']}}
-                    </label>
-                 </span>
+                </span>
 
-
+                <label
+                    class="criteria-entry-text"
+                    [attr.for]="'checkbox-collection'+i"
+                    (mouseover)="getPos($event, criteria['criteria'])"
+                >
+                    {{criteria['criteria']}}
+                </label>
 
                  <span
                          [ngClass]="{
                          'count-box': criteria['count'] > 0,
                          'count-box_zero': criteria['count'] <= 0
                      }"
-                 >{{criteria['count']}}</span>
+                 >
+                     {{criteria['count']}}</span>
                 </span>
             </div>
 

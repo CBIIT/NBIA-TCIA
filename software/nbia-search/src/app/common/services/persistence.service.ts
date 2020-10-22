@@ -8,7 +8,7 @@ import { CookieOptionsArgs } from 'angular2-cookie/core';
 export class PersistenceService{
 
     public Field = Object.freeze( {
-        // Numerical value of data display tab "Summaary", "Search Results", or "Test"
+        // Numerical value of data display tab "Summary", "Search Results", or "Test"
         DATA_DISPLAY_TAB: 'dataDisplayTab',
 
         SEARCH_RESULTS_ROWS_PER_PAGE: 'search_results_rows_PerPage',

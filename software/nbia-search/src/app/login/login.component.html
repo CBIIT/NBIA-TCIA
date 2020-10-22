@@ -1,16 +1,19 @@
-<div class="panel panel-info login-box alert-box-div alert-box-shadow">
-
-    <div class="panel-heading">
-        <div class="panel-title">Login {{username}}</div>
+<div class="card card-nbia-default login-box alert-box-shadow">
+    <div class="card-header card-nbia-header-default">
+        <div class="card-title">Login</div>
     </div>
 
-    <div style="padding-top:30px" class="panel-body">
 
-        <form class="form-horizontal login-form" (ngSubmit)="onSubmit()" #f="ngForm">
+    <div style="padding-top:30px" class="card-body bg-white">
+        <form (ngSubmit)="onSubmit()" #f="ngForm">
 
             <!--  User  -->
             <div style="margin-bottom: 25px" class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <span class="input-group-prepend">
+                    <span class="input-group-text">
+                        <img src="assets/images/user.png">
+                    </span>
+                </span>
                 <input type="text"
                        id="username"
                        class="form-control"
@@ -21,8 +24,12 @@
             </div>
 
             <!--  Password  -->
-            <span class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <span class="input-group mb-3">
+                <span class="input-group-prepend">
+                    <span class="input-group-text">
+                        <img src="assets/images/lock.png">
+                    </span>
+                </span>
                 <input type="password"
                        class="form-control"
                        id="password"
@@ -34,41 +41,36 @@
             </span>
 
             <!-- Button -->
-            <span class="form-group login-button">
+            <span class="form-group">
                 <button type="submit"
-                        class="btn login-button"
+                        class="btn btn-primary"
                         [disabled]="!f.valid"
-                        [ngClass]="{
-                             'btn-primary': f.valid
-                        }"
                 >
                     Log in
                 </button>
                 <!--  Failed Login message  -->
                 <span
-                    *ngIf="statusMessage0.length > 0"
-                    class="error-alert alert alert-danger"
+                        *ngIf="statusMessage0.length > 0"
+                        class="error-alert alert alert-danger"
                 >
                     {{statusMessage0}}
                 </span>
 
                 <span class="account-buttons">
                     <a
-                        *ngIf="statusMessage0.length < 1"
-                        [href]=properties.NEW_ACCOUNT_REGISTRATION TARGET="_blank"
+                            *ngIf="statusMessage0.length < 1"
+                            [href]=properties.NEW_ACCOUNT_REGISTRATION TARGET="_blank"
                     >
-                        <button class="btn btn-primary" type="button">New account</button>
+                        <button class="btn btn-info" type="button">New account</button>
                     </a>
 
                     <a
-                        *ngIf="statusMessage0.length < 1"
-                        class="account-help-button"
-                        [href]=properties.ACCOUNT_HELP TARGET="_blank"
+                            *ngIf="statusMessage0.length < 1"
+                            class="account-help-button"
+                            [href]=properties.ACCOUNT_HELP TARGET="_blank"
                     >
-                        <button class="btn btn-primary" type="button">Account help</button>
+                        <button class="btn btn-info" type="button">Account help</button>
                     </a>
-
-
 
                 </span>
             </span>

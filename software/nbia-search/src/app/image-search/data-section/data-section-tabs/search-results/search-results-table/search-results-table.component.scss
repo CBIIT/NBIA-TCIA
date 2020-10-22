@@ -1,65 +1,59 @@
 @import '../../../../../app.component.scss';
+@import '../../../../../btn-nbia.scss';
 
 /* TODO find out where this is being overridden, we should be able to use this from app.css  */
 .dark {
-  background: #f4f4f4 !important;
+    background: #f4f4f4 !important;
 }
 
 .show-subject-details-td {
-  width: 16px;
-  border-right: none;
-  cursor: pointer;
+    width: 16px;
+    border-right: none;
+    cursor: pointer;
 }
 
 .thead-tr {
-  border: none;
+    border: none;
 }
 
 .show-subject-details {
-  margin-left: 4px;
+    margin-left: 4px;
 
-  border-color: #00b110;
+    border-color: #00b110;
 }
 
 .top-cart-select-dropdown {
-  padding: 0;
-  margin: 0;
-}
-
-.top-cart-select-button {
-  /* T R B L */
-  padding: 2px 7px 1px 7px;
-  margin: 0 7px 0 7px;
-  max-width: 30px;
+    padding: 0;
+    margin: 0;
 }
 
 .cart-heading {
-  padding-right: 0;
-  margin-right: 0;
+    padding-right: 0;
+    margin-right: 0;
 }
 
 .sort-pointer {
-  margin-left: 1px;
+    margin-left: 1px;
 }
 
 .subjectId-heading {
-  cursor: pointer;
-  text-decoration: none;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .search-results-table {
-  border-bottom: solid 1px #cfcfcf;
-  border-right: solid 2px #cfcfcf;
-  border-left: solid 2px #cfcfcf;
-  width: 100%;
+    border-bottom: solid 1px #cfcfcf;
+    border-right: solid 2px #cfcfcf;
+    border-left: solid 2px #cfcfcf;
+    width: 100%;
 }
 
 /* Wait while updating label, shows up next to "Showing X of X Subjects. */
 .cart-update-label {
-  position: relative;
-  top: -28px;
-  left: 220px;
-  font-size: 12pt;
+    position: relative;
+    top: -28px;
+    left: 220px;
+    font-size: 12pt;
 }
 
 /*
@@ -68,41 +62,41 @@
  */
 .search-results-table-div-scroll {
 
-  /** Left side data panel */
-  padding: 0;
-  position: fixed;
-  right: 10px;
-  left: 390px;
+    /** Left side data panel */
+    padding: 0;
+    position: fixed;
+    right: 10px;
+    left: 390px;
 
-  /* Fix position at bottom, leave room for the "show per page", and "pager" at the bottom */
-  bottom: 67px;
-  overflow-x: hidden;
-  overflow-y: auto;
+    /* Fix position at bottom, leave room for the "show per page", and "pager" at the bottom */
+    bottom: 67px;
+    overflow-x: hidden;
+    overflow-y: auto;
 
-  /* FIXME  when the display query needs to expand downward, 311 isn't right anymore. */
-  height: calc(100% - 311px);
+    /* FIXME  when the display query needs to expand downward, 311 isn't right anymore. */
+    height: calc(100% - 311px);
 }
 
 td {
-  border: solid 1px #e7e7e7;
+    border: solid 1px #e7e7e7;
 }
 
 /* The top level Search results
    we can't just use td because the odd TDs are Subject detail displays */
 .search-results-td {
-  padding: 2px 0 2px 4px;
+    padding: 2px 0 2px 4px;
 }
 
 .collectionID {
 }
 
 .cart-check {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .subjectId-link {
-  cursor: pointer;
-  text-decoration: none;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .matchedStudies {
@@ -126,7 +120,7 @@ td {
 .hit {
 }
 
-.ohif-subject-button{
-  width: 30px;
-  padding: 2px 7px 1px 7px;
+.ohif-subject-button {
+    width: 30px;
+    padding: 2px 7px 1px 7px;
 }

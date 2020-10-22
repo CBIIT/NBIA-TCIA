@@ -58,7 +58,6 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     /**
      * True if a (non-default) user is logged in.
-     * Currently this is being set, but not used.  We will need this when, timing out a user is implemented.
      */
     userIsLoggedIn;
 
@@ -184,9 +183,9 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
         // When user clicks a cart button in the Search Results or Cart page.
         this.cartService.cartCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                this.cartCount = data['count'];
-                this.cartTotalFileSize = data['fileSize'];
-                this.cartTotalFileSizeWithDisabled = data['fullFileSize'];
+                this.cartCount = <any>data['count'];
+                this.cartTotalFileSize = <any>data['fileSize'];
+                this.cartTotalFileSizeWithDisabled = <any>data['fullFileSize'];
                 this.checkShareEnabled();
             }
         );

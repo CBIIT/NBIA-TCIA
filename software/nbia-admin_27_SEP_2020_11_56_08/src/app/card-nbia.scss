@@ -1,0 +1,60 @@
+$card-nbia-header-height: 43px;
+$card-nbia-header-with-icon-height: 58px;
+
+$card-nbia-header-default-border-color: #bce8f1;
+$card-nbia-header-default-background-color: #d9edf7;
+$card-nbia-header-default-text-color: #347391;
+
+$card-nbia-header-danger-border-color: #ebccd1;
+$card-nbia-header-danger-background-color: #f2dede;
+$card-nbia-header-danger-text-color: #a94442;
+
+
+// Abstract
+.card-nbia-header {
+    padding-bottom: 0;
+    border-top-left-radius : 3px;
+    border-top-right-radius : 3px;
+}
+
+// Abstract
+.card-nbia-header-with-icon {
+    @extend .card-nbia-header;
+    height:  $card-nbia-header-with-icon-height;
+}
+
+.card-nbia-header-danger{
+    @extend .card-nbia-header-with-icon;
+    background-color: $card-nbia-header-danger-background-color;
+    color: $card-nbia-header-danger-text-color;
+    border-bottom: solid $card-nbia-header-danger-border-color 1px;
+}
+
+.card-nbia-danger{
+    border-color: $card-nbia-header-danger-border-color;
+    border-radius : 3px;
+}
+
+
+.card-nbia-header-default{
+    @extend .card-nbia-header;
+    height:  $card-nbia-header-height;
+    background-color: $card-nbia-header-default-background-color;
+    color: $card-nbia-header-default-text-color;
+    border-color: $card-nbia-header-default-border-color;
+    border-bottom: solid $card-nbia-header-default-border-color 1px;
+}
+
+.card-nbia-header-with-icon-default{
+    @extend .card-nbia-header-with-icon;
+    background-color: $card-nbia-header-default-background-color;
+    color: $card-nbia-header-default-text-color;
+    border-color: $card-nbia-header-default-border-color;
+    border-bottom: solid $card-nbia-header-default-border-color 1px;
+}
+
+.card-nbia-default{
+    border-color: $card-nbia-header-default-border-color;
+    border-radius : 3px;
+}
+

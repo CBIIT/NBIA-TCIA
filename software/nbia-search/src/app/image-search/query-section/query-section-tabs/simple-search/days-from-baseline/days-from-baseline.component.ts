@@ -105,20 +105,18 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
                 let from = dateString;
                 let event = dateString;
 
-                if( dateString.includes('--')){
+                if( dateString.includes( '--' ) ){
                     to = to.replace( /.*--/, '-' );
-                }
-                else{
+                }else{
                     to = to.replace( /.*-/, '' );
                 }
 
 
                 from = from.replace( /^.*:/, '' )
-                if( from.indexOf('-') > 0 ){
+                if( from.indexOf( '-' ) > 0 ){
                     from = from.replace( /-.*/, '' );
-                }
-                else{
-                    from = from.slice(1);
+                }else{
+                    from = from.slice( 1 );
                     from = '-' + from.replace( /-.*/, '' );
                 }
                 event = event.replace( /:.*/, '' );
@@ -286,12 +284,17 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     }
 
     onEventTypeDropdownClick( i ) {
+        if( i === 0 ){
+            this.currentEventTypeIndex = i;
+            return
+        }
 
         if( (this.getMinByEvent( this.eventTypeList[i] ) === '') &&
             (this.getMaxByEvent( this.eventTypeList[i] ) === '')
         ){
             return;
         }
+
 
         this.currentEventTypeIndex = i;
         this.displayFromBaseLineFrom = this.getMinByEvent( this.eventTypeList[i] );

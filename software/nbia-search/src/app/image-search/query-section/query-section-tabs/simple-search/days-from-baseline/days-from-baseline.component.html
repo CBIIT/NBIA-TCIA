@@ -8,7 +8,7 @@
                 class="clicker unselectable"
                 (click)="onShowClinicalTimepointsClick(false)"
         >
-            <img src="assets/images/down_V01.png">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Clinical Time Points
         </span>
 
@@ -18,7 +18,7 @@
                 class="clicker"
                 (click)="onShowClinicalTimepointsClick(true)"
         >
-            <img src="assets/images/right_V01.png">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Clinical Time Points
         </span>
 
@@ -27,13 +27,12 @@
                class="red-clear"
         >
             <img
-                    class=" clicker"
-                    src="assets/images/redClear.png"
+                    class="clicker cart-button-icon"
+                    src="assets/images/TOOLS/clear_red.png"
                     alt="Search"
                     (click)="onClinicalTimepointsClearAllClick()"
             >
         </label>
-
 
     </div>
 
@@ -49,15 +48,11 @@
         </span>
 
         <!-- Event choice dropdown -->
-        <span class="dropdown menu-dropdown clicker">
-                    <span dropdown [dropdownToggle]="true">
-                        <button
-                                class="btn days-from-baseline-dropdown-button text-left"
+        <span class="dropdown clicker">
+                        <button type="button" class="btn days-from-baseline-dropdown-button dropdown-toggle" data-toggle="dropdown"
                                 [ngClass]="{
                                     'days-from-baseline-dropdown-empty-button': currentEventTypeIndex === 0
                                 }"
-
-                                dropdown-open
                         >
                             <span *ngIf="currentEventTypeIndex === 0">
                                 select
@@ -68,12 +63,8 @@
                                 <span class="caret"></span>
                             </span>
                         </button>
-                        <ul
-                                class="dropdown-menu"
-                                role="menu"
-                        >
-                            <li
-                                    class="edit-lic-dropdown-li"
+                        <div class="dropdown-menu" >
+                            <a class="dropdown-item"
 
                                     *ngFor="let eventType of eventTypeList; let c = index"
                                     [ngClass]="{
@@ -81,14 +72,12 @@
                                          (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined) &&
                                          c > 0
                                     }"
-                                    role="menuitem"
                                     (click)="onEventTypeDropdownClick(c)"
                             >
-                                <a class="menu-dropdown-a" >
-                                    <span
+                                    <img
                                             *ngIf="c === currentEventTypeIndex && currentEventTypeIndex > 0"
-                                            class="glyphicon glyphicon-ok"
-                                    ></span>
+                                            src="assets/images/check.png"
+                                    >
                                     {{ eventType }}
                                     <span *ngIf="searchResultsMinMaxTimePoints['minTimepoints'] !== null && searchResultsMinMaxTimePoints['minTimepoints'][eventType] !== undefined &&
                                      searchResultsMinMaxTimePoints['maxTimepoints'] !== null && searchResultsMinMaxTimePoints['maxTimepoints'][eventType] !== undefined ">
@@ -100,10 +89,8 @@
                                       c > 0">
                                         &nbsp;Available range:&nbsp;N/A
                                     </span>
-                                 </a>
-                            </li>
-                        </ul>
-                    </span>
+                            </a>
+                        </div>
         </span>
 
 

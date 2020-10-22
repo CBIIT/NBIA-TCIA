@@ -1,32 +1,27 @@
-@import '../../../app.component';
-@import '../../../popup.scss';
+// ----------------------------------------------------------------------------------------
+// ----------------------        "Edit Collection Licenses         ------------------------
+// ----------------------------------------------------------------------------------------
+
+@import "../../../app.component";
+@import "../../../popup.scss";
 
 $edit-lic-height: 500px;
-$edit-lic-delete-confirm-min-width: 650px;
-
 
 .edit-license-description-tool {
     /* keep the dropdown section and the Display section side by side.  */
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
+    height: $edit-lic-height;
 }
 
-.edit-lic-dropdown-div {
+.admin-dropdown-div {
     padding-right: 8px;
     margin-right: 20px;
 }
 
-.edit-lic-div {
-    height: $edit-lic-height;
-}
-
 td {
     padding: 6px;
-}
-
-.edit-lic-button-div {
-    float: right;
 }
 
 .edit-lic-button {
@@ -47,91 +42,21 @@ td {
     margin: 3px;
 }
 
-.edit-lic-checkbox-label {
+.edit-lic-radio-button-label {
     float: right;
     font-weight: normal;
 }
 
-.edit-lic-commercial-td {
-    text-align: left;
-    padding-left: 10px;
-}
-
-// Text input on the right
+// Text inputs on the right
 .edit-lic-input {
     min-width: 540px;
 }
 
-.edit-lic-dropdown-span {
-    cursor: pointer;
-}
-
-.edit-lic-dropdown-span:hover {
-    background-color: #286090;
-}
-
-.edit-lic-dropdown-button {
-    padding-top: 10px;
-    min-width: 540px;
-    cursor: pointer;
-}
-
-.edit-lic-dropdown-button:disabled {
-    cursor: default;
-}
-
-.edit-lic-dropdown-ul {
-    padding: 0px;
-    margin-top: 10px;
-    // background-color: #337ab7;
-    background-color: #fff;
-}
-
-.edit-lic-dropdown-li:hover {
-    // background-color: #286090;
-    color: #fff;
-}
-
-.edit-lic-dropdown-li {
-    color: #fff;
-    font: 15px arial, sans-serif;
-
-    alignment: left;
-    float: left;
-    border-right: 1px solid #828282;
-    border-bottom: 1px solid #828282;
-    border-left: 1px solid #828282;
-    margin: 0;
-    padding: 6px;
-    width: 100%;
-    cursor: default;
-}
-
-.edit-lic-no-dropdown {
-    color: #fff;
-}
-
-.edit-lic-no-dropdown {
-    text-decoration: none;
-}
-
 .delete-box {
     position: absolute;
-    // width: $edit-lic-delete-confirm-min-width;
-    // width: auto;
-    // left: calc(50% - #{($edit-lic-delete-confirm-min-width / 2)});
     top: 200px;
     padding: 0;
 }
-
-
-.edit-license-heading {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
 
 // .cursor-draggable isn't working for me, this is a workaround.
 .edit-license-panel-heading:hover {
@@ -149,7 +74,7 @@ td {
 }
 
 .edit-license-confirm-delete-buttons-div {
-    float: right;;
+    float: right;
 }
 
 .edit-license-confirm-delete-text0 {
@@ -167,7 +92,6 @@ td {
     padding-bottom: 0;
     margin-bottom: 0;
 }
-
 
 .top-edit-lic-radio-tr {
     margin-bottom: 0;
@@ -189,10 +113,9 @@ td {
     padding-top: 0px;
 }
 
-.edit-lic-warning{
+.edit-lic-warning {
     color: $close-x-red;
     font-weight: bold;
     padding-bottom: 0;
     margin-bottom: 0;
-
 }

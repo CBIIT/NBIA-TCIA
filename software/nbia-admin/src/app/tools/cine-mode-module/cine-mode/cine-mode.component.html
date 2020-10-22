@@ -1,35 +1,44 @@
-<!--The parent div/ bootstrap panel-->
-<div id="cineMode"
+<!----------  This component is no longer used.  @SEE cine-mode-bravo  ---------->
+
+<div
+    id="cineMode"
     *ngIf="showCineModeViewer"
     ngDraggable
     [handle]="PanelHandle"
-    class="panel panel-info alert-box-div alert-box-shadow unselectable"
+    class="card card-nbia-default alert-box-div alert-box-shadow unselectable"
     [ngClass]="{
         'cine-mode-div-with-dicom': showDicomData && progress > 99,
         'cine-mode-div': !showDicomData || progress <= 99,
         'alert-box-heading-moving': handleMoving,
-        'cine-mode-loading': loadingX
+        'cine-mode-loading': loadingX,
+        'font-extra-small': currentFont === '0',
+        'font-small': currentFont === '1',
+        'font-medium': currentFont === '2',
+        'font-large': currentFont === '3'
     }"
     [ngDraggable]="true"
     (started)="onDragBegin($event)"
     (endOffset)="onMoveEnd($event)"
 >
     <!-- The panel heading, this is the draggable part -->
-    <div #PanelHandle class="panel-heading unselectable alert-box-heading">
-        <span class="panel-title"
-        >
+    <div
+        #PanelHandle
+        class="card-heading card-nbia-header-default unselectable cine-panel-heading p-2"
+    >
+        <span class="card-title">
             {{ seriesData["seriesDescription"] }}&nbsp;&nbsp;
-            {{seriesData["dateTime"]}}
-        </span
-        >
-        <span
-            class="clicker glyphicon glyphicon-remove close-x"
-            (click)="closeCineMode()"
-        ></span>
+            {{ seriesData["dateTime"] }}
+        </span>
+
+        <span class="close-x clicker unselectable" (click)="closeCineMode()">
+            X
+        </span>
     </div>
     <div class="cine-mode-content">
         <span *ngIf="loadingX">
-            <span class="cine-mode-progress-bar-data-loading-text">Loading images</span>
+            <span class="cine-mode-progress-bar-data-loading-text"
+            >Loading images</span
+            >
             <progress-bar
                 [progress]="progress"
                 [color]="'#488aff'"
@@ -39,20 +48,18 @@
             <!-- ---------- This row is the image viewer and the DICOM data ---------- -->
             <div class="row">
                 <div class="col-md-5">
-
-
                     <!-- ----- The image ----- -->
-                    <div *ngIf="!loadingX && !!images[currentImage - 1]"
-
-                         (click)="onOpenImageClick(images[currentImage - 1])"
-                         [ngClass]="{
-                             'clicker': last > 0
-                         }"
+                    <div
+                        *ngIf="!loadingX && !!images[currentImage - 1]"
+                        (click)="onOpenImageClick(images[currentImage - 1])"
+                        [ngClass]="{
+                            clicker: last > 0
+                        }"
                     >
                         <img
                             class="image"
                             [src]="images[currentImage - 1]['thumbnailImage']"
-                            alt="Missing Image {{imageCount}}"
+                            alt="Missing Image {{ imageCount }}"
                         />
                     </div>
                     <!-- ----- END The image ----- -->
@@ -84,7 +91,6 @@
                                     [(ngModel)]="currentImage"
                                     (input)="checkCurrentImageNumber()"
                                     class="cine-mode-image-number-input"
-
                                 />
                                 of {{ imageCount }}
                             </span>
@@ -178,8 +184,9 @@
                                                 >
                                                 </span>
                         -->
-                            <table class="cine-mode-frame-rate-table"
-                                   title="Frames per second"
+                            <table
+                                class="cine-mode-frame-rate-table"
+                                title="Frames per second"
                             >
                                 <tr>
                                     <td>
@@ -235,10 +242,7 @@
                             <tbody>
                             <tr
                                 class="cine-mode-dicom-tr data-table-body-tr"
-                                *ngFor="
-                                        let row of dicomData;
-                                        let odd = odd
-                                    "
+                                *ngFor="let row of dicomData; let odd = odd"
                                 [ngClass]="{
                                         'data-table-body-dark-tr': odd
                                     }"
@@ -319,11 +323,9 @@
         </div>
     </div>
 
-
     <!-- ----- Series data display ----- -->
     <div *ngIf="progress > 99">
         <div class="section-div series-data-table">
-
             <!-- The heading with show/hide clicker. -->
             <span
                 *ngIf="showSeriesData"
@@ -331,7 +333,7 @@
                 (click)="onShowSeriesDataClick(false)"
             >
                 <img src="assets/images/down_V01.png"/>
-                Series Data MHL 0
+                Series Data 00
             </span>
 
             <!-- The data table. -->
@@ -341,9 +343,9 @@
                 (click)="onShowSeriesDataClick(true)"
             >
                 <img src="assets/images/right_V01.png"/>
-                Series Data
+                Series Data 01
             </span>
-            <table  *ngIf="showSeriesData">
+            <table *ngIf="showSeriesData">
                 <thead>
                 <tr class="data-table-thead-tr">
                     <th class="data-table-thead-th">Collection//Site</th>
@@ -365,15 +367,16 @@
                         {{ seriesData["patientId"] }}
                     </td>
 
-
-                    <td class="data-table-body-td"
-                        title="{{seriesData['study']}}"
+                    <td
+                        class="data-table-body-td"
+                        title="{{ seriesData['study'] }}"
                     >
                         {{ seriesData["study"] }}
                     </td>
 
-                    <td class="data-table-body-td"
-                        title="{{seriesData['series']}}"
+                    <td
+                        class="data-table-body-td"
+                        title="{{ seriesData['series'] }}"
                     >
                         {{ seriesData["series"] }}
                     </td>
@@ -397,15 +400,14 @@
         <!-- ----- END Series data display ----- -->
 
         <!-- ----- Change QC Status or Deletion----- -->
-        <div
-            class="section-div">
+        <div class="section-div">
             <span
                 *ngIf="showQcStatus"
                 class="clicker section-heading"
                 (click)="onShowQcStatusClick(false)"
             >
                 <img src="assets/images/down_V01.png"/>
-                {{sectionHeading}}
+                {{ sectionHeading }}
             </span>
 
             <span
@@ -414,7 +416,7 @@
                 (click)="onShowQcStatusClick(true)"
             >
                 <img src="assets/images/right_V01.png"/>
-                {{sectionHeading}}
+                {{ sectionHeading }}
             </span>
 
             <!-- ----- Change QC Status ----- -->
@@ -436,11 +438,8 @@
                 }"
                 [seriesData]="seriesData"
             ></nbia-delete-cinemode-series>
-
-
         </div>
         <!-- ----- END Change QC Status ----- -->
-
 
         <!--  ----- QC History ----- -->
         <div class="section-div">
@@ -452,7 +451,6 @@
                 <img src="assets/images/down_V01.png"/>
                 QC Status History
             </span>
-
 
             <!-- Show the Collection radio button list -->
             <span
@@ -469,8 +467,9 @@
                 ></nbia-qc-history-report-table>
             </div>
         </div>
-        <span class="clicker glyphicon glyphicon-remove close-x" (click)="closeCineMode()"></span>
+        <span class="close-x clicker unselectable" (click)="closeCineMode()">
+            X
+        </span>
     </div>
     <!-- ----- END Series data display ----- -->
-
 </div>

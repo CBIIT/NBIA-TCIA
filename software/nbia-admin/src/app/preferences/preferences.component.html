@@ -1,0 +1,88 @@
+<div
+    *ngIf="showPreferences"
+    class="card card-nbia-default alert-box-div alert-box-shadow preferences-div"
+>
+    <div class="card-header card-nbia-header-default p-2">
+        <h4>Preferences</h4>
+    </div>
+
+    <div class="pl-2 pt-2"><b>Font Size</b></div>
+
+    <table class="font-size-table p-1">
+        <tr>
+            <td class="font-button unselectable">
+                <input
+                    type="radio"
+                    class="clicker p-0 m-1"
+                    id="font_0"
+                    name="fontRadioButton"
+                    value="0"
+                    [(ngModel)]="selectedFontSize.options"
+                />
+                <label [attr.for]="'font_0'" class="pl-1">
+                    Extra Small
+                </label>
+            </td>
+            <td class="font-button unselectable pl-3">
+                <input
+                    type="radio"
+                    class="clicker"
+                    id="font_1"
+                    name="fontRadioButton"
+                    value="1"
+                    [(ngModel)]="selectedFontSize.options"
+                />
+                <label [attr.for]="'font_1'" class="pl-1">
+                    Small
+                </label>
+            </td>
+            <td class="font-button unselectable pl-3">
+                <input
+                    type="radio"
+                    class="clicker"
+                    id="font_2"
+                    name="fontRadioButton"
+                    value="2"
+                    [(ngModel)]="selectedFontSize.options"
+                />
+                <label [attr.for]="'font_2'" class="pl-1">
+                    Medium
+                </label>
+            </td>
+            <td class="font-button unselectable pl-3">
+                <input
+                    type="radio"
+                    class="clicker"
+                    id="font_3"
+                    name="fontRadioButton"
+                    value="3"
+                    [(ngModel)]="selectedFontSize.options"
+                />
+                <label [attr.for]="'font_3'" class="pl-1">
+                    Large
+                </label>
+            </td>
+        </tr>
+    </table>
+    <!-- END Font section -->
+
+    <div class="p-1">
+        <div class="float-right">
+            <button
+                class="btn nbia-button"
+                type="button"
+                (click)="onCancelClick()"
+            >
+                Cancel
+            </button>
+            &nbsp;
+            <button
+                class="btn nbia-button"
+                type="button"
+                (click)="onOkayClick()"
+            >
+                Okay
+            </button>
+        </div>
+    </div>
+</div>

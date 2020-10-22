@@ -107,6 +107,7 @@ import { AngularDraggableModule } from 'angular2-draggable';
 import { ProgressBarModule } from 'angular-progress-bar';
 import { DaysFromBaselineComponent } from './image-search/query-section/query-section-tabs/simple-search/days-from-baseline/days-from-baseline.component';
 import { CommercialUseComponent } from './image-search/query-section/query-section-tabs/simple-search/commercial-use/commercial-use.component';
+import { UniversalMenuComponent } from './header/universal-menu/universal-menu.component';
 
 
 /*
@@ -199,7 +200,8 @@ const appRoutes: Routes = [
         BannerComponent,
         CineModeComponent,
         DaysFromBaselineComponent,
-        CommercialUseComponent
+        CommercialUseComponent,
+        UniversalMenuComponent
     ],
     imports: [
         BrowserModule,

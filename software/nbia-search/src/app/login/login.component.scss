@@ -1,18 +1,9 @@
 @import '../app.component.scss';
 
-.login-form{
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
 .login-box {
     width: 400px;
     left: calc(50% - 200px);
-    padding: 0;
-}
-
-.login-td {
-    padding: 4px 0 0 10px;
+    margin-top: $alert-top;
 }
 
 .error-alert {
@@ -29,17 +20,4 @@
     margin-left: 4px;
     margin-top: 0;
 
-}
-
-.new_account-button{
-    margin-top: 0;
-}
-
-hr{
-    margin: 0 0 6px 0;
-    padding: 0;
-}
-
-.login-button{
-    margin-bottom: 0;
 }

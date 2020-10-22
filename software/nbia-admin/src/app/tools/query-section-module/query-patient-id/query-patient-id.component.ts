@@ -1,3 +1,7 @@
+// -------------------------------------------------------------------------------------------
+// -------------------------      Patient ID a.k.a Subject ID      ---------------------------
+// -------------------------------------------------------------------------------------------
+
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '@app/constants';
 import { QuerySectionService } from '../services/query-section.service';
@@ -5,6 +9,8 @@ import { UtilService } from '@app/admin-common/services/util.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
+import { PreferencesService } from '@app/preferences/preferences.service';
+
 
 @Component( {
     selector: 'nbia-query-patient-id',
@@ -26,19 +32,32 @@ export class QueryPatientIdComponent implements OnInit, OnDestroy{
      */
     subjectText = '';
     subjectIds;
+    currentFont;
     consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private querySectionService: QuerySectionService, private utilService: UtilService,
-                 private displayQueryService: DisplayQueryService) {
+                 private displayQueryService: DisplayQueryService ,
+                 private preferencesService: PreferencesService) {
     }
 
     ngOnInit() {
+
+        // When the "Clear" button in the Display query at the top is clicked.
         this.displayQueryService.clearQuerySectionQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.onClearClick();
             } );
+
+        // Get font size
+        this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.currentFont = data;
+            } );
+        // Get the initial value
+        this.currentFont = this.preferencesService.getFontSize();
+
     }
 
     /**

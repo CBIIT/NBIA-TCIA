@@ -1,26 +1,37 @@
 <span *ngIf="properties.SHOW_HEADER">
-<img class="background-image"  src={{properties.LOGO_FILE}} alt="Logo">
 
+<nbia-universal-menu *ngIf="properties.SHOW_UNIVERSAL_MENU"></nbia-universal-menu>
 
-<nav class=" menu-header">
-    <div class="container-fluid">
+<img *ngIf="!properties.SHOW_UNIVERSAL_MENU" class="background-image" src={{properties.LOGO_FILE}} alt="Logo">
 
-        <nbia-custom-menu *ngIf="properties.SHOW_CUSTOM_MENU"></nbia-custom-menu>
+    <nav
+            [ngClass]="{
+            'menu-header': !properties.SHOW_UNIVERSAL_MENU
+        }"
+    >
 
-        <nbia-application-menu></nbia-application-menu>
+        <div class="container-fluid "
+             [ngClass]="{
+            'query-and-results-container': properties.SHOW_UNIVERSAL_MENU
+        }"
+        >
 
-        <!--  This will sit on top of everything else, if the Downloader-download is popped up.  -->
-        <nbia-downloader-download></nbia-downloader-download>
+            <nbia-custom-menu *ngIf="!properties.SHOW_UNIVERSAL_MENU"></nbia-custom-menu>
 
-        <!--  This is no longer used
-                <nbia-save-shared-list></nbia-save-shared-list>
-        -->
+            <nbia-application-menu></nbia-application-menu>
 
-        <!-- Popup for telling user, one or more search criteria in the URL parameters was not here.  -->
-        <nbia-missing-criteria></nbia-missing-criteria>
+            <!--  This will sit on top of everything else, if the Downloader-download is popped up.  -->
+            <nbia-downloader-download></nbia-downloader-download>
 
-    </div>
-</nav>
+            <!--  This is no longer used
+                    <nbia-save-shared-list></nbia-save-shared-list>
+            -->
+
+            <!-- Popup for telling user, one or more search criteria in the URL parameters was not here.  -->
+            <nbia-missing-criteria></nbia-missing-criteria>
+
+        </div>
+    </nav>
 </span>
 
 <!-- -----  Components that need to "popup" at this level when they are visible.  ----- -->

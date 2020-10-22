@@ -1,0 +1,128 @@
+@import 'src/app/tools/query-section-module/query-section/query-section.component';
+@import '../../left-section/left-section.component.scss';
+@import '../../../../app.component.scss';
+
+.main-date-range-div {
+    color: #000;
+    background-color: #fff;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    padding: 0 0 0 0;
+    margin-left: $query-criteria-content-left-margin;
+    margin-top: 8px;
+    height: 32px;
+    font-size: 12px;
+}
+.main-date-range-div-extra-small{
+    @extend .main-date-range-div;
+    width: $left-section-width-extra-small - ($query-section-left-pad + $query-section-right-pad + ( $query-criteria-content-left-margin * 2));
+}
+.main-date-range-div-small{
+    @extend .main-date-range-div;
+    width: $left-section-width-small - ($query-section-left-pad + $query-section-right-pad + ( $query-criteria-content-left-margin * 2));
+}
+.main-date-range-div-medium{
+    @extend .main-date-range-div;
+    width: $left-section-width-medium - ($query-section-left-pad + $query-section-right-pad + ( $query-criteria-content-left-margin * 2));
+}
+.main-date-range-div-large{
+    @extend .main-date-range-div;
+    width: $left-section-width-large - ($query-section-left-pad + $query-section-right-pad + ( $query-criteria-content-left-margin * 2));
+}
+.available-checkbox {
+    margin-top: 15px;
+    margin-bottom: 12px;
+}
+
+.date-box-label {
+    /* Label text color  */
+    color: #000;
+    background-color: #eee;
+    border-right: solid 1px #ccc;
+}
+
+.date-box-label-from {
+    padding: 7px 6px 7px 11px;
+}
+
+.date-box-label-to {
+    padding: 7px 20px 7px 11px;
+}
+
+.date-box-label-box {
+    /* label background color   */
+    background-color: #eee;
+    border-right: solid 1px #ccc;
+    padding: 0;
+    margin: 0;
+    width: 48px;
+    display: inline-block;
+}
+
+.date-box-button-box {
+    background-color: #fff;
+    border-right: solid 1px #ccc;
+    height: 100%;
+    width: 32px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.date-box-button {
+    /* Glyph color  */
+    color: #000;
+    position: relative;
+    top: 6pt;
+    left: 6pt;
+    display: inline-block;
+}
+
+/*  Box around theTex input  */
+.date-box-text-box {
+
+    /* Trying to clean this up for Chrome TODO do we really need/want this? */
+    outline: none;
+
+    border: none;
+
+    height: 100%;
+    display: inline-block;
+    float: none;
+    padding-left:4px;
+}
+.date-box-text-box-extra-small {
+    @extend .date-box-text-box;
+    width: $left-section-width-extra-small - 150px;
+}
+.date-box-text-box-small {
+    @extend .date-box-text-box;
+    width: $left-section-width-small - 150px;
+}
+.date-box-text-box-medium {
+    @extend .date-box-text-box;
+    width: $left-section-width-medium - 150px;
+}
+.date-box-text-box-large {
+    @extend .date-box-text-box;
+    width: $left-section-width-large - 150px;
+}
+
+.apply-is-set {
+    color: $heading-text-color;
+    font-weight: bold;
+}
+
+
+.disabled-text {
+    color: $disabled-text;
+    cursor: not-allowed;
+}
+
+.apply-date-range-text{
+    font-weight: normal;
+}
+
+.display-date-range{
+    color: $heading-text-color;
+    margin: -10px 0 4px 32px;
+}

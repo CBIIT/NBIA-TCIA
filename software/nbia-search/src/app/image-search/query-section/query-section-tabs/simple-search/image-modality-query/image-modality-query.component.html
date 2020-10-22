@@ -1,8 +1,13 @@
 <nbia-tool-tip
-    [showToolTip]=showToolTip
-    [toolTipY]=toolTipY
-    [toolTipText]=toolTipText
-    [toolTipHeading]=toolTipHeading
+
+        (mouseover)="mouseOverToolTip()"
+        (mouseleave)="mouseleaveToolTip()"
+        (mouseout)="mouseleaveToolTip()"
+
+        [showToolTip]=showToolTip
+        [toolTipY]=toolTipY
+        [toolTipText]=toolTipText
+        [toolTipHeading]=toolTipHeading
 ></nbia-tool-tip>
 
 
@@ -13,23 +18,23 @@
 
         <!-- Hide the Image Modality list.  Still show the heading (with this img to its left) -->
         <span *ngIf="showCriteriaList" class="clicker" (click)="onShowCriteriaListClick(false)">
-            <img src="assets/images/down_V01.png">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Image Modality
         </span>
 
         <!-- Show the Image Modality list -->
         <span *ngIf="!showCriteriaList" class="clicker" (click)="onShowCriteriaListClick(true)">
-            <img src="assets/images/right_V01.png">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Image Modality
         </span>
 
         <!-- Any or All radio buttons  -->
         <label *ngFor="let label of allOrAnyLabels; let i = index" class="any-or-all">
             {{label}}
-                <input type="radio" name="radioGroupImageModality"
-                       [value]="label"
-                       [checked]="i === allOrAnyDefault"
-                       (change)="onAnyOrAllChange(label)">
+            <input type="radio" name="radioGroupImageModality"
+                   [value]="label"
+                   [checked]="i === allOrAnyDefault"
+                   (change)="onAnyOrAllChange(label)">
         </label>
 
         <!-- Search in the list of Image modality criteria  (The red magnifying glass)  -->
@@ -51,7 +56,8 @@
 
         <!-- Uncheck all the Image Modality criteria and restore their counts back to the full count in the database. -->
         <label *ngIf="checkedCount > 0" class="red-clear">
-            <img class=" clicker" src="assets/images/redClear.png" alt="Search" (click)="imageModalityQueryClearAllClick(false)">
+            <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="Search"
+                 (click)="imageModalityQueryClearAllClick(false)">
         </label>
     </div>
 
@@ -61,6 +67,7 @@
                 }">
 
         <!-- -----  Criteria list search input (Red magnifying glass) only used in Collections (so far)  ----- -->
+        <!-- This is not used, but we might bring it back.  -->
         <div *ngIf="showSearch"
              [ngClass]="{
                  'box-with-focus':searchHasFocus
@@ -71,7 +78,7 @@
                    [(ngModel)]="searchInput"
                    (blur)="onSearchTextOutFocus(0)"
                    (focus)="onSearchTextFocus(0)"
-                   (ngModelChange)="onSearchChange($event)"
+                   (ngModelChange)="onSearchChange()"
             >
 
             <!-- This needs to be "for", "not ngFor", it needs to be hidden, not removed from the DOM -->
@@ -96,25 +103,33 @@
             <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
         </div>
 
+        <!-- ------------------------------------------------------------------------- -->
+        <!-- ------------------------------------------------------------------------- -->
+
+
         <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
         <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
 
-            <span *ngIf="( criteria['seq']  < ( properties.CRITERIA_SHOW_COUNT + checkedCount) ) || showAll">
-
+            <span *ngIf="( criteria['seq']  < ( properties.CRITERIA_SHOW_COUNT + checkedCount) ) ||
+             showAll">
                 <span
-                    (mouseover)="getPos($event, criteria['criteria'])"
-                    (mouseleave)="hideToolTip()"
+                        (mouseleave)="hideToolTip()"
+                        (mouseout)="hideToolTip()"
                 >
+                    <span>
+                        <input type="checkbox"
+                               class="check-box"
+                               id="checkbox-image-modality{{i}}"
+                               [(ngModel)]="cBox[i]"
+                               (click)="onCheckboxClick(i, $event.target['checked'])"
+                        >
+                    </span>
 
-
-                    <input type="checkbox"
-                        class="check-box"
-                        id="checkbox-image-modality{{i}}"
-                        [(ngModel)]="cBox[i]"
-                        (click)="onCheckboxClick(i, $event.target.checked)"
+                    <label
+                            class="criteria-entry-text"
+                            [attr.for]="'checkbox-image-modality'+i"
+                            (mouseover)="getPos($event, criteria['criteria'])"
                     >
-
-                    <label [attr.for]="'checkbox-image-modality'+i">
                         {{criteria['criteria']}}
                     </label>
                 </span>

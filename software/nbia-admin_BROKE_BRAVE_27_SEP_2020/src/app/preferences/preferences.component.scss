@@ -1,0 +1,20 @@
+@import '../app.component';
+
+$preferences-width: 400px;
+
+.preferences-div{
+    z-index: $popup-z-index;
+    position: absolute;
+    width: $preferences-width;
+    left: calc(50% - #{$preferences-width / 2 });
+}
+
+.font-size-div{
+    border: #4c00ff;
+
+
+}
+
+.font-button{
+    border: solid #00ff5d 1px;
+}

@@ -9,75 +9,67 @@
 <div
     ngDraggable
     [handle]="PanelHandle"
-    class="panel panel-info login-box alert-box-div alert-box-shadow"
+    class="card card-nbia-default login-box alert-box-shadow"
     [ngClass]="{
         'login-panel-heading-moving': handleMoving
     }"
 >
-    <div #PanelHandle class="panel-heading login-panel-heading">
-        <div class="panel-title">Login {{ username }}</div>
+    <div #PanelHandle class="card-header card-nbia-header-default pt-2">
+        <div class="card-title"><h4>Login {{ username }}</h4></div>
     </div>
-    <div style="padding-top: 30px;" class="panel-body">
+    <div style="padding-top: 30px;" class="card-body bg-white">
         <form
             class="form-horizontal login-form"
             (ngSubmit)="onSubmit()"
             #f="ngForm"
         >
             <!--  User  -->
-            <div style="margin-bottom: 25px;" class="input-group">
-				<span class="input-group-addon"
-                >
-					<span class="glyphicon glyphicon-user"></span
-                    >
-				</span>
-                <input
-                    type="text"
-                    id="username"
-                    class="form-control"
-                    name="username"
-                    placeholder="User name"
-                    [(ngModel)]="username"
-                    required
-                />
+            <div style="margin-bottom: 25px" class="input-group">
+                <span class="input-group-prepend">
+                    <span class="input-group-text">
+                        <img src="assets/images/user.png">
+                    </span>
+                </span>
+                <input type="text"
+                       id="username"
+                       class="form-control"
+                       name="username"
+                       placeholder="User name"
+                       ngModel
+                       required>
             </div>
             <!--  Password  -->
-            <span class="input-group">
-				<span class="input-group-addon"
-                >
-					<span class="glyphicon glyphicon-lock"></span
-                    >
-				</span>
-				<input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder="Password"
-                    name="password"
-                    [(ngModel)]="password"
-                    (focus)="onPasswordFocus()"
-                    required
-                />
-			</span>
+            <span class="input-group mb-3">
+                <span class="input-group-prepend">
+                    <span class="input-group-text">
+                        <img src="assets/images/lock.png">
+                    </span>
+                </span>
+                <input type="password"
+                       class="form-control"
+                       id="password"
+                       placeholder="Password"
+                       name="password"
+                       ngModel
+                       (focus)="onPasswordFocus()"
+                       required>
+            </span>
             <!-- Button -->
-            <span class="form-group login-button">
-				<button
-                    type="submit"
-                    class="btn login-button"
-                    [disabled]="!f.valid"
-                    [ngClass]="{
-                        'btn-primary': f.valid
-                    }"
+            <span class="form-group">
+                <button type="submit"
+                        class="btn btn-primary"
+                        [disabled]="!f.valid"
                 >
                     Log in
                 </button>
                 <!--  Failed Login message  -->
-				<span
+                <span
                     *ngIf="statusMessage0.length > 0"
                     class="error-alert alert alert-danger"
                 >
-                    {{ statusMessage0 }}
+                    {{statusMessage0}}
                 </span>
-			</span>
+            </span>
         </form>
     </div>
 </div>

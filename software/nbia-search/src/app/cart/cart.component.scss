@@ -1,5 +1,5 @@
 @import '../app.component.scss';
-$showExcludeCommercialWarningWidth: 500px;
+$showExcludeCommercialWarningWidth: 570px;
 $showExcludeCommercialWarningHeight: 200px;
 
 .line-through {
@@ -161,9 +161,17 @@ td {
   left: calc(50% - #{$showExcludeCommercialWarningWidth / 2 });
   height: $showExcludeCommercialWarningHeight;
   width: $showExcludeCommercialWarningWidth;
+
 }
 
 .exclude-commercial-warning-div{
   margin-top: 30px;
   margin-bottom: 0;
+  left: calc(50% - 200px);
+}
+
+
+.exclude-commercial-warning-text{
+    position: absolute;
+    top: 15px;
 }

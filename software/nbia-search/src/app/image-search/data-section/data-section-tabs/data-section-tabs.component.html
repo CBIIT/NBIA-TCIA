@@ -1,38 +1,55 @@
 <!-- ----------  The Results section - Search results and Summary (Pie Charts)  ---------- -->
 
-<div class="tab-div">
-    <tabset (onSelect)="onTabClick($event)">
-
-        <!-- If Text Search, disable the "Summary" (charts) tab  -->
-        <tab
-            *ngIf="properties.SHOW_SUMMARY_TAB"
-            [active]='tabIsActive[0]'
-            [disabled]="searchType === 1"
+<span class="tab-div unselectable">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 0
+               }"
+                  (click)="onTabClick(0 )"
+            >Summary</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 1
+               }"
+                  (click)="onTabClick(1 )"
+            >Search Results</span>
+        </li>
+        <li *ngIf="showTestTab"
+            class="nav-item"
         >
-            <span *tabHeading>
-                Summary
-            </span>
-            <nbia-summary></nbia-summary>
-        </tab>
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 2
+               }"
+                  (click)="onTabClick(2 )"
+            >Test</span>
 
+        </li>
 
-        <!-- Search Results -->
-        <tab [active]='tabIsActive[1]'>
-            <span *tabHeading>
-                 Search Results
-            </span>
-            <nbia-search-results></nbia-search-results>
-        </tab>
+    </ul>
+</span>
 
+<nbia-summary
+        [ngClass]="{
+        'active': activeTab === 0,
+        'hide': activeTab !== 0
+    }"
+></nbia-summary>
 
-        <!-- This is just a place where I put testing and diagnostic things, showTestTab should never be true for production or public build. -->
-        <tab [active]='tabIsActive[2]' *ngIf="showTestTab">
-            <span *tabHeading>
-                 Test
-            </span>
-            <nbia-test></nbia-test>
-        </tab>
+<nbia-search-results
+        [ngClass]="{
+        'active': activeTab === 1,
+        'hide': activeTab !== 1
+    }"
+></nbia-search-results>
 
-
-    </tabset>
-</div>
+<nbia-test
+        [ngClass]="{
+        'active': activeTab === 2,
+        'hide': activeTab !== 2
+    }"
+></nbia-test>

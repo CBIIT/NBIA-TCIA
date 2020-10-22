@@ -1,0 +1,14 @@
+@import '../../../app.component';
+@import '../../../data-table';
+
+.delete-cine-mode-button{
+    margin: 4px 0 0 4px;
+}
+
+
+.delete-cine-mode-edit-log-text{
+    width: calc(100% - 10px);
+    border: solid $data-table-body-border-color 1px;
+    margin: 14px 0 0 4px;
+}
+

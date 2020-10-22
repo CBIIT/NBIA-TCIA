@@ -1,0 +1,193 @@
+h1,
+.navbar-brand,
+.navbar-nav a {
+    font-family: "Open Sans", Verdana, Tahoma, Arial;
+    font-weight: 400;
+    font-size: 0.9em;
+}
+
+.nav-link:hover {
+    color: #64c6ff !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar-inner,
+.navbar .btn-navbar {
+    border: 0px;
+}
+
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.9); /*#343a40;*/
+    background-clip: padding-box;
+    border: 0px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 0.85em;
+    font-weight: 400;
+    border-radius: 0rem;
+    padding: 10px;
+}
+
+.dropdown-item {
+    color: #cccccc !important;
+    padding: 5px;
+}
+
+.dropdown-item:hover {
+    background-color: #64c6ff;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: #16181b !important;
+}
+
+.bg-dark {
+    background-color: #222222 !important;
+}
+
+.navbar {
+    background-image: url("https://www.cancerimagingarchive.net/wp-content/uploads/2020/03/tcia-header-bkgd.jpg");
+    background-repeat: no-repeat; /* Determine what direction the image will repeat */
+    background-position: center center; /* Where the image will be positioned relative to "top, right, bottom, and/or left */
+    background-size: cover;
+    background-position: center;
+
+    /* -webkit-box-shadow: 0 2px 6px 0px #999;
+    -moz-box-shadow: 0 2px 6px 0px #999;
+    box-shadow: 0 2px 6px 0px #999;*/
+}
+
+@media (min-width: 980px) {
+    /* HOVER shows dropdown, rather than click and show */
+    .navbar-nav li:hover > .dropdown-menu {
+        display: block;
+    }
+
+    /* FIX hover for dropdown moving slowly to dropdown hides */
+    .navbar .dropdown-menu {
+        margin-top: 0px;
+    }
+}
+
+.navbar-toggler {
+    border: 0px solid transparent;
+}
+
+@media (min-width: 980px) {
+    body {
+        padding-top: 0px;
+    }
+
+    .social {
+        display: block;
+    }
+
+    #social-in-menu,
+    .button_social_group {
+        float: left;
+        position: absolute;
+        left: -40px;
+        top: 0px;
+        z-index: 100000;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 980px) {
+    body {
+        padding-top: 0px;
+    }
+
+    .social {
+        display: block;
+    }
+
+    #social-in-menu,
+    .button_social_group {
+        float: right;
+        position: absolute;
+        right: 80px;
+        top: 13px;
+        z-index: 100000;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 540px) {
+    body {
+        padding-top: 0px;
+    }
+
+    .social {
+        display: block;
+    }
+
+    #social-in-menu,
+    .button_social_group {
+        float: right;
+        position: absolute;
+        right: 60px;
+        top: 13px;
+        z-index: 100000;
+        margin: 10px;
+    }
+
+    .navbar {
+        padding: 0.5rem 1rem;
+        padding-top: 0.5rem;
+        padding-right: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0.5rem;
+    }
+}
+
+@media (max-width: 410px) {
+    body {
+        padding-top: 0px;
+    }
+
+    .social {
+        display: none;
+    }
+
+    #social-in-menu,
+    .button_social_group {
+        float: right;
+        position: absolute;
+        right: 80px;
+        top: 13px;
+        z-index: 100000;
+        margin: 10px;
+    }
+}
+
+.social li {
+    list-style-type: none;
+    display: inline;
+    padding-left: 10px;
+    font-size: 0.8em;
+}
+
+.social li a {
+    color: #ffffff;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.social li a:hover {
+    color: #ffffff; /* 64C6FF */
+    opacity: 1;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+    -webkit-transition: -webkit-transform 0.25s ease,
+    opacity 0.2s ease;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+}
+
+.navbar-nav {
+    margin-top: 10px;
+}

@@ -1,12 +1,7 @@
 @import '../app.component.scss';
 
-.menu-header-navbar{
-    // Distance from the bottom
-    top: $heading-height - 44px;
-}
-
-.navbar{
-    border-radius: 0;
+.query-and-results-container{
+    margin-bottom: 20px;
 }
 
 .logo {
@@ -20,8 +15,6 @@
     left: 6px;
   //  width: 137px;
     height: $top-logo-height;
-
-
 }
 
 .menu-header {
@@ -39,7 +32,7 @@
     /* Space between menu bar and top of content */
     margin-bottom: $heading-margin-bottom;
 
-    height: $heading-height;
+     height: $heading-height;
 }
 
 .nav-item {

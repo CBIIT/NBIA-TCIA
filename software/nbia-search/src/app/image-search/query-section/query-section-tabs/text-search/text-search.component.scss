@@ -5,7 +5,7 @@
     border-left: solid 1px #cfcfcf;
     border-bottom: solid 1px #cfcfcf;
     border-right: solid 1px #cfcfcf;
-    height: 140px;
+    height: 152px;
 }
 
 .query-panel-heading {
@@ -39,13 +39,12 @@
 
 .text-search-clear-button {
     position: relative;
-    right: ($left-section-width * -1) + 277px;
-
+    right: ($left-section-width * -1) + 280px;
     top: 6px;
 }
 
 .close-text-explanation-x {
-  color: $close-x-red;
-  float: right;
-  margin-right: 20px
+     float: right;
+     margin-right: 10px;
+     height:18px;
 }

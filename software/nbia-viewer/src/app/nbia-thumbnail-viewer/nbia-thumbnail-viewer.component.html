@@ -113,24 +113,23 @@
              'busy': ! haveData
          }"
     >
-
         <!-- Loop through images for just this page. -->
         <span
             *ngFor="let image of images.slice(firstImage, firstImage + imagesPerPage); let i=index"
             class="topImage"
             [ngClass]="{
-                  'col-1': columns === 1,
-                  'col-2': columns === 2,
-                  'col-3': columns === 3,
-                  'col-4': columns === 4,
-                  'col-5': columns === 5,
-                  'col-6': columns === 6,
-                  'col-7': columns === 7,
-                  'col-8': columns === 8,
-                  'col-9': columns === 9,
-                  'col-10': columns === 10,
-                  'col-11': columns === 11,
-                  'col-12': columns === 12,
+                  'col-nbia-1': columns === 1,
+                  'col-nbia-2': columns === 2,
+                  'col-nbia-3': columns === 3,
+                  'col-nbia-4': columns === 4,
+                  'col-nbia-5': columns === 5,
+                  'col-nbia-6': columns === 6,
+                  'col-nbia-7': columns === 7,
+                  'col-nbia-8': columns === 8,
+                  'col-nbia-9': columns === 9,
+                  'col-nbia-10': columns === 10,
+                  'col-nbia-11': columns === 11,
+                  'col-nbia-12': columns === 12,
                   'busy': ! haveData
              }"
         >

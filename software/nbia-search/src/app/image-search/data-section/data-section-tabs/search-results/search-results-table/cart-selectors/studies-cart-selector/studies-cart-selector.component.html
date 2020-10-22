@@ -3,15 +3,14 @@
 <span class="cart-span">
     <span class="btn-group">
         <label
-            class="btn btn-default cart-button"
-            [ngClass]="{
+            class="btn btn-nbia-i-default cart-button d-inline-flex align-items-center"
+                [ngClass]="{
                'cart-selected': selected,
                'cart-child-selected': childSelected
             }"
             (click)="onStudiesCartClick()"
         >
-
-            <span class="glyphicon glyphicon-shopping-cart"></span>
+            <img class="cart-button-icon" src="assets/images/TOOLS/cart_black.png">
         </label>
     </span>
     <span *ngIf="selectedSeriesCount > 0" class="search-results-cart-count">{{selectedSeriesCount}}</span>

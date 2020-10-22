@@ -1,0 +1,91 @@
+
+$data-table-header-background-color: #dedddd;
+$data-table-header-border-color: #dedddd;
+$data-table-body-background-color: #fff;
+$data-table-body-background-dark-color: #f4f4f4;
+$data-table-body-background-high-light-color: #fff51a;
+$data-table-body-border-color: #e7e7e7;
+$data-table-cell-padding: 7px;
+
+
+.data-tableFixHead {
+    overflow-y: auto;
+}
+
+.data-table-thead-th {
+    border: solid 1px $data-table-header-border-color;
+    font-weight: bold;
+    padding: $data-table-cell-padding;
+
+    // unselectable
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+
+.data-table-thead-tr {
+    background-color: $data-table-header-background-color;
+    color: #000;
+    // Keeps the viewer button icons from scrolling over the top of the heading.
+    z-index: 1;
+    position: sticky;
+    top: 0;
+}
+
+
+.data-table-body-tr {
+    background-color: $data-table-body-background-color;
+}
+
+.data-table-body-dark-tr {
+    background-color: $data-table-body-background-dark-color;
+}
+
+.data-table-body-high-light-tr {
+    background-color: $data-table-body-background-high-light-color;
+}
+
+.data-table-body-td {
+    border: solid 1px $data-table-body-border-color;
+    padding: $data-table-cell-padding;
+    overflow: hidden;
+}
+
+
+
+
+// ///////////////////////////////////////////
+// For column resizing.
+/*
+.grip {
+    width: 20px;
+    height: 15px;
+    margin-top: -3px;
+    background-image: url('src/assets/images/grip.png');
+    margin-left: -5px;
+    position: relative;
+    cursor: e-resize;
+}
+
+// For column resizing.
+.grip:hover {
+    background-position-x: -20px;
+}
+
+// For column resizing.
+.JCLRLastGrip .grip {
+    background-position-y: -18px;
+    left: -2px;
+}
+
+// For column resizing.
+.dragging .grip {
+    background-position-x: -40px;
+}
+
+*/

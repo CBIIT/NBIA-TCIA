@@ -1,87 +1,190 @@
-<div *ngIf="currentTool===consts.TOOL_PERFORM_QC ||
-            currentTool===consts.TOOL_APPROVE_DELETIONS"
-     class="query-panel"
+<!------------------------------------------------------------------------------------------->
+<!-------------------------   Most recent Submission date range   --------------------------->
+<!------------------------------------------------------------------------------------------->
+
+<div
+    *ngIf="
+        currentTool === consts.TOOL_PERFORM_QC ||
+        currentTool === consts.TOOL_APPROVE_DELETIONS
+    "
+    class="query-panel"
 >
-    <div class="query-panel-heading">
-      <span *ngIf="showCriteriaList" class="clicker" (click)="onShowCriteriaListClick(false)">
-            <img src="assets/images/down_V01.png">
+    <div
+        class="query-panel-heading"
+        [ngClass]="{
+            'heading-font-extra-small': currentFont === '0',
+            'heading-font-small': currentFont === '1',
+            'heading-font-medium': currentFont === '2',
+            'heading-font-large': currentFont === '3'
+        }"
+    >
+        <span
+            *ngIf="showCriteriaList"
+            class="clicker"
+            (click)="onShowCriteriaListClick(false)"
+        >
+            <img src="assets/images/down_V01.png" />
             Most Recent Submission
         </span>
 
-        <span *ngIf="!showCriteriaList" class="clicker" (click)="onShowCriteriaListClick(true)">
-            <img src="assets/images/right_V01.png">
+        <span
+            *ngIf="!showCriteriaList"
+            class="clicker"
+            (click)="onShowCriteriaListClick(true)"
+        >
+            <img src="assets/images/right_V01.png" />
             Most Recent Submission
         </span>
-        <label *ngIf="! isAllEmpty()" class="red-clear">
-            <img class=" clicker" src="assets/images/redClear.png"
-                 alt="Search"
-                 (click)="onDateRangeClearAllClick()">
+        <label
+            *ngIf="!isAllEmpty()"
+            [ngClass]="{
+                'red-clear-extra-small': currentFont === '0',
+                'red-clear-small': currentFont === '1',
+                'red-clear-medium': currentFont === '2',
+                'red-clear-large': currentFont === '3'
+            }"
+        >
+            <img
+                class="clicker date-range-red-clear"
+                [ngClass]="{
+                    'date-red-clear-extra-small': currentFont === '0',
+                    'date-red-clear-small': currentFont === '1',
+                    'date-red-clear-medium': currentFont === '2',
+                    'date-red-clear-large': currentFont === '3'
+                }"
+                src="assets/images/redClear.png"
+                alt="Clear"
+                (click)="onDateRangeClearAllClick()"
+            />
         </label>
-
     </div>
 
-
-    <!-- If a date range is in us and the panel is collapsed, show the date range under the heading -->
-    <div *ngIf="! showCriteriaList && checked" class="display-date-range">
-        {{fromDateModel['formatted'] }}&nbsp;to&nbsp;{{toDateModel['formatted']}}
+    <!-- If a date range is in use and the panel is collapsed, show the date range under the heading -->
+    <div *ngIf="!showCriteriaList && checked" class="display-date-range">
+        {{ fromDateModel["formatted"] }}&nbsp;to&nbsp;{{
+            toDateModel["formatted"]
+        }}
     </div>
-    <div [ngClass]="{
-                    'hide': !showCriteriaList
-                }">
-
+    <div
+        [ngClass]="{
+            hide: !showCriteriaList
+        }"
+    >
         <div class="input-group">
-            <div class="main-date-range-div">
-                <span class="date-box-label date-box-label-from">From:</span>
-                <input (click)="dpFrom.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box"
-                       placeholder='Select "From" date'
-                       ngx-mydatepicker name="fromDatePicker"
-                       [(ngModel)]="fromDateModel"
-                       [options]="dateOptions"
-                       #dpFrom="ngx-mydatepicker"
-                       (dateChanged)="onDateChangedFrom($event)"/>
+            <div
+                [ngClass]="{
+                    'main-date-range-div-extra-small': currentFont === '0',
+                    'main-date-range-div-small': currentFont === '1',
+                    'main-date-range-div-medium': currentFont === '2',
+                    'main-date-range-div-large': currentFont === '3'
+                }"
+            >
+                <span
+                    class="date-box-label date-box-label-from"
+                    [ngClass]="{
+                        'font-extra-small': currentFont === '0',
+                        'font-small': currentFont === '1',
+                        'font-medium': currentFont === '2',
+                        'font-large': currentFont === '3'
+                    }"
+                    >From:</span
+                >
+                <input
+                    (click)="
+                        dpFrom.toggleCalendar(); initializeDisableFutureDates()
+                    "
+                    class="date-box-text-box"
+                    [ngClass]="{
+                        'font-extra-small': currentFont === '0',
+                        'font-small': currentFont === '1',
+                        'font-medium': currentFont === '2',
+                        'font-large': currentFont === '3'
+                    }"
+                    placeholder='Select "From" date'
+                    ngx-mydatepicker
+                    name="fromDatePicker"
+                    [(ngModel)]="fromDateModel"
+                    [options]="dateOptions"
+                    #dpFrom="ngx-mydatepicker"
+                    (dateChanged)="onDateChangedFrom($event)"
+                />
             </div>
         </div>
 
-
         <div class="input-group">
-            <div class="main-date-range-div">
-                <span class="date-box-label date-box-label-to">To:</span>
+            <div
+                [ngClass]="{
+                    'main-date-range-div-extra-small': currentFont === '0',
+                    'main-date-range-div-small': currentFont === '1',
+                    'main-date-range-div-medium': currentFont === '2',
+                    'main-date-range-div-large': currentFont === '3'
+                }"
+            >
+                <span
+                    class="date-box-label date-box-label-to"
+                    [ngClass]="{
+                        'font-extra-small': currentFont === '0',
+                        'font-small': currentFont === '1',
+                        'font-medium': currentFont === '2',
+                        'font-large': currentFont === '3'
+                    }"
+                    >To:</span
+                >
 
-                <input (click)="dpTo.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box"
-                       placeholder='Select "To" date'
-                       ngx-mydatepicker name="toDatePicker"
-                       [(ngModel)]="toDateModel"
-                       [options]="dateOptions"
-                       #dpTo="ngx-mydatepicker"
-                       (dateChanged)="onDateChangedTo($event)"/>
+                <input
+                    (click)="
+                        dpTo.toggleCalendar(); initializeDisableFutureDates()
+                    "
+                    [ngClass]="{
+                        'font-extra-small': currentFont === '0',
+                        'font-small': currentFont === '1',
+                        'font-medium': currentFont === '2',
+                        'font-large': currentFont === '3',
 
+                        'date-box-text-box-extra-small': currentFont === '0',
+                        'date-box-text-box-small': currentFont === '1',
+                        'date-box-text-box-medium': currentFont === '2',
+                        'date-box-text-box-large': currentFont === '3'
+                    }"
+                    placeholder='Select "To" date'
+                    ngx-mydatepicker
+                    name="toDatePicker"
+                    [(ngModel)]="toDateModel"
+                    [options]="dateOptions"
+                    #dpTo="ngx-mydatepicker"
+                    (dateChanged)="onDateChangedTo($event)"
+                />
             </div>
         </div>
 
         <!--Apply Available range  checkbox-->
         <div>
-            <input type="checkbox"
-                   class="query-panel-checkboxes available-checkbox"
-                   id="UseDateRange"
-                   [(ngModel)]="checked"
-                   [disabled]="disableUseDateRange"
-                   [ngClass]="{
-                       'clicker': (! disableUseDateRange)
-                   }"
-                   (ngModelChange)="onApplyCheckboxChange( )">
+            <input
+                class="query-panel-checkboxes available-checkbox"
+                type="checkbox"
+                id="UseDateRange"
+                [(ngModel)]="checked"
+                [disabled]="disableUseDateRange"
+                [ngClass]="{
+                    'clicker': !disableUseDateRange,
+                    'disabled-apply-text': disableUseDateRange
+                }"
+                (ngModelChange)="onApplyCheckboxChange()"
+            />
             <label
                 class="clicker apply-date-range-text"
                 [attr.for]="'UseDateRange'"
                 [ngClass]="{
-                    'disabled-text': disableUseDateRange,
-                    'clicker': (! disableUseDateRange)
+                    'disabled-apply-text': disableUseDateRange,
+                    'clicker': !disableUseDateRange,
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
                 }"
             >
-                &nbsp;Apply&nbsp;"<span [ngClass]="{'apply-is-set' : checked }">Most recent</span>"&nbsp;date range
+                &nbsp;Apply&nbsp;"<span [ngClass]="{ 'apply-is-set': checked }">Most recent</span>"&nbsp;date range
             </label>
         </div>
-
-
     </div>
 </div>
-

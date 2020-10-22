@@ -1,0 +1,56 @@
+<div *ngIf="roleIsGood"
+     class="approve-deletions-tool"
+>
+
+
+    <!-- approve-deletions does not use the Status section of left-section. -->
+    <nbia-query-section
+        [currentTool]="consts.TOOL_APPROVE_DELETIONS"
+    ></nbia-query-section>
+
+
+    <div class="container-fluid data-section">
+        <div class="row">
+            <nbia-display-query
+                [currentTool]="consts.TOOL_APPROVE_DELETIONS"
+            ></nbia-display-query>
+        </div>
+
+
+<!--
+        <div class="row">
+            <nbia-search-results-section
+                (resultsUpdateEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateEmitter)="onResultsSelectCountUpdate($event)"
+            >
+            </nbia-search-results-section>
+        </div>
+-->
+
+
+        <div class="row">
+            <nbia-search-results-section-bravo
+                (resultsUpdateBravoEmitter)="onSearchResultsUpdate($event)"
+                (resultsSelectCountUpdateBravoEmitter)="onResultsSelectCountUpdate($event)"
+            >
+            </nbia-search-results-section-bravo>
+        </div>
+        <div *ngIf="showBulkOperations"
+             class="row"
+        >
+            <nbia-deletion-bulk-operations
+                [collectionSite]="collectionSite"
+                [searchResults]="searchResults"
+                [searchResultsSelectedCount]="searchResultsSelectedCount"
+            ></nbia-deletion-bulk-operations>
+        </div>
+    </div>
+
+</div>
+
+
+<h4 *ngIf="! roleIsGood">
+    <p>User does not have authorization required for "<b>Approve deletions</b>"</p>
+    <p>Users role(s): <b>{{userRoles}}</b></p>
+    Required role: <b>NCIA.NCIA.SUPER_CURATOR</b>
+</h4>

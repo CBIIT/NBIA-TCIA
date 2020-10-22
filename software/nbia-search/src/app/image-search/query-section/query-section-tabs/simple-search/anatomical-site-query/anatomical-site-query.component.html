@@ -10,7 +10,7 @@
             class="clicker"
             (click)="onShowCriteriaListClick(false)"
         >
-            <img src="assets/images/down_V01.png">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Anatomical Site
         </span>
 
@@ -20,7 +20,7 @@
             class="clicker"
             (click)="onShowCriteriaListClick(true)"
         >
-            <img src="assets/images/right_V01.png">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Anatomical Site
         </span>
 
@@ -78,8 +78,8 @@
             class="red-clear"
         >
             <img
-                class=" clicker"
-                src="assets/images/redClear.png"
+                class="clicker cart-button-icon"
+                src="assets/images/TOOLS/clear_red.png"
                 alt="Search"
                 (click)="onAnatomicalSiteClearAllClick(false)"
             >
@@ -94,6 +94,7 @@
     >
 
         <!-- -----  Criteria list search input (Red magnifying glass) only used in Collections (so far)  ----- -->
+        <!-- This is not used, but we may want it back.  -->
         <div
             *ngIf="showSearch"
             class="search-box"
@@ -149,9 +150,11 @@
                        class="check-box"
                        id="checkbox-anatomical-site{{i}}"
                        [(ngModel)]="cBox[i]"
-                       (click)="onCheckboxClick(i, $event.target.checked)">
+                       (click)="onCheckboxClick(i, $event.target['checked'])">
 
-                <label [attr.for]="'checkbox-anatomical-site'+i">
+                <label
+                        class="criteria-entry-text"
+                        [attr.for]="'checkbox-anatomical-site'+i">
                     {{criteria['criteria']}}
                 </label>
 

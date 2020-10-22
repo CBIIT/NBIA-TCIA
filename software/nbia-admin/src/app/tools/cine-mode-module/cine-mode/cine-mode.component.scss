@@ -14,6 +14,11 @@ $cineModeLoadingMessageTop: 250px;
     overflow: scroll;
 }
 
+.cine-mode-div{
+    resize: both;
+    overflow: auto;
+}
+
 .cine-mode-div {
     z-index: 4;
     position: absolute;
@@ -54,7 +59,7 @@ $cineModeLoadingMessageTop: 250px;
     padding: $cineModePadding;
 }
 
-.cine-mode-scroller {
+.cine-mode-slider {
     width: $cineModeImageWidth;
 }
 
@@ -156,5 +161,21 @@ $cineModeLoadingMessageTop: 250px;
     border: solid 1px $data-table-header-border-color;
     margin: 4px;
     padding: 4px;
+}
+
+
+// .cursor-draggable isn't working for me, this is a workaround.
+.cine-panel-heading:hover {
+    cursor: grab;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading:active {
+    cursor: grabbing;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.cine-panel-heading-moving {
+    cursor: grabbing;
 }
 

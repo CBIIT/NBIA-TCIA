@@ -1,24 +1,24 @@
 <!-- ----------  This is the Cart button in the Subject level Search results.  ---------- -->
 
 <div
-    class="cart-div"
-    [ngClass]="{
+        class="cart-div"
+        [ngClass]="{
         'cart-with-count': selectedChildCount > 0,
         'cart-no-count': selectedChildCount < 1
     }"
 >
 
-    <span class="btn-group" >
+    <span class="btn-group">
         <label
-            class="btn btn-default cart-button"
-            [ngClass]="{
+                class="btn btn-nbia-i-default cart-button d-inline-flex align-items-center"
+                [ngClass]="{
                 'cart-selected': selected,
                 'cart-child-selected': childSelected
             }"
-            (click)="onSubjectCartClick()"
+                (click)="onSubjectCartClick()"
         >
-            <span class="glyphicon glyphicon-shopping-cart"></span>
-        </label>
+            <img class="cart-button-icon" src="assets/images/TOOLS/cart_black.png">
+         </label>
     </span>
 
     <span *ngIf="selectedChildCount > 0" class="search-results-cart-count">

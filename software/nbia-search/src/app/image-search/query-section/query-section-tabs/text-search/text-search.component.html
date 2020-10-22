@@ -1,5 +1,7 @@
 <div class="text-search-input-panel">
-    <div class="query-panel-heading">Text Search<span class="clicker glyphicon glyphicon-question-sign close-text-explanation-x" (click)="onExplanationClick()"></span></div>
+    <div class="query-panel-heading">Text Search
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-text-explanation-x" (click)="onExplanationClick()">
+    </div>
     <form (ngSubmit)="onSearchClick()" (keydown.enter)="onSearchClick()" (keyup.enter)="onKeyupEnter()">
         <textarea class="text-search-input " [(ngModel)]="textQueryInput" name="textQueryInput"></textarea>
     </form>

@@ -1,0 +1,33 @@
+@import '../../../app.component';
+@import 'src/app/tools/query-section-module/query-section/query-section.component';
+
+.text-input-div
+{
+    height:250px;
+}
+
+.subject-id-text{
+    border: solid 1px #cfcfcf;
+    border-radius: 4px;
+    margin-left:18px;
+    margin-right: 18px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    overflow-y: scroll;
+    resize: none;
+}
+
+.subject-id-query-button{
+    position:relative;
+    right: ($left-section-width * -1) + 206px;
+    top: 4px;
+}
+
+.subject-id-prompt{
+    margin-left:18px;
+}
+
+
+.query-panel-long{
+    padding-bottom:30px;
+}
