@@ -58,7 +58,7 @@ export const Consts = {
     GET_COLLECTION_NAMES: 'getCollectionValuesAndCounts',
     GET_COLLECTION_NAMES_AND_SITES: 'getCollectionSite',
     GET_COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
-    GET_COLLECTION_LICENSES: 'getLicences',
+    GET_COLLECTION_LICENSES: 'getLicenses',
     GET_CONFIG_PARAMS: 'v3/getConfigParams',
     GET_SEARCH_FOR_APPROVE_DELETIONS: 'getQCSearchForDeletion',
     GET_HISTORY_REPORT: 'getQCHistoryReport',
