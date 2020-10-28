@@ -2,11 +2,11 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { UtilService } from './util.service';
 import { ParameterService } from './parameter.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { timeout } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { Consts, TokenStatus } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from './access-token.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable( {
     providedIn: 'root'
@@ -620,7 +620,7 @@ export class ApiService{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log( '002doGet: ' + curl );
         }
 
         let options =
@@ -663,12 +663,12 @@ export class ApiService{
      *
      * @param queryType
      */
-    doGet( queryType, query ? ) {
+    doGet0( queryType, query ? ) {
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log( '001 doGet: ' + curl );
         }
 
         let headers = new HttpHeaders( {
@@ -688,6 +688,38 @@ export class ApiService{
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
         }
+        return results;
+    }
+
+    doGet( queryType, query ? ) {
+        let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
+            console.log( '001 doGet: ' + curl );
+        }
+
+        let headers = new HttpHeaders( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer ' + this.accessTokenService.getAccessToken()
+        } );
+
+        let options = {
+            headers: headers,
+            method: 'get',
+        };
+        let errorMsg = 'No Error';
+        let results;
+            results = this.httpClient.get( getUrl, options ).pipe(
+                catchError(error => {
+                    if (error.error instanceof ErrorEvent) {
+                        errorMsg = `Error: ${error.error.message}`;
+                    } else {
+                        errorMsg = `Error: ${error.message}`;
+                    }
+                    return of([]);
+                })
+            );
 
         return results;
     }
@@ -760,7 +792,7 @@ export class ApiService{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -k \'' + getUrl + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log( '003 doGet: ' + curl );
         }
 
         let headers = new HttpHeaders( {

@@ -26,7 +26,6 @@ export class LargeTextInputComponent implements OnInit{
     cBox = [];
 
     constructor() {
-        console.log('MHL queryCriteriaData: ', this.queryCriteriaData);
     }
 
     ngOnInit() {

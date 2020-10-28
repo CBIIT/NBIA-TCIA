@@ -73,12 +73,15 @@ export let Properties = {
     // Show in console, curl version of post & get calls.
     DEBUG_CURL: false,
 
-    // This value can be changed in the config file.  FIXME  No this is not yet in the config file!
+    // This value can be changed in the config file.  FIXME  No, this is not yet in the config file (yet)!
     HTTP_TIMEOUT: 120000,
 
-    DEV_MODE: true,
+    DEV_MODE: false,
     DEV_PASSWORD: 'changeme',
     DEV_USER: 'mlerner',
+
+    DEFAULT_SECRET: 'ItsBetweenUAndMe',  // CHECKME - Should we have this default here or only set in the configuration file?
+
 
     // DEV_PASSWORD: 'Froggy_127',
     // DEV_USER: 'lernermh',

@@ -60,7 +60,6 @@ export class DateRangeComponent implements OnInit, OnDestroy{
     }
 
     onClearClick() {
-        console.log( 'MHL nbia-date-range: onClearClick' );
         this.dateRangeToDate = null;
         this.dateRangeFromDate = null;
         this.disableUseDateRange = true;

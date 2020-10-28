@@ -88,7 +88,6 @@ export const Consts = {
     waitTime: 11,
 
     API_ACCESS_TOKEN_URL: 'nbia-api/oauth/token',
-    API_CLIENT_SECRET_DEFAULT: 'ItsBetweenUAndMe',
 
     QC_STATUSES: ['Not Yet Reviewed', 'Visible', 'Not Visible',
         'To Be Deleted', 'First Review', 'Second Review', 'Third Review',

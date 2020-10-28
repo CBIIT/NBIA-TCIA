@@ -33,7 +33,7 @@ export class AccessTokenService{
         this.setAccessTokenStatus( TokenStatus.NO_TOKEN_YET );
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-        let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + Consts.API_CLIENT_SECRET_DEFAULT + '&grant_type=password';
+        let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=password';
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
@@ -139,7 +139,7 @@ export class AccessTokenService{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessToken + '\' -k \'' + getUrl + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log( 'AccessToken doGet: ' + curl );
         }
 
         let headers = new HttpHeaders( {

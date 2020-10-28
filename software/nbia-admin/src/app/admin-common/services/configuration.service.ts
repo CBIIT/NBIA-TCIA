@@ -81,6 +81,13 @@ export class ConfigurationService {
                         }
                     }
 
+
+                    if( key === 'DEFAULT_SECRET' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.DEFAULT_SECRET = value;
+                        }
+                    }
+
                     if( key === 'SHOW_UNIVERSAL_MENU' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.SHOW_UNIVERSAL_MENU = value;
@@ -90,6 +97,12 @@ export class ConfigurationService {
                     if( key === 'HELP_BASE_URL' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.HELP_BASE_URL = value;
+                        }
+                    }
+
+                    if( key === 'CINE_MODE_TOGGLE_KEY' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.CINE_MODE_TOGGLE_KEY = value;
                         }
                     }
 
