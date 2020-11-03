@@ -28,6 +28,12 @@ public class ResultSetSorter {
         if (sortField.equalsIgnoreCase("series")) {
         	comp=new PSRMBSeriesCompare();
         }
+        if (comp==null) {
+        	comp=new PSRMBCollectionCompare();
+        }
+        if (sortDirection==null) {
+        	sortDirection="ascending";
+        }
         if (sortDirection.equalsIgnoreCase("ascending")) {
             Collections.sort(copy, comp);
         } else {

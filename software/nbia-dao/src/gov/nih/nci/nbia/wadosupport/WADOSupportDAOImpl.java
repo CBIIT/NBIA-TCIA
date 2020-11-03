@@ -388,44 +388,46 @@ public WADOSupportDTO getWADOSupportDTO(WADOParameters params, String user)
 			   returnValue.setErrors("image not found");
 			   return returnValue; 
 		}
-		List<SiteData> authorizedSites;
-		UserObject uo = userTable.get(user);
-		if (uo!=null)
-		{
-			authorizedSites = uo.getAuthorizedSites();
-			if (authorizedSites==null)
-			{
-				   AuthorizationManager manager = new AuthorizationManager(user);
-				   authorizedSites = manager.getAuthorizedSites();
-				   uo.setAuthorizedSites(authorizedSites);
-			}
-		} else
-		{
-		   System.out.println("the user is " + user);
-		   AuthorizationManager manager = new AuthorizationManager(user);
-		   authorizedSites = manager.getAuthorizedSites();
-		   uo = new UserObject();
-		   uo.setAuthorizedSites(authorizedSites);
-		   userTable.put(user, uo);
+		String skipauth="no";
+		List<SiteData> authorizedSites= new ArrayList<SiteData>();
+		if (user!="skipauth") {
+			UserObject uo = userTable.get(user);
+			if (uo != null) {
+				authorizedSites = uo.getAuthorizedSites();
+				if (authorizedSites == null) {
+					AuthorizationManager manager = new AuthorizationManager(user);
+					authorizedSites = manager.getAuthorizedSites();
+					uo.setAuthorizedSites(authorizedSites);
+				}
+			} else {
+				System.out.println("the user is " + user);
+				AuthorizationManager manager = new AuthorizationManager(user);
+				authorizedSites = manager.getAuthorizedSites();
+				uo = new UserObject();
+				uo.setAuthorizedSites(authorizedSites);
+				userTable.put(user, uo);
+			} 
+		} else {
+			skipauth="yes";
 		}
 		returnValue.setCollection((String)images.get(0)[0]);
 		returnValue.setSite((String)images.get(0)[1]);
 		boolean isAuthorized = false;
-		for (SiteData siteData : authorizedSites)
-		{
-			if (siteData.getCollection().equals(returnValue.getCollection()))
-			{
-				if (siteData.getSiteName().equals(returnValue.getSite()))
-				{
-					isAuthorized = true;
-					break;
+		if (skipauth!="yes") {
+			for (SiteData siteData : authorizedSites) {
+				if (siteData.getCollection().equals(returnValue.getCollection())) {
+					if (siteData.getSiteName().equals(returnValue.getSite())) {
+						isAuthorized = true;
+						break;
+					}
 				}
 			}
-		}
-		if (!isAuthorized)
-		{
-			System.out.println("User: "+user+" not authorized");
-			return null; //not authorized
+			if (!isAuthorized) {
+				System.out.println("User: " + user + " not authorized");
+				return null; //not authorized
+			} 
+		} else {
+			isAuthorized = true;
 		}
 		String filePath = (String)images.get(0)[2];
 		File imageFile = new File(filePath);
