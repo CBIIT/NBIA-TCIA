@@ -307,7 +307,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			}
 			where.append(")");
 		}
-		System.out.println("&&&&&&&&&&&& where clause for project and group=" + where.toString());
+
 		return where;
 	}
 
@@ -379,8 +379,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		}
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
-				+ hql + where.toString());
+//		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+//				+ hql + where.toString());
 
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
@@ -424,8 +424,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
-				+ hql + where.toString());
+//		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+//				+ hql + where.toString());
 
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
@@ -453,8 +453,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
-				+ hql + where.toString());
+//		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+//				+ hql + where.toString());
 
 		rs = getHibernateTemplate().findByNamedParam(hql + where.toString(), "ids", seriesInstanceUids);
 
@@ -487,8 +487,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			if (rs.size() == seriesInstanceUids.size()) //all accepted
 				return null;
 			else {
-				seriesInstanceUids.removeAll(rs);
-				return seriesInstanceUids;
+				List<String> original = new ArrayList<String>(seriesInstanceUids);
+				List<String> newList = new ArrayList<String>(rs);
+//				seriesInstanceUids.removeAll(rs);
+				original.removeAll(newList);
+				return original;
 			}
 		}
 		else return seriesInstanceUids; //all denied
@@ -1056,8 +1059,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			returnList.add(new String((String) row[0] + "//" + (String) row[1]));
 		}
 
-		System.out.println(
-				"===== In nbia-dao, GeneralSeriesDAOImpl:getRequestedProjectAndSite() - downloadable visibility - criteria.add(Restrictions.in('visibility', new String[] {'1'})) ");
+//		System.out.println(
+//				"===== In nbia-dao, GeneralSeriesDAOImpl:getRequestedProjectAndSite() - downloadable visibility - criteria.add(Restrictions.in('visibility', new String[] {'1'})) ");
 
 		return returnList;
 	}
@@ -1159,14 +1162,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 					ac = ac.substring(1, len);
 				}
 				SiteData sd = new SiteData(ac);
-				System.out.println("dao get projecttttt="+sd.getCollection() + " site="+ sd.getSiteName());
 				authorizedSites.add(sd);
 			}
 		}
 		else return null;
 
 		seriesDTOList = getSeriesDTOs(allVisibilities, seriesIds, authorizedSites);
-		System.out.println(" get sdto size =" +seriesDTOList.size());
+
 		if (seriesDTOList != null  && seriesDTOList.size() > 0) {
 			SeriesDTO sdto = seriesDTOList.get(0);
 

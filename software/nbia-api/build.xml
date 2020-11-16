@@ -48,6 +48,9 @@ L-->
 		<fileset dir="${project.lib.dir}/compile">
 			<include name="*.jar" />
 		</fileset>
+		<!--fileset dir="../nbia-other-dao/dist">
+			<include name="*.jar" />
+		</fileset-->
 	</path>
 
 	<!-- Task definitions -->

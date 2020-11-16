@@ -64,6 +64,7 @@ L-->
 	    <dependency org="javax.ws.rs" name="javax.ws.rs-api" rev="2.1" conf="compile->master;runtime->master"> 
 	    <artifact name="javax.ws.rs-api" type="jar" />
 	    </dependency>
+		<dependency org="ncicb" name="nbia-other-dao" rev="latest.integration" conf="compile->master;runtime"/>
 		<dependency org="ncicb" name="nbia-dao" rev="latest.integration" conf="compile->master;runtime"/>
 		<dependency org="ncicb" name="nbia-domain" rev="latest.integration" conf="compile->master;runtime"/>
 		<dependency org="ncicb" name="nbia-util" rev="latest.integration" conf="compile->master;runtime"/>

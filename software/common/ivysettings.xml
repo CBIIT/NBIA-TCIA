@@ -83,8 +83,14 @@ L-->
 
       <filesystem name="nbia-dao-resolver" local="true">
         <artifact pattern="${nbia.basedir}/target/dist/exploded/nbia-dao/nbia-dao.jar" />
-
         <ivy pattern="${nbia.basedir}/nbia-dao/ivy.xml" />
+      </filesystem>
+		
+		
+      <filesystem name="nbia-other-dao-resolver" local="true">
+        <artifact pattern="${nbia.basedir}/target/dist/exploded/nbia-other-dao/nbia-other-dao.jar" />		
+
+        <ivy pattern="${nbia.basedir}/nbia-other-dao/ivy.xml" />
       </filesystem>
       <filesystem name="nbia-ctp-resolver" local="true">
         <artifact pattern="${nbia.basedir}/target/dist/exploded/ctp-jar/nbia.jar" />
@@ -117,6 +123,10 @@ L-->
      <module organisation="ncicb"
              name="nbia-dao"
              resolver="nbia-dao-resolver"/>
+
+     <module organisation="ncicb"
+             name="nbia-other-dao"
+             resolver="nbia-other-dao-resolver"/>			 
 
      <module organisation="ncicb"
              name="nbia-ctp"

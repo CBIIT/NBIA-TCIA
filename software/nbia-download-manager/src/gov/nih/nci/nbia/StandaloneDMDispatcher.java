@@ -87,8 +87,13 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 
+import gov.nih.nci.nbia.cli.DataRetrieverCLI;
 import gov.nih.nci.nbia.util.BrowserLauncher;
 import gov.nih.nci.nbia.util.DownloaderProperties;
+
+//import java.io.Console;
+//import java.io.Reader;
+//import java.util.Scanner;
 
 /**
  * @author Q. Pan
@@ -118,16 +123,82 @@ public class StandaloneDMDispatcher {
 	private List seriesList = null;
 	private boolean majorityPublic = true;
 	private double serverVersion = 0.0;
+	
+	
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+//		Console console = System.console();
+//		if(console == null) {
+//			System.out.println("Console is not available to current JVM process");
+//			return;
+//		} 
+		
 		if (args != null && (args.length > 0)) {
-			String fileName = args[0];
-			StandaloneDMDispatcher sdmp = new StandaloneDMDispatcher();
-			sdmp.loadManifestFile(fileName);
-			sdmp.launch();
+			if (isGUIApp(args)) {
+//				console.printf("GUI Application");
+				String fileName = args[0];
+				StandaloneDMDispatcher sdmp = new StandaloneDMDispatcher();
+				sdmp.loadManifestFile(fileName);
+				sdmp.launch();
+			}
+			else { // command line interface
+//				console.printf("CLI Application");
+				String fileName = null;
+				String userName = null;
+				String passWord = null;
+				String downloadDir = null; // The directory that the user want to put the downloaded data
+
+				DataRetrieverCLI dr = new DataRetrieverCLI();
+
+				if (args != null && (args.length > 0)) {
+					for (int i = 0; i < args.length; ++i) {
+						if (args[i].equals("-c") || args[i].equals("-C") || args[i].equals("--cli") || args[i].equals("--CLI"))
+							fileName = args[i + 1];
+						if (args[i].equals("-u") || args[i].equals("-U"))
+							userName = args[i + 1];
+						if (args[i].equals("-p") || args[i].equals("-P"))
+							passWord = args[i + 1];
+						if (args[i].equals("-d") || args[i].equals("-D")) {
+							downloadDir = args[i + 1];
+						}
+						if (args[i].equals("-l") || args[i].equals("-L")) {
+//							if (args.length == (i + 1))
+//								dr.logger
+							if (dr.getLoginCredential(args[i + 1])) {
+								userName = System.getProperty("userName");
+								passWord = System.getProperty("passWord");
+							}
+						}
+						if (args[i].equals("-v") || args[i].equals("-V") || args[i].equals("--verbose")
+								|| args[i].equals("--VERBOSE")) {
+							dr.verbose = true;
+						}
+						if (args[i].equals("-q") || args[i].equals("-Q") || args[i].equals("--quiet")
+								|| args[i].equals("--QUIET")) {
+							dr.quiet = true;
+
+						}
+						if (args[i].equals("-f") || args[i].equals("-F") || args[i].equals("--force")
+								|| args[i].equals("--FORCE")) {
+							dr.force = true;
+						}
+					}
+					dr.configLogger(downloadDir);
+
+					dr.logger.info("Using manifiest file: " + fileName);
+					dr.logger.info(
+							"Running with option: quiet = " + dr.quiet + "; verbose = " + dr.verbose + "; force = " + dr.force);
+					if (fileName == null) {
+						dr.logger.severe(
+								"This program expect a manifest file. Please provide a manifest file name with the option --cli. For example --cli <manifest file name>.");
+					}
+
+					dr.performDownload(downloadDir, fileName, userName, passWord);
+				}
+			}
 		} else {			
 		    // for copying style
 		    JLabel label = new JLabel();
@@ -158,6 +229,16 @@ public class StandaloneDMDispatcher {
 		    // show
 		    JOptionPane.showMessageDialog(null, ep);
 		}
+	}
+	
+	private static boolean isGUIApp(String[] args) {
+		for (int i = 0; i < args.length; ++i) {
+			if (args[i].equals("-c") || args[i].equals("-C") || args[i].equals("--cli") || args[i].equals("--CLI")) {
+				return  false;
+			}
+		}
+		
+		return true;
 	}
 
 	public StandaloneDMDispatcher() {

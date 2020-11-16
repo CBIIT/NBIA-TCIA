@@ -115,6 +115,23 @@ public class AnnotationDAOImpl extends AbstractDAO
         }
         return annotationList;
 	}
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getAnnotationFileNamesBySeriesUid(String seriesInstanceUid) throws DataAccessException {
+
+		List<String> annotationList = new ArrayList<String>();
+
+		 String query = "select distinct ann from Annotation ann  where ann.seriesInstanceUID = '"+
+	                    seriesInstanceUid + "'";
+
+
+        List<Annotation> results = getHibernateTemplate().find(query);
+        for(Annotation a:results){
+        	annotationList.add(a.getFilePath());
+
+        }
+        return annotationList;
+	}	
 
 	////////////////////////////////////////////PRIVATE///////////////////////////////////////////////
     private String SQL_QUERY_SELECT = "SELECT annot.generalSeriesPkId, annot.filePath, annot.fileSize ";

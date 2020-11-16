@@ -138,8 +138,7 @@ public class getData {
 	
 	protected Response formatResponse(String format, List<Object[]> data, String[] columns) {
 		String returnString = null;
-		System.out.println("data---"+data);
-		System.out.println("columns---"+columns);
+
 		if ((data != null) && (data.size() > 0)) {
 			if ((format == null) || (format.equalsIgnoreCase("JSON"))) {
 				returnString = FormatOutput.toJSONArray(columns, data).toString();
@@ -212,7 +211,6 @@ public class getData {
 			Authentication authentication = SecurityContextHolder.getContext()
 					.getAuthentication();
 			userName = (String) authentication.getPrincipal();
-			System.out.println("!!!!!user name="+ userName);
 		}
 
 		return AuthorizationService.isGivenUserHasAccess(userName, paramMap);
@@ -422,6 +420,19 @@ public class getData {
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
 			results = tDao.getSeriesSize(seriesInstanceUID, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}
+	
+	protected Object[] getSeriesMetaData(boolean allVisibilities, String seriesInstanceUID, List<String> authorizedCollections) {
+		Object[] results = null;
+		
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		try {
+			results = tDao.findSeriesBySeriesInstanceUIDAllVisibilitiesLight(allVisibilities, seriesInstanceUID, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();

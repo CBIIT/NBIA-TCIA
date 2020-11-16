@@ -186,6 +186,7 @@ ant -f buildDMC.xml
 		<filter token="help.desk.url" value="${help.desk.url}"/>
 		<copy todir="${build.dir}" filtering="true">
 			<fileset dir="${resources.dir}" includes="**/*.properties" />
+			<fileset dir="${resources.dir}" includes="**/*.config" />
 		</copy>
 		<copy todir="${build.dir}" filtering="false">
 			<fileset dir="${images.dir}" includes="**/*.png" />

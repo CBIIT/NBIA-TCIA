@@ -153,7 +153,6 @@ public class ImageDAO2Impl extends AbstractDAO
         	String newName = obj.getNewFilename();
         	String newFileName = newName.substring(newName.indexOf("^")+1);
         	String [] twoNames = {obj.getFileName(),  newFileName}; 
-        	System.out.println("@@@@@@@@@@@@@file name = "+obj.getFileName() + " new name="+ newFileName);
         	fileNames.add(twoNames);
         }
 

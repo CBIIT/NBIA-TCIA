@@ -30,6 +30,7 @@ L-->
 	<property name="nbia-services-commons.base.dir" value="${software.dir}/nbia-services-commons"/>
 	<property name="nbia-domain.base.dir" value="${software.dir}/nbia-domain"/>
 	<property name="nbia-util.base.dir" value="${software.dir}/nbia-util"/>
+	<property name="nbia-other-dao.base.dir" value="${software.dir}/nbia-other-dao"/>	
 	<property name="nbia-web.base.dir" value="${software.dir}/nbia-web"/>
 	<property name="nbia-api.base.dir" value="${software.dir}/nbia-api"/>
 	<property name="nbia-auth.base.dir" value="${software.dir}/nbia-auth"/>
@@ -187,6 +188,12 @@ L-->
 			<property name="project.name" value="${project.name}"/>
 		</ant>
 	</target>
+	
+	<target name="build:nbia-other-dao" depends="init">
+		<ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}" target="run" dir="${nbia-other-dao.base.dir}">
+			<property name="project.name" value="${project.name}"/>
+		</ant>
+	</target>	
 	
 	<target name="build:nbia-dao" depends="init,
                                                build:nbia-util,
@@ -838,8 +845,8 @@ L-->
 	</target>
 	
 	<target name="build:nbia-api" depends="init,
-	                   build:nbia-domain,
-		           build:nbia-dao">
+	                   build:nbia-domain, 
+		           build:nbia-dao, build:nbia-other-dao">
 		<ant inheritAll="false" inheritRefs="false" antfile="${nbia.build.file}" target="${nbia-api.build.target}" dir="${nbia-api.base.dir}">
 			<property name="nbia.api.oauth2.client.id" value="${nbia.api.oauth2.client.id}"/>
 			<property name="nbia.api.oauth2.client.secret" value="${nbia.api.oauth2.client.secret}"/>

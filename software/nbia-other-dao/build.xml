@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="run" name="nbia-other-dao" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <!--property name="src" location="src" />
+    <property name="build" location="bin" />
+    <property name="dist" location="dist" />
+	<property name="dist.lib.dir" location="bin/lib" />
+	<property name="lib.dir" value="lib" />	
+    <property name="version" value="1.0" /-->
+	
+	
+  <property name="common.dir" value="${basedir}/../" />
+  <property name="project.lib.dir" value="${common.dir}/target/lib/nbia-other-dao"/> 
+  <property name="base.lib.dir" value="${common.dir}/target/lib" />
+
+  <property name="src.java.dir" value="${basedir}/src" />
+  <property name="classes.dir" value="${basedir}/classes" />  
+  <!-- define this for unittesting.xml import -->
+  <property name="classes.to.test.dir" value="${classes.dir}"/>
+  
+  <property name="target.dir" value="${common.dir}/target/dist/exploded/nbia-other-dao" /> 
+  <property name="java.jar.name" value="nbia-other-dao.jar" />	
+	
+    <!--target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+	
+    <target name="clean">
+        <delete dir="bin"/>
+    	<delete dir="dist"/>
+    </target>
+	
+    <target depends="clean" name="cleanall"/>
+	
+    <target depends="init" name="compile">
+        <javac debug="true"  destdir="bin" includeantruntime="true">
+            <src path="src"/>
+        </javac>
+    </target>	
+	
+	<target name="copy-dependencies">
+		<mkdir dir="${dist.lib.dir}" />
+
+		<jar jarfile="${dist.lib.dir}/dependencies-all.jar">
+			<zipgroupfileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</zipgroupfileset>
+		</jar>
+	</target-->
+	
+  <!-- Paths -->
+  <path id="compile.classpath">
+    <fileset dir="${project.lib.dir}/compile">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+  
+  <import file="../common/unittesting.xml"/>
+        
+  <!-- Targets -->
+  <target name="-pre-clean" description="Performs all necessary clean-up before a build">
+    <delete dir="${classes.dir}" quiet="false" />
+    <delete dir="${instrumented.dir}" quiet="false" />
+    <delete file="${target.dir}/${java.jar.name}" quiet="false" />
+    <delete dir="${project.lib.dir}" />
+  </target>
+
+  <target name="-init" depends="init-test" description="Initializes the system before a build">
+    <mkdir dir="${classes.dir}" />
+    <mkdir dir="${base.lib.dir}"/>
+    <mkdir dir="${target.dir}"/>
+  </target>
+
+  <target name="compile" depends="-pre-clean, -init, ivy-compile" description="Compiles the Java source code">
+    <javac srcdir="${src.java.dir}" destdir="${classes.dir}" debug="true" target="1.8" >
+      <classpath refid="compile.classpath" />
+    </javac>
+  </target>
+  
+
+  <target name="jar" depends="compile" description="Builds the services jar">
+    <jar jarfile="${target.dir}/${java.jar.name}" compress="false">
+      <fileset dir="${classes.dir}">
+        <include name="**/*.class" />
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="-post-clean" depends="post-clean-test" description="Performs necessary clean-up after a build">
+    <delete dir="${classes.dir}" quiet="false" />
+
+  </target>
+
+  <target name="run" depends="jar, test, inspect, -post-clean" description="Default project target" />	
+	
+    <!--target name="dist" depends="compile, copy-dependencies" description="generate the distribution jar"-->
+    <!--target name="dist" depends="compile" description="generate the distribution jar">    	
+        <buildnumber />
+
+        <mkdir dir="${dist}" />
+ 
+
+        <jar destfile="${dist}/nbia-other-dao.jar" basedir="${build}" >	
+        	<manifest>
+        			<attribute name="Main-Class" value="gov.nih.nci.nbia.excellDao.FileLocDao" />
+        	</manifest>
+ 
+        	<exclude name="**/lib/*"/>
+        	<exclude name="**/lib"/>
+        </jar>
+    </target>
+	
+    <target name="SearchExcelDao">
+        <java classname="gov.nih.nci.nbia.excellDao.SearchExcelDao" failonerror="true" fork="yes">
+        </java>
+    </target-->
+</project>

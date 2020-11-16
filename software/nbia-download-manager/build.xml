@@ -141,6 +141,11 @@ L-->
            includes="**"
 		   excludes="${excludes}">
       <classpath refid="classpath"/>
+    	<!--classpath>
+    	        <fileset dir="${project.lib.dir}/compile">
+    	          <include name="*.jar" />
+    	        </fileset>
+    	</classpath-->
     </javac>
    </target>
 
@@ -154,6 +159,7 @@ L-->
 	<filter token="help.desk.url" value="${help.desk.url}"/>
     <copy todir="${build}" filtering="true">
     		<fileset dir="${resources.dir}" includes="**/*.properties" />
+			<fileset dir="${resources.dir}" includes="**/*.config" />
     </copy>
     <copy todir="${build}" filtering="false">
      	<fileset dir="${images.dir}" includes="**/*.png" />
