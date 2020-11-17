@@ -61,8 +61,8 @@ public class AuthorizationService {
 						csmContextName, "'");
 				protectionElementName = protectionElementName.concat("'");
 				publicProtectionElemLst .add(protectionElementName);
-				System.out.println("!!!public protection group="
-						+ protectionElementName);
+//				System.out.println("!!!public protection group="
+//						+ protectionElementName);
 			}
 		}
 		return publicProtectionElemLst;

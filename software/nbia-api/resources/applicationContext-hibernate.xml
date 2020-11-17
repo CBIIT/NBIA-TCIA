@@ -312,11 +312,16 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
-    <bean id="annotationDao" class="gov.nih.nci.nbia.deletion.dao.AnnotationDAOImpl">
+  <bean id="annotationDao" class="gov.nih.nci.nbia.deletion.dao.AnnotationDAOImpl">
     <property name="sessionFactory">
       <ref bean="sessionFactory"/>
     </property>
   </bean>
+  <bean id="annotationDao2" class="gov.nih.nci.nbia.dao.AnnotationDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>  
   <bean id="imageDao" class="gov.nih.nci.nbia.deletion.dao.ImageDAOImpl">
     <property name="sessionFactory">
       <ref bean="sessionFactory"/>

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.Status;
 
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
+import gov.nih.nci.nbia.restSecurity.AuthorizationService;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 
@@ -36,13 +37,14 @@ public class V1_getDeniedSeries extends getData {
 	
 		List<String> authorizedCollections = null;
 		List<String> results = null;
+
 		if (seriesList == null) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, seriesList,  a list of SeriesInstanceUID is required for this API call.")
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		try {
-			if (userName == null)
+			if (userName == null || "null".equals(userName))
 				authorizedCollections = getPublicCollections();
 			else authorizedCollections = getAuthorizedCollections(userName);
 			

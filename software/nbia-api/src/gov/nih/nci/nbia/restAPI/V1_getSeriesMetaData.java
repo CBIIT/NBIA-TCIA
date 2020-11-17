@@ -80,9 +80,14 @@ public class V1_getSeriesMetaData extends getData {
 			e.printStackTrace();
 		}
 		Object[] result = getSeriesMetaData(false, seriesInstanceUID, authorizedCollections);
-		List<Object[]> data = new ArrayList<Object[]>();
-		data.add(result);
-		
-		return formatResponse(format, data, columns);
+		if (result != null && result.length > 0) {
+			List<Object[]> data = new ArrayList<Object[]>();
+			data.add(result);
+			
+			return formatResponse(format, data, columns);
+		}
+		else return Response.status(Status.NO_CONTENT)
+				.entity("No meta data for SeriesInstanceUID "+ seriesInstanceUID + " accessible.")
+				.type(MediaType.APPLICATION_JSON).build();
 	}
 }

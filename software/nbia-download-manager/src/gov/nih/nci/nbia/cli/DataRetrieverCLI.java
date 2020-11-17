@@ -453,10 +453,15 @@ public class DataRetrieverCLI {
 			if (dataType.equalsIgnoreCase("DICOM")) {
 				try {
 					String[] metaData = getMetaData(seriesUid, accessToken);
-					filePath = constrcutFilePath(metaData, directoryType);
-					createLicenseFile(rootDir, metaData[1], metaData[16], metaData[17]);
-					downloadSingleSeries(seriesUid, filePath, accessToken);
-					writeToMetaData(metaData, filePath);
+					if (metaData != null) {
+						filePath = constrcutFilePath(metaData, directoryType);
+						createLicenseFile(rootDir, metaData[1], metaData[16], metaData[17]);
+						downloadSingleSeries(seriesUid, filePath, accessToken);
+						writeToMetaData(metaData, filePath);
+					}
+					else {
+						logger.info("Not able to get metadata for series: " + seriesUid + ".  Move on to the next series");
+					}
 				} catch (RuntimeException re) {
 					if ((accessToken != null) && (re.getMessage().startsWith("Invalid or expired token"))) {
 						accessToken = renewAccessToken();
@@ -767,14 +772,22 @@ public class DataRetrieverCLI {
 			int code = connection.getResponseCode();
 			logger.fine("Get metadata... url=" + connection.getURL().toString());
 			if (code != 200) {
+				connection.disconnect();
 				if (code == 401 || code == 403) {
 					// Access token is invalid or expired.Regenerate the access token
 					logger.fine("Access token is invalid or expired. Regenerating access token....");
 					throw new RuntimeException(
 							"Invalid or expired token. HTTP error code: " + connection.getResponseCode());
-				} else
+				}
+				else if(code == 204) {
+					logger.info("The metadata for series "+ seriesUid +" cannot be accessed.");
+					return null;
+				}
+				else {
 					throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
+				}
 			}
+			
 
 			BufferedReader br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
 			String output = br.readLine(); // header
@@ -925,6 +938,9 @@ public class DataRetrieverCLI {
 
 	private String constrcutFilePath(String[] metaData, String directoryType) {
 		String filePath = null;
+		if (metaData == null) {
+			return null;
+		}
 
 		if (directoryType.equalsIgnoreCase("Classic")) {
 			filePath = File.separator + metaData[1] + File.separator + metaData[4] + File.separator + metaData[5]
