@@ -109,7 +109,7 @@ public class AuthorizationService {
 	if (authorizedProjAndSite != null) {
 		//check if request collection is part of authorized collection for user
 		for (String reqPandS :projAndSiteRequested) {
-			System.out.println("requested Project and site ="+reqPandS);
+			//System.out.println("requested Project and site ="+reqPandS);
 			String formatedS = "'"+ reqPandS +"'";
 			if (authorizedProjAndSite.contains(formatedS))
 			return true;

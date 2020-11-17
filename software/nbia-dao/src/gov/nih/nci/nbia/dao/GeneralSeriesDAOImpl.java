@@ -477,13 +477,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
-				+ hql + where.toString());
+//		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+//				+ hql + where.toString());
 
 		rs = getHibernateTemplate().findByNamedParam(hql + where.toString(), "ids", seriesInstanceUids);
 		
 		if (rs != null) {
-			System.out.println(" get acceptable series size=" +rs.size());
+//			System.out.println(" get acceptable series size=" +rs.size());
 			if (rs.size() == seriesInstanceUids.size()) //all accepted
 				return null;
 			else {
