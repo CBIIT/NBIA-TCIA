@@ -25,6 +25,7 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.excellDao.FileLocDao;
 
 
@@ -42,6 +43,8 @@ public class V1_getImageOther {
 	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid) throws IOException {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
+		String dataSource = NCIAConfig.getOtherDataLocationFile();
+
 		final String sid = seriesInstanceUid;
 		if (sid == null) {
 			return Response.status(Status.BAD_REQUEST)
@@ -75,11 +78,10 @@ public class V1_getImageOther {
 //					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
 					//List<String> fileNames = getImage(sid);
-					System.out.println("!!!!&&&Call fld.getDataLocation");					
+				
 					FileLocDao fld = new FileLocDao();
-					List<String> fileNames = fld.getDataLocation(sid);	
+					List<String> fileNames = fld.getDataLocation(sid, dataSource);	
 
-//					List<String> fileNames = fld.getDataLocation("C:\\NBIA-TCIA\\workspace\\software\\nbia-data\\DataSource.xlsx", sid);
 //					Timestamp qetimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Done with querying the file name list and start to zip and stram--"
 //							+ sdf.format(qetimestamp));
@@ -89,10 +91,8 @@ public class V1_getImageOther {
 
 						if (in != null) {
 							// Add Zip Entry
-							//String fileNameInZip = String.format("%08d", ++counter)
-							//		+ filename.substring(filename.lastIndexOf("."));
 							String fileNameInZip = filename.substring(filename.lastIndexOf(File.separator)+1);
-							System.out.println("zipping file: "+fileNameInZip);
+//							System.out.println("zipping file: "+fileNameInZip);
 							zip.putNextEntry(new ZipEntry(fileNameInZip));
 
 							// Write file into zip

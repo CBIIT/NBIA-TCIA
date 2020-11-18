@@ -885,7 +885,20 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("uat.enable.assign.user.to.protectionGroup");
         checkProperty("uat.enable.assign.user.to.protectionGroup", propertyValue);
         return propertyValue;
-    }  
+    } 
+    
+    /**
+     * Externalized Property!
+     *  Property: uat.enable.assign.user.to.protectionGroup
+     *  This property is configured via nbia.properties/defaultAHP3.properties
+     *  to contain value for UAT to creat new collection and site in DB.
+     */
+    public static String getOtherDataLocationFile(){
+        String propertyValue = properties.getProperty("other.data.location.file");
+//  maybe turn it on later     
+//        checkProperty("other.data.location.file", propertyValue);
+        return propertyValue;
+    }      
     
     /**
      * Utility method for retrieving a property

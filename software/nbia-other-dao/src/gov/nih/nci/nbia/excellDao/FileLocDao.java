@@ -13,7 +13,7 @@ public class FileLocDao
 	private Map<String, ArrayList<String>> fileNameMap = new HashMap<String, ArrayList<String>>();
     
 	public static void main(String[] args) 
-	{	
+	{	//testing code
 		FileLocDao  fld= new FileLocDao();
 		fld.getDataLocation("3.0");	
 	}
@@ -25,7 +25,6 @@ public class FileLocDao
 			reader = new BufferedReader(new FileReader(filePath));
 			String line = reader.readLine();
 			while (line != null) {
-//				System.out.println(line);
 				String [] row = line.split(",");
 				fileNameMap.computeIfAbsent(row[0], k -> new ArrayList<>()).add(row[1]);
 				// read next line
@@ -37,23 +36,29 @@ public class FileLocDao
 		}
 	}
 		
-
+	//Testing code
 	public List getDataLocation(String uid) {
-		System.out.println("Working Directory = " + System.getProperty("user.dir"));
-		System.out.println("!!!  getDataLocation(String uid)/uid="+uid);
-		String filename = "/data/DataSource.csv";
+		//testing code
+		String filename = "/usr/local/tomcat-7.0.105/nbia-data/DataSourceForDevCM.csv";		
 
 		readCsvFile(filename);
-		System.out.println("!!filename="+filename + " uid="+uid);
+//		System.out.println("!!filename="+filename + " uid="+uid);
 		List<String> list = fileNameMap.get(uid);
-//			
-//			for (String fileLoc : list) {
-//				System.out.println(" find file path ="+ fileLoc);
-//				
-//			}
 
 		return list;
 	}
+	
+	public List getDataLocation(String uid, String dataSource) {
+		String filename = "/usr/local/tomcat-7.0.105/nbia-data/DataSourceForDevCM.csv";
+		if (dataSource != null)
+			filename = dataSource;		
+
+		readCsvFile(filename);
+//		System.out.println("!!filename="+filename + " uid="+uid);
+		List<String> list = fileNameMap.get(uid);
+
+		return list;
+	}	
 }
 
 
