@@ -5,7 +5,7 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nbia-domain"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nbia-util"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/csmapi-5.2.0.1.jar"/>
-	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/hibernate-3.2.0.ga.jar"/>
+	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/hibernate-3.2.6.ga.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/jsf-api-1.2_12.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/log4j-1.2.15.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/compile/spring-aop-3.2.8.RELEASE.jar"/>
@@ -41,7 +41,7 @@
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/dbunit-2.4.8.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/dom4j-1.6.1.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/ehcache-1.2.jar"/>
-	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/hibernate-3.2.0.ga.jar"/>
+	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/hibernate-3.2.6.ga.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/javancss-29.50.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/jdom-1.0.jar"/>
 	<classpathentry exported="true" kind="var" path="NBIA_BASE/target/lib/nbia-dao/test/jhbasic-29.50.jar"/>

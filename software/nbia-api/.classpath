@@ -103,5 +103,7 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-tx-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/spring-orm-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/csmapi-5.2.0.1.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/commons-jcs-core-2.2.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-api/compile/commons-jcs-jcache-2.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
