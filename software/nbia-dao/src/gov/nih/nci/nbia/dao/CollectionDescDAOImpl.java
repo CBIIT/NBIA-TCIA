@@ -16,6 +16,8 @@ import gov.nih.nci.nbia.internaldomain.License;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -42,6 +44,27 @@ public class CollectionDescDAOImpl extends AbstractDAO
 
         return (List<String>)getHibernateTemplate().find(hql);
 	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	public Map<String, String> findCollectionNamesAndDOI(String collectionName) throws DataAccessException {
+		Map<String, String> returnValue= new HashMap<String, String>();
+		String hql =
+	    	"select distinct gs.project,gs.descriptionURI "+
+	    	"from GeneralSeries gs where gs.thirdPartyAnalysis is null";
+		if (collectionName!=null&&collectionName!="") {
+			hql=hql+" and gs.project='"+collectionName+"'";
+			
+		}
+		List<Object> cdataList=getHibernateTemplate().find(hql);
+		for (Object cdata:cdataList) {
+		   Object[] obj= (Object[]) cdata;
+		     String name = (String)obj[0];
+		     String description = (String)obj[1];
+		     if (name!=null&description!=null) {
+		    	 returnValue.put(name, description);
+		     }
+		    	 		}    
+        return returnValue;
+	}
 
 	@Transactional(propagation=Propagation.REQUIRED)
 	public CollectionDescDTO findCollectionDescByCollectionName(String collectionName) throws DataAccessException{
@@ -56,8 +79,11 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			CollectionDesc c = collectionDescList.get(0);
 			dto.setDescription(c.getDescription());
 			dto.setId(c.getId());
-			dto.setUserName(c.getUserName());
 			dto.setCollectionName(c.getCollectionName());
+			if (collectionName!=null) {
+				Map <String, String>doiMap=findCollectionNamesAndDOI(collectionName);
+			    dto.setDescriptionURI(doiMap.get(collectionName));
+			}
 			if (c.getLicense() != null)
 				dto.setLicenseId(c.getLicense().getId());
 			else dto.setLicenseId(null);
@@ -76,12 +102,14 @@ public class CollectionDescDAOImpl extends AbstractDAO
         DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
         criteria.add(Restrictions.isNotNull("collectionName"));
         List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+		Map <String, String>doiMap=findCollectionNamesAndDOI(null);
+	    
 		for(CollectionDesc collectionDesc : collectionDescList)	{
 			CollectionDescDTO dto = new CollectionDescDTO();
 			dto.setDescription(collectionDesc.getDescription());
 			dto.setId(collectionDesc.getId());
 			dto.setCollectionName(collectionDesc.getCollectionName());
-			
+			dto.setDescriptionURI(doiMap.get(collectionDesc.getCollectionName()));
 			if (collectionDesc.getLicense()== null)
 				dto.setLicenseId(null);
 			else 

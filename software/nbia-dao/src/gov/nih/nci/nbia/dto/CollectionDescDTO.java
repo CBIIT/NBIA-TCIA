@@ -18,6 +18,7 @@ public class CollectionDescDTO {
 	private String collectionName;
 	private String userName;
 	private Integer licenseId;
+	private String descriptionURI;
 	
 	public String getCollectionName() {
 		return collectionName;
@@ -54,6 +55,12 @@ public class CollectionDescDTO {
 	}
 	public void setLicenseId(Integer licenseId) {
 		this.licenseId = licenseId;
+	}
+	public String getDescriptionURI() {
+		return descriptionURI;
+	}
+	public void setDescriptionURI(String descriptionURI) {
+		this.descriptionURI = descriptionURI;
 	}
 
 	
