@@ -27,7 +27,7 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 	@Transactional(propagation=Propagation.REQUIRED)
 	public Object validate(Map numbers) throws Exception {
 		String temp;
-	    String hql = "from TrialDataProvenance as tdp where ";
+	    String hql = "Select tdp from TrialDataProvenance tdp join tdp.siteCollection s where ";
 	
 	    TrialDataProvenance tdp = (TrialDataProvenance)SpringApplicationContext.getBean("trialDataProvenance");
 	
@@ -41,13 +41,13 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		    }
 		
 		    if ((temp = (String) numbers.get(DicomConstants.SITE_ID)) != null) {
-		        hql += ("tdp.siteCollection.dpSiteId = '" + temp.trim() + "' and ");
+		        hql += ("s.dpSiteId = '" + temp.trim() + "' and ");
 		    } else {
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site id is null");
 		    }
 		
 		    if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
-		        hql += ("lower(tdp.siteCollection.dpSiteName) = '" + temp.trim().toLowerCase() +
+		        hql += ("lower(s.dpSiteName) = '" + temp.trim().toLowerCase() +
 		        "' ");
 		    } else {
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site name is null");
@@ -67,6 +67,7 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		    	}
 		    }
 	    }catch(Exception e) {
+	    	e.printStackTrace();
 	    	log.error("Exception in TrialDataProvenanceOperation " + e);
 	    	throw new Exception("Exception in TrialDataProvenanceOperation: " + e);
 	    }
