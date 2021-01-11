@@ -39,6 +39,7 @@ export class ConfigurationService {
     }
 
     parseConfig( data ) {
+        // console.log('MHL parseConfig: ', data);
         let config = data.replace( /\r\n/g, '\r' ).replace( /\n/g, '\r' ).split( /\r/ );
 
         for( let line of config ){
@@ -69,6 +70,12 @@ export class ConfigurationService {
 
                     if( key === 'OHIF_viewer' ){
                         Properties.SHOW_OHIF_VIEWER = this.utilService.isTrue( value );
+                    }
+
+                    if( key === 'ENABLE_WIDGET_TESTER' ){
+                        Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE = this.utilService.isTrue( value );
+                        // console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE value: ', value);
+                        // console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: ', Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE);
                     }
 
                     if( key === 'DEMO_MODE' ){

@@ -1,3 +1,8 @@
 @import 'src/app/app.component';
-@import 'src/app/tools/query-section-module/query-section/query-section.component';
 @import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
+
+// FIXME for testing only
+.top-border {
+    border-top: solid 1px $criteriaQueryBorderColor;
+}
+

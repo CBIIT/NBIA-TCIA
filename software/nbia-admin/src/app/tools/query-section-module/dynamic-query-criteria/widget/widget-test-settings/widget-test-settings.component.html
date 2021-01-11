@@ -1,0 +1,841 @@
+<div>
+    <button class="btn btn-info" (click)="sendWidgetData()">Update Widget</button>
+</div>
+<div class="widget-data-div mt-1">
+
+    <!-- ----------------------------------- -->
+    <!-- ---------- Input types   ---------- -->
+    <!-- ----------------------------------- -->
+    <table class="widget-type-table">
+
+        <!-- ----- Small text input ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaSmallTextInputCheckbox'"
+                       title="{{itemDescription['dynamicQueryCriteriaSmallTextInput']['tooltip']}}"
+                >
+                    {{itemDescription['dynamicQueryCriteriaSmallTextInput']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaSmallTextInputCheckbox" [checked]="dynamicQueryCriteriaSmallTextInput" (click)="onInputTypeRadioClicked(0)" />
+            </td>
+        </tr>
+        <!-- ----- END Small text input ----- -->
+
+        <!-- ----- Large text input ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaLargeTextInputCheckbox'">
+                    {{itemDescription['dynamicQueryCriteriaLargeTextInput']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaLargeTextInputCheckbox" [checked]="dynamicQueryCriteriaLargeTextInput" (click)="onInputTypeRadioClicked(1)" />
+            </td>
+        </tr>
+        <!-- ----- END Large text input ----- -->
+
+        <!-- ----- Multi choice list (checkboxes) ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaMultiChoiceList'">
+                    {{itemDescription['dynamicQueryCriteriaMultiChoiceList']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaMultiChoiceList" [checked]="dynamicQueryCriteriaMultiChoiceList" (click)="onInputTypeRadioClicked(2)" />
+            </td>
+        </tr>
+        <!-- ----- END Multi choice list (checkboxes) ----- -->
+
+        <!-- ----- Single choice list (radio buttons) ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaSingleChoiceList'">
+                    {{itemDescription['dynamicQueryCriteriaSingleChoiceList']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaSingleChoiceList" [checked]="dynamicQueryCriteriaSingleChoiceList" (click)="onInputTypeRadioClicked(3)" />
+            </td>
+        </tr>
+        <!-- ----- END Single choice list (radio buttons) ----- -->
+
+        <tr>
+            <td>
+                <hr />
+            </td>
+            <td>
+                <hr />
+            </td>
+        </tr>
+
+        <!-- ----- Single line radio buttons ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaSingleLineRadio'">
+                    {{itemDescription['dynamicQueryCriteriaSingleLineRadio']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaSingleLineRadio" [checked]="dynamicQueryCriteriaSingleLineRadio" (click)="onInputTypeRadioClicked(4)" />
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 12px;">
+                Check to set as the default.
+            </td>
+            <td style="font-size: 12px;">
+                Leave text empty to not include.
+            </td>
+        </tr>
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': ! dynamicQueryCriteriaSingleLineRadio
+            }"
+            >
+                <!-- Set as default checkbox -->
+                <input
+                    class="mr-1"
+                    type="checkbox"
+                    title="Set as default"
+                    id="dynamicQueryCriteriaSingleLineRadioDefault0"
+                    [disabled]="! dynamicQueryCriteriaSingleLineRadio"
+                    [(ngModel)]="dynamicQueryCriteriaSingleLineRadioDefault0"
+                    (change)="setDynamicQueryCriteriaSingleLineRadioDefault(0)"
+                />
+                <!-- END Set as default checkbox -->
+
+                <label
+                    for="dynamicQueryCriteriaSingleLineRadioDefault0"
+                    [ngClass]="{
+                    'red-text': dynamicQueryCriteriaSingleLineRadio0.length < 1 && dynamicQueryCriteriaSingleLineRadioDefault0
+                }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaSingleLineRadio0']['text']}}
+                    <span *ngIf="dynamicQueryCriteriaSingleLineRadio0.length < 1 && dynamicQueryCriteriaSingleLineRadioDefault0" style="font-size: 12px;">
+                        Default selection needs text
+                    </span>
+                </label>
+            </td>
+            <td class="right-td">
+                <textarea class="smallTextarea" [disabled]="! dynamicQueryCriteriaSingleLineRadio" [(ngModel)]="dynamicQueryCriteriaSingleLineRadio0"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': ! dynamicQueryCriteriaSingleLineRadio
+            }"
+            >
+                <!-- Set as default checkbox -->
+                <input
+                    class="mr-1"
+                    type="checkbox"
+                    title="Set as default"
+                    id="dynamicQueryCriteriaSingleLineRadioDefault1"
+                    [disabled]="! dynamicQueryCriteriaSingleLineRadio"
+                    [(ngModel)]="dynamicQueryCriteriaSingleLineRadioDefault1"
+                    (change)="setDynamicQueryCriteriaSingleLineRadioDefault(1)"
+                />
+                <!-- END Set as default checkbox -->
+
+                <label
+                    for="dynamicQueryCriteriaSingleLineRadioDefault1"
+                    [ngClass]="{
+                    'red-text': dynamicQueryCriteriaSingleLineRadio1.length < 1 && dynamicQueryCriteriaSingleLineRadioDefault1
+                }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaSingleLineRadio1']['text']}}
+                    <span *ngIf="dynamicQueryCriteriaSingleLineRadio1.length < 1 && dynamicQueryCriteriaSingleLineRadioDefault1" style="font-size: 12px;">
+                        Default selection needs text
+                    </span>
+                </label>
+            </td>
+            <td class="right-td">
+                <textarea class="smallTextarea" [disabled]="! dynamicQueryCriteriaSingleLineRadio" [(ngModel)]="dynamicQueryCriteriaSingleLineRadio1"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': ! dynamicQueryCriteriaSingleLineRadio
+            }"
+            >
+                <!-- Set as default checkbox -->
+                <input
+                    class="mr-1"
+                    type="checkbox"
+                    title="Set as default"
+                    id="dynamicQueryCriteriaSingleLineRadioDefault2"
+                    [disabled]="! dynamicQueryCriteriaSingleLineRadio"
+                    [(ngModel)]="dynamicQueryCriteriaSingleLineRadioDefault2"
+                    (change)="setDynamicQueryCriteriaSingleLineRadioDefault(2)"
+                />
+                <!-- END Set as default checkbox -->
+                <label
+                    for="dynamicQueryCriteriaSingleLineRadioDefault2"
+                    [ngClass]="{
+                    'red-text': dynamicQueryCriteriaSingleLineRadio2.length < 1 && dynamicQueryCriteriaSingleLineRadioDefault2
+                }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaSingleLineRadio2']['text']}}
+                    <span *ngIf="dynamicQueryCriteriaSingleLineRadio2.length < 1 && dynamicQueryCriteriaSingleLineRadioDefault2" style="font-size: 12px;">
+                        Default selection needs text
+                    </span>
+                </label>
+            </td>
+            <td class="right-td">
+                <textarea class="smallTextarea" [disabled]="! dynamicQueryCriteriaSingleLineRadio" [(ngModel)]="dynamicQueryCriteriaSingleLineRadio2"></textarea>
+            </td>
+        </tr>
+        <!-- ----- END Single line radio buttons ----- -->
+
+        <tr>
+            <td>
+                <hr />
+            </td>
+            <td>
+                <hr />
+            </td>
+        </tr>
+
+        <!-- ----- Single checkbox ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaSingleCheckbox'">
+                    {{itemDescription['dynamicQueryCriteriaSingleCheckbox']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaSingleCheckbox" [checked]="dynamicQueryCriteriaSingleCheckbox" (click)="onInputTypeRadioClicked(5)" />
+            </td>
+        </tr>
+
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaSingleCheckboxDefault'"
+                    [ngClass]="{
+                'disabled-text': (! dynamicQueryCriteriaSingleCheckbox)
+            }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaSingleCheckboxDefault']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="checkbox" name="inputTypeRadio" id="dynamicQueryCriteriaSingleCheckboxDefault" [disabled]="(! dynamicQueryCriteriaSingleCheckbox)" [(ngModel)]="dynamicQueryCriteriaSingleCheckboxDefault" />
+            </td>
+        </tr>
+        <!-- ----- END Single checkbox ----- -->
+        <tr>
+            <td>
+                <hr />
+            </td>
+            <td>
+                <hr />
+            </td>
+        </tr>
+
+        <!-- -----  Number input  ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaNumber'" title="{{itemDescription['dynamicQueryCriteriaNumber']['tooltip']}}">
+                    {{itemDescription['dynamicQueryCriteriaNumber']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaNumber" [checked]="dynamicQueryCriteriaNumber" (click)="onInputTypeRadioClicked(6)" />
+            </td>
+        </tr>
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaNumberDefault'"
+                    title="{{itemDescription['dynamicQueryCriteriaNumberDefault']['tooltip']}}"
+                    [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaNumber)
+                    }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaNumberDefault']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="number" id="dynamicQueryCriteriaNumberDefault" [disabled]="(! dynamicQueryCriteriaNumber)" [(ngModel)]="dynamicQueryCriteriaNumberDefault" />
+            </td>
+        </tr>
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaNumberLimitHigh'"
+                    title="{{itemDescription['dynamicQueryCriteriaNumberLimitHigh']['tooltip']}}"
+                    [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaNumber)
+                    }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaNumberLimitHigh']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="number" id="dynamicQueryCriteriaNumberLimitHigh" [disabled]="(! dynamicQueryCriteriaNumber)" [(ngModel)]="dynamicQueryCriteriaNumberLimitHigh" />
+            </td>
+        </tr>
+
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaNumberLimitLow'"
+                    title="{{itemDescription['dynamicQueryCriteriaNumberLimitLow']['tooltip']}}"
+                    [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaNumber)
+                    }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaNumberLimitLow']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="number" id="dynamicQueryCriteriaNumberLimitLow" [disabled]="(! dynamicQueryCriteriaNumber)" [(ngModel)]="dynamicQueryCriteriaNumberLimitLow" />
+            </td>
+        </tr>
+        <!-- -----  END Number input  ----- -->
+
+        <tr>
+            <td>
+                <hr />
+            </td>
+            <td>
+                <hr />
+            </td>
+        </tr>
+
+        <!-- ----- Calendar ----- -->
+        <tr>
+            <td class="left-td">
+                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaCalendar'" title="{{itemDescription['dynamicQueryCriteriaCalendar']['tooltip']}}">
+                    {{itemDescription['dynamicQueryCriteriaCalendar']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="radio" name="inputTypeRadio" id="dynamicQueryCriteriaCalendar" [checked]="dynamicQueryCriteriaCalendar" (click)="onInputTypeRadioClicked(7)" />
+            </td>
+        </tr>
+        <tr>
+            <td
+                [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaCalendar)
+                    }"
+            >
+                First prompt
+            </td>
+            <td class="right-td">
+                <textarea
+                    class="smallTextarea"
+                    [disabled]="! dynamicQueryCriteriaCalendar"
+                    [(ngModel)]="dynamicQueryCriteriaCalendarPrompt0"
+                ></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td
+                [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaCalendar)
+                    }"
+            >
+                First place holder
+            </td>
+            <td class="right-td">
+                <textarea
+                    class="smallTextarea"
+                    [disabled]="! dynamicQueryCriteriaCalendar"
+                    [(ngModel)]="dynamicQueryCriteriaCalendarPlaceHolder0"
+                ></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 12px;"
+                class="mb-0 pb-0"
+                [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaCalendar)
+                }"
+            >
+                Leave Second prompt empty for just a single date
+            </td>
+        </tr>
+
+        <tr>
+            <td
+                [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaCalendar)
+                }"
+            >
+                Second prompt
+            </td>
+            <td >
+                <textarea
+                    class="smallTextarea"
+                    [disabled]="! dynamicQueryCriteriaCalendar"
+                    [(ngModel)]="dynamicQueryCriteriaCalendarPrompt1"
+                ></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td
+                [ngClass]="{
+                       'disabled-text': (! dynamicQueryCriteriaCalendar)
+                    }"
+            >
+                Second place holder
+            </td>
+            <td class="right-td">
+                <textarea
+                    class="smallTextarea"
+                    [disabled]="! dynamicQueryCriteriaCalendar"
+                    [(ngModel)]="dynamicQueryCriteriaCalendarPlaceHolder1"
+                ></textarea>
+            </td>
+        </tr>
+        <!-- ----- END Calendar ----- -->
+
+    </table>
+    <!-- -------------------------------------- -->
+    <!-- ---------  END Input types  ---------- -->
+    <!-- -------------------------------------- -->
+
+
+    <!-- ----------  And Or  ---------- -->
+    <table>
+        <tr
+            [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaSmallTextInput || dynamicQueryCriteriaSingleCheckbox ||
+                dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaNumber || dynamicQueryCriteriaCalendar
+            }"
+        >
+            <td class="left-td">
+                <label>
+                    {{itemDescription['dynamicQueryCriteriaAndOrType']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <span class="mr-1">
+                    <input type="checkbox" [(ngModel)]="andOrAllAnyRadioSelectionAndOr" (change)="andOrAllAnyRadio(0)" />
+                </span>
+
+                <span class="dropdown clicker">
+                    <button
+                        [disabled]="dynamicQueryCriteriaSmallTextInput || dynamicQueryCriteriaSingleCheckbox ||
+                        dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAndOr)
+                        || dynamicQueryCriteriaCalendar"
+                        class="btn btn-info dropdown-toggle"
+                        data-toggle="dropdown"
+                    >
+                        {{ andOrTypesArray[currentAndOrType] }}
+                    </button>
+
+                    <div class="dropdown-menu pb-0">
+                        <a class="dropdown-item admin-dropdown-outline" *ngFor="let andOrType of andOrTypesArray; let c = index" (click)="onAndOrClick(c)">
+                            <span>
+                                <img *ngIf="c === currentAndOrType" src="assets/images/check.png" alt="" />
+                                {{andOrType}}
+                            </span>
+                        </a>
+                    </div>
+                </span>
+            </td>
+        </tr>
+
+        <tr
+            [ngClass]="{
+                'disabled-text': currentAndOrType!==0 || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSmallTextInput ||
+                dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAndOr) || dynamicQueryCriteriaCalendar
+            }"
+        >
+            <td class="left-td">
+                <label>
+                    {{itemDescription['dynamicQueryCriteriaAndOrDefault']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <label
+                    class="ml-3"
+                    [attr.for]="'dynamicQueryCriteriaAndOrDefaultAND'">And&nbsp;</label>
+                <input
+                    [disabled]="currentAndOrType!==0 || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSmallTextInput ||
+                    dynamicQueryCriteriaLargeTextInput  || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAndOr) || dynamicQueryCriteriaCalendar"
+                    type="radio"
+                    name="dynamicQueryCriteriaAndOrDefaultRadio"
+                    id="dynamicQueryCriteriaAndOrDefaultAND"
+                    (change)="dynamicQueryCriteriaAndOrDefaultRadioClick('AND')"
+                    [checked]="dynamicQueryCriteriaAndOrDefault === 'AND'"
+                />
+                &nbsp;&nbsp;&nbsp;
+                <label [attr.for]="'dynamicQueryCriteriaAndOrDefaultOR'">Or&nbsp;</label>
+                <input
+                    [disabled]="currentAndOrType!==0 || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSmallTextInput ||
+                    dynamicQueryCriteriaLargeTextInput  || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAndOr) || dynamicQueryCriteriaCalendar"
+                    type="radio"
+                    name="dynamicQueryCriteriaAndOrDefaultRadio"
+                    id="dynamicQueryCriteriaAndOrDefaultOR"
+                    (change)="dynamicQueryCriteriaAndOrDefaultRadioClick('OR')"
+                    [checked]="dynamicQueryCriteriaAndOrDefault === 'OR'"
+                />
+            </td>
+        </tr>
+    </table>
+    <!-- ----------  END And Or  ---------- -->
+
+
+    <!-- ----------  All Any ---------- -->
+    <table>
+        <tr
+            [ngClass]="{
+              'disabled-text': dynamicQueryCriteriaSmallTextInput || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaLargeTextInput ||
+               dynamicQueryCriteriaNumber || dynamicQueryCriteriaCalendar
+            }"
+        >
+            <td class="left-td">
+                <label>
+                    {{itemDescription['dynamicQueryCriteriaAllAnyType']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <span class="mr-1">
+                    <input type="checkbox" [(ngModel)]="andOrAllAnyRadioSelectionAllAny" (change)="andOrAllAnyRadio(1)" />
+                </span>
+
+                <span class="dropdown clicker">
+                    <button
+                        [disabled]="dynamicQueryCriteriaSmallTextInput || dynamicQueryCriteriaSingleCheckbox ||
+                        dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAllAny) || dynamicQueryCriteriaCalendar"
+                        class="btn btn-info dropdown-toggle"
+                        data-toggle="dropdown"
+                    >
+                        {{ allAnyTypesArray[currentAllAnyType] }}
+                    </button>
+
+                    <div class="dropdown-menu pb-0">
+                        <a class="dropdown-item admin-dropdown-outline" *ngFor="let allAnyType of allAnyTypesArray; let c = index" (click)="onAllAnyClick(c)">
+                            <span>
+                                <img *ngIf="c === currentAllAnyType" src="assets/images/check.png" alt="" />
+                                {{allAnyType}}
+                            </span>
+                        </a>
+                    </div>
+                </span>
+            </td>
+        </tr>
+
+        <tr
+            [ngClass]="{
+                'disabled-text': currentAllAnyType!==0 || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSmallTextInput ||
+                dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAllAny) || dynamicQueryCriteriaCalendar
+            }"
+        >
+            <td class="left-td">
+                <label>
+                    {{itemDescription['dynamicQueryCriteriaAllAnyDefault']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <label
+                    class="ml-3"
+                    [attr.for]="'dynamicQueryCriteriaAllAnyDefaultALL'">All&nbsp;</label>
+                <input
+                    [disabled]="currentAllAnyType!==0 || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSmallTextInput ||
+                    dynamicQueryCriteriaLargeTextInput  || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAllAny) || dynamicQueryCriteriaCalendar"
+                    type="radio"
+                    name="dynamicQueryCriteriaAllAnyDefaultRadio"
+                    id="dynamicQueryCriteriaAllAnyDefaultALL"
+                    (change)="dynamicQueryCriteriaAllAnyDefaultRadioClick('ALL')"
+                    [checked]="dynamicQueryCriteriaAllAnyDefault === 'ALL'"
+                />
+                &nbsp;&nbsp;&nbsp;
+                <label [attr.for]="'dynamicQueryCriteriaAllAnyDefaultAny'">Any&nbsp;</label>
+                    <input
+                        [disabled]="currentAllAnyType!==0 || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSmallTextInput ||
+                        dynamicQueryCriteriaLargeTextInput  || dynamicQueryCriteriaNumber || (!andOrAllAnyRadioSelectionAllAny) || dynamicQueryCriteriaCalendar"
+                        type="radio"
+                        name="dynamicQueryCriteriaAllAnyDefaultRadio"
+                        id="dynamicQueryCriteriaAllAnyDefaultANY"
+                        (change)="dynamicQueryCriteriaAllAnyDefaultRadioClick('ANY')"
+                        [checked]="dynamicQueryCriteriaAllAnyDefault === 'ANY'"
+                    />
+            </td>
+        </tr>
+    </table>
+    <!-- ----------  END All Any  ---------- -->
+
+    <table>
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaSort'"
+                    [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaSmallTextInput ||
+                 dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaCalendar
+            }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaSort']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input
+                    type="checkbox"
+                    id="dynamicQueryCriteriaSort"
+                    [disabled]="dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaSmallTextInput ||
+                 dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaCalendar"
+                    [(ngModel)]="dynamicQueryCriteriaSort"
+                />
+            </td>
+        </tr>
+    </table>
+    <!-- ---------- ---------- -->
+    <!-- ---------- Sample list data---------- -->
+    <table>
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaSmallTextInput ||
+                 dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaCalendar
+            }"
+            >
+                {{itemDescription['dynamicQueryCriteriaListData']['text']}}
+            </td>
+            <td class="right-td">
+                <div class="check-data-list">
+                    <input
+                        [disabled]="dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaSmallTextInput ||
+                     dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaCalendar"
+                        class="check-data-list-checkbox"
+                        type="checkbox"
+                        [(ngModel)]="useSampleData"
+                        (ngModelChange)="onUseSampleDataCheckbox($event)"
+                    />
+
+                    <textarea
+                        class="large-text-area ml-1"
+                        [disabled]="dynamicQueryCriteriaLargeTextInput || dynamicQueryCriteriaSmallTextInput ||
+                           dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaCalendar"
+                        [(ngModel)]="dynamicQueryCriteriaListData"
+                        (ngModelChange)="onListDataChange($event)"
+                    ></textarea>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <!-- ----- Clear button (top right) ----- -->
+        <tr>
+            <td class="left-td">
+                <label [attr.for]="'dynamicQueryCriteriaClearButton'">
+                    {{itemDescription['dynamicQueryCriteriaClearButton']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="checkbox" id="dynamicQueryCriteriaClearButton" [(ngModel)]="dynamicQueryCriteriaClearButton" />
+            </td>
+        </tr>
+
+        <!-- ----- Search/filter button (top right) ----- -->
+        <tr
+            [ngClass]="{
+          'disabled-text': dynamicQueryCriteriaSmallTextInput || dynamicQueryCriteriaLargeTextInput ||
+           dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSingleLineRadio || dynamicQueryCriteriaCalendar
+        }"
+        >
+            <td class="left-td">
+                <label [attr.for]="'dynamicQueryCriteriaSearchable'">
+                    {{itemDescription['dynamicQueryCriteriaSearchable']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input
+                    type="checkbox"
+                    id="dynamicQueryCriteriaSearchable"
+                    [disabled]="dynamicQueryCriteriaSmallTextInput || dynamicQueryCriteriaLargeTextInput ||
+                 dynamicQueryCriteriaNumber || dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaSingleLineRadio || dynamicQueryCriteriaCalendar"
+                    [(ngModel)]="dynamicQueryCriteriaSearchable"
+                />
+            </td>
+        </tr>
+
+        <!-- ----- Is this criteria required ----- -->
+        <tr>
+            <td class="left-td">
+                <label [attr.for]="'dynamicQueryCriteriaIsRequired'" title="{{itemDescription['dynamicQueryCriteriaRequired']['tooltip']}}">
+                    {{itemDescription['dynamicQueryCriteriaRequired']['text']}}
+                </label>
+            </td>
+
+            <td class="right-td">
+                <input type="checkbox" id="dynamicQueryCriteriaIsRequired" [(ngModel)]="dynamicQueryCriteriaRequired" />
+            </td>
+        </tr>
+    </table>
+
+    <!-- ----------  Apply button, checkbox, and text  -------- -->
+    <table>
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber
+            }"
+            >
+                <label [attr.for]="'dynamicQueryCriteriaApplyButton'">
+                    {{itemDescription['dynamicQueryCriteriaApplyButton']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input
+                    type="checkbox"
+                    id="dynamicQueryCriteriaApplyButton"
+                    [disabled]="dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber"
+                    [(ngModel)]="dynamicQueryCriteriaApplyButton"
+                    [ngModelOptions]="{standalone: true}"
+                    (click)="onDynamicQueryCriteriaApplyButtonClick()"
+                />
+            </td>
+        </tr>
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaSingleCheckbox
+            }"
+            >
+                <label [attr.for]="'dynamicQueryCriteriaApplyCheckbox'">
+                    {{itemDescription['dynamicQueryCriteriaApplyCheckbox']['text']}}
+                </label>
+            </td>
+
+            <td class="right-td">
+                <input
+                    type="checkbox"
+                    id="dynamicQueryCriteriaApplyCheckbox"
+                    [disabled]="dynamicQueryCriteriaSingleCheckbox"
+                    [(ngModel)]="dynamicQueryCriteriaApplyCheckbox"
+                    [ngModelOptions]="{standalone: true}"
+                    (click)="onDynamicQueryCriteriaApplyCheckboxClick()"
+                />
+            </td>
+        </tr>
+
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber
+            }"
+            >
+                {{itemDescription['dynamicQueryCriteriaApplyText']['text']}}
+            </td>
+            <td class="right-td">
+                <textarea
+                    class="smallTextarea"
+                    [disabled]="(!dynamicQueryCriteriaApplyCheckbox && ! dynamicQueryCriteriaApplyButton) ||
+                     dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber"
+                    [(ngModel)]="dynamicQueryCriteriaApplyText"
+                    (ngModelChange)="onApplyTextChange()"
+                ></textarea>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ---------- Open/collapse button (top left) ---------- -->
+    <table>
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaOpenCloseButton'"
+                    [ngClass]="{
+                'disabled-text': dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber
+            }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaOpenCloseButton']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input
+                    type="checkbox"
+                    id="dynamicQueryCriteriaOpenCloseButton"
+                    [disabled]="dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber"
+                    [(ngModel)]="dynamicQueryCriteriaOpenCloseButton"
+                />
+            </td>
+        </tr>
+
+        <!-- ----- Main heading ----- -->
+        <tr>
+            <td class="left-td">
+                {{itemDescription['dynamicQueryCriteriaHeading']['text']}}
+
+            </td>
+            <td class="right-td">
+                <textarea
+                    class="smallTextarea"
+                    [(ngModel)]="dynamicQueryCriteriaHeading"
+                    (ngModelChange)="onHeadingChange()"
+                ></textarea>
+            </td>
+        </tr>
+
+        <!-- ----- Sub-heading ----- -->
+        <tr>
+            <td
+                class="left-td"
+                [ngClass]="{
+                     'disabled-text': dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber
+                 }"
+            >
+                {{itemDescription['dynamicQueryCriteriaSubHeading']['text']}}
+            </td>
+            <td class="right-td">
+                <textarea class="smallTextarea" [disabled]="dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber" [(ngModel)]="dynamicQueryCriteriaSubHeading" (ngModelChange)="onSubHeadingChange()"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td
+                [ngClass]="{
+                    'disabled-text': ( ( !dynamicQueryCriteriaSingleChoiceList) && (! dynamicQueryCriteriaSingleLineRadio))
+                }"
+            >
+                Include choice in heading when collapsed
+
+            </td>
+            <td class="right-td" >
+            <input
+                type="checkbox"
+                id="dynamicQueryCriteriaChoiceInHeading"
+                [disabled]="( ( !dynamicQueryCriteriaSingleChoiceList) && (! dynamicQueryCriteriaSingleLineRadio))"
+                [(ngModel)]="dynamicQueryCriteriaSelectionInHeadingCollapsed"
+            />
+
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td class="left-td">
+                <label
+                    [attr.for]="'dynamicQueryCriteriaAllowNoChoice'"
+                    title="{{itemDescription['dynamicQueryCriteriaSingleCheckbox']['tooltip']}}"
+                    [ngClass]="{
+                        'disabled-text': dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber
+                    }"
+                >
+                    {{itemDescription['dynamicQueryCriteriaAllowNoChoice']['text']}}
+                </label>
+            </td>
+            <td class="right-td">
+                <input type="checkbox" id="dynamicQueryCriteriaAllowNoChoice" [disabled]="dynamicQueryCriteriaSingleCheckbox || dynamicQueryCriteriaNumber" [(ngModel)]="dynamicQueryCriteriaAllowNoChoice" />
+            </td>
+        </tr>
+    </table>
+</div>

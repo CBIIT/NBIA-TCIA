@@ -1,15 +1,26 @@
 @import 'src/app/app.component';
 @import 'src/app/tools/query-section-module/query-section/query-section.component';
 
+@import 'src/app/app.component';
+@import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
+// @import "src/app/tools/query-section-module/left-section/left-section.component.scss";
+
+// FIXME for testing only
+.top-border {
+    border-top: solid 1px $criteriaQueryBorderColor;
+}
+
 
 .small-text-input-div {
     height: 100px;
 }
 
+
 .small-text-input-text {
     border: solid 1px $criteriaQueryBorderColor;
     border-radius: 4px;
-    margin-left: 18px;
+    margin-left: $query-criteria-content-left-margin;
+    // margin-left: 18px;
     margin-right: 18px;
     width: calc(100% - 40px);
     // height: calc(100% - 40px);
@@ -23,7 +34,7 @@
     margin-right: 22px;
     margin-top: 8px;
 }
-
+/*
 .small-text-input-subheading {
     margin-left: 18px;
 }
@@ -31,13 +42,6 @@
 
 .query-panel-long {
     padding-bottom: 30px;
-}
-
-
-.close-x-icon {
-    position: absolute;
-    padding-top: 2px;
-    left: $left-section-width - 27px;
 }
 
 .small-text-input-and-or {
@@ -49,3 +53,4 @@
     margin-right: 3px;
     margin-left: 8px;
 }
+*/

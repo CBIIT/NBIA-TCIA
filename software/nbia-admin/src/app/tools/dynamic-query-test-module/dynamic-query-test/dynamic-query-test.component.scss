@@ -1,0 +1,15 @@
+@import "src/app/tools/query-section-module/query-section/query-section.component.scss";
+.dynamic-query-test-parent-div{
+    /* keep the Query section and the Display section side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}
+
+.widget-side{
+     width: 20%;
+}
+
+.left-widget-section{
+    width: 356px;
+}

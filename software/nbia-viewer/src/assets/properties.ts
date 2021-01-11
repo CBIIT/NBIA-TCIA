@@ -1,5 +1,5 @@
 export let Properties = {
-    // 13_FEB_2020
+    // 06_NOV_2020
     VERSION: '1.0.67',
     TITLE: 'Image Viewer',
 
@@ -14,11 +14,20 @@ export let Properties = {
     LOAD_ONE_IMAGE: 2,
     IMAGE_LOAD_MODE: 1,
 
-    API_SERVER_USER_DEFAULT: 'nbia_guest',
-    API_SERVER_PASSWORD_DEFAULT: 'test',
-    API_CLIENT_SECRET_DEFAULT: 'ItsBetweenUAndMe',
+    DEFAULT_USER: 'nbia_guest',
+    DEFAULT_PASSWORD: 'test',
+    DEFAULT_SECRET: 'ItsBetweenUAndMe',
 
-    /*  How many numbed page buttons between the arrow buttons  */
+
+    // This is a flag that is set to true by the ConfigurationService when all the configuration file settings have been set.
+    // It used to determine if it is okay to start using the configured settings yet.
+    CONFIG_COMPLETE: false,
+
+    // The "CONFIG_FILE" is within the /assets directory
+    CONFIG_FILE: 'configuration',
+
+
+    /*  How many numbered page buttons between the arrow buttons  */
     MAX_PAGER_BUTTONS: 6,
     IMAGES_PER_PAGE_CHOICE_DEFAULT: 200   // FIXME
 };

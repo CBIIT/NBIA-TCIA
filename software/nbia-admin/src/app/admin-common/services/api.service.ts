@@ -663,7 +663,7 @@ export class ApiService{
      *
      * @param queryType
      */
-    doGet0( queryType, query ? ) {
+    doGet( queryType, query ? ) {
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
         if( Properties.DEBUG_CURL ){
@@ -691,7 +691,7 @@ export class ApiService{
         return results;
     }
 
-    doGet( queryType, query ? ) {
+    doGet0( queryType, query ? ) {
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
         if( Properties.DEBUG_CURL ){

@@ -1,147 +1,291 @@
-<div class="query-panel">
-    <div class="query-panel-heading">
+<div class="query-panel top-border">
+    <div class="query-panel-heading mb-0">
 
 
-
-        <label *ngIf="haveInput" class="red-clear">
-            <img class="clicker" src="../../../../../assets/images/redClear.png" alt="Clear" (click)="onClearClick()">
-        </label>
-        <label class="close-x-icon">
-        <span class="clicker glyphicon glyphicon-remove  "
-              (click)="onRemoveCriteriaClick()"
-        ></span>
-        </label>
-
-
-
-        <label class="close-x-icon">
-        <span class="clicker glyphicon glyphicon-remove  "
-              (click)="onRemoveCriteriaClick()"
-        ></span>
-        </label>
-
-        <!-- No close/open icon, just show th Heading. -->
-        <span *ngIf="! queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']">
-            {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
+        <!-- No close/open icon on the left, just the Heading. -->
+        <span
+            *ngIf="!queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']"
+            [ngClass]="{
+                'heading-font-extra-small': currentFont === '0',
+                'heading-font-small': currentFont === '1',
+                'heading-font-medium': currentFont === '2',
+                'heading-font-large': currentFont === '3'
+            }"
+        >
+            {{ queryCriteriaData["dynamicQueryCriteriaHeading"] }}
         </span>
+        <!-- END No close/open icon on the left, just the Heading. -->
 
 
-        <span *ngIf="queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']">
-            <span *ngIf="multiChoiceListShowCriteria" class="clicker" (click)="onShowCriteriaClick(false)">
-                <img src="../../../../../assets/images/down_V01.png">
-                {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
+
+
+        <!-- With close/open icon on the left, just the Heading. -->
+        <span
+            *ngIf="queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']"
+            [ngClass]="{
+                'heading-font-extra-small': currentFont === '0',
+                'heading-font-small': currentFont === '1',
+                'heading-font-medium': currentFont === '2',
+                'heading-font-large': currentFont === '3'
+            }"
+        >
+            <span
+                *ngIf="multiChoiceListShowCriteria"
+                class="clicker"
+                (click)="onShowCriteriaClick(false)"
+            >
+                <img src="assets/images/down_V01.png" />
+                {{ queryCriteriaData["dynamicQueryCriteriaHeading"] }}
             </span>
-            <span *ngIf="!multiChoiceListShowCriteria" class="clicker" (click)="onShowCriteriaClick(true)">
-                <img src="../../../../../assets/images/right_V01.png">
-                {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
+            <span
+                *ngIf="!multiChoiceListShowCriteria"
+                class="clicker"
+                (click)="onShowCriteriaClick(true)"
+            >
+                <img src="assets/images/right_V01.png" />
+                {{ queryCriteriaData["dynamicQueryCriteriaHeading"] }}
             </span>
         </span>
+        <!-- END With close/open icon on the left, just the Heading. -->
 
         <!-- And / Or  -->
-        <span>
-            <!-- This user input includes And/Or radio buttons -->
-            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaAndOrType'] === andOrTypes.AND_OR">
-            &nbsp;
-                <span *ngFor="let option of options; let i = index">
-                    <input type="radio"
-                           class="multi-list-input-and-or-radio-button"
-                           name="large-text-input-and-or-radio-button-name{{sequenceNumber}}"
-                           id="large-text-input-and-or-radio-button-id-{{i}}-{{sequenceNumber}}"
-                           (change)="onMultiListAndOrRadioClick(i)"
-                           [checked]="cBox[i]"
+        <!-- This user input includes And/Or radio buttons -->
+        <span
+            *ngIf="andOrType === andOrTypes.AND_OR"
+            [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+        >
+                &nbsp;
+                <span
+                    *ngFor="let option of options; let i = index"
+                    class="clicker"
+                    [ngClass]="{
+                        'font-extra-small': currentFont === '0',
+                        'font-small': currentFont === '1',
+                        'font-medium': currentFont === '2',
+                        'font-large': currentFont === '3'
+                    }"
+                >
+                    <input
+
+                        type="radio"
+                        class="dynamic-query-and-or-radio-button clicker"
+                        name="multi-choice-list-and-or-radio-button-name{{
+                            sequenceNumber
+                        }}"
+                        id="dynamic-query-multi-choice-list-and-or-radio-button-id-{{ i }}-{{
+                            sequenceNumber
+                        }}"
+                        (change)="onMultiListAndOrRadioClick(i)"
+                        [checked]="andOrRadio[i]"
+                    />
+                    <label
+                        [attr.for]="
+                            'dynamic-query-multi-choice-list-and-or-radio-button-id-' +
+                            i +
+                            '-' +
+                            sequenceNumber
+                        "
+                        class="criteria-text clicker"
                     >
-                    <label [attr.for]="'large-text-input-and-or-radio-button-id-'+i+'-'+sequenceNumber"
-                           class="criteria-text"
-                    >
-                        {{option}}
+                        {{ option }}
                     </label>
                 </span>
+
+
             </span>
-            <!--  End of criteriaLargeTextInputAndOrType === andOrTypes.andOr  -->
-            <!-- If server says: This is an "And"  -->
-            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaAndOrType'] === andOrTypes.ONLY_AND">
+        <!--  End of criteriaLargeTextInputAndOrType === andOrTypes.andOr  -->
+        <!-- If server says: This is an "And"  -->
+        <span
+            *ngIf="andOrType === andOrTypes.ONLY_AND"
+            [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+        >
                 &nbsp;&nbsp;&nbsp;(And)
             </span>
-            <!-- If server says: This is an "Or"  -->
-            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaAndOrType'] === andOrTypes.ONLY_OR">
+        <!-- If server says: This is an "Or"  -->
+        <span
+            *ngIf="andOrType === andOrTypes.ONLY_OR"
+            [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+        >
                 &nbsp;&nbsp;&nbsp;(Or)
             </span>
-            <!-- If server says: Don't display an And/Or  -->
-            <!--
-                <span *ngIf="criteriaLargeTextInputAndOrType === andOrTypes.none">
-                    Nothing
-                </span>
-                -->
-        </span>
-        <!-- Search (filter) List. -->
-        <label class="dynamic-criteria-list-search"
-               [ngClass]="{
-                    'dynamic-criteria-list-search-with-clear': haveInput
-                }"
+        <!-- END And / Or  -->
 
-               (click)="onSearchGlassClick()"
+
+        <!-- Filter, Clear, and Remove buttons/icons -->
+        <span
+            class="dynamic-query-top-right-button-box"
+            [ngClass]="{
+                'dynamic-query-list-button-box-extra-small': currentFont === '0',
+                'dynamic-query-list-button-box-small': currentFont === '1',
+                'dynamic-query-list-button-box-medium': currentFont === '2',
+                'dynamic-query-list-button-box-large': currentFont === '3'
+            }"
         >
-            <img
-                class="clicker"
-                src="assets/images/search.png"
-                alt="Search collections"
-            >
-        </label>
-        <!-- ---------------------------------------------------------------- -->
-        <!--
+            <span class="dynamic-query-top-right-inner-button-box">
+                <!-- Search (filter) List. Button  just the button)-->
+                <!-- This is just the button, the Filter text input, etc, is farther below -->
+                <span *ngIf="queryCriteriaData['dynamicQueryCriteriaSearchable']"
+                      class="clicker"
+                      title="{{ searchToolTip }}"
+                      (click)="onSearchGlassClick()"
+                >
+                    <img
+                        [ngClass]="{
+                            'dynamic-query-list-button-icon-extra-small':
+                                currentFont === '0',
+                            'dynamic-query-list-button-icon-small':
+                                currentFont === '1',
+                            'dynamic-query-list-button-icon-medium':
+                                currentFont === '2',
+                            'dynamic-query-list-button-icon-large':
+                                currentFont === '3'
+                        }"
+                        src="assets/images/search.png"
+                        alt="Filter list"
+                    />
+                </span>
+                <!-- END Search (filter) List. Button (just the button) -->
 
-                <div *ngFor="let item  of queryCriteriaData['dynamicQueryCriteriaDataArray']; let i = index">
-                    [{{i}}]: {{item}}
-                </div>
-        -->
+                <!-- Clear button at top right -->
+                <span
+                    *ngIf="haveInput"
+                    class="clicker"
+                    (click)="onClearClick()"
+                >
+                    <img
+                        [ngClass]="{
+                            'dynamic-query-list-button-icon-extra-small':
+                                currentFont === '0',
+                            'dynamic-query-list-button-icon-small':
+                                currentFont === '1',
+                            'dynamic-query-list-button-icon-medium':
+                                currentFont === '2',
+                            'dynamic-query-list-button-icon-large':
+                                currentFont === '3'
+                        }"
+                        src="assets/images/redClear.png"
+                        alt="Clear checks"
+                    />
+                </span>
+                <!-- END Clear button at top right -->
 
+                <!-- Red X at the top right, that will remove this widget from the UI and remove any part of the query it may have provided -->
+                <span
+                    class="clicker"
+                    (click)="onRemoveCriteriaClick()"
+                >
+                    <img class="pl-1"
+                         [ngClass]="{
+                            'dynamic-query-list-button-icon-extra-small':
+                                currentFont === '0',
+                            'dynamic-query-list-button-icon-small':
+                                currentFont === '1',
+                            'dynamic-query-list-button-icon-medium':
+                                currentFont === '2',
+                            'dynamic-query-list-button-icon-large':
+                                currentFont === '3'
+                        }"
+                         src="assets/images/x_red.png"
+                         alt="Remove this search criteria"
+                    />
+                </span>
+                <!-- END Red X at the top right, that will remove this widget from the UI and remove any part of the query it may have provided -->
+
+            </span>
+        </span>
+        <!-- END Filter, Clear, and Remove buttons/icons -->
     </div>
-
-    <!-- -----  Criteria list search input (Red magnifying glass)  ----- -->
-    <div *ngIf="showListSearch" class="list-search-box">
-
-        <input type="text" class="list-search-text-area multi-list-box-with-focus" id="collectionsSearchText" placeholder="search"
-               [(ngModel)]="listSearchInput"
-               (blur)="onSearchTextOutFocus(0)"
-               (focus)="onSearchTextFocus(0)"
-               (ngModelChange)="onSearchChange($event)">
-    </div>
-    <!-- -----  End Search input  ----- -->
+    <!-- END query panel heading -->
 
 
-    <!-- ---------------------------------------------------------------- -->
-    <div class="list-scroller-div"
-         (resized)="onResized($event)"
-
+    <!-- -----  Search (filter) List text input (Launched.shown by Red magnifying glass)  ----- -->
+    <div *ngIf="showListSearch" class="dynamic-query-list-search-box"
          [ngClass]="{
-           'hide': ! multiChoiceListShowCriteria
-       }"
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+    >
+        <span>
+            <input
+                type="text"
+                class="dynamic-query-list-search-text-area dynamic-query-list-search-box-with-focus"
+                placeholder="search"
+                [(ngModel)]="listSearchInput"
+                (blur)="onSearchTextOutFocus(0)"
+                (focus)="onSearchTextFocus(0)"
+                (ngModelChange)="onSearchChange($event)"
+            />
+        </span>
+        <span class="dynamic-query-list-search-count">{{listSearchResultsCount}}</span>
+    </div>
+    <!-- ----- END Search (filter) List text input (Launched.shown by Red magnifying glass)  ----- -->
+
+
+    <!-- -------------  vertical-expand-div  ----------------------- -->
+    <div
+        class="dynamic-query-vertical-expand-div"
+        [ngClass]="{
+            hide: !multiChoiceListShowCriteria
+        }"
     >
 
-        <div class="list-scroller">
+        <div class="dynamic-query-list-scroller">
+                <div
+                    *ngFor="
+                        let item of itemList;
+                        let i = index
+                    "
 
-            <div class="list-scroller-content" id="collections">
-                <div *ngFor="let item of queryCriteriaData['dynamicQueryCriteriaDataArray']; let i = index"
-                     class="list-panel-radio-button"
+                    [ngClass]="{
+                     hide: !item['include'],
+                        'dynamic-query-list-line-extra-small': currentFont === '0',
+                        'dynamic-query-list-line-small': currentFont === '1',
+                        'dynamic-query-list-line-medium': currentFont === '2',
+                        'dynamic-query-list-line-large': currentFont === '3'
+                    }"
 
                 >
-                    <input type="checkbox"
-                           class="multi-list-checkbox"
-                           id="multi-choice-checkbox{{i}}"
-                           [(ngModel)]="listCheckboxes[i]"
-                           (click)="onCriteriaClicked( i)"
-                    >
+                    <input
+                        type="checkbox"
+                        class="dynamic-query-list-checkbox"
+                        id="dynamic-query-multi-choice-checkbox{{ i }}-{{sequenceNumber}}"
+                        [(ngModel)]="listCheckboxes[i]"
+                        (click)="onCriteriaClicked(i)"
+                    />
 
-                    <label [attr.for]="'multi-choice-checkbox'+i"
-                           class="criteria-text"
+                    <label
+                        [attr.for]="'dynamic-query-multi-choice-checkbox' + i"
+                        [ngClass]="{
+                            'font-extra-small': currentFont === '0',
+                            'font-small': currentFont === '1',
+                            'font-medium': currentFont === '2',
+                            'font-large': currentFont === '3'
+                        }"
                     >
-                        {{item}}
+                        {{ item['value'] }}
                     </label>
                 </div>
-            </div>
-
         </div>
+        <!-- ------------- END vertical-expand-div  ----------------------- -->
+
+
+
     </div>
-
-
 </div>

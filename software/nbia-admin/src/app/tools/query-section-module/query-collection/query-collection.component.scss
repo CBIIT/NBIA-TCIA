@@ -26,8 +26,7 @@
     left: $left-section-width-large - 47px;
 }
 
-
-/* Trying to clean this up for Chrome @CHECKME do we still need this?*/
+// Hide highlight border of text input within Search frame
 .box-with-focus {
     outline: none;
 }

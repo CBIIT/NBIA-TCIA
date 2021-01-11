@@ -86,11 +86,11 @@
     background-color: #fff;
     padding: 7px 0 0 0;
     margin-left: $query-criteria-content-left-margin;
-    margin-bottom: 11px;
+    margin-bottom: $query-criteria-heading-bottom-margin;
 }
 
 .criteria-text {
-    font: 15px arial, sans-serif;
+   // font: 15px arial, sans-serif;
 }
 
 

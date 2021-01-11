@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.72',
-    // 20_OCT_2020
-    TEST_VERSION: '1.0.72j',
+    // 06_NOV_2020
+    TEST_VERSION: '1.0.72k',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -72,6 +72,9 @@ export let Properties = {
     // It used to determine if it is okay to start using the configured settings yet.
     CONFIG_COMPLETE: false,
 
+    // The "CONFIG_FILE" is within the /assets directory
+    CONFIG_FILE: 'configuration',
+
 
     // //////////////////////////////////////////////////////////////////////////
     //  The following values will by set by the "Brand"
@@ -83,7 +86,6 @@ export let Properties = {
     LOGO_FILE: '',
     FOOTER_HTML: '',
     BRAND_DIR: 'brand',
-    CONFIG_FILE: 'configuration',
     DEFAULT_BRAND: 'tcia',
     DOWNLOADER_URL: 'https://wiki.nci.nih.gov/display/NBIA/Downloading+NBIA+Images',
 
@@ -109,7 +111,7 @@ export let Properties = {
     DISABLE_COUNTS_AND_SIZE: true,
 
     // Show in console, curl version of API calls.
-    DEBUG_CURL: false,
+    DEBUG_CURL: true,
 
     ACTION_LOGGING: true,
     SHORT_LOG: true,
@@ -186,14 +188,13 @@ export let Properties = {
 
 
     /*
-        API_SERVER_PASSWORD_DEFAULT: 'changeme',
-        API_SERVER_USER_DEFAULT: 'mlerner',
+        DEFAULT_PASSWORD: 'changeme',
+        DEFAULT_USER: 'mlerner',
     */
 
-    API_SERVER_USER_DEFAULT: 'nbia_guest',
-    API_SERVER_PASSWORD_DEFAULT: 'test',
-
-    API_CLIENT_SECRET_DEFAULT: 'ItsBetweenUAndMe',
+    DEFAULT_USER: 'nbia_guest',
+    DEFAULT_PASSWORD: 'test',
+    DEFAULT_SECRET: 'ItsBetweenUAndMe',
 
     /* Search results and Cart pages */
     ROWS_PER_PAGE_CHOICE_DEFAULT: 10,

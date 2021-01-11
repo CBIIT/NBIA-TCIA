@@ -1,0 +1,34 @@
+<div class="dynamic-query-test-parent-div">
+    <div
+        class="query-section"
+        [ngClass]="{
+            'query-section-extra-small': currentFont === '0',
+            'query-section-small': currentFont === '1',
+            'query-section-medium': currentFont === '2',
+            'query-section-large': currentFont === '3'
+        }"
+    >
+        <div class="left-widget-section">
+            <nbia-dynamic-query-criteria></nbia-dynamic-query-criteria>
+        </div>
+        <!--
+           <nbia-left-section [currentTool]="currentTool"></nbia-left-section>
+        -->
+
+    </div>
+        <nbia-widget-test-settings></nbia-widget-test-settings>
+
+
+    <pre>{{ getDynamicWidget | json | cleanDynamicSearchTestJson }}</pre>
+ <!--   <pre>
+    {{ getDynamicMultiChoiceList["dynamicQueryCriteriaType"] }}
+    {{ getDynamicMultiChoiceList | json | cleanDynamicSearchTestJson }}
+  MHL {{ getDynamicSingleChoiceCheckbox | json | cleanDynamicSearchTestJson }}
+   MHL {{ getDynamicSmallTextInput | json | cleanDynamicSearchTestJson }}
+
+   MHL {{ getDynamicWidget | json | cleanDynamicSearchTestJson }}
+        {{ getDynamicMultiChoiceList | json | cleanDynamicSearchTestJson }}
+
+    </pre>
+-->
+</div>

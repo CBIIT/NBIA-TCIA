@@ -44,9 +44,9 @@ export class TwoLevelMultiChoiceComponent implements OnInit, OnDestroy{
         this.currentFont = this.preferencesService.getFontSize();
 
 
-        for( let i = 0; i < this.queryCriteriaData['dynamicQueryCriteriaDataArray'].length; i++){
+        for( let i = 0; i < this.queryCriteriaData['dynamicQueryCriteriaCheckboxArray'].length; i++){
             this.subItemsSelected[i] = [];
-            for( let c = 0; c < this.queryCriteriaData['dynamicQueryCriteriaDataArray'][i]['subItems'].length; c++){
+            for( let c = 0; c < this.queryCriteriaData['dynamicQueryCriteriaCheckboxArray'][i]['subItems'].length; c++){
                 this.subItemsSelected[i][c] = false;
             }
         }
@@ -79,18 +79,18 @@ export class TwoLevelMultiChoiceComponent implements OnInit, OnDestroy{
                 }]
      */
     onSubItemDropdownClick( i, c ) {
-        console.log( 'MHL this.queryCriteriaData: ', this.queryCriteriaData.dynamicQueryCriteriaDataArray );
+        console.log( 'MHL this.queryCriteriaData: ', this.queryCriteriaData.dynamicQueryCriteriaCheckboxArray );
         console.log( 'MHL onSubItemDropdownClick( ' + i + ', ' + c + ' )' );
-        console.log( 'MHL onSubItemDropdownClick( ' + this.queryCriteriaData.dynamicQueryCriteriaDataArray[i].item +
-            ', ' + this.queryCriteriaData.dynamicQueryCriteriaDataArray[i].subItems[c] + ' )' );
+        console.log( 'MHL onSubItemDropdownClick( ' + this.queryCriteriaData.dynamicQueryCriteriaCheckboxArray[i].item +
+            ', ' + this.queryCriteriaData.dynamicQueryCriteriaCheckboxArray[i].subItems[c] + ' )' );
         this.subItemsSelected[i][c] = !this.subItemsSelected[i][c];
         this.updateItemsSelected();
     }
 
     updateItemsSelected(){
-        for( let i = 0; i < this.queryCriteriaData['dynamicQueryCriteriaDataArray'].length; i++){
+        for( let i = 0; i < this.queryCriteriaData['dynamicQueryCriteriaCheckboxArray'].length; i++){
             this.itemsSelected[i] = 0;
-            for( let c = 0; c < this.queryCriteriaData['dynamicQueryCriteriaDataArray'][i]['subItems'].length; c++){
+            for( let c = 0; c < this.queryCriteriaData['dynamicQueryCriteriaCheckboxArray'][i]['subItems'].length; c++){
                if( this.subItemsSelected[i][c] ){
                    this.itemsSelected[i]++;
                }

@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { MenuService } from '../common/services/menu.service';
 import { ApiServerService } from '../image-search/services/api-server.service';
 import { CommonService } from '../image-search/services/common.service';
@@ -42,14 +42,21 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private menuService: MenuService, private apiServerService: ApiServerService,
-                 private commonService: CommonService, private titleService: Title,
-                 private route: ActivatedRoute, private parameterService: ParameterService,
-                 private loadingDisplayService: LoadingDisplayService, private persistenceService: PersistenceService,
-                 private utilService: UtilService, private brandingService: BrandingService,
-                 elementRef: ElementRef, private configurationService: ConfigurationService ) {
+     constructor( private menuService: MenuService, private apiServerService: ApiServerService,
+                       private commonService: CommonService, private titleService: Title,
+                       private route: ActivatedRoute, private parameterService: ParameterService,
+                       private loadingDisplayService: LoadingDisplayService, private persistenceService: PersistenceService,
+                       private utilService: UtilService, private brandingService: BrandingService,
+                       elementRef: ElementRef, private configurationService: ConfigurationService ) {
 
         this.configurationService.initConfiguration();
+        // Make sure the configuration from the assets/configuration has been read and used.
+        // It has DEFAULT_USER, DEFAULT_PASSWORD and DEFAULT_SECRET
+/*
+        while( !Properties.CONFIG_COMPLETE ){
+            await this.commonService.sleep( Consts.waitTime );
+        }
+*/
 
         this.brandingService.initCurrentBrand();
 
@@ -71,17 +78,17 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         // this.titleService.setTitle( Properties.VERSION );
 
 
-        this.defaultUser = Properties.API_SERVER_USER_DEFAULT;
-        this.currentUser = Properties.API_SERVER_USER_DEFAULT;
+        this.defaultUser = Properties.DEFAULT_USER;
+        this.currentUser = Properties.DEFAULT_USER;
 
 
-        this.menuService.currentMenuItemEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.menuService.currentMenuItemEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentMenuItem = <MenuItems>data;
             }
         );
 
-        this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.apiServerService.userSetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentUser = data;
             }
@@ -99,58 +106,36 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
     }  // End constructor
 
-    ngOnInit() {
+  async  ngOnInit() {
 
         this.initUrlParameters();
+
+        console.log('MHL Start waiting for CONFIG_COMPLETE 001');
+        while( !Properties.CONFIG_COMPLETE ){
+            await this.commonService.sleep( Consts.waitTime );
+        }
+        console.log('MHL DONE waiting for CONFIG_COMPLETE 002 : ', Properties.CONFIG_COMPLETE);
+        console.log('MHL DONE waiting for DEFAULT_USER 003 : ', Properties.DEFAULT_USER);
 
         if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ){
             // Logs in the default (guest) user.
             this.initToken();
+        }else{
+            this.apiServerService.setToken( { 'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) } );
+            this.apiServerService.setCurrentUser( this.persistenceService.get( this.persistenceService.Field.USER ) );
+            this.apiServerService.setCurrentPassword( '' );
         }
-        else{
-            this.apiServerService.setToken({'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) }  );
-            this.apiServerService.setCurrentUser(this.persistenceService.get( this.persistenceService.Field.USER ));
-            this.apiServerService.setCurrentPassword('');
-        }
-
-
-
-        // if( this.persistenceService.get( this.persistenceService.Field.USER )  )
-
-
-        /*
-
-                // Log out any logged in user.
-                this.apiServerService.logOut().subscribe(
-                    data => {
-                        this.logout = true;
-                        // console.error( 'logging NO error: ', data );
-                    },
-                    err => {
-                        this.logout = true;
-                        console.error( 'logging out error: ', err );
-                    }
-                );
-                // Wait here while we log out the current access token if there is one.
-                while( !this.logout ){
-                    await this.commonService.sleep( Consts.waitTime );
-                }
-
-                // Logs in the default (guest) user.
-                this.initToken();
-
-        */
 
         this.loadingDisplayService.setLoading( false, 'A Standby...' );
     }
 
 
-/*
-    ngAfterViewChecked() {
-        console.log('IN ngAfterViewChecked theParentSpan: ', this.theParentSpan.nativeElement['offsetHeight']);
-        this.commonService.setOffsetHeight( this.theParentSpan.nativeElement['offsetHeight'] );
-    }
-*/
+    /*
+        ngAfterViewChecked() {
+            console.log('IN ngAfterViewChecked theParentSpan: ', this.theParentSpan.nativeElement['offsetHeight']);
+            this.commonService.setOffsetHeight( this.theParentSpan.nativeElement['offsetHeight'] );
+        }
+    */
 
     // FIXME. Can this all go directly in parameterService?
     initUrlParameters() {
@@ -173,8 +158,8 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         let showTest = this.route.snapshot.queryParams[Properties.URL_KEY_SHOW_TEST_TAB];
         let apiUrl = this.route.snapshot.queryParams[Properties.URL_KEY_API_URL];
         let textSearchInput = this.route.snapshot.queryParams[Properties.URL_KEY_TEXT_SEARCH];
-        let excludeCommercial =   this.route.snapshot.queryParams[Properties.URL_KEY_EXCLUDE_COMMERCIAL];
-        let daysFromBaseline =   this.route.snapshot.queryParams[Properties.URL_KEY_DAYS_FROM_BASELINE];
+        let excludeCommercial = this.route.snapshot.queryParams[Properties.URL_KEY_EXCLUDE_COMMERCIAL];
+        let daysFromBaseline = this.route.snapshot.queryParams[Properties.URL_KEY_DAYS_FROM_BASELINE];
 
         if( !this.utilService.isNullOrUndefined( textSearchInput ) ){
             this.parameterService.setTextSearch( textSearchInput );
@@ -184,8 +169,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         // React to URL parameters
         if( !this.utilService.isNullOrUndefined( modalityAll ) ){
             modalityAll = this.utilService.isTrue( modalityAll );
-        }
-        else{
+        }else{
             modalityAll = null;
         }
 
@@ -197,7 +181,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
             this.parameterService.setExcludeCommercial( excludeCommercial );
         }
 
-       if( !this.utilService.isNullOrUndefined( dateRange ) ){
+        if( !this.utilService.isNullOrUndefined( dateRange ) ){
             this.parameterService.setDateRange( dateRange );
         }
 
@@ -235,11 +219,11 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
             this.parameterService.setSpecies( species );
         }
 
-       if( !this.utilService.isNullOrUndefined( phantoms ) ){
+        if( !this.utilService.isNullOrUndefined( phantoms ) ){
             this.parameterService.setPhantoms( phantoms );
         }
 
-       if( !this.utilService.isNullOrUndefined( thirdParty ) ){
+        if( !this.utilService.isNullOrUndefined( thirdParty ) ){
             this.parameterService.setThirdParty( thirdParty );
         }
 
@@ -259,8 +243,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
     }
 
 
-
-/**
+    /**
      * Login as the default user (get access token).
      *
      * @returns {Promise<void>}
@@ -305,6 +288,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
         today['date']['year'] = now.getFullYear();
         return today;
     }
+
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

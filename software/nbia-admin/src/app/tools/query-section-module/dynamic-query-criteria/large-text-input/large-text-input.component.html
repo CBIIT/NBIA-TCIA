@@ -9,7 +9,7 @@
         ></span>
         </label>
 
-        <!-- No close/open icon, just show th Heading. -->
+        <!-- No close/open icon, just show the Heading. -->
         <span *ngIf="! queryCriteriaData['dynamicQueryCriteriaOpenCloseButton']" >
             {{queryCriteriaData['dynamicQueryCriteriaHeading']}}
         </span>
@@ -68,12 +68,12 @@
         'hide': !criteriaLargeTextInputShowCriteria
         }"
     >
-        <span class="large-text-input-subheading">{{queryCriteriaData['dynamicQueryCriteriaSubheading']}}</span>
+        <span class="large-text-input-subheading">{{queryCriteriaData['dynamicQueryCriteriaSubHeading']}}</span>
         <textarea [(ngModel)]="criteriaLargeTextInputText" class="large-text-input-text"></textarea>
         <button class="btn nbia-button large-text-input-apply-button"
                 type="button"
                 (click)="onApplyCriteriaClick()">
-            {{queryCriteriaData['dynamicQueryCriteriaApplyButtonText']}}
+            {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </button>
     </div>
 </div>

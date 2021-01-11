@@ -1,22 +1,46 @@
-<div class="query-panel">
+<div class="query-panel  top-border">
     <div class="query-panel-heading">
-        <span class="close-x-icon">
-            <span class="clicker glyphicon glyphicon-remove"
-                  (click)="onRemoveCriteriaClick()"
-            ></span>
-        </span>
 
-        <input id="singleCheckbox-{{sequenceNumber}}"
+
+        <!-- Red X at the top right, that will remove this widget from the UI and remove any part of the query it may have provided -->
+        <span
+            class="clicker dynamic-query-top-right-inner-button-box mr-1"
+            (click)="onRemoveCriteriaClick()"
+        >
+                    <img class="pl-1"
+                         [ngClass]="{
+                            'dynamic-query-list-button-icon-extra-small':
+                                currentFont === '0',
+                            'dynamic-query-list-button-icon-small':
+                                currentFont === '1',
+                            'dynamic-query-list-button-icon-medium':
+                                currentFont === '2',
+                            'dynamic-query-list-button-icon-large':
+                                currentFont === '3'
+                        }"
+                         src="assets/images/x_red.png"
+                         alt="Remove this search criteria"
+                    />
+                </span>
+
+        <input id="singleCheckbox-{{sequenceNumber}}-{{sequenceNumber}}"
                type="checkbox"
                [(ngModel)]="boxIsChecked"
                (click)="onCheckboxClick( $event.target['checked'])"
         >
         <label
             class="clicker unselectable"
-            for="singleCheckbox-{{sequenceNumber}}"
+            for="singleCheckbox-{{sequenceNumber}}-{{sequenceNumber}}"
         >
 
-            <span class="checkbox-label-text">
+            <span class="checkbox-label-text"
+                  [ngClass]="{
+                'heading-font-extra-small': currentFont === '0',
+                'heading-font-small': currentFont === '1',
+                'heading-font-medium': currentFont === '2',
+                'heading-font-large': currentFont === '3'
+            }"
+            >
                  &nbsp;{{queryCriteriaData['dynamicQueryCriteriaHeading']}}
              </span>
         </label>

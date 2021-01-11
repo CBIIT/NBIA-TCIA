@@ -273,9 +273,9 @@ export class LoginComponent implements OnInit, OnDestroy{
         }
         this.apiServerService.setLoggingOut( false );
 
-        this.apiServerService.setCurrentUser( Properties.API_SERVER_USER_DEFAULT );
-        this.persistenceService.put( this.persistenceService.Field.USER, Properties.API_SERVER_USER_DEFAULT );
-        this.apiServerService.setCurrentPassword( Properties.API_SERVER_PASSWORD_DEFAULT );
+        this.apiServerService.setCurrentUser( Properties.DEFAULT_USER );
+        this.persistenceService.put( this.persistenceService.Field.USER, Properties.DEFAULT_USER );
+        this.apiServerService.setCurrentPassword( Properties.DEFAULT_PASSWORD );
 
         this.apiServerService.getToken().subscribe(
             ( res ) => {

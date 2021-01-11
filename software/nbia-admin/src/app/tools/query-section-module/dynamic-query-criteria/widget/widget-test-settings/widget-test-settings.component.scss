@@ -1,0 +1,112 @@
+@import 'src/app/app.component';
+@import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
+
+table{
+    border-collapse: separate;
+    border: solid #6193f6 3px;
+    padding: 3px;
+    margin: 3px;
+}
+
+.widget-type-table{
+    border-collapse: separate;
+    border: solid #5e00bb 3px;
+    padding: 3px;
+    margin: 3px;
+
+}
+
+tr{
+    border: solid #ff6f00 3px;
+    padding: 3px;
+    margin: 3px;
+}
+
+
+td{
+/*
+    padding: 3px;
+    margin: 3px;
+    */
+//    width: 350px;
+}
+
+
+
+
+.widget-data-div{
+    border: solid #aaaaaa 1px;
+    padding: 1px;
+    width: 800px;
+    height: 80vh;
+    overflow-y: scroll;
+}
+
+.smallTextarea{
+    height: 24px;
+    resize: none;
+    overflow: hidden;
+    width: 100%;
+}
+
+.large-text-area{
+    width: 100%;
+}
+
+.spacer{
+    border: none;
+    padding: 4px;
+    margin: 0px;
+    background-color: #44ffaa;
+}
+
+.spacer2{
+    border: none;
+
+    padding: 4px;
+    margin: 0px;
+    background-color: #ff0058;
+}
+
+.right-td{
+  //  border: solid #bd760b 3px;
+    width: 600px
+}
+
+.left-td{
+  //  border: solid #a600ff 3px;
+    width: 390px
+}
+
+.check-data-list {
+    /* keep the Checkbox and Sample data input side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.check-data-list-checkbox{
+//    position: absolute;
+    float: top;
+}
+
+.disabled-text{
+    color: $disabled-text;
+}
+
+.test-scroller{
+    color: #f59bb5;
+    height: 80px;
+    overflow-y: scroll;
+    background-color: #0056b3;
+    border: solid #0000ff 3px;
+}
+
+.widget-type-text{
+    font-weight: bold;
+}
+
+.red-text{
+    color: #ff3333;
+}

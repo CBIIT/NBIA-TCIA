@@ -89,6 +89,25 @@ export class ConfigurationService{
                             Properties.API_SERVER_URL = value;
                         }
                     }
+
+                   if( key === 'DEFAULT_USER' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.DEFAULT_USER = value;
+                        }
+                    }
+
+                   if( key === 'DEFAULT_PASSWORD' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.DEFAULT_PASSWORD = value;
+                        }
+                    }
+
+                   if( key === 'DEFAULT_SECRET' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.DEFAULT_SECRET = value;
+                        }
+                    }
+
                     if( key === 'http_timeout' ){
                         Properties.HTTP_TIMEOUT = value;
                     }

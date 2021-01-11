@@ -5,7 +5,8 @@ export enum ToolItems{
     DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM,
     DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM,
     DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM,
-    DATA_ADMIN_EDIT_LICENSE
+    DATA_ADMIN_EDIT_LICENSE,
+    DATA_ADMIN_DYNAMIC_SEARCH_TEST
 }
 export enum TokenStatus{
     NO_TOKEN,
@@ -27,6 +28,7 @@ export const Consts = {
     TOOL_PERFORM_ONLINE_DELETION: 'perform-online-deletion',
     TOOL_VIEW_SUBMISSION_REPORTS: 'view-submission-reports',
     TOOL_EDIT_LICENSE: 'edit-license',
+    TOOL_DYNAMIC_SEARCH_TEST: 'dynamic-search-test',
     TOOL_NONE: 'no-tool',
 
     // For Query section
@@ -104,3 +106,15 @@ export enum SortState{
     SORT_DOWN
 }
 
+
+
+export const DynamicQueryCriteriaTypes = {
+    WIDGET: 'testWidget',
+    LARGE_TEXT_INPUT: 'largeTextInput',
+    SMALL_TEXT_INPUT: 'smallTextInput',
+    DATE_RANGE: 'dateRange',
+    LIST_MULTIPLE_SELECTION: 'listMultipleSelection',
+    TWO_LEVEL_MULTIPLE_SELECTION: 'twoLevelMultipleSelection',
+    LIST_ONE_SELECTION: 'listOneSelection',
+    SINGLE_CHECKBOX: 'singleCheckbox'
+}

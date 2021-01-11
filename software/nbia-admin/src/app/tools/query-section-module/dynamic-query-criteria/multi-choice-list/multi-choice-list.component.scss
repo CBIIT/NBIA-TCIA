@@ -1,20 +1,9 @@
 @import 'src/app/app.component';
-@import 'src/app/tools/query-section-module/query-section/query-section.component';
 @import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
+// @import "src/app/tools/query-section-module/left-section/left-section.component.scss";
 
-
-.multi-list-input-and-or-radio-button {
-    margin-right: 3px;
-    margin-left: 8px;
+// FIXME for testing only
+.top-border {
+    border-top: solid 1px $criteriaQueryBorderColor;
 }
 
-
-.multi-list-checkbox {
-    margin-right: 4px;
-}
-
-// FIXME this is a dup
-/* Trying to clean this up for Chrome */
-.multi-list-box-with-focus {
-    outline: none;
-}

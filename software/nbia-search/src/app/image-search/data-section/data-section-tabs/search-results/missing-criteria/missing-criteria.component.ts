@@ -33,8 +33,8 @@ export class MissingCriteriaComponent implements OnInit, OnDestroy{
                 this.displayText = <any>data;
 
                 // If there are criteria in query that can not be found,
-                // suggest logging in if they logged in as the guest user (Properties.API_SERVER_USER_DEFAULT).
-                if( this.apiServerService.getCurrentUser() === Properties.API_SERVER_USER_DEFAULT ){
+                // suggest logging in if they logged in as the guest user (Properties.DEFAULT_USER).
+                if( this.apiServerService.getCurrentUser() === Properties.DEFAULT_USER ){
                     this.suggestLoggingIn = true;
                 }
                 else{

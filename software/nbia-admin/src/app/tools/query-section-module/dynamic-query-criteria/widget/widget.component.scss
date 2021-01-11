@@ -1,0 +1,57 @@
+@import 'src/app/app.component';
+@import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
+// @import "src/app/tools/query-section-module/left-section/left-section.component.scss";
+
+// FIXME for testing only
+.top-border {
+    border-top: solid 1px $criteriaQueryBorderColor;
+}
+
+.widget-top-right-button-box{
+    background-color: #ffffff;
+    float:right;
+    margin-right: 4px;
+}
+
+textarea{
+    outline: none;
+}
+
+input{
+    outline: none;
+}
+
+// //////////////////////
+// TESTING
+.span-0{
+    background-color: #f59bb5;
+    padding: 10px;
+}
+
+.div-1{
+    background-color: #ffffff;
+    // overflow-y: auto;
+    resize: vertical;
+    height : 100%;
+}
+
+.div-2{
+    overflow-y: scroll;
+    height: 100%;
+    margin: 10px;
+    padding: 10px;
+
+}
+
+.div-3{
+    border: solid 1px $criteriaQueryBorderColor;
+    border-radius: 4px;
+    margin-left: $query-criteria-content-left-margin;
+    margin-right: 18px;
+    width: calc(100% - 40px);
+    resize: none;
+    background-color: #ffffff;
+    overflow:auto;
+    height: calc(100% - 46px); // Space between dat list (and apply button or checkbox if there) and the bottom of the widget
+
+}

@@ -25,6 +25,8 @@ export class ServerAccessService{
     first;
     last;
 
+    currentAccessToken = null;
+
     loading = true;
 
     constructor( private httpClient: HttpClient, private sanitizer: DomSanitizer,
@@ -34,21 +36,10 @@ export class ServerAccessService{
 
         this.seriesId = this.route.snapshot.queryParams['thumbnailSeries'];
 
-        this.timeTest();
 
-    }
+        this.currentAccessToken = this.commonService.getPersistedValue( 'at' );
 
-    timeTest() {
-        let rightThen;
-        let len = -1;
-        let rightNow = new Date();
-
-        this.getImageDrillDownData().subscribe(
-            data => {
-                len = data.length;
-                rightThen = new Date();
-            }
-        );
+        this.initToken();
     }
 
 
@@ -69,6 +60,7 @@ export class ServerAccessService{
      * @param imageNumber
      */
     async getImages( page?, imageNumber? ) {
+        console.log( 'MHL getImages 010' );
         this.loading = true;
         this.images = [];
         let len = 99999999;
@@ -96,7 +88,7 @@ export class ServerAccessService{
                 }
 
                 for( let i = this.first; i <= this.last; i++ ){
-                    this.getThumbnails( data[i]['seriesInstanceUid'], data[i]['sopInstanceUid'], this.getToken() ).subscribe(
+                    this.getThumbnails( data[i]['seriesInstanceUid'], data[i]['sopInstanceUid'] ).subscribe(
                         thumbnailData => {
                             this.images.push(
                                 {
@@ -113,7 +105,7 @@ export class ServerAccessService{
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         thumbnailError => {
-                            console.log('ThumbnailError: ', thumbnailError);
+                            console.log( 'ThumbnailError: ', thumbnailError );
                             // We need this count when we are waiting for all the images (by count) to arrive before moving on
                             this.getThumbnailErrorCount++;
 
@@ -163,6 +155,8 @@ export class ServerAccessService{
     }
 
     getImageDrillDownData(): Observable<any> {
+        console.log( 'MHL getImageDrillDownData' );
+
         let query = 'list=' + this.seriesId;
 
         if( Properties.DEBUG_CURL ){
@@ -183,7 +177,7 @@ export class ServerAccessService{
     }
 
 
-    getThumbnails( seriesUid, objectId, accessToken ): Observable<any> {
+    getThumbnails( seriesUid, objectId ): Observable<any> {
         let post_url = this.API_SERVER_URL + '/nbia-api/services/getThumbnail';
         let headers = new HttpHeaders( {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -251,26 +245,26 @@ export class ServerAccessService{
 
 
     /**
-     * Requests an Access token from the API server.
+     * Requests an Access token from the API server, Using the guest settings (Viewer never has the users name & password).
      *
-     * @returns {Observable<R>}
+     * @returns {Observable<any>}
      */
-    getNewServerAccessToken(): Observable<any> {
-
+    getNewGuestServerAccessToken(): Observable<any> {
+        console.log( 'MHL getNewGuestServerAccessToken' );
         let post_url = this.API_SERVER_URL + '/nbia-api/oauth/token';
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
 
-        let data = 'username=' + Properties.API_SERVER_USER_DEFAULT +
-            '&password=' + Properties.API_SERVER_PASSWORD_DEFAULT +
-            '&client_id=nbiaRestAPIClient&client_secret=' + Properties.API_CLIENT_SECRET_DEFAULT +
+        let data = 'username=' + Properties.DEFAULT_USER +
+            '&password=' + Properties.DEFAULT_PASSWORD +
+            '&client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET +
             '&grant_type=password';
 
-        /*
-               if( Properties.DEBUG_CURL ){
-                   let curl = 'curl -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-                   console.log( 'getAccessToken: ' + curl );
-               }
-       */
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
+            console.log( 'getNewGuestServerAccessToken: ' + curl );
+        }
+
         let options =
             {
                 headers: headers,
@@ -279,8 +273,29 @@ export class ServerAccessService{
         return this.httpClient.post( post_url, data, options );
     }
 
+    /**
+     *
+     * @param t
+     */
+    initToken() {
+        if( this.route.snapshot.queryParams['accessToken'] !== undefined ){
+            this.setToken( this.route.snapshot.queryParams['accessToken'] );
+            console.log( 'MHL Using URL token: ', this.currentAccessToken );
+        }else if( this.route.snapshot.queryParams['accessToken'] !== undefined ){
+            this.setToken( this.route.snapshot.queryParams['accessToken'] );
+            console.log( 'MHL Using Cookie token: ', this.currentAccessToken );
+        }else{
+            // Put login here
+            console.log( 'MHL Using NO TOKEN' );
+        }
+    }
+
+    setToken( t ) {
+        this.currentAccessToken = t;
+    }
+
     getToken() {
-        return this.commonService.getPersistedValue( 'at' );
+        return this.currentAccessToken;
     }
 
 }

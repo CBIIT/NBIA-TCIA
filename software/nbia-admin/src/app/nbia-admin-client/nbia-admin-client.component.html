@@ -15,20 +15,30 @@
     class="parent-tool-div"
 >
 
+
     <span *ngIf="currentTool !== consts.TOOL_NONE">
+
         <nbia-tool-title [currentTool]="currentTool"></nbia-tool-title>
+
+        <nbia-dynamic-query-test
+            *ngIf="currentTool === consts.TOOL_DYNAMIC_SEARCH_TEST && properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE"
+        >
+        </nbia-dynamic-query-test>
 
         <nbia-approve-deletions
             *ngIf="currentTool === consts.TOOL_APPROVE_DELETIONS"
         >
         </nbia-approve-deletions>
 
+
         <nbia-edit-collection-descriptions
             *ngIf="currentTool === consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
         >
         </nbia-edit-collection-descriptions>
 
-        <nbia-perform-qc *ngIf="currentTool === consts.TOOL_PERFORM_QC">
+
+        <nbia-perform-qc *ngIf="currentTool === consts.TOOL_PERFORM_QC"
+        >
         </nbia-perform-qc>
 
         <!--
@@ -56,6 +66,26 @@
     "
     class="container option-list"
 >
+
+    <span
+        *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE"
+        class="row btn admin-tool-button nbia-button"
+        [ngClass]="{
+            'disabled-tool nbia-button-disabled': !showDynamicSearchTestButton && !properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE
+        }"
+        (click)="
+            onToolItemClicked(
+                toolItems.DATA_ADMIN_DYNAMIC_SEARCH_TEST,
+                properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE
+            )
+        "
+    >
+        Dynamic search test {{properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE}}
+    </span>
+
+
+
+
     <span
         class="row btn admin-tool-button nbia-button"
         [ngClass]="{
@@ -73,6 +103,7 @@
             (Required role: NCIA.MANAGE_VISIBILITY_STATUS)
         </p>
     </span>
+
     <span
         class="row btn admin-tool-button nbia-button"
         [ngClass]="{

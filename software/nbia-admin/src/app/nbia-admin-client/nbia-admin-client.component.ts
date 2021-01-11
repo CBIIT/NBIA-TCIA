@@ -10,6 +10,7 @@ import { AccessTokenService } from '../admin-common/services/access-token.servic
 import { Properties } from '@assets/properties';
 import { ConfigurationService } from '../admin-common/services/configuration.service';
 import { BrandingService } from '@app/admin-common/services/branding.service';
+import { PersistenceService } from '@app/admin-common/services/persistence.service';
 
 
 @Component( {
@@ -30,6 +31,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     showDataAdminApproveDeletions = false;
     showPerformOnlineDeletions = false;
     showDataAdminPerformQcButton = false;
+    showDynamicSearchTestButton = false;
     showEditCollectionDescriptions = false;
     showEditLicense = false;
 
@@ -46,6 +48,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     constructor( private parameterService: ParameterService, private apiService: ApiService,
                  private utilService: UtilService, private loginService: LoginService,
                  private accessTokenService: AccessTokenService, private brandingService: BrandingService,
+                 private persistenceService: PersistenceService,
                  private configurationService: ConfigurationService ) {
         this.configurationService.initConfiguration();
     }
@@ -55,6 +58,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         // Get the current tool, if there is one.
         this.parameterService.currentToolEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+               // console.log('MHL parameterService data: ', data);
                 this.currentTool = data;
             } );
 
@@ -97,9 +101,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         if( (this.utilService.isNullOrUndefined( Properties.OHIF_SERVER_URL )) || (Properties.OHIF_SERVER_URL.length < 1) ){
             Properties.OHIF_SERVER_URL = Properties.API_SERVER_URL;
         }
-
-
-
+        this.showDynamicSearchTestButton = Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE;
     }
 
     async initAccess() {
@@ -123,10 +125,13 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             }
         }else{
             this.accessTokenService.setAccessTokenStatus( TokenStatus.GOOD_TOKEN );
-
         }
         // @TODO do something here if we don't like accessTokenStatus
         this.accessTokenStatus = this.accessTokenService.getAccessTokenStatus();
+
+        // nbia-admin uses this value to determine if an expired token should trigger a quiet login of the default guest user or prompt the user for a login.
+        this.persistenceService.put( this.persistenceService.Field.IS_GUEST, false );
+
 
     }
 
@@ -134,7 +139,10 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     // This is called when a user selects a tool.
     onToolItemClicked( tool, enabled ) {
         if( enabled ){
-            if( tool === ToolItems.DATA_ADMIN_PERFORM_QC_MENU_ITEM ){
+            if( tool === ToolItems.DATA_ADMIN_DYNAMIC_SEARCH_TEST){
+                this.currentTool = Consts.TOOL_DYNAMIC_SEARCH_TEST;
+            }
+           if( tool === ToolItems.DATA_ADMIN_PERFORM_QC_MENU_ITEM ){
                 this.currentTool = Consts.TOOL_PERFORM_QC;
             }
             if( tool === ToolItems.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM ){

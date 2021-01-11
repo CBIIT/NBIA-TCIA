@@ -1,41 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DynamicQueryCriteriaTypes} from "@app/constants";
+import {DynamicQueryCriteriaService} from "@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service";
+import {takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
+import {Properties} from "@assets/properties";
 
 
+// Keep these upper case, we match against them with toUpperCase() to stay case insensitive.
 export const AndOrTypes = {
-    AND_OR: 'andOr',  // Radio buttons
-    ONLY_AND: 'onlyAnd', // Just display
-    ONLY_OR: 'onlyOr', // Just display
-    NONE: 'none' // Do nothing, show nothing
+    AND_OR: 'ANDOR',  // Radio buttons
+    ONLY_AND: 'ONLYAND', // Just display
+    ONLY_OR: 'ONLYOR', // Just display
+    NONE: 'NONE' // Do nothing, show nothing
+}
+// Keep these upper case, we match against them with toUpperCase() to stay case insensitive.
+export const AllAnyTypes = {
+    ALL_ANY: 'ALLANY',  // Radio buttons
+    ONLY_ALL: 'ONLYALL', // Just display
+    ONLY_ANY: 'ONLYANY', // Just display
+    NONE: 'NONE' // Do nothing, show nothing
+}
+
+export const CriteriaTypes = {
+    LIST_RADIO: 'LIST_RADIO',
+    LIST_CHECKBOX: 'LIST_CHECKBOX',
+    TEXT_INPUT_LARGE: 'TEXT_INPUT_LARGE',
+    TEXT_INPUT_SMALL: 'TEXT_INPUT_SMALL'
 }
 
 
-export const DynamicQueryCriteriaTypes = {
-    LARGE_TEXT_INPUT: 'largeTextInput',
-    SMALL_TEXT_INPUT: 'smallTextInput',
-    DATE_RANGE: 'dateRange',
-    LIST_MULTIPLE_SELECTION: 'listMultipleSelection',
-    TWO_LEVEL_MULTIPLE_SELECTION: 'twoLevelMultipleSelection',
-    LIST_ONE_SELECTION: 'listOneSelection',
-    SINGLE_CHECKBOX: 'singleCheckbox'
-}
-
-
-@Component( {
+@Component({
     selector: 'nbia-dynamic-query-criteria',
     templateUrl: './dynamic-query-criteria.component.html',
     styleUrls: ['./dynamic-query-criteria.component.scss']
-} )
+})
 
-export class DynamicQueryCriteriaComponent implements OnInit{
+export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     queryCriteriaType = null;
     queryCriteriaData = [];
-
+    ShowSampleCount = 10;
     queryCriteriaCount = 0;
     dynamicQueryCriteriaTypes = DynamicQueryCriteriaTypes;
+    properties = Properties;
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-  //  constructor( private dynamicQueryCriteriaService: DynamicQueryCriteriaService ) {
-    constructor(  ) {
+    constructor(private dynamicQueryCriteriaService: DynamicQueryCriteriaService) {
+        this.dynamicQueryCriteriaService.initWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            async data => {
+                this.addQueryCriteria(data);
+            });
     }
 
     ngOnInit() {
@@ -49,51 +62,101 @@ export class DynamicQueryCriteriaComponent implements OnInit{
         //
 
         let temp;
+        /*
+
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryWidget();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+        */
 
         //       temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSmallTextInput();
         // await this.utilService.sleep( 5000 );
         //       this.addQueryCriteria( temp );
 
-/*
+
+        /*
+                // Still working on this one, it will stop everything following it...
+                temp = this.dynamicQueryCriteriaService.getDynamicTwoLevelMultiChoiceList();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+        */
 
 
-        temp = this.dynamicQueryCriteriaService.getDynamicTwoLevelMultiChoiceList();
-        this.addQueryCriteria( temp );
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+        /*
 
-        temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSingleCheckbox();
-        this.addQueryCriteria( temp );
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryWidget1();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
 
-        temp = this.dynamicQueryCriteriaService.getDynamicMultiChoiceList();
-        this.addQueryCriteria( temp );
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryWidget2();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
 
-        temp = this.dynamicQueryCriteriaService.getDynamicSingleChoiceList();
-        this.addQueryCriteria( temp );
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
 
-        temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaLargeTextInput();
-        this.addQueryCriteria( temp );
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                temp = this.dynamicQueryCriteriaService.getDynamicMultiChoiceList();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                console.log('MHL *** dynamicQueryCriteria Widget data: ' , temp);
 
-        temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSmallTextInput();
-        this.addQueryCriteria( temp );
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                temp = this.dynamicQueryCriteriaService.getDynamicMultiChoiceList1();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                console.log('MHL *** dynamicQueryCriteria Widget data: ' , temp);
+        */
 
-        temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaDateRange();
-        this.addQueryCriteria( temp );
+        /*
 
-        console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSmallTextInput();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
 
-*/
+
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSingleCheckbox();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                temp = this.dynamicQueryCriteriaService.getDynamicMultiChoiceList1();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+                console.log('MHL *** dynamicQueryCriteria Widget data: ' , temp);
+
+
+                temp = this.dynamicQueryCriteriaService.getDynamicSingleChoiceList();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+            */
+
+
+        /*
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaLargeTextInput();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSmallTextInput();
+                this.addQueryCriteria( temp );
+                console.log('MHL *** dynamicQueryCriteriaType: ' , temp['dynamicQueryCriteriaType']);
+
+                temp = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaDateRange();
+                this.addQueryCriteria( temp );
+        */
+
     }
 
-    addQueryCriteria( qCriteriaData ) {
-        this.queryCriteriaData.push( qCriteriaData );
+    addQueryCriteria(qCriteriaData) {
+
+        if(this.queryCriteriaData.length >= this.ShowSampleCount){
+            this.queryCriteriaData.pop();
+        }
+        this.queryCriteriaData.reverse();
+        this.queryCriteriaData.push(qCriteriaData);
+        this.queryCriteriaData.reverse();
+      //  this.queryCriteriaData.push(qCriteriaData);
         this.queryCriteriaCount = this.queryCriteriaData.length;
         this.queryCriteriaType = qCriteriaData.dynamicQueryCriteria;
-        console.log( 'MHL 101 DynamicQueryCriteriaComponent queryCriteriaType: ', this.queryCriteriaType );
-        console.log( 'MHL 102 DynamicQueryCriteriaComponent queryCriteriaType: ', this.queryCriteriaData );
+    }
+
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

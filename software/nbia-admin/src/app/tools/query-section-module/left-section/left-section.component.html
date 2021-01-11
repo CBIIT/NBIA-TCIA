@@ -16,17 +16,11 @@
             "
             [currentTool]="currentTool"
         ></nbia-query-collection>
-
         <!-- These are still in their early stages of development -->
-<!--
-        <hr>
-        <hr>
-        <nbia-dynamic-query-criteria
-            *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA"
-        ></nbia-dynamic-query-criteria>
-        <hr>
-        <hr>
--->
+        <span *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE && currentTool === consts.TOOL_DYNAMIC_SEARCH_TEST">
+             <nbia-dynamic-query-criteria></nbia-dynamic-query-criteria>
+        </span>
+
 
         <nbia-query-released [currentTool]="currentTool"></nbia-query-released>
 

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CookieService } from 'angular2-cookie/core';
 import { ActivatedRoute } from '@angular/router';
 import { Properties } from '../../assets/properties';
@@ -7,6 +7,7 @@ import { ServerAccessService } from '../services/server-access.service';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs/internal/Subject';
 import { CommonService } from '../services/common.service';
+import { ConfigurationService } from '../services/configuration.service';
 
 
 @Component( {
@@ -82,28 +83,37 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
 
     constructor( private cookieService: CookieService, private utilService: UtilService,
                  private route: ActivatedRoute, private serverAccessService: ServerAccessService,
-                 private titleService: Title, private commonService: CommonService ) {
+                 private titleService: Title, private commonService: CommonService,
+                 private configurationService: ConfigurationService) {
 
         this.titleService.setTitle( Properties.TITLE );
 
+        // This will set: DEFAULT_USER, DEFAULT_PASSWORD and DEFAULT_SECRET.
+        // These will only be used if the we have been called from nbia-search, the user is the guest, and the access token has expired.
+        this.configurationService.initConfiguration();
 
+        // Get persisted user preference for viewer columns.
         this.columns = this.commonService.getPersistedValue( 'viewerColumns' );
-        this.userRequestedColumnCount = this.columns;
+
+        // If there is no persisted user preference for viewer columns, use the default
         if( this.utilService.isNullOrUndefined( this.columns ) ){
             this.columns = Properties.VIEWER_COLUMNS_DEFAULT;
             this.commonService.setPersistedValue( 'viewerColumns', this.columns );
         }
+        this.userRequestedColumnCount = this.columns;
+
     }
 
     ngOnInit() {
-
+console.log('MHL ngOnInit: ', this.route.snapshot);
         // Get description passed in the URL
         this.description = this.route.snapshot.queryParams['thumbnailDescription'];
+console.log('MHL ngOnInit URL Token: ', this.route.snapshot.queryParams['accessToken']);
 
         // To determining the maximum number of images that can fit in one row
         this.innerWidth = window.innerWidth;
 
-        // For determining the height of the image grid, so it fits correctly between the hearing and footer.
+        // For determining the height of the image grid, so it fits correctly between the heading and footer.
         this.innerHeight = (window.innerHeight - (50 + 50)).toString() + 'px';  // FIXME - make these constants
 
         if( this.columns > this.getMaxColumns( window.innerWidth ) ){
@@ -136,7 +146,6 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
         );
 
         // Receives the jpg image array.
-        // Currently, this is all the images, I may need to change things so we only get one page at a time.
         this.serverAccessService.getImagesResultsEmitter.subscribe(
             data => {
                 this.images = data;
@@ -184,11 +193,12 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
 
                 // Authorization - bad access token error
                 if( data.status === 401 ){
-
+console.log('MHL Authorization - bad access token error');
                     // User is guest try to get a new token
                     if( this.isGuest() ){
+console.log('MHL Cookie says user is guest.  Try to get a new token.');
                         let token;
-                        this.serverAccessService.getNewServerAccessToken().subscribe(
+                        this.serverAccessService.getNewGuestServerAccessToken().subscribe(
                             tokenData => {
                                 token = tokenData['access_token'];
                                 this.setNewToken( token );
@@ -211,9 +221,12 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
                         }
                     }  // End isGuest
                     else{
+console.log('MHL User is not a guest. Launch Login here.');
                         this.reactToError( 'Expired login', data['status'].toString(), data['statusText'] );
                     }
                 } // End of 401
+
+                // An error that is NOT 401
                 else{
                     this.reactToError( 'Failed to get thumbnail images', data['status'].toString(), data['statusText'] );
                 }
@@ -231,7 +244,7 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
                     // User is guest try to get a new token
                     if( this.isGuest() ){
                         let token;
-                        this.serverAccessService.getNewServerAccessToken().subscribe(
+                        this.serverAccessService.getNewGuestServerAccessToken().subscribe(
                             tokenData => {
                                 token = tokenData['access_token'];
                                 this.setNewToken( token );
@@ -349,6 +362,7 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
 
     setNewToken( token ) {
         this.commonService.setPersistedValue( 'at', token );
+        this.serverAccessService.setToken( token);
     }
 
 

@@ -62,7 +62,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
     userIsLoggedIn;
 
     /**
-     * The currently logged in user. If it is the default/guest user, the user name will be set in Properties.API_SERVER_USER_DEFAULT
+     * The currently logged in user. If it is the default/guest user, the user name will be set in Properties.DEFAULT_USER
      */
     currentUser;
 
@@ -399,7 +399,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
                 // Only switch to the Login screen if the default user is logged in.
                 if( this.menuService.getCurrentItem() !== this.menuItem.LOGIN_MENU_ITEM ){
 
-                    if( this.currentUser === Properties.API_SERVER_USER_DEFAULT ){
+                    if( this.currentUser === Properties.DEFAULT_USER ){
                         this.menuService.setCurrentItem( menuChoice );
                     }else{
                         this.apiServerService.logOutCurrentUser();
@@ -516,11 +516,11 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
 
     /**
      * Sets the Login/Logout button text.<br>
-     * If the user is Properties.API_SERVER_USER_DEFAULT, the button just says "Login".<br>
+     * If the user is Properties.DEFAULT_USER, the button just says "Login".<br>
      * If a regular user is logged in, then the button says "Logout - <user name>".
      */
     updateUser() {
-        if( this.apiServerService.getCurrentUser() === Properties.API_SERVER_USER_DEFAULT ){
+        if( this.apiServerService.getCurrentUser() === Properties.DEFAULT_USER ){
             this.loginButtonText = 'Login';
             this.userIsLoggedIn = false;
         }else{

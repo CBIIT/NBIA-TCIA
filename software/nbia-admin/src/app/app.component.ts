@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Properties} from "@assets/properties";
 
 
 @Component({
@@ -9,4 +10,5 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   title = 'nbia-admin';
+  properties = Properties;
 }

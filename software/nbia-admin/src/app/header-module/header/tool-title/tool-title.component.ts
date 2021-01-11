@@ -36,7 +36,6 @@ export class ToolTitleComponent implements OnInit{
         }
 
         this.helpUrl = Properties.HELP_BASE_URL + '/' + Properties.HELP_PATH;
-        // @TODO this is just a quick fix for early demo purposes.
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
             this.currentToolTitle = 'Edit Collection Descriptions';
             this.helpUrl += '#DataAdministrationToolGuide-EditCollectionDescriptions';
@@ -54,8 +53,12 @@ export class ToolTitleComponent implements OnInit{
         }else if( this.currentTool === Consts.TOOL_EDIT_LICENSE ){
             this.currentToolTitle = 'Add/Edit License';
             this.helpUrl += '#DataAdministrationToolGuide-EditCollectionLicense';
+        }else if( this.currentTool === Consts.TOOL_DYNAMIC_SEARCH_TEST && (! Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE) ){
+            this.currentToolTitle = 'Unrecognized tool parameter: ' + this.currentTool;
+        }else if( this.currentTool === Consts.TOOL_DYNAMIC_SEARCH_TEST && ( Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE) ){
+            this.currentToolTitle = 'Dynamic search widget tester: ' + this.currentTool;
         }else{
-            this.currentToolTitle = 'The tool heading will go here: ' + this.currentTool;
+            this.currentToolTitle = 'Unrecognized tool parameter: ' + this.currentTool;
         }
     }
 

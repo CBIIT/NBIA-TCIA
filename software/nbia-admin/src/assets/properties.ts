@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.8',
-    // 20_OCT_2020
-    TEST_VERSION: '1.0.8c',
+    // 06_NOV_2020
+    TEST_VERSION: '1.0.8L',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
@@ -23,8 +23,8 @@ export let Properties = {
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
  */
 
-      API_SERVER_URL: '',
-     // API_SERVER_URL: 'http://192.168.1.20:8080',
+       API_SERVER_URL: '',
+     // API_SERVER_URL: 'http://192.168.1.10:8080',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -98,6 +98,10 @@ export let Properties = {
     SHOW_ROLES: false,
     DEMO_MODE: false,
 
-    SHOW_DYNAMIC_QUERY_CRITERIA: true
+    SHOW_HEADER: true,
+    SHOW_FOOTER: true,
+
+    SHOW_DYNAMIC_QUERY_CRITERIA: false, // TODO this is not being used. We will use when the "Dynamic Search" has it's own tab.
+    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false
 
 };

@@ -92,7 +92,7 @@ export class ParameterService{
         return this.token;
     }
 
-    // This is for testing DEV mode only, use  @CHECKME
+    // This is for testing DEV mode only  CHECKME
     getAccessToken( user, password, secret ): Observable<any> {
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );

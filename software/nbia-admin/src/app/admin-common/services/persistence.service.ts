@@ -63,7 +63,7 @@ export class PersistenceService {
      * @param value  The contents of the added item.
      */
     put( key, value ) {
-        // Only update if the value has ganged.
+        // Only update if the value has changed.
         if( this.get(key) !== value){
             this.data[key] = value;
         }

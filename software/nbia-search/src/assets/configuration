@@ -16,18 +16,20 @@
 
 #########################################################################
 # This will over ride the brand set in assets/brand/currentBrand
+# The brand header will only appear if UNIVERSAL_HEADING_AND_MENU = false
 #########################################################################
- brand=tcia
+# brand=tcia
+# UNIVERSAL_HEADING_AND_MENU = false
 
 #########################################################################
 # Show OHIF viewer button in Subject & Study sections of search results
 #########################################################################
-OHIF_viewer_study = true
+# OHIF_viewer_study = false
 
 #########################################################################
 # Show OHIF viewer button in Series sections of search results
 #########################################################################
-OHIF_viewer_series = true
+# OHIF_viewer_series = false
 
 #########################################################################
 # The OHIF viewer button will only appears if the series' modality is in this comma separated list.
@@ -55,4 +57,7 @@ OHIF_viewer_series = true
 
 # SHOW_ROLES=
 
-UNIVERSAL_HEADING_AND_MENU = true
+
+# DEFAULT_USER = XXX
+# DEFAULT_PASSWORD = XXX
+# DEFAULT_SECRET = XXX

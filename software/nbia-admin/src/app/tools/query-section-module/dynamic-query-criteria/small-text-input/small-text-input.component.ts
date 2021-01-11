@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AndOrTypes } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component';
+import {takeUntil} from "rxjs/operators";
+import {PreferencesService} from "@app/preferences/preferences.service";
+import {Subject} from "rxjs";
 
 @Component( {
     selector: 'nbia-small-text-input',
@@ -15,8 +18,10 @@ export class SmallTextInputComponent implements OnInit{
     andOrTypes = AndOrTypes;
     criteriaSmallTextInputShowCriteria = true;
     criteriaSmallTextInputText = '';
+    currentFont;
+    private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor() {
+    constructor(private preferencesService: PreferencesService) {
     }
 
     ngOnInit() {
@@ -24,6 +29,18 @@ export class SmallTextInputComponent implements OnInit{
         if( this.queryCriteriaData === undefined ){
             this.queryCriteriaData = [];
         }
+
+
+        // Get font size when it changes
+        this.preferencesService.setFontSizePreferencesEmitter
+            .pipe( takeUntil( this.ngUnsubscribe ) )
+            .subscribe( ( data ) => {
+                console.log( 'MHL FONT data: ', data );
+                this.currentFont = data;
+            } );
+        // Get the initial font size value
+        this.currentFont = this.preferencesService.getFontSize();
+
     }
 
     onShowCriteriaClick( state ) {

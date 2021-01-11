@@ -33,12 +33,10 @@ export class LargeTextInputComponent implements OnInit{
         if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] !== undefined ){
             this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] = this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'].toUpperCase();
             if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] === 'AND' ){
-                console.log('MHL 000 dynamicQueryCriteriaAndOrDefault: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault']);
                 this.cBox[0] = true;
                 this.cBox[1] = false;
             }
             else if(this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] === 'OR'){
-                console.log('MHL 001 dynamicQueryCriteriaAndOrDefault: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault']);
                 this.cBox[0] = false;
                 this.cBox[1] = true;
             }

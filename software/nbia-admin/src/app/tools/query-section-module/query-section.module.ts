@@ -28,8 +28,10 @@ import { DateRangeComponent } from './dynamic-query-criteria/date-range/date-ran
 import { MultiChoiceListComponent } from './dynamic-query-criteria/multi-choice-list/multi-choice-list.component';
 import { SingleChoiceListComponent } from './dynamic-query-criteria/single-choice-list/single-choice-list.component';
 import { SingleCheckboxComponent } from './dynamic-query-criteria/single-checkbox/single-checkbox.component';
-import { SingleChoiceOneLineComponent } from './dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component';
 import { TwoLevelMultiChoiceComponent } from './dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component';
+import { WidgetComponent } from './dynamic-query-criteria/widget/widget.component';
+import { WidgetTestSettingsComponent } from './dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component';
+import { WidgetCalendarComponent } from './dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
 
 
 
@@ -51,8 +53,10 @@ import { TwoLevelMultiChoiceComponent } from './dynamic-query-criteria/two-level
         MultiChoiceListComponent,
         SingleChoiceListComponent,
         SingleCheckboxComponent,
-        SingleChoiceOneLineComponent,
-        TwoLevelMultiChoiceComponent
+        TwoLevelMultiChoiceComponent,
+        WidgetComponent,
+        WidgetTestSettingsComponent,
+        WidgetCalendarComponent
     ],
     exports: [
         LeftSectionComponent,
@@ -63,7 +67,10 @@ import { TwoLevelMultiChoiceComponent } from './dynamic-query-criteria/two-level
         QueryPatientIdComponent,
         QueryQcStatusComponent,
         QueryReleasedComponent,
-        QuerySectionComponent
+        QuerySectionComponent,
+        DynamicQueryCriteriaComponent,
+        WidgetTestSettingsComponent,
+        WidgetComponent
     ],
     imports: [
         CommonModule,

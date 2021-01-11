@@ -54,7 +54,7 @@
                 <span *ngFor="let option of options; let i = index">
                     <input
                         type="radio"
-                        class="multi-list-input-and-or-radio-button"
+                        class="dynamic-query-and-or-radio-button"
                         name="large-text-input-and-or-radio-button-name{{
                             sequenceNumber
                         }}"
@@ -120,17 +120,17 @@
         <!-- ---------------------------------------------------------------- -->
         <!--
 
-                <div *ngFor="let item  of queryCriteriaData['dynamicQueryCriteriaDataArray']; let i = index">
+                <div *ngFor="let item  of queryCriteriaData['dynamicQueryCriteriaCheckboxArray']; let i = index">
                     [{{i}}]: {{item}}
                 </div>
         -->
     </div>
     AAAAAAAAAAAAAA
     <!-- -----  Criteria list search input (Red magnifying glass)  ----- -->
-    <div *ngIf="showListSearch" class="list-search-box">
+    <div *ngIf="showListSearch" class="dynamic-query-list-search-box">
         <input
             type="text"
-            class="list-search-text-area multi-list-box-with-focus"
+            class="dynamic-query-list-search-text-area dynamic-query-list-search-box-with-focus"
             id="collectionsSearchText"
             placeholder="search"
             [(ngModel)]="listSearchInput"
@@ -143,18 +143,18 @@
 
     <!-- ---------------------------------------------------------------- -->
     <div
-        class="list-scroller-div"
+        class="dynamic-query-vertical-expand-div"
         (resized)="onResized($event)"
         [ngClass]="{
             hide: !twoLevelMultiChoiceShowCriteria
         }"
     >
-        <div class="list-scroller">
-            <div class="list-scroller-content" id="collections">
+        <div class="dynamic-query-list-scroller">
+            <div id="collections">
                 <div
                     *ngFor="
                         let item of queryCriteriaData[
-                            'dynamicQueryCriteriaDataArray'
+                            'dynamicQueryCriteriaCheckboxArray'
                         ];
                         let i = index
                     "
@@ -254,7 +254,7 @@
                             >
                                 <input
                                     type="checkbox"
-                                    class="multi-list-checkbox"
+                                    class="dynamic-query-list-checkbox"
                                     id="multi-choice-checkbox{{ i }}:{{c}}"
                                     [ngModel]="subItemsSelected[i][c]"
                                 />

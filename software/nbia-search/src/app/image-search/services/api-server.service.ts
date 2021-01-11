@@ -216,7 +216,7 @@ export class ApiServerService implements OnDestroy{
     rawAccessToken;
 
     /**
-     * This is used for logging in, if the currentUser is not Properties.API_SERVER_USER_DEFAULT, this name is displayed in the login/logout button.<br>
+     * This is used for logging in, if the currentUser is not Properties.DEFAULT_USER, this name is displayed in the login/logout button.<br>
      * Outside of this service, this is accessed with this.setCurrentUser and this.getCurrentUser.
      */
     currentUser;
@@ -271,17 +271,7 @@ export class ApiServerService implements OnDestroy{
                  private loadingDisplayService: LoadingDisplayService ) {
 
         // Until the user logs in, we do everything as the default/guest user.
-        if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ||
-            this.utilService.isNullOrUndefined( this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) )
-        ){
-            this.setCurrentUser( Properties.API_SERVER_USER_DEFAULT );
-            this.setCurrentPassword( Properties.API_SERVER_PASSWORD_DEFAULT );
-        }else{
-            this.setToken( { 'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) } );
-            this.setCurrentUser( this.persistenceService.get( this.persistenceService.Field.USER ) );
-            this.setCurrentPassword( '' );
-
-        }
+        this.initUserLoginData();
 
         // Called when the 'Clear' button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -289,6 +279,29 @@ export class ApiServerService implements OnDestroy{
                 this.setSimpleSearchQueryHold( null );
                 this.getCriteriaCounts();
             } );
+    }
+
+   async initUserLoginData(){
+        // Make sure the configuration from the assets/configuration has been read and used.
+        // It has DEFAULT_USER, DEFAULT_PASSWORD and DEFAULT_SECRET
+        console.log('MHL Start waiting for initUserLoginData CONFIG_COMPLETE DEFAULT_USER: ',  Properties.DEFAULT_USER);
+        while( !Properties.CONFIG_COMPLETE ){
+            await this.commonService.sleep( Consts.waitTime );
+        }
+        console.log('MHL DONE waiting for initUserLoginData CONFIG_COMPLETE DEFAULT_USER: ',  Properties.DEFAULT_USER);
+
+        // Until the user logs in, we do everything as the default/guest user.
+        if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ||
+            this.utilService.isNullOrUndefined( this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) )
+        ){
+            this.setCurrentUser( Properties.DEFAULT_USER );
+            this.setCurrentPassword( Properties.DEFAULT_PASSWORD );
+        }else{
+            this.setToken( { 'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) } );
+            this.setCurrentUser( this.persistenceService.get( this.persistenceService.Field.USER ) );
+            this.setCurrentPassword( '' );
+
+        }
     }
 
     setLoggingOut( l ) {
@@ -561,7 +574,7 @@ export class ApiServerService implements OnDestroy{
      * currentUser is needed by NbiaClientComponent to determine if default user is the current user,
      * and HeaderComponent when the Login button is used.
      *
-     * Sets is_geust in persistenceService, used by the thumbnail viewer, to know if it should relogin as guest if token expires.
+     * Sets is_guest in persistenceService, used by the thumbnail viewer, to know if it should relogin as guest if token expires.
      *
      * @param user
      */
@@ -570,7 +583,7 @@ export class ApiServerService implements OnDestroy{
 
         // This emit tells the header component to update the Login/Logout button.
         this.userSetEmitter.emit( this.currentUser );
-        if( user === Properties.API_SERVER_USER_DEFAULT ){
+        if( user === Properties.DEFAULT_USER ){
             this.persistenceService.put( this.persistenceService.Field.IS_GUEST, true );
         }else{
             this.persistenceService.put( this.persistenceService.Field.IS_GUEST, false );
@@ -1081,6 +1094,14 @@ export class ApiServerService implements OnDestroy{
      * @param accessToken
      */
     async dataGet( queryType, query, accessToken ? ) {
+
+console.log('MHL Start waiting for CONFIG_COMPLETE');
+        while( !Properties.CONFIG_COMPLETE ){
+            await this.commonService.sleep( Consts.waitTime );
+        }
+        console.log('MHL DONE waiting for CONFIG_COMPLETE: ', Properties.CONFIG_COMPLETE);
+
+
         let queryTypeOrig = queryType;
 
         if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
@@ -1121,8 +1142,8 @@ export class ApiServerService implements OnDestroy{
                                 console.log('We can\'t reuse accessToken: [' + accessToken + ']' );
                             */
 
-                            this.setCurrentUser( Properties.API_SERVER_USER_DEFAULT );
-                            this.setCurrentPassword( Properties.API_SERVER_PASSWORD_DEFAULT );
+                            this.setCurrentUser( Properties.DEFAULT_USER );
+                            this.setCurrentPassword( Properties.DEFAULT_PASSWORD );
                             this.loadingDisplayService.setLoadingOff();
                         }
 
@@ -1306,7 +1327,7 @@ export class ApiServerService implements OnDestroy{
      * @returns {Observable<any>}
      */
     getToken(): Observable<any> {
-        let token = this.getAccessToken( this.currentUser, this.currentApiPassword, Properties.API_CLIENT_SECRET_DEFAULT );
+        let token = this.getAccessToken( this.currentUser, this.currentApiPassword, Properties.DEFAULT_SECRET );
         return token;
     }
 

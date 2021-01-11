@@ -15,3 +15,22 @@
 }
 
 
+.list-panel-radio-button {
+    color: #3a3a3a;
+    margin-left: $list-content-left-margin;
+    margin-bottom: 2px;
+}
+
+
+
+.dynamic-criteria-list-search{
+    position: absolute;
+    left: $left-section-width - 47px;
+}
+
+
+// Make room for the clear icon if there is one.
+.dynamic-criteria-list-search-with-clear{
+    position: absolute;
+    left: $left-section-width - 64px;
+}

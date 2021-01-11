@@ -26,6 +26,7 @@ import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.m
 import { CineModeModule } from '@app/tools/cine-mode-module/cine-mode.module';
 import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { DynamicQueryTestModule } from '@app/tools/dynamic-query-test-module/dynamic-query-test.module';
 
 @NgModule( {
     declarations: [
@@ -57,7 +58,8 @@ import { PreferencesComponent } from './preferences/preferences.component';
         PerformQcModule,
         ManageWorkflowItemsModule,
         EditLicenseModule,
-        NgxKeyboardShortcutModule.forRoot()
+        NgxKeyboardShortcutModule.forRoot(),
+        DynamicQueryTestModule
     ],
     providers: [
         AccessTokenService,
