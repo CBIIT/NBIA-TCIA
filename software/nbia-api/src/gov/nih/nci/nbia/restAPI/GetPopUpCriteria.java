@@ -65,7 +65,7 @@ public class GetPopUpCriteria extends getData{
 			    List<PopupCriteriaSelectorDTO> dtos=JSONDeserializer.getPopUpCriteriaFromJson();
 			
 			    for (PopupCriteriaSelectorDTO dto:dtos) {
-			    	if (dto.getParentMenuName()=="Modality") {
+			    	if (dto.getParentMenuName().equalsIgnoreCase("Modality")) {
 						ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
 						ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
 						criteria.setObjectType("MODALITY");
@@ -79,7 +79,7 @@ public class GetPopUpCriteria extends getData{
 							object.getConfiguration().setDynamicQueryCriteriaListData(modalities);
 						}
 			    	}
-			    	if (dto.getParentMenuName()=="Manufacturer") {
+			    	if (dto.getParentMenuName().equalsIgnoreCase("Manufacturer")) {
 						ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
 						ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
 						criteria.setObjectType("MANUFACTURER");
