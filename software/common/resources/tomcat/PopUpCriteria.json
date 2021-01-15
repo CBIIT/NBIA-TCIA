@@ -1,0 +1,369 @@
+[
+   {
+      "parentMenuName":"SeriesUID",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"List",
+            "configuration":{
+               "dynamicQueryCriteriaLargeTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Series UID List",
+               "dynamicQueryCriteriaSubHeading":"Enter comma separated ID(s)",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         },
+         {
+            "criteriaMenuText":"Starts With",
+            "configuration":{
+               "dynamicQueryCriteriaSmallTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Series UID",
+               "dynamicQueryCriteriaSubHeading":"Enter Series UID",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"StudyUID",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"List",
+            "configuration":{
+               "dynamicQueryCriteriaLargeTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Study UID List",
+               "dynamicQueryCriteriaSubHeading":"Enter comma separated ID(s)",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         },
+         {
+            "criteriaMenuText":"Starts With",
+            "configuration":{
+               "dynamicQueryCriteriaSmallTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Study UID",
+               "dynamicQueryCriteriaSubHeading":"Enter Study UID",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"SOPUID",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"List",
+            "configuration":{
+               "dynamicQueryCriteriaLargeTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"SOP UID List",
+               "dynamicQueryCriteriaSubHeading":"Enter comma separated ID(s)",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         },
+         {
+            "criteriaMenuText":"Starts With",
+            "configuration":{
+               "dynamicQueryCriteriaSmallTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"SOP UID",
+               "dynamicQueryCriteriaSubHeading":"Enter SOP UID",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"PatientID",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"List",
+            "configuration":{
+               "dynamicQueryCriteriaLargeTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Patient ID List",
+               "dynamicQueryCriteriaSubHeading":"Enter comma separated ID(s)",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         },
+         {
+            "criteriaMenuText":"Starts With",
+            "configuration":{
+               "dynamicQueryCriteriaSmallTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Patient ID",
+               "dynamicQueryCriteriaSubHeading":"Enter Patient ID",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"PatientName",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"List",
+            "configuration":{
+               "dynamicQueryCriteriaLargeTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Patient Name List",
+               "dynamicQueryCriteriaSubHeading":"Enter comma separated Name(s)",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         },
+         {
+            "criteriaMenuText":"Starts With",
+            "configuration":{
+               "dynamicQueryCriteriaSmallTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Patient ID",
+               "dynamicQueryCriteriaSubHeading":"Enter Patient Name",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Modality",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select from List",
+            "configuration":{
+                 "dynamicQueryCriteriaMultiChoiceList": true,
+                 "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaAllAnyType": "ALLANY",
+                 "dynamicQueryCriteriaAllAnyDefault": "ANY",
+                 "dynamicQueryCriteriaHeading": "Modality",
+                 "dynamicQueryCriteriaSearchable": true,
+                 "dynamicQueryCriteriaSort": true,
+                 "dynamicQueryCriteriaListData": ["CT","MRI"],
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": false,
+                 "dynamicQueryCriteriaCalendarPrompt0": "AAA",
+                 "dynamicQueryCriteriaCalendarPrompt1": "BBB",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Series Description",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Contains",
+            "configuration":{
+                 "dynamicQueryCriteriaSmallTextInput": true,
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaHeading": "Series Description",
+                 "dynamicQueryCriteriaApplyButton": true,
+                 "dynamicQueryCriteriaApplyText": "Okay",
+                 "dynamicQueryCriteriaSort": true,
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": false,
+                 "dynamicQueryCriteriaCalendarPrompt0": "AAA",
+                 "dynamicQueryCriteriaCalendarPrompt1": "BBB",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Study Date",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Equals",
+            "configuration":{
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaHeading": "Study Date",
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": true,
+                 "dynamicQueryCriteriaCalendarPrompt0": "Equals",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": ""
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Study Date",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Less Than",
+            "configuration":{
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaHeading": "Less Than",
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": true,
+                 "dynamicQueryCriteriaCalendarPrompt0": "Equals",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": ""
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Study Date",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Greater Than",
+            "configuration":{
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaHeading": "Greater Than",
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": true,
+                 "dynamicQueryCriteriaCalendarPrompt0": "Equals",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": ""
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Manufacturer",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select from List",
+            "configuration":{
+                 "dynamicQueryCriteriaMultiChoiceList": true,
+                 "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaAllAnyType": "ALLANY",
+                 "dynamicQueryCriteriaAllAnyDefault": "ANY",
+                 "dynamicQueryCriteriaHeading": "Manufacturer",
+                 "dynamicQueryCriteriaSearchable": true,
+                 "dynamicQueryCriteriaSort": true,
+                 "dynamicQueryCriteriaListData": ["GE"],
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": false,
+                 "dynamicQueryCriteriaCalendarPrompt0": "AAA",
+                 "dynamicQueryCriteriaCalendarPrompt1": "BBB",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD"
+            }
+         }
+      ]
+   }
+]
