@@ -21,7 +21,7 @@ export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
  currentFont;
 
     /*
-        testData =  [
+        testData0 =  [
             {'order': 1, 'seriesUID': 'uid000', 'project': 'testP0', 'site': 'testS0'},
             {'order': 2, 'seriesUID': 'uid001', 'project': 'testP1', 'site': 'testS1'},
             {'order': 3, 'seriesUID': 'uid002', 'project': 'testP2', 'site': 'testS2'},

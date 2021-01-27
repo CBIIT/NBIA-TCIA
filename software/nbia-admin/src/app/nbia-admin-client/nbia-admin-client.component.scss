@@ -13,13 +13,15 @@ $parentToolPadding: 10px;
     color: #999;
     background-color:  #444;
     cursor: not-allowed;
+
+    &:hover{
+        color: #999;
+        background-color:  #444;
+        cursor: not-allowed;
+    }
+
 }
 
-.disabled-tool:hover{
-    color: #999;
-    background-color:  #444;
-    cursor: not-allowed;
-}
 
 .admin-tool-button{
     font-size: 18px;

@@ -11,6 +11,7 @@ import { Properties } from '@assets/properties';
 import { ConfigurationService } from '../admin-common/services/configuration.service';
 import { BrandingService } from '@app/admin-common/services/branding.service';
 import { PersistenceService } from '@app/admin-common/services/persistence.service';
+import { CommonService } from '@app/admin-common/services/common.service';
 
 
 @Component( {
@@ -34,6 +35,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     showDynamicSearchTestButton = false;
     showEditCollectionDescriptions = false;
     showEditLicense = false;
+    showCriteriaSelectionMenu = false;
 
     loginMode;
     consts = Consts;
@@ -48,7 +50,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     constructor( private parameterService: ParameterService, private apiService: ApiService,
                  private utilService: UtilService, private loginService: LoginService,
                  private accessTokenService: AccessTokenService, private brandingService: BrandingService,
-                 private persistenceService: PersistenceService,
+                 private persistenceService: PersistenceService, private commonService: CommonService,
                  private configurationService: ConfigurationService ) {
         this.configurationService.initConfiguration();
     }
@@ -58,14 +60,12 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         // Get the current tool, if there is one.
         this.parameterService.currentToolEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-               // console.log('MHL parameterService data: ', data);
                 this.currentTool = data;
             } );
 
 
         this.accessTokenService.tokenStatusChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-
                 // loginMode determines whether the Login screen needs to bs shown.
                 this.loginMode = data;
                 this.accessTokenStatus = this.accessTokenService.getAccessTokenStatus();
@@ -73,7 +73,12 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             } );
 
 
-        // If the user roles change we will get the new roles here.
+        this.commonService.showCriteriaSelectionMenuEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showCriteriaSelectionMenu = data;
+            });
+
+                // If the user roles change we will get the new roles here.
         this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.userRoles = data;

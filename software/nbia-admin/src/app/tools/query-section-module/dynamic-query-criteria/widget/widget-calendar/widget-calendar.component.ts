@@ -33,18 +33,13 @@ export class WidgetCalendarComponent implements OnInit {
     constructor() { }
 
   ngOnInit() {
-
-        console.log('MHL prompt0: ', this.prompt0);
-        console.log('MHL prompt1: ', this.prompt1);
   }
 
     onDateChangedDp1( e: IMyDateModel ) {
-        console.log('MHL onDateChangedDp1: ', e);
         this.date1Change.emit(e);
     }
 
     onDateChangedDp0( e: IMyDateModel ) {
-        console.log('MHL onDateChangedDp0: ', e);
         this.date0Change.emit(e);
 
         // We need to do this because "dateChanged" event can happen before the bound variable fromDateModel is updated.

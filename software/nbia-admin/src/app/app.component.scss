@@ -3,7 +3,7 @@
 
 $toolHeadingFontSize: 16pt;
 $header-background-color: #013856;
-$popup-z-index: 91;
+$popup-z-index: 10;
 $alert-top: 100px;
 $close-x-red: #800;
 $loading-screen-z-index: 5;
@@ -37,30 +37,29 @@ table {
     color: #fff;
     background-color: #0b7983;
     cursor: pointer;
-    /*
-    font-size: 10pt;
-    */
+
+    &:hover {
+        background-color: #277599;
+    }
+
+    &:active {
+        background-color: #1e5975;
+    }
 }
 
-.nbia-button:hover {
-    background-color: #277599;
-}
-
-.nbia-button:active {
-    background-color: #1e5975;
-}
-
-.nbia-button-disabled:active {
-    cursor: not-allowed;
-}
-
-.nbia-button-disabled:hover {
-    cursor: not-allowed;
-}
 
 .nbia-button-disabled {
     cursor: not-allowed;
+
+    &:active {
+        cursor: not-allowed;
+    }
+
+    &:hover {
+        cursor: not-allowed;
+    }
 }
+
 
 .clicker {
     cursor: pointer;
@@ -86,8 +85,6 @@ table {
     margin-left: 2px;
     vertical-align: middle;
     border-top: 4px dashed;
-    border-top: 4px solid \9
-;
     border-right: 4px solid transparent;
     border-left: 4px solid transparent;
 }
@@ -108,10 +105,10 @@ table {
 
 .admin-dropdown-span {
     cursor: pointer;
-}
 
-.admin-dropdown-span:hover {
-    background-color: #286090;
+    &:hover {
+        background-color: #286090;
+    }
 }
 
 .admin-dropdown-button {
@@ -119,47 +116,53 @@ table {
     min-width: 540px;
     cursor: pointer;
     background-color: #f0f0f0;
+
+    &:disabled {
+        cursor: default;
+    }
 }
 
-.admin-dropdown-button:disabled {
-    cursor: default;
-}
-
-.display-query-wrapper{
+.display-query-wrapper {
     width: 100%;
 }
 
-.query-display-row{
+.query-display-row {
     // This should not be needed, but...
     width: calc(100% + 30px);
 }
 
-.parent-font{
+.parent-font {
     font-size: 10px;
 }
 
-.heading-font-extra-small{
+.heading-font-extra-small {
     font: 13px arial, sans-serif;
 }
-.heading-font-small{
+
+.heading-font-small {
     font: 14px arial, sans-serif;
 }
-.heading-font-medium{
+
+.heading-font-medium {
     font: 17px arial, sans-serif;
 }
-.heading-font-large{
+
+.heading-font-large {
     font: 20px arial, sans-serif;
 }
 
-.font-extra-small{
+.font-extra-small {
     font: 11px arial, sans-serif;
 }
-.font-small{
+
+.font-small {
     font: 12px arial, sans-serif;
 }
-.font-medium{
+
+.font-medium {
     font: 14px arial, sans-serif;
 }
-.font-large{
+
+.font-large {
     font: 18px arial, sans-serif;
 }

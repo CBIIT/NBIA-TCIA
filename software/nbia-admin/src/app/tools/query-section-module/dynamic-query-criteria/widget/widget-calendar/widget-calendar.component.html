@@ -6,8 +6,8 @@
                         'main-date-range-div-large': currentFont === '3'
                     }"
 >
-    <div
-    >
+
+    <div>
         <span class="date-box-label date-prompt-label">{{prompt0}}</span>
         <input
             style="outline: none; border: none"
@@ -28,7 +28,7 @@
         />
     </div>
 </div>
-<div *ngIf="prompt1.length > 0"
+<div *ngIf="prompt1 !== undefined && prompt1.length > 0"
     class="input-group date-div mt-1"
         [ngClass]="{
                         'main-date-range-div-extra-small': currentFont === '0',

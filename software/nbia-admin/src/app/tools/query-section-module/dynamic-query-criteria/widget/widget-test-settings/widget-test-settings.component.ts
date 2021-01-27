@@ -57,6 +57,11 @@ export class WidgetTestSettingsComponent implements OnInit {
         'dynamicQueryCriteriaAllAnyDefault': {'text': 'Any/All default', 'tooltip': 'Test tooltip Place holder'},
         'dynamicQueryCriteriaAllowNoChoice': {'text': 'Allow no selection', 'tooltip': 'Test tooltip Place holder'},
         'dynamicQueryCriteriaCalendar': {'text': 'Calendar', 'tooltip': 'Test tooltip Place holder'},
+        'dynamicQueryCriteriaCalendarPrompt0': {'text': 'First prompt', 'tooltip': 'Test tooltip Place holder'},
+        'dynamicQueryCriteriaCalendarPrompt1': {'text': 'Second prompt', 'tooltip': 'Test tooltip Place holder'},
+        'dynamicQueryCriteriaCalendarPlaceHolder0': {'text': 'First place holder', 'tooltip': 'Test tooltip Place holder'},
+        'dynamicQueryCriteriaCalendarPlaceHolder1': {'text': 'Second place holder', 'tooltip': 'Test tooltip Place holder'},
+        'dynamicQueryCriteriaCalendarAllowOneEmpty': {'text': 'If two date inputs are included, allow one to be empty', 'tooltip': 'Test tooltip Place holder'},
         'dynamicQueryCriteriaHeading': {'text': 'Main top heading', 'tooltip': 'Test tooltip Place holder'},
         'dynamicQueryCriteriaSubHeading': {'text': 'Sub-heading', 'tooltip': 'Test tooltip Place holder'},
     };
@@ -83,6 +88,7 @@ export class WidgetTestSettingsComponent implements OnInit {
     dynamicQueryCriteriaSingleLineRadioDefault2 = false;
 
     dynamicQueryCriteriaCalendar = true;
+    dynamicQueryCriteriaCalendarAllowOneEmpty = false;
     dynamicQueryCriteriaCalendarPrompt0 = 'AAA';
     dynamicQueryCriteriaCalendarPrompt1 = 'BBB';
     dynamicQueryCriteriaCalendarPlaceHolder0 = 'CCC';
@@ -147,7 +153,7 @@ export class WidgetTestSettingsComponent implements OnInit {
     }
 
     sendWidgetData() {
-        this.textHold = this.dynamicQueryCriteriaListData.toString();
+       // this.textHold = this.dynamicQueryCriteriaListData.toString();
         if (!this.useSampleData) {
             this.dynamicQueryCriteriaListData = [];
         }
@@ -186,7 +192,7 @@ export class WidgetTestSettingsComponent implements OnInit {
             dynamicQueryCriteriaApplyText: this.dynamicQueryCriteriaApplyText,
             dynamicQueryCriteriaSearchable: this.dynamicQueryCriteriaSearchable,
             dynamicQueryCriteriaSort: this.dynamicQueryCriteriaSort,
-            dynamicQueryCriteriaListData: this.dynamicQueryCriteriaListData.toString(),
+            dynamicQueryCriteriaListData: this.dynamicQueryCriteriaListData,
             dynamicQueryCriteriaAllowNoChoice: this.dynamicQueryCriteriaAllowNoChoice,
             dynamicQueryCriteriaSelectionInHeadingCollapsed: this.dynamicQueryCriteriaSelectionInHeadingCollapsed,
             dynamicQueryCriteriaCalendar: this.dynamicQueryCriteriaCalendar,
@@ -194,10 +200,12 @@ export class WidgetTestSettingsComponent implements OnInit {
             dynamicQueryCriteriaCalendarPrompt1: this.dynamicQueryCriteriaCalendarPrompt1,
             dynamicQueryCriteriaCalendarPlaceHolder0: this.dynamicQueryCriteriaCalendarPlaceHolder0,
             dynamicQueryCriteriaCalendarPlaceHolder1: this.dynamicQueryCriteriaCalendarPlaceHolder1,
+            dynamicQueryCriteriaCalendarAllowOneEmpty: this.dynamicQueryCriteriaCalendarAllowOneEmpty,
 
              sequenceNumber: ++Properties.dynamicQueryCriteriaSequenceNumber
         };
-        this.dynamicQueryCriteriaListData = this.textHold.split(/,/);
+       // this.dynamicQueryCriteriaListData = this.textHold.split(/,/);
+       // console.log('MHL 007 this.dynamicQueryCriteriaListData: ', this.dynamicQueryCriteriaListData);
 
         // Clean here
         temp = this.cleanWidgetData(temp);
@@ -238,7 +246,6 @@ export class WidgetTestSettingsComponent implements OnInit {
      */
     cleanWidgetData(widgetData) {
         let tempData = widgetData;
-        console.log('MHL cleanWidgetData this.dynamicQueryCriteriaSingleCheckbox: ', this.dynamicQueryCriteriaSingleCheckbox);
 
         // Single line radio buttons
         if (tempData.dynamicQueryCriteriaSingleLineRadio) {
@@ -383,8 +390,17 @@ export class WidgetTestSettingsComponent implements OnInit {
             // Exclude 2nd date place holder if it's not used.
             if( this.dynamicQueryCriteriaCalendarPrompt1.length < 1){
                 tempData.dynamicQueryCriteriaCalendarPlaceHolder1 = '';
+                tempData.dynamicQueryCriteriaCalendarAllowOneEmpty = false
             }
 
+        }
+        // Not a calendar
+        else{
+            tempData.dynamicQueryCriteriaCalendarAllowOneEmpty = false
+            tempData.dynamicQueryCriteriaCalendarPlaceHolder0 = '';
+            tempData.dynamicQueryCriteriaCalendarPlaceHolder1 = '';
+            tempData.dynamicQueryCriteriaCalendarPrompt0 = '';
+            tempData.dynamicQueryCriteriaCalendarPrompt1 = '';
         }
         return tempData;
     }

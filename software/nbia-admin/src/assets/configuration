@@ -48,4 +48,12 @@
 
 # DEFAULT_SECRET = 'XXX'
 
+#######################################################
+# Enable the widget building tool
+#######################################################
 ENABLE_WIDGET_TESTER = false
+
+##############################################################################
+# Show the "Dynamic Search" tab.  This is jest for testing and development.
+##############################################################################
+SHOW_DYNAMIC_SEARCH = false

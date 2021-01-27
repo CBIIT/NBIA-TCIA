@@ -15,7 +15,7 @@
             </span>
             <!-- -----  END Single Checkbox  ----- -->
             <!-- ----- The heading Text ----- -->
-            {{criteriaHeading}}MHL
+            {{criteriaHeading}}
             <!-- ----- Number input ----- -->
             <span *ngIf="criteriaNumberInput">
                 <input class="dynamic-query-number-input" type="number" min="{{criteriaNumberInputLimitLow}}" max="{{criteriaNumberInputLimitHigh}}" [(ngModel)]="criteriaNumberInputDefault">
@@ -92,6 +92,7 @@
                 }"> &nbsp;&nbsp;&nbsp;(Or) </span>
         <!-- END Just an "Or"  -->
         <!-- ----- END And/Or (at top, right of Heading text) ----- -->
+
         <!-- ----- All/Any (at top, right of Heading text) ----- -->
         <!-- Includes All/Any radio buttons -->
         <span *ngIf="criteriaAllAnyType === allAnyTypes.ALL_ANY" [ngClass]="{
@@ -312,27 +313,102 @@
             <!-- ----- END  Apply Checkbox  ----- -->
         </div>
     </span>
-    <!-- -----  END TList - Checkbox or Radio button ----- -->
+    <!-- -----  END List - Checkbox or Radio button ----- -->
+
     <!-- ----------  Calendar  --------- -->
     <div *ngIf="widgetShowCriteria  && criteriaCalendar" [ngClass]="{
         'dynamic-query-calendar-div': (! criteriaApplyButton) && (! criteriaApplyCheckbox ),
         'dynamic-query-calendar-div-with-apply-button':  criteriaApplyButton ,
         'dynamic-query-calendar-div-with-apply-checkbox': criteriaApplyCheckbox
         }">
-        <nbia-widget-calendar [prompt0]="criteriaCalendarPrompt0" [prompt1]="criteriaCalendarPrompt1" [placeHolder0]="criteriaCalendarPlaceHolder0" [placeHolder1]="criteriaCalendarPlaceHolder1" [(date0)]="date0" [(date1)]="date1"></nbia-widget-calendar>
+        <nbia-widget-calendar
+            [prompt0]="criteriaCalendarPrompt0"
+            [prompt1]="criteriaCalendarPrompt1"
+            [placeHolder0]="criteriaCalendarPlaceHolder0"
+            [placeHolder1]="criteriaCalendarPlaceHolder1"
+            [(date0)]="date0"
+            [(date1)]="date1">
+
+        </nbia-widget-calendar>
+
         <!-- -----  Apply Button for Calendar ----- -->
-        <button *ngIf="criteriaApplyButton" [disabled]="(date0 === undefined || date0['formatted'].length < 1) ||
-             ( criteriaCalendarPrompt1.length >0 && (date1 === undefined || date1['formatted'].length < 1))" class="btn nbia-button dynamic-query-apply-button mt-1" type="button" (click)="onApplyCriteriaClick()">
+        <button
+            *ngIf="criteriaApplyButton"
+            [disabled]="
+            (
+                (
+                    (date0 === undefined || date0['formatted'].length < 1) &&
+                    (date1 === undefined || date1['formatted'].length < 1)
+                )
+                ||
+                (
+                    ( criteriaCalendarPrompt1.length >0 ) &&
+                    (
+
+                            (
+                                (date0 === undefined || date0['formatted'].length < 1) ||
+                                (date1 === undefined || date1['formatted'].length < 1)
+                            ) &&
+                            ( ! criteriaCalendarAllowOneEmpty )
+                    )
+                )
+            )
+       "
+            class="btn nbia-button dynamic-query-apply-button mt-1"
+            type="button"
+            (click)="onApplyCriteriaClick()"
+        >
             {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </button>
         <!-- ----- END  Apply Button  for Calendar ----- -->
+
+
         <!-- -----  Apply Checkbox  for Calendar ----- -->
         <div *ngIf="criteriaApplyCheckbox" [ngClass]="{
-                     'disabled-text': (date0 === undefined || date0['formatted'].length < 1) ||
-                      ( criteriaCalendarPrompt1.length >0 && (date1 === undefined || date1['formatted'].length < 1))
+                     'disabled-text':             (
+                (
+                    (date0 === undefined || date0['formatted'].length < 1) &&
+                    (date1 === undefined || date1['formatted'].length < 1)
+                )
+                ||
+                (
+                    ( criteriaCalendarPrompt1.length >0 ) &&
+                    (
+
+                            (
+                                (date0 === undefined || date0['formatted'].length < 1) ||
+                                (date1 === undefined || date1['formatted'].length < 1)
+                            ) &&
+                            ( ! criteriaCalendarAllowOneEmpty )
+                    )
+                )
+            )
+
                  }" class="mt-1">
-            <input type="checkbox" [disabled]="(date0 === undefined || date0['formatted'].length < 1) ||
-             ( criteriaCalendarPrompt1.length >0 && (date1 === undefined || date1['formatted'].length < 1))" (click)="onApplyCriteriaClick()" />
+            <input
+                type="checkbox"
+                [disabled]="            (
+                (
+                    (date0 === undefined || date0['formatted'].length < 1) &&
+                    (date1 === undefined || date1['formatted'].length < 1)
+                )
+                ||
+                (
+                    ( criteriaCalendarPrompt1.length >0 ) &&
+                    (
+
+                            (
+                                (date0 === undefined || date0['formatted'].length < 1) ||
+                                (date1 === undefined || date1['formatted'].length < 1)
+                            ) &&
+                            ( ! criteriaCalendarAllowOneEmpty )
+                    )
+                )
+            )
+"
+
+                   (click)="onApplyCriteriaClick()"
+            >
             {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </div>
         <!-- ----- END  Apply Checkbox for Calendar ----- -->

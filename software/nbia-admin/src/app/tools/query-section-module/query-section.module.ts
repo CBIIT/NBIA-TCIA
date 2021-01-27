@@ -22,16 +22,11 @@ import { AngularDraggableModule } from 'angular2-draggable';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { TabsModule } from 'ngx-tabs';
 import { DynamicQueryCriteriaComponent } from './dynamic-query-criteria/dynamic-query-criteria.component';
-import { LargeTextInputComponent } from '@app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component';
-import { SmallTextInputComponent } from './dynamic-query-criteria/small-text-input/small-text-input.component';
-import { DateRangeComponent } from './dynamic-query-criteria/date-range/date-range.component';
-import { MultiChoiceListComponent } from './dynamic-query-criteria/multi-choice-list/multi-choice-list.component';
-import { SingleChoiceListComponent } from './dynamic-query-criteria/single-choice-list/single-choice-list.component';
-import { SingleCheckboxComponent } from './dynamic-query-criteria/single-checkbox/single-checkbox.component';
 import { TwoLevelMultiChoiceComponent } from './dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component';
 import { WidgetComponent } from './dynamic-query-criteria/widget/widget.component';
 import { WidgetTestSettingsComponent } from './dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component';
 import { WidgetCalendarComponent } from './dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
+import { LeftSectionDynamicComponent } from './left-section-dynamic/left-section-dynamic.component';
 
 
 
@@ -46,17 +41,12 @@ import { WidgetCalendarComponent } from './dynamic-query-criteria/widget/widget-
         QueryQcStatusComponent,
         QueryReleasedComponent,
         QuerySectionComponent,
-        LargeTextInputComponent,
         DynamicQueryCriteriaComponent,
-        SmallTextInputComponent,
-        DateRangeComponent,
-        MultiChoiceListComponent,
-        SingleChoiceListComponent,
-        SingleCheckboxComponent,
         TwoLevelMultiChoiceComponent,
         WidgetComponent,
         WidgetTestSettingsComponent,
-        WidgetCalendarComponent
+        WidgetCalendarComponent,
+        LeftSectionDynamicComponent
     ],
     exports: [
         LeftSectionComponent,

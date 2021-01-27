@@ -316,7 +316,11 @@
         <!-- ----- Calendar ----- -->
         <tr>
             <td class="left-td">
-                <label class="widget-type-text" [attr.for]="'dynamicQueryCriteriaCalendar'" title="{{itemDescription['dynamicQueryCriteriaCalendar']['tooltip']}}">
+                <label
+                    class="widget-type-text"
+                    [attr.for]="'dynamicQueryCriteriaCalendar'"
+                    title="{{itemDescription['dynamicQueryCriteriaCalendar']['tooltip']}}"
+                >
                     {{itemDescription['dynamicQueryCriteriaCalendar']['text']}}
                 </label>
             </td>
@@ -330,11 +334,18 @@
                        'disabled-text': (! dynamicQueryCriteriaCalendar)
                     }"
             >
-                First prompt
+                <label
+                    [attr.for]="dynamicQueryCriteriaCalendarPrompt0"
+                    title="{{itemDescription['dynamicQueryCriteriaCalendarPrompt0']['tooltip']}}"
+                >
+                    {{itemDescription['dynamicQueryCriteriaCalendarPrompt0']['text']}}
+                </label>
+
             </td>
             <td class="right-td">
                 <textarea
                     class="smallTextarea"
+                    id="dynamicQueryCriteriaCalendarPrompt0"
                     [disabled]="! dynamicQueryCriteriaCalendar"
                     [(ngModel)]="dynamicQueryCriteriaCalendarPrompt0"
                 ></textarea>
@@ -346,11 +357,17 @@
                        'disabled-text': (! dynamicQueryCriteriaCalendar)
                     }"
             >
-                First place holder
+                <label
+                    [attr.for]="dynamicQueryCriteriaCalendarPlaceHolder0"
+                    title="{{itemDescription['dynamicQueryCriteriaCalendarPlaceHolder0']['tooltip']}}"
+                >
+                    {{itemDescription['dynamicQueryCriteriaCalendarPlaceHolder0']['text']}}
+                </label>
             </td>
             <td class="right-td">
                 <textarea
                     class="smallTextarea"
+                    id="dynamicQueryCriteriaCalendarPlaceHolder0"
                     [disabled]="! dynamicQueryCriteriaCalendar"
                     [(ngModel)]="dynamicQueryCriteriaCalendarPlaceHolder0"
                 ></textarea>
@@ -373,11 +390,18 @@
                        'disabled-text': (! dynamicQueryCriteriaCalendar)
                 }"
             >
-                Second prompt
+                <label
+                    [attr.for]="dynamicQueryCriteriaCalendarPrompt1"
+                    title="{{itemDescription['dynamicQueryCriteriaCalendarPrompt1']['tooltip']}}"
+                >
+                    {{itemDescription['dynamicQueryCriteriaCalendarPrompt1']['text']}}
+                </label>
+
             </td>
             <td >
                 <textarea
                     class="smallTextarea"
+                    id="dynamicQueryCriteriaCalendarPrompt1"
                     [disabled]="! dynamicQueryCriteriaCalendar"
                     [(ngModel)]="dynamicQueryCriteriaCalendarPrompt1"
                 ></textarea>
@@ -389,14 +413,38 @@
                        'disabled-text': (! dynamicQueryCriteriaCalendar)
                     }"
             >
-                Second place holder
+                <label
+                    [attr.for]="dynamicQueryCriteriaCalendarPlaceHolder1"
+                    title="{{itemDescription['dynamicQueryCriteriaCalendarPlaceHolder1']['tooltip']}}"
+                >
+                    {{itemDescription['dynamicQueryCriteriaCalendarPlaceHolder1']['text']}}
+                </label>
+
             </td>
             <td class="right-td">
                 <textarea
                     class="smallTextarea"
+                    id="dynamicQueryCriteriaCalendarPlaceHolder1"
                     [disabled]="! dynamicQueryCriteriaCalendar"
                     [(ngModel)]="dynamicQueryCriteriaCalendarPlaceHolder1"
                 ></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label
+                    [attr.for]="dynamicQueryCriteriaCalendarAllowOneEmpty"
+                    title="{{itemDescription['dynamicQueryCriteriaCalendarAllowOneEmpty']['tooltip']}}"
+                >
+                    {{itemDescription['dynamicQueryCriteriaCalendarAllowOneEmpty']['text']}}
+                </label>
+            </td>
+            <td>
+                <input
+                    type="checkbox"
+                [(ngModel)]="dynamicQueryCriteriaCalendarAllowOneEmpty"
+                    [checked]="dynamicQueryCriteriaCalendarAllowOneEmpty"
+                >
             </td>
         </tr>
         <!-- ----- END Calendar ----- -->

@@ -8,6 +8,8 @@ import { QuerySectionService } from '../services/query-section.service';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CommonService } from '@app/admin-common/services/common.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -36,9 +38,11 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
 
     currentFont;
     consts = Consts;
+    properties = Properties;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-    constructor( private querySectionService: QuerySectionService, private preferencesService: PreferencesService) {
+    constructor( private querySectionService: QuerySectionService, private preferencesService: PreferencesService,
+                 private commonService: CommonService) {
     }
 
     ngOnInit() {
@@ -60,6 +64,12 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
         this.currentTab = i;
         this.querySectionService.setSearchType(this.currentTab);
     }
+
+    onAddCriteriaClick(){
+        console.log('MHL Open Crit select menu');
+        this.commonService.showCriteriaSelectionMenu( true );
+    }
+
 
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();

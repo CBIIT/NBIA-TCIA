@@ -27,8 +27,6 @@ export class ParameterService{
                  private utilService: UtilService, private loginService: LoginService,
                  private accessTokenService: AccessTokenService ) {
 
-
-        // @FIXME This is a dev time temporary bypass of receiving a token from the calling site.
         if( Properties.DEV_MODE ){
             this.getAccessToken( Properties.DEV_USER, Properties.DEV_PASSWORD, Properties.DEFAULT_SECRET ).subscribe(
                 data => {

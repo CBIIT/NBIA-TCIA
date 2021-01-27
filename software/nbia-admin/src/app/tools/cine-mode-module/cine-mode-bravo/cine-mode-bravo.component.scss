@@ -139,19 +139,15 @@ $cineModeSeriesDataHeight: 200px;
     padding: 7px 0 0 0;
 }
 
-// .cursor-draggable isn't working for me, this is a workaround.
-.cine-panel-heading:hover {
-    cursor: grab;
-}
+.cine-panel-heading {
+    // .cursor-draggable isn't working for me, this is a workaround.
+    &:hover {
+        cursor: grab;
+    }
 
-/*  Apply a "closed-hand" cursor during drag operation. */
-.cine-panel-heading:active {
-    cursor: grabbing;
-}
-
-/*  Apply a "closed-hand" cursor during drag operation. */
-.cine-panel-heading-moving {
-    cursor: grabbing;
+    &:active {
+        cursor: grabbing;
+    }
 }
 
 .image-viewer-td {

@@ -24,17 +24,18 @@ $cine-button-width: 46px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+
+    &:hover {
+        border: solid $default-border-hover-color $default-border-line-width;
+        background-color: $default-background-hover-color;
+    }
+
+    &:disabled {
+        border: solid $default-border-disabled-color $default-border-line-width;
+        background-color: $default-background-disabled-color;
+    }
 }
 
-.btn-nbia-default:hover {
-    border: solid $default-border-hover-color $default-border-line-width;
-    background-color: $default-background-hover-color;
-}
-
-.btn-nbia-default:disabled {
-    border: solid $default-border-disabled-color $default-border-line-width;
-    background-color: $default-background-disabled-color;
-}
 
 // For buttons with just a larger image/icon Cine mode
 .btn-nbia-li-default {

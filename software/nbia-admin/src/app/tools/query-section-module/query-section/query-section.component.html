@@ -36,6 +36,7 @@
         'tab-div-large': currentFont === '3'
     }"
 >
+
     <span
         class="tab"
         [ngClass]="{
@@ -52,23 +53,28 @@
         Criteria Search
     </span>
 
-    <!--
-        We are not sure yet what kind of search we will put here.
-    <span *ngIf="currentTool !== consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
+
+    <span  *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA"
         class="tab"
         [ngClass]="{
-         'tab-selected': currentTab === consts.TEXT_SEARCH,
-         'tab-not-selected': currentTab !== consts.TEXT_SEARCH
-      }"
-        (click)="onTabClick(consts.TEXT_SEARCH)"
+            'tab-selected': currentTab === consts.DYNAMIC_SEARCH,
+            'tab-not-selected': currentTab !== consts.DYNAMIC_SEARCH,
+            'hide': !show,
+            'heading-font-extra-small': currentFont === '1',
+            'heading-font-small': currentFont === '1',
+            'heading-font-medium': currentFont === '2',
+            'heading-font-large': currentFont === '3'
+        }"
+        (click)="onTabClick(consts.DYNAMIC_SEARCH)"
     >
-        Text Search
+        Dynamic Search
+        <img
+            (click)="onAddCriteriaClick()" class="add-criteria-plus" src="assets/images/green_plus.png" alt="Add Criteria">
+
+
     </span>
 
--->
-
 </span>
-
 <div
     class="query-section"
     [ngClass]="{
@@ -79,5 +85,8 @@
         'query-section-large': currentFont === '3'
     }"
 >
+
+
     <nbia-left-section [currentTool]="currentTool"></nbia-left-section>
+    <nbia-left-section-dynamic></nbia-left-section-dynamic>
 </div>

@@ -22,10 +22,7 @@ export class LeftSectionComponent implements OnInit, OnDestroy{
 
     consts = Consts;
 
-    /**
-     * Criteria Search or Text Search.
-     */
-    searchType = Consts.CRITERIA_SEARCH;
+    searchType = Consts.CRITERIA_SEARCH; // CHECKME  We don't need this, or the emitter (at least for now)
 
     properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();

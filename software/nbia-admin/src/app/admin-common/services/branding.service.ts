@@ -108,6 +108,8 @@ export class BrandingService{
         }
     }
 
+
+    // TODO this has some copy/paste things from nbia-search
     setBrandItem( item, value ) {
         switch( item ){
             case this.CUSTOM_MENU_DATA:

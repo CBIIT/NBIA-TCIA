@@ -80,7 +80,7 @@
             )
         "
     >
-        Dynamic search test {{properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE}}
+        Dynamic search widget tester
     </span>
 
 
@@ -197,8 +197,8 @@
 
 <nbia-cine-mode-bravo [currentTool]="currentTool"></nbia-cine-mode-bravo>
 
-<!--
-<nbia-cine-mode
-    [currentTool]="currentTool"
-></nbia-cine-mode>
--->
+<nbia-criteria-selection-menu
+    [ngClass]="{
+            'hide': !showCriteriaSelectionMenu
+        }"
+></nbia-criteria-selection-menu>

@@ -52,7 +52,7 @@ export const Consts = {
 
 
     CRITERIA_SEARCH: 0,
-    TEXT_SEARCH: 1,
+    DYNAMIC_SEARCH: 1,
 
     ACCESS_TOKEN: '',
 

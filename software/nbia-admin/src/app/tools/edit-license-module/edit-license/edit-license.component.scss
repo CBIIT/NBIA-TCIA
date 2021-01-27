@@ -26,11 +26,11 @@ td {
 
 .edit-lic-button {
     margin-left: 5px;
-}
 
-.edit-lic-button:disabled {
-    margin-left: 5px;
-    cursor: not-allowed;
+    &:disabled {
+        margin-left: 5px;
+        cursor: not-allowed;
+    }
 }
 
 .edit-lic-left-td {
@@ -58,14 +58,14 @@ td {
     padding: 0;
 }
 
-// .cursor-draggable isn't working for me, this is a workaround.
-.edit-license-panel-heading:hover {
-    cursor: grab;
-}
+.edit-license-panel-heading{
+    &:hover {
+        cursor: grab;
+    }
 
-/*  Apply a "closed-hand" cursor during drag operation. */
-.edit-license-panel-heading:active {
-    cursor: grabbing;
+    &:active {
+        cursor: grabbing;
+    }
 }
 
 /*  Apply a "closed-hand" cursor during drag operation. */
