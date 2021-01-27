@@ -179,6 +179,49 @@ public class StandaloneDMV4 extends StandaloneDM {
 						
 		return seriesInfo;
 	}
+	
+		protected List<String> getSeriesInfo(List seriesList, String username, String password) {
+		int maxInGroup = 5000;
+//		int maxInGroup = 10;		
+		int index = 0;
+		int count = 0;
+		List<String> seriesInfo = null;
+		int seriesSize = seriesList.size();
+		
+		do {
+			List<String> seriesSubgroup = null;
+			++count;
+			int last = (maxInGroup * count) >= seriesSize ? seriesSize : (maxInGroup * count);
+
+			seriesSubgroup = seriesList.subList(index, last);
+			index = maxInGroup * count;
+			try {
+				if (count == 1) {
+					seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesSubgroup, username, password);
+				} 
+				else if (count > 1) {
+					List<String> nextGroup = null;
+					nextGroup = connectAndReadFromURL(new URL(serverUrl), seriesSubgroup, username, password);
+					if (nextGroup != null)
+						seriesInfo.addAll(nextGroup);
+					else return null;
+				}
+				if (seriesInfo == null) {
+					return null;
+				}
+				else if (seriesInfo.size() != last) {
+					return null;
+				}
+
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+		} while (index < seriesSize);
+						
+			
+		//System.out.println("!!!!! v3 return size = " +seriesInfo.size());
+		return seriesInfo;
+	}
 
 	public void launch(List<String> seriesList) {
 		checkCompatibility();
@@ -278,11 +321,12 @@ public class StandaloneDMV4 extends StandaloneDM {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesList, userId, encryptedPassword);
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
-		}
+		seriesInfo = getSeriesInfo(seriesList, userId, encryptedPassword);
+//		try {
+//			seriesInfo = connectAndReadFromURL(new URL(serverUrl), seriesList, userId, encryptedPassword);
+//		} catch (MalformedURLException e1) {
+//			e1.printStackTrace();
+//		}
 		if (seriesInfo == null && returnStatus == CLIENT_LOGIN_FAILED) {
 			setStatus(statusLbl, "Invalid User name and/or password.  Please try it again.", Color.red);
 			return;
