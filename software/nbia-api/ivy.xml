@@ -157,6 +157,62 @@ L-->
                 rev="1.6.1"
                 conf="*->master"/>
   
+ <!--   <dependency
+      org="io.swagger.core.v3"
+      name="swagger-jaxrs2"
+      rev="2.1.2"
+      conf="compile->master;runtime->master"
+    />
+    <dependency
+      org="io.swagger.core.v3"
+      name="swagger-jaxrs2-servlet-initializer-v2"
+      rev="2.1.2"
+    />-->   
+    
+  <dependency
+      org="io.swagger"
+      name="swagger-jersey2-jaxrs"
+      rev="1.5.8"
+      conf="compile->master;runtime->master"/>
+      
+    <dependency
+      org="io.swagger"
+      name="swagger-jaxrs"
+      rev="1.5.8"
+      conf="compile->master;runtime->master"/>
+
+    <dependency
+      org="io.swagger"
+      name="swagger-models"
+      rev="1.5.8"
+      conf="compile->master;runtime->master"/>
+
+     <dependency
+      org="io.swagger"
+      name="swagger-core"
+      rev="1.5.8"
+      conf="compile->master;runtime->master"/>
+      
+     <dependency
+      org="io.swagger"
+      name="swagger-annotations"
+      rev="1.5.8"
+      conf="compile->master;runtime->master"/>
+      
+     <dependency
+      org="org.apache.commons"
+      name="commons-lang3"
+      rev="3.3"
+      conf="compile->master;runtime->master"/>
+      
+      <dependency
+      org="com.fasterxml.jackson.dataformat"
+      name="jackson-dataformat-yaml"
+      rev="2.6.1"
+      conf="compile->master;runtime->master"/>
+      
+     
+      
 		<!-- end of dicom -->
 	</dependencies>
 </ivy-module>

@@ -163,6 +163,7 @@ L-->
 		<!--copy file="${property.dir}/install.properties" tofile="${webapp.dir}/WEB-INF/classes/nbia.properties"/-->
 		<copy file="${tomcat.dir}/DataSourceItem.xml" tofile="${webapp.dir}/WEB-INF/classes/DataSourceItem.xml"/>
 		<copy file="${tomcat.dir}/relationship.xml" tofile="${webapp.dir}/WEB-INF/classes/relationship.xml"/>
+		<copy file="${tomcat.dir}/PopUpCriteria.json" tofile="${webapp.dir}/WEB-INF/classes/PopUpCriteria.json"/>
 	</target>
 
 	<target name="compile" depends="ivy-compile">
