@@ -1,0 +1,157 @@
+<!--
+<span class="background-cover"></span>
+-->
+
+<div
+    ngDraggable
+    [handle]="PanelHandleCriteriaSelectionMenu"
+    class="card card-nbia-default criteria-selection-menu-box alert-box-shadow"
+    [ngClass]="{
+        'criteria-selection-menu-panel-heading': handleMoving
+    }"
+
+    [ngDraggable]="true"
+    (started)="onDragBegin($event)"
+    (endOffset)="onMoveEnd($event)"
+>
+
+    <div #PanelHandleCriteriaSelectionMenu class="card-header card-nbia-header-default pt-2">
+        <div class="card-title unselectable"><h4>Select Search Criteria
+
+            <!--
+                        <img
+                            class="clicker exit-x"
+                            src="assets/images/x_red.png"
+                            alt="Close"
+                            (click)="criteriaSelectionMenuClose()"
+                        />
+            -->
+
+        </h4>
+        </div>
+    </div>
+    <div style="padding-top: 30px;" class="card-body bg-white">
+
+        <div class="criteria-selection-menu-panel-heading-scroller">
+            <!-- Each Criteria -->
+            <table *ngFor="let crit of criteriaData['data']; let n = index;"
+                   class="criteria-selection-menu-criteria  alert-box-shadow unselectable"
+            >
+
+                <tr class="criteria-selection-menu-heading-tr">
+                    <td colspan="2" class="criteria-selection-menu-heading-td  p-1">
+
+                        <span class="parent-menu-name"
+                              [ngClass]="{
+                                'green': and[n] || or[n]
+                             }"
+                        >
+                            {{crit['parentMenuName']}}
+
+                            <span *ngIf="and[n]">
+                                (and)
+                            </span>
+                             <span *ngIf="or[n]">
+                                (or)
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="criteria-selection-menu-td pl-1">
+                        <!-- Each option/type for this criteria -->
+                        <div *ngFor="let critOption of crit['criteriaObjects']; let i = index"
+                             class="criteria-selection-menu-option"
+                        >
+                            <input *ngIf="crit['criteriaObjects'].length > 1"
+                                   class="mr-1 p-0"
+                                   type="radio"
+                                   id="{{crit['parentMenuName']}}-{{i}}"
+                                   name="{{crit['parentMenuName']}}"
+                                   [checked]="option[n] === i"
+                                   (click)="onCriteriaOptionRadioClick( i, n )"
+                                   [disabled]="elementsUsed[n][i]"
+                            >
+                            <label
+                                class="m-0 p-0"
+                                [ngClass]="{
+                                    'disabled-text': elementsUsed[n][i]
+                                }"
+
+                                [attr.for]="crit['parentMenuName'] + '-' + i"
+                            > {{critOption['criteriaMenuText']}}
+                            </label>
+                        </div>
+                    </td>
+
+
+                    <!-- And/Or -->
+                    <td class="criteria-selection-menu-and-or pl-4 bg-white">
+                        <input
+                            type="radio"
+                            name="{{crit['parentMenuName']}}-andOr-radio"
+                            id="{{crit['parentMenuName']}}-andOr-and-radio"
+                            [checked]="and[n]"
+                            (click)="onAndChange(n)"
+                            [disabled]="elementsUsedUp[n]"
+
+                        >
+                        <label
+                            class="mr-3"
+                            [attr.for]="crit['parentMenuName'] + '-andOr-and-radio'"
+                            [ngClass]="{
+                                    'disabled-text': elementsUsedUp[n]
+                                }"
+                        >
+                            &nbsp;And
+                        </label>
+
+                        <input
+                            type="radio"
+                            name="{{crit['parentMenuName']}}-andOr-radio"
+                            id="{{crit['parentMenuName']}}-andOr-or-radio"
+                            [checked]="or[n]"
+                            (click)="onOrChange(n)"
+                            [disabled]="elementsUsedUp[n]"
+                        >
+                        <label
+                            class="mr-3"
+                            [attr.for]="crit['parentMenuName'] + '-andOr-or-radio'"
+                            [ngClass]="{
+                                'disabled-text': elementsUsedUp[n]
+                            }"
+                        >
+                            &nbsp;Or
+                        </label>
+                        <input
+                            type="radio"
+                            name="{{crit['parentMenuName']}}-andOr-radio"
+                            id="{{crit['parentMenuName']}}-andOr-omit-radio"
+                            [checked]="omit[n]"
+                            (click)="onOmitChange(n)"
+                            [disabled]="elementsUsedUp[n]"
+                        >
+                        <label
+                            [attr.for]="crit['parentMenuName'] + '-andOr-omit-radio'"
+                            [ngClass]="{
+                                'disabled-text': elementsUsedUp[n]
+                            }"
+                        >
+                            &nbsp;Omit
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <button class="btn nbia-button criteria-selection-menu-okay-button" type="button"
+                (click)="onCriteriaSelectionMenuOkayClick()">
+            Okay
+        </button>
+        <button class="btn nbia-button criteria-selection-menu-okay-button mr-1" type="button"
+                (click)="onCriteriaSelectionMenuCancelClick()">
+            Cancel
+        </button>
+    </div>
+</div>
