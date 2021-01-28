@@ -1,32 +1,21 @@
-
 <span *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE">
     Keep count
     <input type="number"
-         [(ngModel)]="ShowSampleCount"
+           [(ngModel)]="ShowSampleCount"
     >
 </span>
 
 
 <div class="widget-display-div">
 <span *ngFor="let criteria of queryCriteriaData">
+    Seq: {{criteria['sequenceNumber']}}
     <br>
-<!--
-    <h4  class=mt-3>
-      {{criteria['dynamicQueryCriteriaType']}}
-    </h4>
--->
 
     <!-- [queryCriteriaData]="criteria" is used by the widget test page -->
         <nbia-widget *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.WIDGET"
                      [queryCriteriaData]="criteria"
         ></nbia-widget>
 
-
-    <nbia-two-level-multi-choice
-        *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.TWO_LEVEL_MULTIPLE_SELECTION"
-        [queryCriteriaData]="criteria"
-    >
-    </nbia-two-level-multi-choice>
 
 </span>
 </div>

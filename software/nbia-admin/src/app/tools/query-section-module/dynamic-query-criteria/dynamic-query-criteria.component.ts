@@ -37,7 +37,10 @@ export const CriteriaTypes = {
 
 export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     queryCriteriaType = null;
+
+    // TODO Make this List its own component or maybe class - with a service to access
     queryCriteriaData = [];
+
     ShowSampleCount = 10;
     queryCriteriaCount = 0;
     dynamicQueryCriteriaTypes = DynamicQueryCriteriaTypes;
@@ -45,6 +48,8 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(private dynamicQueryCriteriaService: DynamicQueryCriteriaService) {
+
+
         this.dynamicQueryCriteriaService.initWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
                 this.addQueryCriteria(data);

@@ -400,6 +400,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                }
        */
     }
+/*
 
     displayParameters() {
         // console.log('this.criteriaName: ', this.criteriaName);
@@ -419,6 +420,13 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         console.log( 'this.criteriaSort: ', this.criteriaSort );
         console.log( 'this.criteriaSmallTextInput: ', this.criteriaSmallTextInput );
         console.log( 'this.criteriaLargeTextInput: ', this.criteriaLargeTextInput );
+    }
+
+*/
+
+
+    onSingleCheckboxClick(seq, state){
+        console.log('MHL onSingleCheckboxClick[' + seq + ']: ', state.currentTarget.checked);
     }
 
 
