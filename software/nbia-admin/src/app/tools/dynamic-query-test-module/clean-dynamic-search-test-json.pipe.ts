@@ -49,32 +49,32 @@ export class CleanDynamicSearchTestJsonPipe implements PipeTransform {
             .replace(/ *"dynamicQueryCriteriaSingleCheckboxDefault": false,.* *\n*\r*/g, '')
             .replace(/ *"dynamicQueryCriteriaSingleLineRadioDefault": *-1.* *\n*\r*/g, '')
             .replace(/ *"dynamicQueryCriteriaType":.* *\n*\r*/g, '')
-            .replace(/, *\n*\r* *\n*\r*}\ *$/g, '\n}')
+          .replace(/, *\n*\r* *\n*\r*}\ *$/g, '\n}')
         ;
 
         // Reformat listData as an array
-        result = result.replace(/.*"dynamicQueryCriteriaListData":.*/,
+        result = result.replace(/.*"dynamicQueryCriteriaListData":.*!/,
             '  "dynamicQueryCriteriaListData": [' +
-            '"' + result.replace(/.*"dynamicQueryCriteriaListData":\s*"(.*)".*\n*\r*/sg,
-            '$1').replace(/,\s*".*/s, '').replace(/,/g, '","')
+            '"' + result.replace(/.*"dynamicQueryCriteriaListData":\s*"(.*)".*\n*\r*!/sg,
+            '$1').replace(/,\s*".*!/s, '').replace(/,/g, '","')
             + '],');
 
 
         // If there is no andOr, remove andOr default
         if (!result.match(/dynamicQueryCriteriaAndOrType/)) {
-            result = result.replace(/ *"dynamicQueryCriteriaAndOrDefault": ".* *\n*\r*/g, '')
+            result = result.replace(/ *"dynamicQueryCriteriaAndOrDefault": ".* *\n*\r*!/g, '')
         }
 
         // If there is no Apply button or checkbox, remove apply button text
         if ((!result.match(/dynamicQueryCriteriaApplyButton/)) && (!result.match(/dynamicQueryCriteriaApplyCheckbox/))) {
-            result = result.replace(/ *"dynamicQueryCriteriaApplyText":.* *\n*\r*/g, '')
+            result = result.replace(/ *"dynamicQueryCriteriaApplyText":.* *\n*\r*!/g, '')
         }
 
         // If there is no dynamicQueryCriteriaNumber, remove high, low, and default
         if (!result.match(/dynamicQueryCriteriaNumber"/)) {
-            result = result.replace(/ *"dynamicQueryCriteriaNumberDefault":.* *\n*\r*/g, '')
-            result = result.replace(/ *"dynamicQueryCriteriaNumberLimitHigh":.* *\n*\r*/g, '')
-            result = result.replace(/ *"dynamicQueryCriteriaNumberLimitLow":.* *\n*\r*/g, '')
+            result = result.replace(/ *"dynamicQueryCriteriaNumberDefault":.* *\n*\r*!/g, '')
+            result = result.replace(/ *"dynamicQueryCriteriaNumberLimitHigh":.* *\n*\r*!/g, '')
+            result = result.replace(/ *"dynamicQueryCriteriaNumberLimitLow":.* *\n*\r*!/g, '')
         }
         return result;
     }
