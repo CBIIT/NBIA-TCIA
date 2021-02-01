@@ -239,6 +239,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 			fromStmt = fromStmt+" join gs.generalEquipment ge ";
 		}
 			
+		
 		String whereStmt = " WHERE gs.patientPkId=pt.id";
 		               //    computeVisibilityCriteria(qcStatus) +
 		              //     computeCollectionCriteria(collectionSites) +
