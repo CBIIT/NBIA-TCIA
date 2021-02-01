@@ -8,13 +8,14 @@
 
 package gov.nih.nci.nbia.dao;
 
+import gov.nih.nci.nbia.dto.AdvancedCriteriaDTO;
 import gov.nih.nci.nbia.dto.QcSearchResultDTO;
 import gov.nih.nci.nbia.dto.QcStatusHistoryDTO;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.internaldomain.QCStatusHistory;
 import gov.nih.nci.nbia.qctool.VisibilityStatus;
 import gov.nih.nci.nbia.util.CrossDatabaseUtil;
-
+import gov.nih.nci.ncia.criteria.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -70,7 +72,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		                   computeAdditionalFlags(additionalQcFlagList) +	                 
 		                   computePatientCriteria(patients) +
 		                   computeSubmissionDateCriteria(fromDate, toDate);
-
+        
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
 
 		String hql = selectStmt + fromStmt + whereStmt;
@@ -135,6 +137,195 @@ public class QcStatusDAOImpl extends AbstractDAO
 		return searchResultDtos;
 	}
 
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<QcSearchResultDTO> findSeries(Map<String, QCSearchCriteria>criteria, Map<String, AdvancedCriteriaDTO> criteriaMap, int maxRows) throws DataAccessException {
+		QCSearchCriteria qcStatusCriteria = criteria.get("qcStatus");
+		String[]qcStatus=null;
+		if (qcStatusCriteria!=null) {
+			List<String>qcStatusList=((ListCriteria)qcStatusCriteria).getlistObjects();
+			qcStatus = new String[qcStatusList.size()];
+			qcStatus= qcStatusList.toArray(qcStatus);
+			criteria.remove("qcStatus");
+		}
+		qcStatusCriteria = criteria.get("collectionSites");
+		List<String>collectionSites=null;
+		if (qcStatusCriteria!=null) {
+			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
+			criteria.remove("collectionSites");
+		}
+		qcStatusCriteria = criteria.get("additionalFlags");
+		String[]additionalQcFlagList=null;
+		if (qcStatusCriteria!=null) {
+			List<String> additionalQcFlagListOriginal=((ListCriteria)qcStatusCriteria).getlistObjects();
+			additionalQcFlagList = new String[additionalQcFlagListOriginal.size()];
+			additionalQcFlagList= additionalQcFlagListOriginal.toArray(additionalQcFlagList);
+			criteria.remove("additionalFlags");
+		}
+		qcStatusCriteria = criteria.get("patients");
+		String[]patients=null;
+		if (qcStatusCriteria!=null) {
+			List<String>patientsList=((ListCriteria)qcStatusCriteria).getlistObjects();
+			patients = new String[patientsList.size()];
+			patients= patientsList.toArray(patients);
+			criteria.remove("patients");
+		}
+		qcStatusCriteria = criteria.get("studyDate");
+		Date fromDate=null;
+		Date toDate=null;
+		if (qcStatusCriteria!=null) {
+			fromDate=((DataRangeCriteriaForQCSearch)qcStatusCriteria).getFromDate();
+			toDate=((DataRangeCriteriaForQCSearch)qcStatusCriteria).getToDate();
+			criteria.remove("studyDate");
+		}
+        boolean firstTime = true;
+        int i=0;
+        String andStmt="";
+        boolean joinImage=false;
+        boolean joinManfacturing=false;
+        Map<String, Object> parameters=new HashMap<String, Object>();
+	    for (Map.Entry<String, QCSearchCriteria> entry : criteria.entrySet()) {
+		       System.out.println(entry.getKey() + ":" + entry.getValue());
+		       System.out.println(entry.getValue().getClass().getName());
+		       if (!firstTime) {
+		    	   andStmt=andStmt+" "+entry.getValue().getBooleanOperator();
+		       }
+		       firstTime=false;
+		       String fieldName=null;
+		      if (entry.getValue() instanceof TextCriteria) {
+		    	  TextCriteria textCriteria=(TextCriteria)entry.getValue();
+		    	  AdvancedCriteriaDTO dto=criteriaMap.get(textCriteria.getQueryField());
+		    	  System.out.println(textCriteria.getQueryField());
+		    	  fieldName=dto.getField();
+		    	  andStmt=andStmt+" "+computeTextCriteria(fieldName, textCriteria.getQueryType(), textCriteria.getQueryValue(), parameters, i);
+		      }
+		      if (entry.getValue() instanceof ListCriteria) {
+		    	  ListCriteria listCriteria=(ListCriteria)entry.getValue();
+		    	  AdvancedCriteriaDTO dto=criteriaMap.get(listCriteria.getQueryField());
+		    	  fieldName=dto.getField();
+		    	  andStmt=andStmt+" "+computeListCriteria(fieldName, listCriteria.getlistObjects(), parameters, i);
+		      }
+		      if (entry.getValue() instanceof DataRangeCriteriaForQCSearch) {
+		    	  DataRangeCriteriaForQCSearch dateCriteria=(DataRangeCriteriaForQCSearch)entry.getValue();
+		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
+		    	  fieldName=dto.getField();
+		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
+		      }
+		      System.out.println("fieldName-"+fieldName);
+		      if (fieldName.startsWith("gi.")){
+		    	  joinImage=true;
+		      }
+		      if (fieldName.startsWith("ge.")) {
+		    	  joinManfacturing=true;
+		      }
+		}
+		String selectStmt = "SELECT gs.project," +
+                "gs.site," +
+                "gs.patientId,"+
+                "gs.studyInstanceUID," +
+                "gs.seriesInstanceUID,"+
+                "gs.visibility," +
+                "gs.maxSubmissionTimestamp,"+
+                "gs.modality, "+
+                "gs.seriesDesc, " +
+                
+                "gs.batch, " +
+                "gs.submissionType, gs.releasedStatus, '',  gs.id, gs.studyDate ";
+		
+		String fromStmt = "FROM GeneralSeries as gs, Patient as pt ";
+		if (joinImage) {
+			fromStmt = fromStmt+" join gs.generalImageCollection gi ";
+		}
+		if (joinManfacturing) {
+			fromStmt = fromStmt+" join gs.generalEquipment ge ";
+		}
+			
+		String whereStmt = " WHERE gs.patientPkId=pt.id";
+		               //    computeVisibilityCriteria(qcStatus) +
+		              //     computeCollectionCriteria(collectionSites) +
+		               //    computeAdditionalFlags(additionalQcFlagList) +	                 
+		              //     computePatientCriteria(patients) ;
+		               //    computeSubmissionDateCriteria(fromDate, toDate);
+
+
+
+		whereStmt = whereStmt + " and "+andStmt;
+		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
+
+		String hql = selectStmt + fromStmt + whereStmt;
+
+	//	System.out.println("In QcStatusDAOImpl:findSeries(...) with additional qc values: " 
+	//        		+ "Batch = '" + additionalQcFlagList[0] + "', submissionType = '" + additionalQcFlagList[1] + "', releasedStatus = '"  + additionalQcFlagList[2] + "'");
+	    
+		System.out.println("\n In QcStatusDAOImpl:findSeries(...) with hibernate hql query = " + hql + "\n");
+	
+
+		SessionFactory sf = getHibernateTemplate().getSessionFactory();
+		Session s = sf.getCurrentSession();
+		Query q = s.createQuery(hql);
+	    for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+	    	System.out.println("paramter-"+entry.getKey()+"-"+entry.getValue());
+	    	if (entry.getValue() instanceof ArrayList) {
+	    		q.setParameterList(entry.getKey(), (Collection)entry.getValue());
+	    		
+	    	} else {
+	    	    q.setParameter(entry.getKey(), entry.getValue());
+	    	}
+	    }
+		q.setFirstResult(0);
+		q.setMaxResults(maxRows);
+		List<Object[]> searchResults = q.list();
+
+		for (Object[] row : searchResults) {
+			String collection = (String) row[0];
+			String site = (String) row[1];
+			String patient = (String) row[2];
+			String study = (String) row[3];
+			String series = (String) row[4];
+			String visibilitySt = (String) row[5];
+			Timestamp submissionDate = (Timestamp) row[6];
+			String modality = (String) row[7];
+			String seriesDesc = (String) row[8];
+			
+			String batch = "" + row[9];
+			String submissionType = (String) row[10];
+			String releasedStatus = (String) row[11];
+			String trialDpPkId = "" + row[12];
+			String seriesDpPkId = "" + row[13];
+			String studyDate = "";
+			if  (row[14]!=null) {
+				Timestamp sDate = (Timestamp) row[14];
+				String pattern = "MM-dd-yyyy";
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+				studyDate =simpleDateFormat.format(sDate);
+			}
+			
+			Date subDate = null;
+			if(submissionDate != null) {
+				subDate = new Date(submissionDate.getTime());
+			} 
+
+			QcSearchResultDTO qcSrDTO = new QcSearchResultDTO(collection,
+					                                          site,
+					                                          patient,
+					                                          study,
+					                                          series,
+					                                          subDate,
+					                                          visibilitySt, 
+					                                          modality, 
+					                                          seriesDesc, 
+					                                          batch, submissionType, releasedStatus, trialDpPkId,
+					                                          seriesDpPkId, studyDate);
+			searchResultDtos.add(qcSrDTO);
+		}
+
+		return searchResultDtos;
+	}
+	
+	
+	
+	
+	
+	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<QcStatusHistoryDTO> findQcStatusHistoryInfo(List<String> seriesList) throws DataAccessException{
 		
@@ -421,8 +612,48 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 		return sb.toString();
 	}
+	private static String computeTextCriteria(String fieldName, String type, String value, Map<String, Object> parameters, int x) {
 
-	
+		String parameter= "param"+x;
+		String returnValue=fieldName+" like:"+parameter+" ";
+		if (type.equalsIgnoreCase("contains")) {
+			parameters.put(parameter, "%"+value+"%");
+		}
+		if (type.equalsIgnoreCase("startsWith")) {
+			parameters.put(parameter, value+"%");
+		}
+		return returnValue;
+	}
+	private static String computeListCriteria(String fieldName, List<String> valuesList, Map<String, Object> parameters, int x) {
+		String parameter= "param"+x;
+		String returnValue=fieldName+" in(:"+parameter+") ";
+		parameters.put(parameter, valuesList);
+		return returnValue;
+	}
+	private static String computeDateCriteria(String fieldName, Date fromDate, Date toDate) {
+		if( fromDate == null && toDate == null ) {
+			return "";
+		}
+		else if( fromDate != null && toDate == null ) {
+			toDate = Calendar.getInstance().getTime();
+		}
+		SimpleDateFormat dateFormat = CrossDatabaseUtil.getDatabaseSpecificDatePattern();
+
+		// add a day to toDate because Oracle between command does not include the toDate
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(toDate);
+		cal.add( Calendar.DATE, 1 );
+		toDate = cal.getTime();
+
+		StringBuffer sb = new StringBuffer(49);
+		sb.append( " and gs.maxSubmissionTimestamp between '" );
+		sb.append( dateFormat.format(fromDate) );
+		sb.append( "' and '" );
+		sb.append(dateFormat.format(toDate) );
+		sb.append( '\'' );
+
+		return sb.toString();
+	}
 	private void updateDb(String seriesId,
 			              String oldStatus,
 			              String newStatus,
