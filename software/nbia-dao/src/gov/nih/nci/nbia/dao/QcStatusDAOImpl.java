@@ -147,27 +147,11 @@ public class QcStatusDAOImpl extends AbstractDAO
 			qcStatus= qcStatusList.toArray(qcStatus);
 			criteria.remove("qcStatus");
 		}
-		qcStatusCriteria = criteria.get("collectionSites");
+		qcStatusCriteria = criteria.get("collectionSite");
 		List<String>collectionSites=null;
 		if (qcStatusCriteria!=null) {
 			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
-			criteria.remove("collectionSites");
-		}
-		qcStatusCriteria = criteria.get("additionalFlags");
-		String[]additionalQcFlagList=null;
-		if (qcStatusCriteria!=null) {
-			List<String> additionalQcFlagListOriginal=((ListCriteria)qcStatusCriteria).getlistObjects();
-			additionalQcFlagList = new String[additionalQcFlagListOriginal.size()];
-			additionalQcFlagList= additionalQcFlagListOriginal.toArray(additionalQcFlagList);
-			criteria.remove("additionalFlags");
-		}
-		qcStatusCriteria = criteria.get("patients");
-		String[]patients=null;
-		if (qcStatusCriteria!=null) {
-			List<String>patientsList=((ListCriteria)qcStatusCriteria).getlistObjects();
-			patients = new String[patientsList.size()];
-			patients= patientsList.toArray(patients);
-			criteria.remove("patients");
+			criteria.remove("collectionSite");
 		}
 		qcStatusCriteria = criteria.get("studyDate");
 		Date fromDate=null;
@@ -240,16 +224,15 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 			
 		
-		String whereStmt = " WHERE gs.patientPkId=pt.id";
-		               //    computeVisibilityCriteria(qcStatus) +
-		              //     computeCollectionCriteria(collectionSites) +
-		               //    computeAdditionalFlags(additionalQcFlagList) +	                 
-		              //     computePatientCriteria(patients) ;
-		               //    computeSubmissionDateCriteria(fromDate, toDate);
+		String whereStmt = " WHERE gs.patientPkId=pt.id"+
+		                   computeVisibilityCriteria(qcStatus) +
+		                   computeCollectionCriteria(collectionSites);
+          	               //    computeSubmissionDateCriteria(fromDate, toDate);
 
 
-
-		whereStmt = whereStmt + " and "+andStmt;
+        if (andStmt!=null&&andStmt.length()>0) {
+		     whereStmt = whereStmt + " and "+andStmt;
+        }
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
 
 		String hql = selectStmt + fromStmt + whereStmt;
@@ -273,7 +256,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    	}
 	    }
 		q.setFirstResult(0);
-		q.setMaxResults(maxRows);
+		//q.setMaxResults(maxRows);
 		List<Object[]> searchResults = q.list();
 
 		for (Object[] row : searchResults) {
@@ -598,6 +581,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	private static String computeVisibilityCriteria(String[] qcStatus) {
 		StringBuffer sb = new StringBuffer();
 		if (qcStatus != null && qcStatus.length > 0) {
+			sb.append(" and (");
 			for (int j = 0; j < qcStatus.length; ++j) {
 				if (j == 0) {
 					sb.append("(gs.visibility='"
@@ -609,7 +593,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 									.getNumberValue().intValue() + "'");
 				}
 			}
-			sb.append(')');
+			sb.append("))");
 		}
 		return sb.toString();
 	}
