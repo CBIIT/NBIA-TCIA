@@ -153,14 +153,6 @@ public class QcStatusDAOImpl extends AbstractDAO
 			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
 			criteria.remove("collectionSite");
 		}
-		qcStatusCriteria = criteria.get("studyDate");
-		Date fromDate=null;
-		Date toDate=null;
-		if (qcStatusCriteria!=null) {
-			fromDate=((DataRangeCriteriaForQCSearch)qcStatusCriteria).getFromDate();
-			toDate=((DataRangeCriteriaForQCSearch)qcStatusCriteria).getToDate();
-			criteria.remove("studyDate");
-		}
         boolean firstTime = true;
         int i=0;
         String andStmt="";
@@ -188,8 +180,20 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeListCriteria(fieldName, listCriteria.getlistObjects(), parameters, i);
 		      }
-		      if (entry.getValue() instanceof DataRangeCriteriaForQCSearch) {
-		    	  DataRangeCriteriaForQCSearch dateCriteria=(DataRangeCriteriaForQCSearch)entry.getValue();
+		      if (entry.getValue() instanceof DateRangeCriteriaForQCSearch) {
+		    	  DateRangeCriteriaForQCSearch dateCriteria=(DateRangeCriteriaForQCSearch)entry.getValue();
+		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
+		    	  fieldName=dto.getField();
+		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
+		      }
+		      if (entry.getValue() instanceof DateFromCriteriaForQCSearch) {
+		    	  DateFromCriteriaForQCSearch dateCriteria=(DateFromCriteriaForQCSearch)entry.getValue();
+		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
+		    	  fieldName=dto.getField();
+		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
+		      }
+		      if (entry.getValue() instanceof DateToCriteriaForQCSearch) {
+		    	  DateToCriteriaForQCSearch dateCriteria=(DateToCriteriaForQCSearch)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
@@ -227,8 +231,6 @@ public class QcStatusDAOImpl extends AbstractDAO
 		String whereStmt = " WHERE gs.patientPkId=pt.id"+
 		                   computeVisibilityCriteria(qcStatus) +
 		                   computeCollectionCriteria(collectionSites);
-          	               //    computeSubmissionDateCriteria(fromDate, toDate);
-
 
         if (andStmt!=null&&andStmt.length()>0) {
 		     whereStmt = whereStmt + " and "+andStmt;
@@ -236,9 +238,6 @@ public class QcStatusDAOImpl extends AbstractDAO
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
 
 		String hql = selectStmt + fromStmt + whereStmt;
-
-	//	System.out.println("In QcStatusDAOImpl:findSeries(...) with additional qc values: " 
-	//        		+ "Batch = '" + additionalQcFlagList[0] + "', submissionType = '" + additionalQcFlagList[1] + "', releasedStatus = '"  + additionalQcFlagList[2] + "'");
 	    
 		System.out.println("\n In QcStatusDAOImpl:findSeries(...) with hibernate hql query = " + hql + "\n");
 	
@@ -636,6 +635,29 @@ public class QcStatusDAOImpl extends AbstractDAO
 		sb.append( "' and '" );
 		sb.append(dateFormat.format(toDate) );
 		sb.append( '\'' );
+
+		return sb.toString();
+	}
+	private static String computeDateToCriteria(String fieldName, Date toDate) {
+
+		SimpleDateFormat dateFormat = CrossDatabaseUtil.getDatabaseSpecificDatePattern();
+
+		StringBuffer sb = new StringBuffer(49);
+		sb.append( " and "+fieldName+" <= '" );
+		sb.append(dateFormat.format(toDate) );
+		sb.append( "'" );
+
+		return sb.toString();
+	}
+	private static String computeDateFromCriteria(String fieldName, Date fromDate) {
+
+		SimpleDateFormat dateFormat = CrossDatabaseUtil.getDatabaseSpecificDatePattern();
+
+
+		StringBuffer sb = new StringBuffer(49);
+		sb.append( " and "+fieldName+" >= '" );
+		sb.append(dateFormat.format(fromDate) );
+		sb.append( "'" );
 
 		return sb.toString();
 	}

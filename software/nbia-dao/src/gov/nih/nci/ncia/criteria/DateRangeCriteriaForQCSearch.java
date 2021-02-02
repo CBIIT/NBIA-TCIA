@@ -1,8 +1,8 @@
 package gov.nih.nci.ncia.criteria;
 
+import java.util.Date;
 
-
-public class DataRangeCriteriaForQCSearch extends DateRangeCriteria  implements QCSearchCriteria{
+public class DateRangeCriteriaForQCSearch extends DateRangeCriteria  implements QCSearchCriteria{
     private String queryField;
     private String booleanOperator;
 	public String getQueryField() {
@@ -17,5 +17,13 @@ public class DataRangeCriteriaForQCSearch extends DateRangeCriteria  implements 
 	public void setBooleanOperator(String booleanOperator) {
 		this.booleanOperator = booleanOperator;
 	}
+	public void addDate(Date date) {
+		if (this.getFromDate()==null) {
+			this.setFromDate(date);
+		} else  {
+			this.setToDate(date);
+		}
+	}
+		
 
 }

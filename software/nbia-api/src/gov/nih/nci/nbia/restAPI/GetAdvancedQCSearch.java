@@ -114,24 +114,19 @@ public class GetAdvancedQCSearch extends getData{
 					criteria.setQueryType("startsWith");
 					advancedCriteria.put(criteriaType,criteria);
 			}
-			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("date")){
+			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("dateRange")){
 				if (advancedCriteria.get(criteriaType)==null){
-					DataRangeCriteriaForQCSearch criteria=new DataRangeCriteriaForQCSearch();
+					DateRangeCriteriaForQCSearch criteria=new DateRangeCriteriaForQCSearch();
 					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-					if (inFormParams.get("fromDate"+i).get(0)!=null&&inFormParams.get("fromDate"+i).get(0).length()>0) {
-				       criteria.setFromDate(formatter.parse(inFormParams.get("fromDate"+i).get(0)));
-					}else {
-						criteria.setFromDate(getDate("01-01-1980"));
-		        	}
-					if (inFormParams.get("toDate"+i).get(0)!=null&&inFormParams.get("toDate"+i).get(0).length()>0) {
-				       criteria.setToDate(formatter.parse(inFormParams.get("toDate"+i).get(0)));
-					}else {
-						criteria.setToDate(getDate("01-01-2100"));
-		        	}
-				   criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
-				   criteria.setQueryField(criteriaType);
-				   advancedCriteria.put(criteriaType,criteria);
-				} 
+			        criteria.addDate(formatter.parse(inFormParams.get("value"+i).get(0)));
+				    criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
+				    criteria.setQueryField(criteriaType);
+				    advancedCriteria.put(criteriaType,criteria);
+				} else {
+					DateRangeCriteriaForQCSearch criteria=(DateRangeCriteriaForQCSearch)advancedCriteria.get(criteriaType);
+					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			        criteria.addDate(formatter.parse(inFormParams.get("value"+i).get(0)));
+				}
 			}
 			i++;
 		}
