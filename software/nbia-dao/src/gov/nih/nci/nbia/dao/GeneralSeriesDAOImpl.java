@@ -1114,7 +1114,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			return null;
 		}						
 
-		seriesDTOList = getSeriesDTOs(true, seriesIds, authorizedSites);
+		seriesDTOList = getSeriesDTOs(false, seriesIds, authorizedSites);
 		return seriesDTOList;
 	}
 
