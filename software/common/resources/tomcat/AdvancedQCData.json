@@ -47,6 +47,30 @@
       "object":"GeneralSeries",
       "alias":"gs"
    },
+    {
+      "criteriaType":"submissionDate",
+      "field":"gs.submissionDate",
+      "object":"GeneralSeries",
+      "alias":"gs"
+   },
+   {
+      "criteriaType":"complete",
+      "field":"gs.submissionType",
+      "object":"GeneralSeries",
+      "alias":"gs"
+   },
+   {
+      "criteriaType":"released",
+      "field":"gs.submissionType",
+      "object":"GeneralSeries",
+      "alias":"gs"
+   },
+   {
+      "criteriaType":"batch",
+      "field":"gs.batch",
+      "object":"GeneralSeries",
+      "alias":"gs"
+   },
      {
       "criteriaType":"manufacturer",
       "field":"ge.manufacturer",

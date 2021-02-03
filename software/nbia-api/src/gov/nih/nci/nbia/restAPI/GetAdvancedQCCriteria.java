@@ -32,8 +32,8 @@ import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
-@Path("/getPopUpCriteria")
-public class GetPopUpCriteria extends getData{
+@Path("/getAdvancedQCCriteria")
+public class GetAdvancedQCCriteria extends getData{
 	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
 
