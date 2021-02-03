@@ -27,7 +27,7 @@ public static List<PopupCriteriaSelectorDTO> getPopUpCriteriaFromJson(){
 	}
 	try {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream input = classLoader.getResourceAsStream("PopUpCriteria.json");
+		InputStream input = classLoader.getResourceAsStream("AdvancedQCCriteria.json");
 		ObjectMapper mapper = new ObjectMapper();
 		popupDTOs = mapper.readValue(input, new TypeReference<List<PopupCriteriaSelectorDTO>>(){});
 	} catch (Exception e) {
@@ -43,7 +43,7 @@ public static Map<String, AdvancedCriteriaDTO> getAdvancedCriteriaFromJson(){
 	}
 	try {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream input = classLoader.getResourceAsStream("criteria.json");
+		InputStream input = classLoader.getResourceAsStream("AdvancedQCData.json");
 		ObjectMapper mapper = new ObjectMapper();
 		List<AdvancedCriteriaDTO> list= mapper.readValue(input, new TypeReference<List<AdvancedCriteriaDTO>>(){});
 		advancedMap=new HashMap<String, AdvancedCriteriaDTO>();

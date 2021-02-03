@@ -44,6 +44,9 @@ public class PopupCriteriaConfiguraton {
 	  private Boolean dynamicQueryCriteriaSmallTextInput;
 	  private Boolean dynamicQueryCriteriaSort;
 	  private String dynamicQueryCriteriaSubHeading;
+	  private String criteriaType;
+	  private String inputType;
+
 
 
 	 // Getter Methods 
@@ -344,6 +347,22 @@ public class PopupCriteriaConfiguraton {
 
 	public void setDynamicQueryCriteriaAllAnyDefault(String dynamicQueryCriteriaAllAnyDefault) {
 		this.dynamicQueryCriteriaAllAnyDefault = dynamicQueryCriteriaAllAnyDefault;
+	}
+
+	public String getCriteriaType() {
+		return criteriaType;
+	}
+
+	public void setCriteriaType(String criteriaType) {
+		this.criteriaType = criteriaType;
+	}
+
+	public String getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
 	}
 	  
 	  
