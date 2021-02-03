@@ -117,16 +117,28 @@ public class GetAdvancedQCSearch extends getData{
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("dateRange")){
 				if (advancedCriteria.get(criteriaType)==null){
 					DateRangeCriteriaForQCSearch criteria=new DateRangeCriteriaForQCSearch();
-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			        criteria.addDate(formatter.parse(inFormParams.get("value"+i).get(0)));
+			        criteria.addDate(getDate(inFormParams.get("value"+i).get(0)));
 				    criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				    criteria.setQueryField(criteriaType);
 				    advancedCriteria.put(criteriaType,criteria);
 				} else {
 					DateRangeCriteriaForQCSearch criteria=(DateRangeCriteriaForQCSearch)advancedCriteria.get(criteriaType);
-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			        criteria.addDate(formatter.parse(inFormParams.get("value"+i).get(0)));
+					criteria.addDate(getDate(inFormParams.get("value"+i).get(0)));
 				}
+			}
+			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("dateFrom")){
+				DateFromCriteriaForQCSearch criteria=new DateFromCriteriaForQCSearch();
+			    criteria.setFromDate(getDate(inFormParams.get("value"+i).get(0)));
+				criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
+				criteria.setQueryField(criteriaType);
+				advancedCriteria.put(criteriaType,criteria);
+			}
+			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("dateTo")){
+				DateToCriteriaForQCSearch criteria=new DateToCriteriaForQCSearch();
+			    criteria.setToDate(getDate(inFormParams.get("value"+i).get(0)));
+				criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
+				criteria.setQueryField(criteriaType);
+				advancedCriteria.put(criteriaType,criteria);
 			}
 			i++;
 		}

@@ -364,7 +364,7 @@
                  "dynamicQueryCriteriaCalendarPrompt0": "Equals",
                  "dynamicQueryCriteriaCalendarPlaceHolder0": "",
                  "criteriaType":"studyDate",
-                 "inputType":"dateTo"
+                 "inputType":"dateFrom"
             }
          }
       ]

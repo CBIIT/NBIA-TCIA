@@ -153,7 +153,6 @@ public class QcStatusDAOImpl extends AbstractDAO
 			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
 			criteria.remove("collectionSite");
 		}
-        boolean firstTime = true;
         int i=0;
         String andStmt="";
         boolean joinImage=false;
@@ -162,11 +161,8 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    for (Map.Entry<String, QCSearchCriteria> entry : criteria.entrySet()) {
 		       System.out.println(entry.getKey() + ":" + entry.getValue());
 		       System.out.println(entry.getValue().getClass().getName());
-		       if (!firstTime) {
-		    	   andStmt=andStmt+" "+entry.getValue().getBooleanOperator();
-		       }
-		       firstTime=false;
 		       String fieldName=null;
+		       andStmt=andStmt+" "+entry.getValue().getBooleanOperator()+" ";
 		      if (entry.getValue() instanceof TextCriteria) {
 		    	  TextCriteria textCriteria=(TextCriteria)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(textCriteria.getQueryField());
@@ -183,6 +179,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		      if (entry.getValue() instanceof DateRangeCriteriaForQCSearch) {
 		    	  DateRangeCriteriaForQCSearch dateCriteria=(DateRangeCriteriaForQCSearch)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
+		    	  System.out.println(dateCriteria.getQueryField());
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
 		      }
@@ -190,13 +187,13 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	  DateFromCriteriaForQCSearch dateCriteria=(DateFromCriteriaForQCSearch)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
 		    	  fieldName=dto.getField();
-		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
+		    	  andStmt=andStmt+" "+computeDateFromCriteria(fieldName, dateCriteria.getFromDate());
 		      }
 		      if (entry.getValue() instanceof DateToCriteriaForQCSearch) {
 		    	  DateToCriteriaForQCSearch dateCriteria=(DateToCriteriaForQCSearch)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
 		    	  fieldName=dto.getField();
-		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
+		    	  andStmt=andStmt+" "+computeDateToCriteria(fieldName, dateCriteria.getToDate());
 		      }
 		      System.out.println("fieldName-"+fieldName);
 		      if (fieldName.startsWith("gi.")){
@@ -233,7 +230,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		                   computeCollectionCriteria(collectionSites);
 
         if (andStmt!=null&&andStmt.length()>0) {
-		     whereStmt = whereStmt + " and "+andStmt;
+		     whereStmt = whereStmt +andStmt;
         }
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
 
@@ -255,7 +252,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    	}
 	    }
 		q.setFirstResult(0);
-		//q.setMaxResults(maxRows);
+		q.setMaxResults(maxRows);
 		List<Object[]> searchResults = q.list();
 
 		for (Object[] row : searchResults) {
@@ -630,11 +627,11 @@ public class QcStatusDAOImpl extends AbstractDAO
 		toDate = cal.getTime();
 
 		StringBuffer sb = new StringBuffer(49);
-		sb.append( " and gs.maxSubmissionTimestamp between '" );
+		sb.append( " "+fieldName+" between '" );
 		sb.append( dateFormat.format(fromDate) );
 		sb.append( "' and '" );
 		sb.append(dateFormat.format(toDate) );
-		sb.append( '\'' );
+		sb.append( "'" );
 
 		return sb.toString();
 	}
@@ -643,7 +640,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		SimpleDateFormat dateFormat = CrossDatabaseUtil.getDatabaseSpecificDatePattern();
 
 		StringBuffer sb = new StringBuffer(49);
-		sb.append( " and "+fieldName+" <= '" );
+		sb.append( " "+fieldName+" <= '" );
 		sb.append(dateFormat.format(toDate) );
 		sb.append( "'" );
 
@@ -655,7 +652,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 
 
 		StringBuffer sb = new StringBuffer(49);
-		sb.append( " and "+fieldName+" >= '" );
+		sb.append( " "+fieldName+" >= '" );
 		sb.append(dateFormat.format(fromDate) );
 		sb.append( "'" );
 
