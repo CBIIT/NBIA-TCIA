@@ -10,8 +10,11 @@ package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.QcSearchResultDTO;
 import gov.nih.nci.nbia.dto.QcStatusHistoryDTO;
+import gov.nih.nci.nbia.dto.AdvancedCriteriaDTO;
+import gov.nih.nci.ncia.criteria.QCSearchCriteria;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +30,7 @@ public interface QcStatusDAO {
 			                                  List<String> collectionSites, String[] additionalQcFlagList, 
 			                                  String[] patients) throws DataAccessException;
 		
-		
+	public List<QcSearchResultDTO> findSeries(Map<String, QCSearchCriteria>criteria, Map<String, AdvancedCriteriaDTO> criteriaMap, int maxRows);
 	public List<QcSearchResultDTO> findSeries(String[] qcStatus,
             List<String> collectionSites, String[] additionalQcFlagList, 
             String[] patients, Date fromDate, Date toDate, int maxRows) throws DataAccessException;

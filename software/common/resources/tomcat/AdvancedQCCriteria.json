@@ -20,7 +20,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"seriesUID",
+               "inputType":"list"
             }
          },
          {
@@ -41,7 +43,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"seriesUID",
+               "inputType":"startsWith"
             }
          }
       ]
@@ -67,7 +71,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"studyUID",
+               "inputType":"list"
             }
          },
          {
@@ -88,7 +94,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"studyUID",
+               "inputType":"startsWith"
             }
          }
       ]
@@ -114,7 +122,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"sopUID",
+               "inputType":"list"
             }
          },
          {
@@ -135,7 +145,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"sopUID",
+               "inputType":"startsWith"
             }
          }
       ]
@@ -161,7 +173,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"patientID",
+               "inputType":"list"
             }
          },
          {
@@ -182,7 +196,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"patientID",
+               "inputType":"startsWith"
             }
          }
       ]
@@ -208,7 +224,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"patientName",
+               "inputType":"list"
             }
          },
          {
@@ -229,7 +247,9 @@
                "dynamicQueryCriteriaCalendarPrompt0":"AAA",
                "dynamicQueryCriteriaCalendarPrompt1":"BBB",
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD"
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "criteriaType":"patientName",
+               "inputType":"startsWith"
             }
          }
       ]
@@ -256,7 +276,9 @@
                  "dynamicQueryCriteriaCalendarPrompt0": "AAA",
                  "dynamicQueryCriteriaCalendarPrompt1": "BBB",
                  "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD"
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
+                 "criteriaType":"modality",
+                 "inputType":"list"
             }
          }
       ]
@@ -280,7 +302,9 @@
                  "dynamicQueryCriteriaCalendarPrompt0": "AAA",
                  "dynamicQueryCriteriaCalendarPrompt1": "BBB",
                  "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD"
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
+                 "criteriaType":"seriesDesc",
+                 "inputType":"contains"
             }
          }
       ]
@@ -298,7 +322,9 @@
                  "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
                  "dynamicQueryCriteriaCalendar": true,
                  "dynamicQueryCriteriaCalendarPrompt0": "Equals",
-                 "dynamicQueryCriteriaCalendarPlaceHolder0": ""
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "",
+                 "criteriaType":"studyDate",
+                 "inputType":"dateRange"
             }
          }
       ]
@@ -316,7 +342,9 @@
                  "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
                  "dynamicQueryCriteriaCalendar": true,
                  "dynamicQueryCriteriaCalendarPrompt0": "Equals",
-                 "dynamicQueryCriteriaCalendarPlaceHolder0": ""
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "",
+                 "criteriaType":"studyDate",
+                 "inputType":"dateTo"
             }
          }
       ]
@@ -334,7 +362,9 @@
                  "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
                  "dynamicQueryCriteriaCalendar": true,
                  "dynamicQueryCriteriaCalendarPrompt0": "Equals",
-                 "dynamicQueryCriteriaCalendarPlaceHolder0": ""
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "",
+                 "criteriaType":"studyDate",
+                 "inputType":"dateTo"
             }
          }
       ]
@@ -361,7 +391,9 @@
                  "dynamicQueryCriteriaCalendarPrompt0": "AAA",
                  "dynamicQueryCriteriaCalendarPrompt1": "BBB",
                  "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD"
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
+                 "criteriaType":"manufacturer",
+                 "inputType":"list"
             }
          }
       ]
