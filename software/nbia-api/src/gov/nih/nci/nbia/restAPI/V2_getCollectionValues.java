@@ -72,5 +72,6 @@ public class V2_getCollectionValues extends getData{
 		for(ValuesAndCountsDTO vdto:values) {
 			authorizedCollections.add(vdto.getCriteria());
 		}
+		return formatResponse(format, authorizedCollections, column);
 	}
 }
