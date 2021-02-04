@@ -191,7 +191,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		}				
 
 		List<String> rs = null;
-		String hql = "select distinct(bodyPartExamined) from GeneralSeries s where visibility in ('1') ";
+		String hql = "select distinct(upper(bodyPartExamined)) from GeneralSeries s where visibility in ('1') ";
 		String order = " order by upper(bodyPartExamined)";
 		List<String> paramList = new ArrayList<String>();
 		int i = 0;
