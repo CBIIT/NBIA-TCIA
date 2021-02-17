@@ -6,6 +6,7 @@
 
 package gov.nih.nci.nbia.restAPI;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
@@ -15,6 +16,18 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import gov.nih.nci.nbia.dao.ValueAndCountDAO;
+import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
+import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
+import gov.nih.nci.nbia.security.AuthorizationManager;
+import gov.nih.nci.nbia.util.SiteData;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
+import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
 
 
 @Path("/v2/getCollectionValues")
@@ -33,13 +46,32 @@ public class V2_getCollectionValues extends getData{
 
 	public Response  constructResponse(@QueryParam("format") String format) {
 		List<String> authorizedCollections = null;
-		try {
-			authorizedCollections = getAuthorizedCollections();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+		String userName = (String) authentication.getPrincipal();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+		if (authorizedSiteData==null){
+			try {
+			     AuthorizationManager am = new AuthorizationManager(userName);
+			     authorizedSiteData = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return formatResponse(format, authorizedCollections, column);
+				}
 		}
-		List<String> data = getCollectionValues(authorizedCollections);
-		return formatResponse(format, data, column);
+		AuthorizationCriteria auth = new AuthorizationCriteria();
+		auth.setSeriesSecurityGroups(new ArrayList<String>());
+		auth.setSites(authorizedSiteData);
+		List<String> seriesSecurityGroups = new ArrayList<String>();
+		ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
+		ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
+		criteria.setObjectType("COLLECTION");
+		criteria.setAuth(auth);
+		List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
+		for(ValuesAndCountsDTO vdto:values) {
+			authorizedCollections.add(vdto.getCriteria());
+		}
+		return formatResponse(format, authorizedCollections, column);
 	}
 }

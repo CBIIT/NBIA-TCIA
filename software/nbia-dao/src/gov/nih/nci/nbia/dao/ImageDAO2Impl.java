@@ -309,8 +309,9 @@ public class ImageDAO2Impl extends AbstractDAO
 			int n;
 			while ( (n=bis.read(buffer)) != -1) messageDigest.update(buffer, 0, n);
 			byte[] hashed = messageDigest.digest();
-			BigInteger bi = new BigInteger(1, hashed);
-			result = bi.toString(16);
+//			BigInteger bi = new BigInteger(1, hashed);
+//			result = bi.toString(16);
+			result = String.format("%032x", new BigInteger(1, hashed));
 		}
 		catch (Exception ex) { result = ""; }
 		finally {

@@ -6,8 +6,6 @@ package gov.nih.nci.nbia.restSecurity;
 
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
-import gov.nih.nci.nbia.security.NCIASecurityManager;
-import gov.nih.nci.nbia.security.TableProtectionElement;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -35,7 +33,10 @@ import javax.ws.rs.core.Response.Status;
 
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * @author panq
@@ -46,26 +47,26 @@ public class AuthorizationService {
 	// private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	// private static final String AUTHENTICATION_SCHEME = "Basic";
 
-	public static List<String> getCollectionForPublicRole()
-			throws CSObjectNotFoundException {
-		List<String> publicProtectionElemLst = new ArrayList<String>();
-		String csmContextName = NCIAConfig.getCsmApplicationName()+".";
-		NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext
-				.getBean("nciaSecurityManager");
-		Set<TableProtectionElement> publicPEs = mgr
-				.getSecurityMapForPublicRole();
-		for (TableProtectionElement tPE : publicPEs) {
-			String protectionElementName = tPE.getAttributeValue();
-			if (protectionElementName.indexOf("//") != -1) {
-				protectionElementName = protectionElementName.replaceFirst(
-						csmContextName, "'");
-				protectionElementName = protectionElementName.concat("'");
-				publicProtectionElemLst .add(protectionElementName);
-//				System.out.println("!!!public protection group="
-//						+ protectionElementName);
-			}
-		}
-		return publicProtectionElemLst;
+	public static List<String> getCollectionForPublicRole() throws Exception{
+        List<String> collections =new ArrayList<String>();
+        String guestAccount  = NCIAConfig.getEnabledGuestAccount();
+        if (guestAccount.equalsIgnoreCase("yes")){
+        	String userName = NCIAConfig.getGuestUsername();
+    		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+    		if (authorizedSiteData==null){
+    		     AuthorizationManager am = new AuthorizationManager(userName);
+    		     authorizedSiteData = am.getAuthorizedSites();
+    		     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
+    		}
+    		for (SiteData siteData:authorizedSiteData) {
+    			collections.add("'"+siteData.getCollectionSite()+"'");
+    		}
+        } else {
+        	//no guest account
+        	return collections;
+        }
+
+		return collections;
 	}
 
 

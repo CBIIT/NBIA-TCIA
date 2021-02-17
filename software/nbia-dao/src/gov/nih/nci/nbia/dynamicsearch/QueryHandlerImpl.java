@@ -297,7 +297,7 @@ public class QueryHandlerImpl extends AbstractDAO
 			//add visibility = 1 or 12 for downloadable in generalSeries level
 			
 			//criteria.add(createSeriesVisibilityCriteria(Arrays.asList("Visible")));
-			criteria.add(createSeriesVisibilityCriteria(Arrays.asList("Visible", "Downloadable")));
+			criteria.add(createSeriesVisibilityCriteria(Arrays.asList("Visible")));
 			
 			searchCriteria = ro.sortTableName(criteria);
 			//reset currentNode
