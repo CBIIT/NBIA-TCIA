@@ -145,7 +145,7 @@ export class SearchResultsColumnSelectorComponent implements OnInit, OnDestroy{
 
     /**
      * Hides this popup, if the user clicks outside of the popup.
-     *
+     *     (clickOutside)="onClickedOutside($event)" is gone now @TODO make sure then delete.
      * @param e
      */
     onClickedOutside( e ) {

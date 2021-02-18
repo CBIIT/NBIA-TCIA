@@ -18,22 +18,24 @@
 
     <!-- -----  Pop up the checkbox list of columns to show in the search results table  ----- -->
     <!--  glyphicon glyphicon-menu-hamburger  -->
-    <button
-            type="button"
-            class="btn btn-nbia-default d-inline-flex align-items-center"
+    <div>
+        <button
+                type="button"
+                class="btn btn-nbia-default d-inline-flex align-items-center"
 
-            title="Select Display Columns"
-            id="selectDisplayColumnsButton"
-            [ngClass]="{
+                title="Select Display Columns"
+                id="selectDisplayColumnsButton"
+                [ngClass]="{
             'button-down': showSearchResultsColumnClickSelected
         }"
-            (click)="onShowSearchResultsColumnClick()"
-    >
-        <!--  TODO id should come from a constant  SEE SearchResultsColumnSelectorComponent.onClickedOutside  -->
-        <img src="assets/images/menu-hamburger.png"
-             id="selectDisplayColumnsButtonImage"
+                (click)="onShowSearchResultsColumnClick()"
         >
+            <!--  TODO id should come from a constant  SEE SearchResultsColumnSelectorComponent.onClickedOutside  -->
+            <img src="assets/images/menu-hamburger.png"
+                 id="selectDisplayColumnsButtonImage"
+            >
 
-    </button>
+        </button>
 
+    </div>
 </div>

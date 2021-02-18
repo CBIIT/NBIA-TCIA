@@ -284,11 +284,9 @@ export class ApiServerService implements OnDestroy{
    async initUserLoginData(){
         // Make sure the configuration from the assets/configuration has been read and used.
         // It has DEFAULT_USER, DEFAULT_PASSWORD and DEFAULT_SECRET
-        console.log('MHL Start waiting for initUserLoginData CONFIG_COMPLETE DEFAULT_USER: ',  Properties.DEFAULT_USER);
         while( !Properties.CONFIG_COMPLETE ){
             await this.commonService.sleep( Consts.waitTime );
         }
-        console.log('MHL DONE waiting for initUserLoginData CONFIG_COMPLETE DEFAULT_USER: ',  Properties.DEFAULT_USER);
 
         // Until the user logs in, we do everything as the default/guest user.
         if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ||
@@ -1095,11 +1093,9 @@ export class ApiServerService implements OnDestroy{
      */
     async dataGet( queryType, query, accessToken ? ) {
 
-console.log('MHL Start waiting for CONFIG_COMPLETE');
         while( !Properties.CONFIG_COMPLETE ){
             await this.commonService.sleep( Consts.waitTime );
         }
-        console.log('MHL DONE waiting for CONFIG_COMPLETE: ', Properties.CONFIG_COMPLETE);
 
 
         let queryTypeOrig = queryType;

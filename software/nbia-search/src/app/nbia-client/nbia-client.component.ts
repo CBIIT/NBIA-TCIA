@@ -110,12 +110,9 @@ export class NbiaClientComponent implements OnInit, OnDestroy{
 
         this.initUrlParameters();
 
-        console.log('MHL Start waiting for CONFIG_COMPLETE 001');
         while( !Properties.CONFIG_COMPLETE ){
             await this.commonService.sleep( Consts.waitTime );
         }
-        console.log('MHL DONE waiting for CONFIG_COMPLETE 002 : ', Properties.CONFIG_COMPLETE);
-        console.log('MHL DONE waiting for DEFAULT_USER 003 : ', Properties.DEFAULT_USER);
 
         if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ){
             // Logs in the default (guest) user.
