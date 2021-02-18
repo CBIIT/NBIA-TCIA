@@ -29,7 +29,6 @@ import { ResultsPerPageComponent } from './common/components/results-per-page/re
 import { SearchResultsPagerComponent } from './common/components/search-results-pager/search-results-pager.component';
 import { AnatomicalSiteQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/anatomical-site-query/anatomical-site-query.component';
 import { DateRangeQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/date-range-query/date-range-query.component';
-import { ClickOutsideModule } from 'ng-click-outside';
 import { PieChartCollectionsComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-collections/pie-chart-collections.component';
 import { PieChartImageModalityComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-image-modality/pie-chart-image-modality.component';
 import { PieChartAnatomicalSiteComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-anatomical-site/pie-chart-anatomical-site.component';
@@ -209,7 +208,6 @@ const appRoutes: Routes = [
         HttpClientModule,
         TabsModule,
         DropdownModule,
-        ClickOutsideModule,
         NgxMyDatePickerModule.forRoot(),
         AppRoutingModule,
         ClipboardModule,

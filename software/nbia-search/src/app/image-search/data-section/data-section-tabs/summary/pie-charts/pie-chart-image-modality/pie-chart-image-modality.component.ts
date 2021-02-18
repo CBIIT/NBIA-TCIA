@@ -305,6 +305,10 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
             } );
     }
 
+    /**
+     * @TODO this is not used, double check then delete.
+     * @param e
+     */
     onClickedOutsideModality( e ) {
         // console.log( 'Pie onClickedOutsideModality event: ', e );
         this.showModalityDescription = false;

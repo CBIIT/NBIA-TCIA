@@ -3,9 +3,8 @@
 <!-- ---------- Some items are considered required, and are selected, and disabled, so the user can not unselect them.  --------- -->
 
 <div
-    *ngIf="showSelector"
-    class="card card-default column-selector"
-    (clickOutside)="onClickedOutside($event)"
+        *ngIf="showSelector"
+        class="card card-default column-selector"
 >
     <div class="card-heading card-nbia-header-default pt-2 pl-3">
         Pick columns
@@ -13,7 +12,7 @@
     <div class="card-body c">
         <div *ngFor="let colName of colNames; let i = index">
             <span
-                *ngIf="(
+                    *ngIf="(
                              (
                                  (colName['textSearch'] && (currentSearchMode === TEXT_SEARCH)) ||
                                  (colName['criteriaSearch'] && (currentSearchMode === SIMPLE_SEARCH))
@@ -28,11 +27,11 @@
 
                 <!-- User selectable optional items -->
                 <input
-                    *ngIf="!colName.required"
-                    type="checkbox"
-                    id="checkboxSearchResultsColumnSelectorOptional{{i}}"
-                    [(ngModel)]="colNames[i].selected"
-                    (click)="onClick(i)"
+                        *ngIf="!colName.required"
+                        type="checkbox"
+                        id="checkboxSearchResultsColumnSelectorOptional{{i}}"
+                        [(ngModel)]="colNames[i].selected"
+                        (click)="onClick(i)"
                 >
                 <label *ngIf="!colName.required" [attr.for]="'checkboxSearchResultsColumnSelectorOptional'+i">
                     &nbsp;{{colName['name']}}
@@ -41,10 +40,10 @@
 
                 <!-- Required items are not user selectable, they are set selected and disabled -->
                 <input
-                    *ngIf="colName['required']"
-                    id="checkboxSearchResultsColumnSelectorRequired{{i}}" type="checkbox"
-                    checked="true"
-                    disabled
+                        *ngIf="colName['required']"
+                        id="checkboxSearchResultsColumnSelectorRequired{{i}}" type="checkbox"
+                        checked="true"
+                        disabled
                 >
                 <label *ngIf="colName['required']" class="disabled">
                     &nbsp;{{colName['name']}}

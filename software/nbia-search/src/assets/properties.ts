@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.72',
-    // 06_NOV_2020
-    TEST_VERSION: '1.0.72k',
+    // 18_DEC_2021
+    TEST_VERSION: '1.0.72L.1',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -56,7 +56,7 @@ export let Properties = {
     // This value can be changed in the config file.
     // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
 
-    // API_SERVER_URL: 'http://192.168.1.20:8080',
+     // API_SERVER_URL: 'http://192.168.1.21:8080',
 
      API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
