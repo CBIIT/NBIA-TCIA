@@ -24,7 +24,7 @@
 #########################################################################
 # Show OHIF viewer button in Subject & Study sections of search results
 #########################################################################
-# OHIF_viewer_study = false
+OHIF_viewer_study = false
 
 #########################################################################
 # Show OHIF viewer button in Series sections of search results
