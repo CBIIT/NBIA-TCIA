@@ -11,8 +11,9 @@ export class CriteriaSelectionMenuService{
     }
 
     initElementsUsed( criteriaData ) {
-        for( let n = 0; n < criteriaData['data'].length; n++ ){
-            for( let i = 0; i < criteriaData['data'][n]['criteriaObjects'].length; i++ ){
+        console.log('MHL initElementsUsed  criteriaData: ', criteriaData);
+        for( let n = 0; n < criteriaData.length; n++ ){
+            for( let i = 0; i < criteriaData[n]['criteriaObjects'].length; i++ ){
                 this.elementsUsed[n][i] = false;
             }
         }

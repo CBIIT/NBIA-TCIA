@@ -9,33 +9,56 @@
                 'heading-font-medium': currentFont === '2',
                 'heading-font-large': currentFont === '3'
             }">
+
             <!-- -----  Single Checkbox  ----- -->
             <span *ngIf="criteriaSingleCheckbox || (criteriaNumberInput && criteriaApplyCheckbox)">
-                <input type="checkbox" name="criteriaSingleCheckbox-{{sequenceNumber}}" id="criteriaSingleCheckbox-{{sequenceNumber}}" [(ngModel)]="criteriaSingleCheckboxDefault">
+                <input
+                    type="checkbox"
+                    name="criteriaSingleCheckbox-{{sequenceNumber}}"
+                    id="criteriaSingleCheckbox-{{sequenceNumber}}"
+                    [(ngModel)]="criteriaSingleCheckboxDefault"
+                    (change)="onApplyCheckboxClick( $event)"
+                >
             </span>
             <!-- -----  END Single Checkbox  ----- -->
+
+
             <!-- ----- The heading Text ----- -->
             {{criteriaHeading}}
+
             <!-- ----- Number input ----- -->
             <span *ngIf="criteriaNumberInput">
-                <input class="dynamic-query-number-input" type="number" min="{{criteriaNumberInputLimitLow}}" max="{{criteriaNumberInputLimitHigh}}" [(ngModel)]="criteriaNumberInputDefault">
+                <input
+                    class="dynamic-query-number-input"
+                    type="number"
+                    min="{{criteriaNumberInputLimitLow}}"
+                    max="{{criteriaNumberInputLimitHigh}}"
+                    [(ngModel)]="criteriaNumberInputDefault"
+                    (change)="onChange()"
+                >
             </span>
             <!-- ----- END Number input ----- -->
+
         </span>
         <!-- ----- END No Expand/Collapse icon on the left, just the Heading. ----- -->
+
+
         <!-- ----- With Expand/Collapse icon on the left of the Heading. ----- -->
         <span *ngIf="criteriaOpenCloseButton" [ngClass]="{
                 'heading-font-extra-small': currentFont === '0',
                 'heading-font-small': currentFont === '1',
                 'heading-font-medium': currentFont === '2',
                 'heading-font-large': currentFont === '3'
-            }">
+            }"
+        >
+
             <!-- Down icon,  Content is showing/expanded -->
             <span *ngIf="widgetShowCriteria" class="clicker" (click)="onShowCriteriaClick(false)">
                 <img src="assets/images/down_V01.png" />
                 {{criteriaHeading}}
             </span>
             <!-- END Down icon, Content is showing/expanded -->
+
             <!-- Left icon,  Content is not showing -->
             <span *ngIf="!widgetShowCriteria" class="clicker" (click)="onShowCriteriaClick(true)">
                 <img src="assets/images/right_V01.png" />
@@ -45,8 +68,11 @@
             <!-- END Left icon, Content is not showing -->
         </span>
         <!-- ----- END  With Expand/Collapse icon on the left of the Heading. ----- -->
+
         <!-- ----- END Heading text at top ----- -->
-        <!-- ----- And/Or (at top, right of Heading text) ----- -->
+
+
+        <!-- ----- And/Or (at top right of Heading text) ----- -->
         <!-- Includes And/Or radio buttons -->
         <span *ngIf="criteriaAndOrType === andOrTypes.AND_OR" [ngClass]="{
                     'font-extra-small': currentFont === '0',
@@ -59,22 +85,27 @@
                         'font-medium': currentFont === '2',
                         'font-large': currentFont === '3'
                     }">
-                <input type="radio" class="dynamic-query-and-or-radio-button clicker" name="dynamic-query-widget-and-or-radio-button-id{{
-                            sequenceNumber
-                        }}" id="and-or-radio-button-id-{{ i }}-{{
-                            sequenceNumber
-                        }}" (change)="onWidgetAndOrRadioClick(i)" [checked]="andOrRadio[i]" />
+                <input
+                    type="radio"
+                    class="dynamic-query-and-or-radio-button clicker"
+                    name="dynamic-query-widget-and-or-radio-button-id{{sequenceNumber}}"
+                    id="and-or-radio-button-id-{{ i }}-{{sequenceNumber}}"
+                    (change)="onWidgetAndOrRadioClick(i)"
+                    [checked]="andOrRadio[i]"
+                >
                 <label [attr.for]="
                             'and-or-radio-button-id-' +
                             i +
                             '-' +
                             sequenceNumber
                         " class="criteria-text clicker">
-                    {{ option }}
+                    {{ option }} i:{{i}}
                 </label>
             </span>
         </span>
         <!-- END Includes And/Or radio buttons -->
+
+
         <!-- Just an "And"  -->
         <span *ngIf="criteriaAndOrType === andOrTypes.ONLY_AND" [ngClass]="{
                     'font-extra-small': currentFont === '0',
@@ -100,12 +131,16 @@
                     'font-small': currentFont === '1',
                     'font-medium': currentFont === '2',
                     'font-large': currentFont === '3'
-                }"> &nbsp; <span *ngFor="let option of allAnyOptions; let i = index" class="clicker" [ngClass]="{
+                }"
+        >
+            &nbsp
+            <span *ngFor="let option of allAnyOptions; let i = index" class="clicker" [ngClass]="{
                         'font-extra-small': currentFont === '0',
                         'font-small': currentFont === '1',
                         'font-medium': currentFont === '2',
                         'font-large': currentFont === '3'
-                    }">
+                    }"
+            >
                 <input type="radio" class="dynamic-query-all-any-radio-button clicker" name="dynamic-query-widget-all-any-radio-button-id{{
                             sequenceNumber
                         }}" id="all-any-radio-button-id-{{ i }}-{{
@@ -122,6 +157,8 @@
             </span>
         </span>
         <!-- END Includes All/Any radio buttons -->
+
+
         <!-- Just an "All"  -->
         <span *ngIf="criteriaAllAnyType === allAnyTypes.ONLY_ALL" [ngClass]="{
                     'font-extra-small': currentFont === '0',
@@ -139,6 +176,8 @@
                 }"> &nbsp;&nbsp;&nbsp;(Any) </span>
         <!-- END Just an "Or"  -->
         <!-- ----- END All/Or (at top, right of Heading text) ----- -->
+
+
         <!-- -----  Top right button/icons                       ----- -->
         <!-- -----  Search/Filter, clear, X (remove this widget) ----- -->
         <span class="widget-top-right-button-box">
@@ -179,11 +218,15 @@
             <!-- END Red X at the top right, that will remove this widget from the UI and remove any part of the query it may have provided -->
         </span>
         <!-- ----- END Top right button/icons ----- -->
+
+
         <!-- ----- Calendar dates when collapsed ----- -->
         <div class="ml-3" *ngIf="(! widgetShowCriteria) && date0 !== undefined && date1 !== undefined">
             {{date0['formatted']}}&nbsp;to&nbsp;{{date1['formatted']}}
         </div>
         <!-- ----- END Calendar dates when collapsed ----- -->
+
+
         <!-- -----  Search (filter) List text input (Launched/shown by Red magnifying glass)  ----- -->
         <div *ngIf="showListSearch" class="dynamic-query-list-search-box" [ngClass]="{
                     'font-extra-small': currentFont === '0',
@@ -197,6 +240,7 @@
             <span class="dynamic-query-list-search-count">{{listSearchResultsCount}}</span>
         </div>
         <!-- ----- END Search (filter) List text input (Launched.shown by Red magnifying glass)  ----- -->
+
     </div>
     <!-- ---------- END Header  ---------- -->
     <!-- -----  Single Radio buttons (2 or 3) ----- -->
@@ -239,19 +283,25 @@
                 'dynamic-query-vertical-expand-div' : criteriaLargeTextInput,
                 'test_small_text_input' : criteriaSmallTextInput
             }">
-            <textarea [ngClass]="{
-            'dynamic-query-small-text-input mb-1' : criteriaSmallTextInput,
-            'dynamic-query-large-text-input-with-apply mb-1' : criteriaLargeTextInput && criteriaApplyButton,
-            'dynamic-query-large-text-input mb-1' : criteriaLargeTextInput && ! criteriaApplyButton
-        }" [(ngModel)]="criteriaTextInputText" (ngModelChange)="onTextInputChange()"></textarea>
+            <textarea
+                [ngClass]="{
+                    'dynamic-query-small-text-input mb-1' : criteriaSmallTextInput,
+                    'dynamic-query-large-text-input-with-apply mb-1' : criteriaLargeTextInput && criteriaApplyButton,
+                    'dynamic-query-large-text-input mb-1' : criteriaLargeTextInput && ! criteriaApplyButton
+                }"
+                [(ngModel)]="criteriaTextInputText"
+                (ngModelChange)="onTextInputChange();onChange()"
+            >
+
+            </textarea>
             <!-- -----  Apply Button for Text inputs ----- -->
-            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button" (click)="onApplyCriteriaClick()">
+            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button" (click)="onApplyButtonClick(  )">
                 {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
             </button>
             <!-- ----- END  Apply Button  ----- -->
             <!-- -----  Apply Checkbox  ----- -->
             <span *ngIf="criteriaApplyCheckbox">
-                <input type="checkbox" (click)="onApplyCriteriaClick()" />
+                <input type="checkbox" (click)="onApplyCheckboxClick( $event)" />
                 {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
             </span>
             <!-- ----- END  Apply Checkbox  ----- -->
@@ -274,7 +324,13 @@
                 }">
                     <!-- Checkbox list -->
                     <span *ngIf="criteriaMultiChoiceList">
-                        <input type="checkbox" class="dynamic-query-list-checkbox" id="dynamic-query-multi-choice-checkbox-test{{ i }}-{{sequenceNumber}}" [(ngModel)]="listCheckboxes[i]" (click)="onCriteriaClicked(i)" />
+                        <input
+                            type="checkbox"
+                            class="dynamic-query-list-checkbox"
+                            id="dynamic-query-multi-choice-checkbox-test{{ i }}-{{sequenceNumber}}"
+                            [(ngModel)]="listCheckboxes[i]"
+                            (click)="onCriteriaListItemClicked(i)"
+                        >
                         <label [attr.for]="'dynamic-query-multi-choice-checkbox-test' + i + '-' + sequenceNumber" [ngClass]="{
                             'font-extra-small': currentFont === '0',
                             'font-small': currentFont === '1',
@@ -287,7 +343,7 @@
                     <!-- END Checkbox list -->
                     <!-- Radio button list -->
                     <span *ngIf="criteriaSingleChoiceList">
-                        <input type="radio" name="dynamic-query-list-radio-{{sequenceNumber}}" class="dynamic-query-list-checkbox" id="dynamic-query-list-radio-test{{ i }}-{{sequenceNumber}}" [checked]="listCheckboxes[i]" (click)="onCriteriaClicked(i)" />
+                        <input type="radio" name="dynamic-query-list-radio-{{sequenceNumber}}" class="dynamic-query-list-checkbox" id="dynamic-query-list-radio-test{{ i }}-{{sequenceNumber}}" [checked]="listCheckboxes[i]" (click)="onCriteriaListItemClicked(i)" />
                         <label [attr.for]="'dynamic-query-list-radio-test' + i + '-' + sequenceNumber" [ngClass]="{
                             'font-extra-small': currentFont === '0',
                             'font-small': currentFont === '1',
@@ -301,14 +357,20 @@
                 </div>
             </div>
             <!-- -----  Apply Button  ----- -->
-            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button" (click)="onApplyCriteriaClick()">
+            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button" (click)="onApplyButtonClick(  )">
                 {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
             </button>
             <!-- ----- END  Apply Button  ----- -->
             <!-- -----  Apply Checkbox  ----- -->
             <span style="background-color: #e4606d" *ngIf="criteriaApplyCheckbox">
-                <input type="checkbox" (click)="onApplyCriteriaClick()" />
-                {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+                <input
+                    type="checkbox"
+                    id="list-checkbox-{{sequenceNumber}}"
+                    (click)="onApplyCheckboxClick( $event)"
+                >
+                <label for="list-checkbox-{{sequenceNumber}}">
+                    {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+                </label>
             </span>
             <!-- ----- END  Apply Checkbox  ----- -->
         </div>
@@ -327,7 +389,8 @@
             [placeHolder0]="criteriaCalendarPlaceHolder0"
             [placeHolder1]="criteriaCalendarPlaceHolder1"
             [(date0)]="date0"
-            [(date1)]="date1">
+            [(date1)]="date1"
+        >
 
         </nbia-widget-calendar>
 
@@ -344,7 +407,6 @@
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
-
                             (
                                 (date0 === undefined || date0['formatted'].length < 1) ||
                                 (date1 === undefined || date1['formatted'].length < 1)
@@ -356,7 +418,7 @@
        "
             class="btn nbia-button dynamic-query-apply-button mt-1"
             type="button"
-            (click)="onApplyCriteriaClick()"
+            (click)="onApplyButtonClick()"
         >
             {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </button>
@@ -364,7 +426,8 @@
 
 
         <!-- -----  Apply Checkbox  for Calendar ----- -->
-        <div *ngIf="criteriaApplyCheckbox" [ngClass]="{
+        <div *ngIf="criteriaApplyCheckbox"
+             [ngClass]="{
                      'disabled-text':             (
                 (
                     (date0 === undefined || date0['formatted'].length < 1) &&
@@ -407,98 +470,12 @@
             )
 "
 
-                   (click)="onApplyCriteriaClick()"
+                   (click)="onApplyCheckboxClick( $event)"
             >
             {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </div>
         <!-- ----- END  Apply Checkbox for Calendar ----- -->
     </div>
     <!-- ----------  END Calendar  --------- -->
-    <!-- ----------  List - Checkbox or Radio button  vertical-expand-div ---------- -->
-    <!--  <span *ngIf="( criteriaMultiChoiceList || criteriaSingleChoiceList )">
-    <div
-        class="dynamic-query-vertical-expand-div"
-        style="background-color: #1afff7"
-        [ngClass]="{
-            hide: !widgetShowCriteria
-        }"
-    >
-
-        <div class="dynamic-query-list-scroller"
-        >
-            <div *ngFor="  let item of itemList;  let i = index  "
-                 [ngClass]="{
-                    hide: !item['include'],
-                    'dynamic-query-list-line-extra-small': currentFont === '0',
-                    'dynamic-query-list-line-small': currentFont === '1',
-                    'dynamic-query-list-line-medium': currentFont === '2',
-                    'dynamic-query-list-line-large': currentFont === '3'
-                }"
-            >
-                &lt;!&ndash; Checkbox list &ndash;&gt;
-                <span *ngIf="criteriaMultiChoiceList">
-                    <input
-                        type="checkbox"
-                        class="dynamic-query-list-checkbox"
-                        id="dynamic-query-multi-choice-checkbox{{ i }}-{{sequenceNumber}}"
-                        [(ngModel)]="listCheckboxes[i]"
-                        (click)="onCriteriaClicked(i)"
-                    />
-
-                    <label
-                        [attr.for]="'dynamic-query-multi-choice-checkbox' + i + '-' + sequenceNumber"
-                        [ngClass]="{
-                            'font-extra-small': currentFont === '0',
-                            'font-small': currentFont === '1',
-                            'font-medium': currentFont === '2',
-                            'font-large': currentFont === '3'
-                        }"
-                    >
-                        {{ item['value'] }}
-                    </label>
-                </span>
-                &lt;!&ndash; END Checkbox list &ndash;&gt;
-
-                &lt;!&ndash; Radio button list &ndash;&gt;
-                <span *ngIf="criteriaSingleChoiceList">
-                    <input
-                        type="radio"
-                        name="dynamic-query-list-radio-{{sequenceNumber}}"
-                        class="dynamic-query-list-checkbox"
-                        id="dynamic-query-list-radio{{ i }}-{{sequenceNumber}}"
-                        [checked]="listCheckboxes[i]"
-                        (click)="onCriteriaClicked(i)"
-                    />
-                    <label
-                        [attr.for]="'dynamic-query-list-radio' + i + '-' + sequenceNumber"
-                        [ngClass]="{
-                            'font-extra-small': currentFont === '0',
-                            'font-small': currentFont === '1',
-                            'font-medium': currentFont === '2',
-                            'font-large': currentFont === '3'
-                        }"
-                    >
-                        {{ item['value'] }}
-                    </label>
-                </span>
-                &lt;!&ndash; END Radio button list &ndash;&gt;
-WWW
-            </div>
-            &lt;!&ndash; -&#45;&#45;&#45;&#45; END Item list loop -&#45;&#45;&#45;&#45; &ndash;&gt;
-XXX        </div>
-        &lt;!&ndash; -&#45;&#45;&#45;&#45; END Scroller div -&#45;&#45;&#45;&#45; &ndash;&gt;
-zzz
-        <div>
-            <button class="btn nbia-button dynamic-query-apply-button mb-4" type="button"
-                    (click)="onApplyCriteriaClick()">
-                XXXX{{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
-            </button>
-        </div>
-
-    </div>
-    </span>
-  -->
-    <!-- ---------- END List - Checkbox or Radio button  vertical-expand-div ---------- -->
-    <!-- Apply button -->
-    <!-- ----- END If criteria type is a list div ----- -->
 </div>
+criteriaAndOrType:{{criteriaAndOrType}}

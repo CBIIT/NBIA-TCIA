@@ -63,6 +63,10 @@ export class ApiService{
 
     getDicomImageErrorEmitter = new EventEmitter();
 
+    getDynamicCriteriaSelectionMenuDataResultsEmitter = new EventEmitter();
+    getDynamicCriteriaSelectionMenuDataErrorEmitter = new EventEmitter();
+
+
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService ) {
 
@@ -258,6 +262,19 @@ export class ApiService{
             } );
     }
 
+    getDynamicCriteriaSelectionMenuData(){
+        this.doGet( Consts.GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA ).subscribe(
+            ( data ) => {
+                console.log('MHL GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA: ', data);
+                this.getDynamicCriteriaSelectionMenuDataResultsEmitter.emit( data );
+            },
+            ( err ) => {
+                console.error('MHL ERROR GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA: ', err);
+                this.getDynamicCriteriaSelectionMenuDataErrorEmitter.emit( err );
+            } );
+
+    }
+
     submitBulkDeletion( query ) {
         this.doPost( Consts.SUBMIT_SERIES_DELETION, query ).subscribe(
             ( data ) => {
@@ -281,6 +298,7 @@ export class ApiService{
                 console.error( 'submitOnlineDeletion err: ', err );
             } );
     }
+
 
 // SUBMIT_ONLINE_DELETION
     getSeriesForDeletion() {

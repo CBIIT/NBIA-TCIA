@@ -70,8 +70,8 @@ export class WidgetTestSettingsComponent implements OnInit {
     dynamicQueryCriteriaSmallTextInput = false;
     dynamicQueryCriteriaLargeTextInput = false;
     dynamicQueryCriteriaSingleCheckbox = false;
-    dynamicQueryCriteriaSingleCheckboxDefault = true;
-    dynamicQueryCriteriaMultiChoiceList = false;
+    dynamicQueryCriteriaSingleCheckboxDefault = false;
+    dynamicQueryCriteriaMultiChoiceList = true;
     dynamicQueryCriteriaSingleChoiceList = false;
     dynamicQueryCriteriaNumber = false;
     dynamicQueryCriteriaNumberLimitHigh = 100;
@@ -87,7 +87,7 @@ export class WidgetTestSettingsComponent implements OnInit {
     dynamicQueryCriteriaSingleLineRadioDefault1 = false;
     dynamicQueryCriteriaSingleLineRadioDefault2 = false;
 
-    dynamicQueryCriteriaCalendar = true;
+    dynamicQueryCriteriaCalendar = false;
     dynamicQueryCriteriaCalendarAllowOneEmpty = false;
     dynamicQueryCriteriaCalendarPrompt0 = 'AAA';
     dynamicQueryCriteriaCalendarPrompt1 = 'BBB';
@@ -103,7 +103,7 @@ export class WidgetTestSettingsComponent implements OnInit {
     dynamicQueryCriteriaOpenCloseButton = true;
     dynamicQueryCriteriaApplyButton = true;
     dynamicQueryCriteriaApplyCheckbox = false;
-    dynamicQueryCriteriaApplyText = 'Okay';
+    dynamicQueryCriteriaApplyText = 'Apply';
     dynamicQueryCriteriaSearchable = true;
     dynamicQueryCriteriaSort = true;
     dynamicQueryCriteriaAllowNoChoice = true;
@@ -250,6 +250,11 @@ export class WidgetTestSettingsComponent implements OnInit {
         // Single line radio buttons
         if (tempData.dynamicQueryCriteriaSingleLineRadio) {
             tempData.dynamicQueryCriteriaSearchable = false;
+            tempData.dynamicQueryCriteriaApplyButton = false;
+            tempData.dynamicQueryCriteriaApplyCheckbox = false;
+            tempData.dynamicQueryCriteriaApplyText = '';
+            tempData.dynamicQueryCriteriaListData = '';
+
         }
         // If not Single line radio buttons
         else {
@@ -539,19 +544,19 @@ export class WidgetTestSettingsComponent implements OnInit {
     andOrAllAnyRadio(i) {
         this.andOrAllAnyRadioSelection = -1;
 
-        console.log('MHL andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAndOr: ', this.andOrAllAnyRadioSelectionAndOr);
-        console.log('MHL andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAllAny: ', this.andOrAllAnyRadioSelectionAllAny);
+        console.log('MHL 001 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAndOr: ', this.andOrAllAnyRadioSelectionAndOr);
+        console.log('MHL 002 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAllAny: ', this.andOrAllAnyRadioSelectionAllAny);
 
         // AndOr
         if (i === 0 && this.andOrAllAnyRadioSelectionAndOr) {
-            console.log('MHL a andOrAllAnyRadio: ', i);
+            console.log('MHL 003a andOrAllAnyRadio: ', i);
             this.andOrAllAnyRadioSelectionAllAny = false;
             this.andOrAllAnyRadioSelection = 0;
         }
 
         // AllAny
         else if (i === 1 && this.andOrAllAnyRadioSelectionAllAny) {
-            console.log('MHL B andOrAllAnyRadio: ', i);
+            console.log('MHL 004 andOrAllAnyRadio: ', i);
             this.andOrAllAnyRadioSelectionAndOr = false;
             this.andOrAllAnyRadioSelection = 1;
         }
@@ -564,6 +569,8 @@ export class WidgetTestSettingsComponent implements OnInit {
             this.andOrAllAnyRadioSelection = 1;
 
         }
+        console.log('MHL 005 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAndOr: ', this.andOrAllAnyRadioSelectionAndOr);
+        console.log('MHL 006 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAllAny: ', this.andOrAllAnyRadioSelectionAllAny);
 
     }
 

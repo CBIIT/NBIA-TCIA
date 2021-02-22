@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------------------------------
+// -----------------------       This is used by the Widget Tester             ---------------
+// -------------------------------------------------------------------------------------------
+
+
+
 import {EventEmitter, Injectable} from '@angular/core';
 
 import {UtilService} from '@app/admin-common/services/util.service';
@@ -38,8 +44,9 @@ export class DynamicQueryCriteriaService {
     }
 
 
-    // Sort
+
     initWidget( widgetData){
+        console.log('MHL initWidget widgetData: ', widgetData);
         this.initWidgetEmitter.emit(widgetData);
     }
 

@@ -1,3 +1,8 @@
+<!------------------------------------------------------------------------------------------------>
+<!------------  The Widget tester left vertical section containing the search criteria  ---------->
+<!------------------------------------------------------------------------------------------------>
+
+
 <span *ngIf="properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE">
     Keep count
     <input type="number"
@@ -8,14 +13,11 @@
 
 <div class="widget-display-div">
 <span *ngFor="let criteria of queryCriteriaData">
-    Seq: {{criteria['sequenceNumber']}}
-    <br>
 
     <!-- [queryCriteriaData]="criteria" is used by the widget test page -->
         <nbia-widget *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.WIDGET"
                      [queryCriteriaData]="criteria"
         ></nbia-widget>
-
 
 </span>
 </div>

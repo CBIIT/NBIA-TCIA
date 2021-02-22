@@ -1,3 +1,7 @@
+// ------------------------------------------------------------------------------------------------
+// ------------  The Widget tester left vertical section containing the search criteria  ----------
+// ------------------------------------------------------------------------------------------------
+
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DynamicQueryCriteriaTypes} from "@app/constants";
 import {DynamicQueryCriteriaService} from "@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service";
@@ -6,6 +10,8 @@ import {Subject} from "rxjs";
 import {Properties} from "@assets/properties";
 
 
+
+// @TODO The following three const's are here in this widget testing/building code, but they are used in the real runtime code. MOVE THEM!!!
 // Keep these upper case, we match against them with toUpperCase() to stay case insensitive.
 export const AndOrTypes = {
     AND_OR: 'ANDOR',  // Radio buttons
@@ -27,6 +33,8 @@ export const CriteriaTypes = {
     TEXT_INPUT_LARGE: 'TEXT_INPUT_LARGE',
     TEXT_INPUT_SMALL: 'TEXT_INPUT_SMALL'
 }
+
+
 
 
 @Component({

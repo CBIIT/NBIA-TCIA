@@ -2,7 +2,7 @@
 <span class="background-cover"></span>
 -->
 
-<div
+<div *ngIf="allDataInitialized"
     ngDraggable
     [handle]="PanelHandleCriteriaSelectionMenu"
     class="card card-nbia-default criteria-selection-menu-box alert-box-shadow"
@@ -34,10 +34,11 @@
 
         <div class="criteria-selection-menu-panel-heading-scroller">
             <!-- Each Criteria -->
-            <table *ngFor="let crit of criteriaData['data']; let n = index;"
+            <table *ngFor="let crit of criteriaData; let n = index;"
                    class="criteria-selection-menu-criteria  alert-box-shadow unselectable"
             >
 
+                <!-- The heading for each parent section. -->
                 <tr class="criteria-selection-menu-heading-tr">
                     <td colspan="2" class="criteria-selection-menu-heading-td  p-1">
 
@@ -142,6 +143,7 @@
                             &nbsp;Omit
                         </label>
                     </td>
+                    <!-- END And/Or -->
                 </tr>
             </table>
         </div>

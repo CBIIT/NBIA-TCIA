@@ -7,6 +7,18 @@ import {
     AndOrTypes,
     CriteriaTypes
 } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component';
+import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
+import { DynamicCriteriaQueryPart } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-criteria-query-part';
+
+export enum WIDGET_TYPE{
+    UNKNOWN,
+    NUMBER,
+    TEXT,
+    ITEM_LIST,
+    ONE_LINE_RADIO_BUTTONS,
+    ONE_CHECKBOX,
+    CALENDAR
+}
 
 @Component( {
     selector: 'nbia-widget',
@@ -16,6 +28,14 @@ import {
 export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges{
     @Input() queryCriteriaData;
     sequenceNumber = -1;
+    widgetType = WIDGET_TYPE.UNKNOWN;
+
+
+    /**
+     * If the widget doesn't have an apply checkbox or button this should be set to true.
+     * If it does have an apply checkbox or button, set this to false in ngOnInit.
+     */
+    applyState = false;
 
     criteriaCalendar = false;
     criteriaCalendarAllowOneEmpty = false;
@@ -95,12 +115,24 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     criteriaHeadingAddOn = '';
     criteriaSelectionInHeadingCollapsed = false;
 
+    /**
+     * This will be used in the query returned to the server.
+     */
+    criteriaQueryType = '';
+    /**
+     * This will be used in the query returned to the server.
+     */
+    criteriaQueryInputType = '';
+
+    criteriaLevelAndOrOr = '';
+
+    isApplyCheckboxSet = false;
 
     date0;
     date1;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private preferencesService: PreferencesService ) {
+    constructor( private preferencesService: PreferencesService, private dynamicQueryBuilderService: DynamicQueryBuilderService ) {
     }
 
     ngOnInit() {
@@ -114,6 +146,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.currentFont = this.preferencesService.getFontSize();
 
         this.initParameters();
+
+        // Set applyState to true if there is no Apply checkbox or button
+        this.applyState = !(this.criteriaApplyCheckbox || this.criteriaApplyButton);
     }
 
 
@@ -121,6 +156,10 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * I don't use the queryCriteriaData['xxx'] directly because I anticipate a future need to modify these values.
      */
     initParameters() {
+
+        this.criteriaQueryType = this.queryCriteriaData['criteriaType'];
+        this.criteriaQueryInputType = this.queryCriteriaData['inputType'];
+        this.criteriaLevelAndOrOr = this.queryCriteriaData['widgetAndOrOr'];
 
         if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] !== undefined ){
             this.andOrRadio[0] = (this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'].toUpperCase() === 'AND');
@@ -140,23 +179,52 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.criteriaSubheading = this.queryCriteriaData['dynamicQueryCriteriaSubHeading'];
         this.criteriaApplyButton = this.queryCriteriaData['dynamicQueryCriteriaApplyButton'];
         this.criteriaApplyCheckbox = this.queryCriteriaData['dynamicQueryCriteriaApplyCheckbox'];
+        if( this.criteriaApplyCheckbox === undefined ){
+            this.criteriaApplyCheckbox = false;
+        }
         this.criteriaApplyText = this.queryCriteriaData['dynamicQueryCriteriaApplyText'];
         this.criteriaOpenCloseButton = this.queryCriteriaData['dynamicQueryCriteriaOpenCloseButton'];
         this.criteriaClearButton = this.queryCriteriaData['dynamicQueryCriteriaClearButton'];
         this.criteriaIsSearchable = this.queryCriteriaData['dynamicQueryCriteriaSearchable'];
+
         this.criteriaSmallTextInput = this.queryCriteriaData['dynamicQueryCriteriaSmallTextInput'];
         this.criteriaLargeTextInput = this.queryCriteriaData['dynamicQueryCriteriaLargeTextInput'];
+        if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
+            this.widgetType = WIDGET_TYPE.TEXT;
+        }
+
+        this.criteriaSingleChoiceList = this.queryCriteriaData['dynamicQueryCriteriaSingleChoiceList'];
         this.criteriaMultiChoiceList = this.queryCriteriaData['dynamicQueryCriteriaMultiChoiceList'];
+        if( this.criteriaMultiChoiceList || this.criteriaSingleChoiceList ){
+            console.log( 'MHL Setting: WIDGET_TYPE.ITEM_LIST', );
+            this.widgetType = WIDGET_TYPE.ITEM_LIST;
+        }
+
         this.criteriaSingleCheckbox = this.queryCriteriaData['dynamicQueryCriteriaSingleCheckbox'];
+        if( this.criteriaSingleCheckbox ){
+            this.widgetType = WIDGET_TYPE.ONE_CHECKBOX;
+        }
         this.criteriaNumberInput = this.queryCriteriaData['dynamicQueryCriteriaNumber'];
+        if( this.criteriaNumberInput ){
+            this.widgetType = WIDGET_TYPE.NUMBER;
+        }
         this.criteriaNumberInputDefault = this.queryCriteriaData['dynamicQueryCriteriaNumberDefault'];
         this.criteriaNumberInputLimitHigh = this.queryCriteriaData['dynamicQueryCriteriaNumberLimitHigh'];
         this.criteriaNumberInputLimitLow = this.queryCriteriaData['dynamicQueryCriteriaNumberLimitLow'];
         this.criteriaSelectionInHeadingCollapsed = this.queryCriteriaData['dynamicQueryCriteriaSelectionInHeadingCollapsed'];
 
         this.criteriaCalendar = this.queryCriteriaData['dynamicQueryCriteriaCalendar'];
+        if( this.criteriaCalendar ){
+            this.widgetType = WIDGET_TYPE.CALENDAR;
+        }
         this.criteriaCalendarPrompt0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPrompt0'];
+        if( this.criteriaCalendarPrompt0 === undefined ){
+            this.criteriaCalendarPrompt0 = '';
+        }
         this.criteriaCalendarPrompt1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPrompt1'];
+        if( this.criteriaCalendarPrompt1 === undefined ){
+            this.criteriaCalendarPrompt1 = '';
+        }
         this.criteriaCalendarPlaceHolder0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder0'];
         this.criteriaCalendarPlaceHolder1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder1'];
         this.criteriaCalendarPlaceHolder1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder1'];
@@ -169,6 +237,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.criteriaSingleLineRadioOptions[2] = this.queryCriteriaData['dynamicQueryCriteriaSingleLineRadio2'];
         if( this.criteriaSingleLineRadio ){
             this.criteriaHeadingAddOn = this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioDefault];
+            this.widgetType = WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS;
         }
         /*
                 this.criteriaSingleLineRadio0 = this.queryCriteriaData['dynamicQueryCriteriaSingleLineRadio0'];
@@ -178,7 +247,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
         this.criteriaSingleCheckboxDefault = this.queryCriteriaData['dynamicQueryCriteriaSingleCheckboxDefault'];
 
-        this.criteriaSingleChoiceList = this.queryCriteriaData['dynamicQueryCriteriaSingleChoiceList'];
 
         this.criteriaAllowNoChoice = this.queryCriteriaData['dynamicQueryCriteriaAllowNoChoice'];
         this.criteriaSort = this.queryCriteriaData['dynamicQueryCriteriaSort'];
@@ -210,7 +278,19 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'] !== undefined ){
             this.criteriaAllAnyDefault = this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'].toUpperCase();
         }
-
+ /*
+        console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAndOrType\']: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrType'] );
+        console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAndOrDefault\']: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] );
+        console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAllAnyType\']: ', this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'] );
+        console.log( 'MHL this.criteriaAndOrType: ', this.criteriaAndOrType );
+        console.log( 'MHL this.criteriaAndOrDefault: ', this.criteriaAndOrDefault );
+        console.log( 'MHL this.criteriaAllAnyType: ', this.criteriaAllAnyType );
+        console.log( 'MHL this.criteriaAllAnyDefault: ', this.criteriaAllAnyDefault );
+*/
+        // If there is no "Apply" button or checkbox, set applyState to true because we need to apply on any change
+        if( (!this.criteriaApplyButton) && (!this.criteriaApplyCheckbox) ){
+            this.applyState = true;
+        }
 
     }
 
@@ -256,7 +336,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
     }
 
-    onCriteriaClicked( i ) {
+    onCriteriaListItemClicked( i ) {
         if( this.criteriaSingleChoiceList ){
             for( let n = 0; n < this.listCheckboxes.length; n++ ){
                 this.listCheckboxes[n] = false;
@@ -266,8 +346,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }else if( this.criteriaMultiChoiceList ){
             this.listCheckboxes[i] = !this.listCheckboxes[i]['value'];
         }
-
         this.doHaveInput();
+        this.onChange();
     }
 
     clearItemList() {
@@ -302,10 +382,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.widgetShowCriteria = state;
     }
 
-    onApplyCriteriaClick() {
-        console.log( 'MHL WidgetComponent WidgetComponent' );
-    }
-
+    /**
+     * When the top right red X is clicked
+     */
     onRemoveCriteriaClick() {
         console.log( 'MHL WidgetComponent onRemoveCriteriaClick' );
     }
@@ -329,6 +408,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     onClearClick() {
+        console.log( 'MHL onClearClick' );
         if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.criteriaTextInputText = '';
         }else{
@@ -341,6 +421,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if( !this.criteriaAllowNoChoice ){
             this.listCheckboxes[0] = true;
         }
+        this.onChange();
         this.doHaveInput();
     }
 
@@ -348,10 +429,14 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.doHaveInput();
     }
 
+    /**
+     * This is for the Search/Filter in a search criteria widget.
+     *
+     * @param e
+     */
     onSearchChange( e ) {
         this.currentFilterSearch = e;
         this.listSearchResultsCount = 0;
-
         let n = 0;
         let counter = 0;
         for( let item of this.itemList ){
@@ -377,56 +462,141 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     onWidgetAndOrRadioClick( i ) {
-        console.log( 'MHL onWidgetAndOrRadioClick: ', i );
+        // 0 is AND, 1 is OR
+        console.log( 'MHL onWidgetAndOrRadioClick andOrRadio: ', (i === 0) ? 'And' : 'Or' );
+        this.onChange();
     }
 
     onWidgetAllAnyRadioClick( i ) {
-        console.log( 'MHL onWidgetAllAnyRadioClick: ', i );
+        // 0 is 1, false is ANY
+        console.log( 'MHL onWidgetAllAnyRadioClick allAnyRadio: ', (i === 0) ? 'All' : 'Any' );
+        this.onChange();
     }
 
     onSingleLineRadioChange( i ) {
         this.criteriaSingleLineRadioCurrent = i;
         this.criteriaHeadingAddOn = this.criteriaSingleLineRadioOptions[i];
-        /*       switch(i){
-                   case 0:
-                       this.criteriaHeadingAddOn = this.criteriaSingleLineRadio0;
-                       break;
-                   case 1:
-                       this.criteriaHeadingAddOn = this.criteriaSingleLineRadio1;
-                       break;
-                   case 2:
-                       this.criteriaHeadingAddOn = this.criteriaSingleLineRadio2;
-                       break;
-               }
-       */
-    }
-/*
-
-    displayParameters() {
-        // console.log('this.criteriaName: ', this.criteriaName);
-        console.log( 'this.criteriaRequired: ', this.criteriaRequired );
-        console.log( 'this.criteriaHeading: ', this.criteriaHeading );
-        console.log( 'this.criteriaSubheading: ', this.criteriaSubheading );
-        console.log( 'this.criteriaApplyButton: ', this.criteriaApplyButton );
-        console.log( 'this.criteriaApplyCheckbox: ', this.criteriaApplyCheckbox );
-        console.log( 'this.criteriaApplyButtonText: ', this.criteriaApplyText );
-        console.log( 'this.criteriaOpenCloseButton: ', this.criteriaOpenCloseButton );
-        console.log( 'this.criteriaClearButton: ', this.criteriaClearButton );
-        console.log( 'this.criteriaIsSearchable: ', this.criteriaIsSearchable );
-        console.log( 'MHL this.criteriaAndOrType: ', this.criteriaAndOrType );
-        console.log( 'MHL this.criteriaAllAnyType: ', this.criteriaAllAnyType );
-        console.log( 'this.criteriaAndOrDefault: ', this.criteriaAndOrDefault );
-        console.log( 'this.criteriaAllowNoChoice: ', this.criteriaAllowNoChoice );
-        console.log( 'this.criteriaSort: ', this.criteriaSort );
-        console.log( 'this.criteriaSmallTextInput: ', this.criteriaSmallTextInput );
-        console.log( 'this.criteriaLargeTextInput: ', this.criteriaLargeTextInput );
+        this.onChange();
     }
 
-*/
+    /**
+     *
+     * @param e
+     */
+    onApplyCheckboxClick( e ) {
+        this.applyState = e.currentTarget.checked;
 
+        if( this.applyState ){
+            console.log( 'MHL onApplyCheckboxClick update query' );
+            this.updateQuery();
+        }else{
+            console.log( 'MHL onApplyCheckboxClick remove this part of the query' );
+            this.removeQuery();
+        }
+    }
 
-    onSingleCheckboxClick(seq, state){
-        console.log('MHL onSingleCheckboxClick[' + seq + ']: ', state.currentTarget.checked);
+    /**
+     * Apply buttons
+     * When something is checked or clicked that should trigger the query update
+     *
+     * @param seq
+     * @param state
+     */
+    onApplyButtonClick() {
+        console.log( 'MHL onApplyButtonClick' );
+        this.updateQuery();
+
+    }
+
+    /**
+     * When something happens that could change the query.
+     * We need to check for apply buttons.
+     *
+     * When an apply checkbox is included, but is false we need to remove this from the query.
+     * If an apply button is included, we should do nothing until the Apply Button is clicked.
+     */
+    onChange() {
+        console.log( 'MHL onChange: ', this.widgetType );
+
+        console.log( 'MHL onChange applyState: ', this.applyState );
+        if( this.applyState ){
+            this.updateQuery();
+        }
+    }
+
+    removeQuery() {
+        console.log( 'MHL ***  REMOVE QUERY  ***' );
+    }
+
+    updateQuery() {
+        console.log( 'MHL ***  UPDATE QUERY  ***' );
+        console.log( 'MHL ***  Widget type: ', WIDGET_TYPE[this.widgetType] );
+        let userInput = [];
+
+        switch( this.widgetType ){
+
+            case WIDGET_TYPE.NUMBER:
+                console.log( 'MHL onChange NUMBER Apply: ', this.criteriaNumberInputDefault );
+                userInput = [this.criteriaNumberInputDefault];
+
+                break;
+
+            case WIDGET_TYPE.TEXT:
+                console.log( 'MHL updateQuery Type: ', WIDGET_TYPE[this.widgetType] );
+                console.log( 'MHL updateQuery TEXT Apply: ', this.criteriaTextInputText );
+                console.log( 'MHL updateQuery TEXT Apply criteriaQueryType: ', this.criteriaQueryType );
+                console.log( 'MHL updateQuery TEXT Apply criteriaQueryInputType: ', this.criteriaQueryInputType );
+                console.log( 'MHL updateQuery TEXT Apply criteriaLevelAndOrOr: ', this.criteriaLevelAndOrOr );
+                userInput = [this.criteriaTextInputText];
+                break;
+
+            case WIDGET_TYPE.ITEM_LIST:
+                userInput = [];
+                for( let f = 0; f < this.itemList.length; f++ ){
+                    if( this.listCheckboxes[f] ){
+                        userInput.push( this.itemList[f]['value'] );
+                    }
+                }
+
+                console.log( 'MHL updateQuery Type: ', WIDGET_TYPE[this.widgetType] );
+                console.log( 'MHL updateQuery CHECKBOX or RADIO LIST: ', userInput );
+                console.log( 'MHL updateQuery CHECKBOX or RADIO Apply criteriaQueryType: ', this.criteriaQueryType );
+                console.log( 'MHL updateQuery CHECKBOX or RADIO Apply criteriaQueryInputType: ', this.criteriaQueryInputType );
+                console.log( 'MHL updateQuery CHECKBOX or RADIO Apply criteriaLevelAndOrOr: ', this.criteriaLevelAndOrOr );
+                break;
+
+            case WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS:
+                console.log( 'MHL ONE_LINE_RADIO_BUTTONS: ', this.criteriaSingleLineRadioCurrent );
+                break;
+
+            case WIDGET_TYPE.ONE_CHECKBOX:
+                console.log( 'MHL ONE_CHECKBOX: ', this.criteriaSingleCheckboxDefault );
+                break;
+
+            case WIDGET_TYPE.CALENDAR:
+                userInput = [];
+                if( this.date0 !== undefined ){
+                    console.log( 'MHL CALENDAR: ', this.date0['formatted'] );
+                    userInput.push(this.date0['formatted']);
+                }else{
+                    console.log( 'MHL CALENDAR NO first date' );
+                    userInput.push('');
+                }
+                if( this.date1 !== undefined ){
+                    console.log( 'MHL CALENDAR: ', this.date1['formatted'] );
+                    userInput.push(this.date1['formatted']);
+                }else{
+                    console.log( 'MHL CALENDAR NO second date' );
+                    userInput.push('');
+                }
+                break;
+        }
+
+        // Add this to the dynamicQueryBuilderService's list
+        if(userInput.length > 0){
+            this.dynamicQueryBuilderService.addCriteriaQueryPart( new DynamicCriteriaQueryPart( this.widgetType, userInput, this.criteriaQueryType, this.criteriaQueryInputType, this.criteriaLevelAndOrOr ) );
+        }
+
     }
 
 

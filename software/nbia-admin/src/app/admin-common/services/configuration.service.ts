@@ -74,7 +74,7 @@ export class ConfigurationService {
 
                     if( key === 'ENABLE_WIDGET_TESTER' ){
                         Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE = this.utilService.isTrue( value );
-                        // console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE value: ', value);
+                        // console.log('MHL SET Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE value: ', value);
                         // console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: ', Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE);
                     }
 

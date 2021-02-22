@@ -22,12 +22,21 @@ import { AngularDraggableModule } from 'angular2-draggable';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { TabsModule } from 'ngx-tabs';
 import { DynamicQueryCriteriaComponent } from './dynamic-query-criteria/dynamic-query-criteria.component';
-import { TwoLevelMultiChoiceComponent } from './dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component';
 import { WidgetComponent } from './dynamic-query-criteria/widget/widget.component';
 import { WidgetTestSettingsComponent } from './dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component';
 import { WidgetCalendarComponent } from './dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
 import { LeftSectionDynamicComponent } from './left-section-dynamic/left-section-dynamic.component';
 
+
+export enum WIDGET_TYPE{
+    UNKNOWN,
+    NUMBER,
+    TEXT,
+    ITEM_LIST,
+    ONE_LINE_RADIO_BUTTONS,
+    ONE_CHECKBOX,
+    CALENDAR
+}
 
 
 @NgModule( {
@@ -42,7 +51,6 @@ import { LeftSectionDynamicComponent } from './left-section-dynamic/left-section
         QueryReleasedComponent,
         QuerySectionComponent,
         DynamicQueryCriteriaComponent,
-        TwoLevelMultiChoiceComponent,
         WidgetComponent,
         WidgetTestSettingsComponent,
         WidgetCalendarComponent,
