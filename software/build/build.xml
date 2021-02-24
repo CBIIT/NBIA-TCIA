@@ -1295,10 +1295,11 @@ L-->
 			<os family="unix"/>
 		<then>
 			<sequential>
-				<echo message="Linux build environment"/>
+				<echo message="Linux build environment"/>				
 				<exec executable="npm" dir="${nbia-admin.base.dir}">
 					<arg value="install" />
 				</exec>
+				<exec executable="which ng" dir="${nbia-admin.base.dir}"></exec>
 				<exec executable="ng" dir="${nbia-admin.base.dir}">
 					<arg value="build" />
 					<arg value="--base-href" />
