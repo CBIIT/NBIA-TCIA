@@ -1258,9 +1258,11 @@ L-->
 				</exec>
 				<exec executable="env" dir="${nbia-admin.base.dir}" outputproperty="output"></exec>
 				<echo message="${output}" />				
-				<exec executable="which ng"  outputproperty="output1"></exec>
-				<echo message="${output1}" />				
-				<exec executable="ng" dir="${nbia-viewer.base.dir}">
+				<!--exec executable="which ng"  outputproperty="output1"></exec>
+				<echo message="${output1}" /-->				
+				<exec executable="npm" dir="${nbia-viewer.base.dir}">
+					<arg value="run" />
+					<arg value="ng" />
 					<arg value="build" />
 					<arg value="--base-href" />
 					<arg value="." />
