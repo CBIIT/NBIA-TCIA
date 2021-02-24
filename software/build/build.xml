@@ -1265,7 +1265,6 @@ L-->
 					<arg value="ng" />
 					<arg value="build" />
 					<arg value="--base-href" />
-					<arg value="." />
 				</exec>
 			</sequential>
 		</then>
@@ -1283,8 +1282,7 @@ L-->
 						<arg value="/c"/>
 						<arg value="ng"/>
 						<arg value="build"/>  
-						<arg value="--base-href"/>
-						<arg value="."/>					
+						<arg value="--base-href"/>				
 					</exec>
 				</sequential>
 			</then>	
@@ -1313,7 +1311,6 @@ L-->
 					<arg value="ng" />				
 					<arg value="build" />
 					<arg value="--base-href" />
-					<arg value="." />
 				</exec>
 			</sequential>
 		</then>
