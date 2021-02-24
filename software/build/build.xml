@@ -1299,7 +1299,8 @@ L-->
 				<exec executable="npm" dir="${nbia-admin.base.dir}">
 					<arg value="install" />
 				</exec>
-				<exec executable="which ng" dir="${nbia-admin.base.dir}"></exec>
+				<exec executable="which ng" dir="${nbia-admin.base.dir}" outputproperty="output"></exec>
+				<echo message="${output}" />
 				<exec executable="ng" dir="${nbia-admin.base.dir}">
 					<arg value="build" />
 					<arg value="--base-href" />
