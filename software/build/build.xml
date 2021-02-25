@@ -1255,16 +1255,11 @@ L-->
 				<echo message="Linux build environment"/>
 				<exec executable="npm" dir="${nbia-viewer.base.dir}">
 					<arg value="install" />
-				</exec>
-				<exec executable="env" dir="${nbia-admin.base.dir}" outputproperty="output"></exec>
-				<echo message="${output}" />				
-				<!--exec executable="which ng"  outputproperty="output1"></exec>
-				<echo message="${output1}" /-->				
-				<exec executable="npm" dir="${nbia-viewer.base.dir}">
-					<arg value="run" />
-					<arg value="ng" />
+				</exec>							
+				<exec executable="ng" dir="${nbia-viewer.base.dir}">
 					<arg value="build" />
 					<arg value="--base-href" />
+					<arg value="." />					
 				</exec>
 			</sequential>
 		</then>
@@ -1282,7 +1277,8 @@ L-->
 						<arg value="/c"/>
 						<arg value="ng"/>
 						<arg value="build"/>  
-						<arg value="--base-href"/>				
+						<arg value="--base-href"/>
+						<arg value="."/>					
 					</exec>
 				</sequential>
 			</then>	
@@ -1303,14 +1299,10 @@ L-->
 				<exec executable="npm" dir="${nbia-admin.base.dir}">
 					<arg value="install" />
 				</exec>
-				<!--exec executable="which ng" dir="${nbia-admin.base.dir}" outputproperty="output"></exec>
-				<echo message="${output}" /-->
-				<!--exec executable="ng" dir="${nbia-admin.base.dir}"-->
-				<exec executable="npm" dir="${nbia-viewer.base.dir}">
-					<arg value="run" />
-					<arg value="ng" />				
+				<exec executable="ng" dir="${nbia-admin.base.dir}">				
 					<arg value="build" />
 					<arg value="--base-href" />
+					<arg value="." />
 				</exec>
 			</sequential>
 		</then>
