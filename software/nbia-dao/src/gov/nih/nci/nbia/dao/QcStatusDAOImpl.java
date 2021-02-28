@@ -66,7 +66,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		
 		String fromStmt = "FROM GeneralSeries as gs, Patient as pt, TrialDataProvenance as tdp ";
 			
-		String whereStmt = " WHERE " +
+		String whereStmt = " WHERE 1=1 " +
 		                   computeVisibilityCriteria(qcStatus) +
 		                   computeCollectionCriteria(collectionSites) +
 		                   computeAdditionalFlags(additionalQcFlagList) +	                 
