@@ -1255,11 +1255,11 @@ L-->
 				<echo message="Linux build environment"/>
 				<exec executable="npm" dir="${nbia-viewer.base.dir}">
 					<arg value="install" />
-				</exec>
+				</exec>							
 				<exec executable="ng" dir="${nbia-viewer.base.dir}">
 					<arg value="build" />
 					<arg value="--base-href" />
-					<arg value="." />
+					<arg value="." />					
 				</exec>
 			</sequential>
 		</then>
@@ -1295,11 +1295,11 @@ L-->
 			<os family="unix"/>
 		<then>
 			<sequential>
-				<echo message="Linux build environment"/>
+				<echo message="Linux build environment"/>				
 				<exec executable="npm" dir="${nbia-admin.base.dir}">
 					<arg value="install" />
 				</exec>
-				<exec executable="ng" dir="${nbia-admin.base.dir}">
+				<exec executable="ng" dir="${nbia-admin.base.dir}">				
 					<arg value="build" />
 					<arg value="--base-href" />
 					<arg value="." />
