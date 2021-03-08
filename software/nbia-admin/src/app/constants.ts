@@ -69,6 +69,7 @@ export const Consts = {
     GET_SEARCH_FOR_PERFORM_QC: 'getQCSearch',
     GET_SERIES_FOR_DELETION: 'getSeriesForDeletion',
     GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA: 'getAdvancedQCCriteria',
+    GET_ADVANCED_QC_SEARCH: 'getAdvancedQCSearch',
     UPDATE_COLLECTION_DESCRIPTION: 'submitCollectionDescription',
     GET_HOST_NAME: 'hostName',
 

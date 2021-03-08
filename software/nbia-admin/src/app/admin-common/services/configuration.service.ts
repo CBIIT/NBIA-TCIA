@@ -80,8 +80,8 @@ export class ConfigurationService {
 
                     if( key === 'SHOW_DYNAMIC_SEARCH' ){
                         Properties.SHOW_DYNAMIC_QUERY_CRITERIA = this.utilService.isTrue( value );
-                        // console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE value: ', value);
-                        // console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: ', Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE);
+                         console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE value: ', value);
+                         console.log('MHL Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: ', Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE);
                     }
 
                     if( key === 'DEMO_MODE' ){

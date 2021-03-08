@@ -3,19 +3,19 @@
 // -------------------------------------------------------------------------------------------
 
 
+import { EventEmitter, Injectable } from '@angular/core';
 
-import {EventEmitter, Injectable} from '@angular/core';
+import { UtilService } from '@app/admin-common/services/util.service';
+import { Properties } from '@assets/properties';
+import { DynamicQueryCriteriaTypes } from '@app/constants';
 
-import {UtilService} from '@app/admin-common/services/util.service';
-import {Properties} from '@assets/properties';
-import {DynamicQueryCriteriaTypes} from "@app/constants";
-
-@Injectable({
+@Injectable( {
     providedIn: 'root'
-})
-export class DynamicQueryCriteriaService {
+} )
+export class DynamicQueryCriteriaService{
 
-    initWidgetEmitter = new EventEmitter();
+    addWidgetEmitter = new EventEmitter();
+    deleteWidgetEmitter = new EventEmitter();
 
     // I will use these for test values for now
     dynamicQueryCriteria = 'testCriteria';
@@ -28,7 +28,7 @@ export class DynamicQueryCriteriaService {
     dynamicQueryCriteriaOpenCloseButton = true;
     dynamicQueryCriteriaInputDelimiter = ',';
 
-    constructor(private utilService: UtilService) {
+    constructor( private utilService: UtilService ) {
         //      console.log( 'MHL ** 010 getDynamicQueryCriteriaLargeTextInput: ', this.getDynamicQueryCriteriaLargeTextInput() );
         /*       console.log( 'MHL ** 011 getDynamicQueryCriteriaLargeTextInput: ', this.getDynamicQueryCriteriaLargeTextInput(
                    {
@@ -44,18 +44,33 @@ export class DynamicQueryCriteriaService {
     }
 
 
-
-    initWidget( widgetData){
-        console.log('MHL initWidget widgetData: ', widgetData);
-        this.initWidgetEmitter.emit(widgetData);
+    /**
+     * Adds one widget
+     * @param widgetData
+     */
+    addWidget( widgetData ) {
+        console.log( 'MHL addWidget widgetData: ', widgetData );
+        this.addWidgetEmitter.emit( widgetData );
     }
 
-    getDynamicQueryWidget(criteriaData?) {
+    /**
+     * delete one widget
+     * @param criteriaType
+     * @param inputType
+     * THIS IS USED BY THE TEST WIDGET
+     */
+    deleteWidget( criteriaType, inputType ) {
+        console.log( 'MHL deleteWidget criteriaType: ', criteriaType );
+        console.log( 'MHL deleteWidget inputType: ', inputType );
+        this.deleteWidgetEmitter.emit( { criteriaType, inputType });
+    }
+
+    getDynamicQueryWidget( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if (criteriaData !== undefined) {
+        if( criteriaData !== undefined ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
-        } else {
+        }else{
             let temp = {
                 dynamicQueryCriteriaSmallTextInput: true,
                 dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.WIDGET,
@@ -95,12 +110,12 @@ export class DynamicQueryCriteriaService {
         }
     }
 
-    getDynamicQueryWidget1(criteriaData?) {
+    getDynamicQueryWidget1( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if (criteriaData !== undefined) {
+        if( criteriaData !== undefined ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
-        } else {
+        }else{
             let temp = {
                 dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.WIDGET,
                 dynamicQueryCriteria: 'testWidget',
@@ -131,12 +146,12 @@ export class DynamicQueryCriteriaService {
         }
     }
 
-    getDynamicQueryWidget2(criteriaData?) {
+    getDynamicQueryWidget2( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if (criteriaData !== undefined) {
+        if( criteriaData !== undefined ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
-        } else {
+        }else{
             let temp = {
                 dynamicQueryCriteriaLargeTextInput: true,
                 dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.WIDGET,
@@ -154,39 +169,40 @@ export class DynamicQueryCriteriaService {
 
         }
     }
-/*
-    getDynamicQueryWidget2(criteriaData?) {
-        Properties.dynamicQueryCriteriaSequenceNumber++;
-        if (criteriaData !== undefined) {
-            criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
-            return criteriaData;
-        } else {
-            let temp = {
 
-                dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.WIDGET,
-                dynamicQueryCriteria: 'testWidget',
-                // dynamicQueryCriteriaRequired: true,
-                dynamicQueryCriteriaHeading: 'Test Widget',
-                dynamicQueryCriteriaAllowNoChoice: true,
-                // dynamicQueryCriteriaSort: false,
-                dynamicQueryCriteriaOpenCloseButton: true,
-                dynamicQueryCriteriaSmallTextInput: false,
-                dynamicQueryCriteriaLargeTextInput: false,
-                dynamicQueryCriteriaCheckboxArray: ['Zulu'],
-                sequenceNumber: Properties.dynamicQueryCriteriaSequenceNumber
-            };
-            return temp;
+    /*
+        getDynamicQueryWidget2(criteriaData?) {
+            Properties.dynamicQueryCriteriaSequenceNumber++;
+            if (criteriaData !== undefined) {
+                criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
+                return criteriaData;
+            } else {
+                let temp = {
 
+                    dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.WIDGET,
+                    dynamicQueryCriteria: 'testWidget',
+                    // dynamicQueryCriteriaRequired: true,
+                    dynamicQueryCriteriaHeading: 'Test Widget',
+                    dynamicQueryCriteriaAllowNoChoice: true,
+                    // dynamicQueryCriteriaSort: false,
+                    dynamicQueryCriteriaOpenCloseButton: true,
+                    dynamicQueryCriteriaSmallTextInput: false,
+                    dynamicQueryCriteriaLargeTextInput: false,
+                    dynamicQueryCriteriaCheckboxArray: ['Zulu'],
+                    sequenceNumber: Properties.dynamicQueryCriteriaSequenceNumber
+                };
+                return temp;
+
+            }
         }
-    }
-*/
+    */
 
-    getDynamicQueryCriteriaSmallTextInput(criteriaData?) {
+    getDynamicQueryCriteriaSmallTextInput( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if (criteriaData !== undefined) {
+        if( criteriaData !== undefined ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
-        } else {
+        }else{
             let temp = {
                 dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.SMALL_TEXT_INPUT,
                 dynamicQueryCriteria: 'testCriteriaTypeTwo',
@@ -248,6 +264,7 @@ export class DynamicQueryCriteriaService {
         };
         return temp;
     }
+
     getDynamicMultiChoiceList1() {
         Properties.dynamicQueryCriteriaSequenceNumber++;
         let temp = {
@@ -287,7 +304,6 @@ export class DynamicQueryCriteriaService {
     }
 
 
-
     getDynamicQueryCriteriaDateRange() {
         Properties.dynamicQueryCriteriaSequenceNumber++;
         let temp = {
@@ -303,7 +319,7 @@ export class DynamicQueryCriteriaService {
     }
 
     getDynamicTwoLevelMultiChoiceList() {
-        console.log('MHL AAgetDynamicTwoLevelMultiChoiceList');
+        console.log( 'MHL AAgetDynamicTwoLevelMultiChoiceList' );
         Properties.dynamicQueryCriteriaSequenceNumber++;
         let temp = {
             dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.TWO_LEVEL_MULTIPLE_SELECTION,
@@ -337,19 +353,17 @@ export class DynamicQueryCriteriaService {
     }
 
 
-
-
     /**
      * Create a test criteria - Large Text Input.
      * @param criteriaData
      */
-    getDynamicQueryCriteriaLargeTextInput(criteriaData?) {
+    getDynamicQueryCriteriaLargeTextInput( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
 
-        if (criteriaData !== undefined) {
+        if( criteriaData !== undefined ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
-        } else {
+        }else{
             let temp = {
                 dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.LARGE_TEXT_INPUT,
                 dynamicQueryCriteria: this.dynamicQueryCriteria,

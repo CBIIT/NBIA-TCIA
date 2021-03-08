@@ -102,7 +102,7 @@ export let Properties = {
     SHOW_HEADER: true,
     SHOW_FOOTER: true,
 
-    SHOW_DYNAMIC_QUERY_CRITERIA: false, // TODO this is not being used. We will use when the "Dynamic Search" has it's own tab.
+    SHOW_DYNAMIC_QUERY_CRITERIA: false, // will use when the "Dynamic Search" has it's own tab.
     SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false
 
 };

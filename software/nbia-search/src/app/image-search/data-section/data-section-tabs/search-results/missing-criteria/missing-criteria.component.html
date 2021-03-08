@@ -3,15 +3,16 @@
 <!-- ----------  This "popup" will list the missing criteria, and suggest that the user log in.       ---------- -->
 <!-- ----------  @TODO Change message if the user is already logged in.                               ---------- -->
 
-<div *ngIf="displayText.length > 0" class="panel panel-info missing-criteria">
+<div *ngIf="displayText.length > 0" class="card card-nbia-danger alert-box-div alert-box-shadow missing-criteria">
 
     <div class="panel-heading">
-        <div class="panel-title missing-criteria-panel-title">
+        <div class="card-heading card-nbia-header-danger missing-criteria-panel-title">
+            <img class=" mt-2 ml-3" src="assets/images/icons/exclamation_red_32px.png">
             Inaccessible search criteria
         </div>
     </div>
 
-    <div style="padding-top:20px" class="panel-body ">
+    <div style="padding-top:20px" class="card-body">
 
         <div *ngFor="let t of displayText" class="missing-criteria-list-text">
             {{t}}

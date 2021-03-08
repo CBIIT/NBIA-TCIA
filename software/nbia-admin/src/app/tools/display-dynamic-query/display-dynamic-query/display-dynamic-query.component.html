@@ -1,0 +1,63 @@
+<!---------------------------------------------------------------------------------------->
+<!----------                       Display Query at top                       ------------>
+<!----------     This is updated as criteria are selected from the left side     --------->
+<!---------------------------------------------------------------------------------------->
+
+<div class="alert alert-info display-query display-wrap">
+    <button
+        class="btn btn-nbia-default d-inline-flex align-items-center"
+        title="Clear query"
+        (click)="onClearQueryClick()"
+    >
+        <img
+            class="display-query-clear-icon"
+            src="assets/images/TOOLS/clear_black.png"
+        />
+        <span>&nbsp;Clear</span>
+    </button>
+
+ <!--
+    <span *ngFor="let criteria of displayQueryData; let i = index">
+        <span class="criteria-display-title">{{
+            criteria["displayName"]
+            }}</span>
+
+        <span
+            *ngIf="
+                criteria['criteria'] !== consts.QUERY_CRITERIA_QC_STATUS &&
+                criteria['criteria'] !== consts.QUERY_CRITERIA_SUBJECT_ID
+            "
+        >
+            <span *ngIf="criteria['displayData'].length > 0">
+                <span class="p-0 m-0">(</span>
+                <span class="criteria-display-name display-wrap">{{
+                    criteria["displayData"]
+                    }}</span>
+                <span class="p-0 m-0">)</span>
+            </span>
+        </span>
+
+        <span
+            *ngIf="
+                criteria['criteria'] === consts.QUERY_CRITERIA_QC_STATUS ||
+                criteria['criteria'] === consts.QUERY_CRITERIA_SUBJECT_ID
+            "
+        >
+            <span class="p-0 m-0">(</span>
+            <span *ngFor="let status of criteria['displayData']; let i = index">
+                <span class="criteria-display-comma" *ngIf="i > 0">,</span>
+                <span class="criteria-display-name display-wrap">{{
+                    criteria["displayData"][i]
+                    }} status:{{status}}</span>
+            </span>
+            <span class="p-0 m-0">)</span>
+        </span>
+
+        <span
+            *ngIf="i < displayQueryData.length - 1"
+            class="label label-default criteria-and"
+        >AND</span
+        >
+    </span>
+-->
+</div>

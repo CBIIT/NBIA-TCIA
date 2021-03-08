@@ -7,7 +7,8 @@
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "build-docs": "npx typedoc --logLevel Verbose --out code-docs --exclude **/*.spec.ts src/app"
     },
     "private": true,
     "dependencies": {
@@ -35,6 +36,7 @@
         "rxjs": "~6.4.0",
         "ts-promise": "^2.2.0",
         "tslib": "^1.10.0",
+        "typedoc": "^0.20.23",
         "zone.js": "~0.9.1"
     },
     "devDependencies": {
@@ -59,6 +61,8 @@
         "protractor": "~5.4.0",
         "ts-node": "~7.0.0",
         "tslint": "~5.15.0",
+        "typedoc": "^0.20.23",
+        "typedoc-plugin-extras": "^1.1.7",
         "typescript": "~3.5.3"
     }
 }

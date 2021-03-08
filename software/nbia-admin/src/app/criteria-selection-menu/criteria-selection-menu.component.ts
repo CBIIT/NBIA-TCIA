@@ -45,6 +45,49 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
                 this.criteriaData = data;
             } );
 
+        this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            item => {
+                console.log( 'MHL CriteriaSelectionMenuComponent deleteWidgetEmitter item: ', item );
+                console.log( 'MHL CriteriaSelectionMenuComponent deleteWidgetEmitter and: ', this.and );
+                console.log( 'MHL CriteriaSelectionMenuComponent deleteWidgetEmitter or: ', this.or );
+                for( let n = 0; n < this.criteriaData.length; n++ ){
+                    for( let i = 0; i < this.criteriaData[n]['criteriaObjects'].length; i++ ){
+                        console.log( 'MHL CriteriaSelectionMenuComponent this.elementsUsed[' + n + '][' + i + ']: ', this.elementsUsed[n][i] );
+                        if( (item['criteriaType'] === this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType']) &&
+                            (item['inputType'] === this.criteriaData[n]['criteriaObjects'][i]['configuration']['inputType']) ){
+                            console.log( 'MHL MATCH [' + n + '][' + i + ']' );
+                            console.log( 'MHL MATCH and[' + n + '][' + i + ']: ', this.and[n][i] );
+                            this.elementsUsed[n][i] = false;
+                            /*
+                                                        this.and[n][i] = false;
+                                                        this.or[n][i] = false;
+                                                        this.omit[n][i] = true;
+                            */
+                        }
+                    }
+                }
+
+                for( let n = 0; n < this.criteriaData.length; n++ ){
+
+                    let stillUsed = false;
+                    for( let i = 0; i < this.criteriaData[n]['criteriaObjects'].length; i++ ){
+                        // If elementUsed is false set and and or [n] to false
+                        // this.elementsUsed[n][i]
+
+                        if(this.elementsUsed[n][i])
+                        {
+                            stillUsed = true;
+                        }
+                    }
+                    if( ! stillUsed ){
+                        this.and[n] = false;
+                        this.or[n] = false;
+                        this.omit[n] = true;
+                    }
+                }
+
+            } );
+
 
         this.commonService.showCriteriaSelectionMenuEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -72,7 +115,6 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
             } );
 
 
-
         // Wait until we have the access token before getting the dynamic criteria selection menu data.
         while(
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
@@ -91,12 +133,10 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
         }
 
 
-
-
         console.log( 'MHL 300 initElementsUsed this.criteriaData: ', this.criteriaData );
         this.criteriaSelectionMenuService.initElementsUsed( this.criteriaData );
 
-       this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
+        this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
 
         // Set all criteria to "Omit"
         for( let n = 0; n < this.criteriaData.length; n++ ){
@@ -795,6 +835,7 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
         this.commonService.showCriteriaSelectionMenu( false );
     }
 
+
     onCriteriaSelectionMenuOkayClick() {
         for( let n = 0; n < this.criteriaData.length; n++ ){
             console.log( 'MHL onCriteriaSelectionMenuOkayClick: ', this.criteriaData[n] );
@@ -815,7 +856,7 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
                 }
 
                 // Add the widget
-                this.dynamicQueryCriteriaService.initWidget( critJson0['configuration'] );
+                this.dynamicQueryCriteriaService.addWidget( critJson0['configuration'] );
             }
         }
         this.commonService.showCriteriaSelectionMenu( false );
@@ -831,9 +872,7 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
     }
 
 
-    ngOnDestroy()
-        :
-        void {
+    ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

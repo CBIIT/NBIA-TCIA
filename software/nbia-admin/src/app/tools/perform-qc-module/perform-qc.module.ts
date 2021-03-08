@@ -19,6 +19,7 @@ import { PerformQcBulkOperationsComponent } from './perform-qc/perform-qc-bulk-o
 import { SearchResultsSectionModule } from '../search-results-section-module/search-results-section.module';
 import { QcHistoryReportModuleModule } from '../qc-history-report-module/qc-history-report-module.module';
 import { AngularDraggableModule } from 'angular2-draggable';
+import { DisplayDynamicQueryModule } from '@app/tools/display-dynamic-query/display-dynamic-query.module';
 
 
 @NgModule( {
@@ -41,7 +42,8 @@ import { AngularDraggableModule } from 'angular2-draggable';
         AdminCommonPipeModule,
         SearchResultsSectionModule,
         QcHistoryReportModuleModule,
-        AngularDraggableModule
+        AngularDraggableModule,
+        DisplayDynamicQueryModule
     ]
 } )
 export class PerformQcModule{

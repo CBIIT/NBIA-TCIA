@@ -54,11 +54,11 @@ describe( 'DynamicQueryBuilderService', () => {
         service.addCriteriaQueryPart( qPart );
         expect( service.getQueryPartCount() ).toEqual( 3 );
 
-        service.deleteCriteriaQueryPart( qPart );
+        service.deleteCriteriaQueryPart( 'xX', 'xX' );
         expect( service.getQueryPartCount() ).toEqual( 2 );
 
         qPart =  new DynamicCriteriaQueryPart( WIDGET_TYPE.UNKNOWN,  ['The data'], 'XX', 'XX', 'or' );
-        service.deleteCriteriaQueryPart( qPart );
+        service.deleteCriteriaQueryPart( 'XX', 'XX' );
         expect( service.getQueryPartCount() ).toEqual( 1 );
 
 

@@ -8,12 +8,15 @@
         - {{  (cartList.length > lastRow ? lastRow + 1 : cartList.length)}}</b> of <b>{{cartList.length}}</b>
     Series
     </span>
+
     <!-- Currently this is Export spreadsheet & Download button -->
     <nbia-cart-button-group
             *ngIf="cartList.length > 0"
             class="cart-button-group"
+            [allDisabled]=allDisabled
             [cartList]=cartList
     ></nbia-cart-button-group>
+
     <!-- Main data display -->
     <table class="cart-list-table">
         <!--  Heading  -->

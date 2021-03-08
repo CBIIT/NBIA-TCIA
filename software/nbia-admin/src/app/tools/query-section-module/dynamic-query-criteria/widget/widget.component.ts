@@ -9,6 +9,10 @@ import {
 } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component';
 import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
 import { DynamicCriteriaQueryPart } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-criteria-query-part';
+import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
+import { ApiService } from '@app/admin-common/services/api.service';
+import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import { Consts } from '@app/constants';
 
 export enum WIDGET_TYPE{
     UNKNOWN,
@@ -132,7 +136,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     date1;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private preferencesService: PreferencesService, private dynamicQueryBuilderService: DynamicQueryBuilderService ) {
+    constructor( private preferencesService: PreferencesService, private dynamicQueryBuilderService: DynamicQueryBuilderService,
+                 private dynamicQueryCriteriaService: DynamicQueryCriteriaService, private apiService: ApiService,
+                 private displayDynamicQueryService: DisplayDynamicQueryService) {
     }
 
     ngOnInit() {
@@ -144,6 +150,20 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             } );
         // Get the initial font size value
         this.currentFont = this.preferencesService.getFontSize();
+
+        // When the "Clear" button in the Display query at the top is clicked.
+        if( this.displayDynamicQueryService === undefined){
+            console.log('MHL displayDynamicQueryService === undefined');
+        }else{
+            console.log('MHL displayDynamicQueryService NOT undefined');
+
+        }
+        console.log('MHL ');
+        this.displayDynamicQueryService.clearDynamicQuerySectionQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+               this.onClearClick();
+            } );
+
+
 
         this.initParameters();
 
@@ -172,6 +192,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
 
         this.sequenceNumber = this.queryCriteriaData['sequenceNumber'];
+        console.log('MHL this.queryCriteriaData[\'sequenceNumber\']: ', this.queryCriteriaData['sequenceNumber']);
         // this.criteriaName = this.queryCriteriaData['dynamicQueryCriteria'];
 
         this.criteriaHeading = this.queryCriteriaData['dynamicQueryCriteriaHeading'];
@@ -278,15 +299,15 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'] !== undefined ){
             this.criteriaAllAnyDefault = this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'].toUpperCase();
         }
- /*
-        console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAndOrType\']: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrType'] );
-        console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAndOrDefault\']: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] );
-        console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAllAnyType\']: ', this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'] );
-        console.log( 'MHL this.criteriaAndOrType: ', this.criteriaAndOrType );
-        console.log( 'MHL this.criteriaAndOrDefault: ', this.criteriaAndOrDefault );
-        console.log( 'MHL this.criteriaAllAnyType: ', this.criteriaAllAnyType );
-        console.log( 'MHL this.criteriaAllAnyDefault: ', this.criteriaAllAnyDefault );
-*/
+        /*
+               console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAndOrType\']: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrType'] );
+               console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAndOrDefault\']: ', this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] );
+               console.log( 'MHL this.queryCriteriaData[\'dynamicQueryCriteriaAllAnyType\']: ', this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'] );
+               console.log( 'MHL this.criteriaAndOrType: ', this.criteriaAndOrType );
+               console.log( 'MHL this.criteriaAndOrDefault: ', this.criteriaAndOrDefault );
+               console.log( 'MHL this.criteriaAllAnyType: ', this.criteriaAllAnyType );
+               console.log( 'MHL this.criteriaAllAnyDefault: ', this.criteriaAllAnyDefault );
+       */
         // If there is no "Apply" button or checkbox, set applyState to true because we need to apply on any change
         if( (!this.criteriaApplyButton) && (!this.criteriaApplyCheckbox) ){
             this.applyState = true;
@@ -386,7 +407,12 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * When the top right red X is clicked
      */
     onRemoveCriteriaClick() {
-        console.log( 'MHL WidgetComponent onRemoveCriteriaClick' );
+        console.log( 'MHL 01 WidgetComponent onRemoveCriteriaClick criteriaType: ', this.queryCriteriaData['criteriaType'] );
+        console.log( 'MHL 01 WidgetComponent onRemoveCriteriaClick inputType: ', this.queryCriteriaData['inputType'] );
+
+        // This service is just used by the tester.  //BE Shore to wire up delete
+        this.dynamicQueryCriteriaService.deleteWidget( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
+        this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
     }
 
     onSearchGlassClick() {
@@ -525,9 +551,13 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     }
 
     removeQuery() {
+        // criteriaQueryInputType
         console.log( 'MHL ***  REMOVE QUERY  ***' );
     }
 
+    /**
+     * @TODO react to newly empty query parts
+     */
     updateQuery() {
         console.log( 'MHL ***  UPDATE QUERY  ***' );
         console.log( 'MHL ***  Widget type: ', WIDGET_TYPE[this.widgetType] );
@@ -577,23 +607,38 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 userInput = [];
                 if( this.date0 !== undefined ){
                     console.log( 'MHL CALENDAR: ', this.date0['formatted'] );
-                    userInput.push(this.date0['formatted']);
+                    userInput.push( this.date0['formatted'] );
                 }else{
                     console.log( 'MHL CALENDAR NO first date' );
-                    userInput.push('');
+                    userInput.push( '' );
                 }
                 if( this.date1 !== undefined ){
                     console.log( 'MHL CALENDAR: ', this.date1['formatted'] );
-                    userInput.push(this.date1['formatted']);
+                    userInput.push( this.date1['formatted'] );
                 }else{
                     console.log( 'MHL CALENDAR NO second date' );
-                    userInput.push('');
+                    userInput.push( '' );
                 }
                 break;
         }
 
-        // Add this to the dynamicQueryBuilderService's list
-        if(userInput.length > 0){
+        // Detect empty queries.
+        console.log('MHL userInput: ', userInput );
+        let noInputData = true;
+        for( let f = 0; f < userInput.length; f++){
+            if( userInput[f].length > 0){
+                noInputData = false;
+            }
+        }
+        if( noInputData){
+            // Remove this criteria's part of the query and rerun the query
+             this.dynamicQueryBuilderService.deleteCriteriaQueryPart(this.criteriaQueryType, this.criteriaQueryInputType );
+            console.log('MHL 002 Calling apiService.doAdvancedQcSearch');
+            this.apiService.doAdvancedQcSearch( this.dynamicQueryBuilderService.buildServerQuery() );
+        }
+
+            // Add this to the dynamicQueryBuilderService's list
+        else if( userInput.length > 0 ){
             this.dynamicQueryBuilderService.addCriteriaQueryPart( new DynamicCriteriaQueryPart( this.widgetType, userInput, this.criteriaQueryType, this.criteriaQueryInputType, this.criteriaLevelAndOrOr ) );
         }
 

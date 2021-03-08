@@ -74,15 +74,20 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.dynamicQueryCriteriaService.initWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+        this.dynamicQueryCriteriaService.addWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
                 this.addQueryCriteria( data );
             } );
 
+        this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            async data => {
+                this.deleteQueryCriteria( data );
+            } );
+
 /*
-        this.dynamicQueryCriteriaService.initWidget( this.testData2 );
-        this.dynamicQueryCriteriaService.initWidget( this.testData0 );
-        this.dynamicQueryCriteriaService.initWidget( this.testData1 );
+        this.dynamicQueryCriteriaService.addWidget( this.testData2 );
+        this.dynamicQueryCriteriaService.addWidget( this.testData0 );
+        this.dynamicQueryCriteriaService.addWidget( this.testData1 );
 */
 
     }
@@ -91,6 +96,22 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
         this.queryCriteriaData.reverse();
         this.queryCriteriaData.push( qCriteriaData );
         this.queryCriteriaData.reverse();
+    }
+
+    /**
+     * Removes the widget from this.queryCriteriaData list, this removes it from the screen
+     * @TODO Remove this criteria's part of the query
+     * @TODO Re-enable this choice in the "Select Search Criteria" menu
+     *
+     * @param qCriteriaData
+     */
+    deleteQueryCriteria( qCriteriaData ) {
+        for( let f = 0; f < this.queryCriteriaData.length; f++){
+            if( (this.queryCriteriaData[f]['criteriaType'] === qCriteriaData['criteriaType']) && (this.queryCriteriaData[f]['inputType'] === qCriteriaData['inputType']) ){
+                console.log('MHL DELETE : ', this.queryCriteriaData[f]);
+                this.queryCriteriaData.splice( f, 1 );
+            }
+        }
     }
 
 

@@ -224,7 +224,6 @@ export class ApiService{
 
             }
         }
-
     }
 
     submitBulkQc( query ) {
@@ -382,8 +381,58 @@ export class ApiService{
             } );
     }
 
+    /**
+     *  TODO these methods need more consistent names
+     *  TODO add Error reaction
+     *
+     * For Dynamic criteria search
+     *
+     * @param query
+     */
+    doAdvancedQcSearch( query ){
+        // We don't know if Collection was a query criteria, so only send it if it is.
+        if( query.includes('collectionSite=')){
+            this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
+        }else{
+            this.collectionSiteEmitter.emit( '');
+        }
+        this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
+            ( performAdvancedQcSearchData ) => {
+                console.log('MHL doAdvancedQcSearch: ', performAdvancedQcSearchData);
+                this.searchResultsEmitter.emit( performAdvancedQcSearchData );
+            },
+            async performAdvancedQcSearchDataError => {
+
+                // Token has expired, try to get a new one
+                if( performAdvancedQcSearchDataError['status'] === 401 ){
+                    this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
+                    while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
+                        await this.utilService.sleep( Consts.waitTime );
+                    }
+                    console.log('MHL 02a doAdvancedQcSearch: ',  query);
+
+                    this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
+                        performAdvancedQcSearchData0 => {
+                            this.searchResultsEmitter.emit( performAdvancedQcSearchData0 );
+                        },
+                        performAdvancedQcSearchDataError0 => {
+                            this.resultsErrorEmitter.emit( performAdvancedQcSearchDataError0 );
+                        } );
+                }else{
+                    this.resultsErrorEmitter.emit( performAdvancedQcSearchDataError );
+                    console.error( 'Could not get performQcSearch from server: ', performAdvancedQcSearchDataError['status'] );
+                    console.error( 'Could not get performQcSearch from server: ', Array.from( new Uint8Array( performAdvancedQcSearchDataError ) ) );
+                }
+            } );
+    }
+
+    /**
+     *  TODO these methods need more consistent names
+     * @param query
+     */
     getPerformQcSearch( query ) {
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
+        console.log('MHL getPerformQcSearch: ',  query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
             ( performQcSearchData ) => {
                 this.searchResultsEmitter.emit( performQcSearchData );
@@ -396,6 +445,8 @@ export class ApiService{
                     while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
                         await this.utilService.sleep( Consts.waitTime );
                     }
+                    console.log('MHL 02 getPerformQcSearch: ',  query);
+
                     this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
                         performQcSearchData0 => {
                             this.searchResultsEmitter.emit( performQcSearchData0 );

@@ -51,7 +51,7 @@
 #######################################################
 # Enable the widget building tool
 #######################################################
-ENABLE_WIDGET_TESTER = true
+ENABLE_WIDGET_TESTER = false
 
 ##############################################################################
 # Show the "Dynamic Search" tab.  This is jest for testing and development.

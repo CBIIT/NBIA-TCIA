@@ -209,7 +209,7 @@ export class WidgetTestSettingsComponent implements OnInit {
 
         // Clean here
         temp = this.cleanWidgetData(temp);
-        this.dynamicQueryCriteriaService.initWidget(temp);
+        this.dynamicQueryCriteriaService.addWidget(temp);
     }
 
     setDynamicQueryCriteriaSingleLineRadioDefault(i) {

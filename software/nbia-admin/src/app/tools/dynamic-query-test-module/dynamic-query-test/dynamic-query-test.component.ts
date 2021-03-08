@@ -39,7 +39,7 @@ export class DynamicQueryTestComponent implements OnInit, OnDestroy {
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
 
-        this.dynamicQueryCriteriaService.initWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.dynamicQueryCriteriaService.addWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
                this.getDynamicWidget =  data;
             });

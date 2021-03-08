@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 export class CartButtonGroupComponent implements OnInit{
 
     @Input() cartList;
+    @Input() allDisabled;
 
     /**
      * If true Launch the popup with the TCIA downloader link.

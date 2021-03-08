@@ -44,9 +44,8 @@ export const CriteriaTypes = {
 })
 
 export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
-    queryCriteriaType = null;
 
-    // TODO Make this List its own component or maybe class - with a service to access
+    // TODO Make this List its own component or maybe class - with a service to access - maybe not
     queryCriteriaData = [];
 
     ShowSampleCount = 10;
@@ -55,13 +54,23 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private dynamicQueryCriteriaService: DynamicQueryCriteriaService) {
+    constructor(private dynamicQueryCriteriaService: DynamicQueryCriteriaService ) {
 
-
-        this.dynamicQueryCriteriaService.initWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        console.log('MHL SETTING subscribe addWidgetEmitter');
+        this.dynamicQueryCriteriaService.addWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
+                console.log('MHL Got data from dynamicQueryCriteriaService.addWidgetEmitter');
                 this.addQueryCriteria(data);
             });
+
+        console.log('MHL SETTING subscribe deleteWidgetEmitter');
+        this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            async data => {
+                console.log('MHL Got data from dynamicQueryCriteriaService.deleteWidgetEmitter');
+                this.deleteQueryCriteria(data);
+            });
+
+
     }
 
     ngOnInit() {
@@ -164,7 +173,12 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
         this.queryCriteriaData.reverse();
       //  this.queryCriteriaData.push(qCriteriaData);
         this.queryCriteriaCount = this.queryCriteriaData.length;
-        this.queryCriteriaType = qCriteriaData.dynamicQueryCriteria;
+    }
+
+    deleteQueryCriteria(qCriteriaData) {
+        console.log('MHL DynamicQueryCriteriaComponent.deleteQueryCriteria: ' , qCriteriaData);
+
+        this.queryCriteriaCount = this.queryCriteriaData.length;
     }
 
 

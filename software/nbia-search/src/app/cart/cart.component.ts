@@ -52,6 +52,9 @@ export class CartComponent implements OnInit, OnDestroy{
      */
     cartList = [];
 
+    // If all cart entries are disabled, disable the download button
+    allDisabled = true;
+
     excludeCommercialFlag = false;
     excludeCommercialCount = 0;
     showExcludeCommercialWarning = false;
@@ -484,12 +487,21 @@ export class CartComponent implements OnInit, OnDestroy{
         this.seriesListForQuery = '';
         this.seriesListForDownloadQuery = '';
         let len = this.cart.length;
+        this.allDisabled = true;
         for( let f = 0; f < len; f++ ){
-            if( !this.cart[f].disabled ){
+
+            // TODO refactor this when time permits
+            if(( this.cartList[f] !== undefined) ){
+                this.cart[f].disabled = this.cartList[f].disabled;
+            }
+
+            if(!this.cart[f].disabled){
                 this.seriesListForDownloadQuery += '&list=' + this.cart[f].seriesPkId;
+                this.allDisabled = false;
             }
             this.seriesListForQuery += '&list=' + this.cart[f].seriesPkId;
         }
+
         // Remove leading &
         this.seriesListForQuery = this.seriesListForQuery.substr( 1 );
         this.seriesListForDownloadQuery = this.seriesListForDownloadQuery.substr( 1 );
