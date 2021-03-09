@@ -20,4 +20,4 @@ You will find more details about NBIA in the following links:
   * [Installation Guide] (https://wiki.nci.nih.gov/x/kgKYFg)
   * [Hosted Instance of NBIA] (http://imaging.nci.nih.gov)
     
-Please join us in further developing and improving NBIA.
+Please join us in further developing and improving NBIA. Please submit any issues to GitHub's issue tracker.
