@@ -31,7 +31,7 @@ Build and Install
 3.	Navigate to /software/build.
 4.	Type ``ant dist``.
     *	This creates the install package in /target/dist.
-5.	Follow the [installation guide](https://wiki.nci.nih.gov/x/kgKYFg)
+5.	Follow the [installation guide](https://wiki.nci.nih.gov/x/kgKYFg).
 
 Integrate with Eclipse
 ================================================================
