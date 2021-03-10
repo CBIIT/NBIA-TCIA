@@ -38,4 +38,4 @@ Integrate with Eclipse
 1.	Select **File** > **Import**.
 2.	Select **Existing Projects into Workspace**.
 3.	Select the software directory within the working copy and click **Finish**.
-4.	Define a classpath variable NBIA_BASE to point to the /software directory.
+4.	Define a classpath variable, NBIA_BASE, to point to the /software directory.
