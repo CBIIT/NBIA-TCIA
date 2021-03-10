@@ -25,12 +25,12 @@ Please join us in further developing and improving NBIA. Please submit any issue
 Build and Install
 ================================================================
 1.	Install the required software
- * Java 1.8.x
- *	Ant 1.8.x
+  * Java 1.8.x
+  *	Ant 1.8.x
 2.	Use git to download the project.
 3.	Navigate to /software/build.
 4.	Type ``ant dist``.
- *	This creates the install package in /target/dist.
+  -	This creates the install package in /target/dist.
 5.	Follow the [installation guide] (https://wiki.nci.nih.gov/x/kgKYFg).
 
 Integrate with Eclipse
