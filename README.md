@@ -20,4 +20,22 @@ You will find more details about NBIA in the following links:
   * [Installation Guide] (https://wiki.nci.nih.gov/x/kgKYFg)
   * [Hosted Instance of NBIA] (http://imaging.nci.nih.gov)
     
-Please join us in further developing and improving NBIA. Please submit any issues to GitHub's issue tracker.
+Please join us in further developing and improving NBIA. Please submit any issues to GitHub's issue tracker. Contact [Application Support] (NCIAppSupport@mail.nih.gov) for information about open-source development and NBIA.
+
+Build and Install
+================================================================
+1.	Install the required software
+ * Java 1.8.x
+ *	Ant 1.8.x
+2.	Use git to download the project.
+3.	Navigate to /software/build.
+4.	Type ``ant dist``.
+ *	This creates the install package in /target/dist.
+5.	Follow the [installation guide] (https://wiki.nci.nih.gov/x/kgKYFg).
+
+Integrate with Eclipse
+================================================================
+1.	Select **File** > **Import**.
+2.	Select **Existing Projects into Workspace**.
+3.	Select the software directory within the working copy and click **Finish**.
+4.	Define a classpath variable NBIA_BASE to point to the /software directory.
