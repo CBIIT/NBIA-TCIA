@@ -48,7 +48,9 @@ export class CartButtonGroupComponent implements OnInit{
 */
         // Just launch the cart download.
         if( !this.showDownloaderDownload ){
-            this.commonService.cartListDownLoadButton();
+            if( ! this.allDisabled) {
+                this.commonService.cartListDownLoadButton();
+            }
         }
         else{
             // Launch the popup with the TCIA downloader link.
