@@ -7,11 +7,6 @@ The NBIA download package is a ZIP package that includes the NBIA application, s
 
 Along with the Clinical Trial Processor software from the Radiological Society of North America, NBIA supports customized de-identification of images. NBIA can integrate with other applications through a set of APIs that can facilitate data query and data transfer between multiple repositories, such as between the NCI image repositories, The Cancer Imaging Archive ([TCIA](https://www.cancerimagingarchive.net/)), and [Imaging Data Commons](https://portal.imaging.datacommons.cancer.gov/), a cloud-based resource. NBIA enables several medical imaging archives, including TCIA, which currently hosts over 27.5 million images and empowers downloads of over 100 TB per month. Anyone can deploy a local node of NBIA. 
 
-The ultimate goals of the project include:
-  * Create an imaging informatics infrastructure that provides cost-effective support for purpose-built and other databases as necessary, precluding the need to create separate infrastructure for each database;
-  * Develop searchable imaging reference libraries linked to clinical outcomes data to assist researchers and practitioners;
-  * Supply an archive for mining and integration by the broader research and clinical community; and
-  * Support data-driven decision-making.
 NBIA is distributed under the BSD 3-clause license. Please see the NOTICE and LICENSE files for details.
 
 You will find more details about NBIA in the following links:
