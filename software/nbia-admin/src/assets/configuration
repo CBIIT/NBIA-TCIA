@@ -54,6 +54,6 @@
 ENABLE_WIDGET_TESTER = false
 
 ##############################################################################
-# Show the "Dynamic Search" tab.  This is jest for testing and development.
+# Show the "Dynamic Search" tab.  This is just for testing and development.
 ##############################################################################
-SHOW_DYNAMIC_SEARCH = true
+SHOW_DYNAMIC_SEARCH = false
