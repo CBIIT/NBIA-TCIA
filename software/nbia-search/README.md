@@ -12,9 +12,6 @@
 #### Tomcat deploy
 Copy the `nbia-search` directory to Tomcat's `webapps` directory.
 
-## Custom menu
-The menu across the top (Home, News, About Us, etc...) comes from assets/customMenu.json.
-
-A "Show Introduction" menu entry will be added at the end of the "Help" menu (if there is one). 
-
-
+## TODO
+* Color of "And" in Display query
+* A little more room (move left) for XX more...
