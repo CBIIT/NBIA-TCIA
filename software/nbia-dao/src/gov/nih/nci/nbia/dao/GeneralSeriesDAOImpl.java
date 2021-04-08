@@ -427,6 +427,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
 //				+ hql + where.toString());
 
+
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
 			rs = getHibernateTemplate().find(hql + where.toString(), values);
