@@ -148,5 +148,6 @@ public class DicomConstants {
     public static final String DESCRIPTION_URI = "135";
     public static final String EVENT_TYPE = "136";
     public static final String EVENT_OFFSET = "137";
+    public static final String FILE_ID = "138";
     
 }

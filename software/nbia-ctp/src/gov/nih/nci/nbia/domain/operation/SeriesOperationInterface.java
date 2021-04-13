@@ -15,7 +15,7 @@ import gov.nih.nci.nbia.internaldomain.Study;
 import java.util.Map;
 
 public interface SeriesOperationInterface {
-	public Object validate(Map numbers) throws Exception;
+	public Object validate(Map numbers, boolean overwrite) throws Exception;
 	public void setEquip(GeneralEquipment equip);
 	public void setPatient(Patient patient);
 	public void setStudy(Study study);

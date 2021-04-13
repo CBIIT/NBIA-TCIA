@@ -71,7 +71,9 @@ public class DICOMSubmission extends getData{
 			@FormParam("batch") String batch, 
 			@FormParam("uri") String file,
 			@FormParam("thirdPartyAnalysis") String thirdPartyAnalysis, 
-			@FormParam("descriptionURI") String descriptionURI) {
+			@FormParam("descriptionURI") String descriptionURI,
+			@FormParam("posdaTransferId") String fileId, 
+			@FormParam("overwrite") String overwrite) {
 
 		if (!allowToGoOn(project, siteName)) {
 			return Response.status(403)
@@ -94,7 +96,7 @@ public class DICOMSubmission extends getData{
 				   }
                 }
                 
-                String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI);
+                String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI, fileId, overwrite);
                 if (status.equals("ok")) {
 				   return Response.ok("ok").type("application/text")
 						.build();

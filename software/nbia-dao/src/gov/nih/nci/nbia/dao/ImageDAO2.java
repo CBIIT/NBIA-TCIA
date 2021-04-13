@@ -29,6 +29,7 @@ public interface ImageDAO2 {
      */
     public List<ImageDTO2> findImagesBySeriesUid(String seriesUid,
     		                                    String exclusionSopUidList) throws DataAccessException;
+    public List<ImageDTO2> findImagesBySeriesUid(String seriesUid);
     public List<String []> getImageNamesBySeriesUid(String seriesUid) throws DataAccessException;
     
     public List<String> getImage(String seriesInstanceUid) throws DataAccessException;

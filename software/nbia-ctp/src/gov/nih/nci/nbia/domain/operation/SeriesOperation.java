@@ -42,7 +42,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	 * @throws Exception
 	 */
 	@Transactional(propagation=Propagation.REQUIRED)
-	public Object validate(Map numbers) throws Exception{		
+	public Object validate(Map numbers, boolean overwrite) throws Exception{		
 		
         String temp;
         String hql = "from GeneralSeries as series where ";
@@ -70,20 +70,22 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	        
 	        List rs =getHibernateTemplate().find(hql);	        
 	        if(rs != null && rs.size()> 0) {
+	        	overwrite=true; // new series
 	        	series = (GeneralSeries) rs.get(0);
 	        	//db constraints will make 1 the max
 	        }
 	
-	        String site=populateSeriesFromNumbers(numbers, series);
-	        
-	        series.setPatientPkId(patient.getId());
-	        series.setPatientId(patient.getPatientId());
-	        series.setStudyInstanceUID(study.getStudyInstanceUID());
-	        series.setProject(patient.getDataProvenance().getProject());
-	        series.setSite(site);
-	        setExcludeCommercial(series, patient.getDataProvenance().getProject());
-	        
-	        //does this cause any possible issue with parallelism?
+	        String site;
+			if (overwrite) {
+				site = populateSeriesFromNumbers(numbers, series);
+				series.setPatientPkId(patient.getId());
+				series.setPatientId(patient.getPatientId());
+				series.setStudyInstanceUID(study.getStudyInstanceUID());
+				series.setProject(patient.getDataProvenance().getProject());
+				series.setSite(site);
+				setExcludeCommercial(series, patient.getDataProvenance().getProject());
+			}
+			//does this cause any possible issue with parallelism?
 	        //multiple images submitted to same series at "same time"?
 	        series.setMaxSubmissionTimestamp((java.util.Date)numbers.get("current_timestamp"));
 	        

@@ -14,7 +14,7 @@ import gov.nih.nci.nbia.internaldomain.TrialSite;
 import java.util.Map;
 
 public interface PatientOperationInterface {
-	public Object validate(Map numbers) throws Exception ;
+	public Object validate(Map numbers, boolean overwrite) throws Exception ;
 	public void setSite(TrialSite site);
 	public void setTdp(TrialDataProvenance tdp);
 	

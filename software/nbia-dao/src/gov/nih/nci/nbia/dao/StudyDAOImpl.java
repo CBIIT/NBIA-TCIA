@@ -316,10 +316,10 @@ public class StudyDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientStudy(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException
 	{
-		String hql = "select distinct s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
+		String hql = "select s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
 				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
-				"s.patient.ethnicGroup, s.patient.dataProvenance.project, " +
-				"(select count(*) from GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID) "  +
+				"s.patient.ethnicGroup, gs.project, " +
+				"count(gs.id) "  +
 				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
@@ -331,7 +331,7 @@ public class StudyDAOImpl extends AbstractDAO
 		}
 
 		if (collection != null) {
-			where = where.append(" and UPPER(s.patient.dataProvenance.project)=?");
+			where = where.append(" and gs.project=?");
 			paramList.add(collection.toUpperCase());
 		++i;
 		}
@@ -347,15 +347,18 @@ public class StudyDAOImpl extends AbstractDAO
 		}
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+		where.append(" group by s.id ");
 		
 	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
-		
+	System.out.println("=====New");
+	long startTime = System.currentTimeMillis();
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
 			rs = getHibernateTemplate().find(hql + where.toString(), values);
 		} else
 			rs = getHibernateTemplate().find(hql + where.toString());
-
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Results returned from query in " + elapsedTime + " ms.");
         return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -376,8 +379,8 @@ public class StudyDAOImpl extends AbstractDAO
 	{
 		String hql = "select distinct s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
 				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
-				"s.patient.ethnicGroup, s.patient.dataProvenance.project, " +
-				"(select count(*) from GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID) "  +
+				"s.patient.ethnicGroup, gs.project, " +
+				"count(gs.id) "  +
 				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
@@ -396,7 +399,7 @@ public class StudyDAOImpl extends AbstractDAO
 		int i = 0;
 
 		if (collection != null) {
-			where = where.append(" and UPPER(s.patient.dataProvenance.project)=?");
+			where = where.append(" and gs.project=?");
 			paramList.add(collection.toUpperCase());
 		++i;
 		}
@@ -412,7 +415,7 @@ public class StudyDAOImpl extends AbstractDAO
 		}
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
-		
+		where.append(" group by s.id ");		
 	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
 		
 		if (i > 0) {
@@ -449,7 +452,7 @@ public class StudyDAOImpl extends AbstractDAO
 	}
 
 	/////////////////////////////////////PRIVATE/////////////////////////////////////////
-    private static final String SQL_QUERY_SELECT = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, study.patient.dataProvenance.project, series.annotationTotalSize, series.maxFrameCount, series.patientPkId, study.studyId, series.bodyPartExamined, series.thirdPartyAnalysis, series.descriptionURI, series.project  ";
+    private static final String SQL_QUERY_SELECT = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, series.project, series.annotationTotalSize, series.maxFrameCount, series.patientPkId, study.studyId, series.bodyPartExamined, series.thirdPartyAnalysis, series.descriptionURI, series.project  ";
     private static final String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join series.generalEquipment ge ";
     private static final String SQL_QUERY_WHERE = "WHERE series.visibility in ('1') ";
 
@@ -518,10 +521,10 @@ public class StudyDAOImpl extends AbstractDAO
 		if (seriesPkIds.size() == 0) {
 			return new ArrayList<StudyDTO>();
 		}
-		String selectStmt = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, study.patient.dataProvenance.project, series.annotationTotalSize , ge.manufacturerModelName, ge.softwareVersions, series.patientPkId ";
+		String selectStmt = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, gs.project, series.annotationTotalSize , ge.manufacturerModelName, ge.softwareVersions, series.patientPkId ";
 		String fromStmt = SQL_QUERY_FROM;
 		String whereStmt = SQL_QUERY_WHERE;
-		String oderBy = " Order by study.patient.dataProvenance.project,series.patientId,study.studyDate, study.studyDesc, series.modality, series.seriesDesc,ge.manufacturer, ge.manufacturerModelName, ge.softwareVersions, series.seriesInstanceUID";
+		String oderBy = " Order by series.project,series.patientId,study.studyDate, study.studyDesc, series.modality, series.seriesDesc,ge.manufacturer, ge.manufacturerModelName, ge.softwareVersions, series.seriesInstanceUID";
 
 		StringBuffer hql = null;
 		List<Integer> partitions = null;

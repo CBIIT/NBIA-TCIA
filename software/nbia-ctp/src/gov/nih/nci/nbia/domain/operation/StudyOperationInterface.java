@@ -13,7 +13,7 @@ import gov.nih.nci.nbia.internaldomain.Patient;
 import java.util.Map;
 
 public interface StudyOperationInterface {
-	public Object validate(Map numbers) throws Exception;
+	public Object validate(Map numbers, boolean overwrite) throws Exception;
 	public void setPatient(Patient patient);
 	
 }

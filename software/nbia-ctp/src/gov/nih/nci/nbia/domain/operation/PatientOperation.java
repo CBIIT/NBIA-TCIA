@@ -39,7 +39,7 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)
-	public Object validate(Map numbers) throws Exception {
+	public Object validate(Map numbers, boolean overwrite) throws Exception {
 	    Patient patient = (Patient)SpringApplicationContext.getBean("patient");
 	    
 	    try {		    
@@ -54,27 +54,24 @@ public class PatientOperation extends DomainOperation implements PatientOperatio
 		    	}
 		    }
 		    else {
+		    	overwrite = true;  // its a new patient
 		    	setPatientId(patient, numbers);
 			    patient.setDataProvenance(tdp);		
 		    }
 		    patient.setTrialSite(site);
 	
-		    //properties that can be revised through an update
-		    setPatientName(patient, numbers);
-	
-		    setPatientBirthdate(patient, numbers);
-	
-		    setPatientSex(patient, numbers);
-	
-		    setPatientEthnicGroup(patient, numbers);
-	
-		    setClinicalTrialSubjectId(patient, numbers);
-	
-		    setClinicalTrialSubjectReadingId(patient, numbers);
-		    
-		    setPatientSpeciesDescription(patient, numbers);
-		    setPatientSpeciesCode(patient, numbers);
-		    setPatientPhantomStatus(patient, numbers);
+		    if (overwrite) {
+				//properties that can be revised through an update
+				setPatientName(patient, numbers);
+				setPatientBirthdate(patient, numbers);
+				setPatientSex(patient, numbers);
+				setPatientEthnicGroup(patient, numbers);
+				setClinicalTrialSubjectId(patient, numbers);
+				setClinicalTrialSubjectReadingId(patient, numbers);
+				setPatientSpeciesDescription(patient, numbers);
+				setPatientSpeciesCode(patient, numbers);
+				setPatientPhantomStatus(patient, numbers);
+			}
 		    
 	    }
 	    catch(Exception e) {

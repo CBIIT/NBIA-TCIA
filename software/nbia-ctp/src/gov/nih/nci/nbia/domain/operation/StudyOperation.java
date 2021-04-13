@@ -36,7 +36,7 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)
-	public Object validate(Map numbers) throws Exception {
+	public Object validate(Map numbers, boolean overwrite) throws Exception {
 	    Study study = null;
 	    
 	    try {   				    
@@ -52,12 +52,15 @@ public class StudyOperation extends DomainOperation implements StudyOperationInt
 		    	}
 		    }
 		    else {
+		    	overwrite=true;  // new study
 		    	study = (Study)SpringApplicationContext.getBean("study");
 		    	setStudyInstanceUid(study, numbers);
 		    	study.setPatient(patient);
 		    }
 		
-		    populateStudyFromNumbers(numbers, study);
+		    if (overwrite) {
+				populateStudyFromNumbers(numbers, study);
+			}
 	    }
 	    catch(Exception e) {
 	    	log.error("Exception in StudyOperation " + e);

@@ -86,15 +86,16 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 	public String storeDicomObject(Map numbers,
             String fileName,
             boolean visibility, String project, String siteName, 
-    		String siteID, String trialName, String batch, String thirdPartyAnalysis, String descriptionURI) {
+    		String siteID, String trialName, String batch, String thirdPartyAnalysis, String descriptionURI, String fileId, String overwriteValue) {
 		return storeDicomObject(numbers, fileName, getFileSize(), visibility, project, siteName, 
-	    		siteID, trialName, batch, thirdPartyAnalysis, descriptionURI);
+	    		siteID, trialName, batch, thirdPartyAnalysis, descriptionURI, fileId, overwriteValue);
 	}
 	public String storeDicomObject(Map numbers,
 			                       String fileName,
 			                       long fileSize,
 			                       boolean visibility, String project, String siteName, 
-			               		String siteID, String trialName, String batch, String thirdPartyAnalysis, String descriptionURI) {
+			               		String siteID, String trialName, String batch, String thirdPartyAnalysis, 
+			               		String descriptionURI, String fileId, String overwriteValues) {
 
 		numbers.put(DicomConstants.BATCH_NUMBER, batch);
 		numbers.put(DicomConstants.PROJECT_NAME, project);
@@ -103,8 +104,13 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 		numbers.put(DicomConstants.SITE_ID, siteID);
 		numbers.put(DicomConstants.THIRD_PARTY_ANALYSIS, thirdPartyAnalysis);
 		numbers.put(DicomConstants.DESCRIPTION_URI, descriptionURI);
+		numbers.put(DicomConstants.FILE_ID, fileId);
 		
 		TrialDataProvenance tdp=null;
+		boolean overwrite=true;
+		if (overwriteValues != null && overwriteValues.equalsIgnoreCase("NO")) {
+			overwrite=false;
+		}
         errors.clear();
         try {
 			tdp = (TrialDataProvenance)tdpo.validate(numbers);
@@ -129,7 +135,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
         try {
 			po.setTdp(tdp);
 			po.setSite(null);  ///we dont care about this....
-			patient = (Patient)po.validate(numbers);
+			patient = (Patient)po.validate(numbers, overwrite);
 			getHibernateTemplate().saveOrUpdate(patient);
         }catch(Exception e) {
             log.error("Exception in PatientOperation " + e);
@@ -138,7 +144,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
         Study study=null;
         try {
 			so.setPatient(patient);
-			study = (Study)so.validate(numbers);
+			study = (Study)so.validate(numbers, overwrite);
 			getHibernateTemplate().saveOrUpdate(study);
         }catch(Exception e) {
             log.error("Exception in StudyOperation " + e);
@@ -146,7 +152,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
         }
         GeneralEquipment equip=null;
         try {
-			equip = (GeneralEquipment)geo.validate(numbers);
+			equip = (GeneralEquipment)geo.validate(numbers, overwrite);
 			getHibernateTemplate().saveOrUpdate(equip);
         }catch(Exception e) {
             log.error("Exception in GeneralEquipmentOperation " + e);
@@ -157,7 +163,7 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 			serieso.setEquip(equip);
 			serieso.setPatient(patient);
 			serieso.setStudy(study);
-			series = (GeneralSeries)serieso.validate(numbers);
+			series = (GeneralSeries)serieso.validate(numbers, overwrite);
 			getHibernateTemplate().saveOrUpdate(series);
 			//ao.updateAnnotation(series);
         }catch(Exception e) {

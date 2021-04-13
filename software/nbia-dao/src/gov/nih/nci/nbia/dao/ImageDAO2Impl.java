@@ -42,6 +42,19 @@ public class ImageDAO2Impl extends AbstractDAO
      * Return all the images for a given series.  Optionally exclude
      * sop instance uid's from the returned list.
      */
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+    public List<ImageDTO2> findImagesBySeriesUid(String seriesUid)  {
+		List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
+		try {
+			imageResults=findImagesBySeriesUid(seriesUid, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return imageResults;
+	}
+	
 	@Transactional(propagation=Propagation.REQUIRED)
     public List<ImageDTO2> findImagesBySeriesUid(String seriesUid,
     		                                    String exclusionSopUidList) throws DataAccessException {

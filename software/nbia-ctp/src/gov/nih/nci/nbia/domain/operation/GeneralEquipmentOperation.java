@@ -50,7 +50,7 @@ public class GeneralEquipmentOperation extends DomainOperation implements Genera
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)
-	public Object validate(Map numbers) throws Exception {
+	public Object validate(Map numbers, boolean overwrite) throws Exception {
 		
         String hql = "from GeneralEquipment as equip where ";
         GeneralEquipment equip = (GeneralEquipment)SpringApplicationContext.getBean("generalEquipment");
@@ -71,6 +71,7 @@ public class GeneralEquipmentOperation extends DomainOperation implements Genera
 	        List rs = getHibernateTemplate().find(hql);
 	        if(rs != null && rs.size() > 0) {
 	        	if (rs.size() == 1) {
+	        		overwrite=true; //new equipment
 	        		equip = (GeneralEquipment) rs.get(0);
 	        	}else if (rs.size() > 1) {
 	        		throw new Exception("General_Equipment table has duplicate records, please contact Data Team to fix data, then upload data again");

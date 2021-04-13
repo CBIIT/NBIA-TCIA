@@ -2152,4 +2152,13 @@ ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN GENERATED_SQL_GROUP VARCHAR (4000) NOT 
           ADD COLUMN longitudinal_temporal_offset_from_event DOUBLE PRECISION NULL;    
          </sql>
        </changeSet>
+       <changeSet id="7.8.add.posdaid" author="gustafss" dbms="mysql">
+         <comment>
+           add fields to general image track files
+         </comment>          
+         <sql>       
+          ALTER TABLE general_image 
+          ADD COLUMN posda_transfer_id int(20) NULL;    
+         </sql>
+       </changeSet>
 </databaseChangeLog>

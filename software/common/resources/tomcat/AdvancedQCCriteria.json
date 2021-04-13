@@ -397,5 +397,205 @@
             }
          }
       ]
+      
+   },
+      {
+      "parentMenuName":"QC Status",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select from List",
+            "configuration":{
+                 "dynamicQueryCriteriaMultiChoiceList": true,
+                 "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaAllAnyType": "ALLANY",
+                 "dynamicQueryCriteriaAllAnyDefault": "ANY",
+                 "dynamicQueryCriteriaHeading": "QC Status",
+                 "dynamicQueryCriteriaSearchable": true,
+                 "dynamicQueryCriteriaSort": true,
+                 "dynamicQueryCriteriaListData": ["GE"],
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": false,
+                 "dynamicQueryCriteriaCalendarPrompt0": "AAA",
+                 "dynamicQueryCriteriaCalendarPrompt1": "BBB",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
+                 "dynamicQueryCriteriaRequired": true,
+                 "criteriaType":"qcstatus",
+                 "inputType":"list"
+            }
+         }
+      ]
+      
+   },
+      {
+      "parentMenuName":"Collection",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select from List",
+            "configuration":{
+                 "dynamicQueryCriteriaMultiChoiceList": true,
+                 "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                 "dynamicQueryCriteriaClearButton": true,
+                 "dynamicQueryCriteriaOpenCloseButton": true,
+                 "dynamicQueryCriteriaAllAnyType": "ALLANY",
+                 "dynamicQueryCriteriaAllAnyDefault": "ANY",
+                 "dynamicQueryCriteriaHeading": "Collection",
+                 "dynamicQueryCriteriaSearchable": true,
+                 "dynamicQueryCriteriaSort": true,
+                 "dynamicQueryCriteriaListData": ["GE"],
+                 "dynamicQueryCriteriaAllowNoChoice": true,
+                 "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "dynamicQueryCriteriaCalendar": false,
+                 "dynamicQueryCriteriaCalendarPrompt0": "AAA",
+                 "dynamicQueryCriteriaCalendarPrompt1": "BBB",
+                 "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
+                 "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
+                 "dynamicQueryCriteriaRequired": true,
+                 "criteriaType":"collection",
+                 "inputType":"list"
+            }
+         }
+      ]
+      
+   },
+   {
+      "parentMenuName":"Released",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select",
+            "configuration":{
+                   "dynamicQueryCriteriaNumberDefault": 2,
+                   "dynamicQueryCriteriaNumberLimitHigh": 100,
+                   "dynamicQueryCriteriaNumberLimitLow": 1,
+                   "dynamicQueryCriteriaSingleLineRadio": true,
+                   "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                   "dynamicQueryCriteriaSingleLineRadio0": "Yes",
+                   "dynamicQueryCriteriaSingleLineRadio1": "No",
+                   "dynamicQueryCriteriaSingleLineRadio2": "Ignore",
+                   "dynamicQueryCriteriaRequired": true,
+                   "dynamicQueryCriteriaClearButton": true,
+                   "dynamicQueryCriteriaOpenCloseButton": true,
+                   "dynamicQueryCriteriaHeading": "Released",
+                   "dynamicQueryCriteriaSubHeading": "Sub-heading",
+                   "dynamicQueryCriteriaSort": true,
+                   "dynamicQueryCriteriaAllowNoChoice": true,
+                   "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "criteriaType":"released",
+                 "inputType":"list"
+            }
+         }
+      ]
+      
+   },
+   {
+      "parentMenuName":"Batch Number",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select",
+            "configuration":{
+                   "dynamicQueryCriteriaNumber": true,
+                   "dynamicQueryCriteriaNumberDefault": 1,
+                   "dynamicQueryCriteriaNumberLimitHigh": 93,
+                   "dynamicQueryCriteriaNumberLimitLow": 1,
+                   "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                   "dynamicQueryCriteriaRequired": true,
+                   "dynamicQueryCriteriaClearButton": true,
+                   "dynamicQueryCriteriaHeading": "Batch Number",
+                   "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "criteriaType":"batchnumber",
+                 "inputType":"list"
+            }
+         }
+      ]
+      
+   },
+   {
+      "parentMenuName":"Confirmed as Complete",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select",
+            "configuration":{
+                   "dynamicQueryCriteriaNumberDefault": 2,
+                   "dynamicQueryCriteriaNumberLimitHigh": 100,
+                   "dynamicQueryCriteriaNumberLimitLow": 1,
+                   "dynamicQueryCriteriaSingleLineRadio": true,
+                   "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                   "dynamicQueryCriteriaSingleLineRadio0": "Yes",
+                   "dynamicQueryCriteriaSingleLineRadio1": "No",
+                   "dynamicQueryCriteriaSingleLineRadio2": "Ignore",
+                   "dynamicQueryCriteriaRequired": true,
+                   "dynamicQueryCriteriaClearButton": true,
+                   "dynamicQueryCriteriaOpenCloseButton": true,
+                   "dynamicQueryCriteriaHeading": "Confirmed as Complete",
+                   "dynamicQueryCriteriaSubHeading": "Sub-heading",
+                   "dynamicQueryCriteriaSort": true,
+                   "dynamicQueryCriteriaAllowNoChoice": true,
+                   "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                 "criteriaType":"complete",
+                 "inputType":"list"
+            }
+         }
+      ]
+      
+   },
+      {
+      "parentMenuName":"Subject IDs",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"List",
+            "configuration":{
+               "dynamicQueryCriteriaLargeTextInput":true,
+               "dynamicQueryCriteriaSingleLineRadioDefault":2,
+               "dynamicQueryCriteriaClearButton":true,
+               "dynamicQueryCriteriaOpenCloseButton":true,
+               "dynamicQueryCriteriaHeading":"Subject IDs",
+               "dynamicQueryCriteriaSubHeading":"Enter comma separated ID(s)",
+               "dynamicQueryCriteriaApplyButton":true,
+               "dynamicQueryCriteriaApplyText":"Okay",
+               "dynamicQueryCriteriaSort":true,
+               "dynamicQueryCriteriaAllowNoChoice":true,
+               "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+               "dynamicQueryCriteriaCalendar":false,
+               "dynamicQueryCriteriaCalendarPrompt0":"AAA",
+               "dynamicQueryCriteriaCalendarPrompt1":"BBB",
+               "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
+               "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
+               "dynamicQueryCriteriaRequired": true,
+               "criteriaType":"subjectids",
+               "inputType":"list"
+            }
+         }
+      ]
+   },
+   {
+      "parentMenuName":"Most Recent Submission",
+      "criteriaObjects":[
+         {
+            "criteriaMenuText":"Select",
+            "configuration":{
+                  "dynamicQueryCriteriaNumberDefault": 1,
+                  "dynamicQueryCriteriaNumberLimitHigh": 93,
+                  "dynamicQueryCriteriaNumberLimitLow": 1,
+                  "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                  "dynamicQueryCriteriaRequired": true,
+                  "dynamicQueryCriteriaClearButton": true,
+                  "dynamicQueryCriteriaOpenCloseButton": true,
+                  "dynamicQueryCriteriaHeading": "Most Recent Submission",
+                  "dynamicQueryCriteriaApplyButton": true,
+                  "dynamicQueryCriteriaApplyText": "Apply",
+                  "dynamicQueryCriteriaAllowNoChoice": true,
+                  "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                  "dynamicQueryCriteriaCalendar": true,
+                  "dynamicQueryCriteriaCalendarPrompt0": "From Date",
+                  "dynamicQueryCriteriaCalendarPrompt1": "To Date",
+                 "criteriaType":"submissiondate",
+                 "inputType":"list"
+            }
+         }
+      ]
+      
    }
 ]

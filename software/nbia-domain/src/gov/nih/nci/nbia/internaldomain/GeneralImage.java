@@ -1085,6 +1085,18 @@ public class GeneralImage  implements Serializable
 		return false;
 	}
 
+	private Integer fileId;
+	
+	
+	
+	public Integer getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(Integer fileId) {
+		this.fileId = fileId;
+	}
+
 	/**
 	* Returns hash code for the primary key of the object
 	**/

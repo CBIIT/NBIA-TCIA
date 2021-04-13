@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import gov.nih.nci.nbia.dao.ValueAndCountDAO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
+import gov.nih.nci.nbia.qctool.VisibilityStatus;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONDeserializer;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
@@ -92,9 +93,24 @@ public class GetAdvancedQCCriteria extends getData{
 						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
 							object.getConfiguration().setDynamicQueryCriteriaListData(manufactures);
 						}
-			    	}
-				}
-				return Response.ok(JSONUtil.getJSONforPopupCriteriaSelector(dtos)).type("application/json")
+			    	}			    	if (dto.getParentMenuName().equalsIgnoreCase("QC Status")) {
+						List<String> statuses = new ArrayList<String>();
+						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
+							object.getConfiguration().setDynamicQueryCriteriaListData(VisibilityStatus.getVisibilities());
+						}
+			    	}
+			    	if (dto.getParentMenuName().equalsIgnoreCase("Collection")) {
+						List <String>collectionSites=new ArrayList<String>();
+						if (authorizedSiteData!=null) {
+							for (SiteData siteData:authorizedSiteData) {
+								collectionSites.add(siteData.getCollectionSite());
+							}
+						}
+						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
+							object.getConfiguration().setDynamicQueryCriteriaListData(collectionSites);
+						}
+			    	}
+				}				return Response.ok(JSONUtil.getJSONforPopupCriteriaSelector(dtos)).type("application/json")
 						.build();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

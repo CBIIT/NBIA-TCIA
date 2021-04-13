@@ -74,12 +74,12 @@ public class GetQCSearch extends getData{
                 if (!QAUserUtil.isUserQA(user)) {
                 	System.out.println("Not QA User!!!!");
 				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				   if (!sm.hasQaRole(user)) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				   } else {
-					   QAUserUtil.setUserQA(user);
-				   }
+				 //  if (!sm.hasQaRole(user)) {
+				 // 	  return Response.status(401)
+				//			.entity("Insufficiant Privileges").build();
+				 //  } else {
+				//	   QAUserUtil.setUserQA(user);
+				 //  }
                 } 
         String[] additionalQcFlagList = new String[3];
         additionalQcFlagList[0] = batch;

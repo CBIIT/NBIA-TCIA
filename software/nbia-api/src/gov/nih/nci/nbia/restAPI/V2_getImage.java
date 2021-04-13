@@ -28,6 +28,10 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
+import gov.nih.nci.nbia.dao.ImageDAO2;
+import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
+
 
 @Path("/v2/getImage")
 public class V2_getImage extends getData {
@@ -40,7 +44,8 @@ public class V2_getImage extends getData {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid) throws IOException {
+	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid,
+			@QueryParam("NewFileNames") String newFileNames) throws IOException {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
 		final String sid = seriesInstanceUid;
@@ -61,7 +66,9 @@ public class V2_getImage extends getData {
 		}
 
 		String zipName = sid + ".zip";
-		StreamingOutput stream = new StreamingOutput() {
+		StreamingOutput stream = null;
+		if (newFileNames==null||!(newFileNames.equalsIgnoreCase("yes"))) {
+		    stream = new StreamingOutput() {
 			public void write(OutputStream output) throws IOException, WebApplicationException {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
@@ -110,7 +117,53 @@ public class V2_getImage extends getData {
 						in.close();
 				}
 			}
+		}; } else {
+		    stream = new StreamingOutput() {
+			public void write(OutputStream output) throws IOException, WebApplicationException {
+				// Generate your ZIP and write it to the OutputStream
+				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
+				InputStream in = null;
+
+				try {
+					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
+					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
+					for (ImageDTO2 imageResult : imageResults) {
+						in = new FileInputStream(new File(imageResult.getFileName()));
+
+						if (in != null) {
+							// Add Zip Entry
+							zip.putNextEntry(new ZipEntry(imageResult.getNewFilename()));
+
+							// Write file into zip
+							IOUtils.copy(in, zip);
+							zip.closeEntry();
+							in.close();
+						}
+					}
+
+					zip.close();
+//					Timestamp zetimestamp = new Timestamp(System.currentTimeMillis());
+//					System.out.println("Done with zip and stream--" + sdf.format(zetimestamp));
+				
+				} catch (FileNotFoundException fnex) {
+					fnex.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					zip.close();
+					// Flush output
+					if (output != null) {
+						output.flush();
+						output.close();
+					}
+					// Close input
+					if (in != null)
+						in.close();
+				}
+			}
 		};
+		}
+	
 
 		return Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM)
 				.header("Content-Disposition", "attachment; filename=\"" + zipName + "\"").build();
