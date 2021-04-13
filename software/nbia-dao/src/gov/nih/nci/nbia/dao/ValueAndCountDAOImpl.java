@@ -245,6 +245,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
               item.setCriteria(row[0].toString());
               item.setCount(row[1].toString());
               returnValue.add(item);
+           } else {
+               ValuesAndCountsDTO item=new ValuesAndCountsDTO();
+               item.setCriteria("NOT SPECIFIED");
+               item.setCount(row[1].toString());
+               returnValue.add(item);
            }
         }
 		return returnValue;

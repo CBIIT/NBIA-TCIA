@@ -336,7 +336,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<Object[]> rs = null;
 		String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
 				+ "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
-				+ "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount"
+				+ "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp"
 				+ " from GeneralSeries s where s.visibility in ('1') ";
 
 		List<String> paramList = new ArrayList<String>();
@@ -400,7 +400,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<Object[]> rs = null;
 		String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
 				+ "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
-				+ "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount"
+				+ "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp"
 				+ " from GeneralSeries s where s.visibility in ('1') ";
 
 		List<Date> paramList = new ArrayList<Date>();

@@ -65,6 +65,14 @@ public class PatientSummaryFactory {
 					    	 bodyParts.put(part, new Integer(1));
 					     }
 					}
+				} else {
+				     if (bodyParts.get("NOT SPECIFIED")!=null){
+				    	 Integer count = bodyParts.get("NOT SPECIFIED");
+				    	 count++;
+				    	 bodyParts.put("NOT SPECIFIED", count);
+				     } else {
+				    	 bodyParts.put("NOT SPECIFIED", new Integer(1));
+				     }
 				}
 				if (item.getModalities()!=null) {
 					for (String modality: item.getModalities()) {
