@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
 import { Subject } from 'rxjs';
@@ -7,9 +7,12 @@ import { Subject } from 'rxjs';
     providedIn: 'root'
 } )
 export class CriteriaSelectionMenuService implements OnDestroy{
-    elementsUsed:boolean[][] = [[],[],[],[],[],[],[],[],[],[],[],[]]; // TODO There has to be a better way
+    elementsUsed:boolean[][] = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]; // TODO There has to be a better way
+
 
     criteriaData;
+    requiredCriteriaData;
+    requiredCriteriaDataEmitter = new EventEmitter();
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -36,7 +39,6 @@ export class CriteriaSelectionMenuService implements OnDestroy{
 
     initElementsUsed( criteriaData ) {
         this.criteriaData = criteriaData;
-        console.log('MHL initElementsUsed  this.criteriaData: ', this.criteriaData);
         for( let n = 0; n < criteriaData.length; n++ ){
             for( let i = 0; i < criteriaData[n]['criteriaObjects'].length; i++ ){
                 this.elementsUsed[n][i] = false;
@@ -50,6 +52,15 @@ export class CriteriaSelectionMenuService implements OnDestroy{
 
     addElementUsed( i, n ) {
         this.elementsUsed[i][n] = true;
+    }
+
+    setRequiredCriteriaData( reqData){
+        this.requiredCriteriaData = reqData;
+        this.requiredCriteriaDataEmitter.emit(this.requiredCriteriaData); // @FIXME we don't use/need this
+    }
+
+    getRequiredCriteriaData(){
+        return this.requiredCriteriaData;
     }
 
     removeElementUsed( i, n ) {

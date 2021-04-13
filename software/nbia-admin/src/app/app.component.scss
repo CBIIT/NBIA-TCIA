@@ -25,6 +25,9 @@ table {
     display: none;
 }
 
+.busy-mouse-pointer{
+    cursor: progress;
+}
 
 /* Trying to clean this up for Chrome */
 .no-outline {

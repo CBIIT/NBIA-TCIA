@@ -26,6 +26,7 @@ import { WidgetComponent } from './dynamic-query-criteria/widget/widget.componen
 import { WidgetTestSettingsComponent } from './dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component';
 import { WidgetCalendarComponent } from './dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
 import { LeftSectionDynamicComponent } from './left-section-dynamic/left-section-dynamic.component';
+import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-module/admin-common-pipe.module';
 
 
 export enum WIDGET_TYPE{
@@ -83,7 +84,8 @@ export enum WIDGET_TYPE{
         MomentModule,
         AngularDraggableModule,
         TabsModule,
-        AngularResizedEventModule
+        AngularResizedEventModule,
+        AdminCommonPipeModule
     ]
 } )
 export class QuerySectionModule{

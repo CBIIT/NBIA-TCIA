@@ -47,6 +47,9 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     currentImageWiggleRoom = 1;
 
     images = [];
+    firstImage = null;
+    justFirstImage = false;
+
     loading = false;
     loadingX = false;
     first;
@@ -58,7 +61,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
     handleMoving = false;
     showDicom = false;
-    progress = 0;
+    progress = 100;
     seriesData = {};
     collectionSite = '';
     /**
@@ -74,6 +77,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     PLAY = 0;
     PLAY_BACK = 1;
     STOP = 2;
+
 
     sectionHeading = '';
     sectionHeadings = ['Change QC Status', 'Delete Series'];
@@ -110,7 +114,14 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                 }
 
                 this.reset();
-                this.getImages();
+
+                // TESTING!!!!
+                this.getFirstImage();
+                // END TESTING
+                // this.getImages();
+
+
+                //  this.getImages();
                 this.apiService.doSubmit(
                     Consts.GET_HISTORY_REPORT_TABLE,
                     '&seriesId=' + this.seriesData['series']
@@ -201,6 +212,14 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     }
 
     async onPlayClick() {
+        // If we already have the images, this will just return
+        this.getImages();
+
+        // Wait for images to load
+        while( this.justFirstImage ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
         this.playState = this.PLAY;
 
         while(
@@ -219,7 +238,13 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     }
 
     async onPlayBackwardsClick() {
+        // Wait for images to load
+        while( this.justFirstImage ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
         this.playState = this.PLAY_BACK;
+
 
         while( this.currentImage > 1 && this.playState === this.PLAY_BACK ){
             await this.utilService.sleep( 1000 / +this.frameRate );
@@ -244,17 +269,42 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.setCurrentImage( 1 );
     }
 
-    onPreviousFrameClick() {
+    async onPreviousFrameClick() {
+        // Wait for images to load
+        while( this.justFirstImage ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
+
         this.playState = this.STOP;
         this.decCurrentImage();
     }
 
-    onNextFrameClick() {
+    async onNextFrameClick() {
+
+        // If we already have the images, this will just return
+        this.getImages();
+
+        // Wait for images to load
+        while( this.justFirstImage ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
+
         this.playState = this.STOP;
         this.incCurrentImage();
     }
 
-    onLastFrameClick() {
+    async onLastFrameClick() {
+        // If we already have the images, this will just return
+        this.getImages();
+
+        // Wait for images to load
+        while( this.justFirstImage ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
+
         this.playState = this.STOP;
         this.setCurrentImage( this.imageCount );
     }
@@ -280,20 +330,42 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.updateDicom();
     }
 
-    updateDicom() {
+    updateFirstImageDicom() {
         if( this.showDicomData ){
-            if( this.images[this.currentImage - 1] !== undefined ){
+            if( this.firstImage ){
                 this.dicomData = [];
 
                 // currentImage - 1  because currentImage starts at 1 not 0.
                 let query =
                     'imageID=' +
-                    this.images[this.currentImage - 1]['imagePkId'];
+                    this.firstImage['imagePkId'];
 
                 this.getDicomData( query ).subscribe( ( data ) => {
                     this.dicomData = data;
                     this.haveDicomData = true;
                 } );
+            }
+        }
+    }
+
+    updateDicom() {
+        if( this.showDicomData ){
+            if( this.images[this.currentImage - 1] !== undefined ){
+                this.dicomData = [];
+
+                // currentImage - 1,  because currentImage starts at 1 not 0.
+                let query =
+                    'imageID=' +
+                    this.images[this.currentImage - 1]['imagePkId'];
+
+                this.getDicomData( query ).subscribe( ( data ) => {
+                        this.dicomData = data;
+                        this.haveDicomData = true;
+                    },
+                    ( err ) => {
+                        console.error( 'ERROR updateDicom: ', err );
+                    }
+                );
             }
         }
     }
@@ -346,7 +418,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     }
 
     reset() {
-        this.progress = 0;
+        this.progress = 100;
         this.images = [];
         this.currentImage = 1;
         this.getThumbnailErrorCount = 0;
@@ -384,14 +456,88 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         return this.httpClient.post( imageDrillDownUrl, query, options );
     }
 
+    getFirstImage() {
+        this.justFirstImage = true;
+        this.getImageDrillDownData().subscribe(
+            ( data ) => {
+                this.getThumbnails(
+                    data[0]['seriesInstanceUid'],
+                    data[0]['sopInstanceUid'],
+                    this.accessTokenService.getAccessToken()
+                ).subscribe(
+                    ( thumbnailData ) => {
+                        this.currentImage = 1;
+                        this.loadingX = false;
+                        this.progress = 100;  // @TODO this is a quick fix to go with getting the first image first and display - don't forget to clean this up
+                        this.imageCount = this.imageCount = data.length;
+                        this.last = 1;
+                        this.firstImage = {
+                            thumbnailImage: this.sanitizer.bypassSecurityTrustUrl(
+                                window.URL.createObjectURL( thumbnailData )
+                            ),
+                            // 'thumbnailImage': 'assets/images/image_not_found.png',
+                            imagePkId: data[0]['imagePkId'],
+
+                            seriesInstanceUid: data[0]['seriesInstanceUid'],
+                            sopInstanceUid: data[0]['sopInstanceUid'],
+                            studyInstanceUid: data[0]['studyInstanceUid'],
+
+                            seq: 0
+                        }
+
+                        // get the DICOM data for just this one image
+                        this.updateFirstImageDicom();
+
+                        //   this.getImages();
+
+
+                    },
+                    ( thumbnailError ) => {
+                        console.error(
+                            'Error thumbnailError: ',
+                            thumbnailError['statusText']
+                        );
+
+                        // We need this count when we are waiting for all the images (by count) to arrive before moving on
+                        this.getThumbnailErrorCount++;
+                        this.last = 0;
+                        this.firstImage = {
+                            // 'thumbnailImage': this.sanitizer.bypassSecurityTrustUrl( window.URL.createObjectURL( thumbnailData ) ),
+                            thumbnailImage:
+                                'assets/images/image_not_found.png',
+                            imagePkId: data[0]['imagePkId'],
+
+                            /*                                  We can add this data back in if we want to make the image clickable and do/launch things.*/
+                            seriesInstanceUid: data[0]['seriesInstanceUid'],
+                            sopInstanceUid: data[0]['sopInstanceUid'],
+                            studyInstanceUid: data[0]['studyInstanceUid'],
+
+                            seq: 0
+                        };
+                        // If there is only one image, don't divide by zer0
+                        this.progress = 100;
+
+                        // If there is just one image we need to get the DICOM now/here.
+                        this.currentImage = 1;
+                        this.images.push( this.firstImage );
+                        this.updateDicom();
+                    }
+                );
+            } );
+    }
+
     async getImages() {
+        if( !this.justFirstImage ){
+            return;
+        }
         this.loading = true;
         this.images = [];
-        this.imageCount = 0;
+        //  this.imageCount = 0;
+        this.progress = 1;
 
         let len = 99999999;
         this.getImageDrillDownData().subscribe(
-            ( data ) => {
+            async( data ) => {
                 this.imageCount = data.length;
 
                 len = this.imageCount;
@@ -399,6 +545,10 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                 this.last = len - 1;
                 let n = 0;
                 for( let i = this.first; i <= this.last; i++ ){
+
+                    // TESTING ONLY!!!!!
+                    // await this.utilService.sleep( 100 ); // wait a little
+
                     this.getThumbnails(
                         data[i]['seriesInstanceUid'],
                         data[i]['sopInstanceUid'],
@@ -412,11 +562,10 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                                 // 'thumbnailImage': 'assets/images/image_not_found.png',
                                 imagePkId: data[i]['imagePkId'],
 
-                                /*                                  We can add this data back in if we want to make the image clickable and do/launch things.*/
+                                /* We can add this data back in if we want to make the image clickable and do/launch things.*/
                                 seriesInstanceUid: data[i]['seriesInstanceUid'],
                                 sopInstanceUid: data[i]['sopInstanceUid'],
                                 studyInstanceUid: data[i]['studyInstanceUid'],
-
                                 seq: i,
                             } );
                             // If there is only one image, don't divide by zer0
@@ -428,11 +577,15 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                                 );
                                 n++;
                             }
+                            /* We don't need this now that we display the first image and its DICOM data as soon as we display the first image (else where)
 
                             // If there is just one image we need to get the DICOM now/here.
                             if( this.imageCount === 1 ){
                                 this.updateDicom();
                             }
+                            */
+
+
                         },
 
                         // If we could not get the thumbnail from the server,
@@ -501,7 +654,10 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.images.sort( ( row1, row2 ) => row1.seq - row2.seq );
         this.haveAllData = true;
         this.currentImage = 1;
-        this.updateDicom();
+        this.justFirstImage = false;
+        // We don't need this now that we display the first image and its DICOM data as soon as we display the first image (else where)
+        // this.updateDicom();
+
     }
 
     getThumbnails( seriesUid, objectId, accessToken ): Observable<any> {

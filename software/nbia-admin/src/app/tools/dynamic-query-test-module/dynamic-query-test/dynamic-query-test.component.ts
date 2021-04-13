@@ -44,25 +44,6 @@ export class DynamicQueryTestComponent implements OnInit, OnDestroy {
                this.getDynamicWidget =  data;
             });
 
-/*
-
-        this.getDynamicMultiChoiceList = this.dynamicQueryCriteriaService.getDynamicMultiChoiceList();
-        this.getDynamicMultiChoiceList1 = this.dynamicQueryCriteriaService.getDynamicMultiChoiceList1();
-
-
-        this.getDynamicSingleChoiceList = this.dynamicQueryCriteriaService.getDynamicSingleChoiceList();
-        // console.log('MHL getDynamicSingleChoiceList: ', this.getDynamicSingleChoiceList);
-
-        this.getDynamicSingleChoiceCheckbox = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSingleCheckbox();
-
-        this.getDynamicSmallTextInput = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaSmallTextInput();
-        this.getDynamicLargeTextInput = this.dynamicQueryCriteriaService.getDynamicQueryCriteriaLargeTextInput();
-        this.getDynamicWidget = this.dynamicQueryCriteriaService.getDynamicQueryWidget();
-        this.getDynamicWidget = this.dynamicQueryCriteriaService.getDynamicQueryWidget1();
-        this.getDynamicWidget = this.dynamicQueryCriteriaService.getDynamicQueryWidget2();
-
-*/
-
     }
 
 

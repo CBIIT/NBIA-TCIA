@@ -22,7 +22,6 @@ $cineModeSeriesDataHeight: 200px;
     position: absolute;
     width: $cineModeWidth;
     height: $cineModeHeight;
-
     top: calc((100% - #{$cineModeHeight}) / 2);
     left: calc((100% - #{$cineModeWidth}) / 2);
     padding: 0;
@@ -31,8 +30,36 @@ $cineModeSeriesDataHeight: 200px;
     overflow: auto;
 }
 
+.heading-table {
+    width: 100%;
+}
+
+.grow {
+    width: 100%;
+}
+
 .scroller-div {
     // overflow: auto; // TODO
+}
+
+.cine-title-table {
+    border: solid #800 3px;
+}
+
+.cine-description-td {
+    white-space: nowrap;
+}
+
+.load-progress-bar {
+    width: 300px;
+    border: solid #347391 3px;
+    height: 28px;
+}
+
+.load-progress-bar-text {
+    color: #13526f;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .series-section-div {

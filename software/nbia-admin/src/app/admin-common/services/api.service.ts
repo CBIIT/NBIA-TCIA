@@ -7,6 +7,8 @@ import { Consts, TokenStatus } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from './access-token.service';
 import { Observable, of } from 'rxjs';
+import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
+import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -21,6 +23,7 @@ export class ApiService{
     collectionsAndDescriptions = [];
 
     updatedUserRolesEmitter = new EventEmitter();
+    updatedUserRolesErrorEmitter = new EventEmitter();
     collectionSitesAndDescriptionEmitter = new EventEmitter();
     collectionsAndDescriptionEmitter = new EventEmitter();
 
@@ -66,9 +69,9 @@ export class ApiService{
     getDynamicCriteriaSelectionMenuDataResultsEmitter = new EventEmitter();
     getDynamicCriteriaSelectionMenuDataErrorEmitter = new EventEmitter();
 
-
     constructor( private utilService: UtilService, private parameterService: ParameterService,
-                 private httpClient: HttpClient, private accessTokenService: AccessTokenService ) {
+                 private httpClient: HttpClient, private accessTokenService: AccessTokenService,
+                 private loadingDisplayService: LoadingDisplayService, private displayDynamicQueryService: DisplayDynamicQueryService ) {
 
         this.init();
 
@@ -219,9 +222,8 @@ export class ApiService{
             if( queryParameters.includes( '&visibilities=' ) ){
                 this.getPerformQcSearch( queryParameters.substr( 1 ) );
             }else{
-                // Don't do the search, and send back empty results.
+                // Don't do the search, and send back Consts.NO_SEARCH, this will tell the Searchresults screen don't show results count or pager at the topv(not the same as a search with no results).
                 this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
-
             }
         }
     }
@@ -250,7 +252,7 @@ export class ApiService{
             } );
     }
 
-    submitDeleteLicense( lic ){
+    submitDeleteLicense( lic ) {
         let deleteLicenseQuery = 'id=' + lic;
         this.doPost( Consts.SUBMIT_DELETE_COLLECTION_LICENSES, deleteLicenseQuery ).subscribe(
             ( data ) => {
@@ -261,17 +263,43 @@ export class ApiService{
             } );
     }
 
-    getDynamicCriteriaSelectionMenuData(){
+    getDynamicCriteriaSelectionMenuData() {
         this.doGet( Consts.GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA ).subscribe(
             ( data ) => {
-                console.log('MHL GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA: ', data);
                 this.getDynamicCriteriaSelectionMenuDataResultsEmitter.emit( data );
             },
-            ( err ) => {
-                console.error('MHL ERROR GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA: ', err);
+            async( err ) => {
+                if( err.status === 401 ){
+                    // If there is no user name or pass word, the refresh token will be used
+                    this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
+                    while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
+                        await this.utilService.sleep( Consts.waitTime );
+                    }
+
+                    // Have new token try again
+                    this.doGet( Consts.GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA ).subscribe(
+                        ( data0 ) => {
+                            this.getDynamicCriteriaSelectionMenuDataResultsEmitter.emit( data0 );
+                        },
+                        ( err0 ) => {
+                            this.getDynamicCriteriaSelectionMenuDataErrorEmitter.emit( err0 );
+                            this.loadingDisplayService.setLoading( false );
+                            console.error( 'Server error: ' + err.statusText + ' (' + err['status'] + ') - ' + err.error['error'] );
+                            alert( 'Server error: ' + err.statusText + ' (' + err['status'] + ') - ' + err.error['error'] );
+                        } );
+                }
+
+                // END error 401
+                else{
+                    this.getDynamicCriteriaSelectionMenuDataErrorEmitter.emit( err );
+                    this.loadingDisplayService.setLoading( false );
+                    console.error( 'Server error: ' + err.statusText + ' (' + err['status'] + ') - ' + err.error );
+                    alert( 'Server error: ' + err.statusText + ' (' + err['status'] + ') - ' + err.error );
+                }
+
+                console.error( 'ERROR GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA: ', err );
                 this.getDynamicCriteriaSelectionMenuDataErrorEmitter.emit( err );
             } );
-
     }
 
     submitBulkDeletion( query ) {
@@ -337,7 +365,16 @@ export class ApiService{
 
     }
 
-    getVisibilities() {
+    async getVisibilities() {
+        while(
+            this.accessTokenService.getAccessTokenStatus() === -1 ||
+            this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
+            this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN
+            ){
+            // console.log( 'MHL 000 getVisibilities getAccessTokenStatus: ', this.accessTokenService.getAccessTokenStatus() );
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
         this.doGet( Consts.GET_VISIBILITIES ).subscribe(
             ( data ) => {
                 this.visibilitiesEmitter.emit( data );
@@ -389,27 +426,40 @@ export class ApiService{
      *
      * @param query
      */
-    doAdvancedQcSearch( query ){
+    doAdvancedQcSearch( query ) {
+        this.displayDynamicQueryService.query( query );
+
+        this.loadingDisplayService.setLoading( true, 'doAdvancedQcSearch...' );
+
+        // Check for empty query. If empty just send Consts.NO_SEARCH, this will tell search results component not to show count and pager etc. at the top
+        if( query === undefined || query.length < 1 ){
+            this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
+            return;
+        }
+
+
         // We don't know if Collection was a query criteria, so only send it if it is.
-        if( query.includes('collectionSite=')){
+        if( query.includes( 'collectionSite=' ) ){
             this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         }else{
-            this.collectionSiteEmitter.emit( '');
+            this.collectionSiteEmitter.emit( '' );
         }
+
+        console.log( 'MHL doAdvancedQcSearch query: ', query );
         this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
             ( performAdvancedQcSearchData ) => {
-                console.log('MHL doAdvancedQcSearch: ', performAdvancedQcSearchData);
                 this.searchResultsEmitter.emit( performAdvancedQcSearchData );
             },
-            async performAdvancedQcSearchDataError => {
+            async( performAdvancedQcSearchDataError ) => {
 
                 // Token has expired, try to get a new one
                 if( performAdvancedQcSearchDataError['status'] === 401 ){
+
+                    // If there is no user name and pass word, the refresh token will be used
                     this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
                     while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
                         await this.utilService.sleep( Consts.waitTime );
                     }
-                    console.log('MHL 02a doAdvancedQcSearch: ',  query);
 
                     this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
                         performAdvancedQcSearchData0 => {
@@ -417,11 +467,17 @@ export class ApiService{
                         },
                         performAdvancedQcSearchDataError0 => {
                             this.resultsErrorEmitter.emit( performAdvancedQcSearchDataError0 );
+                            this.loadingDisplayService.setLoading( false );
+                            console.error( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
+                            alert( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
                         } );
-                }else{
+                }
+                // END if 401
+                else{
                     this.resultsErrorEmitter.emit( performAdvancedQcSearchDataError );
-                    console.error( 'Could not get performQcSearch from server: ', performAdvancedQcSearchDataError['status'] );
-                    console.error( 'Could not get performQcSearch from server: ', Array.from( new Uint8Array( performAdvancedQcSearchDataError ) ) );
+                    this.loadingDisplayService.setLoading( false );
+                    console.error( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
+                    alert( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
                 }
             } );
     }
@@ -432,7 +488,6 @@ export class ApiService{
      */
     getPerformQcSearch( query ) {
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
-        console.log('MHL getPerformQcSearch: ',  query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
             ( performQcSearchData ) => {
                 this.searchResultsEmitter.emit( performQcSearchData );
@@ -441,12 +496,14 @@ export class ApiService{
 
                 // Token has expired, try to get a new one
                 if( performQcSearchDataError['status'] === 401 ){
+
+                    // If we have a user name and password use that
                     this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
                     while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
                         await this.utilService.sleep( Consts.waitTime );
                     }
-                    console.log('MHL 02 getPerformQcSearch: ',  query);
 
+                    // Try the query again
                     this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
                         performQcSearchData0 => {
                             this.searchResultsEmitter.emit( performQcSearchData0 );
@@ -454,16 +511,28 @@ export class ApiService{
                         performQcSearchDataError0 => {
                             this.resultsErrorEmitter.emit( performQcSearchDataError0 );
                         } );
-                }else{
+                }
+                // END error 401
+                else{
                     this.resultsErrorEmitter.emit( performQcSearchDataError );
-                    console.error( 'Could not get performQcSearch from server: ', performQcSearchDataError['status'] );
-                    console.error( 'Could not get performQcSearch from server: ', Array.from( new Uint8Array( performQcSearchDataError ) ) );
+                    console.error( 'Server error: ' + performQcSearchDataError.statusText + ' [' + performQcSearchDataError['status'] + '] - ' + performQcSearchDataError.error );
                 }
             } );
     }
 
+    setNoSearch() {
+        this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
+    }
 
-    getWikiUrlParam() {
+    async getWikiUrlParam() {
+        while(
+            this.accessTokenService.getAccessTokenStatus() === -1 ||
+            this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
+            this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN
+            ){
+            // console.log( 'MHL 003 getWikiUrlParam getAccessTokenStatus: ', this.accessTokenService.getAccessTokenStatus() );
+            await this.utilService.sleep( Consts.waitTime );
+        }
         this.doGet( Consts.GET_CONFIG_PARAMS ).subscribe(
             ( data ) => {
                 for( let param of data ){
@@ -472,13 +541,10 @@ export class ApiService{
                     }
                 }
             },
-            // Don't display this error, this will happen if a user has not yet logged in.
-            /*
             getParamsError => {
-                 console.error( 'Error: ', getParamsError );
-                 console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
-             }
-             */
+                console.error( 'Error: ', getParamsError );
+                console.error( 'Could not get help base url from server using default: ', Properties.HELP_BASE_URL );
+            }
         );
     }
 
@@ -644,19 +710,49 @@ export class ApiService{
         if( this.utilService.isNullOrUndefinedOrEmpty( this.accessTokenService.getAccessToken() ) ){
             this.userRoles = [Consts.ERROR, -1];
         }else{
+
             // Get this users role(s)
             this.doGet( Consts.GET_USER_ROLES ).subscribe(
                 ( resGetUserRoles ) => {
                     this.userRoles = resGetUserRoles;
                     this.updatedUserRolesEmitter.emit( this.userRoles );
                 },
-                errGetUserRoles => {
+
+                // Error
+                async( errGetUserRoles ) => {
                     // If we can't get the users role(s) because of 401 "Unauthorized" set the first (only) element to Consts.ERROR_401, so we will know we need to Login.
-                    if( errGetUserRoles.status === 401 ){
-                        // this.userRoles = [Consts.ERROR_401];
+                    // Token has expired, try to get a new one
+                    if( errGetUserRoles['status'] === 401 ){
+
+                        // If there is no user name and pass word, the refresh token will be used
+                        this.accessTokenService.getAccessTokenFromServer( this.accessTokenService.getCurrentUser(), this.accessTokenService.getCurrentPassword() );
+
+                        this.accessTokenService.setAccessTokenStatus( TokenStatus.NO_TOKEN_YET );
+                        while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
+                            await this.utilService.sleep( Consts.waitTime );
+                        }
+/*
+                        if( this.accessTokenService.getAccessTokenStatus() === TokenStatus.GOOD_TOKEN ){
+                            console.log( 'MHL 1002 Got a good token on the 2nd try: ', this.accessTokenService.getAccessTokenStatus() );
+
+                        }else{
+                            console.log( 'MHL 1002b ERROR BAD token 2nd try: ', this.accessTokenService.getAccessTokenStatus() );
+                        }
+*/
+
+                        this.doGet( Consts.GET_USER_ROLES ).subscribe(
+                            getUserRoles0 => {
+                                this.userRoles = getUserRoles0;
+                                this.updatedUserRolesEmitter.emit( this.userRoles );
+                            },
+                            getUserRolesError0 => {
+                                this.updatedUserRolesErrorEmitter.emit( getUserRolesError0 );
+                                this.loadingDisplayService.setLoading( false );
+                                alert( 'Server error: ' + getUserRolesError0.statusText + ' (' + getUserRolesError0['status'] + ') - ' + getUserRolesError0.error['error'] );
+                            } );
+
                     }else{
-                        console.error( 'Could not get user\'s roles from server: ', errGetUserRoles );
-                        // this.userRoles = [Consts.ERROR, errGetUserRoles.status];
+                        console.error( 'getRoles Server error: ', errGetUserRoles  + ' (' + errGetUserRoles['status'] + ') - ' + errGetUserRoles.error['error'] );
                     }
                 } );
         }
@@ -753,6 +849,7 @@ export class ApiService{
         let results;
         try{
             results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+            // console.log( 'MHL doGet [' + queryType + '] [' + query + ']: ', results );
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
@@ -779,16 +876,16 @@ export class ApiService{
         };
         let errorMsg = 'No Error';
         let results;
-            results = this.httpClient.get( getUrl, options ).pipe(
-                catchError(error => {
-                    if (error.error instanceof ErrorEvent) {
-                        errorMsg = `Error: ${error.error.message}`;
-                    } else {
-                        errorMsg = `Error: ${error.message}`;
-                    }
-                    return of([]);
-                })
-            );
+        results = this.httpClient.get( getUrl, options ).pipe(
+            catchError( error => {
+                if( error.error instanceof ErrorEvent ){
+                    errorMsg = `Error: ${error.error.message}`;
+                }else{
+                    errorMsg = `Error: ${error.message}`;
+                }
+                return of( [] );
+            } )
+        );
 
         return results;
     }

@@ -35,11 +35,11 @@ export class ParameterService{
                     this.expiresIn = data['expires_in'];
 
                     this.accessTokenService.setAccessToken( this.token );
-                    this.accessTokenService.setRefreshToken( this.refreshToken );
                     this.accessTokenService.setExpiresIn( this.expiresIn );
+                    this.accessTokenService.setRefreshToken( this.refreshToken );
                     this.initUrlParameters();
 
-                   // this.apiService.getWikiUrlParam();
+                    this.accessTokenService.startRefreshTokenCycle();
 
                 } );
         }else{
@@ -63,8 +63,22 @@ export class ParameterService{
 
         // Get access token
         if( !Properties.DEV_MODE ){
-            this.token = this.route.snapshot.queryParams[Consts.URL_KEY_TOKEN];  // Access Token
-            this.accessTokenService.setAccessToken( this.token );
+            let tokens = this.route.snapshot.queryParams[Consts.URL_KEY_TOKEN];
+            if( tokens !== undefined){
+                Properties.HAVE_URL_TOKEN = true;
+
+                tokens = tokens.split( ':' );
+                this.token = tokens[0];
+                this.refreshToken = tokens[1];
+                this.expiresIn = tokens[2];
+
+                this.accessTokenService.setAccessToken( this.token );
+                this.accessTokenService.setRefreshToken( this.refreshToken );
+                this.accessTokenService.setExpiresIn( this.expiresIn );
+
+                this.accessTokenService.startRefreshTokenCycle();
+
+            }
         }
 
         // We are done initializing.

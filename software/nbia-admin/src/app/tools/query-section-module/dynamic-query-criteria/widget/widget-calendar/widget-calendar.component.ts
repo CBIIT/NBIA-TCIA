@@ -1,12 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IMyDateModel, INgxMyDpOptions} from "ngx-mydatepicker";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IMyDateModel, INgxMyDpOptions } from 'ngx-mydatepicker';
 
-@Component({
-  selector: 'nbia-widget-calendar',
-  templateUrl: './widget-calendar.component.html',
-  styleUrls: ['./widget-calendar.component.scss']
-})
-export class WidgetCalendarComponent implements OnInit {
+@Component( {
+    selector: 'nbia-widget-calendar',
+    templateUrl: './widget-calendar.component.html',
+    styleUrls: ['./widget-calendar.component.scss']
+} )
+export class WidgetCalendarComponent implements OnInit{
 
     @Input() prompt0;
     @Input() prompt1;
@@ -17,6 +17,8 @@ export class WidgetCalendarComponent implements OnInit {
     @Input() date1 = {};
     @Output() date1Change: EventEmitter<{}> = new EventEmitter();
 
+    @Input() haveInput: boolean;
+    @Output() haveInputChange: EventEmitter<{}> = new EventEmitter();
 
     currentFont = 2;
     dateOptions: INgxMyDpOptions = {
@@ -30,27 +32,25 @@ export class WidgetCalendarComponent implements OnInit {
         selectorWidth: '295px',
     };
 
-    constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
     onDateChangedDp1( e: IMyDateModel ) {
-        this.date1Change.emit(e);
+        console.log('MHL WidgetCalendarComponent.onDateChangedDp1: ', this.haveInput);
+        console.log('MHL onDateChangedDp1 e: ', e);
+        this.haveInputChange.emit(this.haveInput);
+        this.date1Change.emit( e );
     }
 
     onDateChangedDp0( e: IMyDateModel ) {
-        this.date0Change.emit(e);
-
-        // We need to do this because "dateChanged" event can happen before the bound variable fromDateModel is updated.
-/*
-        if( !this.utilService.isNullOrUndefined( e.date ) && e.date.year > 0 ){
-            this.fromDateModel = { date: { year: 0, month: 0, day: 0 } };
-            this.fromDateModel['date'] = e.date;
-        }
-        this.validateDateRange();
-        this.onApplyCheckboxChange();
-*/
+        this.haveInput = true;  // @FIXME TESTING ONLY
+        console.log('MHL onDateChangedDp0: ', this.haveInput);
+        console.log('MHL onDateChangedDp0 e: ', e);
+        this.haveInputChange.emit(this.haveInput);
+        this.date0Change.emit( e );
     }
 
     initializeDisableFutureDates() {

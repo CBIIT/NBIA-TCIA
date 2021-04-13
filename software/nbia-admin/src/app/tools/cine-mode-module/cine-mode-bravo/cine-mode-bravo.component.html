@@ -4,14 +4,16 @@
 <!------------------------------------------------------------------------->
 
 <div
-    *ngIf="progress > 99"
     #cineMode
     id="cineMode"
     ngDraggable
     [handle]="PanelHandle"
     class="card card-nbia-default alert-box-div alert-box-shadow unselectable cine-mode-div-with-dicom"
+
+
     [ngClass]="{
         'cine-mode-div': !showDicomData,
+        'busy-mouse-pointer':  progress <100,
         'alert-box-heading-moving': handleMoving,
         hide: hideCineModeViewer || !showCineModeViewer,
         'full-size-div': fullSize,
@@ -31,55 +33,124 @@
         title="Hide/Show:  Ctrl + {{properties.CINE_MODE_TOGGLE_KEY}}"
     >
         <!-- Top heading - Description and data. -->
-        <span class="card-title">
-            <b>{{ seriesData["seriesDescription"] }}</b
-            >&nbsp;&nbsp;
-            {{ seriesData["dateTime"] }}
+        <span class="card-title title-div">
+
+            <table class="heading-table">
+                <tr>
+                    <td class="cine-description-td">
+                        <b>{{ seriesData["seriesDescription"] }}</b>&nbsp;&nbsp;{{ seriesData["dateTime"] }}
+                    </td>
+                    <td class="grow">
+                        <span  *ngIf="progress <100" >
+
+                            <span class="progress load-progress-bar ml-4" >
+                                <span class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                    [ngStyle]="{'width': (progress * 6 ) + 'px'}"
+                                >
+                                    <span class="load-progress-bar-text m-0 p-0">
+                                        {{progress}}%
+                                    </span>
+                                </span>
+                            </span>
+
+                        </span>
+
+
+                        <!-- loading DICOM, Graphic and Text -->
+                        <div
+                            *ngIf="
+                                showDicomData &&
+                                ((!!dicomData && dicomData.length <= 1) ||
+                                    dicomData === undefined)
+                            "
+                        >
+                            <span class="cine-mode-progress-bar-data-loading-text"
+                            >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accessing DICOM data &nbsp;&nbsp;</span
+                            >
+                            <!-- Animated .gif that runs while loading the DICOM data. -->
+                            <img
+                                src="./assets/images/test_loading.gif"
+                                alt="Accessing data gif"
+                            />
+                        </div>
+                        <!-- END loading DICOM data Graphic and Text -->
+
+                    </td>
+                    <td>
+                        <!-- The Close X at the top right. -->
+                        <span class="close-x clicker unselectable grow" (click)="closeCineMode()">
+                            X
+                        </span>
+                    </td>
+                </tr>
+            </table>
         </span>
 
-        <!-- The Close X at the top right. -->
-        <span class="close-x clicker unselectable" (click)="closeCineMode()">
-            X
-        </span>
-        <!--
-        <span class=" close-x clicker unselectable" (click)="fullCineMode()">
-            O
-        </span>
-        <span class=" close-x clicker unselectable" (click)="topLeft()">
-            Z
-        </span>
-        -->
-    </div>
+     </div>
+
+<!--
+    <img
+        class="image"
+        [src]="
+                                    firstImage['thumbnailImage']
+                                "
+        alt="Missing First Image"
+    />
+-->
+
 
     <div class="scroller-div">
         <!-- Image viewer and DICOM data -->
         <div>
-            <table class="table pb-0 mb-0">
+            <table class="table pb-0 mb-0"
+
+            >
                 <!-- ---------- This row is the image viewer and the DICOM data ---------- -->
                 <tr>
-                    <td class="image-viewer-td">
+                    <td class="image-viewer-td"
+                        [ngClass]="{
+                            'busy-mouse-pointer':  progress <100
+                        }"
+                    >
                         <!-- ----- The image ----- -->
                         <div
-                            *ngIf="!loadingX && !!images[currentImage - 1]"
+                            *ngIf=" (!loadingX && !!images[currentImage - 1]) || justFirstImage"
                             (click)="onOpenImageClick(images[currentImage - 1])"
                             [ngClass]="{
-                                clicker: last > 0
+                                clicker: last > 0 && progress > 99,
+                                'busy-mouse-pointer':  progress <100
                             }"
                         >
-                            <img
+
+                            <img *ngIf="justFirstImage && (firstImage !== null)"
+                                class="image"
+                                 [src]="
+                                    firstImage['thumbnailImage']
+                                "
+                                alt="Missing First Image"
+                            />
+
+
+                            <img *ngIf="!justFirstImage"
                                 class="image"
                                 [src]="
                                     images[currentImage - 1]['thumbnailImage']
                                 "
                                 alt="Missing Image {{ imageCount }}"
                             />
+
                         </div>
                         <!-- ----- END The image ----- -->
 
-                        <span *ngIf="imageCount > 1">
+                        <!-- ----- Image controls ----- -->
+                        <span *ngIf="imageCount > 1"
+                         >
                             <!-- ----- The Slider ----- -->
                             <input
                                 *ngIf="!loadingX"
+                                [ngClass]="{
+                                    'busy-mouse-pointer':  progress <100
+                                }"
                                 class="cine-mode-slider"
                                 type="range"
                                 name="points"
@@ -94,6 +165,9 @@
                             <span
                                 *ngIf="imageCount > 1"
                                 class="image-count-display"
+                                [ngClass]="{
+                                    'busy-mouse-pointer':  progress <100
+                                }"
                             >
                                 <!-- Only allow numbers -->
                                 <input
@@ -107,7 +181,11 @@
                             </span>
 
                             <!-- If there is only one image, don't provide the Display/Set input. -->
-                            <span *ngIf="imageCount === 1">
+                            <span *ngIf="imageCount === 1"
+                                  [ngClass]="{
+                                      'busy-mouse-pointer':  progress <100
+                                  }"
+                            >
                                 <b> 1 of 1</b>
                             </span>
                             <!-- ----- END The Image of Images numbers display ----- -->
@@ -116,7 +194,10 @@
                             <span *ngIf="!loadingX" class="pl-3">
                                 <!-- Frame one -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center"
+                                    class="btn-nbia-cine d-inline-flex align-items-center"
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Frame one"
                                     (click)="onFirstFrameClick()"
                                 >
@@ -129,7 +210,10 @@
 
                                 <!-- Previous frame -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center"
+                                    class="btn-nbia-cine d-inline-flex align-items-center"
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Previous frame"
                                     (click)="onPreviousFrameClick()"
                                 >
@@ -142,7 +226,10 @@
 
                                 <!-- Play backwards -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center"
+                                    class="btn-nbia-cine d-inline-flex align-items-center"
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Play backwards"
                                     (click)="onPlayBackwardsClick()"
                                 >
@@ -155,12 +242,15 @@
 
                                 <!-- Pause -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center pl-1"
+                                    class="btn-nbia-cine d-inline-flex align-items-center "
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Pause"
                                     (click)="onPause()"
                                 >
                                     <img
-                                        class="cine-mode-button-icon ml-3"
+                                        class="cine-mode-button-icon ml-2"
                                         src="assets/images/AV/pause.png"
                                         alt="Pause"
                                     />
@@ -168,7 +258,10 @@
 
                                 <!-- Play -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center"
+                                    class="btn-nbia-cine d-inline-flex align-items-center"
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Play"
                                     (click)="onPlayClick()"
                                 >
@@ -181,7 +274,10 @@
 
                                 <!-- Next frame -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center"
+                                    class="btn-nbia-cine d-inline-flex align-items-center"
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Next frame"
                                     (click)="onNextFrameClick()"
                                 >
@@ -194,7 +290,10 @@
 
                                 <!-- Last frame -->
                                 <label
-                                    class="btn btn-nbia-cine d-inline-flex align-items-center"
+                                    class="btn-nbia-cine d-inline-flex align-items-center"
+                                    [ngClass]="{
+                                        'busy-mouse-pointer':  progress <100
+                                    }"
                                     title="Last frame"
                                     (click)="onLastFrameClick()"
                                 >
@@ -234,6 +333,8 @@
                                 </table>
                             </span>
                         </span>
+                        <!-- ----- END Image controls ----- -->
+
                     </td>
 
                     <!-- ------------ -->
@@ -286,24 +387,6 @@
                         </div>
                     </td>
 
-                    <!-- loading DICOM, Graphic and Text -->
-                    <div
-                        *ngIf="
-                            showDicomData &&
-                            ((!!dicomData && dicomData.length <= 1) ||
-                                dicomData === undefined)
-                        "
-                    >
-                        <span class="cine-mode-progress-bar-data-loading-text"
-                        >Accessing DICOM data &nbsp;&nbsp;</span
-                        >
-                        <!-- Animated .gif that runs while loading the DICOM data. -->
-                        <img
-                            src="./assets/images/test_loading.gif"
-                            alt="Accessing data gif"
-                        />
-                    </div>
-                    <!-- END loading DICOM data Graphic and Text -->
                 </tr>
 
                 <!--  Show DICOM Checkbox - We don't want this. -->
@@ -568,6 +651,7 @@
         </span>
     </div>
 </div>
+<!--  No progress bar now that we are showing the first image while the rest are loading
 <div
     *ngIf="loadingX && progress < 100"
     class="card card-nbia-default alert-box-div alert-box-shadow unselectable cine-mode-progress-bar"
@@ -577,8 +661,9 @@
     >
         Loading Images
     </div>
-    <!-- The progress bar. it is displayed when the image is loading, there is something else for DICOM loading. -->
+    &lt;!&ndash; The progress bar. it is displayed when the image is loading, there is something else for DICOM loading. &ndash;&gt;
     <span>
         <progress-bar [progress]="progress" [color]="'#488aff'"></progress-bar>
     </span>
 </div>
+-->

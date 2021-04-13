@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------
-// -----------------------       This is used by the Widget Tester             ---------------
+// -----------------------                                                     ---------------
 // -------------------------------------------------------------------------------------------
 
 
@@ -49,7 +49,6 @@ export class DynamicQueryCriteriaService{
      * @param widgetData
      */
     addWidget( widgetData ) {
-        console.log( 'MHL addWidget widgetData: ', widgetData );
         this.addWidgetEmitter.emit( widgetData );
     }
 
@@ -60,8 +59,6 @@ export class DynamicQueryCriteriaService{
      * THIS IS USED BY THE TEST WIDGET
      */
     deleteWidget( criteriaType, inputType ) {
-        console.log( 'MHL deleteWidget criteriaType: ', criteriaType );
-        console.log( 'MHL deleteWidget inputType: ', inputType );
         this.deleteWidgetEmitter.emit( { criteriaType, inputType });
     }
 

@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.8',
-    // 22_FEB_2021
-    TEST_VERSION: '1.0.8o',
+    // 13_APR_2021
+    TEST_VERSION: '1.0.8p',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
@@ -24,14 +24,13 @@ export let Properties = {
  */
 
       API_SERVER_URL: '',
-    //  API_SERVER_URL: 'http://192.168.1.21:8080',
-     //  API_SERVER_URL: 'http://192.168.1.10:8080',
+     // API_SERVER_URL: 'http://192.168.1.21:8080',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
     OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
 
-    dynamicQueryCriteriaSequenceNumber: -1,
+    dynamicQueryCriteriaSequenceNumber: 0,
 
     NO_LICENSE: false,
 
@@ -71,10 +70,11 @@ export let Properties = {
     OHIF_SERVER_URL: '',
     MAX_VIDEO_FPS: 30,
 
+    HAVE_URL_TOKEN: false,
     // Show in console, curl version of post & get calls.
     DEBUG_CURL: false,
 
-    // This value can be changed in the config file.  FIXME  No, this is not yet in the config file (yet)!
+    // This value can be changed in the config file.  FIXME  No, this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
 
     DEV_MODE: false,
@@ -83,6 +83,10 @@ export let Properties = {
 
     DEFAULT_SECRET: 'ItsBetweenUAndMe',  // CHECKME - Should we have this default here or only set in the configuration file?
 
+    MAX_PAGER_BUTTONS: 6,
+
+    // How many seconds before token end of life to refresh the token
+    TOKEN_REFRESH_TIME_MARGIN: 60,
 
     // DEV_PASSWORD: 'Froggy_127',
     // DEV_USER: 'lernermh',
@@ -102,7 +106,10 @@ export let Properties = {
     SHOW_HEADER: true,
     SHOW_FOOTER: true,
 
-    SHOW_DYNAMIC_QUERY_CRITERIA: false, // will use when the "Dynamic Search" has it's own tab.
-    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false
+
+    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false,
+
+    DEFAULT_SEARCH_TAB: 1, // 0="Criteria Search"  1="Dynamic Search"
+    SHOW_ONLY_DEFAULT_SEARCH_TAB: true
 
 };

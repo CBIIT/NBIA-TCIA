@@ -1,5 +1,5 @@
 <!---------------------------------------------------------------------------------------->
-<!----------                       Display Query at top                       ------------>
+<!----------                  Dynamic Display Query at top                    ------------>
 <!----------     This is updated as criteria are selected from the left side     --------->
 <!---------------------------------------------------------------------------------------->
 
@@ -16,6 +16,7 @@
         <span>&nbsp;Clear</span>
     </button>
 
+    data: {{data}}
  <!--
     <span *ngFor="let criteria of displayQueryData; let i = index">
         <span class="criteria-display-title">{{

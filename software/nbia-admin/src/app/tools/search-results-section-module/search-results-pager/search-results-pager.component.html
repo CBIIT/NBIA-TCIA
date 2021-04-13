@@ -1,0 +1,66 @@
+<!-- ----------  The page changer used by Search results & Cart screen.  ---------- -->
+
+<span *ngIf="totalCount>0"
+    class="parent-pager-span"
+>
+    {{buttons.length}}
+    <!-- If more than one, add s for plural. -->
+    page<span *ngIf="buttons.length > 1">s</span>&nbsp;
+
+    <div class="btn-group " role="group" aria-label="...">
+
+        <!-- Go to first page -->
+        <label
+            class="btn-nbia-pager btn-nbia-pager-left results-pager-font footer-colors unselectable"
+            title="First"
+            (click)="onGoFirstClickClick()"
+        >
+            <span>&lt;&lt;</span>
+        </label>
+
+
+        <!-- Go to previous page -->
+        <label
+            class="btn-nbia-pager results-pager-font footer-colors unselectable"
+            title="Previous"
+            (click)="onGoPreviousClick()"
+        >
+            <span>&lt;</span>
+        </label>
+
+
+        <!-- Go to a specific page -->
+        <label
+            *ngFor="let i of buttons"
+            class="btn-nbia-pager  results-pager-font  unselectable"
+            [ngClass]="{
+                'selected': currentPage == i,
+                'hide-button':( (i < buttonShowOffset) || (i - buttonShowOffset >=  maxButtonsToShow) )
+            }"
+            (click)="onClick( i )"
+        >
+            {{i + 1}}
+        </label>
+
+
+        <!-- Go to next page -->
+        <label
+            class="btn-nbia-pager results-pager-font footer-colors unselectable"
+            title="Next"
+            (click)="onGoNextClick()"
+        >
+            <span>&gt;</span>
+        </label>
+
+
+        <!-- Go to last page -->
+        <label
+            class="btn-nbia-pager btn-nbia-pager-right results-pager-font footer-colors unselectable"
+            title="Last"
+            (click)="onGoLastClick()"
+        >
+            <span>&gt;&gt;</span>
+        </label>
+
+    </div>
+</span>

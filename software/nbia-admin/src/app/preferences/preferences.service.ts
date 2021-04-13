@@ -15,7 +15,6 @@ export class PreferencesService {
 
   setFontSize(fs){
       this.fontSize = fs;
-      console.log('MHL Emit font size: ', fs );
       this.setFontSizePreferencesEmitter.emit( fs );
   }
 

@@ -21,9 +21,9 @@ export class LoadingDisplayService {
             if( this.isLoading < 0 ){
                 this.isLoading = 0;
             }
-        }
+         }
 
-        // FIXME I think I need to remove the ability to include a message for false.
+        // FIXME I should remove the ability to include a message for false.
         if( ! loading){
             message = '';
             subMessage = '';

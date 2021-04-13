@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { QuerySectionService } from '../../query-section-module/services/query-section.service';
 import { Subject } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -31,6 +32,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
     searchResults = {};
     searchResultsSelectedCount = 0;
+    searchType = Properties.DEFAULT_SEARCH_TAB;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -43,6 +45,13 @@ export class PerformQcComponent implements OnInit, OnDestroy{
     }
 
     async ngOnInit() {
+
+        this.querySectionService.updateSearchTypeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.searchType = data;
+            } );
+
+
         // Get the users roles and make sure they have 'NCIA.MANAGE_VISIBILITY_STATUS'
         this.apiService.updatedUserRolesEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )

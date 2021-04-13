@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { ApiService } from '@app/admin-common/services/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +9,15 @@ export class DisplayDynamicQueryService {
     clearDynamicQuerySectionQueryEmitter = new EventEmitter();
     displayDynamicQuery = '';
 
-  constructor() { }
+  constructor( ) { }
 
     query( q ) {
         this.displayDynamicQueryEmitter.emit( q );
     }
 
     clearQuerySectionQuery() {
-      console.log('MHL DisplayDynamicQueryService clearQuerySectionQuery');
         this.clearDynamicQuerySectionQueryEmitter.emit();
+
     }
 
 }

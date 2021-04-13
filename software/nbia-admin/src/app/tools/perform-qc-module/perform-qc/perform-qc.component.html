@@ -2,7 +2,10 @@
 <!----------------------        "Perform Quality Control"         ------------------------>
 <!---------------------------------------------------------------------------------------->
 
-<div *ngIf="roleIsGood"
+<div
+     [ngClass]="{
+     'hide': ! roleIsGood
+     }"
      class="perform-qc"
 >
 
@@ -18,18 +21,19 @@
         <!-- Display Query -->
         <div class="row query-display-row">
             <div class="display-query-wrapper">
-<!--
 
-                <nbia-display-dynamic-query>
+                <!-- Display Query for Dynamic Search -->
+                <nbia-display-dynamic-query
+                    *ngIf="searchType === 1"
                     [currentTool]="consts.TOOL_PERFORM_QC"
+                >
                 </nbia-display-dynamic-query>
 
--->
+                <!-- Display Query for Criteria Search -->
                 <nbia-display-query
+                    *ngIf="searchType === 0"
                     [currentTool]="consts.TOOL_PERFORM_QC"
                 ></nbia-display-query>
-
-
 
             </div>
         </div>

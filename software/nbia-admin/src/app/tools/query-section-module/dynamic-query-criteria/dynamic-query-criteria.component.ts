@@ -55,22 +55,15 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(private dynamicQueryCriteriaService: DynamicQueryCriteriaService ) {
-
-        console.log('MHL SETTING subscribe addWidgetEmitter');
         this.dynamicQueryCriteriaService.addWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
-                console.log('MHL Got data from dynamicQueryCriteriaService.addWidgetEmitter');
                 this.addQueryCriteria(data);
             });
 
-        console.log('MHL SETTING subscribe deleteWidgetEmitter');
         this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async data => {
-                console.log('MHL Got data from dynamicQueryCriteriaService.deleteWidgetEmitter');
                 this.deleteQueryCriteria(data);
             });
-
-
     }
 
     ngOnInit() {
@@ -176,7 +169,7 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     }
 
     deleteQueryCriteria(qCriteriaData) {
-        console.log('MHL DynamicQueryCriteriaComponent.deleteQueryCriteria: ' , qCriteriaData);
+       // console.log('MHL DynamicQueryCriteriaComponent.deleteQueryCriteria: ' , qCriteriaData);
 
         this.queryCriteriaCount = this.queryCriteriaData.length;
     }

@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { QuerySectionService } from '../services/query-section.service';
 import { Properties } from '@assets/properties';
 
-
 @Component( {
     selector: 'nbia-left-section',
     templateUrl: './left-section.component.html',
@@ -21,9 +20,7 @@ export class LeftSectionComponent implements OnInit, OnDestroy{
     @Input() currentTool;
 
     consts = Consts;
-
-    searchType = Consts.CRITERIA_SEARCH; // CHECKME  We don't need this, or the emitter (at least for now)
-
+    searchType = Properties.DEFAULT_SEARCH_TAB;
     properties = Properties;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
