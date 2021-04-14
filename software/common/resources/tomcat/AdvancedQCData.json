@@ -18,7 +18,7 @@
       "alias":"gi"
    },
    {
-      "criteriaType":"patientID",
+      "criteriaType":"subjectids",
       "field":"gs.patientId",
       "object":"GeneralSeries",
       "alias":"gs"
@@ -48,8 +48,8 @@
       "alias":"gs"
    },
     {
-      "criteriaType":"submissionDate",
-      "field":"gs.submissionDate",
+      "criteriaType":"submissiondate",
+      "field":"gs.maxSubmissionTimestamp",
       "object":"GeneralSeries",
       "alias":"gs"
    },
@@ -61,7 +61,7 @@
    },
    {
       "criteriaType":"released",
-      "field":"gs.submissionType",
+      "field":"gs.releasedStatus",
       "object":"GeneralSeries",
       "alias":"gs"
    },

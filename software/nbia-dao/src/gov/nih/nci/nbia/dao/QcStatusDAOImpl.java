@@ -139,19 +139,34 @@ public class QcStatusDAOImpl extends AbstractDAO
 
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<QcSearchResultDTO> findSeries(Map<String, QCSearchCriteria>criteria, Map<String, AdvancedCriteriaDTO> criteriaMap, int maxRows) throws DataAccessException {
-		QCSearchCriteria qcStatusCriteria = criteria.get("qcStatus");
+		QCSearchCriteria qcStatusCriteria = criteria.get("qcstatus");
 		String[]qcStatus=null;
 		if (qcStatusCriteria!=null) {
 			List<String>qcStatusList=((ListCriteria)qcStatusCriteria).getlistObjects();
 			qcStatus = new String[qcStatusList.size()];
 			qcStatus= qcStatusList.toArray(qcStatus);
-			criteria.remove("qcStatus");
+			criteria.remove("qcstatus");
 		}
-		qcStatusCriteria = criteria.get("collectionSite");
+		qcStatusCriteria = criteria.get("collection");
 		List<String>collectionSites=null;
 		if (qcStatusCriteria!=null) {
 			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
-			criteria.remove("collectionSite");
+			criteria.remove("collection");
+		}
+		qcStatusCriteria = criteria.get("complete");
+		List<String>released=null;
+		if (qcStatusCriteria!=null) {
+			released=((ListCriteria)qcStatusCriteria).getlistObjects();
+			List<String>newReleased=new ArrayList<String>();
+			for (String currentValue:released) {
+				if (currentValue!=null&&currentValue.equalsIgnoreCase("Yes")) {
+					newReleased.add("Complete");
+				}
+				if (currentValue!=null&&currentValue.equalsIgnoreCase("No")) {
+					newReleased.add("NotComplete");
+				}
+			}
+			((ListCriteria)qcStatusCriteria).setlistObjects(newReleased);
 		}
         int i=0;
         String andStmt="";
@@ -169,12 +184,14 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	  System.out.println(textCriteria.getQueryField());
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeTextCriteria(fieldName, textCriteria.getQueryType(), textCriteria.getQueryValue(), parameters, i);
+		    	  i++;
 		      }
 		      if (entry.getValue() instanceof ListCriteria) {
 		    	  ListCriteria listCriteria=(ListCriteria)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(listCriteria.getQueryField());
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeListCriteria(fieldName, listCriteria.getlistObjects(), parameters, i);
+		    	  i++;
 		      }
 		      if (entry.getValue() instanceof DateRangeCriteriaForQCSearch) {
 		    	  DateRangeCriteriaForQCSearch dateCriteria=(DateRangeCriteriaForQCSearch)entry.getValue();
@@ -608,6 +625,9 @@ public class QcStatusDAOImpl extends AbstractDAO
 	private static String computeListCriteria(String fieldName, List<String> valuesList, Map<String, Object> parameters, int x) {
 		String parameter= "param"+x;
 		String returnValue=fieldName+" in(:"+parameter+") ";
+		for (String param:valuesList) {
+			System.out.println("list param-"+param);
+		}
 		parameters.put(parameter, valuesList);
 		return returnValue;
 	}

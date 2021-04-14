@@ -87,6 +87,7 @@ public class GetAdvancedQCSearch extends getData{
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("list")){
 				if (advancedCriteria.get(criteriaType)==null){
 				   ListCriteria criteria=new ListCriteria();
+				   System.out.println("List Value:"+inFormParams.get("value"+i).get(0));
 				   criteria.setListValue(inFormParams.get("value"+i).get(0));
 				   criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				   criteria.setQueryField(criteriaType);
