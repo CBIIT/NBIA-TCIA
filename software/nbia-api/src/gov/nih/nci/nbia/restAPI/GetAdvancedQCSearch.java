@@ -99,6 +99,33 @@ public class GetAdvancedQCSearch extends getData{
 					criteria.setQueryField(criteriaType);
 				}
 			}
+			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("commaSeperatedList")){
+				if (advancedCriteria.get(criteriaType)==null){
+				   ListCriteria criteria=new ListCriteria();
+				   System.out.println("List Value:"+inFormParams.get("value"+i).get(0));
+				   String seperatedValue=inFormParams.get("value"+i).get(0);
+				   if (seperatedValue!=null) {
+					   List<String> seperatedList = Arrays.asList(seperatedValue.split(",", -1));
+					   for (String listItem:seperatedList) {
+						   criteria.setListValue(listItem);
+					   }
+				   }		   
+				   criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
+				   criteria.setQueryField(criteriaType);
+				   advancedCriteria.put(criteriaType,criteria);
+				} else {
+					ListCriteria criteria=(ListCriteria)advancedCriteria.get(criteriaType);
+					   String seperatedValue=inFormParams.get("value"+i).get(0);
+					   if (seperatedValue!=null) {
+						   List<String> seperatedList = Arrays.asList(seperatedValue.split(",", -1));
+						   for (String listItem:seperatedList) {
+							   criteria.setListValue(listItem);
+						   }
+					   }	
+					criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
+					criteria.setQueryField(criteriaType);
+				}
+			}
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("contains")){
 				   TextCriteria criteria=new TextCriteria();
 				   criteria.setQueryValue(inFormParams.get("value"+i).get(0));
