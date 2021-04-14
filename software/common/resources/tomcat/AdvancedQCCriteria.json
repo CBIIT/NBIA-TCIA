@@ -73,7 +73,7 @@
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                "criteriaType":"studyUID",
-               "inputType":"list"
+               "inputType":"commaSeperatedList"
             }
          },
          {
@@ -124,7 +124,7 @@
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                "criteriaType":"sopUID",
-               "inputType":"list"
+               "inputType":"commaSeperatedList"
             }
          },
          {
@@ -175,7 +175,7 @@
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                "criteriaType":"patientID",
-               "inputType":"list"
+               "inputType":"commaSeperatedList"
             }
          },
          {
@@ -226,7 +226,7 @@
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                "criteriaType":"patientName",
-               "inputType":"list"
+               "inputType":"commaSeperatedList"
             }
          },
          {
@@ -559,7 +559,7 @@
                "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                "dynamicQueryCriteriaRequired": true,
                "criteriaType":"subjectids",
-               "inputType":"list"
+               "inputType":"commaSeperatedList"
             }
          }
       ]
