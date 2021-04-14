@@ -1,6 +1,6 @@
 <nbia-login
     [ngClass]="{
-        hide: loginMode === tokenStatus.GOOD_TOKEN ||  loginMode === tokenStatus.NO_TOKEN_YET
+        hide: loginMode === tokenStatus.GOOD_TOKEN
     }"
 ></nbia-login>
 
@@ -11,9 +11,11 @@
 
 <!-- We have an access token from the calling site.   -->
 <div
+    [ngClass]="{
+        hide: accessTokenStatus !== tokenStatus.GOOD_TOKEN
+    }"
     class="parent-tool-div"
 >
-
 
     <span *ngIf="currentTool !== consts.TOOL_NONE">
 

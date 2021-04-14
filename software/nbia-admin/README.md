@@ -1,26 +1,27 @@
 # nbia-admin
 
 ## TODO
--[ ] Radio buttons don't trigger a search
+-[X] Radio buttons don't trigger a search
+-[ ] Calendar clear
+-[ ] Calendar allow only one
+-[ ] Display Query Clear button
+-[ ] Display Query
+-[ ] Update pager when query changes (it changes if you click it) NOW I can't reproduce. Revisit.
 -[ ] A little more space horizontally for lists - update the truncating pipe
 -[ ] Persist Page length choice
--[ ] Rework reaction to 401 
--[ ] Rework reaction to 500 ApiService.getPerformQcSearch
--[X] Select All/Select these XX should not have a dropdown if there is only one page of data
 -[ ] Clean up Cine mode scss
 -[ ] Make Cine Mode text selectable
 -[ ] Check Calendar clear & query update
 -[ ] Disable user inputs while search is running
--[X] Select All/Just this page
--[ ] Display Query Clear button
--[ ] Move "Getting dicom data" and graphic up to cine mode heading
--[ ] Search Error handling
 -[ ] Make sure all names (Labels) and IDs use the sequenceNumber
--[ ] Update pager when query changes (it changes if you click it) NOW I can't reproduce. Revisit.
--[ ] Calendar clear
--[ ] Calendar allow only one
--[X] Calendar if allow only one, do we need "Before" & "After"
 -[ ] Clean up this page, it is displayed on Github website. 
+-[ ] Search Error handling
+-[ ] Rework reaction to 401
+-[ ] Rework reaction to 500 ApiService.getPerformQcSearch
+-[X] Calendar if allow only one, do we need "Before" & "After"
+-[X] Select All/Select these XX should not have a dropdown if there is only one page of data
+-[X] Select All/Just this page
+-[X] Move "Getting dicom data" and graphic up to cine mode heading
 -[X] Add Dynamic test flags to commit hook .pl
 -[X] Consolidate config & properties settings for Dynamic search.  At the bottom of both files.
 -[X] Apply checkbox label (for)

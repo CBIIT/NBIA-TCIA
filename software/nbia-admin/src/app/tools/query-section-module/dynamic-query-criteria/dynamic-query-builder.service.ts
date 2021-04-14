@@ -24,7 +24,6 @@ export class DynamicQueryBuilderService{
 
     addCriteriaQueryPart( part: DynamicCriteriaQueryPart ) {
         let havePart = false;
-
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
             if( this.dynamicCriteriaPartList[f].criteriaType === part.criteriaType && this.dynamicCriteriaPartList[f].inputType === part.inputType ){
                 // Swap in the version of this part.
@@ -58,7 +57,7 @@ export class DynamicQueryBuilderService{
         }
         console.log('MHL 004  dynamicCriteriaPartList: ', this.dynamicCriteriaPartList);
 
-   // @FIXME TESTING     if( rerunQuery ){
+   // @FIXME TESTING     if( rerunQuery ){  @TODO for Display query Clear
         if( true ){
             this.apiService.doAdvancedQcSearch( this.buildServerQuery() );
         }
@@ -111,7 +110,8 @@ export class DynamicQueryBuilderService{
                 break;
 
             case WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS:
-                console.log( 'MHL 04 buildServerQueryPart: ', widget.userInput );
+                serverQueryPart += '&value' + this.counter + '=' + widget.userInput[0];
+                serverQueryPart += '&';
                 break;
 
             case WIDGET_TYPE.ONE_CHECKBOX:

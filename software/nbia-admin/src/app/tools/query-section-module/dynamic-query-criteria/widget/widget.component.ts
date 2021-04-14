@@ -586,6 +586,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * If an apply button is included, we should do nothing until the Apply Button is clicked.
      */
     onChange( ignoreApplyState: boolean = false ) {
+        console.log('MHL WidgetComponent.onChange applyState: ', this.applyState);
         if( this.applyState || ignoreApplyState ){
             this.updateQuery();
         }
@@ -646,7 +647,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 break;
 
             case WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS:
-                console.log( 'MHL ONE_LINE_RADIO_BUTTONS: ', this.criteriaSingleLineRadioCurrent );
+               // console.log( 'MHL ONE_LINE_RADIO_BUTTONS[' + this.criteriaSingleLineRadioCurrent + ']: ', this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
+                userInput.push( this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
                 break;
 
             case WIDGET_TYPE.ONE_CHECKBOX:
