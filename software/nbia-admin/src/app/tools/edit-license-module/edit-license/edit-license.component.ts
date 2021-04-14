@@ -114,7 +114,8 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
                     this.roleIsGood = true;
                 }
             } );
-        this.apiService.getRoles();
+
+               this.apiService.getRoles();
 
         // Get the list of licenses and their associated data.
         this.apiService.collectionLicensesResultsEmitter

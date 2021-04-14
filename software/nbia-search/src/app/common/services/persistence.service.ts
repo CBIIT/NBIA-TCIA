@@ -36,6 +36,8 @@ export class PersistenceService{
         LAST_ACCESS: 'lastAccess',
 
         ACCESS_TOKEN: 'at',
+        ACCESS_TOKEN_LIFE_SPAN: 'atlp',
+        REFRESH_TOKEN: 'rt',
         IS_GUEST: 'guest'
 
     } );

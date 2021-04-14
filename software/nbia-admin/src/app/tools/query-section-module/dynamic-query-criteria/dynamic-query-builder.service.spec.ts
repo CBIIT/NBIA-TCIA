@@ -33,9 +33,6 @@ describe( 'DynamicQueryBuilderService', () => {
         service.addCriteriaQueryPart( qPart );
         expect( service.getQueryPartCount() ).toEqual( 3 );
 
-        for( let p of service.getQueryPartList()){
-            console.log('MHL ', p.toString());
-        }
     } );
 
     it( 'Delete a query part', () => {
@@ -61,14 +58,7 @@ describe( 'DynamicQueryBuilderService', () => {
         service.deleteCriteriaQueryPart( 'XX', 'XX' );
         expect( service.getQueryPartCount() ).toEqual( 1 );
 
-
         expect(service.getQueryPartList()[0].userInput[0] ).toEqual( 'The data 000' );
-
-/*
-        for( let p of service.getQueryPartList()){
-            console.log('MHL ', p.toString());
-        }
-*/
 
     } );
 

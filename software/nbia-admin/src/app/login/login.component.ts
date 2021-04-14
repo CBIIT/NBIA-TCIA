@@ -7,6 +7,7 @@ import { AccessTokenService } from '../admin-common/services/access-token.servic
 import { UtilService } from '../admin-common/services/util.service';
 import { ApiService } from '../admin-common/services/api.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component( {
     selector: 'nbia-login',
@@ -73,6 +74,23 @@ export class LoginComponent implements OnInit, OnDestroy{
             case TokenStatus.GOOD_TOKEN:
                 // Update roles
                 this.apiService.getRoles();
+
+
+                ///////////////////////////////////////////////////
+                // @TODO Move this
+                // Wait until we have the access token before getting the dynamic criteria selection menu data.
+                while(
+                    this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
+                    this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN ||
+                    this.accessTokenService.getAccessTokenStatus() === -1
+                    ){
+                    await this.utilService.sleep( Consts.waitTime );
+                }
+                this.apiService.getDynamicCriteriaSelectionMenuData();
+                ///////////////////////////////////////////////////
+
+
+
                 break;
         }
     }

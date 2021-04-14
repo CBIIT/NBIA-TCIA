@@ -898,7 +898,19 @@ public class NCIAConfig {
 //  maybe turn it on later     
 //        checkProperty("other.data.location.file", propertyValue);
         return propertyValue;
-    }      
+    } 
+    
+    /**
+     * Externalized Property!
+     *  Property: user.agreement.file.location
+     *  This property is configured via nbia.properties/defaultAHP3.properties
+     *  to contain user agreement file name and path.
+     */
+    public static String getUserAgreementFileLocation(){
+        String propertyValue = properties.getProperty("user.agreement.file.location");    
+        //checkProperty("user.agreement.file.location", propertyValue);
+        return propertyValue;
+    } 
     
     /**
      * Utility method for retrieving a property

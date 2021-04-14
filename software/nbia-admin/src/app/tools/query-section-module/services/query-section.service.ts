@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
+import { Properties } from '@assets/properties';
 
 @Injectable( {
     providedIn: 'root'
@@ -20,11 +21,14 @@ export class QuerySectionService{
     /**
      * Criteria Search or Text Search.
      */
-    searchType = 0;
+    searchType = Properties.DEFAULT_SEARCH_TAB;
+
     updateSearchTypeEmitter = new EventEmitter();
 
 
     constructor( private utilService: UtilService, private displayQueryService: DisplayQueryService ) {
+        this.searchType = Properties.DEFAULT_SEARCH_TAB;
+        this.updateSearchTypeEmitter.emit( this.searchType );
     }
 
     rerunCurrentQuery(){

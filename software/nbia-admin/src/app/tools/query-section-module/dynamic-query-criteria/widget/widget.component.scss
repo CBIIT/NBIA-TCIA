@@ -2,6 +2,11 @@
 @import 'src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss';
 // @import "src/app/tools/query-section-module/left-section/left-section.component.scss";
 
+// If there is only one date in the widget, we need to make it a little shorter.
+.cal-height-one-date{
+    height: 80px;
+}
+
 // FIXME for testing only
 .top-border {
     border-top: solid 1px $criteriaQueryBorderColor;

@@ -1,60 +1,79 @@
 @import '../../../app.component';
 @import '../../../data-table';
 
-.search-results-table {
-    width: 100%
+$searchResultsTopStats: 30px;
+
+
+.search-results-pager{
+    float: right;
+    height: $searchResultsTopStats;
 }
 
-.search-results-outer-div {
+.search-results-top-stats{
+    height: 3 + $searchResultsTopStats;
+}
+
+.search-results-table{
+    width: 100%;
+}
+
+.search-results-outer-div{
     border: solid #e7e7e7;
     padding-bottom: 12px;
     resize: both;
     overflow: auto;
 }
 
-.search-results-series-viewer-button {
+.search-results-series-viewer-button{
     padding: 2px 7px 1px 7px;
     margin: 0 0 0 2px;
 }
 
-.search-results-modality-td-0 {
+.search-results-modality-td-0{
     min-width: 80px;
 }
-.search-results-modality-td-1 {
+
+.search-results-modality-td-1{
     min-width: 84px;
 }
-.search-results-modality-td-2 {
+
+.search-results-modality-td-2{
     min-width: 98px;
 }
-.search-results-modality-td-3 {
+
+.search-results-modality-td-3{
     min-width: 110px;
 }
 
-
-.search-results-visibility-td-0 {
+.search-results-visibility-td-0{
     min-width: 80px;
 }
-.search-results-visibility-td-1 {
+
+.search-results-visibility-td-1{
     min-width: 84px;
 }
-.search-results-visibility-td-2 {
+
+.search-results-visibility-td-2{
     min-width: 94px;
 }
-.search-results-visibility-td-3 {
+
+.search-results-visibility-td-3{
     min-width: 110px;
 }
 
-
-.search-results-description-td-0 {
+.search-results-description-td-0{
     min-width: 96px;
 }
-.search-results-description-td-1 {
+
+.search-results-description-td-1{
     min-width: 106px;
 }
-.search-results-description-td-2 {
+
+.search-results-description-td-2{
     min-width: 118px;
 }
-.search-results-description-td-3 {
+
+.search-results-description-td-3{
     min-width: 136px;
 }
 
@@ -68,12 +87,27 @@ td{
     margin: 0;
 }
 
-.search-results-table-thead-th-checkbox {
+.search-results-table-thead-th-checkbox{
     width: 28px;
     min-width: 28px;
 }
 
-.search-results-scroller-div {
+.search-results-scroller-div{
     height: 25vh;
     padding: 0;
+}
+
+.number-spinner{
+    border: solid 1px #686868;
+    border-radius: 3px;
+    position: relative;
+    top: 0;
+    padding: 0 4px 0 4px;
+    width: 48px;
+    height: 28px;
+}
+
+.rows-per-page-spinner{
+    color: #686868;
+    // margin-bottom: 12px;
 }

@@ -4,7 +4,6 @@ import { PreferencesComponent } from './preferences.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { FormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { ProgressBarModule } from 'angular-progress-bar';
 import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { RouterTestingModule } from '@angular/router/testing';

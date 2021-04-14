@@ -42,7 +42,6 @@
         </span>
         <!-- ----- END No Expand/Collapse icon on the left, just the Heading. ----- -->
 
-
         <!-- ----- With Expand/Collapse icon on the left of the Heading. ----- -->
         <span *ngIf="criteriaOpenCloseButton" [ngClass]="{
                 'heading-font-extra-small': currentFont === '0',
@@ -54,16 +53,18 @@
 
             <!-- Down icon,  Content is showing/expanded -->
             <span *ngIf="widgetShowCriteria" class="clicker" (click)="onShowCriteriaClick(false)">
-                <img src="assets/images/down_V01.png" />
+                <img src="assets/images/down_V01.png"/>
                 {{criteriaHeading}}
             </span>
             <!-- END Down icon, Content is showing/expanded -->
 
             <!-- Left icon,  Content is not showing -->
             <span *ngIf="!widgetShowCriteria" class="clicker" (click)="onShowCriteriaClick(true)">
-                <img src="assets/images/right_V01.png" />
+                <img src="assets/images/right_V01.png"/>
                 {{ queryCriteriaData["dynamicQueryCriteriaHeading"] }}
-                <span *ngIf="criteriaSelectionInHeadingCollapsed && criteriaHeadingAddOn.length > 0">&nbsp;({{criteriaHeadingAddOn}})</span>
+                <span
+                    *ngIf="criteriaSelectionInHeadingCollapsed && criteriaHeadingAddOn.length > 0">&nbsp;({{criteriaHeadingAddOn}}
+                    )</span>
             </span>
             <!-- END Left icon, Content is not showing -->
         </span>
@@ -141,11 +142,12 @@
                         'font-large': currentFont === '3'
                     }"
             >
-                <input type="radio" class="dynamic-query-all-any-radio-button clicker" name="dynamic-query-widget-all-any-radio-button-id{{
+                <input type="radio" class="dynamic-query-all-any-radio-button clicker"
+                       name="dynamic-query-widget-all-any-radio-button-id{{
                             sequenceNumber
                         }}" id="all-any-radio-button-id-{{ i }}-{{
                             sequenceNumber
-                        }}" (change)="onWidgetAllAnyRadioClick(i)" [checked]="allAnyRadio[i]" />
+                        }}" (change)="onWidgetAllAnyRadioClick(i)" [checked]="allAnyRadio[i]"/>
                 <label [attr.for]="
                             'all-any-radio-button-id-' +
                             i +
@@ -183,23 +185,24 @@
         <span class="widget-top-right-button-box">
             <!-- Search/filter List button (Red magnifying glass)                      -->
             <!-- This is just the button, the Filter text input, etc, is farther below -->
-            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaSearchable']" class="clicker" title="{{ searchToolTip }}" (click)="onSearchGlassClick()">
+            <span *ngIf="queryCriteriaData['dynamicQueryCriteriaSearchable']" class="clicker"
+                  title="{{ searchToolTip }}" (click)="onSearchGlassClick()">
                 <img [ngClass]="{
                         'dynamic-query-list-button-icon-extra-small':  currentFont === '0',
                         'dynamic-query-list-button-icon-small': currentFont === '1',
                         'dynamic-query-list-button-icon-medium': currentFont === '2',
                         'dynamic-query-list-button-icon-large': currentFont === '3'
-                    }" src="assets/images/search.png" alt="Filter list" />
+                    }" src="assets/images/search.png" alt="Filter list"/>
             </span>
             <!-- END Search (filter) List. Button (just the button) -->
             <!-- Clear button at top right -->
-            <span *ngIf="criteriaClearButton && haveInput" class="clicker" (click)="onClearClick()">
+            <span *ngIf="criteriaClearButton && haveInput" class="clicker" (click)="onClearClick(  )">
                 <img [ngClass]="{
                         'dynamic-query-list-button-icon-extra-small': currentFont === '0',
                         'dynamic-query-list-button-icon-small': currentFont === '1',
                         'dynamic-query-list-button-icon-medium': currentFont === '2',
                         'dynamic-query-list-button-icon-large': currentFont === '3'
-                    }" src="assets/images/redClear.png" alt="Clear checks" />
+                    }" src="assets/images/redClear.png" alt="Clear checks"/>
             </span>
             <!-- END Clear button at top right -->
             <!-- Red X at the top right that will remove this widget from the UI and remove any part of the query it may have provided -->
@@ -213,7 +216,7 @@
                                 currentFont === '2',
                             'dynamic-query-list-button-icon-large':
                                 currentFont === '3'
-                        }" src="assets/images/x_red.png" alt="Remove this search criteria" />
+                        }" src="assets/images/x_red.png" alt="Remove this search criteria"/>
             </span>
             <!-- END Red X at the top right, that will remove this widget from the UI and remove any part of the query it may have provided -->
         </span>
@@ -235,7 +238,9 @@
                     'font-large': currentFont === '3'
                 }">
             <span>
-                <input type="text" class="dynamic-query-list-search-text-area dynamic-query-list-search-box-with-focus" placeholder="search" [(ngModel)]="listSearchInput" (blur)="onSearchTextOutFocus(0)" (focus)="onSearchTextFocus(0)" (ngModelChange)="onSearchChange($event)" />
+                <input type="text" class="dynamic-query-list-search-text-area dynamic-query-list-search-box-with-focus"
+                       placeholder="search" [(ngModel)]="listSearchInput" (blur)="onSearchTextOutFocus(0)"
+                       (focus)="onSearchTextFocus(0)" (ngModelChange)="onSearchChange($event)"/>
             </span>
             <span class="dynamic-query-list-search-count">{{listSearchResultsCount}}</span>
         </div>
@@ -249,19 +254,25 @@
             hide: (!widgetShowCriteria)
         }" class="single-line-radio-input-text">
             <span *ngIf="criteriaSingleLineRadioOptions[0].length > 0" class="ml-1">
-                <input class="single-line-radio-input ml-2" type="radio" name="singleLineRadio-{{sequenceNumber}}" id="singleLineRadio0-{{sequenceNumber}}" [checked]="criteriaSingleLineRadioDefault===0" (change)="onSingleLineRadioChange(0)">
+                <input class="single-line-radio-input ml-2" type="radio" name="singleLineRadio-{{sequenceNumber}}"
+                       id="singleLineRadio0-{{sequenceNumber}}" [checked]="criteriaSingleLineRadioDefault===0"
+                       (change)="onSingleLineRadioChange(0)">
                 <label for="singleLineRadio0-{{sequenceNumber}}">
                     {{criteriaSingleLineRadioOptions[0]}}
                 </label>
             </span>
             <span *ngIf="criteriaSingleLineRadioOptions[1].length > 0" class="ml-1">
-                <input class="single-line-radio-input" type="radio" name="singleLineRadio-{{sequenceNumber}}" id="singleLineRadio1-{{sequenceNumber}}" [checked]="criteriaSingleLineRadioDefault===1" (change)="onSingleLineRadioChange(1)">
+                <input class="single-line-radio-input" type="radio" name="singleLineRadio-{{sequenceNumber}}"
+                       id="singleLineRadio1-{{sequenceNumber}}" [checked]="criteriaSingleLineRadioDefault===1"
+                       (change)="onSingleLineRadioChange(1)">
                 <label for="singleLineRadio1-{{sequenceNumber}}">
                     {{criteriaSingleLineRadioOptions[1]}}
                 </label>
             </span>
             <span *ngIf="criteriaSingleLineRadioOptions[2].length > 0" class="ml-1">
-                <input class="single-line-radio-input" type="radio" name="singleLineRadio-{{sequenceNumber}}" id="singleLineRadio2-{{sequenceNumber}}" [checked]="criteriaSingleLineRadioDefault===2" (change)="onSingleLineRadioChange(2)">
+                <input class="single-line-radio-input" type="radio" name="singleLineRadio-{{sequenceNumber}}"
+                       id="singleLineRadio2-{{sequenceNumber}}" [checked]="criteriaSingleLineRadioDefault===2"
+                       (change)="onSingleLineRadioChange(2)">
                 <label for="singleLineRadio2-{{sequenceNumber}}">
                     {{criteriaSingleLineRadioOptions[2]}}
                 </label>
@@ -271,7 +282,8 @@
     <!-- ----- END Single Radio buttons (2 or 3) ----- -->
     <!-- TODO add font sizing -->
     <!-- ----- Subheading ----- -->
-    <div *ngIf="widgetShowCriteria  && criteriaSubheading !== undefined  && criteriaSubheading.length > 0 && (!criteriaSingleLineRadio)">
+    <div
+        *ngIf="widgetShowCriteria  && criteriaSubheading !== undefined  && criteriaSubheading.length > 0 && (!criteriaSingleLineRadio)">
         <span class="dynamic-query-subheading">{{criteriaSubheading}}</span>
     </div>
     <!-- ----- END Subheading ----- -->
@@ -295,16 +307,30 @@
 
             </textarea>
             <!-- -----  Apply Button for Text inputs ----- -->
-            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button" (click)="onApplyButtonClick(  )">
+            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button"
+                    (click)="onApplyButtonClick(  )">
                 {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
             </button>
             <!-- ----- END  Apply Button  ----- -->
+
             <!-- -----  Apply Checkbox  ----- -->
-            <span *ngIf="criteriaApplyCheckbox">
-                <input type="checkbox" (click)="onApplyCheckboxClick( $event)" />
-                {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+            <span *ngIf="criteriaApplyCheckbox"
+                  class="ml-3"
+            >
+                <input
+                    type="checkbox"
+                    id="dynamic-query-apply-checkbox-{{sequenceNumber}}"
+                    (click)="onApplyCheckboxClick( $event.currentTarget['checked'])"
+                    [(ngModel)]="applyState"
+                >
+                <label
+                    class="ml-1"
+                    for="dynamic-query-apply-checkbox-{{sequenceNumber}}">
+                    {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+                </label>
             </span>
             <!-- ----- END  Apply Checkbox  ----- -->
+
         </div>
     </span>
     <!-- -----  END Text input  ----- -->
@@ -329,21 +355,26 @@
                             class="dynamic-query-list-checkbox"
                             id="dynamic-query-multi-choice-checkbox-test{{ i }}-{{sequenceNumber}}"
                             [(ngModel)]="listCheckboxes[i]"
-                            (click)="onCriteriaListItemClicked(i)"
+                            (click)="onCriteriaListItemClicked(i, $event)"
+
                         >
-                        <label [attr.for]="'dynamic-query-multi-choice-checkbox-test' + i + '-' + sequenceNumber" [ngClass]="{
+                        <label [attr.for]="'dynamic-query-multi-choice-checkbox-test' + i + '-' + sequenceNumber"
+                               [ngClass]="{
                             'font-extra-small': currentFont === '0',
                             'font-small': currentFont === '1',
                             'font-medium': currentFont === '2',
                             'font-large': currentFont === '3'
                         }">
-                            {{item['value']}}
+                            {{item['value'] | shorten : 32}}
                         </label>
                     </span>
                     <!-- END Checkbox list -->
                     <!-- Radio button list -->
                     <span *ngIf="criteriaSingleChoiceList">
-                        <input type="radio" name="dynamic-query-list-radio-{{sequenceNumber}}" class="dynamic-query-list-checkbox" id="dynamic-query-list-radio-test{{ i }}-{{sequenceNumber}}" [checked]="listCheckboxes[i]" (click)="onCriteriaListItemClicked(i)" />
+                        <input type="radio" name="dynamic-query-list-radio-{{sequenceNumber}}"
+                               class="dynamic-query-list-checkbox"
+                               id="dynamic-query-list-radio-test{{ i }}-{{sequenceNumber}}"
+                               [checked]="listCheckboxes[i]" (click)="onCriteriaListItemClicked(i)"/>
                         <label [attr.for]="'dynamic-query-list-radio-test' + i + '-' + sequenceNumber" [ngClass]="{
                             'font-extra-small': currentFont === '0',
                             'font-small': currentFont === '1',
@@ -357,19 +388,20 @@
                 </div>
             </div>
             <!-- -----  Apply Button  ----- -->
-            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button" (click)="onApplyButtonClick(  )">
+            <button *ngIf="criteriaApplyButton" class="btn nbia-button dynamic-query-apply-button" type="button"
+                    (click)="onApplyButtonClick(  )">
                 {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
             </button>
             <!-- ----- END  Apply Button  ----- -->
             <!-- -----  Apply Checkbox  ----- -->
-            <span style="background-color: #e4606d" *ngIf="criteriaApplyCheckbox">
+            <span style="background-color: #e4606d;" *ngIf="criteriaApplyCheckbox">
                 <input
                     type="checkbox"
                     id="list-checkbox-{{sequenceNumber}}"
                     (click)="onApplyCheckboxClick( $event)"
                 >
                 <label for="list-checkbox-{{sequenceNumber}}">
-                    {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+                    {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}dynamicQueryCriteriaApplyText01
                 </label>
             </span>
             <!-- ----- END  Apply Checkbox  ----- -->
@@ -381,7 +413,8 @@
     <div *ngIf="widgetShowCriteria  && criteriaCalendar" [ngClass]="{
         'dynamic-query-calendar-div': (! criteriaApplyButton) && (! criteriaApplyCheckbox ),
         'dynamic-query-calendar-div-with-apply-button':  criteriaApplyButton ,
-        'dynamic-query-calendar-div-with-apply-checkbox': criteriaApplyCheckbox
+        'dynamic-query-calendar-div-with-apply-checkbox': criteriaApplyCheckbox,
+        'cal-height-one-date': criteriaCalendarPrompt1.length < 1
         }">
         <nbia-widget-calendar
             [prompt0]="criteriaCalendarPrompt0"
@@ -390,6 +423,7 @@
             [placeHolder1]="criteriaCalendarPlaceHolder1"
             [(date0)]="date0"
             [(date1)]="date1"
+            [(haveInput)]="haveInput"
         >
 
         </nbia-widget-calendar>
@@ -397,8 +431,7 @@
         <!-- -----  Apply Button for Calendar ----- -->
         <button
             *ngIf="criteriaApplyButton"
-            [disabled]="
-            (
+            [disabled]="            (
                 (
                     (date0 === undefined || date0['formatted'].length < 1) &&
                     (date1 === undefined || date1['formatted'].length < 1)
@@ -414,8 +447,7 @@
                             ( ! criteriaCalendarAllowOneEmpty )
                     )
                 )
-            )
-       "
+            ) "
             class="btn nbia-button dynamic-query-apply-button mt-1"
             type="button"
             (click)="onApplyButtonClick()"
@@ -437,7 +469,6 @@
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
-
                             (
                                 (date0 === undefined || date0['formatted'].length < 1) ||
                                 (date1 === undefined || date1['formatted'].length < 1)
@@ -450,6 +481,7 @@
                  }" class="mt-1">
             <input
                 type="checkbox"
+                id="list-checkbox-cal-{{sequenceNumber}}"
                 [disabled]="            (
                 (
                     (date0 === undefined || date0['formatted'].length < 1) &&
@@ -459,7 +491,6 @@
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
-
                             (
                                 (date0 === undefined || date0['formatted'].length < 1) ||
                                 (date1 === undefined || date1['formatted'].length < 1)
@@ -467,15 +498,17 @@
                             ( ! criteriaCalendarAllowOneEmpty )
                     )
                 )
-            )
-"
+            ) "
 
-                   (click)="onApplyCheckboxClick( $event)"
+                (click)="onApplyCheckboxClick( $event)"
             >
-            {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+            <label
+                class="ml-1"
+                for="list-checkbox-cal-{{sequenceNumber}}">
+                {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
+            </label>
         </div>
         <!-- ----- END  Apply Checkbox for Calendar ----- -->
     </div>
     <!-- ----------  END Calendar  --------- -->
 </div>
-criteriaAndOrType:{{criteriaAndOrType}}

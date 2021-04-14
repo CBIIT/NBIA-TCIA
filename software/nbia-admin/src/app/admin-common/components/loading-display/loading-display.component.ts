@@ -8,7 +8,7 @@ import { UtilService } from '../../services/util.service';
 @Component({
   selector: 'nbia-loading-display',
   templateUrl: './loading-display.component.html',
-  styleUrls: ['./loading-display.component.scss']
+  styleUrls: ['../../../app.component.scss', './loading-display.component.scss']
 })
 
 export class LoadingDisplayComponent implements OnInit, OnDestroy{
@@ -41,7 +41,7 @@ export class LoadingDisplayComponent implements OnInit, OnDestroy{
                 this.message = data['message'];
                 this.subMessage = data['subMessage'];
                 this.showBusy = data['value'];
-            }
+             }
         );
 
 

@@ -23,7 +23,6 @@ import { QcHistoryReportComponent } from '@app/tools/qc-history-report-module/qc
 import { QcStatusEditComponent } from '@app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component';
 import { DeleteCinemodeSeriesComponent } from '@app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component';
 import { QcHistoryReportTableComponent } from '@app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component';
-import { ProgressBarModule } from 'angular-progress-bar';
 import { LeftSectionComponent } from '@app/tools/query-section-module/left-section/left-section.component';
 import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 import { QueryQcStatusComponent } from '@app/tools/query-section-module/query-qc-status/query-qc-status.component';
@@ -48,7 +47,6 @@ describe( 'NbiaAdminClientComponent', () => {
                 AngularDraggableModule,
                 FormsModule,
                 AngularEditorModule,
-                ProgressBarModule,
                 NgxKeyboardShortcutModule.forRoot(),
                 NgxMyDatePickerModule.forRoot(),
                 RouterTestingModule,

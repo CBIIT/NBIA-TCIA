@@ -3,24 +3,58 @@
 </button>
 
 <div
-    *ngIf="!noSearch"
     [ngClass]="{
+    'hide': noSearch,
         'heading-font-extra-small': currentFont === '0',
         'heading-font-small': currentFont === '1',
         'heading-font-medium': currentFont === '2',
         'heading-font-large': currentFont === '3'
     }"
 >
-    <b>{{ searchResultsCount }}</b>
-    &nbsp;Series&nbsp;&nbsp;&nbsp;
-    <b>{{ checkboxCount }}</b>
-    &nbsp;Selected&nbsp;&nbsp;&nbsp;
-    <b>{{ collectionSite }}</b>
+    <div class="search-results-top-stats">
+        <span *ngIf="searchResultsCount > 0">
+            Showing&nbsp;<b>{{(currentPage * pageLength) + 1}}</b>&nbsp;-&nbsp;<b>{{(currentPage + 1) * pageLength }}</b>&nbsp;of
+            <b>{{ searchResultsCount }}</b>
+            Series&nbsp;&nbsp;&nbsp;&nbsp;
+            <b>{{ checkboxCount }}</b>
+            Selected&nbsp;
+        </span>
+
+        <span *ngIf="searchResultsCount < 1">
+            No results found
+        </span>
+
+
+        <!--
+                If the Collection is too long, it interferes with the page.
+                <b>{{ collectionSite }}</b>
+        -->
+
+        <span
+            class="search-results-pager"
+        >
+            <!-- Page length number setting  -->
+            <span>
+                Show
+                <input
+                    class="number-spinner rows-per-page-spinner" min="1"
+                    type="number"
+                    [(ngModel)]="pageLength"
+                    (change)="onPageLengthChange()"
+                >
+                entries
+            </span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <nbia-search-results-pager
+                [(totalCount)]="totalCount"
+            ></nbia-search-results-pager>
+        </span>
+    </div>
 </div>
 
-<div
-    class="data-tableFixHead search-results-scroller-div"
-    [ngClass]="{
+<div #scrollerDiv
+     class="data-tableFixHead search-results-scroller-div"
+     [ngClass]="{
         'search-results-outer-div': searchResultsCount > 0
     }"
 >
@@ -41,15 +75,36 @@
                     <th
                         class="data-table-thead-th search-results-table-thead-th-checkbox"
                     >
-                        <input
+
+
+
+                        <span *ngIf="pageLength < searchResultsCount"
+                            class="dropdown">
+                        <input class="dropdown-toggle" data-toggle="dropdown"
+                               type="checkbox"
+                               [(ngModel)]="masterSearchResultsCheckbox"
+                        />
+
+                           <div class="dropdown-menu">
+                               <a class="dropdown-item"
+                                  (click)="toggleSelectAll()"
+                               >
+                                   Select all
+                               </a>
+                               <a class="dropdown-item"
+                                  (click)="toggleSelectPage()"
+                               >
+                                   Select These {{pageLength}}
+                               </a>
+                           </div>
+                        </span>
+
+                        <input  *ngIf="pageLength >= searchResultsCount"
                             type="checkbox"
                             [(ngModel)]="masterSearchResultsCheckbox"
-                            (click)="
-                                toggleTopSearchResultsCheckbox(
-                                    $event.target['checked']
-                                )
-                            "
+                            (click)="toggleTopSearchResultsCheckbox($event.target['checked'])"
                         />
+
                     </th>
 
                     <!-- ----- The Column name ----- -->
@@ -58,34 +113,6 @@
                     <th
                         class="data-table-thead-th"
                         *ngFor="let colName of columnHeadings; let i = index"
-                        [ngClass]="{
-                            'search-results-description-td-0':
-                                i === 4 && currentFont === '0',
-                            'search-results-description-td-1':
-                                i === 4 && currentFont === '1',
-                            'search-results-description-td-2':
-                                i === 4 && currentFont === '2',
-                            'search-results-description-td-3':
-                                i === 4 && currentFont === '3',
-
-                            'search-results-modality-td-0':
-                                i === 5 && currentFont === '0',
-                            'search-results-modality-td-1':
-                                i === 5 && currentFont === '1',
-                            'search-results-modality-td-2':
-                                i === 5 && currentFont === '2',
-                            'search-results-modality-td-3':
-                                i === 5 && currentFont === '3',
-
-                            'search-results-visibility-td-0':
-                                i === 6 && currentFont === '0',
-                            'search-results-visibility-td-1':
-                                i === 6 && currentFont === '1',
-                            'search-results-visibility-td-2':
-                                i === 6 && currentFont === '2',
-                            'search-results-visibility-td-3':
-                                i === 6 && currentFont === '3'
-                        }"
                     >
                         <!-- Heading content and sorting icon/buttons -->
                         <span
@@ -143,7 +170,7 @@
             <tbody>
                 <tr
                     *ngFor="
-                        let dataRow of searchResults;
+                        let dataRow of searchResultsPageToDisplay;
                         let i = index;
                         let odd = odd
                     "
@@ -152,7 +179,7 @@
                         'data-table-body-dark-tr':
                             odd && i !== currentCineModeSeriesIndex,
                         'data-table-body-high-light-tr':
-                            i === currentCineModeSeriesIndex
+                            (i + (pageLength * currentPage)) === currentCineModeSeriesIndex
                     }"
                 >
                     <td class="data-table-body-td">
@@ -235,7 +262,7 @@
                             title="OHIF Viewer"
                             (click)="onOhifViewerClick(i)"
                         >
-                            <img src="assets/images/facetime-video.png" />
+                            <img src="assets/images/facetime-video.png"/>
                         </label>
 
                         <!-- -----  The Cine mode button  ----- -->
@@ -244,7 +271,7 @@
                             title="Cine mode"
                             (click)="onClickCineMode(i)"
                         >
-                            <img src="assets/images/eye.png" />
+                            <img src="assets/images/eye.png"/>
                         </label>
                     </td>
                 </tr>

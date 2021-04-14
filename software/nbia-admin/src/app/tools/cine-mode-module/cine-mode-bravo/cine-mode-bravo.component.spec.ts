@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { QcStatusEditComponent } from '@app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component';
 import { DeleteCinemodeSeriesComponent } from '@app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component';
 import { QcHistoryReportTableComponent } from '@app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component';
-import { ProgressBarComponent } from 'angular-progress-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -26,8 +25,7 @@ describe( 'CineModeBravoComponent', () => {
                 CineModeBravoComponent,
                 QcStatusEditComponent,
                 DeleteCinemodeSeriesComponent,
-                QcHistoryReportTableComponent,
-                ProgressBarComponent,
+                QcHistoryReportTableComponent
             ],
         } ).compileComponents();
     } ) );

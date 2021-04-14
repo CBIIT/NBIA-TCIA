@@ -1,0 +1,43 @@
+@import '../../../app.component';
+
+.parent-pager-span{
+}
+
+.results-pager-font {
+    font-size: 9pt;
+}
+
+.selected {
+    color: #fff;
+    background-color: #686868;
+}
+
+.hide-button {
+    display: none;
+}
+
+.pager{
+    margin-right: 15px;
+    margin-top: 12px;
+
+    float:right;
+}
+
+
+.btn-nbia-pager{
+    border: solid #ccc 1px;
+    height: 32px;
+    width: 32px;
+    padding: 4px 0 0 10px;
+}
+
+.btn-nbia-pager-left{
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+.btn-nbia-pager-right{
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+

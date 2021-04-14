@@ -10,6 +10,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CommonService } from '@app/admin-common/services/common.service';
 import { Properties } from '@assets/properties';
+import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
+import { CriteriaSelectionMenuService } from '@app/criteria-selection-menu/criteria-selection-menu.service';
+import { UtilService } from '@app/admin-common/services/util.service';
 
 
 @Component( {
@@ -31,21 +34,21 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
      */
     show = true;
 
-    /**
-     * Criteria Search or Text Search.
-     */
-    currentTab = Consts.CRITERIA_SEARCH;
+    currentTab = Properties.DEFAULT_SEARCH_TAB; // @TODO Convert the other places where this is used to use the Conts.
 
     currentFont;
     consts = Consts;
     properties = Properties;
 
+    temp;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
     constructor( private querySectionService: QuerySectionService, private preferencesService: PreferencesService,
-                 private commonService: CommonService) {
+                 private criteriaSelectionMenuService: CriteriaSelectionMenuService, private commonService: CommonService,
+                 private utilService: UtilService, private dynamicQueryCriteriaService: DynamicQueryCriteriaService) {
     }
 
-    ngOnInit() {
+   async ngOnInit() {
         this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentFont = data;
@@ -54,7 +57,21 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
 
-    }
+        // Show the correct default tab
+        this.onTabClick(this.currentTab);
+
+        // @TODO explain why this is being done in this location
+        let requiredCriteriaData = undefined;
+        while( requiredCriteriaData === undefined){
+            await this.utilService.sleep( Consts.waitTime );
+            requiredCriteriaData = this.criteriaSelectionMenuService.getRequiredCriteriaData();
+        }
+        for( let requiredCriteria of requiredCriteriaData){
+            this.dynamicQueryCriteriaService.addWidget( requiredCriteria );
+        }
+
+
+   }
 
     onCloserOpenerClick(  ){
         this.show = (! this.show);
@@ -66,7 +83,6 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
     }
 
     onAddCriteriaClick(){
-        console.log('MHL Open Crit select menu');
         this.commonService.showCriteriaSelectionMenu( true );
     }
 

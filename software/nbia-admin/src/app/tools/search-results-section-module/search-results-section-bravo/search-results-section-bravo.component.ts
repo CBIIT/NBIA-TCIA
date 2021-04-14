@@ -3,7 +3,7 @@
 // -----------------     used by "Perform Quality Control" and "Approve Deletions"   ------------------
 // ----------------------------------------------------------------------------------------------------
 
-import { Component, EventEmitter, OnDestroy, OnInit, Output, } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, } from '@angular/core';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { Properties } from '@assets/properties';
@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service';
 import { IKeyboardShortcutListenerOptions, KeyboardKeys, } from 'ngx-keyboard-shortcuts';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { SearchResultsPagerService } from '@app/tools/search-results-section-module/search-results-pager/search-results-pager.service';
 
 
 @Component( {
@@ -27,22 +28,31 @@ import { PreferencesService } from '@app/preferences/preferences.service';
 } )
 
 export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
+    @ViewChild( 'scrollMe', { static: true } ) private myScrollContainer: ElementRef;
     searchResultsSelectedCount = 0;
     searchResults = [];
     currentCineModeSeriesIndex = -1;
+
+    searchResultsPageToDisplay = [];
+    pageLength = 6;
+    currentPage = 0;
+    pageCount = 0;
+    totalCount = 0;
+
     // I don't want to use searchResults.length in the HTML
     searchResultsCount = 0;
     checkboxCount = 0;
     masterSearchResultsCheckbox = false;
     noSearch = true;
 
+    showSelectDropdown = false;
 
     // @TODO init from browser cookie if there.
     columnHeadings = [
         { name: 'Submission date', sortState: SortState.SORT_DOWN }, // Default  TODO save and restore from browser cookie
         // { 'name': 'Trial ID', 'sortState': SortState.NO_SORT },
         // { 'name': 'Collection//Site', 'sortState': SortState.NO_SORT },
-        { name: 'Patient', sortState: SortState.NO_SORT },
+        { name: 'Patient ID', sortState: SortState.NO_SORT },
         { name: 'Study', sortState: SortState.NO_SORT },
         { name: 'Series', sortState: SortState.NO_SORT },
         { name: 'Description', sortState: SortState.NO_SORT },
@@ -79,7 +89,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         private loadingDisplayService: LoadingDisplayService,
         private modalityDescriptionsService: ModalityDescriptionsService,
         private searchResultByIndexService: SearchResultByIndexService,
-        private preferencesService: PreferencesService
+        private preferencesService: PreferencesService,
+        private searchResultsPagerService: SearchResultsPagerService
     ) {
     }
 
@@ -91,21 +102,37 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             runaway--;
         }
 
-        this.searchResultByIndexService.searchResultsByIndexEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
+        this.searchResultsPagerService.currentPageChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) )
             .subscribe( ( data ) => {
-                if(
-                    this.currentCineModeSeriesIndex <
-                    this.searchResults.length - 1
-                ){
-                    this.currentCineModeSeriesIndex++;
-                    this.cineModeService.openCineMode(
-                        this.searchResults[this.currentCineModeSeriesIndex],
-                        this.collectionSite,
-                        this.currentCineModeSeriesIndex
-                    );
-                }
+                this.currentPage = data;
+                this.setupPage();
             } );
+
+
+        // @TODO Make sure this emmitter name makes sense
+        // Happens when Cinemode next/skip
+        this.searchResultByIndexService.searchResultsByIndexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+            console.log( 'MHL 400 searchResultsByIndexEmitter data: ', data );
+            if( this.currentCineModeSeriesIndex < this.searchResults.length - 1 ){
+                this.currentCineModeSeriesIndex++;
+
+                this.cineModeService.openCineMode(
+                    this.searchResults[this.currentCineModeSeriesIndex],
+                    this.collectionSite,
+                    this.currentCineModeSeriesIndex
+                );
+
+                // Do we need to go to next page?
+                console.log( 'MHL 401 currentPage: ', this.currentPage );
+                console.log( 'MHL 402 pageLength: ', this.pageLength );
+                console.log( 'MHL 403 currentCineModeSeriesIndex: ', this.currentCineModeSeriesIndex );
+                console.log( 'MHL 404 ((this.currentPage * this.pageLength) + 1 ): ', ((this.currentPage + 1) * this.pageLength) );
+                if( this.currentCineModeSeriesIndex >= ((this.currentPage + 1) * this.pageLength) ){
+                    console.log( 'MHL NEXT PAGE **************************************' );
+                    this.searchResultsPagerService.goToNextPage();
+                }
+            }
+        } );
 
         // closeCineModeEmitter
         this.cineModeService.closeCineModeEmitter
@@ -114,6 +141,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 this.currentCineModeSeriesIndex = -1;
             } );
 
+
+        // New search results have arrived.
         this.apiService.searchResultsEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
             .subscribe( ( data ) => {
@@ -125,7 +154,11 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 }
 
                 this.searchResults = data;
+                this.totalCount = this.searchResults.length;
                 this.searchResultsCount = this.searchResults.length;
+                this.pageCount = Math.ceil( this.searchResultsCount / this.pageLength );
+                this.searchResultsPagerService.setPageCount( this.pageCount );
+
 
                 // Add/initialize 'selected', 'modalityDescription', and 'showOhif' fields
                 for( let i = 0; i < this.searchResults.length; i++ ){
@@ -151,6 +184,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 this.checkboxCount = 0;
                 this.doInitSort();
                 this.resultsUpdateBravoEmitter.emit( this.searchResults );
+                this.setupPage();
+
                 this.loadingDisplayService.setLoading( false );
             } );
 
@@ -211,7 +246,19 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+
     }
+
+    /**
+     * @FIXME  This doesn't work!!!!!!
+     */
+    scrollToTop(): void {
+        try{
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        }catch( err ){
+        }
+    }
+
 
     toggleTopSearchResultsCheckbox( c ) {
         // If they are not all selected, checking this box turns them all on
@@ -221,7 +268,9 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             }
             this.masterSearchResultsCheckbox = true;
             this.checkboxCount = this.searchResults.length;
-        }else{
+        }else
+            // All are checked
+        {
             for( let i = 0; i < this.searchResults.length; i++ ){
                 this.setCheckbox( i, false );
             }
@@ -230,6 +279,52 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         }
         this.resultsSelectCountUpdateBravoEmitter.emit( this.checkboxCount );
     }
+
+
+    toggleSelectPage() {
+
+        if( this.areAnyUncheckedCurrentPage() ){
+
+            for( let i = this.currentPage * this.pageLength; i < ((this.currentPage * this.pageLength) + this.pageLength); i++ ){
+                this.setCheckbox( i, true );
+            }
+            // FIXME
+            // this.masterSearchResultsCheckbox = true;
+
+        }else
+        // All on this page are checked
+        {
+            for( let i = this.currentPage * this.pageLength; i < ((this.currentPage * this.pageLength) + this.pageLength); i++ ){
+                this.setCheckbox( i, false );
+            }
+            // FIXME
+            // this.masterSearchResultsCheckbox = false;
+        }
+        this.getSelectedCheckboxCount();
+    }
+
+    toggleSelectAll() {
+        console.log( 'MHL toggleSelectAll areAnyUnchecked: ', this.areAnyUnchecked() );
+        // If they are not all selected, checking this box turns them all on
+        if( this.areAnyUnchecked() ){
+            for( let i = 0; i < this.searchResults.length; i++ ){
+                this.setCheckbox( i, true );
+            }
+            this.masterSearchResultsCheckbox = true;
+            this.checkboxCount = this.searchResults.length;
+        }else
+            // All are checked
+        {
+            for( let i = 0; i < this.searchResults.length; i++ ){
+                this.setCheckbox( i, false );
+            }
+            this.masterSearchResultsCheckbox = false;
+            this.checkboxCount = 0;
+        }
+        this.resultsSelectCountUpdateBravoEmitter.emit( this.checkboxCount );
+
+    }
+
 
     toggleSearchResultsCheckbox( i, c ) {
         this.setCheckbox( i, c );
@@ -266,6 +361,16 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         return anyUnchecked;
     }
 
+    areAnyUncheckedCurrentPage() {
+        let anyUnchecked = false;
+        for( let state of this.searchResultsPageToDisplay ){
+            if( !state['selected'] ){
+                anyUnchecked = true;
+            }
+        }
+        return anyUnchecked;
+    }
+
     setCheckbox( i, state ) {
         this.searchResults[i]['selected'] = state;
         this.resultsUpdateBravoEmitter.emit( this.searchResults );
@@ -273,6 +378,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     // Cine-mode viewer
     onClickCineMode( i ) {
+        i += (this.currentPage * this.pageLength);
         this.currentCineModeSeriesIndex = i;
 
         this.cineModeService.openCineMode(
@@ -284,6 +390,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     // nbia-viewer
     onThumbnailClick( i ) {
+        i += (this.currentPage * this.pageLength);
         window.open(
             Properties.API_SERVER_URL +
             '/nbia-viewer/?thumbnailSeries=' +
@@ -298,6 +405,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     // OHIF Viewer
     onOhifViewerClick( i ) {
+        i += (this.currentPage * this.pageLength);
         let ohifUrl =
             Properties.OHIF_SERVER_URL +
             '/viewer?study=' +
@@ -316,6 +424,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             this.columnHeadings[i]['name'] !== 'Collection//Site' &&
             this.columnHeadings[i]['name'] !== 'Viewers'
         ){
+
+
             // Is this column the current sorting column
             if( this.columnHeadings[i]['sortState'] === SortState.NO_SORT ){
                 // Clear all sort states
@@ -493,7 +603,29 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 );
                 break;
         }
+
+
+        // @TODO Update the Page
+        this.setupPage();
+
         this.loadingDisplayService.setLoading( false );
+    }
+
+    pageChanged( e ) {
+        console.log( 'MHL pageChanged: ', e );
+        console.log( 'MHL pageChanged currentPage: ', this.currentPage );
+        this.setupPage();
+    }
+
+    onPageLengthChange() {
+        this.pageCount = Math.ceil( this.searchResultsCount / this.pageLength );
+        this.searchResultsPagerService.setPageCount( this.pageCount );
+        this.setupPage();
+    }
+
+    setupPage() {
+        this.searchResultsPageToDisplay = this.searchResults.slice( this.pageLength * this.currentPage, this.pageLength * (this.currentPage + 1) );
+        this.scrollToTop();
     }
 
     hideShowCineMode() {

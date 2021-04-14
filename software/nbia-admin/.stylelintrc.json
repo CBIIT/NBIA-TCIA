@@ -1,0 +1,8 @@
+{
+    "extends": "stylelint-config-standard",
+    "rules": {
+        "indentation": 4,
+        "block-opening-brace-space-before": "never",
+        "selector-max-empty-lines": 3
+    }
+}

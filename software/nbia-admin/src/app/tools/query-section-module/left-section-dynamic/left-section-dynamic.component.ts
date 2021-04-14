@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
+import { Properties } from '@assets/properties';
 
 @Component( {
     selector: 'nbia-left-section-dynamic',
@@ -9,6 +10,7 @@ import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dyn
     styleUrls: ['./left-section-dynamic.component.scss']
 } )
 export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
+    @Input() currentTool;
     usedElements = [];
     queryCriteriaData = [];
 
@@ -76,6 +78,9 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     ngOnInit() {
         this.dynamicQueryCriteriaService.addWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
+                // Add sequenceNumber here
+                data['sequenceNumber'] =  Properties.dynamicQueryCriteriaSequenceNumber++;
+               // console.log('MHL LeftSectionDynamicComponent CALLING addQueryCriteria: ', data);
                 this.addQueryCriteria( data );
             } );
 
@@ -93,6 +98,7 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     }
 
     addQueryCriteria( qCriteriaData ) {
+       // console.log('MHL LeftSectionDynamicComponent addQueryCriteria: ', qCriteriaData);
         this.queryCriteriaData.reverse();
         this.queryCriteriaData.push( qCriteriaData );
         this.queryCriteriaData.reverse();

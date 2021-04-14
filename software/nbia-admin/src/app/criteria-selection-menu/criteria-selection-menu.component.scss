@@ -27,13 +27,12 @@ $criteria-selection-menu-box-width: 40%;
     padding: 0;
     position: absolute;
 
-    top: 250px;
-}
+    top: 50px;
 
-.criteria-selection-menu-panel-heading-scroller{
-    overflow-y: auto;
-}
+  //  height: 300px;
+    height: calc(100% - 100px);
 
+}
 table{
     padding: 0;
    // border-collapse: collapse;
@@ -123,3 +122,28 @@ td{
 .disabled-table{
     background-color: #dc3545;
 }
+
+
+.criteria-selection-menu-body{
+    resize: vertical;
+    background-color: #34ce57;
+}
+
+
+
+.rSize{
+    resize: vertical;
+    overflow: auto;
+}
+
+.criteria-selection-menu-panel-body{
+    background-color: #FFFFFF;
+}
+
+.criteria-selection-menu-panel-heading-scroller{
+     // height: 100%;
+    height: calc(100% - 40px);
+    overflow: auto;
+    border: solid #bce8f1 1px;
+}
+

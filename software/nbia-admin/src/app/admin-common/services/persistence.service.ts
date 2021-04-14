@@ -6,6 +6,7 @@ import { CookieOptionsArgs, CookieService } from 'angular2-cookie/core';
   providedIn: 'root'
 })
 export class PersistenceService {
+// This is copied from nbia-search to get started
 
     public Field = Object.freeze( {
         // Numerical value of data display tab "Summaary", "Search Results", or "Test"

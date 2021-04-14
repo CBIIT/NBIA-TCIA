@@ -1,8 +1,8 @@
 export let Properties = {
     // 09_MAR_2021
     VERSION: '1.0.73',
-    // 09_MAR_2021
-    TEST_VERSION: '1.0.73b',
+    // 14_APR_2021
+    TEST_VERSION: '1.0.73c',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -58,7 +58,7 @@ export let Properties = {
 
     // API_SERVER_URL: 'http://192.168.1.21:8080',
 
-     API_SERVER_URL: '',
+    API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
@@ -153,6 +153,7 @@ export let Properties = {
     // Key words for thumbnail values in the URL (outbound)
     URL_KEY_THUMBNAIL_SERIES: 'thumbnailSeries',
     URL_KEY_THUMBNAIL_DESCRIPTION: 'thumbnailDescription',
+    URL_KEY_THUMBNAIL_TOKEN: 'accessToken',
     ///////////////////////////////////////////////////////////////////////////////
 
     THUMBNAIL_URL: 'nbia-viewer',

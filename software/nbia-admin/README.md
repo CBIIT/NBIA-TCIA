@@ -1,20 +1,47 @@
 # nbia-admin
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
-
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4300/`. The app will automatically reload if you change any of the source files.
-
-
 ## TODO
-* Make sure all names and IDs use the sequenceNumber
-- Add to Dynamic widget:
+-[X] Radio buttons don't trigger a search
+-[ ] Calendar clear
+-[ ] Calendar allow only one
+-[ ] Display Query Clear button
+-[ ] Display Query
+-[ ] Update pager when query changes (it changes if you click it) NOW I can't reproduce. Revisit.
+-[ ] A little more space horizontally for lists - update the truncating pipe
+-[ ] Persist Page length choice
+-[ ] Clean up Cine mode scss
+-[ ] Make Cine Mode text selectable
+-[ ] Check Calendar clear & query update
+-[ ] Disable user inputs while search is running
+-[ ] Make sure all names (Labels) and IDs use the sequenceNumber
+-[ ] Clean up this page, it is displayed on Github website. 
+-[ ] Search Error handling
+-[ ] Rework reaction to 401
+-[ ] Rework reaction to 500 ApiService.getPerformQcSearch
+-[X] Calendar if allow only one, do we need "Before" & "After"
+-[X] Select All/Select these XX should not have a dropdown if there is only one page of data
+-[X] Select All/Just this page
+-[X] Move "Getting dicom data" and graphic up to cine mode heading
+-[X] Add Dynamic test flags to commit hook .pl
+-[X] Consolidate config & properties settings for Dynamic search.  At the bottom of both files.
+-[X] Apply checkbox label (for)
+-[X] Move Apply checkbox label right
+-[X] When logging in update the access token from the URL if there is one. We would only be logging in if that token is bad.
+-[X] After User logs in - re-run getAdvancedQCCriteria rest call
+-[X] Need default And/Or for required criteria (It's And)
+-[X] Show "Wait" screen while search is running
+-[X] Fix sequenceNumbers
+-[X] Need All/Any included in the query - Can server do this yet? we don't need this (yet)
+-[X] Text input clear needs to update query
 ---
+### Add to Dynamic widget:
+
 - Calendar
 - [X] In the builder
 - [X] In the cleaner
 - [X] In the widget
 - [ ] changing the date with Apply checked does NOT update
+- [ ] Clear does not work right
 ---
 - Single checkbox
 - [x] In the builder

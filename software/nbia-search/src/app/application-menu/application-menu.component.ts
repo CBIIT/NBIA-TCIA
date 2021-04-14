@@ -307,7 +307,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // Perform QC
             case this.menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_QC + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_QC + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;
@@ -315,7 +315,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // Approve Deletions
             case this.menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_APPROVE_DELETIONS + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_APPROVE_DELETIONS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;
@@ -323,7 +323,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // View Submission reports
             case this.menuItem.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_VIEW_SUBMISSION_REPORTS + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_VIEW_SUBMISSION_REPORTS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;
@@ -332,7 +332,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // Perform online deletion
             case this.menuItem.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_ONLINE_DELETION + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_ONLINE_DELETION + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;
@@ -341,7 +341,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // Edit collection descriptions
             case this.menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;
@@ -349,7 +349,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // Edit collection descriptions
             case this.menuItem.DATA_ADMIN_EDIT_LICENSE_ITEMS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_LICENSE + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_LICENSE + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;
@@ -357,7 +357,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy{
             // Manage Workflow Items
             case this.menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM:
                 window.open( Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_MANAGE_WORKFLOW_ITEMS + '&accessToken=' + this.apiServerService.showToken(),
+                    '/nbia-admin/?tool=' + Consts.TOOL_MANAGE_WORKFLOW_ITEMS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
                     '_blank' );
 
                 break;

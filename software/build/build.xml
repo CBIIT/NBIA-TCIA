@@ -903,6 +903,7 @@ L-->
 				<filter token="nbia.wiki.user.guide.url" value="${nbia.wiki.user.guide.url}"/>
 				<filter token="help.desk.url" value="${help.desk.url}"/>
 				<filter token="online.help.url" value="${online.help.url}"/>
+				<filter token="user.agreement.file.location" value="${user.agreement.file.location}"/>
 			 	<filter token="qctool.visibility.stage1" value="${qctool.visibility.stage1}"/>
 			 	<filter token="qctool.visibility.stage2" value="${qctool.visibility.stage2}"/>
 			 	<filter token="qctool.visibility.stage3" value="${qctool.visibility.stage3}"/>
@@ -920,6 +921,7 @@ L-->
 			 	<filter token="force.downloader.upgrade" value="${force.downloader.upgrade}"/>
 			 	<filter token="help.desk.url" value="${help.desk.url}"/>
 				<filter token="online.help.url" value="${online.help.url}"/>
+				<filter token="user.agreement.file.location" value="${user.agreement.file.location}"/>
 				<filter token="tomcat.server.port" value="${tomcat.server.port}"/>
 			</filterset>
 		</copy>

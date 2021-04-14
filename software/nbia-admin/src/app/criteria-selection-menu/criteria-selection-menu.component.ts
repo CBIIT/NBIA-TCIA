@@ -24,6 +24,7 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
 
     handleMoving = false;
     criteriaData = [];
+    requiredCriteriaData = [];
     elementsUsed = [];
     elementsUsedUp = [];
     allDataInitialized = false;
@@ -36,33 +37,51 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
+        this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
         this.init();
     }
 
     async init() {
         this.apiService.getDynamicCriteriaSelectionMenuDataResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
-                this.criteriaData = data;
+            async data => {
+                // There are cases where this can be called more than once.
+                if(this.criteriaData.length < 1 ){
+                    this.criteriaData = data;
+this.criteriaSelectionMenuService.initElementsUsed( this.criteriaData );
+this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
+
+                    // Set all criteria to "Omit"
+                    for( let n = 0; n < this.criteriaData.length; n++ ){
+                        this.omit[n] = true;
+                    }
+
+                    for( let n = 0; n < this.criteriaData.length; n++ ){
+                        for( let i = 0; i < this.criteriaData[n]['criteriaObjects'].length; i++ ){
+
+                            // Required criteria
+                            if( (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired'] !== undefined) && (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired']) ){
+                                // Add the widget
+                                this.omit[n] = false;
+                                this.or[n] = false;
+                                this.and[n] = true;
+                                this.elementsUsed[n][i] = true;
+                                this.criteriaData[n]['criteriaObjects'][i]['configuration']['widgetAndOrOr'] = 'AND'; // AND is the default.
+                                this.requiredCriteriaData.push( this.criteriaData[n]['criteriaObjects'][i]['configuration'] );
+                            }
+                            // END if Required criteria
+                        }
+                    }
+this.criteriaSelectionMenuService.setRequiredCriteriaData( this.requiredCriteriaData );
+                }
             } );
 
         this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             item => {
-                console.log( 'MHL CriteriaSelectionMenuComponent deleteWidgetEmitter item: ', item );
-                console.log( 'MHL CriteriaSelectionMenuComponent deleteWidgetEmitter and: ', this.and );
-                console.log( 'MHL CriteriaSelectionMenuComponent deleteWidgetEmitter or: ', this.or );
                 for( let n = 0; n < this.criteriaData.length; n++ ){
                     for( let i = 0; i < this.criteriaData[n]['criteriaObjects'].length; i++ ){
-                        console.log( 'MHL CriteriaSelectionMenuComponent this.elementsUsed[' + n + '][' + i + ']: ', this.elementsUsed[n][i] );
                         if( (item['criteriaType'] === this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType']) &&
                             (item['inputType'] === this.criteriaData[n]['criteriaObjects'][i]['configuration']['inputType']) ){
-                            console.log( 'MHL MATCH [' + n + '][' + i + ']' );
-                            console.log( 'MHL MATCH and[' + n + '][' + i + ']: ', this.and[n][i] );
                             this.elementsUsed[n][i] = false;
-                            /*
-                                                        this.and[n][i] = false;
-                                                        this.or[n][i] = false;
-                                                        this.omit[n][i] = true;
-                            */
                         }
                     }
                 }
@@ -71,15 +90,11 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
 
                     let stillUsed = false;
                     for( let i = 0; i < this.criteriaData[n]['criteriaObjects'].length; i++ ){
-                        // If elementUsed is false set and and or [n] to false
-                        // this.elementsUsed[n][i]
-
-                        if(this.elementsUsed[n][i])
-                        {
+                        if( this.elementsUsed[n][i] ){
                             stillUsed = true;
                         }
                     }
-                    if( ! stillUsed ){
+                    if( !stillUsed ){
                         this.and[n] = false;
                         this.or[n] = false;
                         this.omit[n] = true;
@@ -93,8 +108,6 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
             data => {
                 if( data ){
                     // We have just been "Shown" update the already used options
-                    this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
-
                     for( let n = 0; n < this.criteriaData.length; n++ ){
                         this.omit[n] = true;
 
@@ -123,24 +136,12 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
             ){
             await this.utilService.sleep( Consts.waitTime );
         }
-        console.log( 'MHL  this.accessTokenService.getAccessTokenStatus(): ', this.accessTokenService.getAccessTokenStatus() );
         this.apiService.getDynamicCriteriaSelectionMenuData();
         // Wait until we have the data for the dynamic criteria selection menu data. @TODO There has to be a better way...
         while(
             this.criteriaData.length < 1
             ){
             await this.utilService.sleep( Consts.waitTime );
-        }
-
-
-        console.log( 'MHL 300 initElementsUsed this.criteriaData: ', this.criteriaData );
-        this.criteriaSelectionMenuService.initElementsUsed( this.criteriaData );
-
-        this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
-
-        // Set all criteria to "Omit"
-        for( let n = 0; n < this.criteriaData.length; n++ ){
-            this.omit[n] = true;
         }
 
         this.allDataInitialized = true;
@@ -838,9 +839,6 @@ export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
 
     onCriteriaSelectionMenuOkayClick() {
         for( let n = 0; n < this.criteriaData.length; n++ ){
-            console.log( 'MHL onCriteriaSelectionMenuOkayClick: ', this.criteriaData[n] );
-            console.log( 'MHL onCriteriaSelectionMenuOkayClick AND : ', this.and[n] );
-            console.log( 'MHL onCriteriaSelectionMenuOkayClick OR : ', this.or[n] );
             if( this.omit[n] !== true ){
                 let critJson0 = this.criteriaData[n]['criteriaObjects'][this.option[n]];
 

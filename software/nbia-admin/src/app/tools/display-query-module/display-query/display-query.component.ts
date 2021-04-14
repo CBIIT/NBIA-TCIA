@@ -38,21 +38,19 @@ export class DisplayQueryComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-        this.displayQueryService.displayQueryEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
-                this.displayQueryData = data;
+        this.displayQueryService.displayQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+            this.displayQueryData = data;
 
-                // At this time, nothing is different for the two tools that use the Display query, but that may change...
-                switch( data[0]['tool'] ){
-                    case Consts.TOOL_PERFORM_QC:
-                        this.displayQuery = this.buildDisplayQueryArray( data );
-                        break;
-                    case Consts.TOOL_APPROVE_DELETIONS:
-                        this.displayQuery = this.buildDisplayQueryArray( data );
-                        break;
-                }
-            } );
+            // At this time, nothing is different for the two tools that use the Display query, but that may change...
+            switch( data[0]['tool'] ){
+                case Consts.TOOL_PERFORM_QC:
+                    this.displayQuery = this.buildDisplayQueryArray( data );
+                    break;
+                case Consts.TOOL_APPROVE_DELETIONS:
+                    this.displayQuery = this.buildDisplayQueryArray( data );
+                    break;
+            }
+        } );
     }
 
     /**
@@ -112,7 +110,7 @@ export class DisplayQueryComponent implements OnInit, OnDestroy{
 
                 case Consts.QUERY_CRITERIA_MOST_RECENT_SUBMISSION:
                     q[i]['displayName'] = Consts.DISPLAY_QUERY_CRITERIA_MOST_RECENT_SUBMISSION;
-                    q[i]['displayData'] = q[i]['data'].replace(/-/g, '/').replace(/,/, ' to ');
+                    q[i]['displayData'] = q[i]['data'].replace( /-/g, '/' ).replace( /,/, ' to ' );
                     break;
             }
         }
