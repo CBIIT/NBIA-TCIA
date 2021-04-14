@@ -59,6 +59,7 @@ import { UtilService } from '@app/common/services/util.service';
 export class LoginComponent implements OnInit, OnDestroy{
     @ViewChild( 'f', {static: true}  ) loginForm: NgForm;
     accessToken;
+    refreshToken;
     username = '';
     statusMessage0 = '';
     currentMenuItem: MenuItems;
@@ -138,7 +139,6 @@ export class LoginComponent implements OnInit, OnDestroy{
      * </ul>
      */
     async doLogin() {
-
         // Log out current user.
         this.apiServerService.setLoggingOut( true );
         this.apiServerService.setSimpleSearchQueryHold( '' );

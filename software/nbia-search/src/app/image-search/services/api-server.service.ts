@@ -1,20 +1,20 @@
-import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import {EventEmitter, Injectable, OnDestroy} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http'
 
-import { Consts, NumberHash } from '@app/consts';
-import { PersistenceService } from '@app/common/services/persistence.service';
-import { Properties } from '@assets/properties';
-import { CommonService } from './common.service';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil, timeout } from 'rxjs/operators';
-import { UtilService } from '@app/common/services/util.service';
-import { ParameterService } from '@app/common/services/parameter.service';
-import { HistoryLogService } from '@app/common/services/history-log.service';
-import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import {Consts, NumberHash} from '@app/consts';
+import {PersistenceService} from '@app/common/services/persistence.service';
+import {Properties} from '@assets/properties';
+import {CommonService} from './common.service';
+import {Observable, Subject} from 'rxjs';
+import {takeUntil, timeout} from 'rxjs/operators';
+import {UtilService} from '@app/common/services/util.service';
+import {ParameterService} from '@app/common/services/parameter.service';
+import {HistoryLogService} from '@app/common/services/history-log.service';
+import {LoadingDisplayService} from '@app/common/components/loading-display/loading-display.service';
 
 
 @Injectable()
-export class ApiServerService implements OnDestroy{
+export class ApiServerService implements OnDestroy {
 
     /**
      * Used to return results from a Simple search.
@@ -213,6 +213,8 @@ export class ApiServerService implements OnDestroy{
      * If an API search call gets a 401, we will try to get a new token.
      */
     accessToken: string;
+    refreshToken: string;
+    tokenLifeSpan: 100000;
     rawAccessToken;
 
     /**
@@ -265,44 +267,44 @@ export class ApiServerService implements OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private httpClient: HttpClient, private persistenceService: PersistenceService,
-                 private commonService: CommonService, private parameterService: ParameterService,
-                 private historyLogService: HistoryLogService, private utilService: UtilService,
-                 private loadingDisplayService: LoadingDisplayService ) {
+    constructor(private httpClient: HttpClient, private persistenceService: PersistenceService,
+                private commonService: CommonService, private parameterService: ParameterService,
+                private historyLogService: HistoryLogService, private utilService: UtilService,
+                private loadingDisplayService: LoadingDisplayService) {
 
         // Until the user logs in, we do everything as the default/guest user.
         this.initUserLoginData();
 
         // Called when the 'Clear' button on the left side of the Display query at the top.
-        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            async() => {
-                this.setSimpleSearchQueryHold( null );
+        this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            async () => {
+                this.setSimpleSearchQueryHold(null);
                 this.getCriteriaCounts();
-            } );
+            });
     }
 
-   async initUserLoginData(){
+    async initUserLoginData() {
         // Make sure the configuration from the assets/configuration has been read and used.
         // It has DEFAULT_USER, DEFAULT_PASSWORD and DEFAULT_SECRET
-        while( !Properties.CONFIG_COMPLETE ){
-            await this.commonService.sleep( Consts.waitTime );
+        while (!Properties.CONFIG_COMPLETE) {
+            await this.commonService.sleep(Consts.waitTime);
         }
 
         // Until the user logs in, we do everything as the default/guest user.
-        if( this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) ||
-            this.utilService.isNullOrUndefined( this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) )
-        ){
-            this.setCurrentUser( Properties.DEFAULT_USER );
-            this.setCurrentPassword( Properties.DEFAULT_PASSWORD );
-        }else{
-            this.setToken( { 'access_token': this.persistenceService.get( this.persistenceService.Field.ACCESS_TOKEN ) } );
-            this.setCurrentUser( this.persistenceService.get( this.persistenceService.Field.USER ) );
-            this.setCurrentPassword( '' );
+        if (this.persistenceService.get(this.persistenceService.Field.IS_GUEST) ||
+            this.utilService.isNullOrUndefined(this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN))
+        ) {
+            this.setCurrentUser(Properties.DEFAULT_USER);
+            this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
+        } else {
+            this.setToken({'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN)});
+            this.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
+            this.setCurrentPassword('');
 
         }
     }
 
-    setLoggingOut( l ) {
+    setLoggingOut(l) {
         this.loggingOut = l;
     }
 
@@ -322,10 +324,10 @@ export class ApiServerService implements OnDestroy{
         return this.simpleSearchQueryHold;
     }
 
-    setSimpleSearchQueryHold( s ) {
+    setSimpleSearchQueryHold(s) {
         this.simpleSearchQueryHold = s;
 
-        this.simpleSearchQueryHoldEmitter.emit( this.simpleSearchQueryHold );
+        this.simpleSearchQueryHoldEmitter.emit(this.simpleSearchQueryHold);
 
     }
 
@@ -333,21 +335,21 @@ export class ApiServerService implements OnDestroy{
         return this.textSearchQueryHold;
     }
 
-    setTextSearchQueryHold( s ) {
+    setTextSearchQueryHold(s) {
         this.textSearchQueryHold = s;
         // So far this is only used to tell the HeaderComponent Share -> Share my query if it should be enabled.
-        this.textSearchQueryHoldEmitter.emit( this.textSearchQueryHold );
+        this.textSearchQueryHoldEmitter.emit(this.textSearchQueryHold);
 
     }
 
     // Just for testing
-    showAllQueryData( allData ) {
+    showAllQueryData(allData) {
         let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'SpeciesCriteria'];
-        for( let name of criteriaStr ){
-            if( (!this.utilService.isNullOrUndefined( allData[name] )) && (allData[name].length > 0) ){
-                console.log( 'allQueryData[' + name + ']: ', allData[name] );
-            }else{
-                console.log( 'allQueryData[' + name + ']: -' );
+        for (let name of criteriaStr) {
+            if ((!this.utilService.isNullOrUndefined(allData[name])) && (allData[name].length > 0)) {
+                console.log('allQueryData[' + name + ']: ', allData[name]);
+            } else {
+                console.log('allQueryData[' + name + ']: -');
             }
         }
     }
@@ -358,33 +360,33 @@ export class ApiServerService implements OnDestroy{
      *
      * @returns {string}
      */
-    buildSimpleSearchQuery( allData ) {
+    buildSimpleSearchQuery(allData) {
         let searchQuery = '';
         this.queryBuilderIndex = 0;
 
         let isSearchable = false; // CHECKME I don't think we need/use this
 
         // Days from baseline
-        if( (allData[Consts.DAYS_FROM_BASELINE_CRITERIA] !== undefined) &&
+        if ((allData[Consts.DAYS_FROM_BASELINE_CRITERIA] !== undefined) &&
             (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] !== undefined) &&
-            (allData[Consts.DAYS_FROM_BASELINE_CRITERIA].length > 0) ){
+            (allData[Consts.DAYS_FROM_BASELINE_CRITERIA].length > 0)) {
             isSearchable = true;
 
             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DAYS_FROM_BASELINE_CRITERIA + '&eventType' + this.queryBuilderIndex + '=' +
                 allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0];
-            if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1].length > 0 ){
+            if (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1].length > 0) {
                 searchQuery += '&fromDay' + (this.queryBuilderIndex) + '=' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1];
             }
-            if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2].length > 0 ){
+            if (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2].length > 0) {
                 searchQuery += '&toDay' + (this.queryBuilderIndex) + '=' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2];
             }
             this.queryBuilderIndex++;
         }
 
         // Exclude Commercial
-        if( (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA] !== undefined) &&
+        if ((allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA] !== undefined) &&
             (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0] !== undefined) &&
-            (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA].length > 0) ){
+            (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA].length > 0)) {
             isSearchable = true;
 
             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.EXCLUDE_COMMERCIAL_CRITERIA + '&value' + this.queryBuilderIndex + '=' +
@@ -393,22 +395,22 @@ export class ApiServerService implements OnDestroy{
         }
 
         // Collections
-        if( (allData[Consts.COLLECTION_CRITERIA] !== undefined) && (allData[Consts.COLLECTION_CRITERIA].length > 0) ){
+        if ((allData[Consts.COLLECTION_CRITERIA] !== undefined) && (allData[Consts.COLLECTION_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.COLLECTION_CRITERIA] ){
+            for (let item of allData[Consts.COLLECTION_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.COLLECTION_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Minimum Studies
-        if( (allData[Consts.MINIMUM_STUDIES] !== undefined) && (allData[Consts.MINIMUM_STUDIES].length > 0) ){
+        if ((allData[Consts.MINIMUM_STUDIES] !== undefined) && (allData[Consts.MINIMUM_STUDIES].length > 0)) {
             isSearchable = true;
 
-            for( let item of allData[Consts.MINIMUM_STUDIES] ){
+            for (let item of allData[Consts.MINIMUM_STUDIES]) {
 
                 let msCount = +item - 1;
-                if( msCount > 0 ){
+                if (msCount > 0) {
                     searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' + msCount;
                     this.queryBuilderIndex++;
                 }
@@ -417,56 +419,56 @@ export class ApiServerService implements OnDestroy{
 
 
         // Image Modality
-        if( (allData[Consts.IMAGE_MODALITY_CRITERIA] !== undefined) && (allData[Consts.IMAGE_MODALITY_CRITERIA].length > 0) ){
+        if ((allData[Consts.IMAGE_MODALITY_CRITERIA] !== undefined) && (allData[Consts.IMAGE_MODALITY_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.IMAGE_MODALITY_CRITERIA] ){
+            for (let item of allData[Consts.IMAGE_MODALITY_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.IMAGE_MODALITY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
-            if( this.getImageModalityAllOrAny() === 'All' )  // FIXME make a constant
+            if (this.getImageModalityAllOrAny() === 'All')  // FIXME make a constant
             {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=ModalityAndedSearchCriteria&value' + this.queryBuilderIndex + '=all';
             }
         }
 
         // Anatomical Site
-        if( (allData[Consts.ANATOMICAL_SITE_CRITERIA] !== undefined) && (allData[Consts.ANATOMICAL_SITE_CRITERIA].length > 0) ){
+        if ((allData[Consts.ANATOMICAL_SITE_CRITERIA] !== undefined) && (allData[Consts.ANATOMICAL_SITE_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.ANATOMICAL_SITE_CRITERIA] ){
+            for (let item of allData[Consts.ANATOMICAL_SITE_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.ANATOMICAL_SITE_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Species
-        if( (allData[Consts.SPECIES_CRITERIA] !== undefined) && (allData[Consts.SPECIES_CRITERIA].length > 0) ){
+        if ((allData[Consts.SPECIES_CRITERIA] !== undefined) && (allData[Consts.SPECIES_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.SPECIES_CRITERIA] ){
+            for (let item of allData[Consts.SPECIES_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.SPECIES_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Phantoms
-        if( (allData[Consts.PHANTOMS_CRITERIA] !== undefined) && (allData[Consts.PHANTOMS_CRITERIA].length > 0) ){
+        if ((allData[Consts.PHANTOMS_CRITERIA] !== undefined) && (allData[Consts.PHANTOMS_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.PHANTOMS_CRITERIA] ){
+            for (let item of allData[Consts.PHANTOMS_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PHANTOMS_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Third Party Analyses
-        if( (allData[Consts.THIRD_PARTY_CRITERIA] !== undefined) && (allData[Consts.THIRD_PARTY_CRITERIA].length > 0) ){
+        if ((allData[Consts.THIRD_PARTY_CRITERIA] !== undefined) && (allData[Consts.THIRD_PARTY_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
+            for (let item of allData[Consts.THIRD_PARTY_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.THIRD_PARTY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Available  -  Date Range
-        if( (allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0) ){
+        if ((allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0)) {
             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DATE_RANGE_CRITERIA + '&' +
                 'fromDate' + this.queryBuilderIndex + '=' + allData[Consts.DATE_RANGE_CRITERIA][0] + '&' +
                 'toDate' + this.queryBuilderIndex + '=' + allData[Consts.DATE_RANGE_CRITERIA][1];
@@ -474,9 +476,9 @@ export class ApiServerService implements OnDestroy{
         }
 
         // Subject ID  -  Patient Criteria
-        if( (allData[Consts.PATIENT_CRITERIA] !== undefined) && (allData[Consts.PATIENT_CRITERIA].length > 0) ){
+        if ((allData[Consts.PATIENT_CRITERIA] !== undefined) && (allData[Consts.PATIENT_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.PATIENT_CRITERIA] ){
+            for (let item of allData[Consts.PATIENT_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
@@ -484,40 +486,40 @@ export class ApiServerService implements OnDestroy{
 
 
         // Manufacturer
-        if( (allData[Consts.MANUFACTURER_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_CRITERIA].length > 0) ){
+        if ((allData[Consts.MANUFACTURER_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.MANUFACTURER_CRITERIA] ){
+            for (let item of allData[Consts.MANUFACTURER_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MANUFACTURER_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Manufacturer Model
-        if( (allData[Consts.MANUFACTURER_MODEL_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_MODEL_CRITERIA].length > 0) ){
+        if ((allData[Consts.MANUFACTURER_MODEL_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_MODEL_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.MANUFACTURER_MODEL_CRITERIA] ){
+            for (let item of allData[Consts.MANUFACTURER_MODEL_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MANUFACTURER_MODEL_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
 
         // Manufacturer Software version
-        if( (allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA].length > 0) ){
+        if ((allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA].length > 0)) {
             isSearchable = true;
-            for( let item of allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA] ){
+            for (let item of allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA]) {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
         }
         // Add tool name to query so server can track usage.
 
-        if( searchQuery.length > 0 ){
+        if (searchQuery.length > 0) {
             searchQuery += '&tool=nbiaclient';
         }
 
         // Remove leading &
-        searchQuery = searchQuery.substr( 1 );
-        this.commonService.setIsSearchable( isSearchable );  // CHECKME I don't think we need/use this
+        searchQuery = searchQuery.substr(1);
+        this.commonService.setIsSearchable(isSearchable);  // CHECKME I don't think we need/use this
 
         return searchQuery;
     }
@@ -532,27 +534,31 @@ export class ApiServerService implements OnDestroy{
      *
      * @param t Access token
      */
-    setToken( t ) {
-        if( t === null ){
+    setToken(t) {
+        if (t === null) {
             this.accessToken = null;
-        }else{
+        } else {
             this.accessToken = t['access_token'];
+            this.refreshToken = t['refresh_token'];
+            this.tokenLifeSpan =  t['expires_in'];
             this.gotToken();
         }
-        this.persistenceService.put( this.persistenceService.Field.ACCESS_TOKEN, this.accessToken );
+        this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN, this.accessToken);
+        this.persistenceService.put(this.persistenceService.Field.REFRESH_TOKEN, this.refreshToken);
+        this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN, this.tokenLifeSpan);
         this.rawAccessToken = t;
 
         // Get this users role(s)
-        this.doGet( Consts.GET_USER_ROLES, this.accessToken ).subscribe(
-            ( resGetUserRoles ) => {
+        this.doGet(Consts.GET_USER_ROLES, this.accessToken).subscribe(
+            (resGetUserRoles) => {
                 this.currentUserRoles = resGetUserRoles;
-                this.currentUserRolesEmitter.emit( this.currentUserRoles );
+                this.currentUserRolesEmitter.emit(this.currentUserRoles);
             },
-            ( errGetUserRoles ) => {
+            (errGetUserRoles) => {
                 // If we can't get the users role(s), we will give them none.
                 this.currentUserRoles = [];
-                this.currentUserRolesEmitter.emit( this.currentUserRoles );
-            } );
+                this.currentUserRolesEmitter.emit(this.currentUserRoles);
+            });
 
     }
 
@@ -565,6 +571,22 @@ export class ApiServerService implements OnDestroy{
         return this.accessToken;
     }
 
+    showRefreshToken() {
+        return this.refreshToken;
+    }
+
+
+    getRefreshToken() {
+        return this.showRefreshToken();
+    }
+
+   showTokenLifeSpan() {
+        return this.tokenLifeSpan;
+    }
+
+    getTokenLifeSpan() {
+        return this.showTokenLifeSpan();
+    }
 
     /**
      * Called by the LoginComponent.
@@ -576,15 +598,15 @@ export class ApiServerService implements OnDestroy{
      *
      * @param user
      */
-    setCurrentUser( user ) {
+    setCurrentUser(user) {
         this.currentUser = user;
 
         // This emit tells the header component to update the Login/Logout button.
-        this.userSetEmitter.emit( this.currentUser );
-        if( user === Properties.DEFAULT_USER ){
-            this.persistenceService.put( this.persistenceService.Field.IS_GUEST, true );
-        }else{
-            this.persistenceService.put( this.persistenceService.Field.IS_GUEST, false );
+        this.userSetEmitter.emit(this.currentUser);
+        if (user === Properties.DEFAULT_USER) {
+            this.persistenceService.put(this.persistenceService.Field.IS_GUEST, true);
+        } else {
+            this.persistenceService.put(this.persistenceService.Field.IS_GUEST, false);
         }
     }
 
@@ -601,7 +623,7 @@ export class ApiServerService implements OnDestroy{
      *
      * @param pw plain text password.
      */
-    setCurrentPassword( pw ) {
+    setCurrentPassword(pw) {
         this.currentApiPassword = pw;
     }
 
@@ -615,12 +637,12 @@ export class ApiServerService implements OnDestroy{
      * Tells LoginComponent to 'quietly' login the default user.
      */
     logOutCurrentUser() {
-        this.logOutCurrentUserEmitter.emit( true );
+        this.logOutCurrentUserEmitter.emit(true);
     }
 
-    log( logText ) {
-        if( Properties.ACTION_LOGGING ){
-            this.doSearch( Consts.LOG_ENTRY, 'action=' + logText );
+    log(logText) {
+        if (Properties.ACTION_LOGGING) {
+            this.doSearch(Consts.LOG_ENTRY, 'action=' + logText);
         }
         /*
              else{
@@ -650,26 +672,29 @@ export class ApiServerService implements OnDestroy{
      * @param res
      * @param selected Optional If this is for SERIES_FOR_SUBJECT, which was called when a Subject ID (parent) was clicked, we need to pass along the state.
      */
-    emitPostResults( searchType, res, id?, selected? ) {
-        if( (!this.utilService.isNullOrUndefined( res['resultSet'] )) && (res['resultSet'].length < 1) ){
+    emitPostResults(searchType, res, id?, selected?) {
+        if ((!this.utilService.isNullOrUndefined(res['resultSet'])) && (res['resultSet'].length < 1)) {
             // 0 means no results from a search,  -1 means no search
-            this.commonService.updateSearchResultsCount( 0 );
+            this.commonService.updateSearchResultsCount(0);
         }
 
-        if( searchType === Consts.SIMPLE_SEARCH && Properties.PAGED_SEARCH ){
+        if (searchType === Consts.SIMPLE_SEARCH && Properties.PAGED_SEARCH) {
             this.currentSearchResultsData = res;
             this.currentSearchResults = res['resultSet'].slice();
             // Tell everyone the the search results count.
-            this.commonService.updateSearchResultsCount( this.currentSearchResultsData['totalPatients'] );
+            this.commonService.updateSearchResultsCount(this.currentSearchResultsData['totalPatients']);
 
             // TODO Explain why we need this ( for now )
-            this.commonService.updateSimpleSearchResultsCount( this.currentSearchResultsData['totalPatients'] );
+            this.commonService.updateSimpleSearchResultsCount(this.currentSearchResultsData['totalPatients']);
 
-            this.simpleSearchTimePointsMinMaxEmitter.emit( { 'minTimepoints': this.currentSearchResultsData['minTimepoints'], 'maxTimepoints': this.currentSearchResultsData['maxTimepoints']});
+            this.simpleSearchTimePointsMinMaxEmitter.emit({
+                'minTimepoints': this.currentSearchResultsData['minTimepoints'],
+                'maxTimepoints': this.currentSearchResultsData['maxTimepoints']
+            });
             // We need to add matchedStudies to the data.
-            for( let row of this.currentSearchResults ){
+            for (let row of this.currentSearchResults) {
                 let matchedSeriesCount = 0;
-                for( let sId of row['studyIdentifiers'] ){
+                for (let sId of row['studyIdentifiers']) {
                     matchedSeriesCount += sId['seriesIdentifiers'].length;
                 }
 
@@ -680,19 +705,19 @@ export class ApiServerService implements OnDestroy{
 
 
             this.getCriteriaCounts();
-            this.simpleSearchResultsEmitter.emit( this.currentSearchResults );
+            this.simpleSearchResultsEmitter.emit(this.currentSearchResults);
         }
 
         // TODO we will probably never go back to non-paged results. Should start cleaning this stuff out.
-        if( searchType === Consts.SIMPLE_SEARCH && (!Properties.PAGED_SEARCH) ){
+        if (searchType === Consts.SIMPLE_SEARCH && (!Properties.PAGED_SEARCH)) {
 
             this.currentSearchResults = res.slice();
 
             // We need to add matchedStudies to the data.
-            for( let row of res ){
+            for (let row of res) {
 
                 let matchedSeriesCount = 0;
-                for( let sId of row['studyIdentifiers'] ){
+                for (let sId of row['studyIdentifiers']) {
                     matchedSeriesCount += sId['seriesIdentifiers'].length;
                 }
                 row['matchedSeries'] = matchedSeriesCount;
@@ -700,51 +725,51 @@ export class ApiServerService implements OnDestroy{
             }
 
             this.getCriteriaCounts();
-            this.simpleSearchResultsEmitter.emit( res );
-        }else if( searchType === Consts.DRILL_DOWN_CART ){
+            this.simpleSearchResultsEmitter.emit(res);
+        } else if (searchType === Consts.DRILL_DOWN_CART) {
 
-            this.seriesForCartResultsEmitter.emit( res );
-        }else if( searchType === Consts.DRILL_DOWN_IMAGE ){
-            this.imageDataResultsEmitter.emit( res );
-        }else if( searchType === Consts.DRILL_DOWN_CART_FROM_SERIES ){
-            this.seriesForCartFromSeriesIdResultsEmitter.emit( res );
-        }else if( searchType === Consts.DRILL_DOWN ){
-            this.subjectDetailsResultsEmitter.emit( res );
+            this.seriesForCartResultsEmitter.emit(res);
+        } else if (searchType === Consts.DRILL_DOWN_IMAGE) {
+            this.imageDataResultsEmitter.emit(res);
+        } else if (searchType === Consts.DRILL_DOWN_CART_FROM_SERIES) {
+            this.seriesForCartFromSeriesIdResultsEmitter.emit(res);
+        } else if (searchType === Consts.DRILL_DOWN) {
+            this.subjectDetailsResultsEmitter.emit(res);
         }
         // Results of Subject level cart is clicked.
-        else if( searchType === Consts.SERIES_FOR_SUBJECT ){
-            this.seriesForSubjectResultsEmitter.emit( { res, id, selected } );
-        }else if( searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT ){
-            this.seriesForSharedListSubjectResultsEmitter.emit( { res } );
+        else if (searchType === Consts.SERIES_FOR_SUBJECT) {
+            this.seriesForSubjectResultsEmitter.emit({res, id, selected});
+        } else if (searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT) {
+            this.seriesForSharedListSubjectResultsEmitter.emit({res});
         }
 
         // To get all the studies for the subject(s)  // @TODO rename things to say Study - MAKE SURE THAT IS CORRECT!
-        else if( searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH ){
-            this.idForSharedListSubjectResultsEmitter.emit( { res } );
-        }else if( searchType === Consts.CREATE_SHARED_LIST ){
-            this.saveSharedListResultsEmitter.emit( res );
-        }else if( searchType === Consts.DELETE_SHARED_LIST ){
-            this.deleteSharedListResultsEmitter.emit( res );
-        }else if( searchType === Consts.GET_SHARED_LIST ){
-            this.getSharedListResultsEmitter.emit( res );
-        }else if( searchType === Consts.LOG_ENTRY ){
-            this.logEntryResultsEmitter.emit( res );
-        }else if( searchType === Consts.GET_HOST_NAME ){
-            this.getHostNameEmitter.emit( res );
-        }else if( searchType === Consts.TEXT_SEARCH ){
+        else if (searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH) {
+            this.idForSharedListSubjectResultsEmitter.emit({res});
+        } else if (searchType === Consts.CREATE_SHARED_LIST) {
+            this.saveSharedListResultsEmitter.emit(res);
+        } else if (searchType === Consts.DELETE_SHARED_LIST) {
+            this.deleteSharedListResultsEmitter.emit(res);
+        } else if (searchType === Consts.GET_SHARED_LIST) {
+            this.getSharedListResultsEmitter.emit(res);
+        } else if (searchType === Consts.LOG_ENTRY) {
+            this.logEntryResultsEmitter.emit(res);
+        } else if (searchType === Consts.GET_HOST_NAME) {
+            this.getHostNameEmitter.emit(res);
+        } else if (searchType === Consts.TEXT_SEARCH) {
 
 
             // We need to add matchedStudies to the data.
-            for( let row of res ){
+            for (let row of res) {
                 let matchedSeriesCount = 0;
-                for( let sId of row['studyIdentifiers'] ){
+                for (let sId of row['studyIdentifiers']) {
                     matchedSeriesCount += sId['seriesIdentifiers'].length;
                 }
                 row['matchedSeries'] = matchedSeriesCount;
                 row['matchedStudies'] = row['studyIdentifiers'].length;
             }
-            this.commonService.updateSearchResultsCount( res.length );
-            this.textSearchResultsEmitter.emit( res );
+            this.commonService.updateSearchResultsCount(res.length);
+            this.textSearchResultsEmitter.emit(res);
         }
     }
 
@@ -760,37 +785,37 @@ export class ApiServerService implements OnDestroy{
      * @param err  The error object
      * @param id I don't think I'm going to use this?
      */
-    emitPostError( searchType, err, id ) {
+    emitPostError(searchType, err, id) {
 
         // console.error( 'PostError  searchType:', searchType, '  err:', err['_body']  + '  ' + this.temp);
-        if( searchType === Consts.SIMPLE_SEARCH ){
-            this.simpleSearchErrorEmitter.emit( err );
-        }else if( searchType === Consts.GET_HOST_NAME ){
-            this.getHostNameErrorEmitter.emit( err );
-        }else if( searchType === Consts.DRILL_DOWN_CART ){
-            this.seriesForCartResultsErrorEmitter.emit( err );
-        }else if( searchType === Consts.DRILL_DOWN_IMAGE ){
-            this.imageDataErrorEmitter.emit( err );
-        }else if( searchType === Consts.DRILL_DOWN_CART_FROM_SERIES ){
-            this.seriesForCartFromSeriesIdErrorEmitter.emit( err );
-        }else if( searchType === Consts.DRILL_DOWN ){
-            this.subjectDetailsErrorEmitter.emit( err );
-        }else if( searchType === Consts.SERIES_FOR_SUBJECT ){
-            this.seriesForSubjectErrorEmitter.emit( err );
-        }else if( searchType === Consts.TEXT_SEARCH ){
-            this.textSearchErrorEmitter.emit( err );
-        }else if( searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT ){
-            this.seriesForSharedListSubjectErrorEmitter.emit( { err } );
-        }else if( searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH ){
-            this.idForSharedListSubjectErrorEmitter.emit( { err } );
-        }else if( searchType === Consts.CREATE_SHARED_LIST ){
-            this.saveSharedListErrorEmitter.emit( err );
-        }else if( searchType === Consts.DELETE_SHARED_LIST ){
-            this.deleteSharedListErrorEmitter.emit( err );
-        }else if( searchType === Consts.GET_SHARED_LIST ){
-            this.getSharedListErrorEmitter.emit( err );
-        }else if( searchType === Consts.LOG_ENTRY ){
-            this.logEntryErrorEmitter.emit( err );
+        if (searchType === Consts.SIMPLE_SEARCH) {
+            this.simpleSearchErrorEmitter.emit(err);
+        } else if (searchType === Consts.GET_HOST_NAME) {
+            this.getHostNameErrorEmitter.emit(err);
+        } else if (searchType === Consts.DRILL_DOWN_CART) {
+            this.seriesForCartResultsErrorEmitter.emit(err);
+        } else if (searchType === Consts.DRILL_DOWN_IMAGE) {
+            this.imageDataErrorEmitter.emit(err);
+        } else if (searchType === Consts.DRILL_DOWN_CART_FROM_SERIES) {
+            this.seriesForCartFromSeriesIdErrorEmitter.emit(err);
+        } else if (searchType === Consts.DRILL_DOWN) {
+            this.subjectDetailsErrorEmitter.emit(err);
+        } else if (searchType === Consts.SERIES_FOR_SUBJECT) {
+            this.seriesForSubjectErrorEmitter.emit(err);
+        } else if (searchType === Consts.TEXT_SEARCH) {
+            this.textSearchErrorEmitter.emit(err);
+        } else if (searchType === Consts.SERIES_FOR_SHARED_LIST_SUBJECT) {
+            this.seriesForSharedListSubjectErrorEmitter.emit({err});
+        } else if (searchType === Consts.SHARED_LIST_SUBJECT_ID_SEARCH) {
+            this.idForSharedListSubjectErrorEmitter.emit({err});
+        } else if (searchType === Consts.CREATE_SHARED_LIST) {
+            this.saveSharedListErrorEmitter.emit(err);
+        } else if (searchType === Consts.DELETE_SHARED_LIST) {
+            this.deleteSharedListErrorEmitter.emit(err);
+        } else if (searchType === Consts.GET_SHARED_LIST) {
+            this.getSharedListErrorEmitter.emit(err);
+        } else if (searchType === Consts.LOG_ENTRY) {
+            this.logEntryErrorEmitter.emit(err);
         }
 
     }
@@ -810,23 +835,23 @@ export class ApiServerService implements OnDestroy{
      * @param id Optional additional string, which is carried along to the results as is.
      * @param selected Optional
      */
-    doSearch( searchType, query, id ?, selected ? ) {
+    doSearch(searchType, query, id ?, selected ?) {
         this.temp = query;
         let searchService;
         let re = /&start=[0-9]+&/;
 
-        switch( searchType ){
+        switch (searchType) {
 
             case Consts.SIMPLE_SEARCH:
                 // Only log for the initial search, not each change of the page.
                 // Do not log if the query has not changed other than "start=".
-                if( query.includes( '&start=0' ) && (query.replace( re, '' ) !== this.simpleSearchQueryTrailer.replace( re, '' )) ){
-                    this.log( this.historyLogService.doLog( Consts.SIMPLE_SEARCH_LOG_TEXT, this.currentUser, query ) );
+                if (query.includes('&start=0') && (query.replace(re, '') !== this.simpleSearchQueryTrailer.replace(re, ''))) {
+                    this.log(this.historyLogService.doLog(Consts.SIMPLE_SEARCH_LOG_TEXT, this.currentUser, query));
                 }
                 this.simpleSearchQueryTrailer = query;
 
                 // We are doing a simple search, so we need to update the criteria counts.
-                this.setSimpleSearchQueryHold( query );
+                this.setSimpleSearchQueryHold(query);
                 searchService = Consts.SIMPLE_SEARCH;
                 break;
 
@@ -869,7 +894,7 @@ export class ApiServerService implements OnDestroy{
 
             case Consts.TEXT_SEARCH:
                 searchService = Consts.TEXT_SEARCH;
-                this.log( this.historyLogService.doLog( Consts.TEXT_SEARCH_LOG_TEXT, this.currentUser, query ) );
+                this.log(this.historyLogService.doLog(Consts.TEXT_SEARCH_LOG_TEXT, this.currentUser, query));
 
                 break;
 
@@ -899,18 +924,18 @@ export class ApiServerService implements OnDestroy{
         }
 
         // Run the query
-        this.doPost( searchService, query ).subscribe(
+        this.doPost(searchService, query).subscribe(
             // Good results, emit the search results.
-            ( res ) => {
+            (res) => {
                 // id and selected are just passed along from the 'doSearch' parameters.
-                this.emitPostResults( searchType, res, id, selected );
+                this.emitPostResults(searchType, res, id, selected);
             },
 
             // An error
-            ( err ) => {
+            (err) => {
 
                 // What kind of error?
-                switch( err.status ){
+                switch (err.status) {
 
                     // Bad authorization - could be a bad Access token
                     case 401:
@@ -918,39 +943,38 @@ export class ApiServerService implements OnDestroy{
 
                         // Try getting a new Access token
                         this.getToken().subscribe(
-                            ( res0 ) => {
-
-                                this.setToken( res0 );
+                            (res0) => {
+                                this.setToken(res0);
 
 
                                 // We have a new token, try the search one more time.
-                                this.doPost( searchService, query ).subscribe(
+                                this.doPost(searchService, query).subscribe(
                                     // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
-                                    ( res1 ) => {
-                                        this.emitPostResults( searchType, res1, id, selected );
+                                    (res1) => {
+                                        this.emitPostResults(searchType, res1, id, selected);
                                     },
 
                                     // Our second attempt with a new Access token has failed, emit the error.
-                                    ( err1 ) => {
-                                        switch( err1.status ){
+                                    (err1) => {
+                                        switch (err1.status) {
                                             case 401:
-                                                console.error( 'Attempt with new Access token: ' + err1.statusText + '[' + err1.status + ']' );
+                                                console.error('Attempt with new Access token: ' + err1.statusText + '[' + err1.status + ']');
                                                 break;
 
                                             default:
-                                                console.error( 'ERROR: ' + err1.statusText + '[' + err1.status + '] ' + err1.message );
+                                                console.error('ERROR: ' + err1.statusText + '[' + err1.status + '] ' + err1.message);
                                                 break;
                                         }
-                                        this.emitPostError( searchType, err1, id );
+                                        this.emitPostError(searchType, err1, id);
                                     }
                                 );
 
                             },
 
                             // We tried and failed to get a new Access token, emit the error.
-                            ( err1 ) => {
-                                console.error( 'Failed to get a new Access token: ' + err1.statusText + '[' + err1.status + ']' );
-                                this.emitPostError( searchType, err1, id );
+                            (err1) => {
+                                console.error('Failed to get a new Access token: ' + err1.statusText + '[' + err1.status + ']');
+                                this.emitPostError(searchType, err1, id);
                                 this.gotToken();
 
                             }
@@ -961,7 +985,7 @@ export class ApiServerService implements OnDestroy{
                     // An error other than 401
                     default:
 
-                        this.emitPostError( searchType, err, id );
+                        this.emitPostError(searchType, err, id);
                         break;
                 }
             }
@@ -975,38 +999,38 @@ export class ApiServerService implements OnDestroy{
      * @param query The query in the format that can be passed on to the Rest service.
      * @param accessToken
      */
-    doPost( queryType, query, accessToken ? ) {
+    doPost(queryType, query, accessToken ?) {
 
-        if( accessToken === undefined ){
+        if (accessToken === undefined) {
             accessToken = this.accessToken;
         }
 
-        if( Properties.DEBUG_CURL ){
+        if (Properties.DEBUG_CURL) {
             let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
-            console.log( '01 doPost: ', curl );
+            console.log('01 doPost: ', curl);
         }
 
         let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
 
-        let headers = new HttpHeaders( {
+        let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + accessToken
-        } );
+        });
 
         let options;
 
         // These are returned as text NOT JSON.
-        if( (queryType === Consts.CREATE_SHARED_LIST) ||
+        if ((queryType === Consts.CREATE_SHARED_LIST) ||
             (queryType === Consts.DELETE_SHARED_LIST) ||
             (queryType === Consts.GET_HOST_NAME) ||
             (queryType === Consts.DICOM_TAGS_BY_IMAGE) ||
-            (queryType === Consts.LOG_ENTRY) ){
+            (queryType === Consts.LOG_ENTRY)) {
             options = {
                 headers: headers,
                 responseType: 'text' as 'text'
             };
-        }else{
+        } else {
             options = {
                 headers: headers
             };
@@ -1018,7 +1042,7 @@ export class ApiServerService implements OnDestroy{
                 console.log( 'doPost options: ', options );
         */
 
-        return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+        return this.httpClient.post(simpleSearchUrl, query, options).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
 
@@ -1027,60 +1051,60 @@ export class ApiServerService implements OnDestroy{
      * @param queryType
      * @param res
      */
-    emitGetResults( queryType, res, id ? ) {
-        if( queryType === 'getCollectionValuesAndCounts' ){
-            this.getCollectionValuesAndCountsEmitter.emit( res );
-        }else if( queryType === Consts.GET_HOST_NAME ){
-            this.getHostNameEmitter.emit( res );
-        }else if( queryType === 'getModalityValuesAndCounts' ){
-            this.getModalityValuesAndCountsEmitter.emit( res );
-        }else if( queryType === 'getBodyPartValuesAndCounts' ){
-            this.getBodyPartValuesAndCountsEmitter.emit( res );
-        }else if( queryType === 'getSpeciesValuesAndCounts' ){
-            this.getSpeciesValuesAndCountsEmitter.emit( res );
-        }else if( queryType === Consts.GET_SPECIES_TAX ){
+    emitGetResults(queryType, res, id ?) {
+        if (queryType === 'getCollectionValuesAndCounts') {
+            this.getCollectionValuesAndCountsEmitter.emit(res);
+        } else if (queryType === Consts.GET_HOST_NAME) {
+            this.getHostNameEmitter.emit(res);
+        } else if (queryType === 'getModalityValuesAndCounts') {
+            this.getModalityValuesAndCountsEmitter.emit(res);
+        } else if (queryType === 'getBodyPartValuesAndCounts') {
+            this.getBodyPartValuesAndCountsEmitter.emit(res);
+        } else if (queryType === 'getSpeciesValuesAndCounts') {
+            this.getSpeciesValuesAndCountsEmitter.emit(res);
+        } else if (queryType === Consts.GET_SPECIES_TAX) {
             this.speciesTax = res;
-            this.getSpeciesTaxEmitter.emit( res );
-        }else if( queryType === 'getEventTypes' ){
-            this.getEventTypesEmitter.emit( res );
-        }else if( queryType === Consts.GET_MIN_MAX_TIME_POINTS ){
-            this.getMinMaxTimepointsEmitter.emit( res );
-        }else if( queryType === 'getManufacturerTree' ){
-            this.getManufacturerTreeEmitter.emit( res );
-        }else if( queryType === Consts.DICOM_TAGS ){
-            this.getDicomTagsEmitter.emit( { 'id': id, 'res': res } );
-        }else if( queryType === Consts.DICOM_TAGS_BY_IMAGE ){
-            this.getDicomTagsByImageEmitter.emit( { 'id': id, 'res': res } );
-        }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
-            this.collectionDescriptionsResultsEmitter.emit( res );
+            this.getSpeciesTaxEmitter.emit(res);
+        } else if (queryType === 'getEventTypes') {
+            this.getEventTypesEmitter.emit(res);
+        } else if (queryType === Consts.GET_MIN_MAX_TIME_POINTS) {
+            this.getMinMaxTimepointsEmitter.emit(res);
+        } else if (queryType === 'getManufacturerTree') {
+            this.getManufacturerTreeEmitter.emit(res);
+        } else if (queryType === Consts.DICOM_TAGS) {
+            this.getDicomTagsEmitter.emit({'id': id, 'res': res});
+        } else if (queryType === Consts.DICOM_TAGS_BY_IMAGE) {
+            this.getDicomTagsByImageEmitter.emit({'id': id, 'res': res});
+        } else if (queryType === Consts.COLLECTION_DESCRIPTIONS) {
+            this.collectionDescriptionsResultsEmitter.emit(res);
         }
 
     }
 
 
-    emitGetError( queryType, err, id ? ) {
-        if( queryType === 'getCollectionValuesAndCounts' ){
-            this.getCollectionValuesAndCountsErrorEmitter.emit( err );
-        }else if( queryType === Consts.GET_HOST_NAME ){
-            this.getHostNameErrorEmitter.emit( err );
-        }else if( queryType === 'getModalityValuesAndCounts' ){
-            this.getModalityValuesAndCountsErrorEmitter.emit( err );
-        }else if( queryType === 'getBodyPartValuesAndCounts' ){
-            this.getBodyPartValuesAndCountsErrorEmitter.emit( err );
-        }else if( queryType === 'getSpeciesValuesAndCounts' ){
-            this.getSpeciesValuesAndCountsErrorEmitter.emit( err );
-        }else if( queryType === Consts.GET_SPECIES_TAX ){
-            this.getSpeciesTaxErrorEmitter.emit( err );
-        }else if( queryType === 'getEventTypes' ){
-            this.getEventTypesErrorEmitter.emit( err );
-        }else if( queryType === 'getManufacturerTree' ){
-            this.getManufacturerTreeErrorEmitter.emit( err );
-        }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS ){
-            this.getDicomTagsErrorEmitter.emit( { err, id } );
-        }else if( queryType.replace( /\?.*/g, '' ) === Consts.DICOM_TAGS_BY_IMAGE ){
-            this.getDicomTagsByImageErrorEmitter.emit( { err, id } );
-        }else if( queryType === Consts.COLLECTION_DESCRIPTIONS ){
-            this.collectionDescriptionsErrorEmitter.emit( err );
+    emitGetError(queryType, err, id ?) {
+        if (queryType === 'getCollectionValuesAndCounts') {
+            this.getCollectionValuesAndCountsErrorEmitter.emit(err);
+        } else if (queryType === Consts.GET_HOST_NAME) {
+            this.getHostNameErrorEmitter.emit(err);
+        } else if (queryType === 'getModalityValuesAndCounts') {
+            this.getModalityValuesAndCountsErrorEmitter.emit(err);
+        } else if (queryType === 'getBodyPartValuesAndCounts') {
+            this.getBodyPartValuesAndCountsErrorEmitter.emit(err);
+        } else if (queryType === 'getSpeciesValuesAndCounts') {
+            this.getSpeciesValuesAndCountsErrorEmitter.emit(err);
+        } else if (queryType === Consts.GET_SPECIES_TAX) {
+            this.getSpeciesTaxErrorEmitter.emit(err);
+        } else if (queryType === 'getEventTypes') {
+            this.getEventTypesErrorEmitter.emit(err);
+        } else if (queryType === 'getManufacturerTree') {
+            this.getManufacturerTreeErrorEmitter.emit(err);
+        } else if (queryType.replace(/\?.*/g, '') === Consts.DICOM_TAGS) {
+            this.getDicomTagsErrorEmitter.emit({err, id});
+        } else if (queryType.replace(/\?.*/g, '') === Consts.DICOM_TAGS_BY_IMAGE) {
+            this.getDicomTagsByImageErrorEmitter.emit({err, id});
+        } else if (queryType === Consts.COLLECTION_DESCRIPTIONS) {
+            this.collectionDescriptionsErrorEmitter.emit(err);
         }
     }
 
@@ -1091,55 +1115,55 @@ export class ApiServerService implements OnDestroy{
      * @param query
      * @param accessToken
      */
-    async dataGet( queryType, query, accessToken ? ) {
+    async dataGet(queryType, query, accessToken ?) {
 
-        while( !Properties.CONFIG_COMPLETE ){
-            await this.commonService.sleep( Consts.waitTime );
+        while (!Properties.CONFIG_COMPLETE) {
+            await this.commonService.sleep(Consts.waitTime);
         }
 
 
         let queryTypeOrig = queryType;
 
-        if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
+        if ((!this.utilService.isNullOrUndefined(query)) && (query.length > 0)) {
             queryType = queryType + '?' + query;
         }
         let counter = 0; // If something goes wrong, we don't want to be an endless loop
         // If something else is waiting for an access token, wait here
-        while( this.gettingAccessToken > 0 && counter < 50 ){
+        while (this.gettingAccessToken > 0 && counter < 50) {
             counter++;
-            await this.commonService.sleep( 100 );
+            await this.commonService.sleep(100);
         }
 
 
-        this.doGet( queryType, accessToken ).subscribe(
+        this.doGet(queryType, accessToken).subscribe(
             // Good results, return the search results.
-            ( res ) => {
-                if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
-                    this.emitGetResults( queryTypeOrig, res, query.replace( 'SeriesUID=', '' ) );
-                }else{
-                    this.emitGetResults( queryType, res );
+            (res) => {
+                if ((!this.utilService.isNullOrUndefined(query)) && (query.length > 0)) {
+                    this.emitGetResults(queryTypeOrig, res, query.replace('SeriesUID=', ''));
+                } else {
+                    this.emitGetResults(queryType, res);
                 }
             },
 
             // An error
-            ( err ) => {
+            (err) => {
 
                 // What kind of error?
-                switch( err.status ){
+                switch (err.status) {
 
                     // Bad authorization - could be a bad Access token
                     case 401:
 
                         // If the user is not guest and the password field is empty - Switch to default (guest) user.
-                        if( !this.persistenceService.get( this.persistenceService.Field.IS_GUEST ) && this.utilService.isEmpty( this.getCurrentPassword() ) ){
+                        if (!this.persistenceService.get(this.persistenceService.Field.IS_GUEST) && this.utilService.isEmpty(this.getCurrentPassword())) {
                             /*
                                 console.log('We can\'t reuse queryType: [' + queryType + ']' );
                                 console.log('We can\'t reuse query: [' + query + ']' );
                                 console.log('We can\'t reuse accessToken: [' + accessToken + ']' );
                             */
 
-                            this.setCurrentUser( Properties.DEFAULT_USER );
-                            this.setCurrentPassword( Properties.DEFAULT_PASSWORD );
+                            this.setCurrentUser(Properties.DEFAULT_USER);
+                            this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
                             this.loadingDisplayService.setLoadingOff();
                         }
 
@@ -1149,43 +1173,45 @@ export class ApiServerService implements OnDestroy{
 
                         // Try getting a new Access token
                         this.getToken().subscribe(
-                            ( res0 ) => {
+                            (res0) => {
+                                console.log('MHL 002 getToken: ', res0);
 
-                                this.setToken( res0 );
+                                console.log('MHL 402 CALLING apiServerService.setToken: ', res0);
+                                this.setToken(res0);
                                 accessToken = res0['access_token'];
 
                                 // We have a new token, try the query one more time.
-                                this.doGet( queryType, accessToken ).subscribe(
+                                this.doGet(queryType, accessToken).subscribe(
                                     // The second attempt to search (with a new Access token) has succeeded,  emit the search results.
-                                    ( res1 ) => {
-                                        if( (!this.utilService.isNullOrUndefined( query )) && (query.length > 0) ){
-                                            this.emitGetResults( queryTypeOrig, res1, query.replace( 'SeriesUID=', '' ) );
-                                        }else{
-                                            this.emitGetResults( queryType, res1 );
+                                    (res1) => {
+                                        if ((!this.utilService.isNullOrUndefined(query)) && (query.length > 0)) {
+                                            this.emitGetResults(queryTypeOrig, res1, query.replace('SeriesUID=', ''));
+                                        } else {
+                                            this.emitGetResults(queryType, res1);
                                         }
 
                                     },
 
                                     // Our second attempt with a new Access token has failed, emit the error.
-                                    ( err1 ) => {
-                                        switch( err1.status ){
+                                    (err1) => {
+                                        switch (err1.status) {
                                             case 401:
-                                                console.error( 'Attempt with new Access token: ' + err1.statusText + '[' + err1.status + ']' );
+                                                console.error('Attempt with new Access token: ' + err1.statusText + '[' + err1.status + ']');
                                                 break;
 
                                             default:
-                                                console.error( 'ERROR: ' + err1.statusText + '[' + err1.status + '] ' + err1.message );
+                                                console.error('ERROR: ' + err1.statusText + '[' + err1.status + '] ' + err1.message);
                                                 break;
                                         }
-                                        this.emitGetError( queryType, err1 );
+                                        this.emitGetError(queryType, err1);
                                     }
                                 );
                             },
 
                             // We tried and failed to get a new Access token, emit the error.
-                            ( err1 ) => {
-                                console.error( 'Failed to get a new Access token: ' + err1.statusText + '[' + err1.status + ']' );
-                                this.emitGetError( queryType, err1 );
+                            (err1) => {
+                                console.error('Failed to get a new Access token: ' + err1.statusText + '[' + err1.status + ']');
+                                this.emitGetError(queryType, err1);
                                 this.gotToken();
                             }
                         );
@@ -1195,8 +1221,8 @@ export class ApiServerService implements OnDestroy{
 
                     default:
                         // console.error( 'nbia-api/services/' + queryType + ' Error: ' + err.statusText + '[' + err.status + '] ' + err.message );
-                        console.error( 'nbia-api/services/' + queryType + ' Error: ' + err.statusText + '[' + err.status + '] ' );
-                        this.emitGetError( queryType, err );
+                        console.error('nbia-api/services/' + queryType + ' Error: ' + err.statusText + '[' + err.status + '] ');
+                        this.emitGetError(queryType, err);
                         break;
                 }
             }
@@ -1206,22 +1232,22 @@ export class ApiServerService implements OnDestroy{
     }
 
 
-    doGet( queryType, accessToken ) {
+    doGet(queryType, accessToken) {
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
-        if( Properties.DEBUG_CURL ){
+        if (Properties.DEBUG_CURL) {
             let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + getUrl + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log('doGet: ' + curl);
         }
 
-        if( this.utilService.isNullOrUndefined( accessToken ) ){
+        if (this.utilService.isNullOrUndefined(accessToken)) {
             accessToken = this.accessToken;
         }
 
-        let headers = new HttpHeaders( {
+        let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + accessToken
-        } );
+        });
 
         let options = {
             headers: headers,
@@ -1229,27 +1255,27 @@ export class ApiServerService implements OnDestroy{
         };
 
         let results;
-        try{
-            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
-        }catch( e ){
+        try {
+            results = this.httpClient.get(getUrl, options).pipe(timeout(Properties.HTTP_TIMEOUT));
+        } catch (e) {
             // TODO react to error.
-            console.error( 'doGet Exception: ' + e );
+            console.error('doGet Exception: ' + e);
         }
 
         return results;
     }
 
-    doGetNoToken( queryType ) {
+    doGetNoToken(queryType) {
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
-        if( Properties.DEBUG_CURL ){
+        if (Properties.DEBUG_CURL) {
             let curl = 'curl  -k \'' + getUrl + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log('doGet: ' + curl);
         }
 
-        let headers = new HttpHeaders( {
+        let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded'
-        } );
+        });
 
         let options = {
             headers: headers,
@@ -1258,41 +1284,41 @@ export class ApiServerService implements OnDestroy{
         };
 
         let results;
-        try{
-            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
-        }catch( e ){
+        try {
+            results = this.httpClient.get(getUrl, options).pipe(timeout(Properties.HTTP_TIMEOUT));
+        } catch (e) {
             // TODO react to error.
-            console.error( 'doGetNoToken Exception: ' + e );
+            console.error('doGetNoToken Exception: ' + e);
         }
 
         return results;
     }
 
 
-    downloadSeriesList( seriesList ) {
+    downloadSeriesList(seriesList) {
         let query = seriesList + '&password=' + this.currentApiPassword + '&includeAnnotation=true';
-        let downloadManifestUrl = this.commonService.buildPath( Properties.API_SERVER_URL, Consts.API_MANIFEST_URL );
+        let downloadManifestUrl = this.commonService.buildPath(Properties.API_SERVER_URL, Consts.API_MANIFEST_URL);
 
-        if( Properties.DEBUG_CURL ){
+        if (Properties.DEBUG_CURL) {
             let curl = ' curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/' + Consts.API_MANIFEST_URL + '\' -d \'' + query + '\'';
-            console.log( '03 doPost: ', curl );
+            console.log('03 doPost: ', curl);
         }
 
 
-        let headers = new HttpHeaders( {
+        let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + this.accessToken
-        } );
+        });
 
         let options = {
             headers: headers,
             responseType: 'text' as 'text'
         };
 
-        return this.httpClient.post( downloadManifestUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+        return this.httpClient.post(downloadManifestUrl, query, options).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
-    setImageModalityAllOrAny( a ) {
+    setImageModalityAllOrAny(a) {
         this.imageModalityAllOrAnyLabels = a;
     }
 
@@ -1301,21 +1327,20 @@ export class ApiServerService implements OnDestroy{
     }
 
     getCollectionLicenses() {
-        this.doGet( Consts.GET_COLLECTION_LICENSES, this.showToken() ).subscribe(
-            ( collectionLicensesData ) => {
+        this.doGet(Consts.GET_COLLECTION_LICENSES, this.showToken()).subscribe(
+            (collectionLicensesData) => {
                 this.collectionLicenses = collectionLicensesData;
                 // Emit here
-                this.collectionLicensesResultsEmitter.emit( this.collectionLicenses );
+                this.collectionLicensesResultsEmitter.emit(this.collectionLicenses);
             },
             collectionLicensesError => {
                 this.collectionDescriptionsErrorEmitter.emit(collectionLicensesError);
-            } );
+            });
     }
 
 
-
     deleteToken() {
-        this.persistenceService.remove( this.persistenceService.Field.ACCESS_TOKEN );
+        this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN);
     }
 
     /**
@@ -1323,7 +1348,9 @@ export class ApiServerService implements OnDestroy{
      * @returns {Observable<any>}
      */
     getToken(): Observable<any> {
-        let token = this.getAccessToken( this.currentUser, this.currentApiPassword, Properties.DEFAULT_SECRET );
+        let token = this.getAccessToken(this.currentUser, this.currentApiPassword, Properties.DEFAULT_SECRET);
+
+        console.log('MHL ApiServerService.getToken: ', token);
         return token;
     }
 
@@ -1341,16 +1368,16 @@ export class ApiServerService implements OnDestroy{
      * @param secret
      * @returns {Observable<R>}
      */
-    getAccessToken( user, password, secret ): Observable<any> {
+    getAccessToken(user, password, secret): Observable<any> {
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
 
-        let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
+        let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
 
         let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
 
-        if( Properties.DEBUG_CURL ){
+        if (Properties.DEBUG_CURL) {
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
-            console.log( 'getAccessToken: ' + curl );
+            console.log('getAccessToken: ' + curl);
         }
 
         let options =
@@ -1358,20 +1385,20 @@ export class ApiServerService implements OnDestroy{
                 headers: headers,
                 method: 'post'
             };
-        return this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+        return this.httpClient.post(post_url, data, options).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
 
     logOut() {
         let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
-        if( Properties.DEBUG_CURL ){
+        if (Properties.DEBUG_CURL) {
             let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + getUrl + '\'';
-            console.log( 'doGet: ' + curl );
+            console.log('doGet: ' + curl);
         }
-        let headers = new HttpHeaders( {
+        let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + this.accessToken
-        } );
+        });
 
         let options =
             {
@@ -1380,7 +1407,7 @@ export class ApiServerService implements OnDestroy{
                 responseType: 'text' as 'text'
             };
 
-        return this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+        return this.httpClient.get(getUrl, options).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
     /**
@@ -1389,37 +1416,37 @@ export class ApiServerService implements OnDestroy{
      *
      */
     getCriteriaCounts2() {
-        if( this.utilService.isNullOrUndefined( this.simpleSearchQueryHold ) || this.simpleSearchQueryHold.length < 1 ){
+        if (this.utilService.isNullOrUndefined(this.simpleSearchQueryHold) || this.simpleSearchQueryHold.length < 1) {
             return;
         }
         let query = this.simpleSearchQueryHold;
 
         // Add 'At least X studies'
         let minStudies = this.commonService.getMinimumMatchedStudiesValue();
-        if( +minStudies > 1 ){
+        if (+minStudies > 1) {
             // Get the current parameter number
-            let parameterNumber = query.replace( /.*value/, '' );
-            parameterNumber = parameterNumber.replace( /=.*/, '' );
+            let parameterNumber = query.replace(/.*value/, '');
+            parameterNumber = parameterNumber.replace(/=.*/, '');
             parameterNumber++;
             minStudies--;
             query += '&criteriaType' + parameterNumber + '=MinNumberOfStudiesCriteria&value' + parameterNumber + '=' + minStudies;
         }
 
-        this.doSearch( Consts.SEARCH_CRITERIA_VALUES, query );
+        this.doSearch(Consts.SEARCH_CRITERIA_VALUES, query);
     }
 
 
     // @TODO we can probably get rid of this and Properties.PAGED_SEARCH because we will always use Properties.PAGED_SEARCH
     getCriteriaCounts() {
-        if( Properties.PAGED_SEARCH ){
+        if (Properties.PAGED_SEARCH) {
             return this.getCriteriaCountsPaged();
         }
 
-        if(
-            (this.utilService.isNullOrUndefined( this.simpleSearchQueryHold )) ||
+        if (
+            (this.utilService.isNullOrUndefined(this.simpleSearchQueryHold)) ||
             (this.simpleSearchQueryHold.length < 1) ||
-            (this.utilService.isNullOrUndefined( this.currentSearchResults ))
-        ){
+            (this.utilService.isNullOrUndefined(this.currentSearchResults))
+        ) {
             return;
         }
 
@@ -1428,29 +1455,29 @@ export class ApiServerService implements OnDestroy{
         this.criteriaCountsCollection = {};
         this.criteriaCountsSpecies = {};
 
-        for( let data of this.currentSearchResults ){
-            for( let modality of data.modalities ){
-                if( this.utilService.isNullOrUndefined( this.criteriaCountsImageModality[modality] ) ){
+        for (let data of this.currentSearchResults) {
+            for (let modality of data.modalities) {
+                if (this.utilService.isNullOrUndefined(this.criteriaCountsImageModality[modality])) {
                     this.criteriaCountsImageModality[modality] = 0;
                 }
                 this.criteriaCountsImageModality[modality]++;
             }
 
-            for( let sp of data.species ){
-                if( this.utilService.isNullOrUndefined( this.criteriaCountsSpecies[sp] ) ){
+            for (let sp of data.species) {
+                if (this.utilService.isNullOrUndefined(this.criteriaCountsSpecies[sp])) {
                     this.criteriaCountsSpecies[sp] = 0;
                 }
                 this.criteriaCountsSpecies[sp]++;
             }
 
-            for( let anatomicalSite of data.bodyParts ){
-                if( this.utilService.isNullOrUndefined( this.criteriaCountsAnatomicalSite [anatomicalSite] ) ){
+            for (let anatomicalSite of data.bodyParts) {
+                if (this.utilService.isNullOrUndefined(this.criteriaCountsAnatomicalSite [anatomicalSite])) {
                     this.criteriaCountsAnatomicalSite [anatomicalSite] = 0;
                 }
                 this.criteriaCountsAnatomicalSite [anatomicalSite]++;
             }
 
-            if( this.utilService.isNullOrUndefined( this.criteriaCountsCollection[data.project] ) ){
+            if (this.utilService.isNullOrUndefined(this.criteriaCountsCollection[data.project])) {
                 this.criteriaCountsCollection[data.project] = 0;
             }
             this.criteriaCountsCollection[data.project]++;
@@ -1459,9 +1486,9 @@ export class ApiServerService implements OnDestroy{
 
         let resObj = [];
         // Add modality
-        let modalityObj = { 'criteria': 'Image Modality', 'values': [] };
-        Object.keys( this.criteriaCountsImageModality ).forEach(
-            ( key ) => {
+        let modalityObj = {'criteria': 'Image Modality', 'values': []};
+        Object.keys(this.criteriaCountsImageModality).forEach(
+            (key) => {
                 modalityObj.values.push(
                     {
                         'criteria': key,
@@ -1471,9 +1498,9 @@ export class ApiServerService implements OnDestroy{
             }
         );
 
-        let anatomicalSiteObj = { 'criteria': 'Anatomical Site', 'values': [] };
-        Object.keys( this.criteriaCountsAnatomicalSite ).forEach(
-            ( key ) => {
+        let anatomicalSiteObj = {'criteria': 'Anatomical Site', 'values': []};
+        Object.keys(this.criteriaCountsAnatomicalSite).forEach(
+            (key) => {
                 anatomicalSiteObj.values.push(
                     {
                         'criteria': key,
@@ -1483,9 +1510,9 @@ export class ApiServerService implements OnDestroy{
             }
         );
 
-        let speciesObj = { 'criteria': 'Species', 'values': [] };
-        Object.keys( this.criteriaCountsSpecies ).forEach(
-            ( key ) => {
+        let speciesObj = {'criteria': 'Species', 'values': []};
+        Object.keys(this.criteriaCountsSpecies).forEach(
+            (key) => {
                 speciesObj.values.push(
                     {
                         'criteria': key,
@@ -1495,9 +1522,9 @@ export class ApiServerService implements OnDestroy{
             }
         );
 
-        let collectionObj = { 'criteria': 'Collections', 'values': [] };
-        Object.keys( this.criteriaCountsCollection ).forEach(
-            ( key ) => {
+        let collectionObj = {'criteria': 'Collections', 'values': []};
+        Object.keys(this.criteriaCountsCollection).forEach(
+            (key) => {
                 collectionObj.values.push(
                     {
                         'criteria': key,
@@ -1507,12 +1534,12 @@ export class ApiServerService implements OnDestroy{
             }
         );
 
-        resObj.push( collectionObj );
-        resObj.push( anatomicalSiteObj );
-        resObj.push( modalityObj );
-        resObj.push( speciesObj );
+        resObj.push(collectionObj);
+        resObj.push(anatomicalSiteObj);
+        resObj.push(modalityObj);
+        resObj.push(speciesObj);
 
-        this.criteriaCountUpdateEmitter.emit( { 'res': resObj } );
+        this.criteriaCountUpdateEmitter.emit({'res': resObj});
     }
 
     /**
@@ -1520,18 +1547,18 @@ export class ApiServerService implements OnDestroy{
      */
     getCriteriaCountsPaged() {
 
-        if(
-            (this.utilService.isNullOrUndefined( this.simpleSearchQueryHold )) ||
+        if (
+            (this.utilService.isNullOrUndefined(this.simpleSearchQueryHold)) ||
             (this.simpleSearchQueryHold.length < 1) ||
-            (this.utilService.isNullOrUndefined( this.currentSearchResults ))
-        ){
+            (this.utilService.isNullOrUndefined(this.currentSearchResults))
+        ) {
             return;
         }
         let resObj = [];
-        let collectionObjPaged = { 'criteria': 'Collections', 'values': [] };
+        let collectionObjPaged = {'criteria': 'Collections', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if( this.currentSearchResultsData['collections'] !== 'null' ){
-            for( let collection of this.currentSearchResultsData['collections'] ){
+        if (this.currentSearchResultsData['collections'] !== 'null') {
+            for (let collection of this.currentSearchResultsData['collections']) {
 
                 collectionObjPaged.values.push(
                     {
@@ -1542,10 +1569,10 @@ export class ApiServerService implements OnDestroy{
             }
         }
 
-        let modalityObjPaged = { 'criteria': 'Image Modality', 'values': [] };
+        let modalityObjPaged = {'criteria': 'Image Modality', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if( this.currentSearchResultsData['modalities'] !== 'null' ){
-            for( let modality of this.currentSearchResultsData['modalities'] ){
+        if (this.currentSearchResultsData['modalities'] !== 'null') {
+            for (let modality of this.currentSearchResultsData['modalities']) {
                 modalityObjPaged.values.push(
                     {
                         'criteria': modality.value,
@@ -1554,10 +1581,10 @@ export class ApiServerService implements OnDestroy{
                 );
             }
         }
-        let anatomicalSiteObjPaged = { 'criteria': 'Anatomical Site', 'values': [] };
+        let anatomicalSiteObjPaged = {'criteria': 'Anatomical Site', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if( this.currentSearchResultsData['bodyParts'] !== 'null' ){
-            for( let bodyPart of this.currentSearchResultsData['bodyParts'] ){
+        if (this.currentSearchResultsData['bodyParts'] !== 'null') {
+            for (let bodyPart of this.currentSearchResultsData['bodyParts']) {
                 anatomicalSiteObjPaged.values.push(
                     {
                         'criteria': bodyPart.value,
@@ -1566,10 +1593,10 @@ export class ApiServerService implements OnDestroy{
                 );
             }
         }
-        let speciesObjPaged = { 'criteria': 'Species', 'values': [] };
+        let speciesObjPaged = {'criteria': 'Species', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if( (this.currentSearchResultsData['species'] !== 'null') && (this.currentSearchResultsData['species'] !== null) ){
-            for( let species of this.currentSearchResultsData['species'] ){
+        if ((this.currentSearchResultsData['species'] !== 'null') && (this.currentSearchResultsData['species'] !== null)) {
+            for (let species of this.currentSearchResultsData['species']) {
                 speciesObjPaged.values.push(
                     {
                         'criteria': species.value,
@@ -1579,17 +1606,17 @@ export class ApiServerService implements OnDestroy{
             }
         }
 
-        resObj.push( collectionObjPaged );
-        resObj.push( anatomicalSiteObjPaged );
-        resObj.push( modalityObjPaged );
-        resObj.push( speciesObjPaged );
+        resObj.push(collectionObjPaged);
+        resObj.push(anatomicalSiteObjPaged);
+        resObj.push(modalityObjPaged);
+        resObj.push(speciesObjPaged);
 
-        this.criteriaCountUpdateEmitter.emit( { 'res': resObj } );
+        this.criteriaCountUpdateEmitter.emit({'res': resObj});
     }
 
 
     refreshCriteriaCounts() {
-        this.criteriaCountUpdateEmitter.emit( {} );
+        this.criteriaCountUpdateEmitter.emit({});
     }
 
 

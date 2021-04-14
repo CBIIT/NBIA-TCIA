@@ -139,6 +139,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
         }
     }
 
+    /*
     onThumbnailClick( seriesId ) {
         window.open( Properties.API_SERVER_URL +
             '/' + Properties.THUMBNAIL_URL + '?' +
@@ -148,9 +149,25 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
             encodeURI( seriesId.description ),
             '_blank' );
     }
+   */
 
+    onThumbnailClick( seriesId ) {
+        window.open(Properties.API_SERVER_URL +
+            '/' + Properties.THUMBNAIL_URL + '?' +
+            Properties.URL_KEY_THUMBNAIL_SERIES + '=' +
+            encodeURI(seriesId.seriesPkId) + '&' +
+            Properties.URL_KEY_THUMBNAIL_DESCRIPTION + '=' +
+            encodeURI(seriesId.description) + '&' +
 
-    onSeriesOhifViewerClick( i ) {
+            Properties.URL_KEY_THUMBNAIL_TOKEN + '=' +
+            this.apiServerService.showToken()  + ':' +
+            this.apiServerService.getRefreshToken()  + ':' +
+            this.apiServerService.getTokenLifeSpan()
+            ,
+            '_blank');
+    }
+
+        onSeriesOhifViewerClick( i ) {
         this.ohifViewerService.launchOhifViewerSeries( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId'] );
     }
 

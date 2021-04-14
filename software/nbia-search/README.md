@@ -13,5 +13,10 @@
 Copy the `nbia-search` directory to Tomcat's `webapps` directory.
 
 ## TODO
+ #### access tokens
+- [ ] Persist refresh token and token lifespan with access token
+- [ ] Add Refresh token and token lifespan to url for data-admin
+- [ ] Bring up login screen if refresh token does not work
+- [ ] ApiServerService.setToken "t" does not have refreshToken or life span if logging in by refreshing the page Line 573
+
 * Color of "And" in Display query
-* A little more room (move left) for XX more...
