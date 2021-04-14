@@ -22,7 +22,7 @@
                "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                "criteriaType":"seriesUID",
-               "inputType":"list"
+               "inputType":"commaSeperatedList"
             }
          },
          {
