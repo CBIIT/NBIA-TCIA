@@ -107,7 +107,9 @@ public class GetAdvancedQCSearch extends getData{
 				   if (seperatedValue!=null) {
 					   List<String> seperatedList = Arrays.asList(seperatedValue.split(",", -1));
 					   for (String listItem:seperatedList) {
-						   criteria.setListValue(listItem);
+						   if (listItem!=null) {
+							criteria.setListValue(listItem.trim());
+						}
 					   }
 				   }		   
 				   criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
@@ -118,8 +120,10 @@ public class GetAdvancedQCSearch extends getData{
 					   String seperatedValue=inFormParams.get("value"+i).get(0);
 					   if (seperatedValue!=null) {
 						   List<String> seperatedList = Arrays.asList(seperatedValue.split(",", -1));
-						   for (String listItem:seperatedList) {
-							   criteria.setListValue(listItem);
+						   for (String listItem:seperatedList) {				   
+							   if (listItem!=null) {
+								criteria.setListValue(listItem.trim());
+							}
 						   }
 					   }	
 					criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
