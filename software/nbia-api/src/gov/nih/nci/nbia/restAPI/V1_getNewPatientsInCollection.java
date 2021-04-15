@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-@Path("/v1/getNewPatientsInCollection")
+@Path("/v1/NewPatientsInCollection")
 public class V1_getNewPatientsInCollection extends getData{
 	private static final String[] columns={"PatientId", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection"};
 	public final static String TEXT_CSV = "text/csv";
