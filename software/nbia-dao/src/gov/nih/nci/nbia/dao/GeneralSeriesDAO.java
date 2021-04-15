@@ -10,6 +10,7 @@ package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.EquipmentDTO;
 import gov.nih.nci.nbia.dto.SeriesDTO;
+import gov.nih.nci.nbia.dto.DOIDTO;
 import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.Collection;
@@ -105,4 +106,5 @@ public interface GeneralSeriesDAO  {
 			List<String> authorizedCollections) throws DataAccessException;
 	public List<String> getDeniedSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
 	public int updateDOIForSeries(String project, String doi)throws DataAccessException;
+	public List<DOIDTO> getCollectionOrSeriesForDOI(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException;
 }
