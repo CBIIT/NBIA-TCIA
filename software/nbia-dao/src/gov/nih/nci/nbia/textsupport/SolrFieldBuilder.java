@@ -25,7 +25,7 @@ public class SolrFieldBuilder {
 	public static Map<String,String> getTerms()
 	{
       try {
-    	      if (dicomFieldMap==null&&System.currentTimeMillis()>now) {
+    	      if (dicomFieldMap==null||System.currentTimeMillis()>now) {
     	    	  refeshMap();
     	    	  now = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1);
     	      }
@@ -82,9 +82,9 @@ public class SolrFieldBuilder {
 	      }
 
 	    }
-       /** for (Map.Entry<String, String> entry : dicomFieldMap.entrySet()) {
+        for (Map.Entry<String, String> entry : dicomFieldMap.entrySet()) {
             System.out.println("dicom : " + entry.getKey() + " solr : " + entry.getValue());
-        } */
+        } 
     }
 	
 }

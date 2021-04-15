@@ -326,7 +326,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid,
 			List<String> authorizedProjAndSites, String modality, String bodyPartExamined, String manufacturerModelName,
-			String manufacturer) throws DataAccessException {
+			String manufacturer, String seriesInstanceUID) throws DataAccessException {
 				
 		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
 			return null;
@@ -375,6 +375,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		if (manufacturer != null) {
 			where = where.append(" and s.generalEquipment.manufacturer=?");
 			paramList.add(manufacturer);
+			++i;
+		}
+		if (seriesInstanceUID != null) {
+			where = where.append(" and s.seriesInstanceUID=?");
+			paramList.add(seriesInstanceUID);
 			++i;
 		}
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));

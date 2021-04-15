@@ -62,7 +62,8 @@ public class V2_getSeries extends getData {
 	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("format") String format,
 			@QueryParam("PatientID") String patientId, @QueryParam("StudyInstanceUID") String studyInstanceUid,
 			@QueryParam("Modality") String modality, @QueryParam("BodyPartExamined") String bodyPartExamined,
-			@QueryParam("ManufacturerModelName") String manufacturerModelName, @QueryParam("Manufacturer") String manufacturer)  {
+			@QueryParam("ManufacturerModelName") String manufacturerModelName, @QueryParam("Manufacturer") String manufacturer,
+			@QueryParam("SeriesInstanceUID") String seriesInstanceUID)  {
 		List<String> authorizedCollections = null;
 		try {
 			authorizedCollections = getAuthorizedCollections();
@@ -71,7 +72,7 @@ public class V2_getSeries extends getData {
 			e.printStackTrace();
 		}
 		List<Object[]> data = getSeries(collection, patientId, studyInstanceUid, authorizedCollections,
-				modality, bodyPartExamined, manufacturerModelName, manufacturer);
+				modality, bodyPartExamined, manufacturerModelName, manufacturer, seriesInstanceUID);
 		return formatResponse(format, data, columns);
 	}
 }

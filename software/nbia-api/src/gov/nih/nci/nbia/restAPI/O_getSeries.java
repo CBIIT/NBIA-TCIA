@@ -84,7 +84,7 @@ public class O_getSeries extends getData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		List<Object[]> data = getSeries(collection, patientId, studyInstanceUid, authorizedCollections,null,null,null,null);
+		List<Object[]> data = getSeries(collection, patientId, studyInstanceUid, authorizedCollections,null,null,null,null,null);
 		if (seriesUid!=null&&seriesUid.length()>0&&!seriesUid.equals("null"))
 		{
 			for (Object[] object:data){
