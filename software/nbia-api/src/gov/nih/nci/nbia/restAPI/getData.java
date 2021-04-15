@@ -130,7 +130,7 @@ public class getData {
 				return Response.ok(returnString).type("application/force-download").header("Content-Disposition","attachment; filename=\"SeriesMetaData.csv\"").build();
 			}
 		} else {
-			return Response.status(500).entity("No data found.").build();
+			return Response.ok().build();
 		}
 		return Response.status(500)
 				.entity("Server was not able to process your request").build();
@@ -168,8 +168,7 @@ public class getData {
 			}
 		}
 		else {
-			return Response.status(500)
-					.entity("No data found.").build();
+			return Response.ok().build();
 		}
 		return Response.status(500)
 				.entity("Server was not able to process your request")
@@ -199,8 +198,7 @@ public class getData {
 			}		
 		}
 		else {
-			return Response.status(500)
-					.entity("No data found.").build();
+			return Response.ok().build();
 		}
 		return Response.status(500)
 				.entity("Server was not able to process your request")
