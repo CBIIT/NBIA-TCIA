@@ -16,11 +16,6 @@
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"seriesUID",
                     "inputType":"commaSeperatedList"
                 }
@@ -39,11 +34,6 @@
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"seriesUID",
                     "inputType":"startsWith"
                 }
@@ -67,11 +57,6 @@
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"studyUID",
                     "inputType":"list"
                 }
