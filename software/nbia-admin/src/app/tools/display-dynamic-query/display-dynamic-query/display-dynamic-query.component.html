@@ -16,49 +16,97 @@
         <span>&nbsp;Clear</span>
     </button>
 
-    data: {{data}}
- <!--
-    <span *ngFor="let criteria of displayQueryData; let i = index">
-        <span class="criteria-display-title">{{
-            criteria["displayName"]
-            }}</span>
+<span *ngIf="properties.SHOW_SERVER_QUERY">{{data}}</span>
 
-        <span
-            *ngIf="
-                criteria['criteria'] !== consts.QUERY_CRITERIA_QC_STATUS &&
-                criteria['criteria'] !== consts.QUERY_CRITERIA_SUBJECT_ID
-            "
-        >
-            <span *ngIf="criteria['displayData'].length > 0">
-                <span class="p-0 m-0">(</span>
-                <span class="criteria-display-name display-wrap">{{
-                    criteria["displayData"]
-                    }}</span>
-                <span class="p-0 m-0">)</span>
+<span *ngIf="! properties.SHOW_SERVER_QUERY">
+    <span *ngFor="let criteria of niceDisplayData; let i = index">
+        <!-- Some can be empty -->
+        <span *ngIf="criteria">
+
+
+            <span class="criteria-display-title">
+                {{criteria["criteriaHeading"]}}
             </span>
-        </span>
 
-        <span
-            *ngIf="
-                criteria['criteria'] === consts.QUERY_CRITERIA_QC_STATUS ||
-                criteria['criteria'] === consts.QUERY_CRITERIA_SUBJECT_ID
-            "
-        >
-            <span class="p-0 m-0">(</span>
-            <span *ngFor="let status of criteria['displayData']; let i = index">
-                <span class="criteria-display-comma" *ngIf="i > 0">,</span>
-                <span class="criteria-display-name display-wrap">{{
-                    criteria["displayData"][i]
-                    }} status:{{status}}</span>
+
+            <span *ngIf="criteria['condition'].length > 0">
+                {{criteria['condition']}}
             </span>
-            <span class="p-0 m-0">)</span>
-        </span>
+            <span *ngIf="criteria['condition'].length < 1">
+                (
+            </span>
 
-        <span
-            *ngIf="i < displayQueryData.length - 1"
-            class="label label-default criteria-and"
-        >AND</span
-        >
+            <!-- The user input -->
+            <span *ngIf="criteria['value'].length === 1"
+                  class="criteria-display-name display-wrap"
+            >
+                {{criteria['value']}}
+            </span>
+
+            <span *ngIf="criteria['value'].length > 1">
+                <span *ngFor="let val of criteria['value']; let n = index">
+                    <!-- Keep this all on the same line. -->
+                    <span class="criteria-display-name display-wrap">{{val}}</span><span class="criteria-display-comma" *ngIf="n < (criteria['value'].length - 1 )">,</span>
+                </span>
+            </span>
+
+
+            <span *ngIf="criteria['condition'].length < 1">
+                )
+            </span>
+
+            <span *ngIf="i < lastElementIndex"
+                class="criteria-and"
+            >{{criteria['andOr']}}</span>
+
+
+        </span>
     </span>
--->
+</span>
+
+
+        <!--
+           <span *ngFor="let criteria of displayQueryData; let i = index">
+               <span class="criteria-display-title">{{
+                   criteria["displayName"]
+                   }}</span>
+
+               <span
+                   *ngIf="
+                       criteria['criteria'] !== consts.QUERY_CRITERIA_QC_STATUS &&
+                       criteria['criteria'] !== consts.QUERY_CRITERIA_SUBJECT_ID
+                   "
+               >
+                   <span *ngIf="criteria['displayData'].length > 0">
+                       <span class="p-0 m-0">(</span>
+                       <span class="criteria-display-name display-wrap">{{
+                           criteria["displayData"]
+                           }}</span>
+                       <span class="p-0 m-0">)</span>
+                   </span>
+               </span>
+
+               <span
+                   *ngIf="
+                       criteria['criteria'] === consts.QUERY_CRITERIA_QC_STATUS ||
+                       criteria['criteria'] === consts.QUERY_CRITERIA_SUBJECT_ID
+                   "
+               >
+                   <span class="p-0 m-0">(</span>
+                   <span *ngFor="let status of criteria['displayData']; let i = index">
+                       <span class="criteria-display-comma" *ngIf="i > 0">,</span>
+                       <span class="criteria-display-name display-wrap">{{
+                           criteria["displayData"][i]
+                           }} status:{{status}}</span>
+                   </span>
+                   <span class="p-0 m-0">)</span>
+               </span>
+
+               <span
+                   *ngIf="i < displayQueryData.length - 1"
+                   class="label label-default criteria-and"
+               >AND</span
+               >
+           </span>
+       -->
 </div>

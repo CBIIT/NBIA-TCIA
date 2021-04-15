@@ -75,12 +75,12 @@ export class ConfigurationService {
                         Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE = this.utilService.isTrue( value );
                     }
 
-                    if( key === 'SHOW_DYNAMIC_SEARCH' ){
-                        Properties.SHOW_ONLY_DEFAULT_SEARCH_TAB = ( this.utilService.isTrue( value ) );
-                    }
-
                     if( key === 'DEMO_MODE' ){
                         Properties.DEMO_MODE = this.utilService.isTrue( value );
+                    }
+
+                    if( key === 'SHOW_SERVER_QUERY' ){
+                        Properties.SHOW_SERVER_QUERY = this.utilService.isTrue( value );
                     }
 
                     if( key === 'brand' ){

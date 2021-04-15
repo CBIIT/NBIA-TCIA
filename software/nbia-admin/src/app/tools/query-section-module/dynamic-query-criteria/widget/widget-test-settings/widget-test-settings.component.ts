@@ -149,7 +149,6 @@ export class WidgetTestSettingsComponent implements OnInit {
         this.onAndOrClick(this.currentAndOrType);
         Properties.SHOW_HEADER = false;
         Properties.SHOW_FOOTER = false;
-        console.log('MHL IN DynamicQueryCriteriaService ngOnInit CALLING: sendWidgetData' );
         this.sendWidgetData();
     }
 
@@ -210,7 +209,6 @@ export class WidgetTestSettingsComponent implements OnInit {
 
         // Clean here
         temp = this.cleanWidgetData(temp);
-        console.log('MHL IN DynamicQueryCriteriaService sendWidgetData CALLING: addWidget' );
         this.dynamicQueryCriteriaService.addWidget(temp);
     }
 

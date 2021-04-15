@@ -31,7 +31,7 @@
                 <span *ngFor="let critRow of allCriteriaList; let n = index">
                     <!-- Do not split up the following line.  -->
                     <span *ngIf="( n > 0 ) && ( n < allCriteriaList.length )">&nbsp;<span
-                    class="label label-default criteria-and">AND</span>
+                    class="label criteria-display  label-default criteria-and">AND</span>
                     </span>
 
                     <span *ngFor="let critRowElements of critRow; let i = index">

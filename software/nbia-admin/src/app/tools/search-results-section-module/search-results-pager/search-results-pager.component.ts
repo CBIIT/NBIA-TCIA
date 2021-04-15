@@ -61,7 +61,6 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
     ngOnInit() {
         this.searchResultsPagerService.pageCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
                 this.pageCount = data;
-                console.log('MHL pageCountEmitter data: ', this.pageCount);
                 this.setButtons();
             } );
 

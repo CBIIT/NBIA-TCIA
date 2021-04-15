@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.8',
-    // 13_APR_2021
-    TEST_VERSION: '1.0.8p',
+    // 15_APR_2021
+    TEST_VERSION: '1.0.8q',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
@@ -107,8 +107,10 @@ export let Properties = {
     SHOW_FOOTER: true,
 
 
-    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false,
+    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: true,
+    SHOW_SERVER_QUERY: false,
 
+    // @TODO We shouldn't need these anymore @CHECKME they can be deleted
     DEFAULT_SEARCH_TAB: 1, // 0="Criteria Search"  1="Dynamic Search"
     SHOW_ONLY_DEFAULT_SEARCH_TAB: true
 

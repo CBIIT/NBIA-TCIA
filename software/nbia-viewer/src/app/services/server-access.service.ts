@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { Properties } from '../../assets/properties';
 import { UtilService } from './util.service';
 import { CommonService } from './common.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { timeout } from 'rxjs/operators';
 
 @Injectable( {
     providedIn: 'root'
@@ -25,19 +26,24 @@ export class ServerAccessService{
     first;
     last;
 
-    currentAccessToken = null;
+    token;
+    refreshToken;
+    expiresIn;
+    tokenRefreshCycleRunning = false;
 
     loading = true;
 
     constructor( private httpClient: HttpClient, private sanitizer: DomSanitizer,
                  private utilService: UtilService, private commonService: CommonService,
-                 private route: ActivatedRoute ) {
+                 private route: ActivatedRoute, private router: Router
+    ) {
         this.API_SERVER_URL = location.origin.toString();
 
         this.seriesId = this.route.snapshot.queryParams['thumbnailSeries'];
 
 
-        this.currentAccessToken = this.commonService.getPersistedValue( 'at' );
+        this.token = this.commonService.getPersistedValue( 'at' );
+        console.log('MHL this.token: ', this.token);
 
         this.initToken();
     }
@@ -278,24 +284,151 @@ export class ServerAccessService{
      * @param t
      */
     initToken() {
-        if( this.route.snapshot.queryParams['accessToken'] !== undefined ){
-            this.setToken( this.route.snapshot.queryParams['accessToken'] );
-            console.log( 'MHL Using URL token: ', this.currentAccessToken );
-        }else if( this.route.snapshot.queryParams['accessToken'] !== undefined ){
-            this.setToken( this.route.snapshot.queryParams['accessToken'] );
-            console.log( 'MHL Using Cookie token: ', this.currentAccessToken );
-        }else{
-            // Put login here
-            console.log( 'MHL Using NO TOKEN' );
+        console.log('MHL 010 initToken: ', this.route.snapshot.queryParams['accessToken']);
+
+
+        // Get access token
+            let tokens = this.route.snapshot.queryParams['accessToken'];
+            if( tokens !== undefined){
+                console.log('MHL 011 initToken: ', tokens);
+
+                tokens = tokens.split( ':' );
+                this.token = tokens[0];
+                this.refreshToken = tokens[1];
+                this.expiresIn = tokens[2];
+
+
+                this.startRefreshTokenCycle();
+
+              //  this.setToken( this.token );
+ /*               this.accessTokenService.setRefreshToken( this.refreshToken );
+                this.accessTokenService.setExpiresIn( this.expiresIn );
+
+                this.accessTokenService.startRefreshTokenCycle();
+*/
+            }
+
+
+
+            /*
+                    if( this.route.snapshot.queryParams['token'] !== undefined ){
+                        this.setToken( this.route.snapshot.queryParams['token'] );
+                        console.log( 'MHL Using URL token: ', this.token );
+                    }else if( this.route.snapshot.queryParams['token'] !== undefined ){
+                        this.setToken( this.route.snapshot.queryParams['token'] );
+                        console.log( 'MHL Using Cookie token: ', this.token );
+                    }else{
+                        // Put login here
+                        console.log( 'MHL Using NO TOKEN' );
+                    }
+            */
+    }
+
+
+
+    startRefreshTokenCycle(){
+        let tempCounter = 0;
+        if( ! this.tokenRefreshCycleRunning ){
+            console.log('MHL startRefreshTokenCycle');
+            this.tokenRefreshCycleRunning = true;
+            let cycleTimeSeconds = this.expiresIn - Properties.TOKEN_REFRESH_TIME_MARGIN;
+            setInterval(() => {
+                console.log('MHL refresh[' + cycleTimeSeconds + ']: ' + new Date() + '  ' + tempCounter++);
+                this.getAccessTokenWithRefresh( this.getRefreshToken() );
+
+            }, this.getExpiresIn() * 1000);
         }
     }
 
+    /**
+     * Gets an Access token from the server using a refresh token
+     * @param user
+     * @param password
+     */
+    getAccessTokenWithRefresh( refreshToken ) {
+        let post_url = this.API_SERVER_URL + '/nbia-api/oauth/token';
+
+
+        let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
+        let data = 'client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=refresh_token&refresh_token=' + refreshToken;
+
+        if( Properties.DEBUG_CURL ){
+            let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
+            console.log( 'getAccessToken: ' + curl );
+        }
+
+        let options =
+            {
+                headers: headers,
+                method: 'post'
+            };
+
+        this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
+            accessTokenData => {
+                this.setToken( accessTokenData['access_token'] );
+                this.setRefreshToken( accessTokenData['refresh_token'] );
+                this.setExpiresIn( accessTokenData['expires_in'] );
+
+                console.log('MHL refreshToken AccessToken: ', this.getToken());
+                console.log('MHL refreshToken RefreshToken: ', this.getRefreshToken());
+                console.log('MHL refreshToken ExpiresIn: ', this.getExpiresIn());
+
+
+                // If the token was passed to us in the URL, we need to update that URL when the token changes (so refreshing the page won't keep prompting for login).
+                if( Properties.HAVE_URL_TOKEN ){
+                    console.log('MHL IN getAccessTokenWithRefresh CALLING:  appendAQueryParam(' +  this.getToken() + ':' + this.getRefreshToken() + ':' + this.getExpiresIn() + ')' );
+                    this.appendAQueryParam( this.getToken() + ':' + this.getRefreshToken() + ':' + this.getExpiresIn() );
+                }
+
+            },
+            err => {
+                console.error( 'Get new token with refresh token error: ', err );
+                // @FIXME Inform user
+            }
+        )
+    }
+
+
+    /**
+     * Updates the URL at the top of the browser with a new token string.
+     *
+     * @param tokenString Access token: refresh token: token life span in seconds
+     */
+    appendAQueryParam( tokenString ) {
+        console.log('MHL UPDATE URL: ', tokenString);
+
+        let urlTree = this.router.createUrlTree([], {
+            queryParams: { accessToken: tokenString },
+            queryParamsHandling: "merge",
+            preserveFragment: true });
+        this.router.navigateByUrl(urlTree);
+    }
+
+
+
     setToken( t ) {
-        this.currentAccessToken = t;
+        this.token = t;
     }
 
     getToken() {
-        return this.currentAccessToken;
+        return this.token;
     }
+
+    setRefreshToken( token ) {
+        this.refreshToken = token;
+    }
+
+    getRefreshToken(  ) {
+        return this.refreshToken;
+    }
+
+    setExpiresIn( expIn ) {
+        this.expiresIn = expIn;
+    }
+
+    getExpiresIn(  ) {
+        return this.expiresIn;
+    }
+
 
 }

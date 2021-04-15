@@ -9,6 +9,7 @@ import { AccessTokenService } from './access-token.service';
 import { Observable, of } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
 import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -71,7 +72,7 @@ export class ApiService{
 
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService,
-                 private loadingDisplayService: LoadingDisplayService, private displayDynamicQueryService: DisplayDynamicQueryService ) {
+                 private loadingDisplayService: LoadingDisplayService, private displayDynamicQueryService: DisplayDynamicQueryService) {
 
         this.init();
 
@@ -371,7 +372,6 @@ export class ApiService{
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN
             ){
-            // console.log( 'MHL 000 getVisibilities getAccessTokenStatus: ', this.accessTokenService.getAccessTokenStatus() );
             await this.utilService.sleep( Consts.waitTime );
         }
 
@@ -445,7 +445,6 @@ export class ApiService{
             this.collectionSiteEmitter.emit( '' );
         }
 
-        console.log( 'MHL doAdvancedQcSearch query: ', query );
         this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
             ( performAdvancedQcSearchData ) => {
                 this.searchResultsEmitter.emit( performAdvancedQcSearchData );

@@ -26,9 +26,16 @@ export let Properties = {
     // The "CONFIG_FILE" is within the /assets directory
     CONFIG_FILE: 'configuration',
 
+    HTTP_TIMEOUT: 120000,
+    HAVE_URL_TOKEN: true,
+
 
     /*  How many numbered page buttons between the arrow buttons  */
     MAX_PAGER_BUTTONS: 6,
-    IMAGES_PER_PAGE_CHOICE_DEFAULT: 200   // FIXME
+    IMAGES_PER_PAGE_CHOICE_DEFAULT: 200 ,  // FIXME
+
+    // How many seconds before token end of life to refresh the token
+    TOKEN_REFRESH_TIME_MARGIN: 60
+
 };
 

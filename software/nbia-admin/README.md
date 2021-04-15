@@ -1,21 +1,40 @@
 # nbia-admin
 
 ## TODO
-- [ ] Calendar clear
-- [ ] Display Query Clear button
-- [ ] Calendar allow only one
-- [ ] Display Query
+- [X] Radio Ignore
+- [ ] Master clear does not work on single line radio buttons 
+- [ ] Calendar unchecking apply did not remove from display query - check on searching query
+- [ ] Calendar clear does not clear apply checkbox
+- [ ] Calendar Clear puts in today & yesterday, but does not enable Apply
 - [ ] Update pager when query changes (it changes if you click it) NOW I can't reproduce. Revisit.
+- [ ] Select all of this page.  Reword to unselect when appropriate   
 - [ ] A little more space horizontally for lists - update the truncating pipe
+- [ ] Calendar top collapsed date
+- [ ] Calendar prompt, if too long can cause wrap
+- [ ] Calendar Top clear does not clear apply checkbox  
+- [ ] Calendar allow only one
+- [ ] Clean up grey at the top left  
+- [X] Number Inputs
+- [X] Unchecking apply check boxes does not remove the criteria from the query
+- [X] Fix AND in Search Display query
+- [X] A switch to show api query instead of Display Query
+
 - [ ] Persist Page length choice
+
+
 - [ ] Make Cine Mode text selectable
 - [ ] Clean up Cine mode scss
 - [ ] Disable user inputs while search is running
 - [ ] Make sure all names (Labels) and IDs use the sequenceNumber
+- [ ] Move enum WIDGET_TYPE to its own file
 - [ ] Clean up this page, it is displayed on Github website. 
 - [ ] Search Error handling
 - [ ] Rework reaction to 401
 - [ ] Rework reaction to 500 ApiService.getPerformQcSearch
+
+- [X] Display Query Clear button
+
+- [X] Calendar clear
 - [X] Radio buttons don't trigger a search
 - [X] Calendar if allow only one, do we need "Before" & "After"
 - [X] Select All/Select these XX should not have a dropdown if there is only one page of data

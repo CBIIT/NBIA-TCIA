@@ -11,7 +11,12 @@ export class DynamicQueryBuilderService{
     dynamicCriteriaPartList: DynamicCriteriaQueryPart[] = [];
     counter = 0;
 
-    constructor( private apiService: ApiService, private displayDynamicQueryService: DisplayDynamicQueryService) {
+    constructor( private apiService: ApiService) {
+    }
+
+    // This is called when the Master Clear button in the Display Query is clicked
+    clearQuery(){
+        this.dynamicCriteriaPartList = [];
     }
 
     getQueryPartList() {
@@ -23,6 +28,7 @@ export class DynamicQueryBuilderService{
     }
 
     addCriteriaQueryPart( part: DynamicCriteriaQueryPart ) {
+        console.log('MHL addCriteriaQueryPart: ', part);
         let havePart = false;
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
             if( this.dynamicCriteriaPartList[f].criteriaType === part.criteriaType && this.dynamicCriteriaPartList[f].inputType === part.inputType ){
@@ -47,21 +53,13 @@ export class DynamicQueryBuilderService{
      * @param rerunQuery  This will be set to false when the "Master Clear" button at the top is clicked.  We need to wait until all widgets are cleared before we do anything with the query.
      */
     deleteCriteriaQueryPart( criteriaType, inputType , rerunQuery = true) {
-        console.log('MHL 000 dynamicCriteriaPartList: ', this.dynamicCriteriaPartList);
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
-            console.log('MHL 001  deleteCriteriaQueryPart criteriaType: ', criteriaType);
             if( this.dynamicCriteriaPartList[f].criteriaType === criteriaType && this.dynamicCriteriaPartList[f].inputType === inputType ){
                 this.dynamicCriteriaPartList.splice( f, 1 );
-                console.log('MHL 003  deleteCriteriaQueryPart REMOVE criteriaType: ', criteriaType);
             }
         }
-        console.log('MHL 004  dynamicCriteriaPartList: ', this.dynamicCriteriaPartList);
 
-   // @FIXME TESTING     if( rerunQuery ){  @TODO for Display query Clear
-        if( true ){
             this.apiService.doAdvancedQcSearch( this.buildServerQuery() );
-        }
-        console.log('MHL 005  dynamicCriteriaPartList: ', this.dynamicCriteriaPartList);
     }
 
     buildServerQuery(): string {
@@ -119,13 +117,9 @@ export class DynamicQueryBuilderService{
                 break;
 
             case WIDGET_TYPE.CALENDAR:
-                console.log( 'MHL 06 buildServerQueryPart: ', widget.userInput );
                 serverQueryPart = '';
 
-                console.log('MHL widget.userInput: ', widget.userInput);
-
                 for( let part of widget.userInput ){
-                    console.log('MHL part: ', part);
                     if( part === '' )
                     {
                         break;
@@ -137,8 +131,6 @@ export class DynamicQueryBuilderService{
                     serverQueryPart += (part.length > 0) ? part : '';
                     serverQueryPart += '&';
                     this.counter++;
-
-                    console.log('MHL serverQueryPart: ', serverQueryPart);
 
                 }
                 break;

@@ -39,16 +39,12 @@ export class WidgetCalendarComponent implements OnInit{
     }
 
     onDateChangedDp1( e: IMyDateModel ) {
-        console.log('MHL WidgetCalendarComponent.onDateChangedDp1: ', this.haveInput);
-        console.log('MHL onDateChangedDp1 e: ', e);
         this.haveInputChange.emit(this.haveInput);
         this.date1Change.emit( e );
     }
 
     onDateChangedDp0( e: IMyDateModel ) {
         this.haveInput = true;  // @FIXME TESTING ONLY
-        console.log('MHL onDateChangedDp0: ', this.haveInput);
-        console.log('MHL onDateChangedDp0 e: ', e);
         this.haveInputChange.emit(this.haveInput);
         this.date0Change.emit( e );
     }

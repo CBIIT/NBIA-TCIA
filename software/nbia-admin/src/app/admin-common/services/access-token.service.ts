@@ -135,10 +135,8 @@ export class AccessTokenService{
      */
     getAccessTokenWithRefresh( refreshToken ) {
         if( this.currentlyGettingToken ){
-            console.log('MHL 2020a Get IN getAccessTokenWithRefresh  refresh token don\'t need it');
             return;
         }
-        console.log('MHL 2020 Get IN getAccessTokenWithRefresh  refresh token');
         this.currentlyGettingToken = true;
         this.setAccessTokenStatus( TokenStatus.NO_TOKEN_YET );
 
@@ -165,13 +163,7 @@ export class AccessTokenService{
 
                 this.setAccessTokenStatus( TokenStatus.GOOD_TOKEN );
 
-                console.log('MHL refreshToken AccessToken: ', this.getAccessToken());
-                console.log('MHL refreshToken RefreshToken: ', this.getRefreshToken());
-                console.log('MHL refreshToken ExpiresIn: ', this.getExpiresIn());
-
-
                 // If the token was passed to us in the URL, we need to update that URL when the token changes (so refreshing the page won't keep prompting for login). @CHECKME Let's update the URL even if they didn't have the token in the URL
-                    console.log('MHL IN getAccessTokenWithRefresh CALLING:  appendAQueryParam(' +  this.getAccessToken() + ':' + this.getRefreshToken() + ':' + this.getExpiresIn() + ')' );
                     this.appendAQueryParam( this.getAccessToken() + ':' + this.getRefreshToken() + ':' + this.getExpiresIn() );
 
                 this.currentlyGettingToken = false;

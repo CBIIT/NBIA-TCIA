@@ -39,6 +39,7 @@
         'tab-div-large': currentFont === '3'
     }"
 >
+<!--
 
     <span
         *ngIf="(
@@ -60,11 +61,9 @@
         Criteria Search
     </span>
 
+-->
 
     <span
-        *ngIf="(! properties.SHOW_ONLY_DEFAULT_SEARCH_TAB) ||
-                   (properties.DEFAULT_SEARCH_TAB === 1
-               )"
         class="tab"
         [ngClass]="{
             'tab-selected': currentTab === consts.DYNAMIC_SEARCH,

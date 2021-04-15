@@ -112,7 +112,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // @TODO Make sure this emmitter name makes sense
         // Happens when Cinemode next/skip
         this.searchResultByIndexService.searchResultsByIndexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
-            console.log( 'MHL 400 searchResultsByIndexEmitter data: ', data );
             if( this.currentCineModeSeriesIndex < this.searchResults.length - 1 ){
                 this.currentCineModeSeriesIndex++;
 
@@ -123,12 +122,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 );
 
                 // Do we need to go to next page?
-                console.log( 'MHL 401 currentPage: ', this.currentPage );
-                console.log( 'MHL 402 pageLength: ', this.pageLength );
-                console.log( 'MHL 403 currentCineModeSeriesIndex: ', this.currentCineModeSeriesIndex );
-                console.log( 'MHL 404 ((this.currentPage * this.pageLength) + 1 ): ', ((this.currentPage + 1) * this.pageLength) );
                 if( this.currentCineModeSeriesIndex >= ((this.currentPage + 1) * this.pageLength) ){
-                    console.log( 'MHL NEXT PAGE **************************************' );
                     this.searchResultsPagerService.goToNextPage();
                 }
             }
@@ -304,7 +298,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
     toggleSelectAll() {
-        console.log( 'MHL toggleSelectAll areAnyUnchecked: ', this.areAnyUnchecked() );
         // If they are not all selected, checking this box turns them all on
         if( this.areAnyUnchecked() ){
             for( let i = 0; i < this.searchResults.length; i++ ){
@@ -612,8 +605,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
     pageChanged( e ) {
-        console.log( 'MHL pageChanged: ', e );
-        console.log( 'MHL pageChanged currentPage: ', this.currentPage );
         this.setupPage();
     }
 

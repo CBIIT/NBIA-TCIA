@@ -53,9 +53,4 @@
 ###########################################################################################################
 # ENABLE_WIDGET_TESTER = true
 
-###########################################################################################################
-# Show the "Dynamic Search" tab.
-# The default is false.
-# This is just for development, eventually Dynamic search will be the only search.
-###########################################################################################################
-SHOW_DYNAMIC_SEARCH = true
+SHOW_SERVER_QUERY = true

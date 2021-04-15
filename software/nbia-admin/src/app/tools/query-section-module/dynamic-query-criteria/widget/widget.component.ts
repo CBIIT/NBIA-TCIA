@@ -103,6 +103,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     criteriaSingleLineRadioCurrent = -1;
     criteriaSingleLineRadioDefault = -1;
     criteriaSingleLineRadioOptions = [];
+    r0;
+    r1;
+    r2;
     /*
         criteriaSingleLineRadio0 = '';
         criteriaSingleLineRadio1 = '';
@@ -209,7 +212,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.criteriaSingleChoiceList = this.queryCriteriaData['dynamicQueryCriteriaSingleChoiceList'];
         this.criteriaMultiChoiceList = this.queryCriteriaData['dynamicQueryCriteriaMultiChoiceList'];
         if( this.criteriaMultiChoiceList || this.criteriaSingleChoiceList ){
-            // console.log( 'MHL Setting: WIDGET_TYPE.ITEM_LIST', );
             this.widgetType = WIDGET_TYPE.ITEM_LIST;
         }
 
@@ -251,6 +253,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if( this.criteriaSingleLineRadio ){
             this.criteriaHeadingAddOn = this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioDefault];
             this.widgetType = WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS;
+            this.r0 = this.criteriaSingleLineRadioDefault === 0;
+            this.r1 = this.criteriaSingleLineRadioDefault === 1;
+            this.r2 = this.criteriaSingleLineRadioDefault === 2;
         }
         /*
                 this.criteriaSingleLineRadio0 = this.queryCriteriaData['dynamicQueryCriteriaSingleLineRadio0'];
@@ -393,7 +398,10 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * @TODO Need Calendar, etc. tested here!!!!!
      */
     doHaveInput() {
-        this.haveInput = false;
+        // @TODO Cleanup how calendar works
+        if( ! this.criteriaCalendar ){
+            this.haveInput = false;
+        }
         if( this.criteriaSingleChoiceList || this.criteriaMultiChoiceList ){
             for( let box of this.listCheckboxes ){
                 if( box ){
@@ -403,6 +411,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             }
         }else if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.haveInput = this.criteriaTextInputText.length > 0;
+        }else if( this.criteriaNumberInput ){
+            this.haveInput = this.criteriaSingleCheckboxDefault;
         }
     }
 
@@ -415,9 +425,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * When the top right red X is clicked
      */
     onRemoveCriteriaClick() {
-        console.log( 'MHL 01 WidgetComponent onRemoveCriteriaClick criteriaType: ', this.queryCriteriaData['criteriaType'] );
-        console.log( 'MHL 01 WidgetComponent onRemoveCriteriaClick inputType: ', this.queryCriteriaData['inputType'] );
-
         // This service is just used by the tester.  //BE Shore to wire up delete
         this.dynamicQueryCriteriaService.deleteWidget( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
         this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
@@ -451,28 +458,33 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.criteriaTextInputText = '';
         }
-        // @FIXME Clearing dates is not this simple.  We may have to just plug in today's date to "Clear" and init
+        else if( this.criteriaSingleLineRadio ){
+            this.r0 = this.criteriaSingleLineRadioDefault === 0;
+            this.r1 = this.criteriaSingleLineRadioDefault === 1;
+            this.r2 = this.criteriaSingleLineRadioDefault === 2;
+
+        }
         else if( this.criteriaCalendar   ){
 
-            /*
-            [prompt0]="criteriaCalendarPrompt0"
-            [prompt1]="criteriaCalendarPrompt1"
-            [placeHolder0]="criteriaCalendarPlaceHolder0"
-            [placeHolder1]="criteriaCalendarPlaceHolder1"
-            [(date0)]="date0"
-            [(date1)]="date1"
-            [(haveInput)]="haveInput"
-             */
-
-
-            this.date0 = [];
-            this.date1 = [];
-            this.haveInput = false;
+            // Set date ranges to From yesterday to today.
+            let date: Date = new Date();
+            this.date1 = { date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() } }
+            date.setDate(date.getDate() - 1);
+            this.date0 = { date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() } }
+            // There is valid data after a date clear
+            this.haveInput = true;
 
         }else{
             for( let n = 0; n < this.listCheckboxes.length; n++ ){
                 this.listCheckboxes[n] = false;
             }
+        }
+
+        if( this.criteriaNumberInput ){
+            // @CHECKME TODO rename this var.
+            this.criteriaSingleCheckboxDefault = false;
+            this.criteriaNumberInputDefault = this.criteriaNumberInputLimitLow;
+            this.onApplyCheckboxClick( false );
         }
 
         if( !this.criteriaAllowNoChoice ){
@@ -543,6 +555,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.onChange();
     }
 
+    /**
+     * @param i
+     */
     onSingleLineRadioChange( i ) {
         this.criteriaSingleLineRadioCurrent = i;
         this.criteriaHeadingAddOn = this.criteriaSingleLineRadioOptions[i];
@@ -554,13 +569,16 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * @param e
      */
     onApplyCheckboxClick( e ) {
-        this.applyState = e;
+        if( typeof e === 'boolean'){
+            this.applyState = e;
+        }else{
+            this.applyState = e.target.checked;
+
+        }
 
         if( this.applyState ){
-            console.log( 'MHL onApplyCheckboxClick update query' );
             this.updateQuery();
         }else{
-            console.log( 'MHL onApplyCheckboxClick remove this part of the query' );
             this.removeQuery();
         }
     }
@@ -573,7 +591,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * @param state
      */
     onApplyButtonClick() {
-        console.log( 'MHL onApplyButtonClick' );
         this.updateQuery();
 
     }
@@ -586,7 +603,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * If an apply button is included, we should do nothing until the Apply Button is clicked.
      */
     onChange( ignoreApplyState: boolean = false ) {
-        console.log('MHL WidgetComponent.onChange applyState: ', this.applyState);
         if( this.applyState || ignoreApplyState ){
             this.updateQuery();
         }
@@ -597,8 +613,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * Used by onApplyCheckboxClick
      */
     removeQuery( rerunQuery = true) {
-        // criteriaQueryInputType
-        console.log( 'MHL ***  REMOVE QUERY  ***' );
         // Remove this criteria's part of the query and rerun the query
         this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.criteriaQueryType, this.criteriaQueryInputType, rerunQuery );
     }
@@ -607,15 +621,13 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
      * @TODO react to newly empty query parts
      */
     updateQuery() {
-        console.log( 'MHL ***  UPDATE QUERY  ***' );
-        console.log( 'MHL ***  Widget type: ', WIDGET_TYPE[this.widgetType] );
         let userInput = [];
+        let displayQuery = {};
 
         switch( this.widgetType ){
 
             case WIDGET_TYPE.NUMBER:
-                userInput = [this.criteriaNumberInputDefault];
-
+                userInput = [this.criteriaNumberInputDefault.toString()];
                 break;
 
             case WIDGET_TYPE.TEXT:
@@ -647,7 +659,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 break;
 
             case WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS:
-               // console.log( 'MHL ONE_LINE_RADIO_BUTTONS[' + this.criteriaSingleLineRadioCurrent + ']: ', this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
+                console.log( 'MHL ONE_LINE_RADIO_BUTTONS[' + this.criteriaSingleLineRadioCurrent + ']: ', this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
                 userInput.push( this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
                 break;
 
@@ -658,43 +670,36 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             case WIDGET_TYPE.CALENDAR:
                 userInput = [];
                 if( this.date0 !== undefined ){
-                    console.log( 'MHL CALENDAR: ', this.date0['formatted'] );
-                    console.log( 'MHL CALENDAR: ', this.date0 );
                     userInput.push( this.date0['formatted'] );
                 }else{
                     console.log( 'MHL CALENDAR NO first date' );
                     userInput.push( '' );
                 }
                 if( this.date1 !== undefined ){
-                    console.log( 'MHL CALENDAR: ', this.date1['formatted'] );
                     userInput.push( this.date1['formatted'] );
                 }else{
-                    console.log( 'MHL CALENDAR NO second date' );
                     userInput.push( '' );
                 }
                 break;
         }
 
         // Detect completely empty queries.
-        console.log( 'MHL userInput: ', userInput );
         let noInputData = true;
-        if( (userInput !== undefined) && (userInput[0] !== undefined) && (userInput.length > 0) ){
+
+        // For ONE_LINE_RADIO_BUTTONS to deal with "Ignore" @TODO we should not be looking at the labels, we need an additional parameter for the widget indicating a "don't use this criteria in the query" index.
+        if( this.widgetType === WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS && ( this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent].match(/^\s*ignore\s*/i) )){
+                noInputData = true;
+        }else if( (userInput !== undefined) && (userInput[0] !== undefined) && (userInput.length > 0) ){
             for( let f = 0; f < userInput.length; f++ ){
                 if( userInput[f].length > 0 ){
                     noInputData = false;
                 }
             }
         }
-
         if( noInputData ){
             // Remove this criteria's part of the query and rerun the query
             this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.criteriaQueryType, this.criteriaQueryInputType );
-
-           // let query = this.dynamicQueryBuilderService.buildServerQuery()
-           // console.log( 'MHL 004 Calling apiService.doAdvancedQcSearch [' +  this.criteriaQueryType  + '] for noInputData: ', query );
-           // this.apiService.doAdvancedQcSearch( query );
         }
-
         // Add this to the dynamicQueryBuilderService's list
         else if( userInput.length > 0 ){
             this.dynamicQueryBuilderService.addCriteriaQueryPart(
@@ -702,6 +707,41 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             );
         }
 
+        // This is used for the DisplayQuery at the top
+        displayQuery['criteriaHeading'] = this.criteriaHeading;
+
+        // Not a calendar
+        if( this.widgetType !== WIDGET_TYPE.CALENDAR){
+            displayQuery['criteriaSubheading'] = this.criteriaSubheading;
+        }else
+        // Calendar
+        {
+            // if there is a subheading use it
+            if( this.criteriaSubheading !== undefined){
+                 displayQuery['criteriaSubheading'] = this.criteriaSubheading;
+            }else
+            // If there are two dates (range), use '' (nothing)
+            if( this.criteriaCalendarPrompt1 !== undefined && this.criteriaCalendarPrompt1.length >0){
+                displayQuery['criteriaSubheading'] = '';
+            }else
+            // If there is just one date use criteriaCalendarPrompt0
+            if(this.criteriaCalendarPrompt0 !== undefined && this.criteriaCalendarPrompt0.length >0 )
+            {
+                displayQuery['criteriaSubheading'] = this.criteriaCalendarPrompt0;
+            }else{
+                displayQuery['criteriaSubheading'] = '';
+            }
+        }
+
+        displayQuery['value'] = userInput;
+        displayQuery['andOr'] = this.criteriaLevelAndOrOr;
+        displayQuery['widgetType'] = this.widgetType;
+        displayQuery['sequenceNumber'] = this.sequenceNumber;
+        if( ! noInputData ){
+            this.displayDynamicQueryService.updateDisplayQuery( displayQuery );
+        }else{
+            this.displayDynamicQueryService.removeFromDisplayQuery(this.sequenceNumber);
+        }
     }
 
 

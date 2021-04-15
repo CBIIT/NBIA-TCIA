@@ -114,7 +114,6 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     deleteQueryCriteria( qCriteriaData ) {
         for( let f = 0; f < this.queryCriteriaData.length; f++){
             if( (this.queryCriteriaData[f]['criteriaType'] === qCriteriaData['criteriaType']) && (this.queryCriteriaData[f]['inputType'] === qCriteriaData['inputType']) ){
-                console.log('MHL DELETE : ', this.queryCriteriaData[f]);
                 this.queryCriteriaData.splice( f, 1 );
             }
         }
