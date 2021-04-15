@@ -105,10 +105,10 @@ public class PatientDAOImpl extends AbstractDAO
 			return null;
 		}
 
-		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
+		whereCondition.append(collection == null ? "":" and UPPER(gs.project)=?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project from Patient as p, GeneralSeries as gs " +
 				" where gs.visibility in ('1') and p.patientId = gs.patientId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
@@ -133,11 +133,11 @@ public class PatientDAOImpl extends AbstractDAO
 			e.printStackTrace();
 			return null;
 		}  
-		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
+		whereCondition.append(collection == null ? "":" and UPPER(gs.project)=?");
 		whereCondition.append(date1 == null ? "":" and gs.maxSubmissionTimestamp>?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project from Patient as p, GeneralSeries as gs " +
 				" where gs.visibility in ('1') and p.patientId = gs.patientId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
@@ -156,11 +156,11 @@ public class PatientDAOImpl extends AbstractDAO
 			return null;
 		}
 
-		whereCondition.append(collection == null ? "":" and UPPER(p.dataProvenance.project)=?");
+		whereCondition.append(collection == null ? "":" and UPPER(gs.project)=?");
 		whereCondition.append(modality == null ? "":" and gs.modality=?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.dataProvenance.project from Patient as p, GeneralSeries as gs " +
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project from Patient as p, GeneralSeries as gs " +
 				" where gs.visibility in ('1') and p.patientId = gs.patientId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):

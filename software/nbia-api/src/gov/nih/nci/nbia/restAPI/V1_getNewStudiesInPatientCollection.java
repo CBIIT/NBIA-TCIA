@@ -55,7 +55,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 
-@Path("/v1/getNewStudiesInPatientCollection")
+@Path("/v1/NewStudiesInPatientCollection")
 public class V1_getNewStudiesInPatientCollection extends getData{
 	private static final String[] columns={"StudyInstanceUID", "StudyDate", "StudyDescription", "AdmittingDiagnosesDescription", "StudyID", "PatientAge", "PatientID", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection", "SeriesCount"};
 	public final static String TEXT_CSV = "text/csv";
