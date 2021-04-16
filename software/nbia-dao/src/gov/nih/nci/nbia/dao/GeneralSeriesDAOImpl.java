@@ -14,6 +14,7 @@ import java.text.ParseException;
 
 import gov.nih.nci.nbia.dto.EquipmentDTO;
 import gov.nih.nci.nbia.dto.SeriesDTO;
+import gov.nih.nci.nbia.dto.DOIDTO;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
@@ -1325,6 +1326,81 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			returnValue=query.executeUpdate();
 		} catch (HibernateException e) {
 			e.printStackTrace();
+		}
+		return returnValue;
+	}
+	
+	
+	public List<DOIDTO> getCollectionOrSeriesForDOI(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException{
+		List<DOIDTO> returnValue=new ArrayList<DOIDTO>();
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return returnValue;
+		}
+		boolean forSeries=false;
+		if (collectionOrSeries!=null&&collectionOrSeries.equalsIgnoreCase("Series")) {
+			forSeries=true;
+		}
+		String sqlString = "select project, thirdPartyAnalysis ";
+		if (forSeries) {
+			sqlString += ",seriesInstanceUID ";
+		}
+		List<String> paramList = new ArrayList<String>();
+		int i = 0;
+		sqlString +=" from GeneralSeries s where 1=1 ";
+		if (doi!=null&&doi.length()>0) {
+			sqlString += " and s.descriptionURI=?";
+			paramList.add(doi);
+			++i;
+		}
+		sqlString += addAuthorizedProjAndSites(authorizedProjAndSites);
+		if (forSeries) {
+			sqlString += " group by project, thirdPartyAnalysis, seriesInstanceUID ";
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			List resultsData = null;
+			if (i > 0) {
+				resultsData = getHibernateTemplate().find(sqlString, values);
+			} else {
+				resultsData = getHibernateTemplate().find(sqlString, values);
+			}
+			for (Object item : resultsData) {
+				DOIDTO dto = new DOIDTO();
+				Object[] row = (Object[]) item;
+				if (row[0] != null) {
+					dto.setCollection(row[0].toString());
+
+				}
+				if (row[1] != null) {
+					dto.setThirdPartyAnanlysis(row[1].toString());
+
+				}
+				if (row[2] != null) {
+					dto.setSeriesInstanceUID(row[2].toString());
+
+				}
+				returnValue.add(dto);
+			} 
+		} else {
+			sqlString += " group by project, thirdPartyAnalysis ";
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			List resultsData = null;
+			if (i > 0) {
+				resultsData = getHibernateTemplate().find(sqlString, values);
+			} else {
+				resultsData = getHibernateTemplate().find(sqlString, values);
+			}
+			for (Object item : resultsData) {
+				DOIDTO dto = new DOIDTO();
+				Object[] row = (Object[]) item;
+				if (row[0] != null) {
+					dto.setCollection(row[0].toString());
+
+				}
+				if (row[1] != null) {
+					dto.setThirdPartyAnanlysis(row[1].toString());
+
+				}
+				returnValue.add(dto);
+			} 
 		}
 		return returnValue;
 	}

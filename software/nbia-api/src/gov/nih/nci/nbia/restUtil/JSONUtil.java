@@ -9,6 +9,7 @@ import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
 import gov.nih.nci.nbia.dto.CriteriaValuesForPatientDTO;
 import gov.nih.nci.nbia.dto.SpeciesDTO;
 import gov.nih.nci.nbia.dto.*;
+import gov.nih.nci.nbia.dto.DOIDTO;
 import gov.nih.nci.nbia.util.*;
 import gov.nih.nci.nbia.deletion.DeletionDisplayObject;
 
@@ -297,6 +298,18 @@ public class JSONUtil {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			jsonInString = mapper.writeValueAsString(value);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
+	public static String getJSONforDOI(List<DOIDTO> dois){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(dois);
 		} catch (Exception e) {
 
 			e.printStackTrace();
