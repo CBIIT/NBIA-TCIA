@@ -72,9 +72,8 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
             } );
 
         // Check for search results.  If there are none, don't show bulk operations.
-        this.apiService.searchResultsEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.apiService.searchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
                 this.showBulkOperations =
                     data[0] !== Consts.NO_SEARCH && data.length > 0;
             } );
@@ -107,7 +106,7 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
      * @param e
      */
     onResultsSelectCountUpdate( e ) {
-       this.searchResultsSelectedCount = e;
+        this.searchResultsSelectedCount = e;
     }
 
     getCollectionSite() {

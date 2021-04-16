@@ -137,9 +137,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
 
         // New search results have arrived.
-        this.apiService.searchResultsEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.apiService.searchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
                 if( data[0] === Consts.NO_SEARCH ){
                     this.noSearch = true;
                     data = [];
@@ -282,17 +281,13 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             for( let i = this.currentPage * this.pageLength; i < ((this.currentPage * this.pageLength) + this.pageLength); i++ ){
                 this.setCheckbox( i, true );
             }
-            // FIXME
-            // this.masterSearchResultsCheckbox = true;
 
         }else
-        // All on this page are checked
+            // All on this page are checked
         {
             for( let i = this.currentPage * this.pageLength; i < ((this.currentPage * this.pageLength) + this.pageLength); i++ ){
                 this.setCheckbox( i, false );
             }
-            // FIXME
-            // this.masterSearchResultsCheckbox = false;
         }
         this.getSelectedCheckboxCount();
     }

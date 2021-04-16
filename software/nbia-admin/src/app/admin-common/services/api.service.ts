@@ -427,6 +427,7 @@ export class ApiService{
      * @param query
      */
     doAdvancedQcSearch( query ) {
+        console.log('MHL DO AdvancedQcSearch: ', query);
         this.displayDynamicQueryService.query( query );
 
         this.loadingDisplayService.setLoading( true, 'doAdvancedQcSearch...' );

@@ -10,6 +10,7 @@
     <div>
         <span class="date-box-label date-prompt-label">{{prompt0}}</span>
         <input
+            class="cal-input"
             style="outline: none; border: none;"
             (click)="dp0.toggleCalendar(); initializeDisableFutureDates() "
             [ngClass]="{

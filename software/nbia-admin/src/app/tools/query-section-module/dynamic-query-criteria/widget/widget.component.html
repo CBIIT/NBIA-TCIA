@@ -260,8 +260,9 @@
                     type="radio"
                     name="singleLineRadio-{{sequenceNumber}}"
                     id="singleLineRadio0-{{sequenceNumber}}"
-                    [checked]="criteriaSingleLineRadioDefault===0"
-                    (change)="onSingleLineRadioChange(0)">
+                    [checked]="criteriaSingleLineRadioCurrent===0"
+                    (click)="onSingleLineRadioChange(0)"
+                >
                 <label for="singleLineRadio0-{{sequenceNumber}}">
                     {{criteriaSingleLineRadioOptions[0]}}
                 </label>
@@ -273,8 +274,8 @@
                     type="radio"
                     name="singleLineRadio-{{sequenceNumber}}"
                     id="singleLineRadio1-{{sequenceNumber}}"
-                    [checked]="criteriaSingleLineRadioDefault===1"
-                    (change)="onSingleLineRadioChange(1)"
+                    [checked]="criteriaSingleLineRadioCurrent===1"
+                    (click)="onSingleLineRadioChange(1)"
                 >
                 <label for="singleLineRadio1-{{sequenceNumber}}">
                     {{criteriaSingleLineRadioOptions[1]}}
@@ -287,8 +288,8 @@
                     type="radio"
                     name="singleLineRadio-{{sequenceNumber}}"
                     id="singleLineRadio2-{{sequenceNumber}}"
-                    [checked]="criteriaSingleLineRadioDefault===2"
-                    (change)="onSingleLineRadioChange(2)"
+                    [checked]="criteriaSingleLineRadioCurrent===2"
+                    (click)="onSingleLineRadioChange(2)"
                 >
                 <label for="singleLineRadio2-{{sequenceNumber}}">
                     {{criteriaSingleLineRadioOptions[2]}}
@@ -359,13 +360,16 @@
             hide: !widgetShowCriteria
         }">
             <div class="div-3 mb-1">
-                <div *ngFor="  let item of itemList;  let i = index  " [ngClass]="{
-                    hide: !item['include'],
-                    'dynamic-query-list-line-extra-small': currentFont === '0',
-                    'dynamic-query-list-line-small': currentFont === '1',
-                    'dynamic-query-list-line-medium': currentFont === '2',
-                    'dynamic-query-list-line-large': currentFont === '3'
-                }">
+                <div *ngFor="  let item of itemList;  let i = index"
+                    class="div-4"
+                    [ngClass]="{
+                        hide: !item['include'],
+                        'dynamic-query-list-line-extra-small': currentFont === '0',
+                        'dynamic-query-list-line-small': currentFont === '1',
+                        'dynamic-query-list-line-medium': currentFont === '2',
+                        'dynamic-query-list-line-large': currentFont === '3'
+                    }"
+                  >
                     <!-- Checkbox list -->
                     <span *ngIf="criteriaMultiChoiceList">
                         <input

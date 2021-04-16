@@ -2,7 +2,6 @@
 // ------------  The parent component of the left side criteria selecting components  --------
 // -------------------------------------------------------------------------------------------
 
-
 @import 'src/app/app.component';
 
 $query-section-left-pad: 10px;
@@ -20,38 +19,47 @@ $query-collection-start-height: 420px;
 
 $tab-selected-border-color: #ddd;
 
-.query-section {
+.query-section{
     padding-right: $query-section-right-pad;
 }
-.query-section-extra-small {
-   @extend .query-section;
+
+.query-section-extra-small{
+    @extend .query-section;
+
     width: $left-section-width-extra-small;
 }
-.query-section-small {
-   @extend .query-section;
+
+.query-section-small{
+    @extend .query-section;
+
     width: $left-section-width-small;
 }
-.query-section-medium {
-   @extend .query-section;
+
+.query-section-medium{
+    @extend .query-section;
+
     width: $left-section-width-medium;
 }
-.query-section-large {
-   @extend .query-section;
+
+.query-section-large{
+    @extend .query-section;
+
     width: $left-section-width-large;
 }
 
-.search-query-opener-icon, .search-query-closer-icon{
+.search-query-opener-icon,
+.search-query-closer-icon{
     height: 14px;
 }
 
-.search-query-closer {
-    background-color: #f4f4f4;
+.search-query-closer{
+    background-color: #fff;
     margin: 0 16px 0 0;
     padding: 8px 3px 4px 0;
     cursor: pointer;
 }
 
-.search-query-opener {
+.search-query-opener{
     color: $heading-text-color;
     cursor: pointer;
     float: right;
@@ -62,35 +70,42 @@ $tab-selected-border-color: #ddd;
 }
 
 // Tab stuff - TODO move to its own scss file
-.tab-div {
+.tab-div{
     height: 10px;
-    background-color: #f4f4f4;
+    background-color: #fff;
     margin: 0;
     padding: 6px 6px 6px 0;
     vertical-align: bottom;
     display: table-cell;
 }
+
 .tab-div-extra-small{
     @extend .tab-div;
+
     width: $left-section-width-extra-small - $query-section-right-pad;
 }
+
 .tab-div-small{
     @extend .tab-div;
+
     width: $left-section-width-small - $query-section-right-pad;
 }
+
 .tab-div-medium{
     @extend .tab-div;
+
     width: $left-section-width-medium - $query-section-right-pad;
 }
+
 .tab-div-large{
     @extend .tab-div;
+
     width: $left-section-width-large - $query-section-right-pad;
 }
 
-.tab {
+.tab{
     padding: 8px 8px 8px 8px;
     height: 100%;
-
     margin: 0 0 0 0;
     border-top: solid $tab-selected-border-color 1px;
     border-left: solid $tab-selected-border-color 1px;
@@ -99,13 +114,13 @@ $tab-selected-border-color: #ddd;
     border-top-right-radius: 5px;
 }
 
-.tab-selected {
+.tab-selected{
     color: #555;
     background-color: #fff;
     cursor: default;
 }
 
-.tab-not-selected:hover {
+.tab-not-selected:hover{
     padding: 8px 8px 7px 8px;
     color: #383e79;
     background-color: #eee;
@@ -113,7 +128,7 @@ $tab-selected-border-color: #ddd;
     cursor: pointer;
 }
 
-.tab-not-selected {
+.tab-not-selected{
     padding: 8px 8px 7px 8px;
     color: #337ab7;
     background-color: #f4f4f4;

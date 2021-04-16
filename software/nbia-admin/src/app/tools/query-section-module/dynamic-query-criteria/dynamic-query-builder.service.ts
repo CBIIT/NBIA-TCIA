@@ -28,7 +28,6 @@ export class DynamicQueryBuilderService{
     }
 
     addCriteriaQueryPart( part: DynamicCriteriaQueryPart ) {
-        console.log('MHL addCriteriaQueryPart: ', part);
         let havePart = false;
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
             if( this.dynamicCriteriaPartList[f].criteriaType === part.criteriaType && this.dynamicCriteriaPartList[f].inputType === part.inputType ){
@@ -58,8 +57,9 @@ export class DynamicQueryBuilderService{
                 this.dynamicCriteriaPartList.splice( f, 1 );
             }
         }
-
+        if( rerunQuery){
             this.apiService.doAdvancedQcSearch( this.buildServerQuery() );
+        }
     }
 
     buildServerQuery(): string {

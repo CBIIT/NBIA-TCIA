@@ -48,6 +48,7 @@ input{
 
 }
 
+// @TODO rename this
 .div-3{
     border: solid 1px $criteriaQueryBorderColor;
     border-radius: 4px;
@@ -59,4 +60,9 @@ input{
     overflow:auto;
     height: calc(100% - 46px); // Space between dat list (and apply button or checkbox if there) and the bottom of the widget
 
+}
+
+// @TODO rename this
+.div-4{
+    margin: 0 0 0 4px;
 }

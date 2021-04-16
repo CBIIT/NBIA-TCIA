@@ -35,8 +35,8 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
             this.niceDisplayData = data;
             this.getLastElementIndex();
         } );
-
      }
+
 
     getLastElementIndex(){
         this.lastElementIndex = 0;
@@ -56,6 +56,7 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
         this.displayDynamicQueryService.clearQuerySectionQuery();
         this.dynamicQueryBuilderService.clearQuery();
         this.apiService.setNoSearch();
+        this.data = '';
     }
 
     ngOnDestroy() {

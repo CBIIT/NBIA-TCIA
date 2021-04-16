@@ -20,7 +20,7 @@
 @import "../../../../../app.component.scss";
 @import "../../../dynamic-query-criteria/dynamic-query-criteria.component.scss";
 
-.main-date-range-div {
+.main-date-range-div{
     color: #000;
     background-color: #fff;
     border: solid 1px #ccc;
@@ -32,73 +32,85 @@
     font-size: 12px;
 }
 
-.main-date-range-div-extra-small {
+.main-date-range-div-extra-small{
     @extend .main-date-range-div;
-    width: $left-section-width-extra-small -
+
+    width:
+        $left-section-width-extra-small -
         (
             $query-section-left-pad + $query-section-right-pad +
-                ($query-criteria-content-left-margin * 2)
+            ($query-criteria-content-left-margin * 2)
         );
 }
 
-.main-date-range-div-small {
+.main-date-range-div-small{
     @extend .main-date-range-div;
-    width: $left-section-width-small -
+
+    width:
+        $left-section-width-small -
         (
             $query-section-left-pad + $query-section-right-pad +
-                ($query-criteria-content-left-margin * 2)
+            ($query-criteria-content-left-margin * 2)
         );
 }
 
-.main-date-range-div-medium {
+.main-date-range-div-medium{
     @extend .main-date-range-div;
-    width: $left-section-width-medium -
+
+    width:
+        $left-section-width-medium -
         (
             $query-section-left-pad + $query-section-right-pad +
-                ($query-criteria-content-left-margin * 2)
+            ($query-criteria-content-left-margin * 2)
         );
 }
 
-.main-date-range-div-large {
+.main-date-range-div-large{
     @extend .main-date-range-div;
-    width: $left-section-width-large -
+
+    width:
+        $left-section-width-large -
         (
             $query-section-left-pad + $query-section-right-pad +
-                ($query-criteria-content-left-margin * 2)
+            ($query-criteria-content-left-margin * 2)
         );
 }
 
-.date-range-red-clear {
+// If this width is too long, and the prompt is too long, the date input will wrap to the next line.
+.cal-input{
+    width: 190px;
+}
+
+.date-range-red-clear{
     position: absolute;
     left: 10px;
 }
 
-.available-checkbox {
+.available-checkbox{
     margin-top: 15px;
     margin-bottom: 12px;
 }
 
-.date-box-label {
+.date-box-label{
     /* Label text color  */
     color: #000;
     background-color: #eee;
     border-right: solid 1px #ccc;
 }
 
-.date-prompt-label {
+.date-prompt-label{
     padding: 4px 6px 4px 11px;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-
 }
 
-.date-box-label-to {
+.date-box-label-to{
     padding: 7px 20px 7px 11px;
 }
 
 /*  Box around theTex input  */
-.date-box-text-box {
-    /* Trying to clean this up for Chrome CHECKME do we still want this?*/
+.date-box-text-box{
+    /* Trying to clean this up for Chrome CHECKME do we still want this? */
     outline: none;
     border: none;
     height: 100%;
@@ -107,45 +119,47 @@
     padding-left: 4px;
 }
 
-.date-box-text-box-extra-small {
+.date-box-text-box-extra-small{
     @extend .date-box-text-box;
+
     width: $left-section-width-extra-small - 150px;
 }
 
-.date-box-text-box-small {
+.date-box-text-box-small{
     @extend .date-box-text-box;
+
     width: $left-section-width-small - 150px;
 }
 
-.date-box-text-box-medium {
+.date-box-text-box-medium{
     width: 100%;
 }
 
-.date-box-text-box-large {
+.date-box-text-box-large{
     @extend .date-box-text-box;
+
     width: $left-section-width-large - 150px;
 }
 
-.apply-is-set {
+.apply-is-set{
     color: $heading-text-color;
     font-weight: bold;
 }
 
-.disabled-apply-text {
+.disabled-apply-text{
     @extend .disabled-text;
+
     cursor: not-allowed;
 }
 
-.apply-date-range-text {
+.apply-date-range-text{
     font-weight: normal;
 }
 
-.display-date-range {
+.display-date-range{
     color: $heading-text-color;
-
     margin: -10px 0 4px 32px;
 }
-
 
 .date-div{
     color: #000;
@@ -153,6 +167,5 @@
     border-radius: 4px;
     padding: 0 0 0 0;
     margin-right: 10px;
-    width: calc(100% - #{$dynamic-query-apply-button-right-margin} );
-
+    width: calc(100% - #{$dynamic-query-apply-button-right-margin});
 }
