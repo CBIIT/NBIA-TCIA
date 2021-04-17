@@ -64,7 +64,7 @@ L-->
     <property name="usFrameNum" type="string" column="US_FRAME_NUMBER"/>
 	  <property name="usColorDataPresent" type="string" column="US_COLOR_DATA_PRESENT"/>
   	<property name="usMultiModality" type="string" column="US_MULTI_MODALITY"/>
-
+   <property name="fileId" type="integer" column="POSDA_TRANSFER_ID"/>
 
 
     <!-- Associations mapping for the GeneralImage class -->

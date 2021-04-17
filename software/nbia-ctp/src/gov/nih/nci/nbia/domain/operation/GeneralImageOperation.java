@@ -333,11 +333,11 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
         if ((temp = (String)numbers.get(DicomConstants.US_NUM_FRAME)) != null) {
         	gi.setUsFrameNum(temp.trim());
         }
-        
-        if ((temp = (String)numbers.get((String) numbers.get(DicomConstants.FILE_ID))) != null&&
+        if ((temp = (String)numbers.get(DicomConstants.FILE_ID)) != null&&
         		temp.trim().length()>0) {
         	try {
-				gi.setFileId(Integer.valueOf(temp.trim()));
+        		Integer fileint = Integer.valueOf(temp.trim());
+				gi.setFileId(fileint);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
