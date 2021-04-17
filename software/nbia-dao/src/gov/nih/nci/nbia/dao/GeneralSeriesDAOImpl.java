@@ -23,8 +23,13 @@ import org.hibernate.Query;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -32,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -1404,4 +1409,124 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		}
 		return returnValue;
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select patientId, project from GeneralSeries where visibility=1 and project=:project and (";
+		boolean first=true;
+		for (SiteData sd : authorizedSites) {
+			if (first) {
+				sqlString+="(site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			    first=false;
+			} else {
+				sqlString+=" or (site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			}
+		}
+		sqlString+=")";		
+		sqlString += " group by patientId, project";
+		List<String[]> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
+		String md5Concat="";
+		List<String> sortedList=new ArrayList<String>();
+		for (Object item[] : resultsData) {
+			sortedList.add(getMD5ForPatientId(item[0].toString(),item[1].toString(), authorizedSites));
+		}
+		Collections.sort(sortedList);
+		for (String item : sortedList) {
+			if (item != null) {
+				md5Concat+=item;
+			}
+		}
+		return digest(md5Concat);
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select studyInstanceUID from GeneralSeries where visibility=1 and patientId=:id " + 
+				"and project=:project and (";
+		boolean first=true;
+		for (SiteData sd : authorizedSites) {
+			if (first) {
+				sqlString+="(site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			    first=false;
+			} else {
+				sqlString+=" or (site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			}
+		}
+		sqlString+=")";			
+		sqlString += " group by studyInstanceUID";
+		String[] paramNames = {"id","project"};
+		String[] params = {patientId, project};
+		List<String> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, paramNames, params);
+		String md5Concat="";
+		List<String> sortedList=new ArrayList<String>();
+		for (String item : resultsData) {
+			if (item != null) {
+				sortedList.add(getMD5ForStudy(item, authorizedSites));
+			}
+		}
+		Collections.sort(sortedList);
+		for (String item : sortedList) {
+			if (item != null) {
+				md5Concat+=item;
+			}
+		}
+		return digest(md5Concat);
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForStudy(String studyInstanceUID, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select seriesInstanceUID from GeneralSeries where visibility=1 and studyInstanceUID=:id and (";
+		boolean first=true;
+		for (SiteData sd : authorizedSites) {
+			if (first) {
+				sqlString+="(site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			    first=false;
+			} else {
+				sqlString+=" or (site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			}
+		}
+		sqlString+=")";
+		List<String> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "id", studyInstanceUID);
+		String md5Concat="";
+		List<String> sortedList=new ArrayList<String>();
+		for (String item : resultsData) {
+			if (item != null) {
+                sortedList.add(getMD5ForSeries(item));
+			}
+		}
+		
+		Collections.sort(sortedList);
+		for (String item : sortedList) {
+			if (item != null) {
+				md5Concat+=item;
+			}
+		}
+		return digest(md5Concat);
+	}	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException{
+        String returnValue="";
+		String sqlString = "SELECT CONVERT(GROUP_CONCAT(md5_digest) USING utf8) as md5 " + 
+				"FROM (select md5_digest, series_instance_uid from general_image  where series_instance_uid=:id order by md5_digest) sorted  " + 
+				"GROUP BY series_instance_uid; ";
+		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString).setParameter("id", seriesInstanceUID).list();
+		for(String item:results) {
+			if (item!=null) {
+			  returnValue=digest(item.toString());
+			}
+		}
+		return returnValue;
+	}
+	private static String digest(String input) {
+		String result="";
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			messageDigest.update(input.getBytes());
+			byte[] hashed = messageDigest.digest();
+			result = String.format("%032x", new BigInteger(1, hashed));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+}
 }

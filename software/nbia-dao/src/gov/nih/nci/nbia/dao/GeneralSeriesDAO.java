@@ -107,4 +107,8 @@ public interface GeneralSeriesDAO  {
 	public List<String> getDeniedSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
 	public int updateDOIForSeries(String project, String doi)throws DataAccessException;
 	public List<DOIDTO> getCollectionOrSeriesForDOI(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException;
+	public String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException;
+	public String getMD5ForStudy(String studyInstanceUID,List<SiteData> authorizedSites)throws DataAccessException;
+	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException;
+	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException;
 }
