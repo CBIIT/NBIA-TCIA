@@ -14,17 +14,23 @@ package gov.nih.nci.nbia.dao;
 import gov.nih.nci.nbia.dto.ImageDTO2;
 import gov.nih.nci.nbia.internaldomain.GeneralImage;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SiteData;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Iterator;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
@@ -333,4 +339,68 @@ public class ImageDAO2Impl extends AbstractDAO
 		}
 		return result;
     }
+	@Transactional(propagation=Propagation.REQUIRED)	
+	public String getLicenseContent(String seriesInstanceUID) {
+		String returnValue="";
+		String licenseText=NCIAConfig.getLicenseText();
+		String agreement=NCIAConfig.getUserAgreementFileLocation();
+		if (licenseText==null&&agreement==null) {
+			return null;
+		}
+		String sqlString = " select collection_name, license_url, short_name "+
+				" from license, collection_descriptions, general_series "+
+				" where license.license_id=collection_descriptions.license_id "+
+				" and general_series.project=collection_descriptions.collection_name "+
+				" and series_instance_uid=:id";
+		List<Object[]> resultsData = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString).setParameter("id", seriesInstanceUID).list();
+		String collection=null;
+		String licenseName=null;
+		String licenseUrl=null;
+		boolean noLicense=false;
+		for(Object[] item:resultsData) {
+			if (item[0]!=null) {
+				collection=item[0].toString();
+			}
+			if (item[1]!=null) {
+				licenseUrl=item[1].toString();
+			}
+			if (item[2]!=null) {
+				licenseName=item[2].toString();
+			}
+		}
+		if (collection==null&&licenseUrl==null&&licenseName==null) {
+			noLicense=true;
+		}
+		if (licenseUrl==null) licenseUrl="Not Specified";
+		if (licenseName==null) licenseName="Not Specified";
+		boolean hasDataFile=false;
+		FileInputStream inputStream = null;
+		String fileContents="";
+   	    try {
+   	    	  inputStream = new FileInputStream(agreement);
+			  hasDataFile=true;
+		} catch (Exception e) {
+			//do nothing no file to read
+		}
+        if (noLicense&&!hasDataFile) {
+        	return null;
+        }
+        if (hasDataFile) {
+        	try {
+				fileContents = IOUtils.toString(inputStream, "UTF-8");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        	
+        }
+        if (!noLicense) {
+			returnValue = new MessageFormat(licenseText)
+					.format(new String[] { collection, licenseName, licenseUrl });
+        }
+        if (hasDataFile) {
+        	returnValue = returnValue+"\n"+fileContents;
+        }
+		return returnValue;
+		
+	}
 }

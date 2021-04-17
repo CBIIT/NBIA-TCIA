@@ -67,6 +67,8 @@ public class V2_getImage extends getData {
 
 		String zipName = sid + ".zip";
 		StreamingOutput stream = null;
+		ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
+		String fileContents=tDao.getLicenseContent(sid);
 		if (newFileNames==null||!(newFileNames.equalsIgnoreCase("yes"))) {
 		    stream = new StreamingOutput() {
 			public void write(OutputStream output) throws IOException, WebApplicationException {
@@ -82,6 +84,9 @@ public class V2_getImage extends getData {
 //					System.out.println("Done with querying the file name list and start to zip and stram--"
 //							+ sdf.format(qetimestamp));
 					int counter = 0;
+					zip.putNextEntry(new ZipEntry("LICENSE.txt"));
+					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
+					zip.closeEntry();
 					for (String filename : fileNames) {
 						in = new FileInputStream(new File(filename));
 
@@ -123,7 +128,9 @@ public class V2_getImage extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				zip.putNextEntry(new ZipEntry("LICENSE.txt"));
+				IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
+				zip.closeEntry();
 				try {
 					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
 					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
@@ -132,7 +139,10 @@ public class V2_getImage extends getData {
 
 						if (in != null) {
 							// Add Zip Entry
-							zip.putNextEntry(new ZipEntry(imageResult.getNewFilename()));
+							String newFileName=imageResult.getNewFilename();
+							int pos = newFileName.indexOf("^");
+							newFileName=newFileName.substring(pos+1);
+							zip.putNextEntry(new ZipEntry(newFileName));
 
 							// Write file into zip
 							IOUtils.copy(in, zip);
