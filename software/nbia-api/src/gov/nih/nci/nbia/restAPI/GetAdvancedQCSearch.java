@@ -61,7 +61,7 @@ public class GetAdvancedQCSearch extends getData{
 		String user = null;
 
 		try {	
-			/*  Authentication authentication = SecurityContextHolder.getContext()
+			  Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				user = (String) authentication.getPrincipal();
                 if (!QAUserUtil.isUserQA(user)) {
@@ -73,7 +73,7 @@ public class GetAdvancedQCSearch extends getData{
 				   } else {
 					   QAUserUtil.setUserQA(user);
 				   }
-                }  */
+                }  
  
         QcStatusDAO qcStatusDAO = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
 
