@@ -1,15 +1,41 @@
 # nbia-admin
 
 ## TODO
-- [ ] Checkbox don't clear the query at top
-- [ ] Update pager when query changes (it changes if you click it) NOW I can't reproduce. Revisit.
+
+- [ ] Update pager when query changes (it changes if you click it) Change the query around to reproduce
+- [ ] Circular dependency
+
+- [ ] Persist Page length choice
+
+- [X] Calendar Clear icon only if apply is on
+
+- [ ] Disable user inputs while search is running
+- [ ] Select all of this page.  Reword to unselect when appropriate
   
-- [ ] Calendar unchecking apply did not remove from display query - check on searching query
-- [ ] Calendar clear does not clear apply checkbox
-- [ ] Calendar Clear puts in today & yesterday, but does not enable Apply
-- [ ] Calendar top collapsed date
-- [ ] Calendar Top clear does not clear apply checkbox  
-- [ ] Calendar allow only one when there are two inputs
+- [ ] Remove manage-workflow-items-module
+- [ ] Clean up Cine mode scss
+- [ ] Make sure all names (Labels) and IDs use the sequenceNumber
+- [ ] Move enum WIDGET_TYPE to its own file
+- [ ] Clean up this page, it is displayed on Github website.
+  
+- [ ] Search Error handling
+- [ ] Rework reaction to 401
+- [ ] Rework reaction to 500 ApiService.getPerformQcSearch
+
+
+
+- [X] Calendar changing date does not update query
+- [X] Calendar top collapsed date with * if apply is on
+
+- [X] Pager numbers move left for 3-digit numbers
+- [X] Master Clear button - Text inputs don't clear Display query
+- [X] Master Clear button - Single line radio buttons don't clear the Display query
+- [X] Master Clear button - Lists don't clear Display query
+- [X] Calendar unchecking apply did not remove from display query - check on searching query
+- [X] Calendar clear does not clear apply checkbox
+- [X] Calendar Master clear does not clear apply checkbox
+- [X] Calendar Clear puts in today & yesterday, but does not enable Apply
+- [X] Calendar Init with Yesterday & Today
 - [X] Clean up grey at the top left  
 - [X] Number Inputs
 - [X] Unchecking apply check boxes does not remove the criteria from the query
@@ -19,20 +45,10 @@
 - [X] Master clear does not work on single line radio buttons
 - [X] A little more space horizontally for lists - update the truncating pipe
 - [X] Calendar prompt, if too long can cause wrap
-
-- [ ] Persist Page length choice
+- [X] Checkbox don't clear the query at top
 
 
 - [X] Make Cine Mode text selectable
-- [ ] Clean up Cine mode scss
-- [ ] Disable user inputs while search is running
-- [ ] Select all of this page.  Reword to unselect when appropriate
-- [ ] Make sure all names (Labels) and IDs use the sequenceNumber
-- [ ] Move enum WIDGET_TYPE to its own file
-- [ ] Clean up this page, it is displayed on Github website. 
-- [ ] Search Error handling
-- [ ] Rework reaction to 401
-- [ ] Rework reaction to 500 ApiService.getPerformQcSearch
 
 - [X] Display Query Clear button
 

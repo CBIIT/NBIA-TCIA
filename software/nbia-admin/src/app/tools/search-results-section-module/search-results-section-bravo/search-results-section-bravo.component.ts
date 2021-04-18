@@ -605,6 +605,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     onPageLengthChange() {
         this.pageCount = Math.ceil( this.searchResultsCount / this.pageLength );
+        console.log('MHL 701 SearchResultsSectionBravoComponent onPageLengthChange pageCount: ', this.pageCount);
+
         this.searchResultsPagerService.setPageCount( this.pageCount );
         this.setupPage();
     }

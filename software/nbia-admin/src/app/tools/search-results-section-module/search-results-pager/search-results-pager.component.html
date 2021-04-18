@@ -1,5 +1,10 @@
 <!-- ----------  The page changer used by Search results & Cart screen.  ---------- -->
 
+<!--
+<span style="background-color: hotpink;">currentPage:{{currentPage}}  totalCount:{{totalCount}}</span>
+-->
+
+
 <span *ngIf="totalCount>0"
     class="parent-pager-span"
 >
@@ -11,7 +16,7 @@
 
         <!-- Go to first page -->
         <label
-            class="btn-nbia-pager btn-nbia-pager-left results-pager-font footer-colors unselectable"
+            class="btn-nbia-pager btn-nbia-pager-left results-pager-font footer-colors unselectable pt-2"
             title="First"
             (click)="onGoFirstClickClick()"
         >
@@ -21,7 +26,7 @@
 
         <!-- Go to previous page -->
         <label
-            class="btn-nbia-pager results-pager-font footer-colors unselectable"
+            class="btn-nbia-pager results-pager-font footer-colors unselectable pt-2"
             title="Previous"
             (click)="onGoPreviousClick()"
         >
@@ -32,20 +37,27 @@
         <!-- Go to a specific page -->
         <label
             *ngFor="let i of buttons"
-            class="btn-nbia-pager  results-pager-font  unselectable"
+            class="btn-nbia-pager  results-pager-font  unselectable pt-2"
             [ngClass]="{
                 'selected': currentPage == i,
                 'hide-button':( (i < buttonShowOffset) || (i - buttonShowOffset >=  maxButtonsToShow) )
             }"
             (click)="onClick( i )"
         >
-            {{i + 1}}
+            <span
+            [ngClass]="{
+                'button-number-hundreds': (i + 1) > 99,
+                'button-number-tens': (i + 1) > 9  && (i + 1) < 100
+            }"
+            >
+                {{i + 1}}
+            </span>
         </label>
 
 
         <!-- Go to next page -->
         <label
-            class="btn-nbia-pager results-pager-font footer-colors unselectable"
+            class="btn-nbia-pager results-pager-font footer-colors unselectable pt-2"
             title="Next"
             (click)="onGoNextClick()"
         >
@@ -55,7 +67,7 @@
 
         <!-- Go to last page -->
         <label
-            class="btn-nbia-pager btn-nbia-pager-right results-pager-font footer-colors unselectable"
+            class="btn-nbia-pager btn-nbia-pager-right results-pager-font footer-colors unselectable pt-2"
             title="Last"
             (click)="onGoLastClick()"
         >

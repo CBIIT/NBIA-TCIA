@@ -53,4 +53,4 @@
 ###########################################################################################################
 # ENABLE_WIDGET_TESTER = true
 
-SHOW_SERVER_QUERY = true
+# SHOW_SERVER_QUERY = true

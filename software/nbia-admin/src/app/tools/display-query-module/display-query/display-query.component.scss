@@ -7,25 +7,21 @@
 $display-query-top: 0;
 $display-query-right-margin: 10px;
 
-
-.display-query {
+.display-query{
     background-color: #edf8fb;
     border: solid 1px #c9dce0;
     border-radius: 4px;
     width: 100%;
-
     min-height: 66px;
     // margin-right: $display-query-right-margin;
     margin-top: $display-query-top;
     margin-bottom: 10px;
 
-    /* Font for commas and Ellipses*/
+    /* Font for commas and Ellipses */
     font-size: 15pt;
     font-weight: normal;
-
     padding: 14px;
 }
-
 
 .display-on-top{
     position: relative;
@@ -39,7 +35,7 @@ $display-query-right-margin: 10px;
 
 
 /*  Each query element/label  */
-.criteria-display {
+.criteria-display{
     color: #fff;
     border-radius: 4px;
     padding: 4px 6px 5px 5px;
@@ -47,20 +43,23 @@ $display-query-right-margin: 10px;
     font-weight: normal;
 }
 
-.criteria-display-title {
+.criteria-display-title{
     @extend .criteria-display;
+
     background-color: #5b5151;
     margin: 0 1px 0 4px;
 }
 
-.criteria-display-name {
+.criteria-display-name{
     @extend .criteria-display;
+
     background-color: #255425;
     margin: 0 2px 0 2px;
 }
 
-.criteria-and {
+.criteria-and{
     @extend .criteria-display;
+
     background-color: #955c0d;
     margin: 0 2px 0 4px;
 }
@@ -78,7 +77,6 @@ $display-query-right-margin: 10px;
 .show-all-criteria-button-span{
     float: right;
 }
-
 
 .display-query-clear-icon{
     height: 14px;

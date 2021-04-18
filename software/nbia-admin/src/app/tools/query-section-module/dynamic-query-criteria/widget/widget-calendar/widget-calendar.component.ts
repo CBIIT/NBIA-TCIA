@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IMyDateModel, INgxMyDpOptions } from 'ngx-mydatepicker';
+import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
 
 @Component( {
     selector: 'nbia-widget-calendar',
@@ -32,21 +33,26 @@ export class WidgetCalendarComponent implements OnInit{
         selectorWidth: '295px',
     };
 
-    constructor() {
+    constructor( private widgetCalendarService: WidgetCalendarService) {
     }
 
     ngOnInit() {
     }
 
     onDateChangedDp1( e: IMyDateModel ) {
+        // @TODO explain 2 emits
         this.haveInputChange.emit(this.haveInput);
         this.date1Change.emit( e );
+        this.widgetCalendarService.dateChanged();
     }
 
     onDateChangedDp0( e: IMyDateModel ) {
-        this.haveInput = true;  // @FIXME TESTING ONLY
+        this.haveInput = true;  // @CHECKME
+
+        // @TODO explain 2 emits
         this.haveInputChange.emit(this.haveInput);
         this.date0Change.emit( e );
+        this.widgetCalendarService.dateChanged();
     }
 
     initializeDisableFutureDates() {
@@ -58,6 +64,7 @@ export class WidgetCalendarComponent implements OnInit{
             month: today.getMonth() + 1,
             day: today.getDate()
         };
+
     }
 
 

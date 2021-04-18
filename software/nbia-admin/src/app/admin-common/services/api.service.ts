@@ -427,10 +427,9 @@ export class ApiService{
      * @param query
      */
     doAdvancedQcSearch( query ) {
-        console.log('MHL DO AdvancedQcSearch: ', query);
         this.displayDynamicQueryService.query( query );
 
-        this.loadingDisplayService.setLoading( true, 'doAdvancedQcSearch...' );
+        this.loadingDisplayService.setLoading( true, 'Loading data...' );
 
         // Check for empty query. If empty just send Consts.NO_SEARCH, this will tell search results component not to show count and pager etc. at the top
         if( query === undefined || query.length < 1 ){

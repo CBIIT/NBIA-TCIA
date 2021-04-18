@@ -23,8 +23,8 @@ export let Properties = {
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
  */
 
-     API_SERVER_URL: '',
-    //  API_SERVER_URL: 'http://192.168.1.21:8080',
+    API_SERVER_URL: '',
+    // API_SERVER_URL: 'http://192.168.1.21:8080',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button

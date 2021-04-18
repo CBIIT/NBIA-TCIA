@@ -19,8 +19,8 @@ export class DisplayDynamicQueryService{
     }
 
     removeFromDisplayQuery( sequenceNumber ) {
-        this.displayQueryElements[sequenceNumber] = undefined;
         this.displayNiceDynamicQueryEmitter.emit( this.displayQueryElements );
+        this.displayQueryElements[sequenceNumber] = undefined;
     }
 
     updateDisplayQuery( criteriaQueryData ) {
@@ -31,7 +31,8 @@ export class DisplayDynamicQueryService{
 
     clearQuerySectionQuery() {
         this.clearDynamicQuerySectionQueryEmitter.emit();
-    }
+        this.displayQueryElements = [];
+        this.displayNiceDynamicQueryEmitter.emit(  this.displayQueryElements ); }
 
     /**
      * Try to determine from the sub-heading: Less than, greater than, etc.

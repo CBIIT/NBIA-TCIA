@@ -12,6 +12,10 @@ import { DynamicCriteriaQueryPart } from '@app/tools/query-section-module/dynami
 import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import { Consts } from '@app/constants';
+import { UtilService } from '@app/admin-common/services/util.service';
+import { WidgetCalendarComponent } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
+import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
 
 export enum WIDGET_TYPE{
     UNKNOWN,
@@ -28,7 +32,7 @@ export enum WIDGET_TYPE{
     templateUrl: './widget.component.html',
     styleUrls: ['./widget.component.scss', '../../left-section/left-section.component.scss']
 } )
-export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges{
+export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     @Input() queryCriteriaData;
     sequenceNumber = -1;
     widgetType = WIDGET_TYPE.UNKNOWN;
@@ -46,6 +50,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
     criteriaCalendarPrompt1 = '';
     criteriaCalendarPlaceHolder0 = '';
     criteriaCalendarPlaceHolder1 = '';
+    criteriaSingleCheckboxCalender = false;
 
     currentFont;
     widgetShowCriteria = true;
@@ -134,14 +139,18 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
     constructor( private preferencesService: PreferencesService, private dynamicQueryBuilderService: DynamicQueryBuilderService,
                  private dynamicQueryCriteriaService: DynamicQueryCriteriaService, private apiService: ApiService,
-                 private displayDynamicQueryService: DisplayDynamicQueryService ) {
+                 private displayDynamicQueryService: DisplayDynamicQueryService, private utilService: UtilService,
+                 private widgetCalendarService: WidgetCalendarService ) {
     }
 
     ngOnInit() {
+        if( this.criteriaCalendar ){
+            this.onClearClick( false ); // false = Do not rerun the query
+        }
+
         // Get font size when it changes
-        this.preferencesService.setFontSizePreferencesEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
                 this.currentFont = data;
             } );
         // Get the initial font size value
@@ -153,10 +162,19 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.onClearClick( false ); // false = Do not rerun the query
         } );
 
+        // To know when the date has changed in Widget-calender
+         this.widgetCalendarService.dateChange.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+            if(this.applyState){
+                this.onApplyCheckboxClick( true );
+            }
+        } );
+
+
         this.initParameters();
 
         // Set applyState to true if there is no Apply checkbox or button
         this.applyState = !(this.criteriaApplyCheckbox || this.criteriaApplyButton);
+
     }
 
 
@@ -179,7 +197,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
 
         this.sequenceNumber = this.queryCriteriaData['sequenceNumber'];
-        // this.criteriaName = this.queryCriteriaData['dynamicQueryCriteria'];
 
         this.criteriaHeading = this.queryCriteriaData['dynamicQueryCriteriaHeading'];
         this.criteriaRequired = this.queryCriteriaData['dynamicQueryCriteriaRequired'];
@@ -299,6 +316,16 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.applyState = true;
         }
 
+        if( this.criteriaCalendar ){
+            this.initCalendar();
+        }
+
+    }
+
+    async initCalendar() {
+        await this.utilService.sleep( Consts.waitTime );
+        this.onClearClick( false ); // false = Do not rerun the query
+
     }
 
     /**
@@ -390,7 +417,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         // @TODO Cleanup how calendar works
         if( !this.criteriaCalendar ){
             this.haveInput = false;
+        }else {
+            // Calendar always has input
+            this.haveInput = this.applyState;
         }
+
         if( this.criteriaSingleChoiceList || this.criteriaMultiChoiceList ){
             for( let box of this.listCheckboxes ){
                 if( box ){
@@ -417,6 +448,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         // This service is just used by the tester.  //BE Shore to wire up delete
         this.dynamicQueryCriteriaService.deleteWidget( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
         this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
+        this.displayDynamicQueryService.removeFromDisplayQuery( this.sequenceNumber );
     }
 
     onSearchGlassClick() {
@@ -452,11 +484,22 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
             // Set date ranges to From yesterday to today.
             let date: Date = new Date();
-            this.date1 = { date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() } }
+            this.date1 = {
+                date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
+                formatted: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear()
+            }
             date.setDate( date.getDate() - 1 );
-            this.date0 = { date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() } }
+            this.date0 = {
+                date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
+                formatted: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear()
+            }
+
             // There is valid data after a date clear
-            this.haveInput = true;
+            // this.haveInput = false;
+            // this.applyState = false;
+            //  rerunTheQuery = false;
+
+            this.onApplyCheckboxClick( false );
 
         }else{
             for( let n = 0; n < this.listCheckboxes.length; n++ ){
@@ -468,7 +511,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             // @CHECKME TODO rename this var.
             this.criteriaSingleCheckboxDefault = false;
             this.criteriaNumberInputDefault = this.criteriaNumberInputLimitLow;
-           this.onApplyCheckboxClick( false );
+            this.onApplyCheckboxClick( false );
         }
 
         if( !this.criteriaAllowNoChoice ){
@@ -488,14 +531,17 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         }
 
         if( this.criteriaSingleLineRadio ){
-          //  this.onChange( );
+            //  this.onChange( );
             this.apiService.setNoSearch();
         }
 
+        if( this.criteriaCalendar ){
+            this.criteriaSingleCheckboxCalender = false;
+        }
 
         this.doHaveInput();
 
-     }
+    }
 
     onTextInputChange() {
         this.doHaveInput();
@@ -526,22 +572,20 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
 
 
     onSearchTextOutFocus( n ) {
-        console.log( 'MHL onSearchTextOutFocus: ', n );
+       // console.log( 'MHL onSearchTextOutFocus: ', n );
     }
 
     onSearchTextFocus( n ) {
-        console.log( 'MHL onSearchTextFocus: ', n );
+      //  console.log( 'MHL onSearchTextFocus: ', n );
     }
 
     onWidgetAndOrRadioClick( i ) {
         // 0 is AND, 1 is OR
-        console.log( 'MHL onWidgetAndOrRadioClick andOrRadio: ', (i === 0) ? 'And' : 'Or' );
         this.onChange();
     }
 
     onWidgetAllAnyRadioClick( i ) {
         // 0 is 1, false is ANY
-        console.log( 'MHL onWidgetAllAnyRadioClick allAnyRadio: ', (i === 0) ? 'All' : 'Any' );
         this.onChange();
     }
 
@@ -571,12 +615,15 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
             this.applyState = e.target.checked;
             if( this.applyState ){
                 this.updateQuery();
+
+                if( this.criteriaCalendar ){
+                    this.haveInput = true;
+                }
             }else{
                 this.removeQuery( true ); // Clears display query
             }
-
         }
-     }
+    }
 
     /**
      * Apply buttons
@@ -655,7 +702,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 break;
 
             case WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS:
-                console.log( 'MHL ONE_LINE_RADIO_BUTTONS[' + this.criteriaSingleLineRadioCurrent + ']: ', this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
                 userInput.push( this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent] );
                 break;
 
@@ -668,7 +714,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 if( this.date0 !== undefined ){
                     userInput.push( this.date0['formatted'] );
                 }else{
-                    console.log( 'MHL CALENDAR NO first date' );
                     userInput.push( '' );
                 }
                 if( this.date1 !== undefined ){
@@ -685,6 +730,10 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         // For ONE_LINE_RADIO_BUTTONS to deal with "Ignore" @TODO we should not be looking at the labels, we need an additional parameter for the widget indicating a "don't use this criteria in the query" index.
         if( this.widgetType === WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS && (this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent].match( /^\s*ignore\s*/i )) ){
             noInputData = true;
+        }
+        // Calendar will always have some input because "Clear" sets the dates to yesterday and today, but, unchecks apply
+        else if( this.widgetType === WIDGET_TYPE.CALENDAR && (!this.applyState) ){
+            noInputData = true;
         }else if( (userInput !== undefined) && (userInput[0] !== undefined) && (userInput.length > 0) ){
             for( let f = 0; f < userInput.length; f++ ){
                 if( userInput[f].length > 0 ){
@@ -692,9 +741,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 }
             }
         }
+
         if( noInputData ){
             // Remove this criteria's part of the query and rerun the query
             this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.criteriaQueryType, this.criteriaQueryInputType );
+            this.displayDynamicQueryService.removeFromDisplayQuery( this.sequenceNumber );
         }
         // Add this to the dynamicQueryBuilderService's list
         else if( userInput.length > 0 ){
@@ -702,7 +753,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                 new DynamicCriteriaQueryPart( this.widgetType, userInput, this.criteriaQueryType, this.criteriaQueryInputType, this.criteriaLevelAndOrOr )
             );
         }
-
 
 
         // This is used for the DisplayQuery at the top
@@ -736,6 +786,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         displayQuery['sequenceNumber'] = this.sequenceNumber;
         if( !noInputData ){
             this.displayDynamicQueryService.updateDisplayQuery( displayQuery );
+        }else{
+            this.displayDynamicQueryService.removeFromDisplayQuery( this.sequenceNumber );
         }
     }
 
@@ -749,8 +801,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
         this.ngUnsubscribe.complete();
     }
 
-    ngOnChanges( changes: SimpleChanges ) {
-        /*
+ /*   ngOnChanges( changes: SimpleChanges ) {
+        /!*
                 for (let propName in changes) {
                     let chng = changes[propName];
                     let cur  = JSON.stringify(chng.currentValue);
@@ -758,7 +810,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit, OnChan
                   //  this.changeLog.push(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
                     console.log('MHL ngOnChanges: ', `${propName}: currentValue = ${cur}, previousValue = ${prev}`);
                 }
-        */
-        // console.log('MHL changes: ', changes);
+        *!/
+        console.log( 'MHL changes: ', changes );
     }
+*/
 }

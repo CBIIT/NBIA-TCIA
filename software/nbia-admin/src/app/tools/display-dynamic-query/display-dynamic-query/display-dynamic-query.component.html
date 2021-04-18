@@ -16,51 +16,51 @@
         <span>&nbsp;Clear</span>
     </button>
 
-<span *ngIf="properties.SHOW_SERVER_QUERY">{{data}}</span>
-
-<span *ngIf="! properties.SHOW_SERVER_QUERY">
-    <span *ngFor="let criteria of niceDisplayData; let i = index">
-        <!-- Some can be empty -->
-        <span *ngIf="criteria">
+    <!-- Show the search parameters to be used in the Rest call. -->
+<span *ngIf="properties.SHOW_SERVER_QUERY">{{data}}<br></span>
 
 
-            <span class="criteria-display-title">
-                {{criteria["criteriaHeading"]}}
-            </span>
+<span *ngFor="let criteria of niceDisplayData; let i = index">
+    <!-- Some can be empty -->
+    <span *ngIf="criteria">
 
 
-            <span *ngIf="criteria['condition'].length > 0">
-                {{criteria['condition']}}
-            </span>
-            <span *ngIf="criteria['condition'].length < 1">
-                (
-            </span>
-
-            <!-- The user input -->
-            <span *ngIf="criteria['value'].length === 1"
-                  class="criteria-display-name display-wrap"
-            >
-                {{criteria['value']}}
-            </span>
-
-            <span *ngIf="criteria['value'].length > 1">
-                <span *ngFor="let val of criteria['value']; let n = index">
-                    <!-- Keep this all on the same line. -->
-                    <span class="criteria-display-name display-wrap">{{val}}</span><span class="criteria-display-comma" *ngIf="n < (criteria['value'].length - 1 )">,</span>
-                </span>
-            </span>
-
-
-            <span *ngIf="criteria['condition'].length < 1">
-                )
-            </span>
-
-            <span *ngIf="i < lastElementIndex"
-                class="criteria-and"
-            >{{criteria['andOr']}}</span>
-
-
+        <span class="criteria-display-title">
+            {{criteria["criteriaHeading"]}}
         </span>
+
+
+        <span *ngIf="criteria['condition'].length > 0">
+            {{criteria['condition']}}
+        </span>
+        <span *ngIf="criteria['condition'].length < 1">
+            (
+        </span>
+
+        <!-- The user input -->
+        <span *ngIf="criteria['value'].length === 1"
+              class="criteria-display-name display-wrap"
+        >
+            {{criteria['value']}}
+        </span>
+
+        <span *ngIf="criteria['value'].length > 1">
+            <span *ngFor="let val of criteria['value']; let n = index">
+                <!-- Keep this all on the same line. -->
+                <span class="criteria-display-name display-wrap">{{val}}</span><span class="criteria-display-comma" *ngIf="n < (criteria['value'].length - 1 )">,</span>
+            </span>
+        </span>
+
+
+        <span *ngIf="criteria['condition'].length < 1">
+            )
+        </span>
+
+        <span *ngIf="i < lastElementIndex"
+            class="criteria-and"
+        >{{criteria['andOr']}}</span>
+
+
     </span>
 </span>
 

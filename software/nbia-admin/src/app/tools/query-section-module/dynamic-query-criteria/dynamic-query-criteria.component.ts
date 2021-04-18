@@ -169,8 +169,6 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     }
 
     deleteQueryCriteria(qCriteriaData) {
-       // console.log('MHL DynamicQueryCriteriaComponent.deleteQueryCriteria: ' , qCriteriaData);
-
         this.queryCriteriaCount = this.queryCriteriaData.length;
     }
 

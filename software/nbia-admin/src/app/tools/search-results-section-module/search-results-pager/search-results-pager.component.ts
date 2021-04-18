@@ -44,7 +44,6 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
     direction = 0;
 
 
-
     /**
      * An array representing each button, this currently just holds the text for the button (which is just the index plus one).
      * @type {Array}
@@ -60,14 +59,15 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         this.searchResultsPagerService.pageCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
-                this.pageCount = data;
-                this.setButtons();
-            } );
+            this.pageCount = data;
+            this.setButtons();
+            console.log( 'MHL SearchResultsPagerComponent pageCount: ', this.pageCount );
+        } );
 
-       this.searchResultsPagerService.nextPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( (  ) => {
-                this.onGoNextClick();
-            } );
-
+        this.searchResultsPagerService.nextPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+            this.onGoNextClick();
+            console.log( 'MHL SearchResultsPagerComponent nextPageEmitter' );
+        } );
 
 
     }
@@ -81,7 +81,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
         for( let f = 0; f < this.pageCount; f++ ){
             this.buttons[f] = f;
         }
-        if( this.pageCount < this.currentPage){
+        if( this.pageCount < this.currentPage ){
             this.onGoLastClick();
         }
     }
@@ -108,7 +108,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
     }
 
     onGoNextClick() {
-        if( this.pageCount === (this.currentPage + 1 ) ){
+        if( this.pageCount === (this.currentPage + 1) ){
             return;
         }
 

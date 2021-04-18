@@ -9,7 +9,6 @@
                 'heading-font-medium': currentFont === '2',
                 'heading-font-large': currentFont === '3'
             }">
-
             <!-- -----  Single Checkbox  ----- -->
             <span *ngIf="criteriaSingleCheckbox || (criteriaNumberInput && criteriaApplyCheckbox)">
                 <input
@@ -22,9 +21,9 @@
             </span>
             <!-- -----  END Single Checkbox  ----- -->
 
-
             <!-- ----- The heading Text ----- -->
             {{criteriaHeading}}
+
 
             <!-- ----- Number input ----- -->
             <span *ngIf="criteriaNumberInput">
@@ -225,6 +224,9 @@
 
         <!-- ----- Calendar dates when collapsed ----- -->
         <div class="ml-3" *ngIf="(! widgetShowCriteria) && date0 !== undefined && date1 !== undefined">
+            <span *ngIf="applyState">
+                *
+            </span>
             {{date0['formatted']}}&nbsp;to&nbsp;{{date1['formatted']}}
         </div>
         <!-- ----- END Calendar dates when collapsed ----- -->
@@ -423,7 +425,7 @@
                     (click)="onApplyCheckboxClick( $event)"
                 >
                 <label for="list-checkbox-{{sequenceNumber}}">
-                    {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}dynamicQueryCriteriaApplyText01
+                    {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
                 </label>
             </span>
             <!-- ----- END  Apply Checkbox  ----- -->
@@ -503,6 +505,8 @@
                  }" class="mt-1">
             <input
                 type="checkbox"
+                [(ngModel)]="criteriaSingleCheckboxCalender"
+
                 id="list-checkbox-cal-{{sequenceNumber}}"
                 [disabled]="            (
                 (
@@ -533,4 +537,5 @@
         <!-- ----- END  Apply Checkbox for Calendar ----- -->
     </div>
     <!-- ----------  END Calendar  --------- -->
+
 </div>

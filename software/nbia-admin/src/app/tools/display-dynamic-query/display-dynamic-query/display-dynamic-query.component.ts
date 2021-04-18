@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
 import { Properties } from '@assets/properties';
-import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
 
 @Component( {
@@ -26,21 +25,22 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
                  private dynamicQueryBuilderService: DynamicQueryBuilderService, private utilService: UtilService ) {
     }
 
-   ngOnInit() {
+    ngOnInit() {
         this.displayDynamicQueryService.displayDynamicQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
             this.data = data;
         } );
 
-        this.displayDynamicQueryService.displayNiceDynamicQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
-            this.niceDisplayData = data;
-            this.getLastElementIndex();
-        } );
-     }
+        this.displayDynamicQueryService.displayNiceDynamicQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                this.niceDisplayData = data;
+                this.getLastElementIndex();
+            } );
+    }
 
 
-    getLastElementIndex(){
+    getLastElementIndex() {
         this.lastElementIndex = 0;
-        for( let f = 0; f < this.niceDisplayData.length; f++){
+        for( let f = 0; f < this.niceDisplayData.length; f++ ){
             if( this.niceDisplayData[f] !== undefined ){
                 this.lastElementIndex = f;
             }
