@@ -107,7 +107,7 @@ export let Properties = {
     SHOW_FOOTER: true,
 
 
-    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: true,
+    SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false,
     SHOW_SERVER_QUERY: false,
 
     // @TODO We shouldn't need these anymore @CHECKME they can be deleted

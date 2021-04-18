@@ -40,7 +40,6 @@ export class DynamicQueryBuilderService{
         if( !havePart ){
             this.dynamicCriteriaPartList.push( part );
         }
-
         this.apiService.doAdvancedQcSearch( this.buildServerQuery() );
     }
 
