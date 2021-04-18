@@ -33,7 +33,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import gov.nih.nci.nbia.dao.ImageDAO2;
+import gov.nih.nci.nbia.dto.MD5DTO;
+import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
+import gov.nih.nci.nbia.security.AuthorizationManager;
+import gov.nih.nci.nbia.util.NCIAConfig;
+import gov.nih.nci.nbia.util.SiteData;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 @Path("/v2/getImageWithMD5Hash")
 public class V2_getImageWithMD5Hash extends getData {
@@ -55,7 +65,21 @@ public class V2_getImageWithMD5Hash extends getData {
 					.entity("A parameter, SeriesInstanceUID, is required for this API call.")
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+		String userName = (String) authentication.getPrincipal();
+		List<SiteData> authorizedSiteDataTemp = AuthorizationUtil.getUserSiteData(userName);
+		try {
+			if (authorizedSiteDataTemp==null){
+			     AuthorizationManager am = new AuthorizationManager(userName);
+			     authorizedSiteDataTemp = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(userName, authorizedSiteDataTemp);
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		final List<SiteData> authorizedSiteData = authorizedSiteDataTemp;
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("seriesInstanceUID", sid);
 
@@ -74,25 +98,21 @@ public class V2_getImageWithMD5Hash extends getData {
 				InputStream in = null;
 
 				try {
-//					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
-//					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
-					List<String> fileNames = getImage(sid);
-//					Timestamp qetimestamp = new Timestamp(System.currentTimeMillis());
-//					System.out.println("Done with querying the file name list and start to zip and stram--"
-//							+ sdf.format(qetimestamp));
-					int counter = 0;
-					Map<String,String> fileMD5Map = new HashMap<String,String>();
-					for (String filename : fileNames) {
-						in = new FileInputStream(new File(filename));
 
+					int counter = 0;
+					ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
+					List<MD5DTO> dtos = tDao.getImageAndMD5Hash(sid, authorizedSiteData);
+					Map<String,String> fileMD5Map = new HashMap<String,String>();
+					for (MD5DTO dto : dtos) {
+						String filename=dto.getFileName();
+						in = new FileInputStream(new File(filename));
 						if (in != null) {
 							// Add Zip Entry
 							String fileNameInZip = String.format("%08d", ++counter)
 									+ filename.substring(filename.lastIndexOf("."));
 							zip.putNextEntry(new ZipEntry(fileNameInZip));
-                            String md5digest = digest(new File(filename));
-                            fileMD5Map.put(fileNameInZip, md5digest);
 
+                            fileMD5Map.put(fileNameInZip, dto.getMD5Hash());
 							// Write file into zip
 							IOUtils.copy(in, zip);
 							zip.closeEntry();

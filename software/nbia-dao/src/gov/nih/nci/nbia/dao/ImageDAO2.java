@@ -12,6 +12,7 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.dto.MD5DTO;
 import gov.nih.nci.nbia.util.SiteData;
 
 import java.util.List;
@@ -35,4 +36,5 @@ public interface ImageDAO2 {
     public List<String> getImage(String seriesInstanceUid) throws DataAccessException;
     public String getImage(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;	
     public String getLicenseContent(String seriesInstanceUID);
+	public List<MD5DTO>  getImageAndMD5Hash(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;
 }
