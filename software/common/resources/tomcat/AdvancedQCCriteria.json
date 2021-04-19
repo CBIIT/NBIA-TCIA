@@ -58,7 +58,7 @@
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
                     "criteriaType":"studyUID",
-                    "inputType":"list"
+                    "inputType":"commaSeperatedList"
                 }
             },
             {
@@ -104,7 +104,7 @@
                     "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                     "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"sopUID",
-                    "inputType":"list"
+                    "inputType":"commaSeperatedList"
                 }
             },
             {
@@ -155,7 +155,7 @@
                     "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                     "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"patientID",
-                    "inputType":"list"
+                    "inputType":"commaSeperatedList"
                 }
             },
             {
@@ -206,7 +206,7 @@
                     "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
                     "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"patientName",
-                    "inputType":"list"
+                    "inputType":"commaSeperatedList"
                 }
             },
             {
@@ -287,54 +287,24 @@
         "parentMenuName":"Study Date",
         "criteriaObjects":[
             {
-                "criteriaMenuText":"Equals",
+                "criteriaMenuText":"Select",
                 "configuration":{
+                    "dynamicQueryCriteriaNumberDefault": 1,
+                    "dynamicQueryCriteriaNumberLimitHigh": 93,
+                    "dynamicQueryCriteriaNumberLimitLow": 1,
+                    "dynamicQueryCriteriaSingleLineRadioDefault": 2,
                     "dynamicQueryCriteriaClearButton": true,
                     "dynamicQueryCriteriaOpenCloseButton": true,
                     "dynamicQueryCriteriaHeading": "Study Date",
+                    "dynamicQueryCriteriaApplyCheckbox": true,
+                    "dynamicQueryCriteriaApplyText": "Apply",
                     "dynamicQueryCriteriaAllowNoChoice": true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
                     "dynamicQueryCriteriaCalendar": true,
-                    "dynamicQueryCriteriaApplyCheckbox":true,
-                    "dynamicQueryCriteriaApplyText":"Apply",
-                    "dynamicQueryCriteriaCalendarPrompt0": "Equals",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "",
+                    "dynamicQueryCriteriaCalendarPrompt0": "From Date",
+                    "dynamicQueryCriteriaCalendarPrompt1": "To Date",
                     "criteriaType":"studyDate",
                     "inputType":"dateRange"
-                }
-            },
-            {
-                "criteriaMenuText":"Less Than",
-                "configuration":{
-                    "dynamicQueryCriteriaClearButton": true,
-                    "dynamicQueryCriteriaOpenCloseButton": true,
-                    "dynamicQueryCriteriaHeading": "Study Date",
-                    "dynamicQueryCriteriaAllowNoChoice": true,
-                    "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": true,
-                    "dynamicQueryCriteriaCalendarPrompt0": "Less than",
-                    "dynamicQueryCriteriaApplyCheckbox":true,
-                    "dynamicQueryCriteriaApplyText":"Apply",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "",
-                    "criteriaType":"studyDate",
-                    "inputType":"dateTo"
-                }
-            },
-            {
-                "criteriaMenuText":"Greater Than",
-                "configuration":{
-                    "dynamicQueryCriteriaClearButton": true,
-                    "dynamicQueryCriteriaOpenCloseButton": true,
-                    "dynamicQueryCriteriaHeading": "Study Date",
-                    "dynamicQueryCriteriaAllowNoChoice": true,
-                    "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": true,
-                    "dynamicQueryCriteriaCalendarPrompt0": "Greater Than",
-                    "dynamicQueryCriteriaApplyCheckbox":true,
-                    "dynamicQueryCriteriaApplyText":"Apply",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "",
-                    "criteriaType":"studyDate",
-                    "inputType":"dateFrom"
                 }
             }
         ]
@@ -525,8 +495,8 @@
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
                     "dynamicQueryCriteriaRequired": true,
-                    "criteriaType":"subjectids",
-                    "inputType":"list"
+                    "criteriaType":"patientID",
+                    "inputType":"commaSeperatedList"
                 }
             }
         ]

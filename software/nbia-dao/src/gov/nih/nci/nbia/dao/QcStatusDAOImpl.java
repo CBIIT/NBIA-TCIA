@@ -190,7 +190,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	  ListCriteria listCriteria=(ListCriteria)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(listCriteria.getQueryField());
 		    	  fieldName=dto.getField();
-		    	  andStmt=andStmt+" "+computeListCriteria(fieldName, listCriteria.getlistObjects(), parameters, i);
+		    	  andStmt=andStmt+" "+computeListCriteria(fieldName, dto.getDataType(), listCriteria.getlistObjects(), parameters, i);
 		    	  i++;
 		      }
 		      if (entry.getValue() instanceof DateRangeCriteriaForQCSearch) {
@@ -622,11 +622,16 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 		return returnValue;
 	}
-	private static String computeListCriteria(String fieldName, List<String> valuesList, Map<String, Object> parameters, int x) {
+	private static String computeListCriteria(String fieldName, String dataType, List<String> valuesList, Map<String, Object> parameters, int x) {
 		String parameter= "param"+x;
 		String returnValue=fieldName+" in(:"+parameter+") ";
-		for (String param:valuesList) {
-			System.out.println("list param-"+param);
+		if (dataType.equalsIgnoreCase("Integer")) {
+			List<Integer> newValueList= new ArrayList<Integer>();
+			for (String value:valuesList) {
+				newValueList.add(Integer.valueOf(value));
+			}
+			parameters.put(parameter, newValueList);
+			return returnValue;
 		}
 		parameters.put(parameter, valuesList);
 		return returnValue;

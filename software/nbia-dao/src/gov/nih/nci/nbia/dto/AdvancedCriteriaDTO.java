@@ -5,6 +5,7 @@ public class AdvancedCriteriaDTO {
 	    public String field;
 	    public String object;
 	    public String alias;
+	    public String dataType;
 		public String getCriteriaType() {
 			return criteriaType;
 		}
@@ -28,6 +29,12 @@ public class AdvancedCriteriaDTO {
 		}
 		public void setAlias(String alias) {
 			this.alias = alias;
+		}
+		public String getDataType() {
+			return dataType;
+		}
+		public void setDataType(String dataType) {
+			this.dataType = dataType;
 		}
 	    
 }
