@@ -48,12 +48,14 @@ public class CollectionDescDAOImpl extends AbstractDAO
 	public Map<String, String> findCollectionNamesAndDOI(String collectionName) throws DataAccessException {
 		Map<String, String> returnValue= new HashMap<String, String>();
 		String hql =
-	    	"select distinct gs.project,gs.descriptionURI "+
-	    	"from GeneralSeries gs where gs.thirdPartyAnalysis is null";
+	    	"select gs.project,gs.descriptionURI "+
+	    	"from GeneralSeries gs where gs.thirdPartyAnalysis is null or gs.thirdPartyAnalysis='NO'";
+
 		if (collectionName!=null&&collectionName!="") {
 			hql=hql+" and gs.project='"+collectionName+"'";
 			
 		}
+		hql+=" group by gs.project,gs.descriptionURI";
 		List<Object> cdataList=getHibernateTemplate().find(hql);
 		for (Object cdata:cdataList) {
 		   Object[] obj= (Object[]) cdata;
