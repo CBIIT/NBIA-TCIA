@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.ProxySelector;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -38,6 +39,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
@@ -135,6 +138,7 @@ public class StandaloneDMDispatcher {
 //			System.out.println("Console is not available to current JVM process");
 //			return;
 //		} 
+		os = System.getProperty("os.name").toLowerCase();
 		
 		if (args != null && (args.length > 0)) {
 			if (isGUIApp(args)) {
@@ -142,9 +146,11 @@ public class StandaloneDMDispatcher {
 				String fileName = args[0];
 				StandaloneDMDispatcher sdmp = new StandaloneDMDispatcher();
 				sdmp.loadManifestFile(fileName);
+//				sdmp.getUserAgreementTxt();
 				sdmp.launch();
 			}
-			else { // command line interface
+			else if (os.toLowerCase().contains("linux"))
+			{ // command line interface
 //				console.printf("CLI Application");
 				String fileName = null;
 				String userName = null;
@@ -199,6 +205,7 @@ public class StandaloneDMDispatcher {
 					dr.performDownload(downloadDir, fileName, userName, passWord);
 				}
 			}
+			else System.out.println("NBIA Data Retriever is only supporting Linux operating system currently.");
 		} else {			
 		    // for copying style
 		    JLabel label = new JLabel();
@@ -365,9 +372,12 @@ public class StandaloneDMDispatcher {
 			sdm.launch(seriesList);
 		}
 		else if (manifestVersion.startsWith("3.")) {
+		if (1 == showUserAgreementTxt(getUserAgreementTxt()))
+			System.exit(0);
 		StandaloneDMV4 sdm = new StandaloneDMV4();
 		sdm.setKey(key);
 		sdm.launch(seriesList);
+		
 	}
 		else {
 			JOptionPane.showMessageDialog(null, "The version of manifest file, " + manifestVersion
@@ -910,5 +920,59 @@ public class StandaloneDMDispatcher {
 	            catch(Exception e){}
 	    }
 	
+	}
+	
+	private String getUserAgreementTxt() {
+		String text = null;
+		try {
+			String pubApiUrl = serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet",
+					"nbia-api/services/v1/getUserAgreementTxt");
+			URL urlForGetRequest = new URL(pubApiUrl);
+
+			HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
+			connection.setRequestMethod("GET");
+
+			int responseCode = connection.getResponseCode();
+
+			if (responseCode != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
+			}
+
+			InputStream input = connection.getInputStream();
+
+			text = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))
+					.lines().collect(Collectors.joining("\n"));
+			connection.disconnect();
+			input.close();
+			if (text != null && !text.isEmpty()) {
+				System.setProperty("data.usage.agreement.text",
+						text);
+			}
+
+		} catch (Exception e) {
+		}
+
+		return text;
+	}
+	
+	private int showUserAgreementTxt(String text) {
+		int n = 0;
+
+		if (text != null && !text.isEmpty()) {
+			Object[] options = { "Agree", "Disagree" };
+			JTextArea textArea = new JTextArea(text);
+			JScrollPane scrollPane = new JScrollPane(textArea);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			scrollPane.setPreferredSize(new Dimension(500, 500));
+
+			n = JOptionPane.showOptionDialog(null, scrollPane, "Data Usage Policy", JOptionPane.YES_NO_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			if (n == JOptionPane.CLOSED_OPTION) {
+				n = 1;
+			}
+		}
+
+		return n;
 	}
 }

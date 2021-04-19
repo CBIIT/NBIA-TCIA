@@ -49,8 +49,6 @@ public class ButtonUpdater implements ThreadPoolListener {
 	private PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if ("status".equals(evt.getPropertyName())) {
-System.out.println("status at buttonupdate class="+Integer.parseInt(evt.getNewValue().toString()));				
-				
 				int status = Integer.parseInt(evt.getNewValue().toString());
 				if (AbstractSeriesDownloader.ERROR == status && !errorLabel.isVisible()) {
 					errorLabel.setVisible(true);
@@ -88,8 +86,7 @@ System.out.println("status at buttonupdate class="+Integer.parseInt(evt.getNewVa
 
 	public void update() {
 		// TODO Auto-generated method stub
-		// disable pause/resume buttons
-//System.out.println("????????????completed the list yet ");	
+		// disable pause/resume buttons	
 		boolean stillDownloading = false;
 		boolean hasIncomplete = false;
 		

@@ -42,8 +42,8 @@ public class TotalProgressPanel extends JPanel implements Observer {
 		LocalSeriesDownloader downloader = (LocalSeriesDownloader) o;
 		if (downloader.getStatus() == downloader.COMPLETE) {
 			subTotal = subTotal + downloader.getSize();
-			System.out.println("@@@@@sid =" + downloader.getSeriesInstanceUid() + " size = " + downloader.getSize()
-					+ " subtotal now = " + subTotal + " totalSize =" + totalSize);
+//			System.out.println("@@@@@sid =" + downloader.getSeriesInstanceUid() + " size = " + downloader.getSize()
+//					+ " subtotal now = " + subTotal + " totalSize =" + totalSize);
 			double progress = ((double) subTotal / totalSize) * 100;
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {

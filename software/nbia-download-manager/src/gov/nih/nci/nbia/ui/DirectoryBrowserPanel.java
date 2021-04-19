@@ -9,6 +9,7 @@
 package gov.nih.nci.nbia.ui;
 
 import java.awt.Color;
+//import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 
@@ -19,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
+//import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -143,7 +145,21 @@ public class DirectoryBrowserPanel extends JPanel {
         }
         	
 	}
+/*
+	private DownloadManagerFrame getDMFrame() {
+		Component p = this;
+
+		while (p != null) {
+			if (p instanceof DownloadManagerFrame) {
+				return (DownloadManagerFrame)p;
+			}
+			else
+				p = p.getParent();
+		}
+		return null;
+	} */
 }
+
 
 class HintTextField extends JTextField implements FocusListener {
 

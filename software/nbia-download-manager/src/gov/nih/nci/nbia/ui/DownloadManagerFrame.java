@@ -27,13 +27,25 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +86,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	private JButton closeButton, deleteButton;
 	public static JLabel errorLabel;
 	private JButton agreementButton;
+	private JButton commercialButton;
 
 	/* Currently selected download. */
 	private AbstractSeriesDownloader selectedDownload;
@@ -97,6 +110,8 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	private TotalProgressPanel totalProgressPanel;
 	private long totalSize = 0;
 	private HashMap<String, String[]>clList = new HashMap<String, String[]>();
+	private boolean commercialFlag = false;
+//	private boolean standalone = false;
 
 	public DownloadManagerFrame(String userId, String password, boolean includeAnnotation, List<SeriesData> series,
 			String downloadServerUrl, Integer noOfRetry) {
@@ -120,6 +135,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	
 	public DownloadManagerFrame(boolean standalone, String userId, String password, boolean includeAnnotation, List<SeriesData> series,
 			String downloadServerUrl, Integer noOfRetry) {
+//		this.standalone = standalone;
 		this.userId = userId;
 		this.includeAnnotation = includeAnnotation;
 		this.noOfRetry = noOfRetry;
@@ -144,7 +160,156 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			//System.out.println("Error adding series to data table: " + e.getMessage());
 		}
 		totalProgressPanel.setTotalSize(totalSize);
-	}	
+		if (commercialFlag)
+			commercialButton.setVisible(true);
+	}
+	
+	private List<SeriesData> removeExistingSeries(List<String> existSeriesList, List<SeriesData> series) {
+		if ((existSeriesList != null) && (existSeriesList.size() > 0)) {
+			if ((series != null) && (series.size() > 0)) {
+				for (String s : existSeriesList) {
+					for (SeriesData sd : series) {
+						if (sd.getSeriesInstanceUid().equals(s)) {
+							series.remove(sd);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return series;
+	}
+	
+	public List<String> scanDataDir(String filePath) {
+		String line = "";
+		String splitBy = ",";
+		int seriesUidColumnNum = 0;
+		int onlyHeaderSize = 243;
+		ArrayList<String> existSeriesList = null;
+
+	//		String fileName = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
+		//				+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+		String fileName = filePath + File.separator
+						+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+
+		File f = new File(fileName);
+		if (f.exists() && !f.isDirectory()) {
+			int n = 0;
+			System.out.println("!!metadata file length = " + f.length());
+			if (f.length() > onlyHeaderSize) {
+				// pop up dialog
+
+				Object[] options = { "Download all", "Download missing series" };
+				n = JOptionPane.showOptionDialog(null,
+						"Metadata detacted for the same manifest file. Do you want to download all or only the data which is not in the metadata.csv?",
+						"Existing Downloaded Data Notification", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE,
+						null, options, options[0]);
+			} else
+				return null;
+
+			if (n == 0) {
+				//clean directory
+				String dir = filePath+ File.separator + System.getProperty("databasketId").replace(".tcia", "");
+				//File directory = new File(dir);
+				File directoryToBeDeleted = new File(dir);			
+				deleteDirectory(directoryToBeDeleted);
+				//renameDirectory(dir);
+				
+				return null;
+			}
+			else {
+				// get the series list
+				try {
+					// parsing a CSV file into BufferedReader class constructor
+					BufferedReader br = new BufferedReader(new FileReader(fileName));
+					existSeriesList = new ArrayList<String>();
+					int lc = 0;
+					while ((line = br.readLine()) != null) // returns a Boolean value
+					{
+						if (lc == 0) {
+							++lc;
+						} else {
+							String[] seriesInfo = line.split(splitBy); // use comma as separator
+							//System.out.println("series instance uid =" + seriesInfo[seriesUidColumnNum]);
+							existSeriesList.add(seriesInfo[seriesUidColumnNum]);
+							++lc;
+						}
+					}
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return existSeriesList;
+			}
+		} else
+			return null;
+	}
+	
+	boolean deleteDirectory(File directoryToBeDeleted) {
+		//File directoryToBeDeleted = new File(dir);
+		    File[] allContents = directoryToBeDeleted.listFiles();
+	    if (allContents != null) {
+	        for (File file : allContents) {
+	            deleteDirectory(file);
+	        }
+	    }
+	    return directoryToBeDeleted.delete();
+	}
+	
+	boolean renameDirectory (String oldDir) {
+		try {
+			Files.move(new File(oldDir).toPath(), new File(oldDir+"_old").toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+//		Path source = Paths.get(oldDir);
+//		Path newdir = Paths.get(oldDir+"_old");
+//		try {
+//			Files.move(source, newdir.resolve(source.getFileName()),
+//			            StandardCopyOption.REPLACE_EXISTING);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		return true;
+	}
+	
+	public void removeSeriesFromTbl(List<String> existSeriesList) {
+		for (String sid : existSeriesList) {
+			int rowCount = tableModel.getRowCount();
+
+			for (int i = 0; i < rowCount; i++) {
+				LocalSeriesDownloader sd = (LocalSeriesDownloader) ((DownloadsTableModel) table.getModel())
+						.getDownload(i);
+				if (sd.getSeriesInstanceUid().equals(sid)) {
+					tableModel.clearDownload(i);
+					totalSize = totalSize - sd.getSize();
+					break;
+				}
+			}
+		}
+		commercialButton.setVisible(false);
+		if (totalSize == 0) {
+			errorLabel.setText("No New Series to Download.");
+			errorLabel.setVisible(true);
+		}
+		else {
+			totalProgressPanel.setTotalSize(totalSize);
+//			updateButtons();
+		}
+		
+		
+//		totalSize = totalSize - tableModel.getDownload(table.getSelectedRow()).getSize();
+//		totalProgressPanel.setTotalSize(totalSize);
+
+//		clearing = true;
+//		tableModel.clearDownload(table.getSelectedRow());
+//		clearing = false;
+//??		selectedDownload = null;
+//		updateButtons();
+	}
 
 	private void buildUI() {
 		String appName = Application.getAppTitle();
@@ -310,6 +475,18 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			agreementButton.setEnabled(true);
 			agreementButton.setVisible(true);
 			agreementPanel.add(agreementButton);
+			
+			commercialButton= new JButton();
+			commercialButton.setText(
+					"<HTML><FONT color=\"#FF0000\">The list above contains series with commercial use restrictions. See license info under the collection directory for downloaded data.</FONT>");
+			commercialButton.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+			commercialButton.setContentAreaFilled(false);
+			commercialButton.setOpaque(false);
+			commercialButton.setBackground(Color.WHITE);
+			//commercialButton.addActionListener(new OpenUrlAction());
+			commercialButton.setEnabled(true);
+			commercialButton.setVisible(false);
+			agreementPanel.add(commercialButton);
 			agreementPanel.setVisible(true);
 		}
 
@@ -387,7 +564,9 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			String[] lInfo = {seriesData.get(i).getLicenseName(), seriesData.get(i).getLicenseUrl()};
 			clList.put(seriesData.get(i).getCollection(), lInfo);
 
-				
+			if 	((seriesData.get(i).getLicenseName() != null) && (seriesData.get(i).getLicenseName().contains("NonCommercial"))) {
+				commercialFlag = true;				
+			}
 			
 			seriesDownloader.start(serverUrl, seriesData.get(i).getCollection(), seriesData.get(i).getPatientId(),
 					seriesData.get(i).getStudyInstanceUid(), seriesData.get(i).getSeriesInstanceUid(),
@@ -417,16 +596,17 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		} else {
 			outputDir = new File(rootDir);
 		}
+
 	   for(Map.Entry m : clList.entrySet()){      
 		    String collection = (String) m.getKey();
 		    String [] mValue = (String[]) m.getValue();
 		    String licenseName = mValue[0];
 		    String licenseUrl = mValue[1];
-		    
+	    
 		    if (!licenseName.equals("null")) {
 			    String fileName = outputDir +File.separator
 						+ System.getProperty("databasketId").replace(".tcia", "")
-						+ File.separator + collection + File.separator + "license.html";
+						+ File.separator + collection + File.separator + "license.txt";
 		    
 				File file = new File(fileName);
 	
@@ -440,7 +620,12 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 					writer = new BufferedWriter(new FileWriter(file, true));
 			    	String content = new MessageFormat(DownloaderProperties.getLicenseText()).format(new String[] {collection, licenseName, licenseUrl});
 			        writer.append(content);
-			         
+			        String duaText = System.getProperty("data.usage.agreement.text");
+			        if (duaText != null && !duaText.isEmpty() && !duaText.equalsIgnoreCase("null")) {
+			        	writer.append("\n_____________________________\n\n");
+			        	writer.append(duaText);
+			        }
+			        	writer.append(duaText);
 			        writer.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -515,15 +700,66 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			updateButtons();
 		}
 	}
+	
+	private void writeHeaderToMetaData(String path) {
+		String fileName = path + File.separator + System.getProperty("databasketId").replace(".tcia", "")
+				+ File.separator + "metadata.csv";
+
+		File file = new File(fileName);
+		file.getParentFile().mkdirs();
+
+		try {
+			if (!file.exists()) {
+				file.createNewFile();
+				PrintWriter output = new PrintWriter(new FileWriter(fileName, true));
+				String header = "Series UID" + "," + "Collection" + "," + "3rd Party Analysis" + ","
+						+ "Data Description URI" + "," + "Subject ID" + "," + "Study UID" + "," + "Study Description" + ","
+						+ "Study Date" + "," + "Series Description" + "," + "Manufacturer" + "," + "Modality" + ","
+						+ "SOP Class Name" + "," + "SOP Class UID" + "," + "Number of Images" + "," + "File Size" + ","
+						+ "File Location" + "," + "Download Timestamp";
+				output.printf("%s\r\n", header);
+				output.flush();
+				output.close();
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 
 	/* start the download. */
 	private void actionStart() {
 		startButton.setEnabled(false);
 		String path = this.directoryBrowserPanel.getDirectory();
+//		String fileName = path + File.separator
+//				+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+		List <String> existSeriesList = scanDataDir(path);
+		
+		if (existSeriesList != null) {
+//			series = removeExistingSeries(existSeriesList, series);
+//			List<String> existingSeries = p.scanDataDir(chooser.getSelectedFile().getPath());
+			//Disable Start button until existing series all removed??
+//adding progress bar here??
+			removeSeriesFromTbl(existSeriesList); 
+
+		}
+		if (totalSize == 0) {
+			startButton.setEnabled(false);
+			return;
+		}
+		
+		startButton.setEnabled(false);
+		//String path = this.directoryBrowserPanel.getDirectory();
 		if (!(this.directoryBrowserPanel.isDirWritable(path)))
 			return;
 		setSeriesDownloadersOutputDirectory(this.directoryBrowserPanel.getDirectory(),
 				this.radioButtonPanel.isClassicDir());
+		
+		writeHeaderToMetaData(path);
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -545,9 +781,11 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			}
 		});
 		pauseButton.setEnabled(true);
-		if (this.serverUrl.endsWith("V4"))
-			createLicenseFile(this.directoryBrowserPanel.getDirectory());
+//		if (this.serverUrl.endsWith("V4"))
+//			createLicenseFile(this.directoryBrowserPanel.getDirectory());
 		totalProgressPanel.actionStarted();
+		if (this.serverUrl.endsWith("V4"))
+			createLicenseFile(this.directoryBrowserPanel.getDirectory());		
 	}
 
 	/* Pause the entire download. */

@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -39,9 +40,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.net.HttpURLConnection;
@@ -95,7 +98,8 @@ public class DataRetrieverCLI {
 	private String rootDir = null; // directory with manifest file name
 
 	static Map<String, String> sopClassNameMap = new HashMap<String, String>();
-	private String license_text = "<html><head><title>License Information</title></head><body><br/><p>The {0} collection is distributed under the {1} (<a href={2}>{2}</a>). </p><p>By downloading the data, you agree to abide by terms of this license.</p></body></html>";
+	//private String license_text = "<html><head><title>License Information</title></head><body><br/><p>The {0} collection is distributed under the {1} (<a href={2}>{2}</a>). </p><p>By downloading the data, you agree to abide by terms of this license.</p></body></html>";
+	private String license_text = "License\n\nThe {0} collection is distributed under the {1} ({2}). \nBy downloading the data, you agree to abide by terms of this license.\n";
 	private String directoryType = "Descriptive";
 	private String refreshToken = null;
 	public boolean verbose = false;
@@ -104,7 +108,7 @@ public class DataRetrieverCLI {
 
 	public final Logger logger = Logger.getGlobal();
 	private String setProperty;
-
+	private String duaText = null;
 	/**
 	 * @param args
 	 */
@@ -307,6 +311,7 @@ public class DataRetrieverCLI {
 				url.append(",");
 			}
 			String urlStr = url.toString();
+			//System.out.println("url="+urlStr.substring(0, urlStr.length() - 1));			
 			urlForGetRequest = new URL(urlStr.substring(0, urlStr.length() - 1));
 			HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
 			connection.setRequestMethod("GET");
@@ -374,6 +379,10 @@ public class DataRetrieverCLI {
 		if ((fileName != null) && fileName.endsWith(".tcia")) {
 //			DataRetriever cmdDR = new DataRetriever();
 			loadManifestFile(fileName);
+			String text = getUserAgreementTxt();
+			if (text != null && !text.isEmpty()) {
+				retrieveUsersAns(text);
+			}
 			if (dataType.equals("DICOM")) {
 				hasPermission = validateAccess(seriesList, userName);
 			} else {
@@ -857,7 +866,7 @@ public class DataRetrieverCLI {
 	private void createLicenseFile(String rootDir, String collection, String licenseName, String licenseUrl) {
 
 		if (!licenseName.equals("null")) {
-			String fileName = rootDir + File.separator + collection + File.separator + "license.html";
+			String fileName = rootDir + File.separator + collection + File.separator + "license.txt";
 
 			File file = new File(fileName);
 			if (!file.exists()) {
@@ -872,7 +881,11 @@ public class DataRetrieverCLI {
 					String content = new MessageFormat(license_text)
 							.format(new String[] { collection, licenseName, licenseUrl });
 					writer.append(content);
-
+//			        String duaText = System.getProperty("data.usage.agreement.text");
+			        if (duaText != null && !duaText.isEmpty() && !duaText.equalsIgnoreCase("null")) {
+			        	writer.append("\n_____________________________\n\n");
+			        	writer.append(duaText);
+			        }
 					writer.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -902,7 +915,7 @@ public class DataRetrieverCLI {
 				throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
 			}
 
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			InputStream input = connection.getInputStream();
 			Properties properties = new Properties();
 
@@ -956,10 +969,14 @@ public class DataRetrieverCLI {
 	}
 
 	private String bytesIntoHumanReadable(Long metaData) {
-		long kilobyte = 1024;
-		long megabyte = kilobyte * 1024;
-		long gigabyte = megabyte * 1024;
-		long terabyte = gigabyte * 1024;
+//		long kilobyte = 1024;
+//		long megabyte = kilobyte * 1024;
+//		long gigabyte = megabyte * 1024;
+//		long terabyte = gigabyte * 1024;
+        long kilobyte = 1000;
+        long megabyte = kilobyte * 1000;
+        long gigabyte = megabyte * 1000;
+        long terabyte = gigabyte * 1000;		
 
 		if ((metaData >= 0) && (metaData < kilobyte)) {
 			return metaData + " B";
@@ -1311,5 +1328,63 @@ public class DataRetrieverCLI {
 			}
 		}
 		return seriesList;
+	}
+	
+	private String getUserAgreementTxt() {
+		try {
+			String pubApiUrl = serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet",
+					"nbia-api/services/v1/getUserAgreementTxt");
+			URL urlForGetRequest = new URL(pubApiUrl);
+//			System.out.println("url=" + pubApiUrl);
+
+			HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
+			connection.setRequestMethod("GET");
+
+			int responseCode = connection.getResponseCode();
+
+			if (responseCode != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
+			}
+
+			InputStream input = connection.getInputStream();
+
+			duaText = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))
+					.lines().collect(Collectors.joining("\n"));
+
+			connection.disconnect();
+			input.close();
+//			if (text != null && !text.isEmpty()) {
+//				System.setProperty("data.usage.agreement.text",
+//						text);
+//			}
+
+		} catch (Exception e) {
+		}
+
+		return duaText;
+	}
+	
+	private void retrieveUsersAns(String text) {
+//		System.out.println("Please read the Data Usage Agreement below:");
+		System.out.println(text);
+		Scanner kbd = new Scanner(System.in);
+		System.out.println("Do you agree with the Data Usage Agreement? (Y/N)");
+		boolean bk = false;
+		while (bk == false) {
+			String answer = kbd.nextLine();
+			switch (answer) {
+			case "Y":
+			case "y": bk = true;
+				break;
+			case "N":
+			case "n":
+				System.exit(0);
+				break;
+
+			default:
+				System.out.println("Invalid answer. Enter Y for yes or N for no: ");
+				break;
+			}
+		}
 	}
 }
