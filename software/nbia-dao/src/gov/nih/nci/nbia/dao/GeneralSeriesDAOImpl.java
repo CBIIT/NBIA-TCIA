@@ -479,7 +479,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				
 		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
 			return null;
-		}		
+		}	
+		
+		if (seriesInstanceUids == null || seriesInstanceUids.isEmpty())
+			return null;
+		
 		StringBuffer where = new StringBuffer();
 		List<String> rs = null;
 		String hql = "select s.seriesInstanceUID"
