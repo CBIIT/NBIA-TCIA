@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 	showAuthorUG: boolean;
 	showAuthorPG: boolean;
 	selectedTabHeader = "User";
-	version = '2.3';
+	version = '2.4';
 	hostName:string;
 	@ViewChild(TabView,{static:false}) tabView: TabView;
 	@ViewChild(GroupComponent,{static:false}) groupComponent: GroupComponent;
@@ -79,11 +79,21 @@ export class AppComponent implements OnInit {
 		//console.log(this.tabView.tabs[this.selectedTabIndex].header);
 		this.selectedTabHeader = this.tabView.tabs[e.index].header;
 		console.log(this.selectedTabHeader);
+		if (this.tabView.tabs[e.index].header == "Protection Group")
+			this.pgComponent.ngOnInit();
+		
+		if (this.tabView.tabs[e.index].header == "Protection Element")
+			this.peComponent.ngOnInit();
+		
+		if (this.tabView.tabs[e.index].header == "User Group")
+			this.groupComponent.ngOnInit();		
+			
 		if (this.tabView.tabs[e.index].header == "Protection Element" && this.peComponent.loadingComplete == false)
 			this.loadingDisplayService.setLoading( true, 'Loading existing collection and site data...' );
 		
-		if (this.tabView.tabs[e.index].header == "Protection Group" && this.pgComponent.loadingComplete == false)
+		if (this.tabView.tabs[e.index].header == "Protection Group" && this.pgComponent.loadingComplete == false) {
 			this.loadingDisplayService.setLoading( true, 'Loading protection group data...' );
+		}
 		
 		if (this.tabView.tabs[e.index].header == "User Group" && this.groupComponent.loadingComplete == false)
 			this.loadingDisplayService.setLoading( true, 'Loading user group data...' );		
