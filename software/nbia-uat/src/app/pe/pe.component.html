@@ -23,6 +23,11 @@
 					Site
 					<p-sortIcon [field]="'site'"></p-sortIcon>
 				</th>
+				<th [pSortableColumn]="'dataSets'" style="border-bottom: none">
+					Associated Protection Group (s)
+					<p-sortIcon [field]="'dataSets'"></p-sortIcon>
+				</th>
+				<th rowspan="2" style="width:10em">Assign/Remove Protection Group(s)</th>
 			</tr>
 			<tr>
 				<th style="border-top: none;">
@@ -36,13 +41,24 @@
 						<input pInputText type="text" pTooltip="Enter partial or whole word to filter on site name" (input)="dt.filter($event.target.value, 'site', 'contains')"
 						[value]="dt.filters['site'] ? dt.filters['site'].value : ''">
 					</div>	
-				</th>				
+				</th>
+				<th style="border-top: none;">
+					<div class="ui-fluid">
+						<input pInputText type="text" pTooltip="Enter a whole or partial word to filter on associated protection group name" (input)="dt.filter($event.target.value, 'dataSets', 'contains')"
+						[value]="dt.filters['dataSets'] ? dt.filters['dataSets'].value : ''">
+					</div>
+				</th>					
 			</tr>
 		</ng-template>		
 		<ng-template pTemplate="body" let-rowData>
 			<tr >
 			  <td>{{rowData.collection}}</td>
-			  <td>{{rowData.site}}</td>			  		  
+			  <td>{{rowData.site}}</td>
+			  <td><div style="white-space: pre-wrap;">{{rowData.dataSets | addNewLine}}</div></td>
+			  <td>
+                <button pButton type="button" icon="fa fa-plus" class="nbia-col-button" (click)="showDialogToAssign(rowData)"></button>
+				<button pButton type="button" icon="fa fa-minus" class="nbia-col-button" (click)="showDialogToRemove(rowData)"></button>
+   			  </td>				  
 			</tr>
 		</ng-template>
 
@@ -71,4 +87,47 @@
 			</div>		
 		</p-footer>
 	</p-dialog>
+	
+	<p-dialog header="Assign Protection Element to Protection Group(s)" [(visible)]="displayAssignDialog" [modal]="true"
+			[responsive]="true" [style]="{width: '800px', minWidth: '300px'}" [maximizable]="true">
+		<div class="ui-g ui-fluid" *ngIf="pe">
+			<div class="ui-g-12">
+				<div class="ui-g-4"><label for="peName">Protection Elements</label></div>
+				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPg"/>
+				</div>
+			</div>
+			<div class="ui-g-12">
+				<div class="ui-g-4"><label for="description">Available Protection Groups</label></div>
+				<div class="ui-g-8"><p-multiSelect [options]="availablePgs" [(ngModel)]="selectedPgs" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
+					<p>Selected Data Set(s): {{selectedPgs}}</p>
+				</div>
+			</div>
+		</div>	
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="fa fa-check" (click)="addPgs()" label="Assign" class="nbia-button"></button>
+			</div>
+		</p-footer>
+	</p-dialog>
+	<p-dialog header="Remove Protection Element from Protection Group" [(visible)]="displayDeassignDialog" [modal]="true"
+			[responsive]="true" [style]="{width: '800px', minWidth: '300px'}" [maximizable]="true">
+		<div class="ui-g ui-fluid" *ngIf="pe">
+			<div class="ui-g-12">
+				<div class="ui-g-4"><label for="dataGroup">Protection Elements</label></div>
+				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPg"/></div>
+			</div>
+			<div class="ui-g-12">
+				<div class="ui-g-4"><label for="description">Associated Protection Grpups</label></div>
+				<div class="ui-g-8">
+				<p-multiSelect [options]="includedPgs" [(ngModel)]="selectedPgs" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
+					<p>Selected Protection Group(s) to Remove: {{selectedPgs}}</p>
+				</div>
+			</div>
+		</div>
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="fa fa-check" (click)="removePGs()" label="Remove"></button>
+			</div>
+		</p-footer>
+	</p-dialog>		
 </div>

@@ -479,7 +479,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				
 		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
 			return null;
-		}		
+		}	
+		
+		if (seriesInstanceUids == null || seriesInstanceUids.isEmpty())
+			return null;
+		
 		StringBuffer where = new StringBuffer();
 		List<String> rs = null;
 		String hql = "select s.seriesInstanceUID"
@@ -1322,11 +1326,11 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int updateDOIForSeries(String project, String doi)throws DataAccessException {
 		int returnValue=0;
-		String sqlString = "update general_series set description_uri=? where (upper(third_party_analysis)<>'YES' or third_party_analysis is null) and upper(project)=?";
+		String sqlString = "update general_series set description_uri=? where (upper(third_party_analysis)='NO' or third_party_analysis is null) and upper(project)=?";
 		Query query = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
 		System.out.println("uri-"+doi+"-collection-"+project);
 		query.setParameter(0, doi, Hibernate.STRING);
-		query.setParameter(1, project, Hibernate.STRING);
+		query.setParameter(1, project.toUpperCase(), Hibernate.STRING);
 		try {
 			returnValue=query.executeUpdate();
 		} catch (HibernateException e) {

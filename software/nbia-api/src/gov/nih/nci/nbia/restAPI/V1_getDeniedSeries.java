@@ -52,6 +52,7 @@ public class V1_getDeniedSeries extends getData {
 			List<String> list = Arrays.asList(seriesIds);   
 			GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 			results = gsDao.getDeniedSeries(list, authorizedCollections);
+			//results = gsDao.getDeniedSeries(seriesList, authorizedCollections);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

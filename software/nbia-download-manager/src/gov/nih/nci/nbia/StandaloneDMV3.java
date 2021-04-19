@@ -230,7 +230,7 @@ public class StandaloneDMV3 extends StandaloneDM {
 		} while (index < seriesSize);
 						
 			
-		System.out.println("!!!!! v3 return size = " +seriesInfo.size());
+//		System.out.println("!!!!! v3 return size = " +seriesInfo.size());
 		return seriesInfo;
 	}
 	

@@ -12,6 +12,7 @@ import gov.nih.nci.nbia.util.NBIAIOUtils;
 import gov.nih.nci.nbia.util.StringUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.net.ssl.SSLHandshakeException;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -246,7 +248,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		try {
 			HttpResponse response = httpClient.execute(httpPostMethod);
 			int responseCode = response.getStatusLine().getStatusCode();
-
+//			System.out.println("response code ="+responseCode);
 			/* Make sure response code is in the 200 range. */
 			if (responseCode / 100 != 2) {
 				if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -483,38 +485,45 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		
 		File file = new File(fileName); 
 		if (!file.exists()) {
-        	try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
-			{
-        		String header = "Series UID" + "," +
-       				 "Collection" + "," + 
-       				 "3rd Party Analysis" + "," + 
-       				 "Data Description URI" + "," + 
-       				 "Subject ID" + "," + 
-       				 "Study UID" + "," + 
-       				 "Study Description" + "," + 
-       				 "Study Date" + "," + 
-       				 "Series Description" + "," + 
-       				 "Manufacturer" + "," + 
-       				 "Modality" + "," + 
-       				 "SOP Class Name" + "," + 
-       				 "SOP Class UID" + "," + 
-       				 "Number of Images" + "," + 
-       				 "File Size" + "," + 
-       				 "File Location" + "," + 
-       				 "Download Timestamp";
-        		output.printf("%s\r\n", header);
-			    output.printf("%s\r\n", newLine);
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			System.out.println("System Error: metadata file has not created.  It should be done already.Exit from the program.");
+			System.exit(ERROR);
+//        	try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
+//			{
+//        		String header = "Series UID" + "," +
+//       				 "Collection" + "," + 
+//       				 "3rd Party Analysis" + "," + 
+//       				 "Data Description URI" + "," + 
+//       				 "Subject ID" + "," + 
+//       				 "Study UID" + "," + 
+//       				 "Study Description" + "," + 
+//       				 "Study Date" + "," + 
+//       				 "Series Description" + "," + 
+//       				 "Manufacturer" + "," + 
+//       				 "Modality" + "," + 
+//       				 "SOP Class Name" + "," + 
+//       				 "SOP Class UID" + "," + 
+//       				 "Number of Images" + "," + 
+//       				 "File Size" + "," + 
+//       				 "File Location" + "," + 
+//       				 "Download Timestamp";
+//        		output.printf("%s\r\n", header);
+//			    output.printf("%s\r\n", newLine);
+//			} 
+//			catch (Exception e) {
+//				e.printStackTrace();
+//			}
         }
-        	
         else {
 			try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
 			{								 
 			    output.printf("%s\r\n", newLine);
-			} 
+			}
+			catch (FileNotFoundException fe) {
+				if (fe.getMessage().contains("because it is being used by another process")) {
+					JOptionPane.showMessageDialog(null,
+						    "Can't write to metadata.csv because it is being used by another process.");
+				}
+			}
 			catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -584,10 +593,15 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 	}
 	
 	private String bytesIntoHumanReadable(long bytes) {
-        long kilobyte = 1024;
-        long megabyte = kilobyte * 1024;
-        long gigabyte = megabyte * 1024;
-        long terabyte = gigabyte * 1024;
+//        long kilobyte = 1024;
+//        long megabyte = kilobyte * 1024;
+//        long gigabyte = megabyte * 1024;
+//        long terabyte = gigabyte * 1024;
+        
+        long kilobyte = 1000;
+        long megabyte = kilobyte * 1000;
+        long gigabyte = megabyte * 1000;
+        long terabyte = gigabyte * 1000;        
 
         if ((bytes >= 0) && (bytes < kilobyte)) {
             return bytes + " B";

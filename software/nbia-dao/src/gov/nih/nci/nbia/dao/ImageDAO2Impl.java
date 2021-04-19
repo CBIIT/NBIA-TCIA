@@ -12,6 +12,7 @@
 package gov.nih.nci.nbia.dao;
 
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.dto.MD5DTO;
 import gov.nih.nci.nbia.internaldomain.GeneralImage;
 import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -205,7 +206,7 @@ public class ImageDAO2Impl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)	
 	public String getImage(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException {
 		String returnValue=null;
-		String hql = "select gi.filename, gs.project, gs.site "
+		String hql = "select gi.md5Digest, gs.project, gs.site "
 				+ "from  GeneralImage gi join gi.generalSeries gs "
 				+ "where gs.visibility in ('1')"
 				+ " and gi.SOPInstanceUID = ? ";
@@ -214,12 +215,11 @@ public class ImageDAO2Impl extends AbstractDAO
 		List<Object[]> searchResults = getHibernateTemplate().find(hql, sopInstanceUid); // protect against sql injection
 		if (searchResults!=null) {
 			for (Object[] row : searchResults) {
-				String fileName=row[0].toString();
+				String md5Digest=row[0].toString();
 				String project=row[1].toString();
 				String site=row[2].toString();
 				if (isAuthorized(project, site, siteDataList)) {
-					String md5digest = digest(new File(fileName));
-					return md5digest;
+					return md5Digest;
 				}
 			}
 
@@ -227,7 +227,33 @@ public class ImageDAO2Impl extends AbstractDAO
 
         return returnValue;
 	}
-	
+	public List<MD5DTO> getImageAndMD5Hash(String seriesInstanceUID, List<SiteData> siteDataList ) throws DataAccessException {
+		List<MD5DTO> returnValue= new ArrayList<MD5DTO>() ;
+		String hql = "select gi.md5Digest, gs.project, gs.site, gi.filename "
+				+ "from  GeneralImage gi join gi.generalSeries gs "
+				+ "where gs.visibility in ('1')"
+				+ " and gi.seriesInstanceUID = ? ";
+		
+		//System.out.println("===== In nbia-dao, ImageDAO2Impl:getImage(..) - hql statement call with where visibility in ('1'): " + hql);
+		List<Object[]> searchResults = getHibernateTemplate().find(hql, seriesInstanceUID); // protect against sql injection
+		if (searchResults!=null) {
+			for (Object[] row : searchResults) {
+				String md5Digest=row[0].toString();
+				String project=row[1].toString();
+				String site=row[2].toString();
+				String filename=row[3].toString();
+				if (isAuthorized(project, site, siteDataList)) {
+					MD5DTO dto = new MD5DTO();
+					dto.setFileName(filename);
+					dto.setMD5Hash(md5Digest);
+					returnValue.add(dto);
+				}
+			}
+
+		}
+
+        return returnValue;
+	}
 	private boolean isAuthorized(String project, String site, List<SiteData> siteDataList) {
 		boolean returnValue=false;
 		for (SiteData siteData: siteDataList) {
@@ -318,27 +344,6 @@ public class ImageDAO2Impl extends AbstractDAO
 			dto.setNewFilename(newFileName);
 		}				
 	}
-	private static String digest(File file) {
-		String result;
-		BufferedInputStream bis = null;
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-			bis = new BufferedInputStream( new FileInputStream( file ) );
-			byte[] buffer = new byte[8192];
-			int n;
-			while ( (n=bis.read(buffer)) != -1) messageDigest.update(buffer, 0, n);
-			byte[] hashed = messageDigest.digest();
-//			BigInteger bi = new BigInteger(1, hashed);
-//			result = bi.toString(16);
-			result = String.format("%032x", new BigInteger(1, hashed));
-		}
-		catch (Exception ex) { result = ""; }
-		finally {
-			try { bis.close(); }
-			catch (Exception ignore) { }
-		}
-		return result;
-    }
 	@Transactional(propagation=Propagation.REQUIRED)	
 	public String getLicenseContent(String seriesInstanceUID) {
 		String returnValue="";

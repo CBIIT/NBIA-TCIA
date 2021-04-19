@@ -3,78 +3,91 @@
       "criteriaType":"seriesUID",
       "field":"gs.seriesInstanceUID",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
       "criteriaType":"studyUID",
       "field":"gs.studyInstanceUID",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
       "criteriaType":"sopUID",
       "field":"gi.SOPInstanceUID",
       "object":"GeneralImage",
+      "dataType":"String",
       "alias":"gi"
    },
    {
-      "criteriaType":"subjectids",
+      "criteriaType":"patientID",
       "field":"gs.patientId",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
       "criteriaType":"patientName",
       "field":"pt.patientName",
       "object":"Patient",
+      "dataType":"String",
       "alias":"pt"
    },
    {
-      "criteriaType":"seriesDescription",
+      "criteriaType":"seriesDesc",
       "field":"gs.seriesDesc",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
       "criteriaType":"modality",
       "field":"gs.modality",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
       "criteriaType":"studyDate",
       "field":"gs.studyDate",
       "object":"GeneralSeries",
+      "dataType":"Date",
       "alias":"gs"
    },
     {
       "criteriaType":"submissiondate",
       "field":"gs.maxSubmissionTimestamp",
       "object":"GeneralSeries",
+      "dataType":"Date",
       "alias":"gs"
    },
    {
       "criteriaType":"complete",
       "field":"gs.submissionType",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
       "criteriaType":"released",
       "field":"gs.releasedStatus",
       "object":"GeneralSeries",
+      "dataType":"String",
       "alias":"gs"
    },
    {
-      "criteriaType":"batch",
+      "criteriaType":"batchnumber",
       "field":"gs.batch",
       "object":"GeneralSeries",
+      "dataType":"Integer",
       "alias":"gs"
    },
      {
       "criteriaType":"manufacturer",
       "field":"ge.manufacturer",
       "object":"GeneralEquipment",
+      "dataType":"String",
       "alias":"ge"
    }
 ]
