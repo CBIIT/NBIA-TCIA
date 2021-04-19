@@ -339,6 +339,8 @@ public class DownloadServletV4 extends HttpServlet {
 	private static String cleanStr(String in) {
 		if ((in != null) && (in.length() > 0)) {
 			String out = in.replaceAll("[^a-zA-Z0-9 .-]", "");
+			if (out.isEmpty())
+				return "null";
 			return out;
 		} else
 			return null;
@@ -389,8 +391,8 @@ public class DownloadServletV4 extends HttpServlet {
 				String url = "url";
 				String displayName = "displayName";
 				String studyDate = series.getStudyDateString();
-				String studyDesc = cleanStr(series.getStudyDesc());
-				String seriesDesc = cleanStr(series.getDescription());
+				String studyDesc = cleanStr(series.getStudyDesc());				
+				String seriesDesc = cleanStr(series.getDescription());				
 				String study_id = cleanStr(series.getStudy_id());
 				String seriesNumber = series.getSeriesNumber();
 				String thirdPartyAnalysis= series.getThirdPartyAnalysis();

@@ -51,6 +51,7 @@ public class JnlpArgumentsParser {
                 series.setStudyDesc(result[13]);
                 series.setSeriesNum(result[14]);
                 series.setSeriesDesc(result[15]);
+
                 if (result.length >= 24) {
 	                series.setThirdPartyAnalysis(result[16]);
 	    	        series.setDescriptionURI(result[17]);
