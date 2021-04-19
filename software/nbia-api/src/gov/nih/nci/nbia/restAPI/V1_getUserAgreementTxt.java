@@ -38,7 +38,7 @@ public class V1_getUserAgreementTxt {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid) throws IOException {
+	public Response constructResponse() throws IOException {
 		String dataSource = NCIAConfig.getUserAgreementFileLocation();
 		
 		if (dataSource == null || dataSource.isEmpty())
