@@ -6,6 +6,7 @@ import { Config } from '../configs/config';
 import { ConfigService } from '../configs/configservice';
 import { Globals } from '../conf/globals'
 import { Pe } from './pe';
+import { Pg } from '../pg/pg';
 import { PeService } from './peservice';
 import { LoadingDisplayService } from '../common/components/loading-display/loading-display.service';
 
