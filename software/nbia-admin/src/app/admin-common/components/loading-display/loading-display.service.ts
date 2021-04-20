@@ -49,7 +49,7 @@ export class LoadingDisplayService {
 
     /**
      *
-     * @param {string} message  This parameter is just used for testing/debugging and can be removed at some point
+     * @param {string} message  This parameter is just used for @testing/debugging and can be removed at some point
      */
     setLoadingOff( message = '' ) {
         this.isLoading = 0;

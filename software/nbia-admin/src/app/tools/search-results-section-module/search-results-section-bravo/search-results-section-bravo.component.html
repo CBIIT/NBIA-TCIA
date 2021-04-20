@@ -13,7 +13,14 @@
 >
     <div class="search-results-top-stats">
         <span *ngIf="searchResultsCount > 0">
-            Showing&nbsp;<b>{{(currentPage * pageLength) + 1}}</b>&nbsp;-&nbsp;<b>{{(currentPage + 1) * pageLength }}</b>&nbsp;of
+            Showing&nbsp;<b>{{(currentPage * pageLength) + 1}}</b>&nbsp;-&nbsp;
+
+            <b *ngIf="((currentPage + 1) * pageLength) <= searchResultsCount">{{(currentPage + 1) * pageLength }}</b>
+            <b *ngIf="((currentPage + 1) * pageLength) > searchResultsCount">{{searchResultsCount}}</b>
+
+            &nbsp;of
+
+
             <b>{{ searchResultsCount }}</b>
             Series&nbsp;&nbsp;&nbsp;&nbsp;
             <b>{{ checkboxCount }}</b>

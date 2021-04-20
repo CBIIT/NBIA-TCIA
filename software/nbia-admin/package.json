@@ -30,7 +30,6 @@
         "ngx-dropdown": "0.0.22",
         "ngx-keyboard-shortcuts": "^1.0.1",
         "ngx-moment": "^3.5.0",
-        "ngx-mydatepicker": "^2.4.10",
         "ngx-tabs": "0.0.13",
         "rxjs": "~6.4.0",
         "ts-promise": "^2.2.0",
