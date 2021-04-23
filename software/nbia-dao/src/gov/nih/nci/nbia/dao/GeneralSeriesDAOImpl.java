@@ -20,6 +20,7 @@ import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
@@ -48,6 +49,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -1510,15 +1512,16 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException{
         String returnValue="";
-		String sqlString = "SELECT CONVERT(GROUP_CONCAT(md5_digest) USING utf8) as md5 " + 
-				"FROM (select md5_digest, series_instance_uid from general_image  where series_instance_uid=:id order by md5_digest) sorted  " + 
-				"GROUP BY series_instance_uid; ";
+		String sqlString = "SELECT md5_digest " + 
+				"FROM general_image  " + 
+				"where series_instance_uid=:id "+
+                " order by md5_digest ";
+		SQLQuery qu = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
 		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString).setParameter("id", seriesInstanceUID).list();
 		for(String item:results) {
-			if (item!=null) {
-			  returnValue=digest(item.toString());
-			}
+			returnValue=returnValue+item;
 		}
+		returnValue=digest(returnValue.toString());
 		return returnValue;
 	}
 	private static String digest(String input) {
