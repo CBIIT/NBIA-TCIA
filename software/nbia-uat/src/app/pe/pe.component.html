@@ -117,7 +117,7 @@
 				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPg"/></div>
 			</div>
 			<div class="ui-g-12">
-				<div class="ui-g-4"><label for="description">Associated Protection Grpups</label></div>
+				<div class="ui-g-4"><label for="description">Associated Protection Groups</label></div>
 				<div class="ui-g-8">
 				<p-multiSelect [options]="includedPgs" [(ngModel)]="selectedPgs" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
 					<p>Selected Protection Group(s) to Remove: {{selectedPgs}}</p>
