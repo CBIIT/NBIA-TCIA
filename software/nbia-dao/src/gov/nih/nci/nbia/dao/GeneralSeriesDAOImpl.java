@@ -19,11 +19,14 @@ import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
+import gov.nih.nci.nbia.util.NCIAConfig;
+import gov.nih.nci.nbia.util.CallPatientMD5;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
+import java.util.concurrent.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -1414,6 +1417,56 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			} 
 		}
 		return returnValue;
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForCollectionMuliThreaded(String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select patientId, project from GeneralSeries where visibility=1 and project=:project and (";
+		boolean first=true;
+		for (SiteData sd : authorizedSites) {
+			if (first) {
+				sqlString+="(site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			    first=false;
+			} else {
+				sqlString+=" or (site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
+			}
+		}
+		sqlString+=")";		
+		sqlString += " group by patientId, project";
+		List<String[]> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
+		String md5Concat="";
+		List<String> sortedList=new ArrayList<String>();
+		int maxThreads=2;
+		String maxThreadConfig=NCIAConfig.getMd5MaxThreads();
+		if (maxThreadConfig!=null&&maxThreadConfig.length()>0) {
+			maxThreads=Integer.getInteger(maxThreadConfig).intValue();
+		}
+		ExecutorService executorService = Executors.newFixedThreadPool(maxThreads);
+		for (Object item[] : resultsData) {
+			CallPatientMD5 patientMD5=new CallPatientMD5(item[0].toString(),item[1].toString(), authorizedSites, this.getHibernateTemplate());
+			Future<String> future = executorService.submit(patientMD5);
+			try {
+				sortedList.add(future.get());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		executorService.shutdown();
+        try {
+			if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+				executorService.shutdownNow();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Collections.sort(sortedList);
+		for (String item : sortedList) {
+			if (item != null) {
+				md5Concat+=item;
+			}
+		}
+		return digest(md5Concat);
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{

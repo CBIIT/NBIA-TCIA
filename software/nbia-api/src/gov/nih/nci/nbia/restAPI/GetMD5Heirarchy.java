@@ -59,7 +59,8 @@ public class GetMD5Heirarchy extends getData{
 	public Response  constructResponse(@FormParam("SeriesInstanceUID") String seriesInstanceUID, 
 			                           @FormParam("StudyInstanceUID") String studyInstanceUID,
 			                           @FormParam("PatientID") String patientID,
-			                           @FormParam("Collection") String collection) {
+			                           @FormParam("Collection") String collection,
+			                           @FormParam("MultiThreaded") String multiThreaded) {
 		String md5 = "";
 		try {
 		Authentication authentication = SecurityContextHolder.getContext()
@@ -86,7 +87,11 @@ public class GetMD5Heirarchy extends getData{
             }	
             if ((collection!=null&&collection.length()>0)&&!(patientID!=null&&patientID.length()>0)) {
     			GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-    			md5=tDao.getMD5ForCollection(collection, authorizedSiteData);
+    			if (multiThreaded!=null&&multiThreaded.equalsIgnoreCase("Yes")) {
+    				md5=tDao.getMD5ForCollectionMuliThreaded(collection, authorizedSiteData);
+    			} else {
+    			   md5=tDao.getMD5ForCollection(collection, authorizedSiteData);
+    			}
             }            
             
             

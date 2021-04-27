@@ -916,6 +916,11 @@ public class NCIAConfig {
         //checkProperty("user.agreement.file.location", propertyValue);
         return propertyValue;
     } 
+    public static String getMd5MaxThreads(){
+        String propertyValue = properties.getProperty("md5MaxThreads");    
+        //checkProperty("user.agreement.file.location", propertyValue);
+        return propertyValue;
+    } 
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer
