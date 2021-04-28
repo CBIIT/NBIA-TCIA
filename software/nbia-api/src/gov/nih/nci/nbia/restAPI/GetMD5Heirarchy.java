@@ -42,7 +42,7 @@ import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.deletion.DeletionDisplayObject;
 import gov.nih.nci.nbia.deletion.ImageDeletionService;
 import gov.nih.nci.nbia.restUtil.QAUserUtil;
-import gov.nih.nci.nbia.restUtil.RoleCache;
+import gov.nih.nci.nbia.restUtil.MD5Cache;
 @Path("/getMD5Hierarchy")
 public class GetMD5Heirarchy extends getData{
 
@@ -59,8 +59,7 @@ public class GetMD5Heirarchy extends getData{
 	public Response  constructResponse(@FormParam("SeriesInstanceUID") String seriesInstanceUID, 
 			                           @FormParam("StudyInstanceUID") String studyInstanceUID,
 			                           @FormParam("PatientID") String patientID,
-			                           @FormParam("Collection") String collection,
-			                           @FormParam("MultiThreaded") String multiThreaded) {
+			                           @FormParam("Collection") String collection) {
 		String md5 = "";
 		try {
 		Authentication authentication = SecurityContextHolder.getContext()
@@ -73,29 +72,29 @@ public class GetMD5Heirarchy extends getData{
 		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
 		}
 	
-            if (seriesInstanceUID!=null&&seriesInstanceUID.length()>0) {
-    			GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-    			md5=tDao.getMD5ForSeries(seriesInstanceUID);
-            }
-            if (studyInstanceUID!=null&&studyInstanceUID.length()>0) {
-    			GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-    			md5=tDao.getMD5ForStudy(studyInstanceUID, authorizedSiteData);
-            }	
-            if (patientID!=null&&patientID.length()>0) {
-    			GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-    			md5=tDao.getMD5ForPatientId(patientID, collection, authorizedSiteData);
-            }	
-            if ((collection!=null&&collection.length()>0)&&!(patientID!=null&&patientID.length()>0)) {
-    			GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-    			if (multiThreaded!=null&&multiThreaded.equalsIgnoreCase("Yes")) {
-    				md5=tDao.getMD5ForCollectionMuliThreaded(collection, authorizedSiteData);
-    			} else {
-    			   md5=tDao.getMD5ForCollection(collection, authorizedSiteData);
-    			}
-            }            
-            
-            
-    		return Response.ok().type("text/plain")
+            synchronized (this) {
+				if (seriesInstanceUID != null && seriesInstanceUID.length() > 0) {
+					GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+					md5 = tDao.getMD5ForSeries(seriesInstanceUID);
+				}
+				if (studyInstanceUID != null && studyInstanceUID.length() > 0) {
+					GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+					md5 = tDao.getMD5ForStudy(studyInstanceUID, authorizedSiteData);
+				}
+				if (patientID != null && patientID.length() > 0) {
+					GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+					md5 = tDao.getMD5ForPatientId(patientID, collection, authorizedSiteData);
+				}
+				if ((collection != null && collection.length() > 0) && !(patientID != null && patientID.length() > 0)) {
+					md5 = MD5Cache.getMD5ForCollection(collection);
+					if (md5 == null) {
+						GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+						md5 = tDao.getMD5ForCollection(collection, authorizedSiteData);
+						MD5Cache.setMD5(collection, md5);
+					}
+				}
+			}
+			return Response.ok().type("text/plain")
     				.entity(md5)
     				.build();
 		} catch (Exception e) {
@@ -106,23 +105,6 @@ public class GetMD5Heirarchy extends getData{
 				.entity("Server was not able to process your request").build();
 	}
 	
-	private Date getDate(String date) {
-		Date returnValue=null;
-		
-		if (date==null)
-		{
-			return Calendar.getInstance().getTime();
-		}
-		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
-		try {
-		returnValue=format.parse(date);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String today = format.format(new Date());
-		System.out.println("today-"+today);
-		return returnValue;
-	}
+
 	
 }
