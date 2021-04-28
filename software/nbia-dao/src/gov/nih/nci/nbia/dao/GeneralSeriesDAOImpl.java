@@ -1449,8 +1449,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException{
-		String sqlString = "select studyInstanceUID from GeneralSeries where visibility=1 and patientId=:id " + 
-				"and project=:project and (";
+		String sqlString = "select gs.studyInstanceUID from GeneralSeries gs, Patient p  where "
+				+ " gs.patientPkId=p.id and "
+				+ " gs.visibility=1 and p.patientId=:id " + 
+				"and gs.project=:project and (";
 		boolean first=true;
 		for (SiteData sd : authorizedSites) {
 			if (first) {
@@ -1461,7 +1463,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			}
 		}
 		sqlString+=")";			
-		sqlString += " group by studyInstanceUID";
+		sqlString += " group by gs.studyInstanceUID";
 		String[] paramNames = {"id","project"};
 		String[] params = {patientId, project};
 		List<String> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, paramNames, params);
