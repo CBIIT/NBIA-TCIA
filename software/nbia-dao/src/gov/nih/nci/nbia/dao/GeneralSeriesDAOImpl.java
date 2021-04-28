@@ -1443,6 +1443,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				md5Concat+=item;
 			}
 		}
+		if (md5Concat.length()==0) {
+			return md5Concat;
+		}
 		return digest(md5Concat);
 	}
 	
@@ -1480,6 +1483,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				md5Concat+=item;
 			}
 		}
+		if (md5Concat.length()==0) {
+			return md5Concat;
+		}
 		return digest(md5Concat);
 	}
 	
@@ -1511,6 +1517,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				md5Concat+=item;
 			}
 		}
+		if (md5Concat.length()==0) {
+			return md5Concat;
+		}
 		return digest(md5Concat);
 	}	
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -1524,6 +1533,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString).setParameter("id", seriesInstanceUID).list();
 		for(String item:results) {
 			returnValue=returnValue+item;
+		}
+		if (returnValue.length()==0) {
+			return returnValue;
 		}
 		returnValue=digest(returnValue.toString());
 		return returnValue;
