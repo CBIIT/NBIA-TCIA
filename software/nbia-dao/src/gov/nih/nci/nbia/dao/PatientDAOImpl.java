@@ -108,14 +108,14 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(collection == null ? "":" and UPPER(gs.project)=?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project from Patient as p, GeneralSeries as gs " +
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
 				" where gs.visibility in ('1') and p.id = gs.patientPkId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection.toUpperCase()); // protect against sql injection
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
-
+	    fillInHuman(rs);
         return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -137,14 +137,14 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(date1 == null ? "":" and gs.maxSubmissionTimestamp>?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project from Patient as p, GeneralSeries as gs " +
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
 				" where gs.visibility in ('1') and p.id = gs.patientPkId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection.toUpperCase(), date1); // protect against sql injection
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
-
+	    fillInHuman(rs);
         return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -160,14 +160,14 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(modality == null ? "":" and gs.modality=?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
-		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project from Patient as p, GeneralSeries as gs " +
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
 				" where gs.visibility in ('1') and p.id = gs.patientPkId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection, modality); // protect against sql injection
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
-
+	    fillInHuman(rs);
         return rs;
 	}
 	/**
@@ -193,5 +193,14 @@ public class PatientDAOImpl extends AbstractDAO
 		}
 		System.out.println("&&&&&&&&&&&&where clause for project and group=" + where.toString());
 		return where;
+	}
+	private void fillInHuman(List<Object[]> patients) {
+		if (patients==null) return;
+		for (Object[] patient:patients) {
+			if (patient[6]==null) patient[6]="NO";
+			if (patient[7]==null) patient[7]="337915000";
+			if (patient[8]==null) patient[8]="Homo sapiens";
+		}
+		
 	}
 }

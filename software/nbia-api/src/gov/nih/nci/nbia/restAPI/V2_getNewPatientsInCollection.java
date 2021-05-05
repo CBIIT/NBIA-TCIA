@@ -33,7 +33,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/v2/NewPatientsInCollection")
 public class V2_getNewPatientsInCollection extends getData{
-	private static final String[] columns={"PatientId", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection"};
+	private static final String[] columns={"PatientId", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection","Phantom","SpeciesCode","SpeciesDescription"};
 	public final static String TEXT_CSV = "text/csv";
 
 	@Context private HttpServletRequest httpRequest;
