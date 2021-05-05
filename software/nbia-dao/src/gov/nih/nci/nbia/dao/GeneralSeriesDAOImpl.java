@@ -19,10 +19,13 @@ import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
+import java.util.concurrent.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +51,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StringType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -1439,14 +1443,19 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				md5Concat+=item;
 			}
 		}
+		if (md5Concat.length()==0) {
+			return md5Concat;
+		}
 		return digest(md5Concat);
 	}
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException{
-		String sqlString = "select studyInstanceUID from GeneralSeries where visibility=1 and patientId=:id " + 
-				"and project=:project and (";
+		String sqlString = "select gs.studyInstanceUID from GeneralSeries gs, Patient p  where "
+				+ " gs.patientPkId=p.id and "
+				+ " gs.visibility=1 and p.patientId=:id " + 
+				"and gs.project=:project and (";
 		boolean first=true;
 		for (SiteData sd : authorizedSites) {
 			if (first) {
@@ -1457,7 +1466,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			}
 		}
 		sqlString+=")";			
-		sqlString += " group by studyInstanceUID";
+		sqlString += " group by gs.studyInstanceUID";
 		String[] paramNames = {"id","project"};
 		String[] params = {patientId, project};
 		List<String> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, paramNames, params);
@@ -1473,6 +1482,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			if (item != null) {
 				md5Concat+=item;
 			}
+		}
+		if (md5Concat.length()==0) {
+			return md5Concat;
 		}
 		return digest(md5Concat);
 	}
@@ -1505,20 +1517,27 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				md5Concat+=item;
 			}
 		}
+		if (md5Concat.length()==0) {
+			return md5Concat;
+		}
 		return digest(md5Concat);
 	}	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException{
         String returnValue="";
-		String sqlString = "SELECT CONVERT(GROUP_CONCAT(md5_digest) USING utf8) as md5 " + 
-				"FROM (select md5_digest, series_instance_uid from general_image  where series_instance_uid=:id order by md5_digest) sorted  " + 
-				"GROUP BY series_instance_uid; ";
+		String sqlString = "SELECT md5_digest " + 
+				"FROM general_image  " + 
+				"where series_instance_uid=:id "+
+                " order by md5_digest ";
+		SQLQuery qu = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
 		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString).setParameter("id", seriesInstanceUID).list();
 		for(String item:results) {
-			if (item!=null) {
-			  returnValue=digest(item.toString());
-			}
+			returnValue=returnValue+item;
 		}
+		if (returnValue.length()==0) {
+			return returnValue;
+		}
+		returnValue=digest(returnValue.toString());
 		return returnValue;
 	}
 	private static String digest(String input) {

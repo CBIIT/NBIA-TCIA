@@ -195,13 +195,14 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		File f = new File(fileName);
 		if (f.exists() && !f.isDirectory()) {
 			int n = 0;
-			System.out.println("!!metadata file length = " + f.length());
+
 			if (f.length() > onlyHeaderSize) {
 				// pop up dialog
 
 				Object[] options = { "Download all", "Download missing series" };
 				n = JOptionPane.showOptionDialog(null,
-						"Metadata detacted for the same manifest file. Do you want to download all or only the data which is not in the metadata.csv?",
+						"Metadata detacted for the same manifest file. Do you want to download all or only the data which is not in the metadata.csv?\n"
+						+"Please note selecting \"Download All\" will delete all existing files in download directory first.",
 						"Existing Downloaded Data Notification", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE,
 						null, options, options[0]);
 			} else

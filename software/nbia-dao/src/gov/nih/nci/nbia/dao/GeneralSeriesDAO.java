@@ -111,4 +111,5 @@ public interface GeneralSeriesDAO  {
 	public String getMD5ForStudy(String studyInstanceUID,List<SiteData> authorizedSites)throws DataAccessException;
 	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException;
 	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException;
+
 }

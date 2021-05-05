@@ -75,19 +75,11 @@ public class SetQCVisibilityForDataAdmin extends getData{
 	
 
 		try {	
+			
 			   Authentication authentication = SecurityContextHolder.getContext()
 						.getAuthentication();
 				String user = (String) authentication.getPrincipal();
-                String project = projectSite.substring(0, projectSite.indexOf("/"));
-                String siteName =projectSite.substring( projectSite.indexOf("/")+2);
-                System.out.println("newQcStatus-"+newQcStatus);
-				NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				if (!sm.hasQaRoleForProjSite(user, project, siteName)) {
-					return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				} 
-				
-				String status = "Not submitted.";
+  			    String status = "Not submitted.";
 				String releasedYesNo=null;
 				if (released!=null&&released.equalsIgnoreCase("released")) {
 					releasedYesNo="Yes";
@@ -96,7 +88,7 @@ public class SetQCVisibilityForDataAdmin extends getData{
 				}
 				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
 				try {
-					List<Map<String,String>>results = qDao.findExistingStatus(project, siteName, seriesIdList);
+					List<Map<String,String>>results = qDao.findExistingStatus(null, null, seriesIdList);
 					if ((results != null) && (results.size() != seriesIdList.size())) {
 						status = "Some or all series need to be submitted into database first";
 						Response.status(412).entity(status).build();

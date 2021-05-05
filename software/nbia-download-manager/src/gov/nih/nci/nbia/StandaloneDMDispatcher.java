@@ -366,12 +366,12 @@ public class StandaloneDMDispatcher {
 //			sdm.launch(seriesList);
 //		}
 		//For upcoming release, if the server is not updated to version 4
-		else if ((manifestVersion.startsWith("3.")) && (serverVersion < 4.0)) {
+		else if ((manifestVersion.startsWith("3.")) && (serverVersion < 4.0)) {		
 			StandaloneDMV3 sdm = new StandaloneDMV3();
 			sdm.setKey(key);
 			sdm.launch(seriesList);
 		}
-		else if (manifestVersion.startsWith("3.")) {
+		else if (manifestVersion.startsWith("3.")) {			
 		if (1 == showUserAgreementTxt(getUserAgreementTxt()))
 			System.exit(0);
 		StandaloneDMV4 sdm = new StandaloneDMV4();
@@ -836,9 +836,13 @@ public class StandaloneDMDispatcher {
 				line = reader.readLine();
 			}
 			String data;
-			while ((data = reader.readLine()) != null) { // read and store only
-															// line
-				seriesList.add(data.replaceFirst(",", ""));
+			while ((data = reader.readLine()) != null) { 
+				// read and store only valid line
+				String seriesUid = 	data.replaceAll("[^.0-9]", "");
+				if (!(seriesUid.isEmpty())) {
+					seriesList.add(seriesUid);
+				}
+				//seriesList.add(data.replaceFirst(",", ""));
 			}
 
 		} catch (IOException e) {

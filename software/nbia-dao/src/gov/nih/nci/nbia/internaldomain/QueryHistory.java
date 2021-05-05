@@ -174,7 +174,7 @@ public class QueryHistory implements Serializable, PersistentQuery {
      * @param attr
      */
     public void addQueryAttribute(QueryAttributeWrapper attr, int sequenceNumber) {
-    	if (attr!=null||attr.getCriteriaClassName()!=null) {
+    	if (attr==null||attr.getCriteriaClassName()==null) {
     		return;
     	}
     	if (attr.getCriteriaClassName().equals("gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria")&&

@@ -142,7 +142,7 @@ public class StandaloneDMV4 extends StandaloneDM {
 
 	protected List<String> getSeriesInfo(List seriesList) {
 		int maxInGroup = 5000;
-//		int maxInGroup = 10;		
+//		int maxInGroup = 10;
 		int index = 0;
 		int count = 0;
 		List<String> seriesInfo = null;
@@ -182,8 +182,9 @@ public class StandaloneDMV4 extends StandaloneDM {
 	}
 	
 	protected List<String> getSeriesInfo(List seriesList, String username, String password) {
-		int maxInGroup = 5000;
-//		int maxInGroup = 10;		
+//		int maxInGroup = 5000;
+//		int maxInGroup = 10;
+		int maxInGroup = 2000;
 		int index = 0;
 		int count = 0;
 		List<String> seriesInfo = null;
@@ -404,7 +405,8 @@ public class StandaloneDMV4 extends StandaloneDM {
 			// Equalizer load balance switch
 			// httpClient.getParams().setParameter("http.socket.timeout", new
 			// Integer(12000));
-			httpClient.getParams().setParameter("http.socket.timeout", new Integer(120000));
+			//httpClient.getParams().setParameter("http.socket.timeout", new Integer(120000));
+			httpClient.getParams().setParameter("http.socket.timeout", new Integer(720000));
 			httpClient.getParams().setParameter("http.socket.receivebuffer", new Integer(16384));
 			httpClient.getParams().setParameter("http.tcp.nodelay", true);
 			httpClient.getParams().setParameter("http.connection.stalecheck", false);

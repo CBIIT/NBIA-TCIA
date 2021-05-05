@@ -319,7 +319,7 @@ public class StudyDAOImpl extends AbstractDAO
 		String hql = "select s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
 				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
 				"s.patient.ethnicGroup, gs.project, " +
-				"count(gs.id) "  +
+				"count(gs.id), s.longitudinalTemporalEventType, s.longitudinalTemporalOffsetFromEvent "  +
 				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
@@ -380,7 +380,7 @@ public class StudyDAOImpl extends AbstractDAO
 		String hql = "select distinct s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
 				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
 				"s.patient.ethnicGroup, gs.project, " +
-				"count(gs.id) "  +
+				"count(gs.id), s.longitudinalTemporalEventType, s.longitudinalTemporalOffsetFromEvent "  +
 				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = null;
