@@ -63,8 +63,7 @@ export class ToolTitleComponent implements OnInit{
     }
 
     onHomeMenuClick() {
-        // window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken(), '_blank' );
-        window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken() );
+        window.open( Properties.API_SERVER_URL + location.pathname + '?accessToken=' + this.accessTokenService.getAccessToken() + ':' + this.accessTokenService.getRefreshToken() + ':' + this.accessTokenService.getExpiresIn() );
     }
 
     onPreferencesClick() {
