@@ -201,9 +201,9 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 
 				Object[] options = { "Download all", "Download missing series" };
 				n = JOptionPane.showOptionDialog(null,
-						"Metadata detacted for the same manifest file. Do you want to download all or only the data which is not in the metadata.csv?\n"
-						+"Please note selecting \"Download All\" will delete all existing files in download directory first.",
-						"Existing Downloaded Data Notification", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE,
+						"Some of this data has already been downloaded. Do you want to download only the missing data or all of the data?\n"
+						+"Note that selecting \"Download all\" overwrites the existing download folder and data with this new download.\n",
+						"Data Partially Downloaded Notification", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE,
 						null, options, options[0]);
 			} else
 				return null;
@@ -607,7 +607,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		    if (!licenseName.equals("null")) {
 			    String fileName = outputDir +File.separator
 						+ System.getProperty("databasketId").replace(".tcia", "")
-						+ File.separator + collection + File.separator + "license.txt";
+						+ File.separator + collection + File.separator + "LICENSE";
 		    
 				File file = new File(fileName);
 	

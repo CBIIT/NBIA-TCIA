@@ -866,7 +866,7 @@ public class DataRetrieverCLI {
 	private void createLicenseFile(String rootDir, String collection, String licenseName, String licenseUrl) {
 
 		if (!licenseName.equals("null")) {
-			String fileName = rootDir + File.separator + collection + File.separator + "license.txt";
+			String fileName = rootDir + File.separator + collection + File.separator + "LICENSE";
 
 			File file = new File(fileName);
 			if (!file.exists()) {
