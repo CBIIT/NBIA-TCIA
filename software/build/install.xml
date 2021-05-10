@@ -193,6 +193,7 @@ L-->
 		<!--copy file="${basedir}/install.properties" tofile="${basedir}/nbia.properties"/-->
 		<copy file="${basedir}/install.properties" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/nbia.properties"/>
 		<copy file="${common.resources.dir}/tomcat/userAgreement.txt" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/userAgreement.txt"/>
+		<copy file="${common.resources.dir}/tomcat/UIDNames.properties" tofile="${gov.nih.nci.ncia.tomcat.home}/lib/UIDNames.properties"/>
 	    <!--war destfile="${basedir}/nbia-wars/ncia.war" update="true">
 	    	<zipfileset dir="${basedir}" includes="**/nbia.properties" prefix="WEB-INF/classes"/>
 			<zipfileset dir="${basedir}"  prefix="WEB-INF/classes"/>
