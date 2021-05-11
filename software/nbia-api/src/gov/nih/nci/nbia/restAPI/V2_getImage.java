@@ -84,7 +84,7 @@ public class V2_getImage extends getData {
 //					System.out.println("Done with querying the file name list and start to zip and stram--"
 //							+ sdf.format(qetimestamp));
 					int counter = 0;
-					zip.putNextEntry(new ZipEntry("LICENSE.txt"));
+					zip.putNextEntry(new ZipEntry("LICENSE"));
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
 					for (String filename : fileNames) {
@@ -128,7 +128,7 @@ public class V2_getImage extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-				zip.putNextEntry(new ZipEntry("LICENSE.txt"));
+				zip.putNextEntry(new ZipEntry("LICENSE"));
 				IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 				zip.closeEntry();
 				try {

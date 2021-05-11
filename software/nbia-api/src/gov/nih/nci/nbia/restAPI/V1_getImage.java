@@ -87,7 +87,7 @@ public class V1_getImage extends getData {
 //					System.out.println("Done with querying the file name list and start to zip and stram--"
 //							+ sdf.format(qetimestamp));
 					int counter = 0;
-					zip.putNextEntry(new ZipEntry("LICENSE.txt"));
+					zip.putNextEntry(new ZipEntry("LICENSE"));
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
 					for (String filename : fileNames) {
@@ -135,7 +135,7 @@ public class V1_getImage extends getData {
 				try {
 					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
 					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
-					zip.putNextEntry(new ZipEntry("LICENSE.txt"));
+					zip.putNextEntry(new ZipEntry("LICENSE"));
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
 					for (ImageDTO2 imageResult : imageResults) {

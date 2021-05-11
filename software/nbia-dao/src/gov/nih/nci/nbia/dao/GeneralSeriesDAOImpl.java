@@ -1523,7 +1523,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		return digest(md5Concat);
 	}	
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException{
+	public synchronized String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException{
         String returnValue="";
 		String sqlString = "SELECT md5_digest " + 
 				"FROM general_image  " + 
