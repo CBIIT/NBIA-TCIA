@@ -1,7 +1,9 @@
 # nbia-admin
 
 ## TODO
-
+- [ ] When "Change QC Status" is collapsed, make DICOM data taller.
+- [ ] Progress bar for cinemode does not match the number (The number is)
+- [ ] Less than, equals, etc in display query
 - [ ] Update pager when query changes (it changes if you click it) Change the query around to reproduce
 - [ ] Circular dependency
 

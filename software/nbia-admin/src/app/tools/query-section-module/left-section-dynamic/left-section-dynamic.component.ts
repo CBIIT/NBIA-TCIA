@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
 import { Properties } from '@assets/properties';
+import { Consts } from '@app/constants';
 
 @Component( {
     selector: 'nbia-left-section-dynamic',
@@ -72,16 +73,23 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private dynamicQueryCriteriaService: DynamicQueryCriteriaService ) {
+    constructor( private dynamicQueryCriteriaService: DynamicQueryCriteriaService ){
     }
 
-    ngOnInit() {
+    ngOnInit(){
         this.dynamicQueryCriteriaService.addWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
                 // Add sequenceNumber here
-                data['sequenceNumber'] =  Properties.dynamicQueryCriteriaSequenceNumber++;
-               // console.log('MHL LeftSectionDynamicComponent CALLING addQueryCriteria: ', data);
-                this.addQueryCriteria( data );
+                data['sequenceNumber'] = Properties.dynamicQueryCriteriaSequenceNumber++;
+
+                //
+                if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
+                    if( data['dynamicQueryCriteriaHeading'] === 'Collection'){
+                        this.addQueryCriteria( data );
+                    }
+                }else{
+                    this.addQueryCriteria( data );
+                }
             } );
 
         this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -89,16 +97,20 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
                 this.deleteQueryCriteria( data );
             } );
 
-/*
-        this.dynamicQueryCriteriaService.addWidget( this.testData2 );
-        this.dynamicQueryCriteriaService.addWidget( this.testData0 );
-        this.dynamicQueryCriteriaService.addWidget( this.testData1 );
-*/
+        /*
+                this.dynamicQueryCriteriaService.addWidget( this.testData2 );
+                this.dynamicQueryCriteriaService.addWidget( this.testData0 );
+                this.dynamicQueryCriteriaService.addWidget( this.testData1 );
+        */
 
     }
 
-    addQueryCriteria( qCriteriaData ) {
-       // console.log('MHL LeftSectionDynamicComponent addQueryCriteria: ', qCriteriaData);
+    /**
+     * Add to top of list.
+     *
+     * @param qCriteriaData
+     */
+    addQueryCriteria( qCriteriaData ){
         this.queryCriteriaData.reverse();
         this.queryCriteriaData.push( qCriteriaData );
         this.queryCriteriaData.reverse();
@@ -111,8 +123,8 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
      *
      * @param qCriteriaData
      */
-    deleteQueryCriteria( qCriteriaData ) {
-        for( let f = 0; f < this.queryCriteriaData.length; f++){
+    deleteQueryCriteria( qCriteriaData ){
+        for( let f = 0; f < this.queryCriteriaData.length; f++ ){
             if( (this.queryCriteriaData[f]['criteriaType'] === qCriteriaData['criteriaType']) && (this.queryCriteriaData[f]['inputType'] === qCriteriaData['inputType']) ){
                 this.queryCriteriaData.splice( f, 1 );
             }
@@ -120,7 +132,7 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     }
 
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

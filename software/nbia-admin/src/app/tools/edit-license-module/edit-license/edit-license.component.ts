@@ -7,8 +7,9 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { UtilService } from '@app/admin-common/services/util.service';
-import { Consts } from '@app/constants';
+import { Consts, TokenStatus } from '@app/constants';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 
 
 @Component( {
@@ -82,9 +83,10 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
 
     constructor(
         private apiService: ApiService,
+        private accessTokenService: AccessTokenService,
         private utilService: UtilService,
         private preferencesService: PreferencesService
-    ) {
+    ){
     }
 
     /**
@@ -93,12 +95,12 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
      *
      * @param i the index in the licData array of the selected license.
      */
-    onLicenseDropdownClick( i ) {
+    onLicenseDropdownClick( i ){
         this.currentLic = i;
         this.commercialTest = this.licData[this.currentLic]['commercialUse'];
     }
 
-    ngOnInit() {
+    ngOnInit(){
         // Get the user's role
         this.apiService.updatedUserRolesEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
@@ -115,7 +117,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
                 }
             } );
 
-               this.apiService.getRoles();
+        this.apiService.getRoles();
 
         // Get the list of licenses and their associated data.
         this.apiService.collectionLicensesResultsEmitter
@@ -140,7 +142,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
                     'commercialUse'
                     ];
             } );
-        this.apiService.getCollectionLicenses();
+
 
         // A save has completed, we must reread the list from the server to be sure any new license that where saved, now have their ID.
         this.apiService.submitCollectionLicenseResultsEmitter
@@ -182,13 +184,24 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+
+        this.initLicenseList();
+    }
+
+    async initLicenseList(){
+        // If the user has not logged in yet, we have wait for the access token
+        while( this.accessTokenService.getAccessToken() === TokenStatus.NO_TOKEN_YET ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+        this.apiService.getCollectionLicenses();
+
     }
 
     /**
      * Create a new license object and add it to the beginning of licData.
      * An id of -1 indicates that this is a new record to be added rather than updated.
      */
-    onLicEditNewClick() {
+    onLicEditNewClick(){
         // Save so we can restore if the user cancels.
         this.currentLicHold = this.currentLic;
 
@@ -210,7 +223,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         this.commercialTest = this.commercialLicAllowedDefault;
     }
 
-    onLicEditSaveClick() {
+    onLicEditSaveClick(){
         this.save();
         this.isEditing = false;
         this.isChanged = false;
@@ -222,11 +235,11 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
     /**
      * Hides the cancel button and save the new license will stay
      */
-    onLicEditAddClick() {
+    onLicEditAddClick(){
         this.onLicEditSaveClick();
     }
 
-    onLicEditCancelClick() {
+    onLicEditCancelClick(){
         this.isEditing = false;
         this.licData.shift();
         // If they cancel the license, rest the current one to the one they where previously looking at.
@@ -236,7 +249,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         this.onLicChange();
     }
 
-    copyLicArray( licArray ) {
+    copyLicArray( licArray ){
         let tempLicArray = [];
         for( let lic of licArray ){
             tempLicArray.push( this.copyLic( lic ) );
@@ -244,7 +257,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         return tempLicArray;
     }
 
-    copyLic( lic ) {
+    copyLic( lic ){
         return {
             shortName: lic.shortName,
             longName: lic.longName,
@@ -254,7 +267,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         };
     }
 
-    shortNameKeypress( e ) {
+    shortNameKeypress( e ){
         if(
             this.licData[this.currentLic]['shortName'].length ===
             this.shortNameMaxLen &&
@@ -265,7 +278,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         }
     }
 
-    shortNameKeyup( e ) {
+    shortNameKeyup( e ){
         if(
             this.licData[this.currentLic]['shortName'].length <=
             this.shortNameMaxLen &&
@@ -275,7 +288,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         }
     }
 
-    onShortNameChange() {
+    onShortNameChange(){
         if(
             this.licData[this.currentLic]['shortName'].length <=
             this.shortNameMaxLen
@@ -285,11 +298,11 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         this.onLicChange();
     }
 
-    onLicChange() {
+    onLicChange(){
         this.isChanged = this.haveChanges();
     }
 
-    haveChanges() {
+    haveChanges(){
         let len = this.licData.length;
         let lenChange = this.licChangeDataHold.length;
         if( len !== lenChange ){
@@ -308,7 +321,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
      * @param l0
      * @param l1
      */
-    compareLic( l0, l1 ): boolean {
+    compareLic( l0, l1 ): boolean{
         let ret = !(
             l0['shortName'] !== l1['shortName'] ||
             l0['longName'] !== l1['longName'] ||
@@ -319,7 +332,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         return ret;
     }
 
-    save() {
+    save(){
         let len = this.licData.length;
         for( let i = 0; i < len; i++ ){
             // Is it new?
@@ -350,7 +363,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
      * @param id
      * @param licArray
      */
-    getLicIndexById( id, licArray ) {
+    getLicIndexById( id, licArray ){
         let len = licArray.length;
         for( let i = 0; i < len; i++ ){
             if( licArray[i]['id'] === id ){
@@ -360,7 +373,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         return -1;
     }
 
-    addLic( i ) {
+    addLic( i ){
         let submitData =
             'longName=' +
             this.licData[i]['longName'].replace( '%', '%25' ) +
@@ -374,7 +387,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         this.apiService.doSubmit( Consts.TOOL_EDIT_LICENSE, submitData );
     }
 
-    saveLic( i ) {
+    saveLic( i ){
         let submitData =
             'longName=' +
             this.licData[i]['longName'].replace( '%', '%25' ) +
@@ -389,7 +402,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         this.apiService.doSubmit( Consts.TOOL_EDIT_LICENSE, submitData );
     }
 
-    onLicEditDeleteClick() {
+    onLicEditDeleteClick(){
         this.showConfirmDelete = true;
         // TODO Explain this
         this.popupWidth = Math.max(
@@ -399,7 +412,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         this.confirmDeleteLeft = window.innerWidth / 2 - this.popupWidth * 6;
     }
 
-    onLicEditConfirmDeleteClick() {
+    onLicEditConfirmDeleteClick(){
         this.showConfirmDelete = false;
         this.apiService.doSubmit(
             Consts.SUBMIT_DELETE_COLLECTION_LICENSES,
@@ -407,26 +420,26 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
         );
     }
 
-    onLicEditCancelDeleteClick() {
+    onLicEditCancelDeleteClick(){
         this.showConfirmDelete = false;
         this.editLicErrorNote = '';
     }
 
-    onCommercialRadioChange( i ) {
+    onCommercialRadioChange( i ){
         this.licData[this.currentLic].commercialUse = i === 0;
         this.onLicChange();
     }
 
     /////////////////////////
-    onDragBegin( e ) {
+    onDragBegin( e ){
         this.handleMoving = true;
     }
 
-    onMoveEnd( e ) {
+    onMoveEnd( e ){
         this.handleMoving = false;
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

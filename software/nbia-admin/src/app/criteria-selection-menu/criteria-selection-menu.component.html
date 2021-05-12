@@ -21,7 +21,6 @@
         </div>
     </div>
 
-
     <div style="padding-top: 20px;" class="card-body criteria-selection-menu-panel-body">
         <div  class="criteria-selection-menu-panel-heading-scroller pl-1 pt-1">
             <!-- Each Criteria -->
@@ -58,6 +57,17 @@
                              class="criteria-selection-menu-option"
                         >
 
+                            <!-- This version disables entire criteria if any of its sub sections is selected. -->
+                            <input *ngIf="crit['criteriaObjects'].length > 1"
+                                   class="mr-1 p-0"
+                                   type="radio"
+                                   id="{{crit['parentMenuName']}}-{{i}}"
+                                   name="{{crit['parentMenuName']}}"
+                                   [checked]="option[n] === i && ( (! and[n]) || ! (or[n]) )"
+                                   (click)="onCriteriaOptionRadioClick( i, n )"
+                                   [disabled]="elementsUsed[n][i] || and[n] || or[n]"
+                            >
+                            <!--
                             <input *ngIf="crit['criteriaObjects'].length > 1"
                                    class="mr-1 p-0"
                                    type="radio"
@@ -67,12 +77,12 @@
                                    (click)="onCriteriaOptionRadioClick( i, n )"
                                    [disabled]="elementsUsed[n][i]"
                             >
-
+                            -->
 
                             <label
                                 class="m-0 p-0"
                                 [ngClass]="{
-                                    'disabled-text': elementsUsed[n][i]
+                                    'disabled-text': elementsUsed[n][i] || and[n] || or[n]
                                 }"
 
                                 [attr.for]="crit['parentMenuName'] + '-' + i"

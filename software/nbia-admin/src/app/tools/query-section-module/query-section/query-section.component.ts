@@ -78,8 +78,12 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
     }
 
     onTabClick(i){
+
+/* We will only have one type of Search (tab) visible at a time.
         this.currentTab = i;
         this.querySectionService.setSearchType(this.currentTab);
+*/
+
     }
 
     onAddCriteriaClick(){

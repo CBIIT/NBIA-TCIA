@@ -17,23 +17,23 @@
 
     <!-- ----------  The results and editing section on the right  ---------- -->
     <div class="container-fluid data-section">
-
         <!-- Display Query -->
         <div class="row query-display-row">
             <div class="display-query-wrapper">
 
                 <!-- Display Query for Dynamic Search -->
                 <nbia-display-dynamic-query
-                    *ngIf="searchType === 1"
                     [currentTool]="consts.TOOL_PERFORM_QC"
                 >
                 </nbia-display-dynamic-query>
 
-                <!-- Display Query for Criteria Search -->
+                <!-- Display Query for Criteria Search  TODO This is the old way, we shouldn't need this anymore -->
+<!--
                 <nbia-display-query
                     *ngIf="searchType === 0"
                     [currentTool]="consts.TOOL_PERFORM_QC"
                 ></nbia-display-query>
+-->
 
             </div>
         </div>

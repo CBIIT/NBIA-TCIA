@@ -52,7 +52,9 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
                  private accessTokenService: AccessTokenService, private brandingService: BrandingService,
                  private persistenceService: PersistenceService, private commonService: CommonService,
                  private configurationService: ConfigurationService ) {
-        this.configurationService.initConfiguration();
+
+                // Read and set configuration from assets/configuration file
+                this.configurationService.initConfiguration();
     }
 
     async ngOnInit() {

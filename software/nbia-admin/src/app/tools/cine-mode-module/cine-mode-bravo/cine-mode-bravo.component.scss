@@ -17,7 +17,7 @@ $cineModeProgressWidth: 600px;
 $cineModeProgressHeight: 100px;
 $cineModeSeriesDataHeight: 200px;
 
-.cine-mode-div-with-dicom {
+.cine-mode-div-with-dicom{
     z-index: 4;
     position: absolute;
     width: $cineModeWidth;
@@ -30,78 +30,78 @@ $cineModeSeriesDataHeight: 200px;
     overflow: auto;
 }
 
-.heading-table {
+.heading-table{
     width: 100%;
 }
 
-.grow {
+.grow{
     width: 100%;
 }
 
-.scroller-div {
+.scroller-div{
     // overflow: auto; // TODO
 }
 
-.cine-title-table {
+.cine-title-table{
     border: solid #800 3px;
 }
 
-.cine-description-td {
+.cine-description-td{
     white-space: nowrap;
 }
 
-.load-progress-bar {
+.load-progress-bar{
     width: 300px;
     border: solid #347391 3px;
     height: 28px;
 }
 
-.load-progress-bar-text {
+.load-progress-bar-text{
     color: #13526f;
     font-weight: bold;
     font-size: 14px;
 }
 
-.series-section-div {
+.series-section-div{
     border: solid 1px $data-table-header-border-color;
     margin: 4px 4px 4px 0;
     padding: 4px;
 }
 
-.section-div {
+.section-div{
     border: solid 1px $data-table-header-border-color;
     margin: 4px;
     padding: 4px 0 0 4px;
 }
 
-.series-data-header {
+.series-data-header{
     background-color: $data-table-header-background-color;
     margin: 2px;
 }
 
-.series-data-data {
+.series-data-data{
     border: solid #e7e7e7 1px;
     margin: 2px;
     padding: $data-table-cell-padding;
 }
 
-.image {
+.image{
     height: $cineModeImageHeight;
     width: $cineModeImageWidth;
     padding: 0;
     margin: 0;
 }
 
-.cine-mode-slider {
+.cine-mode-slider{
     width: $cineModeImageWidth;
 }
 
-.cine-mode-image-number-input {
+.cine-mode-image-number-input{
     width: 40px;
     border: solid 1px #ccc;
 }
 
-.cine-mode-frame-rate-number {
+.cine-mode-frame-rate-number{
     margin: 0;
     padding-bottom: 0;
     height: 26px;
@@ -110,78 +110,83 @@ $cineModeSeriesDataHeight: 200px;
     border-style: hidden;
 }
 
-.cine-mode-frame-rate-number-text {
+.cine-mode-frame-rate-number-text{
     font-size: 10px;
     height: 12px;
     width: 40px;
 }
 
-.cine-mode-frame-rate-table {
+.cine-mode-frame-rate-table{
     float: right;
     border: solid 1px #ccc;
 }
 
-.image-count-display {
+.image-count-display{
     font-size: 10pt;
 }
 
-.current-image-input {
+.current-image-input{
     padding: 6px;
 }
 
-.show-dicom-checkbox {
+.show-dicom-checkbox{
     font-size: 12pt;
     float: right;
 }
 
-.cine-mode-button-icon {
+.cine-mode-button-icon{
     height: 18px;
     padding: 0;
     margin-right: 10px;
 }
 
-.play-back-image {
+.play-back-image{
     height: 25px;
     padding: 3px 0 3px 0;
 }
 
-.cine-mode-dicom-tr {
+.cine-mode-dicom-tr{
     height: 30px;
 }
 
 // The + 80px extends the dicom data to go down as far as the Image plus play video control buttons.
-.dicom-scroll-area {
-    height: calc(#{$cineModeImageHeight} + 80px);
+.dicom-scroll-area{
+    // height: calc(#{$cineModeImageHeight} + 80px);
+    height: 284px;
     padding-bottom: 0;
     margin-bottom: 0;
     overflow-y: auto;
 }
+.dicom-scroll-area-long{
+    @extend .dicom-scroll-area;
+    height: 552px;
+}
 
-.dicom-data-table {
+.dicom-data-table{
     width: 100%;
 }
 
-.section-heading {
+.section-heading{
     color: $heading-text-color;
     padding: 7px 0 0 0;
 }
 
-.cine-panel-heading {
+.cine-panel-heading{
     // .cursor-draggable isn't working for me, this is a workaround.
-    &:hover {
+    &:hover{
         cursor: grab;
     }
 
-    &:active {
+    &:active{
         cursor: grabbing;
     }
 }
 
-.image-viewer-td {
+.image-viewer-td{
     width: $cineModeImageTdWidth;
 }
 
-.cine-mode-progress-bar {
+.cine-mode-progress-bar{
     z-index: 30;
     width: $cineModeProgressWidth;
     height: $cineModeProgressHeight;
@@ -193,7 +198,7 @@ $cineModeSeriesDataHeight: 200px;
 }
 
 // This was part of a failed attempt to have a full size toggle. We will revisit when time permits.
-.full-size-div {
+.full-size-div{
     width: 100%;
     height: 100%;
 }

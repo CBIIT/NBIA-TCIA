@@ -6,6 +6,7 @@ import { DisplayQueryModule } from '../display-query-module/display-query.module
 import { SearchResultsSectionModule } from '../search-results-section-module/search-results-section.module';
 import { DeletionBulkOperationsComponent } from '@app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component';
 import { FormsModule } from '@angular/forms';
+import { DisplayDynamicQueryModule } from '@app/tools/display-dynamic-query/display-dynamic-query.module';
 
 
 @NgModule( {
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
         DisplayQueryModule,
         SearchResultsSectionModule,
         FormsModule,
+        DisplayDynamicQueryModule,
     ]
 } )
 

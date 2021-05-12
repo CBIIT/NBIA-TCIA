@@ -79,15 +79,16 @@ export class ApiService{
     }
 
     async init() {
-        // Wait until we are sure we have the access token (if there is one).
+        // Wait until we are sure we have the access token from the parameters (if there is one).
         while( !this.parameterService.haveParameters() ){
             await this.utilService.sleep( Consts.waitTime );
         }
-        this.update();
 
-        while( this.accessTokenService.getAccessToken() === undefined ){
+        // If we still don't have an access token, wait here for the user to login.
+        while( ( this.accessTokenService.getAccessToken() === undefined ) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
+        this.update();
         this.getWikiUrlParam();
     }
 
@@ -529,7 +530,6 @@ export class ApiService{
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN
             ){
-            // console.log( 'MHL 003 getWikiUrlParam getAccessTokenStatus: ', this.accessTokenService.getAccessTokenStatus() );
             await this.utilService.sleep( Consts.waitTime );
         }
         this.doGet( Consts.GET_CONFIG_PARAMS ).subscribe(
@@ -696,7 +696,6 @@ export class ApiService{
     // @TODO Explain
     async sendCollectionSitesAndDescriptions() {
         await this.utilService.sleep( Consts.waitTime );
-
         this.collectionSitesAndDescriptionEmitter.emit( this.collectionSitesAndDescriptions );
     }
 
@@ -730,14 +729,6 @@ export class ApiService{
                         while( this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ){
                             await this.utilService.sleep( Consts.waitTime );
                         }
-/*
-                        if( this.accessTokenService.getAccessTokenStatus() === TokenStatus.GOOD_TOKEN ){
-                            console.log( 'MHL 1002 Got a good token on the 2nd try: ', this.accessTokenService.getAccessTokenStatus() );
-
-                        }else{
-                            console.log( 'MHL 1002b ERROR BAD token 2nd try: ', this.accessTokenService.getAccessTokenStatus() );
-                        }
-*/
 
                         this.doGet( Consts.GET_USER_ROLES ).subscribe(
                             getUserRoles0 => {
@@ -823,7 +814,6 @@ export class ApiService{
 
 
     /**
-     * @TODO react to not having a accessToken.
      *
      * @param queryType
      */
@@ -832,7 +822,7 @@ export class ApiService{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
-            console.log( '001 doGet: ' + curl );
+            console.log( curl );
         }
 
         let headers = new HttpHeaders( {
@@ -861,7 +851,7 @@ export class ApiService{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
-            console.log( '001 doGet: ' + curl );
+            console.log( curl );
         }
 
         let headers = new HttpHeaders( {
@@ -957,7 +947,7 @@ export class ApiService{
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -k \'' + getUrl + '\'';
-            console.log( '003 doGet: ' + curl );
+            console.log( curl );
         }
 
         let headers = new HttpHeaders( {

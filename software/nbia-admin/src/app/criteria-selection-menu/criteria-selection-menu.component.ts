@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
 import { CommonService } from '@app/admin-common/services/common.service';
 import { CriteriaSelectionMenuService } from '@app/criteria-selection-menu/criteria-selection-menu.service';
@@ -15,6 +15,7 @@ import { UtilService } from '@app/admin-common/services/util.service';
     styleUrls: ['./criteria-selection-menu.component.scss']
 } )
 export class CriteriaSelectionMenuComponent implements OnInit, OnDestroy{
+    @Input() currentTool;
 
     // These are for the radio buttons on the right for each criteria
     and = [];
@@ -58,6 +59,13 @@ this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
                     for( let n = 0; n < this.criteriaData.length; n++ ){
                         for( let i = 0; i < this.criteriaData[n]['criteriaObjects'].length; i++ ){
 
+
+                            // If the current tool is "Approve Deletions", do not Require "QC Status" criteria
+                            if( (this.currentTool === Consts.TOOL_APPROVE_DELETIONS) && (this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType'] === 'qcstatus')){
+                              //  console.log('MHL 100 this.criteriaData[' +  n + ']: ', this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType']);
+                              //  console.log('MHL 101 this.criteriaData[' +  n + ']: ', this.criteriaData[n]['criteriaObjects'][i]);
+                            } else
+
                             // Required criteria
                             if( (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired'] !== undefined) && (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired']) ){
                                 // Add the widget
@@ -69,6 +77,9 @@ this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
                                 this.requiredCriteriaData.push( this.criteriaData[n]['criteriaObjects'][i]['configuration'] );
                             }
                             // END if Required criteria
+
+
+
                         }
                     }
 this.criteriaSelectionMenuService.setRequiredCriteriaData( this.requiredCriteriaData );

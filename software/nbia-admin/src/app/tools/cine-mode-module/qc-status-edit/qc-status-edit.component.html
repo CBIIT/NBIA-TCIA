@@ -4,8 +4,7 @@
 <!---------------------------------------------------------------------------------------->
 
 <!-- Row of radio buttons across the top with each of the possible statuses. -->
-<div class="qc-status-outer-div">
-    <div class="bulk-qc-status-table-frame">
+<div class="qc-status-outer-div pb-0 mb-0">
         <div class="container-fluid">
             <div class="row">
                 <!-- qcStatuses is the list of possible statuses sent from the server -->
@@ -36,7 +35,44 @@
             </div>
         </div>
         <!-- END container-fluid -->
+
+
+    <div class="ml-1 mt-0 mb-0 p-0">
+        <span>
+            <button
+                class="btn nbia-button qc-status-update-button"
+                [ngClass]="{
+                    'nbia-button-disabled': visible < 0,
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+                [disabled]="visible < 0"
+                type="button"
+                (click)="onQcUpdateNextClick()"
+            >
+                Update / Next Series
+            </button>
+        </span>
+        <span>
+            <button
+                class="btn nbia-button qc-status-update-button"
+                [ngClass]="{
+                    'font-extra-small': currentFont === '0',
+                    'font-small': currentFont === '1',
+                    'font-medium': currentFont === '2',
+                    'font-large': currentFont === '3'
+                }"
+                type="button"
+                (click)="onQcSkipNextClick()"
+            >
+                Skip / Next Series
+            </button>
+        </span>
     </div>
+
+
 
     <!-- Second row: "Batch Number", "Confirmed as Complete", and "Released". -->
     <div class="bulk-qc-status-table-frame">
@@ -161,52 +197,12 @@
                 </td>
             </tr>
         </table>
-        <table width="100%">
-            <tr>
-                <td colspan="3">
+                <div>
                     <textarea
                         class="qc-status-edit-log-text"
                         [(ngModel)]="logText"
                         placeholder="Enter change log here..."
                     ></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <span>
-                        <button
-                            class="btn nbia-button qc-status-update-button"
-                            [ngClass]="{
-                                'nbia-button-disabled': visible < 0,
-                                'font-extra-small': currentFont === '0',
-                                'font-small': currentFont === '1',
-                                'font-medium': currentFont === '2',
-                                'font-large': currentFont === '3'
-                            }"
-                            [disabled]="visible < 0"
-                            type="button"
-                            (click)="onQcUpdateNextClick()"
-                        >
-                            Update / Next Series
-                        </button>
-                    </span>
-                    <span>
-                        <button
-                            class="btn nbia-button qc-status-update-button"
-                            [ngClass]="{
-                                'font-extra-small': currentFont === '0',
-                                'font-small': currentFont === '1',
-                                'font-medium': currentFont === '2',
-                                'font-large': currentFont === '3'
-                            }"
-                            type="button"
-                            (click)="onQcSkipNextClick()"
-                        >
-                            Skip / Next Series
-                        </button>
-                    </span>
-                </td>
-            </tr>
-        </table>
+                </div>
     </div>
 </div>

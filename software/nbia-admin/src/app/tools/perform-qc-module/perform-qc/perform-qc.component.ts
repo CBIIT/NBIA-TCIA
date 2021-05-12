@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------------------
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Consts } from '@app/constants';
+import { Consts, TokenStatus } from '@app/constants';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { takeUntil } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { QuerySectionService } from '../../query-section-module/services/query-s
 import { Subject } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
 import { Properties } from '@assets/properties';
+import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 
 
 @Component( {
@@ -38,6 +39,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
     constructor(
         private apiService: ApiService,
+        private accessTokenService: AccessTokenService,
         private utilService: UtilService,
         private querySectionService: QuerySectionService,
         private loadingDisplayService: LoadingDisplayService
@@ -64,7 +66,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
                     this.roleIsGood = true;
                 }
             } );
-        this.apiService.getRoles();
+
 
         // Get updated query criteria when user query on the left changes and (re)runs the query.
         this.querySectionService.updatedQueryEmitter
@@ -93,7 +95,19 @@ export class PerformQcComponent implements OnInit, OnDestroy{
                 this.showBulkOperations =
                     data[0] !== Consts.NO_SEARCH && data.length > 0;
             } );
+
+        this.init();
     }
+
+    async init(){
+        // Make sure we are logged in
+        while( ( this.accessTokenService.getAccessToken() === undefined ) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+        this.apiService.getRoles();
+    }
+
+
 
     // Run the query
     doPerformQcSearch() {

@@ -185,7 +185,7 @@
             <!-- Search/filter List button (Red magnifying glass)                      -->
             <!-- This is just the button, the Filter text input, etc, is farther below -->
             <span *ngIf="queryCriteriaData['dynamicQueryCriteriaSearchable']" class="clicker"
-                  title="{{ searchToolTip }}" (click)="onSearchGlassClick()">
+                  title="Filter/Search" (click)="onSearchGlassClick()">
                 <img [ngClass]="{
                         'dynamic-query-list-button-icon-extra-small':  currentFont === '0',
                         'dynamic-query-list-button-icon-small': currentFont === '1',

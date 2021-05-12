@@ -103,6 +103,19 @@ $tab-selected-border-color: #ddd;
     width: $left-section-width-large - $query-section-right-pad;
 }
 
+.single-tab{
+    position: relative;
+    top: 2px;
+    color: #000 !important;
+    background-color: #fff !important;
+    border-top: solid #cfcfcf 1px !important;
+    border-left: solid #cfcfcf 1px !important;
+    border-right: solid #cfcfcf 1px !important;
+    border-top-left-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+    cursor: default !important;
+}
+
 .tab{
     padding: 8px 8px 8px 8px;
     height: 100%;

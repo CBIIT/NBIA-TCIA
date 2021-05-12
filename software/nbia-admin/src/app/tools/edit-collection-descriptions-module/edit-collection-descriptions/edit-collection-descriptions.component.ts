@@ -8,10 +8,11 @@ import { UtilService } from '@app/admin-common/services/util.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { Consts } from '@app/constants';
+import { Consts, TokenStatus } from '@app/constants';
 import { QuerySectionService } from '../../query-section-module/services/query-section.service';
 import { Properties } from '@assets/properties';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 
 
 @Component( {
@@ -149,6 +150,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     constructor(
         private apiService: ApiService,
+        private accessTokenService: AccessTokenService,
         private utilService: UtilService,
         private querySectionService: QuerySectionService,
         private preferencesService: PreferencesService
@@ -174,7 +176,6 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
                     this.textTrailer = this.htmlContent;
                 }
             } );
-        this.apiService.getCollectionAndDescriptions();
 
         // When a Collection is selected from the search criteria on the left, it is received here.
         this.querySectionService.updateCollectionEmitter
@@ -197,7 +198,6 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
                     this.roleIsGood = true;
                 }
             } );
-        this.apiService.getRoles();
 
         // Get the list of licenses and their associated data.
         this.apiService.collectionLicensesResultsEmitter
@@ -210,7 +210,6 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
                         .localeCompare( b['longName'].toUpperCase() )
                 );
             } );
-        this.apiService.getCollectionLicenses();
 
         // Get the font size.
         this.preferencesService.setFontSizePreferencesEmitter
@@ -221,8 +220,22 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
         // Get the initial font size.
         this.currentFont = this.preferencesService.getFontSize();
+
+        // Init has things that need to wait until we are sure we have an access token.
+        this.init();
     }
 
+    async init(){
+        // Make sure we are logged in
+        while( ( this.accessTokenService.getAccessToken() === undefined ) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+            await this.utilService.sleep( Consts.waitTime );
+        }
+
+        this.apiService.getRoles();
+        this.apiService.getCollectionAndDescriptions();
+        this.apiService.getCollectionLicenses();
+
+    }
     /**
      * Update with newly selected Collection data when user selects a Collection from the left side "Criteria Search".
      * @param i - Index in the this.collections array

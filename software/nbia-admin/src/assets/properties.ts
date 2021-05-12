@@ -1,8 +1,8 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.8',
-    // 15_APR_2021
-    TEST_VERSION: '1.0.8r',
+    // 05_MAY_2021
+    TEST_VERSION: '1.0.8s',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
@@ -23,8 +23,9 @@ export let Properties = {
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
  */
 
-    API_SERVER_URL: '',
+     API_SERVER_URL: '',
     // API_SERVER_URL: 'http://192.168.1.21:8080',
+   // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -62,7 +63,7 @@ export let Properties = {
     HOST_NAME: '',
 
     // This value can be changed in the config file.
-    // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
+    // Show the OHIF viewer button at the Subject and Study levels
     SHOW_OHIF_VIEWER: true,
 
     // This value can be changed in the config file.
@@ -84,6 +85,8 @@ export let Properties = {
     DEFAULT_SECRET: 'ItsBetweenUAndMe',  // CHECKME - Should we have this default here or only set in the configuration file?
 
     MAX_PAGER_BUTTONS: 6,
+    DEFAULT_PAGE_LENGTH: 20,
+    MAX_PAGE_LENGTH: 200,
 
     // How many seconds before token end of life to refresh the token
     TOKEN_REFRESH_TIME_MARGIN: 60,
@@ -107,11 +110,12 @@ export let Properties = {
     SHOW_FOOTER: true,
 
 
+
     SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE: false,
     SHOW_SERVER_QUERY: false,
 
-    // @TODO We shouldn't need these anymore @CHECKME they can be deleted
-    DEFAULT_SEARCH_TAB: 1, // 0="Criteria Search"  1="Dynamic Search"
+    // @TODO We shouldn't need these anymore @CHECKME they can be deleted soon
+    DEFAULT_SEARCH_TAB: 0, // 0="Criteria Search"  1="Dynamic Search"
     SHOW_ONLY_DEFAULT_SEARCH_TAB: true
 
 };

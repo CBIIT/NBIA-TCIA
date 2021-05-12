@@ -31,16 +31,18 @@ export class AccessTokenService{
 
     startRefreshTokenCycle(){
         if( ! this.tokenRefreshCycleRunning ){
-            console.log('MHL startRefreshTokenCycle');
+           // console.log('MHL startRefreshTokenCycle');
             this.tokenRefreshCycleRunning = true;
             let cycleTimeSeconds = this.expiresIn - Properties.TOKEN_REFRESH_TIME_MARGIN;
             setInterval(() => {
                 this.getAccessTokenWithRefresh( this.getRefreshToken() );
             }, cycleTimeSeconds * 1000);
         }
+/*
         else{
             console.log('MHL IN startRefreshTokenCycle, but we don\'t need it');
         }
+*/
     }
 
 
@@ -120,7 +122,7 @@ export class AccessTokenService{
         }
         // END if user length > 0
         else{
-            console.log('MHL Get refresh token');
+            // Get refresh token
             this.getAccessTokenWithRefresh( this.getRefreshToken() );
         }
     }

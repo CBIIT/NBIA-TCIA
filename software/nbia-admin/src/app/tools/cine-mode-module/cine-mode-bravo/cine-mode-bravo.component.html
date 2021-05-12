@@ -337,14 +337,62 @@
 
                     </td>
 
-                    <!-- ------------ -->
-                    <!--  DICOM Data  -->
-                    <td
-                        *ngIf="
-                            showDicomData && !!dicomData && dicomData.length > 0
-                        "
-                    >
-                        <div class="dicom-scroll-area">
+                    <td>
+
+                        <!-- ----- Change QC Status or Deletion----- -->
+                        <div class="section-div">
+                            <span
+                                *ngIf="showQcStatus"
+                                class="clicker section-heading"
+                                [ngClass]="{
+                                    'heading-font-extra-small': currentFont === '0',
+                                    'heading-font-small': currentFont === '1',
+                                    'heading-font-medium': currentFont === '2',
+                                    'heading-font-large': currentFont === '3'
+                                }"
+                                (click)="onShowQcStatusClick(false)"
+                            >
+                                <img src="assets/images/down_V01.png"/>
+                                {{ sectionHeading }}
+                            </span>
+
+                                <span
+                                    *ngIf="!showQcStatus"
+                                    class="clicker section-heading"
+                                    (click)="onShowQcStatusClick(true)"
+                                >
+                                    <img src="assets/images/right_V01.png"/>
+                                    {{ sectionHeading }}
+                            </span>
+
+                            <!-- ----- Change QC Status ----- -->
+                            <nbia-qc-status-edit
+                                *ngIf="currentTool === consts.TOOL_PERFORM_QC"
+                                [ngClass]="{
+                    hide: !showQcStatus
+                }"
+                                [collectionSite]="collectionSite"
+                                [seriesData]="seriesData"
+                            >
+                            </nbia-qc-status-edit>
+
+                            <!-- ----- Put Deletion here ----- -->
+                            <nbia-delete-cinemode-series
+                                *ngIf="currentTool === consts.TOOL_APPROVE_DELETIONS"
+                                [ngClass]="{
+                    hide: !showQcStatus
+                }"
+                                [seriesData]="seriesData"
+                            ></nbia-delete-cinemode-series>
+                        </div>
+                        <!-- ----- END Change QC Status ----- -->
+
+
+                        <!-- ----- DICOM Data ----- -->
+                        <div class="dicom-scroll-area"
+                        [ngClass]="{
+                            'dicom-scroll-area-long': ! showQcStatus
+                        }">
                             <table class="dicom-data-table">
                                 <!-- ----- Header  ----- -->
                                 <thead>
@@ -452,7 +500,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Collection//Site<br/>&nbsp;
+                                    Collection//Site
                                 </div>
                                 <div class="series-data-data">
                                     {{ collectionSite }}
@@ -462,7 +510,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Patient<br/>&nbsp;
+                                    Patient
                                 </div>
                                 <div class="series-data-data">
                                     {{ seriesData["patientId"] }}
@@ -472,7 +520,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Study<br/>&nbsp;
+                                    Study
                                 </div>
                                 <div class="series-data-data">
                                     {{ seriesData["study"] }}
@@ -482,7 +530,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Series<br/>&nbsp;
+                                    Series
                                 </div>
                                 <div class="series-data-data">
                                     {{ seriesData["series"] }}
@@ -492,7 +540,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    QC Status<br/>&nbsp;
+                                    QC Status
                                 </div>
                                 <div class="series-data-data">
                                     {{ seriesData["visibilityStatus"] }}
@@ -502,7 +550,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Batch<br/>Number
+                                    Batch
                                 </div>
                                 <div
                                     *ngIf="seriesData['batch'] != null"
@@ -521,7 +569,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Submission<br/>Type
+                                    Submission
                                 </div>
                                 <div
                                     *ngIf="seriesData['submissionType'] != null"
@@ -542,7 +590,7 @@
                                 <div
                                     class="data-table-thead-th series-data-header"
                                 >
-                                    Released<br/>Status
+                                    Released
                                 </div>
                                 <div
                                     *ngIf="seriesData['releasedStatus'] != null"
@@ -566,53 +614,11 @@
         </div>
         <!-- ----- END Series data display ----- -->
 
-        <!-- ----- Change QC Status or Deletion----- -->
-        <div class="section-div">
-            <span
-                *ngIf="showQcStatus"
-                class="clicker section-heading"
-                [ngClass]="{
-                    'heading-font-extra-small': currentFont === '0',
-                    'heading-font-small': currentFont === '1',
-                    'heading-font-medium': currentFont === '2',
-                    'heading-font-large': currentFont === '3'
-                }"
-                (click)="onShowQcStatusClick(false)"
-            >
-                <img src="assets/images/down_V01.png"/>
-                {{ sectionHeading }}
-            </span>
 
-            <span
-                *ngIf="!showQcStatus"
-                class="clicker section-heading"
-                (click)="onShowQcStatusClick(true)"
-            >
-                <img src="assets/images/right_V01.png"/>
-                {{ sectionHeading }}
-            </span>
+        <!--   Change QC Status use to be here -->
 
-            <!-- ----- Change QC Status ----- -->
-            <nbia-qc-status-edit
-                *ngIf="currentTool === consts.TOOL_PERFORM_QC"
-                [ngClass]="{
-                    hide: !showQcStatus
-                }"
-                [collectionSite]="collectionSite"
-                [seriesData]="seriesData"
-            >
-            </nbia-qc-status-edit>
 
-            <!-- ----- Put Deletion here ----- -->
-            <nbia-delete-cinemode-series
-                *ngIf="currentTool === consts.TOOL_APPROVE_DELETIONS"
-                [ngClass]="{
-                    hide: !showQcStatus
-                }"
-                [seriesData]="seriesData"
-            ></nbia-delete-cinemode-series>
-        </div>
-        <!-- ----- END Change QC Status ----- -->
+
 
         <!--  ----- QC History ----- -->
         <div class="section-div">

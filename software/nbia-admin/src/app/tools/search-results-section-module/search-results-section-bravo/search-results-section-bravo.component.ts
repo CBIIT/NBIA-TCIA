@@ -34,7 +34,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     currentCineModeSeriesIndex = -1;
 
     searchResultsPageToDisplay = [];
-    pageLength = 6;
+    pageLength = Properties.DEFAULT_PAGE_LENGTH;
+    maxPageLength = Properties.MAX_PAGE_LENGTH;
     currentPage = 0;
     pageCount = 0;
     totalCount = 0;
@@ -52,7 +53,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         { name: 'Submission date', sortState: SortState.SORT_DOWN }, // Default  TODO save and restore from browser cookie
         // { 'name': 'Trial ID', 'sortState': SortState.NO_SORT },
         // { 'name': 'Collection//Site', 'sortState': SortState.NO_SORT },
-        { name: 'Patient ID', sortState: SortState.NO_SORT },
+        { name: 'Subject ID', sortState: SortState.NO_SORT },
         { name: 'Study', sortState: SortState.NO_SORT },
         { name: 'Series', sortState: SortState.NO_SORT },
         { name: 'Description', sortState: SortState.NO_SORT },
@@ -386,7 +387,9 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             '&thumbnailDescription=' +
             encodeURI( this.searchResults[i]['seriesDescription'] ) +
             '&accessToken=' +
-            this.accessTokenService.getAccessToken(),
+            this.accessTokenService.getAccessToken() + ':' +
+            this.accessTokenService.getRefreshToken()  + ':' +
+            this.accessTokenService.getExpiresIn(),
             '_blank'
         );
     }
@@ -605,8 +608,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     onPageLengthChange() {
         this.pageCount = Math.ceil( this.searchResultsCount / this.pageLength );
-        console.log('MHL 701 SearchResultsSectionBravoComponent onPageLengthChange pageCount: ', this.pageCount);
-
         this.searchResultsPagerService.setPageCount( this.pageCount );
         this.setupPage();
     }
