@@ -75,7 +75,6 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
     // Used when determining the height of the image grid, so it fits correctly between the hearing and footer.
     innerHeight;
 
-
     // Just for testing
     temp = 'Dog';
 
@@ -105,10 +104,8 @@ export class NbiaThumbnailViewerComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit() {
-console.log('MHL ngOnInit: ', this.route.snapshot);
         // Get description passed in the URL
         this.description = this.route.snapshot.queryParams['thumbnailDescription'];
-console.log('MHL ngOnInit URL Token: ', this.route.snapshot.queryParams['accessToken']);
 
         // To determining the maximum number of images that can fit in one row
         this.innerWidth = window.innerWidth;
@@ -221,7 +218,6 @@ console.log('MHL Cookie says user is guest.  Try to get a new token.');
                         }
                     }  // End isGuest
                     else{
-console.log('MHL User is not a guest. Launch Login here.');
                         this.reactToError( 'Expired login', data['status'].toString(), data['statusText'] );
                     }
                 } // End of 401
@@ -302,6 +298,7 @@ console.log('MHL User is not a guest. Launch Login here.');
             this.columns++;
         }
     }
+
 
     onRadioClick( i ){
         Properties.IMAGE_LOAD_MODE = i;

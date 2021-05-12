@@ -43,8 +43,6 @@ export class ServerAccessService{
 
 
         this.token = this.commonService.getPersistedValue( 'at' );
-        console.log('MHL this.token: ', this.token);
-
         this.initToken();
     }
 
@@ -66,7 +64,6 @@ export class ServerAccessService{
      * @param imageNumber
      */
     async getImages( page?, imageNumber? ) {
-        console.log( 'MHL getImages 010' );
         this.loading = true;
         this.images = [];
         let len = 99999999;
@@ -132,7 +129,6 @@ export class ServerAccessService{
                 this.loading = false;
             },
             err => {
-                console.log( 'MHL 01 getImageDrillDownData err: ', err );
                 this.loading = false;
                 this.getImageDrillDownDataErrorEmitter.emit( err );
 
@@ -161,8 +157,6 @@ export class ServerAccessService{
     }
 
     getImageDrillDownData(): Observable<any> {
-        console.log( 'MHL getImageDrillDownData' );
-
         let query = 'list=' + this.seriesId;
 
         if( Properties.DEBUG_CURL ){
@@ -284,13 +278,10 @@ export class ServerAccessService{
      * @param t
      */
     initToken() {
-        console.log('MHL 010 initToken: ', this.route.snapshot.queryParams['accessToken']);
-
 
         // Get access token
             let tokens = this.route.snapshot.queryParams['accessToken'];
             if( tokens !== undefined){
-                console.log('MHL 011 initToken: ', tokens);
 
                 tokens = tokens.split( ':' );
                 this.token = tokens[0];
@@ -329,11 +320,11 @@ export class ServerAccessService{
     startRefreshTokenCycle(){
         let tempCounter = 0;
         if( ! this.tokenRefreshCycleRunning ){
-            console.log('MHL startRefreshTokenCycle');
+         //   console.log('MHL startRefreshTokenCycle');
             this.tokenRefreshCycleRunning = true;
             let cycleTimeSeconds = this.expiresIn - Properties.TOKEN_REFRESH_TIME_MARGIN;
             setInterval(() => {
-                console.log('MHL refresh[' + cycleTimeSeconds + ']: ' + new Date() + '  ' + tempCounter++);
+              //  console.log('MHL refresh[' + cycleTimeSeconds + ']: ' + new Date() + '  ' + tempCounter++);
                 this.getAccessTokenWithRefresh( this.getRefreshToken() );
 
             }, this.getExpiresIn() * 1000);
@@ -369,14 +360,8 @@ export class ServerAccessService{
                 this.setRefreshToken( accessTokenData['refresh_token'] );
                 this.setExpiresIn( accessTokenData['expires_in'] );
 
-                console.log('MHL refreshToken AccessToken: ', this.getToken());
-                console.log('MHL refreshToken RefreshToken: ', this.getRefreshToken());
-                console.log('MHL refreshToken ExpiresIn: ', this.getExpiresIn());
-
-
                 // If the token was passed to us in the URL, we need to update that URL when the token changes (so refreshing the page won't keep prompting for login).
                 if( Properties.HAVE_URL_TOKEN ){
-                    console.log('MHL IN getAccessTokenWithRefresh CALLING:  appendAQueryParam(' +  this.getToken() + ':' + this.getRefreshToken() + ':' + this.getExpiresIn() + ')' );
                     this.appendAQueryParam( this.getToken() + ':' + this.getRefreshToken() + ':' + this.getExpiresIn() );
                 }
 
@@ -395,8 +380,6 @@ export class ServerAccessService{
      * @param tokenString Access token: refresh token: token life span in seconds
      */
     appendAQueryParam( tokenString ) {
-        console.log('MHL UPDATE URL: ', tokenString);
-
         let urlTree = this.router.createUrlTree([], {
             queryParams: { accessToken: tokenString },
             queryParamsHandling: "merge",
