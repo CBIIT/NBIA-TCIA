@@ -107,6 +107,9 @@ export class CommonService{
     showThirdPartyExplanationEmitter = new EventEmitter();
     showThirdPartyExplanation = false;
 
+    showClinicalTimePointsExplanationEmitter = new EventEmitter();
+    showClinicalTimePointsExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -446,6 +449,11 @@ export class CommonService{
     setShowTextExplanation( e ) {
         this.showTextExplanation = e;
         this.showTextExplanationEmitter.emit( this.showTextExplanation );
+    }
+
+    setShowClinicalTimePointsExplanation( e ) {
+        this.showClinicalTimePointsExplanation = e;
+        this.showClinicalTimePointsExplanationEmitter.emit( this.showClinicalTimePointsExplanation );
     }
 
     setShowThirdPartyExplanation( e ) {

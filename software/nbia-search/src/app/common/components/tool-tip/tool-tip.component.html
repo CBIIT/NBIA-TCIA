@@ -4,11 +4,19 @@
 <span
     [ngStyle]="{'top':(toolTipY + 10) + 'px'}"
     class="toolTip step"
+
     [ngClass]="{
         'show': showToolTip
     }"
 >
-    <div><b>{{toolTipHeading}}</b></div>
+
+    <div *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1">
+        <b>{{toolTipHeading}}</b>
+        <span
+                class="close-x clicker"
+                (click)="onToolTopCloseClick()"
+        >X</span>
+    </div>
     <span [innerHTML]=toolTipText ></span>
 
  </span>

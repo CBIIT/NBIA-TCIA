@@ -731,17 +731,37 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.updateCriteriaList( true );
     }
 
+
+    onCollectionDescriptionClick( e , collectionName){
+        // Set position
+        this.toolTipY = e.view.pageYOffset + e.clientY;
+
+        this.inCollection = true;
+
+        // Populate
+        this.toolTipHeading = collectionName;
+        this.toolTipText = this.collectionDescriptionsService.getCollectionDescription( collectionName );
+        if( (!this.utilService.isNullOrUndefinedOrEmpty( this.collectionDescriptionsService.getCollectionLicense( collectionName ) )) &&
+            (!this.utilService.isNullOrUndefinedOrEmpty( this.collectionDescriptionsService.getCollectionLicense( collectionName ) )['longName']) &&
+            (!Properties.NO_LICENSE)
+        ){
+            this.toolTipText += '<hr>License:<br>' + this.collectionDescriptionsService.getCollectionLicense( collectionName )['longName'];
+        }
+        this.showToolTip = true;
+    }
+
+
     /**
      * Get the position and text for the Collection description tooltip/
      *
      * @param e  Mouse over event.
      * @param collectionName Collection name used to retrieve the description.
      */
-    getPos( e, collectionName ) {
-        this.inCollection = true;
-
+    getPos( e, collectionName, n ) {
         // Set position
         this.toolTipY = e.view.pageYOffset + e.clientY;
+
+        this.inCollection = true;
 
         // Populate
         this.toolTipHeading = collectionName;
@@ -763,8 +783,11 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
      * If the user has their mouse over the tool tip don't let it fade out.
      */
     mouseOverToolTip() {
-        this.inCollection = true;
-        this.toolTipStayOn = true;
+        if( Properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 0){
+            this.inCollection = true;
+            this.toolTipStayOn = true;
+        }
+
     }
 
     /**
@@ -777,6 +800,11 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
     }
 
     async hideToolTip() {
+        if( Properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1){
+            return;
+        }
+        console.log('MHL 600 hideToolTip');
+
         this.inCollection = false;
         this.toolTipCounter++;
         let count = Properties.COLLECTION_DESCRIPTION_TOOLTIP_TIME;

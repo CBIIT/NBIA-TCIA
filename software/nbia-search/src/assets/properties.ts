@@ -58,7 +58,7 @@ export let Properties = {
 
     // API_SERVER_URL: 'http://192.168.1.21:8080',
 
-    API_SERVER_URL: '',
+     API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
@@ -188,10 +188,10 @@ export let Properties = {
     /////////////////////////////////////////////////////////////////////////////////
 
 
-    /*
+/*
         DEFAULT_PASSWORD: 'changeme',
         DEFAULT_USER: 'mlerner',
-    */
+*/
 
     DEFAULT_USER: 'nbia_guest',
     DEFAULT_PASSWORD: 'test',
@@ -222,6 +222,9 @@ export let Properties = {
     DISPLAY_QUERY_ELEMENTS_MAX: 4,
 
     // How long to show Collection descriptions after mouse leaves the Collection, in seconds.
-    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 1
+    COLLECTION_DESCRIPTION_TOOLTIP_TIME: 1,
+
+    // 0 = Old mouseover way   1 = New Click on it way
+    COLLECTION_DESCRIPTION_TOOLTIP_TYPE: 1
 };
 

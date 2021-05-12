@@ -7,7 +7,7 @@
         (mouseleave)="mouseleaveToolTip()"
         (mouseout)="mouseleaveToolTip()"
 
-        [showToolTip]=showToolTip
+        [(showToolTip)]=showToolTip
         [toolTipY]=toolTipY
         [toolTipText]=toolTipText
         [toolTipHeading]=toolTipHeading
@@ -151,8 +151,8 @@
             <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
 
             <span
-                    *ngIf="(
-                        criteria['seq']  < ( properties.CRITERIA_SHOW_COUNT + checkedCount) ) ||
+                    *ngIf="
+                        ( criteria['seq']  < ( properties.CRITERIA_SHOW_COUNT + checkedCount) ) ||
                         showAll ||
                         showAllForSearch ||
                         (! properties.USE_COLLECTIONS_LESS_MORE)
@@ -163,20 +163,47 @@
 
                 <span>
                     <input type="checkbox"
-                        class="check-box"
-                        id="checkbox-collection{{i}}"
-                        [(ngModel)]="cBox[i]"
-                        (click)="onCheckboxClick(i, $event.target['checked'])"
+                           class="check-box"
+                           id="checkbox-collection{{i}}"
+                           [(ngModel)]="cBox[i]"
+                           (click)="onCheckboxClick(i, $event.target['checked'])"
                     >
                 </span>
 
+
+
+                <!-- -----  The old way  ----- -->
                 <label
-                    class="criteria-entry-text"
-                    [attr.for]="'checkbox-collection'+i"
-                    (mouseover)="getPos($event, criteria['criteria'])"
+                        *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 0"
+                        class="criteria-entry-text"
+                        [attr.for]="'checkbox-collection'+i"
+                        (mouseover)="getPos($event, criteria['criteria'], 1)"
                 >
                     {{criteria['criteria']}}
                 </label>
+
+                <!-- -----  The new way  ----- -->
+                <label
+                    *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1"
+                    class="criteria-entry-text"
+                    [attr.for]="'checkbox-collection'+i"
+                >
+                      {{criteria['criteria']}}
+                </label>
+
+
+                <label
+                    *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1"
+                    (click)="onCollectionDescriptionClick($event, criteria['criteria'])"
+                    title="Collection description"
+                    class="p-0 m-0"
+                >
+                    &nbsp;<img
+                            src="assets/images/icons/info_blue_32px.png"
+                            class="filter-red"
+                    >
+                </label>
+
 
                  <span
                          [ngClass]="{

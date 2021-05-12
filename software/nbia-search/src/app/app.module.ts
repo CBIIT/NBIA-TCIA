@@ -107,6 +107,7 @@ import { ProgressBarModule } from 'angular-progress-bar';
 import { DaysFromBaselineComponent } from './image-search/query-section/query-section-tabs/simple-search/days-from-baseline/days-from-baseline.component';
 import { CommercialUseComponent } from './image-search/query-section/query-section-tabs/simple-search/commercial-use/commercial-use.component';
 import { UniversalMenuComponent } from './header/universal-menu/universal-menu.component';
+import { ClinicalTimePointsExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/days-from-baseline/clinical-time-points-explination/clinical-time-points-explanation.component';
 
 
 /*
@@ -200,7 +201,8 @@ const appRoutes: Routes = [
         CineModeComponent,
         DaysFromBaselineComponent,
         CommercialUseComponent,
-        UniversalMenuComponent
+        UniversalMenuComponent,
+        ClinicalTimePointsExplanationComponent
     ],
     imports: [
         BrowserModule,

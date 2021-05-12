@@ -297,7 +297,11 @@ export class ApiServerService implements OnDestroy {
             this.setCurrentUser(Properties.DEFAULT_USER);
             this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
         } else {
-            this.setToken({'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN)});
+            this.setToken(
+                {
+                    'expires_in': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN),
+                    'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN),
+                    'refresh_token': this.persistenceService.get(this.persistenceService.Field.REFRESH_TOKEN)});
             this.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
             this.setCurrentPassword('');
 
@@ -1174,9 +1178,6 @@ export class ApiServerService implements OnDestroy {
                         // Try getting a new Access token
                         this.getToken().subscribe(
                             (res0) => {
-                                console.log('MHL 002 getToken: ', res0);
-
-                                console.log('MHL 402 CALLING apiServerService.setToken: ', res0);
                                 this.setToken(res0);
                                 accessToken = res0['access_token'];
 
@@ -1341,6 +1342,8 @@ export class ApiServerService implements OnDestroy {
 
     deleteToken() {
         this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN);
+        this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN);
+        this.persistenceService.remove(this.persistenceService.Field.REFRESH_TOKEN);
     }
 
     /**
@@ -1349,8 +1352,6 @@ export class ApiServerService implements OnDestroy {
      */
     getToken(): Observable<any> {
         let token = this.getAccessToken(this.currentUser, this.currentApiPassword, Properties.DEFAULT_SECRET);
-
-        console.log('MHL ApiServerService.getToken: ', token);
         return token;
     }
 

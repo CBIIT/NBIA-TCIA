@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
     styleUrls: ['../simple-search.component.scss', './days-from-baseline.component.scss']
 } )
 export class DaysFromBaselineComponent implements OnInit, OnDestroy{
+    showClinicalTimePointsExplanation = false;
 
     fromBaseLineFrom = '';
     fromBaseLineFromHold = '';
@@ -59,6 +60,13 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             }
         );
         this.getInitialMinMaxTimePoints();
+
+
+        this.commonService.showClinicalTimePointsExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showClinicalTimePointsExplanation = <boolean>data;
+            }
+        );
 
 
         // Every time a new query returns results.
@@ -307,6 +315,10 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             this.onApplyFromBaselineCheckboxClick( false );
             this.currentEventTypeTrailer = 0;
         }
+    }
+
+    onClinicalTimePointsExplanationClick(){
+        this.showClinicalTimePointsExplanation = true;
     }
 
     /**
