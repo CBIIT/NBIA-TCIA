@@ -42,10 +42,10 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
         private querySectionService: QuerySectionService,
         private loginService: LoginService,
         private preferencesService: PreferencesService
-    ) {
+    ){
     }
 
-    async ngOnInit() {
+    async ngOnInit(){
 
         // Get this users roles and check for 'NCIA.SUPER_CURATOR'
         this.apiService.updatedUserRolesEmitter
@@ -62,10 +62,10 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
         this.apiService.getRoles();
 
 
+        // @CHECKME This may no longer be needed
         // Gets the currently selected Collection//Site from the left side "Collection" criteria picker.
-        this.querySectionService.updatedQueryEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
                 this.currentQueryData = data;
                 this.collectionSite = this.getCollectionSite();
                 this.doApproveDeletionsSearch();
@@ -94,7 +94,7 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
      * When resultsUpdateBravoEmitter emits
      * @param queryResults - The query results from the Criteria Search on the left, which are marked for deletion.
      */
-    onSearchResultsUpdate( queryResults ) {
+    onSearchResultsUpdate( queryResults ){
         if( !this.utilService.isNullOrUndefinedOrEmpty( queryResults ) ){
             this.searchResults = queryResults;
         }
@@ -105,11 +105,11 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
      * via [searchResultsSelectedCount]="searchResultsSelectedCount"
      * @param e
      */
-    onResultsSelectCountUpdate( e ) {
+    onResultsSelectCountUpdate( e ){
         this.searchResultsSelectedCount = e;
     }
 
-    getCollectionSite() {
+    getCollectionSite(){
         for( let row of this.currentQueryData ){
             if( row['criteria'] === Consts.QUERY_CRITERIA_COLLECTION ){
                 return row['data'];
@@ -119,14 +119,14 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
     }
 
     // Run the query
-    doApproveDeletionsSearch() {
+    doApproveDeletionsSearch(){
         this.apiService.doCriteriaSearchQuery(
             Consts.TOOL_APPROVE_DELETIONS,
             this.currentQueryData
         );
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

@@ -1,6 +1,5 @@
 @import '../app.component.scss';
 
-
 // This gives us the over white margin.
 $parentToolPadding: 10px;
 
@@ -8,27 +7,23 @@ $parentToolPadding: 10px;
     padding: $parentToolPadding $parentToolPadding 0 $parentToolPadding;
 }
 
-
 .disabled-tool{
     color: #999;
-    background-color:  #444;
+    background-color: #444;
     cursor: not-allowed;
 
     &:hover{
         color: #999;
-        background-color:  #444;
+        background-color: #444;
         cursor: not-allowed;
     }
-
 }
-
 
 .admin-tool-button{
     font-size: 18px;
     padding: 8px;
     margin-top: 4px;
     width: 100%;
-
 }
 
 .option-list{

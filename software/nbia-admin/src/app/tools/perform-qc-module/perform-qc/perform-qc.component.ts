@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
+import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
 
 
 @Component( {
@@ -42,12 +43,11 @@ export class PerformQcComponent implements OnInit, OnDestroy{
         private accessTokenService: AccessTokenService,
         private utilService: UtilService,
         private querySectionService: QuerySectionService,
+        private dynamicQueryBuilderService: DynamicQueryBuilderService,
         private loadingDisplayService: LoadingDisplayService
-    ) {
-    }
+    ){}
 
-    async ngOnInit() {
-
+    async ngOnInit(){
         this.querySectionService.updateSearchTypeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.searchType = data;
@@ -69,9 +69,8 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
 
         // Get updated query criteria when user query on the left changes and (re)runs the query.
-        this.querySectionService.updatedQueryEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.querySectionService.updatedQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
                 this.currentQueryData = data;
                 this.collectionSite = this.getCollectionSite();
                 this.loadingDisplayService.setLoading( true, 'Searching...' );
@@ -80,13 +79,15 @@ export class PerformQcComponent implements OnInit, OnDestroy{
                 this.doPerformQcSearch();
             } );
 
+
+
         // Rerun the current query after the user has made changes, not to the query, but to the data.
-        this.apiService.submitBulkQcResultsEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
-                // Rerun the query
-                this.doPerformQcSearch();
+        this.apiService.submitBulkQcResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                this.apiService.doAdvancedQcSearch(this.dynamicQueryBuilderService.buildServerQuery() )
             } );
+
+
 
         // Check for search results.  If there are none, don't show bulk operations.
         this.apiService.searchResultsEmitter
@@ -101,16 +102,15 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
     async init(){
         // Make sure we are logged in
-        while( ( this.accessTokenService.getAccessToken() === undefined ) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+        while( (this.accessTokenService.getAccessToken() === undefined) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
         this.apiService.getRoles();
     }
 
 
-
     // Run the query
-    doPerformQcSearch() {
+    doPerformQcSearch(){
         this.apiService.doCriteriaSearchQuery(
             Consts.TOOL_PERFORM_QC,
             this.currentQueryData
@@ -118,18 +118,18 @@ export class PerformQcComponent implements OnInit, OnDestroy{
     }
 
     // This method is bound to resultsUpdateBravoEmitter in search-results-section-bravo component.
-    onSearchResultsUpdate( e ) {
+    onSearchResultsUpdate( e ){
         if( !this.utilService.isNullOrUndefinedOrEmpty( e ) ){
             this.searchResults = e;
         }
     }
 
     // This method is bound to resultsSelectCountUpdateBravoEmitter in search-results-section-bravo component.
-    onResultsSelectCountUpdate( e ) {
+    onResultsSelectCountUpdate( e ){
         this.searchResultsSelectedCount = e;
     }
 
-    getCollectionSite() {
+    getCollectionSite(){
         for( let row of this.currentQueryData ){
             if( row['criteria'] === Consts.QUERY_CRITERIA_COLLECTION ){
                 return row['data'];
@@ -138,7 +138,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
         return '';
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

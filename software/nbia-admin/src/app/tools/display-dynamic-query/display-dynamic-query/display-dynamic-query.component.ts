@@ -19,14 +19,15 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
     data = '';
     niceDisplayData = [];
     lastElementIndex = 0;
-    properties = Properties; //properties.SHOW_SERVER_QUERY
+    properties = Properties;
 
     constructor( private displayDynamicQueryService: DisplayDynamicQueryService, private apiService: ApiService,
                  private dynamicQueryBuilderService: DynamicQueryBuilderService, private utilService: UtilService ) {
     }
 
     ngOnInit() {
-        this.displayDynamicQueryService.displayDynamicQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+        this.displayDynamicQueryService.displayDynamicQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
             this.data = data;
         } );
 

@@ -8,7 +8,7 @@ export let Properties = {
     // This value can be changed in the config file.
 
     // Use this when server is local npm run
-    //  API_SERVER_URL: 'http://192.168.1.20:8080',
+    //  API_SERVER_URL: 'http://192.168.1.21:8080',
     /*
      Our Dev server
      API_SERVER_URL: 'http://ncias-d1707-v.nci.nih.gov:8080',
@@ -24,8 +24,6 @@ export let Properties = {
  */
 
      API_SERVER_URL: '',
-    // API_SERVER_URL: 'http://192.168.1.21:8080',
-   // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -72,6 +70,7 @@ export let Properties = {
     MAX_VIDEO_FPS: 30,
 
     HAVE_URL_TOKEN: false,
+
     // Show in console, curl version of post & get calls.
     DEBUG_CURL: false,
 

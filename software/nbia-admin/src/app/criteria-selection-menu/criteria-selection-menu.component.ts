@@ -62,8 +62,8 @@ this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
 
                             // If the current tool is "Approve Deletions", do not Require "QC Status" criteria
                             if( (this.currentTool === Consts.TOOL_APPROVE_DELETIONS) && (this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType'] === 'qcstatus')){
-                              //  console.log('MHL 100 this.criteriaData[' +  n + ']: ', this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType']);
-                              //  console.log('MHL 101 this.criteriaData[' +  n + ']: ', this.criteriaData[n]['criteriaObjects'][i]);
+                              //  console.log('this.criteriaData[' +  n + ']: ', this.criteriaData[n]['criteriaObjects'][i]['configuration']['criteriaType']);
+                              //  console.log('this.criteriaData[' +  n + ']: ', this.criteriaData[n]['criteriaObjects'][i]);
                             } else
 
                             // Required criteria

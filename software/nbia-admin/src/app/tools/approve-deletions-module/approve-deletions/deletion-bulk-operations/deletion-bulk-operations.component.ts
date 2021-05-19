@@ -5,6 +5,7 @@ import { Properties } from '@assets/properties';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
 
 
 /**
@@ -25,10 +26,8 @@ export class DeletionBulkOperationsComponent implements OnInit, OnDestroy{
     currentFont;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor(
-        private apiService: ApiService,
-        private preferencesService: PreferencesService
-    ) {
+    constructor( private apiService: ApiService, private preferencesService: PreferencesService,
+                 private dynamicQueryBuilderService: DynamicQueryBuilderService) {
     }
 
     ngOnInit() {
@@ -37,6 +36,9 @@ export class DeletionBulkOperationsComponent implements OnInit, OnDestroy{
             .pipe( takeUntil( this.ngUnsubscribe ) )
             .subscribe( () => {
                 // Rerun the query to update the search results table.
+                this.apiService.doAdvancedQcSearch(this.dynamicQueryBuilderService.buildServerQuery() )
+
+/*
                 this.apiService.doCriteriaSearchQuery(
                     Consts.TOOL_APPROVE_DELETIONS,
                     [
@@ -46,6 +48,8 @@ export class DeletionBulkOperationsComponent implements OnInit, OnDestroy{
                         },
                     ]
                 );
+*/
+
                 this.searchResultsSelectedCount = 0;
             } );
 
@@ -67,9 +71,11 @@ export class DeletionBulkOperationsComponent implements OnInit, OnDestroy{
                 query += '&seriesId=' + row['series'];
             }
         }
+
         if( this.logText.length > 0 ){
             query += '&comment=' + this.logText;
         }
+
         if( Properties.DEMO_MODE ){
             console.log( 'DEMO mode: Bulk Delete ', query );
         }else{

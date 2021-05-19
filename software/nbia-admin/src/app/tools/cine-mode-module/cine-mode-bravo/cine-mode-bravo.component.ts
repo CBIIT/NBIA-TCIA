@@ -568,8 +568,10 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                                 studyInstanceUid: data[i]['studyInstanceUid'],
                                 seq: i,
                             } );
+
+
                             // If there is only one image, don't divide by zer0
-                            if( this.last === 0 ){
+                            if( (this.last === 0) || ( i === this.last) ){
                                 this.progress = 100;
                             }else{
                                 this.progress = Math.trunc(

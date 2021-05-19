@@ -31,7 +31,6 @@ export class AccessTokenService{
 
     startRefreshTokenCycle(){
         if( ! this.tokenRefreshCycleRunning ){
-           // console.log('MHL startRefreshTokenCycle');
             this.tokenRefreshCycleRunning = true;
             let cycleTimeSeconds = this.expiresIn - Properties.TOKEN_REFRESH_TIME_MARGIN;
             setInterval(() => {

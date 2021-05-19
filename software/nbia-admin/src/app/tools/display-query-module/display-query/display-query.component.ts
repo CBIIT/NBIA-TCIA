@@ -40,7 +40,6 @@ export class DisplayQueryComponent implements OnInit, OnDestroy{
     ngOnInit() {
         this.displayQueryService.displayQueryEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
             this.displayQueryData = data;
-
             // At this time, nothing is different for the two tools that use the Display query, but that may change...
             switch( data[0]['tool'] ){
                 case Consts.TOOL_PERFORM_QC:

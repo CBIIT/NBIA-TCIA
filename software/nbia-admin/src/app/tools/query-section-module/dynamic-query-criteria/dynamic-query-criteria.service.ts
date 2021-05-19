@@ -316,7 +316,6 @@ export class DynamicQueryCriteriaService{
     }
 
     getDynamicTwoLevelMultiChoiceList() {
-        console.log( 'MHL AAgetDynamicTwoLevelMultiChoiceList' );
         Properties.dynamicQueryCriteriaSequenceNumber++;
         let temp = {
             dynamicQueryCriteriaType: DynamicQueryCriteriaTypes.TWO_LEVEL_MULTIPLE_SELECTION,

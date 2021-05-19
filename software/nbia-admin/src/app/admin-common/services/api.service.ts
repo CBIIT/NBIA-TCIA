@@ -97,7 +97,7 @@ export class ApiService{
     }
 
     // TODO rename this, we use it for queries too that are not from that left side Criteria search.
-    // This method is not really necessary
+    // @TODO This method no longer does anything and is not really necessary anymore
     doSubmit( tool, submitData ) {
         switch( tool ){
             case Consts.TOOL_BULK_QC:
@@ -139,10 +139,8 @@ export class ApiService{
      */
     doCriteriaSearchQuery( tool, queryData ) {
         let queryParameters = '';
-        // SUBMIT_QC_STATUS_UPDATE
         // Build the correctly formatted query for the rest call here.
         for( let element of queryData ){
-
             switch( element['criteria'] ){
                 case Consts.QUERY_CRITERIA_QC_STATUS:
                     if( tool === Consts.TOOL_PERFORM_QC ){
@@ -224,7 +222,7 @@ export class ApiService{
             if( queryParameters.includes( '&visibilities=' ) ){
                 this.getPerformQcSearch( queryParameters.substr( 1 ) );
             }else{
-                // Don't do the search, and send back Consts.NO_SEARCH, this will tell the Searchresults screen don't show results count or pager at the topv(not the same as a search with no results).
+                // Don't do the search, and send back Consts.NO_SEARCH, this will tell the Search results screen don't show results count or pager at the top(not the same as a search with no results).
                 this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
             }
         }
@@ -838,7 +836,6 @@ export class ApiService{
         let results;
         try{
             results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
-            // console.log( 'MHL doGet [' + queryType + '] [' + query + ']: ', results );
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
