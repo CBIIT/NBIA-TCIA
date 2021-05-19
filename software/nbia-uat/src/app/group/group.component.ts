@@ -232,15 +232,17 @@ export class GroupComponent implements OnInit {
 
     delete() {
 		this.clearMsg();
-		this.groupService.deleteSelectGroup(this.group)
-			.subscribe(
-				data => this.postData = JSON.stringify(data),
-				error => {this.handleError(error);this.errorMessage = <any>error;this.refreshTable()},
-				() => {console.log("Finished"); this.refreshTable()}
-			);
-        this.groups.splice(this.findSelectedGroupIndex(), 1);
-        //this.group = null;
-        this.displayDialog = false;
+		if (confirm("Do you want to delete the user group?") == true) {
+			this.groupService.deleteSelectGroup(this.group)
+				.subscribe(
+					data => this.postData = JSON.stringify(data),
+					error => {this.handleError(error);this.errorMessage = <any>error;this.refreshTable()},
+					() => {console.log("Finished"); this.refreshTable()}
+				);
+			this.groups.splice(this.findSelectedGroupIndex(), 1);
+			//this.group = null;
+			this.displayDialog = false;
+		}
     }
 	
     onSelect(group) {

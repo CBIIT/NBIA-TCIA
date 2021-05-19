@@ -337,13 +337,16 @@ public class DownloadServletV4 extends HttpServlet {
 	}
 
 	private static String cleanStr(String in) {
+		if ((in == null) || (in.length() == 0))
+			return "NA";
+		else
 		if ((in != null) && (in.length() > 0)) {
 			String out = in.replaceAll("[^a-zA-Z0-9 .-]", "");
 			if (out.isEmpty())
-				return "null";
+				return "NA";
 			return out;
-		} else
-			return null;
+		}
+		return in;
 	}
 
 	private static List<String> getManifestRec(List<String> seriesUids, String loginName) {
@@ -396,8 +399,8 @@ public class DownloadServletV4 extends HttpServlet {
 				String study_id = cleanStr(series.getStudy_id());
 				String seriesNumber = series.getSeriesNumber();
 				String thirdPartyAnalysis= series.getThirdPartyAnalysis();
-				String dataDescURI = series.getDescriptionURI();
-				String manufacturer = series.getManufacturer();
+				String dataDescURI = cleanStr(series.getDescriptionURI());
+				String manufacturer = cleanStr(series.getManufacturer());
 				String modality = series.getModality();
 				String sopClassUid = series.getSopClassUID();
 				String sopClassName = sopClassNameMap.get(series.getSopClassUID());

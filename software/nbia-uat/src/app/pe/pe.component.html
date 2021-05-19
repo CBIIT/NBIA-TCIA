@@ -83,7 +83,7 @@
 		</div>
 		<p-footer>
 			<div class="ui-dialog-buttonpane ui-helper-clearfix">
-				<button type="button" pButton icon="fa fa-check" (click)="save()" label="Save" [disabled]="pe.collection == null || pe.site== null || pe.collection==''||pe.site==''"></button>
+				<button type="button" pButton icon="fa fa-check" class="nbia-button" (click)="save()" label="Save" [disabled]="pe.collection == null || pe.site== null || pe.collection==''||pe.site==''"></button>
 			</div>		
 		</p-footer>
 	</p-dialog>
@@ -105,7 +105,7 @@
 		</div>	
 		<p-footer>
 			<div class="ui-dialog-buttonpane ui-helper-clearfix">
-				<button type="button" pButton icon="fa fa-check" (click)="addPgs()" label="Assign" class="nbia-button"></button>
+				<button type="button" pButton icon="fa fa-check" class="nbia-button" (click)="addPgs()" label="Assign" class="nbia-button"></button>
 			</div>
 		</p-footer>
 	</p-dialog>
@@ -126,7 +126,7 @@
 		</div>
 		<p-footer>
 			<div class="ui-dialog-buttonpane ui-helper-clearfix">
-				<button type="button" pButton icon="fa fa-check" (click)="removePGs()" label="Remove"></button>
+				<button type="button" pButton icon="fa fa-check" class="nbia-button" (click)="removePGs()" label="Remove"></button>
 			</div>
 		</p-footer>
 	</p-dialog>		
