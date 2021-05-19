@@ -28,6 +28,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
     // ------------------------------------------------------
 
     disableUseDateRange = true;
+    applyCheckboxCalender = false;
 
     /*
      dayLabels?: IMyDayLabels;
@@ -183,6 +184,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.setFromDate( Properties.LAST_ACCESS );
         this.checked = false;
         this.disableUseDateRange = true;
+        this.applyCheckboxCalender = false;
 
         // this.validateDateRange();
 

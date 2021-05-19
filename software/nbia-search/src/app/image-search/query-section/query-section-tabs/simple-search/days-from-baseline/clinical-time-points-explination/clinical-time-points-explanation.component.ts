@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonService} from "@app/image-search/services/common.service";
 
 @Component({
@@ -7,6 +7,7 @@ import {CommonService} from "@app/image-search/services/common.service";
   styleUrls: ['./clinical-time-points-explanation.component.scss']
 })
 export class ClinicalTimePointsExplanationComponent implements OnInit {
+  @Input() posY;
 
   constructor( private commonService: CommonService) { }
 

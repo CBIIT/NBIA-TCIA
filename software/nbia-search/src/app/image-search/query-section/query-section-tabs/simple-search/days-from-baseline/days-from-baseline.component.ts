@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 } )
 export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     showClinicalTimePointsExplanation = false;
+    posY = 0;
 
     fromBaseLineFrom = '';
     fromBaseLineFromHold = '';
@@ -317,8 +318,9 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         }
     }
 
-    onClinicalTimePointsExplanationClick(){
+    onClinicalTimePointsExplanationClick(e){
         this.showClinicalTimePointsExplanation = true;
+        this.posY = e.view.pageYOffset + e.clientY;
     }
 
     /**

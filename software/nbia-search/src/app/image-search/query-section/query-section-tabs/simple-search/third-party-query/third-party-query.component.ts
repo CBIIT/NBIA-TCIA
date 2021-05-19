@@ -31,6 +31,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
     showCriteriaList;
 
     showThirdPartyExplanation = false;
+    posY = 0;
 
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
@@ -124,8 +125,9 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
 
     }
 
-    onThirdPartyExplanationClick() {
+    onThirdPartyExplanationClick( e ) {
         this.showThirdPartyExplanation = true;
+        this.posY = e.view.pageYOffset + e.clientY;
     }
 
     ngOnDestroy() {

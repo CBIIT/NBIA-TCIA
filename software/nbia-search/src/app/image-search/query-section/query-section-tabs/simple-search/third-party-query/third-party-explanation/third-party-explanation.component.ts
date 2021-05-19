@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { CommonService } from '@app/image-search/services/common.service';
   styleUrls: ['./third-party-explanation.component.scss']
 })
 export class ThirdPartyExplanationComponent implements OnInit {
+
+  @Input() posY;
 
   constructor( private commonService: CommonService) { }
 

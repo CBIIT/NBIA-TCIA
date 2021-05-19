@@ -10,8 +10,10 @@
             Date Released
         </span>
 
-        <label *ngIf="! isAllEmpty()" class="red-clear"><img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png"
-                                                             alt="Search" (click)="onDateRangeClearAllClick(false)"></label>
+        <label *ngIf="! isAllEmpty()" class="red-clear"><img class="clicker cart-button-icon"
+                                                             src="assets/images/TOOLS/clear_red.png"
+                                                             alt="Search"
+                                                             (click)="onDateRangeClearAllClick(false)"></label>
     </div>
 
 
@@ -22,7 +24,8 @@
         <div class="input-group">
             <div class="main-date-range-div">
                 <span class="date-box-label date-box-label-from">From:</span>
-                <input (click)="dpFrom.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box" placeholder='Select "From" date'
+                <input (click)="dpFrom.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box"
+                       placeholder='Select "From" date'
                        ngx-mydatepicker name="fromDatePicker"
                        [(ngModel)]="fromDateModel"
                        [options]="dateOptions"
@@ -34,7 +37,8 @@
         <div class="input-group">
             <div class="main-date-range-div">
                 <span class="date-box-label date-box-label-to">To:</span>
-                <input (click)="dpTo.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box" placeholder='Select "To" date'
+                <input (click)="dpTo.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box"
+                       placeholder='Select "To" date'
                        ngx-mydatepicker name="toDatePicker"
                        [(ngModel)]="toDateModel"
                        [options]="dateOptions"
@@ -45,10 +49,14 @@
 
         <!--Apply Available range  checkbox-->
         <div>
-            <input type="checkbox" class="query-panel-checkboxes available-checkbox" [disabled]="disableUseDateRange"
-                   (click)="onApplyCheckboxClick( $event.target.checked)">
+            <input
+                    type="checkbox"
+                    class="query-panel-checkboxes available-checkbox"
+                    [disabled]="disableUseDateRange"
+                    [(ngModel)]="applyCheckboxCalender"
+                    (click)="onApplyCheckboxClick( $event.target.checked)">
             <label
-                [ngClass]="{
+                    [ngClass]="{
                     'disabled-text': disableUseDateRange
                 }"
             >

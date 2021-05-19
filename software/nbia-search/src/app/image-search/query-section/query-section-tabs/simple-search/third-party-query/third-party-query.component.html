@@ -16,7 +16,7 @@
                     class="thirdParty-status"
             > ({{thirdPartyShortRadioLabels[thirdPartyApplySelection]}})</span>
         </span>
-        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onThirdPartyExplanationClick()">
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onThirdPartyExplanationClick($event)">
 
         <!-- Show the ThirdParty Radio buttons -->
         <span
@@ -76,4 +76,5 @@
 </div>
 <nbia-third-party-explanation
         *ngIf="showThirdPartyExplanation"
+        [posY]=posY
 ></nbia-third-party-explanation>

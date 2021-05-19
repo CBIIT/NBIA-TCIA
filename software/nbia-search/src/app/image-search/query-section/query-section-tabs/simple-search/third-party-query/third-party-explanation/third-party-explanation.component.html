@@ -1,4 +1,8 @@
-<span class="card-nbia-default text-search-explanation alert-box-div alert-box-shadow">
+<span
+        class="card-nbia-default text-search-explanation alert-box-div alert-box-shadow"
+        [ngStyle]="{'top':(posY - 230) + 'px'}"
+
+>
     <div class="card-nbia-header-default p-2">
         <div >3<small>rd</small>-Party Analysis Results
             <span class=" close-x clicker unselectable" (click)="onThirdPartyExplanationCloseClick()">

@@ -22,7 +22,7 @@
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Clinical Time Points
         </span>
-        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onClinicalTimePointsExplanationClick()">
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onClinicalTimePointsExplanationClick($event)">
 
 
         <label *ngIf="currentEventTypeIndex !== 0 || fromBaseLineFrom !== '' || fromBaseLineTo !== '' "
@@ -146,4 +146,6 @@
 </div>
 <nbia-clinical-time-points-explanation
         *ngIf="showClinicalTimePointsExplanation"
+        [posY]=posY
+
 ></nbia-clinical-time-points-explanation>
