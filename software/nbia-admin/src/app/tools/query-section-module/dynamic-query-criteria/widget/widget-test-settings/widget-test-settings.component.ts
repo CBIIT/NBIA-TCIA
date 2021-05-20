@@ -475,9 +475,11 @@ export class WidgetTestSettingsComponent implements OnInit {
     }
 
     onListDataChange(e) {
+/*
         console.log('MHL 0 onListDataChange: ', e);
         console.log('MHL 1 onListDataChange: ', this.dynamicQueryCriteriaListData);
         console.log('MHL 2 onListDataChange: ', this.dynamicQueryCriteriaListData = this.dynamicQueryCriteriaListData.toString().split(','));
+*/
     }
 
     onDynamicQueryCriteriaApplyButtonClick() {
@@ -537,26 +539,20 @@ export class WidgetTestSettingsComponent implements OnInit {
     }
 
     onUseSampleDataCheckbox(e) {
-        console.log('MHL onUseSampleDataCheckbox: ', e);
         this.useSampleData = e;
     }
 
     andOrAllAnyRadio(i) {
         this.andOrAllAnyRadioSelection = -1;
 
-        console.log('MHL 001 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAndOr: ', this.andOrAllAnyRadioSelectionAndOr);
-        console.log('MHL 002 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAllAny: ', this.andOrAllAnyRadioSelectionAllAny);
-
         // AndOr
         if (i === 0 && this.andOrAllAnyRadioSelectionAndOr) {
-            console.log('MHL 003a andOrAllAnyRadio: ', i);
             this.andOrAllAnyRadioSelectionAllAny = false;
             this.andOrAllAnyRadioSelection = 0;
         }
 
         // AllAny
         else if (i === 1 && this.andOrAllAnyRadioSelectionAllAny) {
-            console.log('MHL 004 andOrAllAnyRadio: ', i);
             this.andOrAllAnyRadioSelectionAndOr = false;
             this.andOrAllAnyRadioSelection = 1;
         }
@@ -569,8 +565,6 @@ export class WidgetTestSettingsComponent implements OnInit {
             this.andOrAllAnyRadioSelection = 1;
 
         }
-        console.log('MHL 005 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAndOr: ', this.andOrAllAnyRadioSelectionAndOr);
-        console.log('MHL 006 andOrAllAnyRadio(' + i + ') andOrAllAnyRadioSelectionAllAny: ', this.andOrAllAnyRadioSelectionAllAny);
 
     }
 

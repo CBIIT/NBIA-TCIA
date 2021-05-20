@@ -389,7 +389,7 @@
                             'font-medium': currentFont === '2',
                             'font-large': currentFont === '3'
                         }">
-                            {{item['value'] | shorten : 32}}
+                            {{item['value'] | shorten : 32}}<!-- This should be a "Property" -->
                         </label>
                     </span>
                     <!-- END Checkbox list -->
@@ -405,7 +405,7 @@
                             'font-medium': currentFont === '2',
                             'font-large': currentFont === '3'
                         }">
-                            {{ item['value'] }}
+                            {{item['value'] | shorten : 32}}
                         </label>
                     </span>
                     <!-- END Radio button list -->
