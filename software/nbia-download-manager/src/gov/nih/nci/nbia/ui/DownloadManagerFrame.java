@@ -603,7 +603,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 		    String [] mValue = (String[]) m.getValue();
 		    String licenseName = mValue[0];
 		    String licenseUrl = mValue[1];
-	    
+
 		    if (!licenseName.equals("null")) {
 			    String fileName = outputDir +File.separator
 						+ System.getProperty("databasketId").replace(".tcia", "")
@@ -626,7 +626,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			        	writer.append("\n_____________________________\n\n");
 			        	writer.append(duaText);
 			        }
-			        	writer.append(duaText);
+
 			        writer.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
