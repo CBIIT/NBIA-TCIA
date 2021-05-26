@@ -30,6 +30,7 @@ import gov.nih.nci.nbia.restUtil.PopupCriteriaObjects;
 import gov.nih.nci.nbia.restUtil.PopupCriteriaSelectorDTO;
 import gov.nih.nci.nbia.security.AuthorizationManager;
 import gov.nih.nci.nbia.util.SiteData;
+import gov.nih.nci.nbia.util.CollectionSiteUtil;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
@@ -102,9 +103,7 @@ public class GetAdvancedQCCriteria extends getData{
 			    	if (dto.getParentMenuName().equalsIgnoreCase("Collection")) {
 						List <String>collectionSites=new ArrayList<String>();
 						if (authorizedSiteData!=null) {
-							for (SiteData siteData:authorizedSiteData) {
-								collectionSites.add(siteData.getCollectionSite());
-							}
+							collectionSites=CollectionSiteUtil.getUserSiteData(authorizedSiteData);
 						}
 						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
 							object.getConfiguration().setDynamicQueryCriteriaListData(collectionSites);

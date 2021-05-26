@@ -74,4 +74,7 @@ public class SiteData implements Serializable {
     public String getCollectionSite() {
     	return collection+SITE_DELIMITER+siteName;
     }
+    public String getDelimiter() {
+    	return SITE_DELIMITER;
+    }
 }

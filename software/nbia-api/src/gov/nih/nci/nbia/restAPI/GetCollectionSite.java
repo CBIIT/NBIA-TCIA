@@ -38,6 +38,7 @@ import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.restUtil.QAUserUtil;
 import gov.nih.nci.nbia.restUtil.RoleCache;
+import gov.nih.nci.nbia.util.CollectionSiteUtil;
 import java.text.SimpleDateFormat;
 
 import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
@@ -77,11 +78,9 @@ public class GetCollectionSite extends getData{
 			     authorizedSiteData = am.getAuthorizedSites();
 			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
 			}
-			List <String>collectionSites=new <String>ArrayList();
+			List <String>collectionSites=null;
 			if (authorizedSiteData!=null) {
-				for (SiteData siteData:authorizedSiteData) {
-					collectionSites.add(siteData.getCollectionSite());
-				}
+				collectionSites=CollectionSiteUtil.getUserSiteData(authorizedSiteData);
 			}
 
         		return Response.ok(JSONUtil.getJSONforStringList(collectionSites)).type("application/json")

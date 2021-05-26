@@ -14,6 +14,7 @@ import gov.nih.nci.nbia.dto.QcStatusHistoryDTO;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.internaldomain.QCStatusHistory;
 import gov.nih.nci.nbia.qctool.VisibilityStatus;
+import gov.nih.nci.nbia.util.CollectionSiteUtil;
 import gov.nih.nci.nbia.util.CrossDatabaseUtil;
 import gov.nih.nci.ncia.criteria.*;
 import java.sql.Timestamp;
@@ -151,6 +152,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		List<String>collectionSites=null;
 		if (qcStatusCriteria!=null) {
 			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
+			collectionSites=CollectionSiteUtil.getOriginalCollectionSites(collectionSites);
 			criteria.remove("collection");
 		}
 		qcStatusCriteria = criteria.get("complete");
