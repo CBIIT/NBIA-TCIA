@@ -607,6 +607,12 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
     onPageLengthChange() {
+        if( this.pageLength < 1){
+            this.pageLength = 1;
+        }
+        if( this.pageLength > this.maxPageLength){
+            this.pageLength = this.maxPageLength;
+        }
         this.pageCount = Math.ceil( this.searchResultsCount / this.pageLength );
         this.searchResultsPagerService.setPageCount( this.pageCount );
         this.setupPage();

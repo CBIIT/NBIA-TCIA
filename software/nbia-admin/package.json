@@ -25,7 +25,6 @@
         "angular2-cookie": "^1.2.6",
         "angular2-draggable": "^2.3.2",
         "colresizable": "^1.6.0",
-        "jquery": "^3.4.1",
         "moment": "^2.24.0",
         "ngx-dropdown": "0.0.22",
         "ngx-keyboard-shortcuts": "^1.0.1",

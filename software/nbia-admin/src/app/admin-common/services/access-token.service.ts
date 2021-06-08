@@ -48,7 +48,7 @@ export class AccessTokenService{
     /**
      * Updates the URL at the top of the browser with a new token string.
      *
-     * @param tokenString Access token: refresh token: token life span in seconds
+     * @param tokenString Access token: refresh token: token life span (in seconds)
      */
     appendAQueryParam( tokenString ) {
 
@@ -56,6 +56,7 @@ export class AccessTokenService{
             queryParams: { accessToken: tokenString },
             queryParamsHandling: "merge",
             preserveFragment: true });
+        console.log('MHL urlTree: ', urlTree );
         this.router.navigateByUrl(urlTree);
     }
 

@@ -141,6 +141,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
                  private dynamicQueryCriteriaService: DynamicQueryCriteriaService, private apiService: ApiService,
                  private displayDynamicQueryService: DisplayDynamicQueryService, private utilService: UtilService,
                  private widgetCalendarService: WidgetCalendarService ) {
+
     }
 
     ngOnInit() {

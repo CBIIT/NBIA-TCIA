@@ -386,6 +386,7 @@ export class ApiService{
 
     }
 
+    // We will stop using this soon (04_JUN_2021)  @checkme
     getApproveDeletionsSearch( query ) {
         // Send the Collection//Site so it doesn't need to bi included in the search results
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );

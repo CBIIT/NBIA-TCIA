@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { DynamicCriteriaQueryPart } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-criteria-query-part';
 import { WIDGET_TYPE } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget.component';
 import { ApiService } from '@app/admin-common/services/api.service';
-import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import { ParameterService } from '@app/admin-common/services/parameter.service';
+import { Consts } from '@app/constants';
 
 @Injectable( {
     providedIn: 'root'
@@ -11,7 +12,7 @@ export class DynamicQueryBuilderService{
     dynamicCriteriaPartList: DynamicCriteriaQueryPart[] = [];
     counter = 0;
 
-    constructor( private apiService: ApiService) {
+    constructor( private apiService: ApiService,  private parameterService: ParameterService ) {
     }
 
     // This is called when the Master Clear button in the Display Query is clicked
@@ -26,8 +27,8 @@ export class DynamicQueryBuilderService{
     getQueryPartCount(): number {
         return this.dynamicCriteriaPartList.length;
     }
-
-    addCriteriaQueryPart( part: DynamicCriteriaQueryPart ) {
+    // @FIXME - we don't need currenTool parameter anymore
+    addCriteriaQueryPart( part: DynamicCriteriaQueryPart, currentTool? ) {
         let havePart = false;
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
             if( this.dynamicCriteriaPartList[f].criteriaType === part.criteriaType && this.dynamicCriteriaPartList[f].inputType === part.inputType ){
@@ -68,8 +69,16 @@ export class DynamicQueryBuilderService{
             serverQuery += this.buildServerQueryPart( this.dynamicCriteriaPartList[f] );
         }
 
-        // Remove last "&"
-        serverQuery = serverQuery.slice( 0, -1 );
+        if(this.parameterService.getCurrentTool() === Consts.TOOL_APPROVE_DELETIONS){
+            serverQuery += 'criteriaType' + this.counter + '=qcstatus' +
+                '&inputType' + this.counter + '=list' +
+                '&boolean' + this.counter + '=AND' +
+                '&value' + this.counter + '=To Be Deleted';
+
+        }else{
+            // Remove last "&"
+            serverQuery = serverQuery.slice( 0, -1 );
+        }
 
         return serverQuery;
     }

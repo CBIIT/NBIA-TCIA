@@ -77,7 +77,10 @@
         (click)="onTabClick(consts.DYNAMIC_SEARCH)"
     >
         Search
+<!--
         <img *ngIf="currentTool === consts.TOOL_PERFORM_QC || currentTool === consts.TOOL_APPROVE_DELETIONS"
+-->
+        <img *ngIf="currentTool === consts.TOOL_PERFORM_QC"
             (click)="onAddCriteriaClick()"
             class="add-criteria-plus"
             src="assets/images/green_plus.png"
