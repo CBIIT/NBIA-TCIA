@@ -803,7 +803,6 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         if( Properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1){
             return;
         }
-        console.log('MHL 600 hideToolTip');
 
         this.inCollection = false;
         this.toolTipCounter++;

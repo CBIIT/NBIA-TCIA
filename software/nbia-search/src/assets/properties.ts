@@ -1,8 +1,8 @@
 export let Properties = {
     // 09_MAR_2021
     VERSION: '1.0.73',
-    // 14_APR_2021
-    TEST_VERSION: '1.0.73c',
+    // 08_JUN_2021
+    TEST_VERSION: '1.0.73d',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
