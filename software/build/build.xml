@@ -499,7 +499,7 @@ L-->
 								<attribute name="Trusted-Library" value="${jar.manifest.secure.attribute.Trusted-Library}"/>
 							</manifest>
 						</jar>
-						<signjar destDir="${target.dir}/dist/exploded/nbia-download-manager" alias="${jar-signing.keystore.alias}" keystore="${jar-signing.keystore.location}" storepass="${jar-signing.keystore.password}" keypass="${jar-signing.keystore.password}" tsaurl="http://tsa.starfieldtech.com" lazy="true">
+						<signjar destDir="${target.dir}/dist/exploded/nbia-download-manager" alias="${jar-signing.keystore.alias}" keystore="${jar-signing.keystore.location}" storepass="${jar-signing.keystore.password}" keypass="${jar-signing.keystore.password}" tsaurl="http://timestamp.digicert.com/" lazy="true">
 							<path>
 								<fileset dir="${target.dir}/dist/exploded/nbia-download-manager" includes="${just.jar.filename}"/>
 							</path>
