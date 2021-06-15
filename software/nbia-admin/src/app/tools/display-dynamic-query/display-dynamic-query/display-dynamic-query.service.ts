@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { UtilService } from '@app/admin-common/services/util.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -11,28 +12,30 @@ export class DisplayDynamicQueryService{
 
     displayQueryElements = [];
 
-    constructor() {
+    constructor( private utilService: UtilService ){
     }
 
-    query( q ) {
+    query( q ){
         this.displayDynamicQueryEmitter.emit( q );
     }
 
-    removeFromDisplayQuery( sequenceNumber ) {
-        this.displayNiceDynamicQueryEmitter.emit( this.displayQueryElements );
+    async removeFromDisplayQuery( sequenceNumber ){
+        await this.utilService.sleep( 375 );// TESTING  THIS is a workaround (please) refactor me. Don't forget to describe this in JIRA
         this.displayQueryElements[sequenceNumber] = undefined;
-    }
-
-    updateDisplayQuery( criteriaQueryData ) {
-        this.displayQueryElements[criteriaQueryData['sequenceNumber']] = criteriaQueryData;
-        this.displayQueryElements[criteriaQueryData['sequenceNumber']]['condition'] = this.setCondition( criteriaQueryData);
         this.displayNiceDynamicQueryEmitter.emit( this.displayQueryElements );
     }
 
-    clearQuerySectionQuery() {
+    updateDisplayQuery( criteriaQueryData ){
+        this.displayQueryElements[criteriaQueryData['sequenceNumber']] = criteriaQueryData;
+        this.displayQueryElements[criteriaQueryData['sequenceNumber']]['condition'] = this.setCondition( criteriaQueryData );
+        this.displayNiceDynamicQueryEmitter.emit( this.displayQueryElements );
+    }
+
+    clearQuerySectionQuery(){
         this.clearDynamicQuerySectionQueryEmitter.emit();
         this.displayQueryElements = [];
-        this.displayNiceDynamicQueryEmitter.emit(  this.displayQueryElements ); }
+        this.displayNiceDynamicQueryEmitter.emit( this.displayQueryElements );
+    }
 
     /**
      * Try to determine from the sub-heading: Less than, greater than, etc.
@@ -44,18 +47,18 @@ export class DisplayDynamicQueryService{
             subHead = criteriaQueryData['criteriaSubheading'];
         }
 
-        if( subHead.match(/^\s*contains\s*/i)){
+        if( subHead.match( /^\s*contains\s*/i ) ){
             return 'Contains';
         }
-        if( subHead.match(/^\s*starts \s*with\s*/i)){
+        if( subHead.match( /^\s*starts \s*with\s*/i ) ){
             return 'Starts with';
         }
 
-        if( subHead.match(/^\s*less \s*than\s*/i)){
+        if( subHead.match( /^\s*less \s*than\s*/i ) ){
             return '<';
         }
 
-        if( subHead.match(/^\s*greater \s*than\s*/i)){
+        if( subHead.match( /^\s*greater \s*than\s*/i ) ){
             return '>';
         }
         return '';

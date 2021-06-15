@@ -29,18 +29,6 @@ export class DynamicQueryCriteriaService{
     dynamicQueryCriteriaInputDelimiter = ',';
 
     constructor( private utilService: UtilService ) {
-        //      console.log( 'MHL ** 010 getDynamicQueryCriteriaLargeTextInput: ', this.getDynamicQueryCriteriaLargeTextInput() );
-        /*       console.log( 'MHL ** 011 getDynamicQueryCriteriaLargeTextInput: ', this.getDynamicQueryCriteriaLargeTextInput(
-                   {
-                       'dynamicQueryCriteriaType': AndOrTypes.AND_OR,
-                       'dynamicQueryCriteria': 'testCriteria',
-                       'dynamicQueryCriteriaHeading': 'The Heading',
-                       'dynamicQueryCriteriaSubHeading': 'The subheading',
-                       'dynamicQueryCriteriaApplyText': 'ApplyButtonText',
-                       'dynamicQueryCriteriaAndOrType': 0
-                   }
-               ) );
-       */
     }
 
 

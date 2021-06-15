@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import { Subject } from 'rxjs';
@@ -14,7 +14,6 @@ import { ApiService } from '@app/admin-common/services/api.service';
 import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
 import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
-import { WidgetCalendarComponent } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
 import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
 
 export enum WIDGET_TYPE{
@@ -165,17 +164,25 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
         // To know when the date has changed in Widget-calender
          this.widgetCalendarService.dateChange.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
-            if(this.applyState){
-                this.onApplyCheckboxClick( true );
+
+            // If applyState is true, than we have a selected Apply Checkbox
+             if(this.applyState){
+                 this.onApplyCheckboxClick( true );
+             }
+
+             // If applyState is false, than we have an un-selected Apply Checkbox or an Apply Button
+            /*
+             if(! this.applyState){
+                console.log('MHL applyState: ', this.applyState);
             }
-        } );
+            */
+        });
 
 
         this.initParameters();
 
         // Set applyState to true if there is no Apply checkbox or button
         this.applyState = !(this.criteriaApplyCheckbox || this.criteriaApplyButton);
-
     }
 
 
@@ -476,12 +483,13 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      *
      * @param doNotRerunTheQuery
      */
-    onClearClick( rerunTheQuery: boolean = true ) {
+   onClearClick( rerunTheQuery: boolean = true ) {
         if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.criteriaTextInputText = '';
         }else if( this.criteriaSingleLineRadio ){
             this.criteriaSingleLineRadioCurrent = this.criteriaSingleLineRadioDefault;
         }else if( this.criteriaCalendar ){
+
 
             // Set date ranges to From yesterday to today.
             let date: Date = new Date();
@@ -495,13 +503,13 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
                 formatted: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear()
             }
 
-            // There is valid data after a date clear
-            // this.haveInput = false;
-            // this.applyState = false;
-            //  rerunTheQuery = false;
 
-            this.onApplyCheckboxClick( false );
+            // @CHECKME FIXME This will break if using ApplyCheckbox
+            // this.onApplyCheckboxClick( false );
             this.criteriaSingleCheckboxCalender = false;
+            this.applyState = false;
+
+            this.displayDynamicQueryService.removeFromDisplayQuery( this.sequenceNumber );
 
         }else{
             for( let n = 0; n < this.listCheckboxes.length; n++ ){
@@ -527,9 +535,12 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         // If we have changed this criteria by clicking on Clear, we want to update the search results regardless of whether it's apply status is false.
         if( rerunTheQuery ){
             this.onChange( true );
+
             if( this.criteriaApplyButton ){
                 this.onApplyButtonClick();
             }
+        }else{
+           // console.log('MHL 3011 WidgetComponent.onClearClick if NOT rerunTheQuery');
         }
 
         if( this.criteriaSingleLineRadio ){
@@ -619,7 +630,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
                 this.updateQuery();
 
                 if( this.criteriaCalendar ){
-                    this.haveInput = true;
+                    this.haveInput = true; // @CHECKME
                 }
             }else{
                 this.removeQuery( true ); // Clears display query
@@ -635,8 +646,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * @param state
      */
     onApplyButtonClick() {
-        this.updateQuery();
-
+        this.onApplyCheckboxClick(true);
+        this.applyState = false;
     }
 
     /**
@@ -648,7 +659,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      */
     onChange( ignoreApplyState: boolean = false ) {
         if( this.applyState || ignoreApplyState ){
-            this.updateQuery();
+            this.updateQuery(ignoreApplyState);
         }
     }
 
@@ -663,9 +674,9 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     /**
-     *
+     *  Hastily adding "clear" for clear button on Calendar
      */
-    updateQuery() {
+    updateQuery( clear: boolean = false) {
         let userInput = [];
         let displayQuery = {};
 
@@ -733,9 +744,10 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         if( this.widgetType === WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS && (this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioCurrent].match( /^\s*ignore\s*/i )) ){
             noInputData = true;
         }
+
         // Calendar will always have some input because "Clear" sets the dates to yesterday and today, but, unchecks apply
         else if( this.widgetType === WIDGET_TYPE.CALENDAR && (!this.applyState) ){
-            noInputData = true;
+            noInputData = clear;
         }else if( (userInput !== undefined) && (userInput[0] !== undefined) && (userInput.length > 0) ){
             for( let f = 0; f < userInput.length; f++ ){
                 if( userInput[f].length > 0 ){

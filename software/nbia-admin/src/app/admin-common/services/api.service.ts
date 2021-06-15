@@ -70,6 +70,7 @@ export class ApiService{
     getDynamicCriteriaSelectionMenuDataResultsEmitter = new EventEmitter();
     getDynamicCriteriaSelectionMenuDataErrorEmitter = new EventEmitter();
 
+    trailerQuery = '';
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService,
                  private loadingDisplayService: LoadingDisplayService, private displayDynamicQueryService: DisplayDynamicQueryService) {
@@ -427,6 +428,13 @@ export class ApiService{
      * @param query
      */
     doAdvancedQcSearch( query ) {
+        // If the query has not changed, don't run it again.
+        if( this.trailerQuery === query ){
+            return;
+        }
+
+        this.trailerQuery = query;
+
         this.displayDynamicQueryService.query( query );
 
         this.loadingDisplayService.setLoading( true, 'Loading data...' );

@@ -1,867 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="83341ce9-d639-4271-85f5-6c4c568df6e5" name="Default Changelist" comment="Adding widget configuration tool">
-      <change afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/clean-dynamic-search-test-json.pipe.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/clean-dynamic-search-test-json.pipe.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/dynamic-query-test.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/dynamic-query-test/dynamic-query-test.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/dynamic-query-test/dynamic-query-test.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/dynamic-query-test/dynamic-query-test.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+    <list default="true" id="83341ce9-d639-4271-85f5-6c4c568df6e5" name="Default Changelist" comment="Adding widget configuration files that I missed in the last commit.">
+      <change afterPath="$PROJECT_DIR$/../nbia-api/nbia-api.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/persistence.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/persistence.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/footer/footer.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/footer/footer.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/header-module/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/header-module/header/header.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/header-module/header/tool-title/tool-title.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/header-module/header/tool-title/tool-title.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/preferences/preferences.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/preferences/preferences.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/two-level-multi-choice/two-level-multi-choice.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/configuration" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/configuration" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/assets/properties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/properties.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/angular.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/browserslist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/e2e/src/app.e2e-spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/e2e/src/app.po.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/e2e/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/karma.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/admin-common-pipe.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/pipes/month-day-year.pipe.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/pipes/month-day-year.pipe.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/pipes/shorten-right.pipe.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/pipes/shorten-right.pipe.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/pipes/shorten.pipe.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/admin-common-pipe-module/pipes/shorten.pipe.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/components/loading-display/loading-display.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/components/loading-display/loading-display.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/components/loading-display/loading-display.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/components/loading-display/loading-display.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/components/loading-display/loading-display.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/components/loading-display/loading-display.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/access-token.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/access-token.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/api.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/api.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/branding.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/branding.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/common.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/common.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/configuration.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/configuration.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/parameter.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/parameter.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/persistence.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/persistence.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/util.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/admin-common/services/util.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/app-routing.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/app.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/app.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/app.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/app.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/app.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/btn-nbia.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/card-nbia.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/consts.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/data-table.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/footer/footer.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/footer/footer.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/footer/footer.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/footer/footer.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/custom-menu/custom-menu.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/custom-menu/custom-menu.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/custom-menu/custom-menu.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/custom-menu/custom-menu.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/header.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/header.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/header.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/header.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/tool-title/tool-title.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/tool-title/tool-title.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/tool-title/tool-title.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/header-module/header/tool-title/tool-title.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/login/login.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/login/login.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/login/login.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/login/login.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/login/login.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/login/login.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/nbia-admin-client/nbia-admin-client.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/nbia-admin-client/nbia-admin-client.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/nbia-admin-client/nbia-admin-client.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/nbia-admin-client/nbia-admin-client.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/popup.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/preferences/preferences.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/preferences/preferences.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/preferences/preferences.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/preferences/preferences.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/preferences/preferences.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/preferences/preferences.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode/cine-mode.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/cine-mode/cine-mode.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query/display-query.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query/display-query.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query/display-query.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query/display-query.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query/display-query.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/display-query-module/display-query/display-query.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-license-module/edit-license.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-license-module/edit-license/edit-license.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-license-module/edit-license/edit-license.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-license-module/edit-license/edit-license.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/edit-license-module/edit-license/edit-license.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/manage-workflow-items-module/manage-workflow-items.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-online-deletion-module/perform-online-deletion.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/perform-qc/perform-qc.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/perform-qc-module/services/perform-qc.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report-module.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/qc-tool-module/qc-tool/qc-tool.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/dynamic-query-test/dynamic-query-test.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/left-section/left-section.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/left-section/left-section.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/left-section/left-section.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/left-section/left-section.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-batch/query-batch.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-batch/query-batch.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-batch/query-batch.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-batch/query-batch.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-collection/query-collection.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-collection/query-collection.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-collection/query-collection.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-collection/query-collection.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-released/query-released.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-released/query-released.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-released/query-released.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-released/query-released.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-section.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-section/query-section.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-section/query-section.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-section/query-section.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/query-section/query-section.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/services/query-section.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/query-section-module/services/query-section.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/services/modality-descriptions.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/services/modality-descriptions.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/services/search-result-by-index.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/search-results-section-module/services/search-result-by-index.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/view-submission-reports-module/view-submission-reports.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/css/bootstrap.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/bootstrap-4.5.2-dist/js/bootstrap.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/currentBrand" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/accountHelpUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/customMenu.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/downloaderUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/footer.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/logo_ORIG.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/newAccountUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/textSearchDocumentationUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/nbia/versionSuffix.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/accountHelpUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/customMenu.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/downloaderUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/footer.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/newAccountUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/textSearchDocumentationUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/brand/tcia/versionSuffix.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/colResizable-1.6.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/colResizable-1.6.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/configuration" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/Untitled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/pause.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/play_arrow_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/play_back_arrow-black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/skip_first_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/skip_first_black_wide.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/skip_first_black_wide.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/skip_last_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/skip_next_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/AV/skip_previous_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cart.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cartDelete_01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cartDelete_02.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cart_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cart_delete_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cart_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/cart_empty.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/chevron_down_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/chevron_right_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/clear_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/clear_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/close_left_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/down_triangle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/download_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/download_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/download_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/exclamation_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/hamburger_menu.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/hamburger_menu.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/home0_42px.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/home_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/login_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/login_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/logout_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/logout_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/open_right_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/question_red_small.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/search_black_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/search_disabled_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/search_red_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/share_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/share_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/up_triangle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/wrench_black_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/TOOLS/wrench_disabled_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/check.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/clear-icon1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/dotted.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/downTriangle2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/down_V01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/emptyTriangle2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/eye.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/facetime-video.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/grip.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/image_not_found.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/image_not_found.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/loading-gears-animation-13.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/magGlass.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/nc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/nc.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/playBack.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/redClear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/right_V01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/search.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/search0_14px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/search0_14px.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/search2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/tcia-global-logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/tcia-header-bkgd.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/test_loading.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/th.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/images/upTriangle2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/jquery/3.5.1/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/popper/1.16.0/umd/popper.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/properties.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/tcia-masthead-body-include.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/assets/tcia-masthead-head-include.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/environments/environment.prod.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/environments/environment.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/main.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/polyfills.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/styles.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/src/test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/tsconfig.app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/tsconfig.spec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/tslint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_27_SEP_2020_11_56_08/tslint_ORIG.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/angular.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/browserslist" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/e2e/src/app.e2e-spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/e2e/src/app.po.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/e2e/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/karma.conf.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/admin-common-pipe.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/pipes/month-day-year.pipe.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/pipes/month-day-year.pipe.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/pipes/shorten-right.pipe.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/pipes/shorten-right.pipe.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/pipes/shorten.pipe.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/admin-common-pipe-module/pipes/shorten.pipe.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/components/loading-display/loading-display.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/components/loading-display/loading-display.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/components/loading-display/loading-display.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/components/loading-display/loading-display.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/components/loading-display/loading-display.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/components/loading-display/loading-display.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/access-token.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/access-token.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/api.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/api.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/branding.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/branding.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/common.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/common.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/configuration.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/configuration.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/parameter.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/parameter.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/persistence.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/persistence.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/util.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/admin-common/services/util.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/app-routing.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/app.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/app.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/app.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/app.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/app.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/btn-nbia.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/card-nbia.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/consts.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/data-table.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/footer/footer.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/footer/footer.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/footer/footer.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/footer/footer.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/custom-menu/custom-menu.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/custom-menu/custom-menu.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/custom-menu/custom-menu.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/custom-menu/custom-menu.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/header.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/header.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/header.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/header.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/tool-title/tool-title.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/tool-title/tool-title.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/tool-title/tool-title.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/header-module/header/tool-title/tool-title.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/login/login.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/login/login.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/login/login.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/login/login.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/login/login.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/login/login.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/nbia-admin-client/nbia-admin-client.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/nbia-admin-client/nbia-admin-client.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/nbia-admin-client/nbia-admin-client.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/nbia-admin-client/nbia-admin-client.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/popup.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/preferences/preferences.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/preferences/preferences.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/preferences/preferences.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/preferences/preferences.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/preferences/preferences.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/preferences/preferences.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode/cine-mode.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode/cine-mode.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/cine-mode/cine-mode.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/delete-cinemode-series/delete-cinemode-series.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query/display-query.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query/display-query.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query/display-query.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query/display-query.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query/display-query.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/display-query-module/display-query/display-query.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-license-module/edit-license.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-license-module/edit-license/edit-license.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-license-module/edit-license/edit-license.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-license-module/edit-license/edit-license.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/edit-license-module/edit-license/edit-license.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/manage-workflow-items-module/manage-workflow-items.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/manage-workflow-items-module/manage-workflow-items/manage-workflow-items.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-online-deletion-module/perform-online-deletion.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/perform-qc/perform-qc.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/perform-qc-module/services/perform-qc.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report-module.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report-table/qc-history-report-table.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-history-report-module/qc-history-report/qc-history-report.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/qc-tool-module/qc-tool/qc-tool.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/date-range/date-range.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/large-text-input/large-text-input.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/multi-choice-list/multi-choice-list.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-checkbox/single-checkbox.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-list/single-choice-list.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/single-choice-one-line/single-choice-one-line.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/dynamic-query-criteria/small-text-input/small-text-input.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/left-section/left-section.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/left-section/left-section.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/left-section/left-section.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/left-section/left-section.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-batch/query-batch.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-batch/query-batch.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-batch/query-batch.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-batch/query-batch.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-collection/query-collection.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-collection/query-collection.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-collection/query-collection.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-collection/query-collection.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-patient-id/query-patient-id.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-released/query-released.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-released/query-released.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-released/query-released.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-released/query-released.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-section.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-section/query-section.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-section/query-section.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-section/query-section.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/query-section/query-section.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/services/query-section.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/query-section-module/services/query-section.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section-charlie/search-results-section-charlie.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/search-results-section/search-results-section.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/services/modality-descriptions.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/services/modality-descriptions.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/services/search-result-by-index.service.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/search-results-section-module/services/search-result-by-index.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/view-submission-reports-module/view-submission-reports.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/app/tools/view-submission-reports-module/view-submission-reports/view-submission-reports.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-grid.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap-reboot.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/css/bootstrap.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.bundle.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/bootstrap-4.5.2-dist/js/bootstrap.min.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/currentBrand" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/accountHelpUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/customMenu.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/downloaderUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/footer.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/logo_ORIG.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/newAccountUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/textSearchDocumentationUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/nbia/versionSuffix.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/accountHelpUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/customMenu.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/downloaderUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/footer.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/newAccountUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/textSearchDocumentationUrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/brand/tcia/versionSuffix.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/colResizable-1.6.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/colResizable-1.6.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/configuration" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/Untitled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/pause.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/play_arrow_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/play_back_arrow-black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/skip_first_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/skip_first_black_wide.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/skip_first_black_wide.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/skip_last_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/skip_next_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/AV/skip_previous_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cart.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cartDelete_01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cartDelete_02.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cart_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cart_delete_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cart_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/cart_empty.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/chevron_down_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/chevron_right_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/clear_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/clear_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/close_left_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/down_triangle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/download_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/download_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/download_white.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/exclamation_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/hamburger_menu.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/hamburger_menu.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/home0_42px.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/home_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/login_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/login_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/logout_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/logout_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/open_right_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/question_red_small.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/search_black_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/search_disabled_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/search_red_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/share_black.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/share_disabled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/up_triangle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/wrench_black_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/TOOLS/wrench_disabled_43px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/check.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/clear-icon1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/dotted.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/downTriangle2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/down_V01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/emptyTriangle2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/eye.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/facetime-video.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/grip.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/image_not_found.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/image_not_found.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/loading-gears-animation-13.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/magGlass.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/nc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/nc.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/playBack.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/redClear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/right_V01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/search.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/search0_14px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/search0_14px.xcf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/search2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/tcia-global-logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/tcia-header-bkgd.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/test_loading.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/th.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/images/upTriangle2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/jquery/3.5.1/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/popper/1.16.0/umd/popper.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/properties.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/tcia-masthead-body-include.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/assets/tcia-masthead-head-include.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/environments/environment.prod.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/environments/environment.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/main.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/polyfills.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/styles.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/src/test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/tsconfig.app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/tsconfig.spec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/tslint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-admin_BROKE_BRAVE_27_SEP_2020/tslint_ORIG.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/application-menu/application-menu.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/application-menu/application-menu.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/common/services/configuration.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/common/services/configuration.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/image-search/data-section/data-section-tabs/search-results/missing-criteria/missing-criteria.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/image-search/data-section/data-section-tabs/search-results/missing-criteria/missing-criteria.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/image-search/services/api-server.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/image-search/services/api-server.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/login/login.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/nbia-client/nbia-client.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/nbia-client/nbia-client.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/assets/configuration" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/assets/configuration" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-search/src/assets/properties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/assets/properties.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-viewer/src/app/nbia-thumbnail-viewer/nbia-thumbnail-viewer.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-viewer/src/app/nbia-thumbnail-viewer/nbia-thumbnail-viewer.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-viewer/src/app/services/server-access.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-viewer/src/app/services/server-access.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nbia-viewer/src/assets/properties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-viewer/src/assets/properties.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -871,6 +22,37 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/properties.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/constants.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-released/query-released.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="JupyterTrust" id="5f4b9c4e-0380-42c5-8300-1bdc5c35f79a" />
   <component name="ProjectId" id="1jhKRiWrVjPBSfmfu17HNlQ7X6B" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -882,15 +64,70 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.stylelint" value="true" />
+    <property name="node.js.selected.package.stylelint" value="$PROJECT_DIR$/node_modules/stylelint" />
     <property name="nodejs.protractor.protractor_package" value="$PROJECT_DIR$/node_modules/protractor" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.HTML" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.stylesheets.stylelint" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
-  <component name="RunManager" selected="npm.Angular CLI Server">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query" />
+      <recent name="$PROJECT_DIR$/src/app/tools/display-dynamic-query" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.Angular Application">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DisplayDynamicQueryService.Test setCondition Greater than" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file-path value="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service.spec.ts" />
+      <test-names>
+        <test-name value="DisplayDynamicQueryService" />
+        <test-name value="Test setCondition Greater than" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="ShortenRightPipe" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/admin-common-pipe-module/pipes/shorten-right.pipe.spec.ts" />
+      <test-names>
+        <test-name value="ShortenRightPipe" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration name="E2E Tests (nbia-admin)" type="JavaScriptTestRunnerProtractor">
       <config-file value="$PROJECT_DIR$/e2e/protractor.conf.js" />
       <node-interpreter value="project" />
@@ -900,7 +137,7 @@
       <scope-kind value="ALL" />
       <method v="2" />
     </configuration>
-    <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4200">
+    <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4300" useFirstLineBreakpoints="true">
       <method v="2" />
     </configuration>
     <configuration name="Angular CLI Server" type="js.build_tools.npm">
@@ -908,6 +145,16 @@
       <command value="run" />
       <scripts>
         <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build-docs" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build-docs" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -923,12 +170,35 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="startWithProxy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="startWithProxy" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.Angular Application" />
+      <item itemvalue="Karma.DisplayDynamicQueryService.Test setCondition Greater than" />
+      <item itemvalue="Karma.ShortenRightPipe" />
+      <item itemvalue="npm.Angular CLI Server" />
+      <item itemvalue="npm.build-docs" />
+      <item itemvalue="npm.build" />
+      <item itemvalue="npm.startWithProxy" />
+      <item itemvalue="Protractor.E2E Tests (nbia-admin)" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.startWithProxy" />
         <item itemvalue="npm.build" />
+        <item itemvalue="npm.build-docs" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -943,139 +213,262 @@
       <workItem from="1604311086960" duration="2373000" />
       <workItem from="1605013397789" duration="176000" />
       <workItem from="1607813710148" duration="220000" />
-      <workItem from="1607855529328" duration="296949000" />
+      <workItem from="1607855529328" duration="298261000" />
+      <workItem from="1610539118521" duration="46752000" />
+      <workItem from="1610662122836" duration="67301000" />
+      <workItem from="1611489454064" duration="48910000" />
+      <workItem from="1612363537215" duration="775000" />
+      <workItem from="1612377673119" duration="1205000" />
+      <workItem from="1612378995789" duration="5668000" />
+      <workItem from="1612534200390" duration="20325000" />
+      <workItem from="1612794023154" duration="3935000" />
+      <workItem from="1612799942036" duration="68693000" />
+      <workItem from="1613987484908" duration="43135000" />
+      <workItem from="1614338554607" duration="152000" />
+      <workItem from="1614364216613" duration="504000" />
+      <workItem from="1614528708958" duration="153036000" />
+      <workItem from="1616835834839" duration="120341000" />
+      <workItem from="1617833518689" duration="3671000" />
+      <workItem from="1617873654126" duration="2180000" />
+      <workItem from="1617876303099" duration="1715000" />
+      <workItem from="1617878229437" duration="624000" />
+      <workItem from="1617879116743" duration="234000" />
+      <workItem from="1617879370162" duration="68000" />
+      <workItem from="1617879510879" duration="217000" />
+      <workItem from="1617879761855" duration="83000" />
+      <workItem from="1617879874897" duration="189000" />
+      <workItem from="1617880082433" duration="38586000" />
+      <workItem from="1617975197484" duration="28230000" />
+      <workItem from="1618138209688" duration="135018000" />
+      <workItem from="1618662327598" duration="203000" />
+      <workItem from="1618665658408" duration="27999000" />
+      <workItem from="1618824440288" duration="40071000" />
+      <workItem from="1619165621233" duration="3235000" />
+      <workItem from="1619209634249" duration="19435000" />
+      <workItem from="1619701875070" duration="9675000" />
+      <workItem from="1619973713142" duration="74013000" />
+      <workItem from="1620642722727" duration="7251000" />
+      <workItem from="1620824912337" duration="5585000" />
+      <workItem from="1621202027097" duration="47393000" />
+      <workItem from="1621458293616" duration="5862000" />
+      <workItem from="1621541681730" duration="33804000" />
+      <workItem from="1622654051454" duration="498000" />
+      <workItem from="1622655252414" duration="97000" />
+      <workItem from="1622655470208" duration="17835000" />
+      <workItem from="1623170258494" duration="106000" />
+      <workItem from="1623170416370" duration="26285000" />
+      <workItem from="1623257056809" duration="13949000" />
+      <workItem from="1623345193195" duration="15276000" />
     </task>
+    <task id="LOCAL-00001" summary="Adding widget configuration tool">
+      <created>1610398273481</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1610398273481</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Adding preliminary criteria selection menu and &quot;Dynamic Search&quot; tab.">
+      <created>1611767200505</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1611767200505</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Adding widget configuration files that I missed in the last commit.">
+      <created>1611827668775</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1611827668775</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Adding widget configuration files that I missed in the last commit.">
+      <created>1611854538216</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1611854538216</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Adding widget configuration files that I missed in the last commit.">
+      <created>1611857122331</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1611857122331</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Updated the universal menu at the top of the page.">
+      <created>1613559579753</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1613559579753</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Adding widget configuration set from server. Start of dynamic query building.">
+      <created>1613990161217</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1613990161217</updated>
+    </task>
+    <task id="LOCAL-00008" summary="JIRAs 1621, 1622, 1615(Buttons), and 1617&#10;1621 - Exclude commercial restricted series - series are still include in manifest file&#10;1622 - Fix universal menus&#10;1615 - Update intro screens - Fixed the bottons looking disabled, still need to update the screen shots&#10;1617 - popup when a shared query includes Collection(s) not accessable by the user - Updated for Bootstrap 4">
+      <created>1615216598960</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1615216598960</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Update JQuery to version 3.6.0">
+      <created>1616416114142</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1616416114142</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Turned off Dynamic search criteria in the configuration file.">
+      <created>1616506800094</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1616506800094</updated>
+    </task>
+    <task id="LOCAL-00011" summary="committing Dynamic search, still a work in progress. Cine mode only loads and displays first image until/unless user needs more.&#10;Added paging to search results.">
+      <created>1618351428317</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1618351428317</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Single line radio button input">
+      <created>1618391103339</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1618391103339</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Fixed bad Markdown formatting">
+      <created>1618395402323</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1618395402323</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Refresh token use">
+      <created>1618500428792</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1618500428792</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Adding widget configuration files that I missed in the last commit.">
+      <created>1618501901858</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1618501901858</updated>
+    </task>
+    <task id="LOCAL-00016" summary="A little clean up of widget menu configuration JSON">
+      <created>1618504092174</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1618504092174</updated>
+    </task>
+    <task id="LOCAL-00017" summary="More work on Dynamic search.">
+      <created>1618576948292</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1618576948292</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Adding widget configuration files that I missed in the last commit.">
+      <created>1618746566406</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1618746566406</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Configuration tweak">
+      <created>1618747470594</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1618747470594</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Removed typedoc from package.json">
+      <created>1618846467285</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1618846467285</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Fixing &quot;Showing X - Y of Z Series&quot; at the top">
+      <created>1618919631955</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1618919631955</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Fixes authentication issue when &quot;Home&quot; button is clicked">
+      <created>1620222926670</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1620222926670</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Put ngx-mydatepicker back in the package.json file.">
+      <created>1620380501144</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1620380501144</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Fixes for JIRAs: 1668, 1666, 1665, 1660, 1658, 1661, 1657">
+      <created>1620843122990</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1620843122990</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Bug fixes for 7.8">
+      <created>1621445040424</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1621445040424</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="-1147" y="239" key="#com.intellij.ide.util.MemberChooser" timestamp="1608126655175">
-      <screen x="-1920" y="23" width="1920" height="986" />
-    </state>
-    <state x="-1147" y="239" key="#com.intellij.ide.util.MemberChooser/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608126655175" />
-    <state x="-1420" y="-457" key="CommitChangelistDialog2" timestamp="1610397944745">
-      <screen x="-1920" y="-523" width="1920" height="989" />
-    </state>
-    <state x="-1420" y="-457" key="CommitChangelistDialog2/-1920.-523.1920.989/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.989" timestamp="1610397944745" />
-    <state x="-1820" y="123" width="1720" height="789" key="DiffContextDialog" timestamp="1609434566118">
-      <screen x="-1920" y="23" width="1920" height="989" />
-    </state>
-    <state x="-1820" y="123" width="1720" height="786" key="DiffContextDialog/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608125923733" />
-    <state x="-1820" y="123" width="1720" height="789" key="DiffContextDialog/-1920.23.1920.989/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.989" timestamp="1609434566118" />
-    <state width="1878" height="98" key="GridCell.Tab.0.bottom" timestamp="1610020289561">
-      <screen x="-1920" y="-523" width="1920" height="982" />
-    </state>
-    <state width="1878" height="98" key="GridCell.Tab.0.bottom/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610020289561" />
-    <state width="1878" height="98" key="GridCell.Tab.0.bottom/-1920.-523.1920.986/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.986" timestamp="1609960055649" />
-    <state width="1878" height="126" key="GridCell.Tab.0.bottom/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1609096679818" />
-    <state width="1878" height="126" key="GridCell.Tab.0.bottom/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609074477868" />
-    <state width="1878" height="126" key="GridCell.Tab.0.bottom/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608282616476" />
-    <state width="1878" height="98" key="GridCell.Tab.0.bottom/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609174553413" />
-    <state width="2508" height="360" key="GridCell.Tab.0.bottom/-2560.-864.2560.1337/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1337" timestamp="1604254622527" />
-    <state width="2508" height="360" key="GridCell.Tab.0.bottom/-2560.-864.2560.1338/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1338" timestamp="1604310944718" />
-    <state width="1878" height="98" key="GridCell.Tab.0.center" timestamp="1610020289559">
-      <screen x="-1920" y="-523" width="1920" height="982" />
-    </state>
-    <state width="1878" height="98" key="GridCell.Tab.0.center/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610020289559" />
-    <state width="1878" height="98" key="GridCell.Tab.0.center/-1920.-523.1920.986/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.986" timestamp="1609960055645" />
-    <state width="1878" height="126" key="GridCell.Tab.0.center/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1609096679817" />
-    <state width="1878" height="126" key="GridCell.Tab.0.center/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609074477843" />
-    <state width="1878" height="126" key="GridCell.Tab.0.center/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608282616474" />
-    <state width="1878" height="98" key="GridCell.Tab.0.center/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609174553410" />
-    <state width="2508" height="360" key="GridCell.Tab.0.center/-2560.-864.2560.1337/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1337" timestamp="1604254622526" />
-    <state width="2508" height="360" key="GridCell.Tab.0.center/-2560.-864.2560.1338/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1338" timestamp="1604310944716" />
-    <state width="1878" height="98" key="GridCell.Tab.0.left" timestamp="1610020289559">
-      <screen x="-1920" y="-523" width="1920" height="982" />
-    </state>
-    <state width="1878" height="98" key="GridCell.Tab.0.left/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610020289559" />
-    <state width="1878" height="98" key="GridCell.Tab.0.left/-1920.-523.1920.986/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.986" timestamp="1609960055637" />
-    <state width="1878" height="126" key="GridCell.Tab.0.left/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1609096679816" />
-    <state width="1878" height="126" key="GridCell.Tab.0.left/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609074477809" />
-    <state width="1878" height="126" key="GridCell.Tab.0.left/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608282616403" />
-    <state width="1878" height="98" key="GridCell.Tab.0.left/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609174553409" />
-    <state width="2508" height="360" key="GridCell.Tab.0.left/-2560.-864.2560.1337/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1337" timestamp="1604254622525" />
-    <state width="2508" height="360" key="GridCell.Tab.0.left/-2560.-864.2560.1338/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1338" timestamp="1604310944713" />
-    <state width="1878" height="98" key="GridCell.Tab.0.right" timestamp="1610020289560">
-      <screen x="-1920" y="-523" width="1920" height="982" />
-    </state>
-    <state width="1878" height="98" key="GridCell.Tab.0.right/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610020289560" />
-    <state width="1878" height="98" key="GridCell.Tab.0.right/-1920.-523.1920.986/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.986" timestamp="1609960055648" />
-    <state width="1878" height="126" key="GridCell.Tab.0.right/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1609096679817" />
-    <state width="1878" height="126" key="GridCell.Tab.0.right/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609074477856" />
-    <state width="1878" height="126" key="GridCell.Tab.0.right/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608282616475" />
-    <state width="1878" height="98" key="GridCell.Tab.0.right/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609174553411" />
-    <state width="2508" height="360" key="GridCell.Tab.0.right/-2560.-864.2560.1337/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1337" timestamp="1604254622526" />
-    <state width="2508" height="360" key="GridCell.Tab.0.right/-2560.-864.2560.1338/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1338" timestamp="1604310944717" />
-    <state x="-1701" y="-551" key="NewModule_or_Project.wizard" timestamp="1604311233045">
-      <screen x="-2560" y="-864" width="2560" height="1338" />
-    </state>
-    <state x="-1701" y="-551" key="NewModule_or_Project.wizard/-2560.-864.2560.1338/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1338" timestamp="1604311233045" />
-    <state x="-1164" y="134" key="SettingsEditor" timestamp="1608734164401">
-      <screen x="-1920" y="23" width="1920" height="984" />
-    </state>
-    <state x="-1164" y="134" key="SettingsEditor/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1608734164401" />
-    <state x="-1164" y="134" key="SettingsEditor/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608129592332" />
-    <state x="-1820" y="-423" width="1720" height="790" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1610118840461">
-      <screen x="-1920" y="-523" width="1920" height="989" />
-    </state>
-    <state x="-1820" y="-424" width="1720" height="784" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610034293457" />
-    <state x="-1820" y="-423" width="1720" height="790" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.-523.1920.989/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.989" timestamp="1610118840461" />
-    <state x="-1820" y="123" width="1720" height="786" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1607862456115" />
-    <state x="-1820" y="123" width="1720" height="788" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609324256353" />
-    <state x="-1813" y="-422" width="1720" height="786" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1610113831639">
-      <screen x="-1920" y="-523" width="1920" height="989" />
-    </state>
-    <state x="-1813" y="-423" width="1720" height="780" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610034293457" />
-    <state x="-1813" y="-423" width="1720" height="783" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/-1920.-523.1920.986/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.986" timestamp="1609948579208" />
-    <state x="-1813" y="-422" width="1720" height="786" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/-1920.-523.1920.989/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.989" timestamp="1610113831639" />
-    <state x="-1813" y="123" width="1720" height="784" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609680607344" />
-    <state x="-1162" y="-111" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1610398027092">
-      <screen x="-1920" y="-523" width="1920" height="989" />
-    </state>
-    <state x="-1162" y="-111" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1920.-523.1920.989/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.989" timestamp="1610398027092" />
-    <state x="-1873" y="-523" width="1812" height="884" key="find.popup" timestamp="1610397430466">
-      <screen x="-1920" y="-523" width="1920" height="989" />
-    </state>
-    <state x="-1873" y="-523" width="1812" height="879" key="find.popup/-1920.-523.1920.982/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.982" timestamp="1610040006772" />
-    <state x="-1873" y="-523" width="1812" height="882" key="find.popup/-1920.-523.1920.986/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.986" timestamp="1609955760951" />
-    <state x="-1873" y="-523" width="1812" height="883" key="find.popup/-1920.-523.1920.988/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.988" timestamp="1609939484860" />
-    <state x="-1873" y="-523" width="1812" height="884" key="find.popup/-1920.-523.1920.989/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.989" timestamp="1610397430466" />
-    <state x="-1873" y="23" width="1812" height="881" key="find.popup/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1609087694696" />
-    <state x="-3793" y="23" width="1812" height="1053" key="find.popup/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609079642942" />
-    <state x="-1873" y="23" width="1812" height="882" key="find.popup/-1920.23.1920.986/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.986" timestamp="1608282616210" />
-    <state x="-1873" y="23" width="1812" height="883" key="find.popup/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609595709063" />
-    <state x="-1873" y="23" width="1812" height="884" key="find.popup/-1920.23.1920.989/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.989" timestamp="1609525725484" />
-    <state x="-2498" y="-864" width="2415" height="1195" key="find.popup/-2560.-864.2560.1338/0.23.1680.1027/-4480.-864.1920.1177@-2560.-864.2560.1338" timestamp="1604324312631" />
-    <state width="600" height="428" key="javadoc.popup" timestamp="1608215247215">
-      <screen x="-1920" y="23" width="1920" height="988" />
-    </state>
-    <state width="600" height="428" key="javadoc.popup/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1608215247215" />
-    <state x="-1088" y="-147" width="350" height="301" key="org.angular.cli.generate" timestamp="1609937361228">
-      <screen x="-1920" y="-523" width="1920" height="988" />
-    </state>
-    <state x="-1088" y="-147" width="350" height="301" key="org.angular.cli.generate/-1920.-523.1920.988/0.23.1680.1027/-3840.-523.1920.1177@-1920.-523.1920.988" timestamp="1609937361228" />
-    <state x="-3008" y="471" width="350" height="358" key="org.angular.cli.generate/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609074464392" />
-    <state x="-1088" y="399" width="350" height="300" key="org.angular.cli.generate/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1607948200218" />
-    <state x="-1295" y="240" width="670" height="676" key="search.everywhere.popup" timestamp="1609610334583">
-      <screen x="-1920" y="23" width="1920" height="988" />
-    </state>
-    <state x="-1295" y="240" width="670" height="674" key="search.everywhere.popup/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.984" timestamp="1609094735281" />
-    <state x="-3215" y="282" width="670" height="806" key="search.everywhere.popup/-1920.23.1920.984/0.23.1680.1027/-3840.23.1920.1177@-3840.23.1920.1177" timestamp="1609075350844" />
-    <state x="-1295" y="240" width="670" height="676" key="search.everywhere.popup/-1920.23.1920.988/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.988" timestamp="1609610334583" />
-    <state x="-1295" y="240" width="670" height="677" key="search.everywhere.popup/-1920.23.1920.989/0.23.1680.1027/-3840.23.1920.1177@-1920.23.1920.989" timestamp="1609505708261" />
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="Adding widget configuration tool" />
+    <MESSAGE value="Adding preliminary criteria selection menu and &quot;Dynamic Search&quot; tab." />
+    <MESSAGE value="Updated the universal menu at the top of the page." />
+    <MESSAGE value="Adding widget configuration set from server. Start of dynamic query building." />
+    <MESSAGE value="JIRAs 1621, 1622, 1615(Buttons), and 1617&#10;1621 - Exclude commercial restricted series - series are still include in manifest file&#10;1622 - Fix universal menus&#10;1615 - Update intro screens - Fixed the bottons looking disabled, still need to update the screen shots&#10;1617 - popup when a shared query includes Collection(s) not accessable by the user - Updated for Bootstrap 4" />
+    <MESSAGE value="Update JQuery to version 3.6.0" />
+    <MESSAGE value="Turned off Dynamic search criteria in the configuration file." />
+    <MESSAGE value="committing Dynamic search, still a work in progress. Cine mode only loads and displays first image until/unless user needs more.&#10;Added paging to search results." />
+    <MESSAGE value="Single line radio button input" />
+    <MESSAGE value="Fixed bad Markdown formatting" />
+    <MESSAGE value="Refresh token use" />
+    <MESSAGE value="A little clean up of widget menu configuration JSON" />
+    <MESSAGE value="More work on Dynamic search." />
+    <MESSAGE value="Adding widget configuration files that I missed in the last commit." />
+    <MESSAGE value="Configuration tweak" />
+    <MESSAGE value="Removed typedoc from package.json" />
+    <MESSAGE value="Fixing &quot;Showing X - Y of Z Series&quot; at the top" />
+    <MESSAGE value="Fixes authentication issue when &quot;Home&quot; button is clicked" />
+    <MESSAGE value="Put ngx-mydatepicker back in the package.json file." />
+    <MESSAGE value="Fixes for JIRAs: 1668, 1666, 1665, 1660, 1658, 1661, 1657" />
+    <MESSAGE value="Bug fixes for 7.8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fixes for 7.8" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/app/tools/dynamic-query-test-module/dynamic-query-test/dynamic-query-test.component.ts</url>
-          <line>49</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

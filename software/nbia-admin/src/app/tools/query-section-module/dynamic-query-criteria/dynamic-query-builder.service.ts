@@ -4,6 +4,7 @@ import { WIDGET_TYPE } from '@app/tools/query-section-module/dynamic-query-crite
 import { ApiService } from '@app/admin-common/services/api.service';
 import { ParameterService } from '@app/admin-common/services/parameter.service';
 import { Consts } from '@app/constants';
+import { UtilService } from '@app/admin-common/services/util.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -12,7 +13,8 @@ export class DynamicQueryBuilderService{
     dynamicCriteriaPartList: DynamicCriteriaQueryPart[] = [];
     counter = 0;
 
-    constructor( private apiService: ApiService,  private parameterService: ParameterService ) {
+    constructor( private apiService: ApiService,  private parameterService: ParameterService,
+                 private utilService: UtilService) {
     }
 
     // This is called when the Master Clear button in the Display Query is clicked
@@ -51,7 +53,8 @@ export class DynamicQueryBuilderService{
      * @param inputType
      * @param rerunQuery  This will be set to false when the "Master Clear" button at the top is clicked.  We need to wait until all widgets are cleared before we do anything with the query.
      */
-    deleteCriteriaQueryPart( criteriaType, inputType , rerunQuery = true) {
+   async deleteCriteriaQueryPart( criteriaType, inputType , rerunQuery = true) {
+        await this.utilService.sleep( 300 );// TESTING  THIS is a workaround (please) refactor me. Don't forget to describe this in JIRA
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
             if( this.dynamicCriteriaPartList[f].criteriaType === criteriaType && this.dynamicCriteriaPartList[f].inputType === inputType ){
                 this.dynamicCriteriaPartList.splice( f, 1 );

@@ -9,6 +9,7 @@ import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-q
 } )
 export class WidgetCalendarComponent implements OnInit{
 
+    @Input() applyState;
     @Input() prompt0;
     @Input() prompt1;
     @Input() placeHolder0;
@@ -40,19 +41,28 @@ export class WidgetCalendarComponent implements OnInit{
     }
 
     onDateChangedDp1( e: IMyDateModel ) {
-        // @TODO explain 2 emits
+/*
+        if( ! this.applyState){
+            return;
+        }
+*/        // @TODO explain 2 emits
         this.haveInputChange.emit(this.haveInput);
         this.date1Change.emit( e );
-        this.widgetCalendarService.dateChanged();
+     //   this.widgetCalendarService.dateChanged();
     }
 
     onDateChangedDp0( e: IMyDateModel ) {
+/*
+        if( ! this.applyState){
+            return;
+        }
+*/
         this.haveInput = true;  // @CHECKME
 
         // @TODO explain 2 emits
         this.haveInputChange.emit(this.haveInput);
         this.date0Change.emit( e );
-        this.widgetCalendarService.dateChanged();
+      //  this.widgetCalendarService.dateChanged();
     }
 
     initializeDisableFutureDates() {
