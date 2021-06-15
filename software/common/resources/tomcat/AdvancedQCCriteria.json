@@ -15,13 +15,36 @@
                     "dynamicQueryCriteriaListData": ["GE"],
                     "dynamicQueryCriteriaAllowNoChoice": true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": false,
-                    "dynamicQueryCriteriaCalendarPrompt0": "AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1": "BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
                     "criteriaType":"manufacturer",
                     "inputType":"list"
+                }
+            }
+        ]
+
+    },
+      {
+        "parentMenuName":"Most Recent Submission",
+        "criteriaObjects":[
+            {
+                "criteriaMenuText":"Select",
+                "configuration":{
+                    "dynamicQueryCriteriaNumberDefault": 1,
+                    "dynamicQueryCriteriaNumberLimitHigh": 93,
+                    "dynamicQueryCriteriaNumberLimitLow": 1,
+                    "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                    "dynamicQueryCriteriaRequired": true,
+                    "dynamicQueryCriteriaClearButton": true,
+                    "dynamicQueryCriteriaOpenCloseButton": true,
+                    "dynamicQueryCriteriaHeading": "Most Recent Submission",
+                    "dynamicQueryCriteriaApplyButton": true,
+                    "dynamicQueryCriteriaApplyText": "Apply",
+                    "dynamicQueryCriteriaAllowNoChoice": true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                    "dynamicQueryCriteriaCalendar": true,
+                    "dynamicQueryCriteriaCalendarPrompt0": "From Date",
+                    "dynamicQueryCriteriaCalendarPrompt1": "To Date",
+                    "criteriaType":"submissiondate",
+                    "inputType":"dateRange"
                 }
             }
         ]
@@ -43,11 +66,6 @@
                     "dynamicQueryCriteriaListData": ["CT","MRI"],
                     "dynamicQueryCriteriaAllowNoChoice": true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": false,
-                    "dynamicQueryCriteriaCalendarPrompt0": "AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1": "BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
                     "criteriaType":"modality",
                     "inputType":"list"
                 }
@@ -72,11 +90,6 @@
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"patientName",
                     "inputType":"commaSeperatedList"
                 }
@@ -88,18 +101,13 @@
                     "dynamicQueryCriteriaSingleLineRadioDefault":2,
                     "dynamicQueryCriteriaClearButton":true,
                     "dynamicQueryCriteriaOpenCloseButton":true,
-                    "dynamicQueryCriteriaHeading":"Patient Name",
-                    "dynamicQueryCriteriaSubHeading":"Starts With",
+                    "dynamicQueryCriteriaHeading":"Patient ID",
+                    "dynamicQueryCriteriaSubHeading":"Enter Patient Name",
                     "dynamicQueryCriteriaApplyButton":true,
                     "dynamicQueryCriteriaApplyText":"Apply",
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"patientName",
                     "inputType":"startsWith"
                 }
@@ -159,7 +167,7 @@
                     "dynamicQueryCriteriaClearButton":true,
                     "dynamicQueryCriteriaOpenCloseButton":true,
                     "dynamicQueryCriteriaHeading":"Series UID",
-                    "dynamicQueryCriteriaSubHeading":"Starts With",
+                    "dynamicQueryCriteriaSubHeading":"Enter Series UID",
                     "dynamicQueryCriteriaApplyButton":true,
                     "dynamicQueryCriteriaApplyText":"Apply",
                     "dynamicQueryCriteriaSort":true,
@@ -188,11 +196,6 @@
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"sopUID",
                     "inputType":"commaSeperatedList"
                 }
@@ -205,17 +208,12 @@
                     "dynamicQueryCriteriaClearButton":true,
                     "dynamicQueryCriteriaOpenCloseButton":true,
                     "dynamicQueryCriteriaHeading":"SOP UID",
-                    "dynamicQueryCriteriaSubHeading":"Starts With",
+                    "dynamicQueryCriteriaSubHeading":"Enter SOP UID",
                     "dynamicQueryCriteriaApplyButton":true,
                     "dynamicQueryCriteriaApplyText":"Apply",
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"sopUID",
                     "inputType":"startsWith"
                 }
@@ -235,7 +233,7 @@
                     "dynamicQueryCriteriaClearButton": true,
                     "dynamicQueryCriteriaOpenCloseButton": true,
                     "dynamicQueryCriteriaHeading": "Study Date",
-                    "dynamicQueryCriteriaApplyCheckbox": true,
+                    "dynamicQueryCriteriaApplyButton": true,
                     "dynamicQueryCriteriaApplyText": "Apply",
                     "dynamicQueryCriteriaAllowNoChoice": true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
@@ -300,51 +298,18 @@
                     "dynamicQueryCriteriaSingleLineRadioDefault":2,
                     "dynamicQueryCriteriaClearButton":true,
                     "dynamicQueryCriteriaOpenCloseButton":true,
-                    "dynamicQueryCriteriaHeading":"Subject ID",
-                    "dynamicQueryCriteriaSubHeading":"Enter Subject ID",
+                    "dynamicQueryCriteriaHeading":"Patient ID",
+                    "dynamicQueryCriteriaSubHeading":"Enter Patient ID",
                     "dynamicQueryCriteriaApplyButton":true,
                     "dynamicQueryCriteriaApplyText":"Apply",
                     "dynamicQueryCriteriaSort":true,
                     "dynamicQueryCriteriaAllowNoChoice":true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
-                    "dynamicQueryCriteriaCalendar":false,
-                    "dynamicQueryCriteriaCalendarPrompt0":"AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1":"BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0":"CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1":"DDD",
                     "criteriaType":"patientID",
                     "inputType":"startsWith"
                 }
             }
         ]
-    },
-      {
-        "parentMenuName":"Most Recent Submission",
-        "criteriaObjects":[
-            {
-                "criteriaMenuText":"Select",
-                "configuration":{
-                    "dynamicQueryCriteriaNumberDefault": 1,
-                    "dynamicQueryCriteriaNumberLimitHigh": 93,
-                    "dynamicQueryCriteriaNumberLimitLow": 1,
-                    "dynamicQueryCriteriaSingleLineRadioDefault": 2,
-                    "dynamicQueryCriteriaRequired": true,
-                    "dynamicQueryCriteriaClearButton": true,
-                    "dynamicQueryCriteriaOpenCloseButton": true,
-                    "dynamicQueryCriteriaHeading": "Most Recent Submission",
-                    "dynamicQueryCriteriaApplyCheckbox": true,
-                    "dynamicQueryCriteriaApplyText": "Apply",
-                    "dynamicQueryCriteriaAllowNoChoice": true,
-                    "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": true,
-                    "dynamicQueryCriteriaCalendarPrompt0": "From Date",
-                    "dynamicQueryCriteriaCalendarPrompt1": "To Date",
-                    "criteriaType":"submissiondate",
-                    "inputType":"dateRange"
-                }
-            }
-        ]
-
     },
     {
         "parentMenuName":"Subject IDs",
@@ -468,11 +433,6 @@
                     "dynamicQueryCriteriaListData": ["GE"],
                     "dynamicQueryCriteriaAllowNoChoice": true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": false,
-                    "dynamicQueryCriteriaCalendarPrompt0": "AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1": "BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
                     "dynamicQueryCriteriaRequired": true,
                     "criteriaType":"collection",
                     "inputType":"list"
@@ -497,11 +457,6 @@
                     "dynamicQueryCriteriaListData": ["GE"],
                     "dynamicQueryCriteriaAllowNoChoice": true,
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaCalendar": false,
-                    "dynamicQueryCriteriaCalendarPrompt0": "AAA",
-                    "dynamicQueryCriteriaCalendarPrompt1": "BBB",
-                    "dynamicQueryCriteriaCalendarPlaceHolder0": "CCC",
-                    "dynamicQueryCriteriaCalendarPlaceHolder1": "DDD",
                     "dynamicQueryCriteriaRequired": true,
                     "criteriaType":"qcstatus",
                     "inputType":"list"
