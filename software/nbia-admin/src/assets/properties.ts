@@ -1,14 +1,14 @@
 export let Properties = {
     // 19_AUG_2020
     VERSION: '1.0.8',
-    // 05_MAY_2021
-    TEST_VERSION: '1.0.8s',
+    // 15_JUN_2021
+    TEST_VERSION: '1.0.8t',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
 
     // Use this when server is local npm run
-    //  API_SERVER_URL: 'http://192.168.1.21:8080',
+    // API_SERVER_URL: 'http://192.168.1.21:8080',
     /*
      Our Dev server
      API_SERVER_URL: 'http://ncias-d1707-v.nci.nih.gov:8080',
@@ -23,7 +23,7 @@ export let Properties = {
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
  */
 
-     API_SERVER_URL: '',
+    API_SERVER_URL: '',
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -68,6 +68,8 @@ export let Properties = {
     // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
     MAX_VIDEO_FPS: 30,
+
+
 
     HAVE_URL_TOKEN: false,
 
