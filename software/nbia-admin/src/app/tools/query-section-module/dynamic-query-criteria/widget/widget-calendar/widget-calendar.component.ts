@@ -41,11 +41,11 @@ export class WidgetCalendarComponent implements OnInit{
     }
 
     onDateChangedDp1( e: IMyDateModel ) {
-/*
-        if( ! this.applyState){
-            return;
-        }
-*/        // @TODO explain 2 emits
+        /*
+                if( ! this.applyState){
+                    return;
+                }
+        */        // @TODO explain 2 emits
         this.haveInputChange.emit(this.haveInput);
         this.date1Change.emit( e );
      //   this.widgetCalendarService.dateChanged();

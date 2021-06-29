@@ -56,7 +56,6 @@ export class AccessTokenService{
             queryParams: { accessToken: tokenString },
             queryParamsHandling: "merge",
             preserveFragment: true });
-        console.log('MHL urlTree: ', urlTree );
         this.router.navigateByUrl(urlTree);
     }
 

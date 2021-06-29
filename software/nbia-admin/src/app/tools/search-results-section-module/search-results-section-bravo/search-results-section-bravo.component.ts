@@ -78,6 +78,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
+    // Passing resultsUpdateBravoEmitter to child
     @Output() resultsUpdateBravoEmitter = new EventEmitter(); // Used by Input in PerformQcBulkOperationsComponent
     @Output() resultsSelectCountUpdateBravoEmitter = new EventEmitter(); // Used by Input in PerformQcBulkOperationsComponent
 
@@ -110,7 +111,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             } );
 
 
-        // @TODO Make sure this emmitter name makes sense
+        // @TODO Make sure this emitter name makes sense
         // Happens when Cinemode next/skip
         this.searchResultByIndexService.searchResultsByIndexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
             if( this.currentCineModeSeriesIndex < this.searchResults.length - 1 ){

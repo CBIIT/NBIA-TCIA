@@ -106,6 +106,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             console.log('DEMO mode: Perform QC  Update ', query );
         }
         else{
+            // apiService
             this.apiService.doSubmit(Consts.TOOL_BULK_QC, query);
         }
     }

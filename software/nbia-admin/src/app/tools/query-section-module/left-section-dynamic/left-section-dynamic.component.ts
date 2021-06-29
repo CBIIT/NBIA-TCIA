@@ -14,6 +14,7 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     @Input() currentTool;
     usedElements = [];
     queryCriteriaData = [];
+    consts = Consts;
 
     testData0 = {
         'dynamicQueryCriteriaClearButton': true,
@@ -88,6 +89,8 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
                         this.addQueryCriteria( data );
                     }
                 }else{
+                   // console.log('MHL DATA: ', data );
+                   // console.log('MHL currentTool: ', this.currentTool );
                     this.addQueryCriteria( data );
                 }
             } );

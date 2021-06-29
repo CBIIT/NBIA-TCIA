@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 } )
 export class SearchResultsPagerComponent implements OnInit, OnDestroy{
 
-    @Input() currentPage = 0;
+
     /**
      * Total number of results (not pages).
      */
@@ -22,7 +22,7 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
      * commonService.updateCurrentCartPage.
      * @type {number}
      */
-    //  currentPage = 0;
+     currentPage = 0;
 
     /**
      * How many "Number" buttons to show if there are more than Properties.MAX_PAGER_BUTTONS pages.

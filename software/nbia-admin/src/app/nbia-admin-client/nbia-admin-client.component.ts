@@ -167,6 +167,8 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
            if( tool === ToolItems.DATA_ADMIN_EDIT_LICENSE ){
                 this.currentTool = Consts.TOOL_EDIT_LICENSE;
             }
+
+           this.parameterService.setCurrentTool( this.currentTool );
         }
     }
 

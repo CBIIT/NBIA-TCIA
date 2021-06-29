@@ -73,6 +73,7 @@ export class DynamicQueryBuilderService{
         }
 
         if(this.parameterService.getCurrentTool() === Consts.TOOL_APPROVE_DELETIONS){
+
             serverQuery += 'criteriaType' + this.counter + '=qcstatus' +
                 '&inputType' + this.counter + '=list' +
                 '&boolean' + this.counter + '=AND' +

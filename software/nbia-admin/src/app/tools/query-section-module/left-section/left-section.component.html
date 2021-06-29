@@ -3,9 +3,12 @@
 <!------------------------------------------------------------------------------------------->
 
 <div class="left-section-div">
+
     <div *ngIf="searchType === consts.CRITERIA_SEARCH">
+
         <nbia-query-qc-status
             [currentTool]="currentTool"
+            *ngIf="currentTool !== consts.TOOL_APPROVE_DELETIONS"
         ></nbia-query-qc-status>
 
         <nbia-query-collection

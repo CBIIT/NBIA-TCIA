@@ -84,7 +84,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
         // Rerun the current query after the user has made changes, not to the query, but to the data.
         this.apiService.submitBulkQcResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                this.apiService.doAdvancedQcSearch(this.dynamicQueryBuilderService.buildServerQuery() )
+                this.apiService.doAdvancedQcSearch(this.dynamicQueryBuilderService.buildServerQuery(), true ); // @CHECKME Does this update Search results screen
             } );
 
 

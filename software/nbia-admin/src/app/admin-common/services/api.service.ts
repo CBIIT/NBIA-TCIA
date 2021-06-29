@@ -9,7 +9,6 @@ import { AccessTokenService } from './access-token.service';
 import { Observable, of } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
 import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
-import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -71,35 +70,36 @@ export class ApiService{
     getDynamicCriteriaSelectionMenuDataErrorEmitter = new EventEmitter();
 
     trailerQuery = '';
+
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService,
-                 private loadingDisplayService: LoadingDisplayService, private displayDynamicQueryService: DisplayDynamicQueryService) {
+                 private loadingDisplayService: LoadingDisplayService, private displayDynamicQueryService: DisplayDynamicQueryService ){
 
         this.init();
 
     }
 
-    async init() {
+    async init(){
         // Wait until we are sure we have the access token from the parameters (if there is one).
         while( !this.parameterService.haveParameters() ){
             await this.utilService.sleep( Consts.waitTime );
         }
 
         // If we still don't have an access token, wait here for the user to login.
-        while( ( this.accessTokenService.getAccessToken() === undefined ) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+        while( (this.accessTokenService.getAccessToken() === undefined) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
         this.update();
         this.getWikiUrlParam();
     }
 
-    update() {
+    update(){
         this.getRoles();
     }
 
     // TODO rename this, we use it for queries too that are not from that left side Criteria search.
     // @TODO This method no longer does anything and is not really necessary anymore
-    doSubmit( tool, submitData ) {
+    doSubmit( tool, submitData ){
         switch( tool ){
             case Consts.TOOL_BULK_QC:
                 this.submitBulkQc( submitData );
@@ -138,7 +138,7 @@ export class ApiService{
      * @param tool
      * @param queryData
      */
-    doCriteriaSearchQuery( tool, queryData ) {
+    doCriteriaSearchQuery( tool, queryData ){
         let queryParameters = '';
         // Build the correctly formatted query for the rest call here.
         for( let element of queryData ){
@@ -229,7 +229,7 @@ export class ApiService{
         }
     }
 
-    submitBulkQc( query ) {
+    submitBulkQc( query ){
         this.doPost( Consts.SUBMIT_QC_STATUS_UPDATE, query ).subscribe(
             ( data ) => {
                 this.submitBulkQcResultsEmitter.emit( data );
@@ -241,7 +241,7 @@ export class ApiService{
             } );
     }
 
-    submitCollectionLicense( query ) {
+    submitCollectionLicense( query ){
         this.doPost( Consts.SUBMIT_COLLECTION_LICENSES, query ).subscribe(
             ( data ) => {
                 this.submitCollectionLicenseResultsEmitter.emit( data );
@@ -253,7 +253,7 @@ export class ApiService{
             } );
     }
 
-    submitDeleteLicense( lic ) {
+    submitDeleteLicense( lic ){
         let deleteLicenseQuery = 'id=' + lic;
         this.doPost( Consts.SUBMIT_DELETE_COLLECTION_LICENSES, deleteLicenseQuery ).subscribe(
             ( data ) => {
@@ -264,7 +264,7 @@ export class ApiService{
             } );
     }
 
-    getDynamicCriteriaSelectionMenuData() {
+    getDynamicCriteriaSelectionMenuData(){
         this.doGet( Consts.GET_DYNAMIC_CRITERIA_SELECTION_MENU_DATA ).subscribe(
             ( data ) => {
                 this.getDynamicCriteriaSelectionMenuDataResultsEmitter.emit( data );
@@ -303,7 +303,7 @@ export class ApiService{
             } );
     }
 
-    submitBulkDeletion( query ) {
+    submitBulkDeletion( query ){
         this.doPost( Consts.SUBMIT_SERIES_DELETION, query ).subscribe(
             ( data ) => {
                 this.submitSeriesDeletionResultsEmitter.emit( data );
@@ -315,7 +315,7 @@ export class ApiService{
             } );
     }
 
-    submitOnlineDeletion() {
+    submitOnlineDeletion(){
         this.doPost( Consts.SUBMIT_ONLINE_DELETION, 'deletion=online' ).subscribe(
             ( data ) => {
                 this.submitOnlineDeletionResultsEmitter.emit( data );
@@ -329,7 +329,7 @@ export class ApiService{
 
 
 // SUBMIT_ONLINE_DELETION
-    getSeriesForDeletion() {
+    getSeriesForDeletion(){
         this.doGet( Consts.GET_SERIES_FOR_DELETION ).subscribe(
             ( data ) => {
                 this.seriesForDeletionEmitter.emit( data );
@@ -341,7 +341,7 @@ export class ApiService{
             } );
     }
 
-    getQcHistoryReport( query ) {
+    getQcHistoryReport( query ){
         this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(
             ( data ) => {
                 this.qcHistoryResultsEmitter.emit( data );
@@ -353,7 +353,7 @@ export class ApiService{
             } );
     }
 
-    getQcHistoryReportTable( query ) {
+    getQcHistoryReportTable( query ){
         this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(
             ( data ) => {
                 this.qcHistoryResultsTableEmitter.emit( data );
@@ -366,7 +366,7 @@ export class ApiService{
 
     }
 
-    async getVisibilities() {
+    async getVisibilities(){
         while(
             this.accessTokenService.getAccessTokenStatus() === -1 ||
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
@@ -388,7 +388,7 @@ export class ApiService{
     }
 
     // We will stop using this soon (04_JUN_2021)  @checkme
-    getApproveDeletionsSearch( query ) {
+    getApproveDeletionsSearch( query ){
         // Send the Collection//Site so it doesn't need to bi included in the search results
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         this.doPost( Consts.GET_SEARCH_FOR_APPROVE_DELETIONS, query ).subscribe(
@@ -412,7 +412,6 @@ export class ApiService{
                             this.resultsErrorEmitter.emit( performQcSearchDataError0 );
                         } );
                 }else{
-
                     this.resultsErrorEmitter.emit( approveDeletionsSearchDataError );
                     console.error( 'Could not get ApproveDeletionsSearch from server: ', approveDeletionsSearchDataError );
                 }
@@ -427,16 +426,14 @@ export class ApiService{
      *
      * @param query
      */
-    doAdvancedQcSearch( query ) {
+    doAdvancedQcSearch( query, rerun = false ){
         // If the query has not changed, don't run it again.
-        if( this.trailerQuery === query ){
+        if( this.trailerQuery === query && (! rerun) ){
             return;
         }
 
         this.trailerQuery = query;
-
         this.displayDynamicQueryService.query( query );
-
         this.loadingDisplayService.setLoading( true, 'Loading data...' );
 
         // Check for empty query. If empty just send Consts.NO_SEARCH, this will tell search results component not to show count and pager etc. at the top
@@ -493,7 +490,7 @@ export class ApiService{
      *  TODO these methods need more consistent names
      * @param query
      */
-    getPerformQcSearch( query ) {
+    getPerformQcSearch( query ){
         this.collectionSiteEmitter.emit( query.replace( /^.*collectionSite=/, '' ).replace( /&.*$/, '' ) );
         this.doPost( Consts.GET_SEARCH_FOR_PERFORM_QC, query ).subscribe(
             ( performQcSearchData ) => {
@@ -527,11 +524,11 @@ export class ApiService{
             } );
     }
 
-    setNoSearch() {
+    setNoSearch(){
         this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
     }
 
-    async getWikiUrlParam() {
+    async getWikiUrlParam(){
         while(
             this.accessTokenService.getAccessTokenStatus() === -1 ||
             this.accessTokenService.getAccessTokenStatus() === TokenStatus.NO_TOKEN_YET ||
@@ -554,7 +551,7 @@ export class ApiService{
         );
     }
 
-    getCollectionAndDescriptions() {
+    getCollectionAndDescriptions(){
         this.doGet( Consts.GET_COLLECTION_DESCRIPTIONS ).subscribe(
             ( collectionDescriptionsData ) => {
                 this.collectionDescriptions = collectionDescriptionsData;
@@ -571,7 +568,7 @@ export class ApiService{
     }
 
 
-    getCollectionSiteAndDescriptions() {
+    getCollectionSiteAndDescriptions(){
         this.doGet( Consts.GET_COLLECTION_DESCRIPTIONS ).subscribe(
             ( collectionDescriptionsData ) => {
                 this.collectionDescriptions = collectionDescriptionsData;
@@ -589,7 +586,7 @@ export class ApiService{
             } );
     }
 
-    getCollectionLicenses() {
+    getCollectionLicenses(){
         this.doGet( Consts.GET_COLLECTION_LICENSES ).subscribe(
             ( collectionLicensesData ) => {
                 this.collectionLicenses = collectionLicensesData;
@@ -607,7 +604,7 @@ export class ApiService{
             } );
     }
 
-    getCollectionSitesAndDescription() {
+    getCollectionSitesAndDescription(){
         this.doGet( Consts.GET_COLLECTION_NAMES_AND_SITES ).subscribe(
             collectionNamesData => {
                 this.collectionSiteNames = collectionNamesData;
@@ -622,7 +619,7 @@ export class ApiService{
             } );
     }
 
-    getDicomData( image ) {
+    getDicomData( image ){
 
     }
 
@@ -630,7 +627,7 @@ export class ApiService{
     /**
      * Collection names without sites.
      */
-    getCollectionNames() {
+    getCollectionNames(){
         if( this.utilService.isNullOrUndefinedOrEmpty( this.accessTokenService.getAccessToken() ) ){
             this.userRoles = [Consts.ERROR, -1];
         }else{
@@ -650,7 +647,7 @@ export class ApiService{
         }
     }
 
-    mergeCollectionsAndDescriptions() {
+    mergeCollectionsAndDescriptions(){
         for( let name of this.collectionNames ){
             let temp = { 'name': name['criteria'] };
             temp['description'] = '';
@@ -670,7 +667,7 @@ export class ApiService{
     }
 
 
-    mergeCollectionSitesAndDescriptions() {
+    mergeCollectionSitesAndDescriptions(){
         // Go through the names
 
         for( let name of this.collectionSiteNames ){
@@ -695,23 +692,23 @@ export class ApiService{
     }
 
     // @TODO Explain
-    async sendCollectionsAndDescriptions() {
+    async sendCollectionsAndDescriptions(){
         await this.utilService.sleep( Consts.waitTime );
         this.collectionsAndDescriptionEmitter.emit( this.collectionsAndDescriptions );
     }
 
     // @TODO Explain
-    async sendCollectionSitesAndDescriptions() {
+    async sendCollectionSitesAndDescriptions(){
         await this.utilService.sleep( Consts.waitTime );
         this.collectionSitesAndDescriptionEmitter.emit( this.collectionSitesAndDescriptions );
     }
 
-    getUserRoles() {
+    getUserRoles(){
         return this.userRoles;
     }
 
     // get roles
-    getRoles() {
+    getRoles(){
         if( this.utilService.isNullOrUndefinedOrEmpty( this.accessTokenService.getAccessToken() ) ){
             this.userRoles = [Consts.ERROR, -1];
         }else{
@@ -749,14 +746,14 @@ export class ApiService{
                             } );
 
                     }else{
-                        console.error( 'getRoles Server error: ', errGetUserRoles  + ' (' + errGetUserRoles['status'] + ') - ' + errGetUserRoles.error['error'] );
+                        console.error( 'getRoles Server error: ', errGetUserRoles + ' (' + errGetUserRoles['status'] + ') - ' + errGetUserRoles.error['error'] );
                     }
                 } );
         }
     }
 
 
-    downLoadDicomImageFile( seriesUID, objectUID, studyUID ) {
+    downLoadDicomImageFile( seriesUID, objectUID, studyUID ){
         this.getDicomImage( seriesUID, objectUID, studyUID ).subscribe(
             data => {
                 let dicomFile = new Blob( [data], { type: 'application/dicom' } );
@@ -771,7 +768,7 @@ export class ApiService{
     }
 
 
-    getDicomImage( seriesUID, objectUID, studyUID ): Observable<any> {
+    getDicomImage( seriesUID, objectUID, studyUID ): Observable<any>{
         let post_url = Properties.API_SERVER_URL + '/nbia-api/services/getWado';
         let headers = new HttpHeaders( {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -795,7 +792,7 @@ export class ApiService{
     }
 
 
-    downloadSeriesList( seriesList ) {
+    downloadSeriesList( seriesList ){
         let query = seriesList + '&includeAnnotation=true';
         let downloadManifestUrl = Properties.API_SERVER_URL + '/' + Consts.API_MANIFEST_URL;
 
@@ -824,7 +821,7 @@ export class ApiService{
      *
      * @param queryType
      */
-    doGet( queryType, query ? ) {
+    doGet( queryType, query ? ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
         if( Properties.DEBUG_CURL ){
@@ -852,7 +849,7 @@ export class ApiService{
         return results;
     }
 
-    doGet0( queryType, query ? ) {
+    doGet0( queryType, query ? ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
         if( Properties.DEBUG_CURL ){
@@ -885,7 +882,7 @@ export class ApiService{
         return results;
     }
 
-    doPost( queryType, query ) {
+    doPost( queryType, query ){
         let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
@@ -928,7 +925,7 @@ export class ApiService{
     }
 
     // CHECKME Should a license be optional?
-    updateCollectionDescription( name, description, licenseId ) {
+    updateCollectionDescription( name, description, licenseId ){
         this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name +
             '&description=' + encodeURIComponent( description ) +
             '&license=' + licenseId
@@ -948,7 +945,7 @@ export class ApiService{
      *
      * @param queryType
      */
-    doGetNoToken( queryType ) {
+    doGetNoToken( queryType ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
 
         if( Properties.DEBUG_CURL ){
