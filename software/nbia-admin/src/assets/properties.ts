@@ -1,8 +1,8 @@
 export let Properties = {
-    // 19_AUG_2020
-    VERSION: '1.0.8',
     // 29_JUN_2021
-    TEST_VERSION: '1.0.8v',
+    VERSION: '1.0.9',
+    // 29_JUN_2021
+    TEST_VERSION: '1.0.9a',
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
