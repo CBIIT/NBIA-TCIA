@@ -81,6 +81,10 @@ public class V1_getSeriesMetaData extends getData {
 		}
 		Object[] result = getSeriesMetaData(false, seriesInstanceUID, authorizedCollections);
 		if (result != null && result.length > 0) {
+			if (result[9] != null) {
+				//replace the "," character in the manufacture field 
+				result[9] = (Object)(result[9].toString().replaceAll(",", " "));
+			}
 			List<Object[]> data = new ArrayList<Object[]>();
 			data.add(result);
 			

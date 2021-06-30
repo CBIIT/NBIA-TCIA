@@ -87,6 +87,11 @@ public class V2_getSeriesMetaData extends getData {
 					.entity("No access for metadata of series:"+ seriesInstanceUID)
 					.type(MediaType.APPLICATION_JSON).build();
 		}
+		
+		if (result[9] != null) {
+			//replace the "," character in the manufacture field 
+			result[9] = (Object)(result[9].toString().replaceAll(",", " "));
+		}
 		List<Object[]> data = new ArrayList<Object[]>();
 		data.add(result);
 		
