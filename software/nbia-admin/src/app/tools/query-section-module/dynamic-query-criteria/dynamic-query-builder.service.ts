@@ -122,6 +122,7 @@ export class DynamicQueryBuilderService{
             case WIDGET_TYPE.ONE_LINE_RADIO_BUTTONS:
                 serverQueryPart += '&value' + this.counter + '=' + widget.userInput[0];
                 serverQueryPart += '&';
+                this.counter++;
                 break;
 
             case WIDGET_TYPE.ONE_CHECKBOX:
