@@ -235,7 +235,7 @@ public class QcStatusDAOImpl extends AbstractDAO
                 "gs.batch, " +
                 "gs.submissionType, gs.releasedStatus, '',  gs.id, gs.studyDate ";
 		
-		String fromStmt = "FROM GeneralSeries as gs, Patient as pt ";
+		String fromStmt = "FROM Patient as pt join pt.studyCollection as st join st.generalSeriesCollection as gs ";
 		if (joinImage) {
 			fromStmt = fromStmt+" join gs.generalImageCollection gi ";
 		}
@@ -244,7 +244,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 			
 		
-		String whereStmt = " WHERE gs.patientPkId=pt.id"+
+		String whereStmt = " where 1=1 "+
 		                   computeVisibilityCriteria(qcStatus) +
 		                   computeCollectionCriteria(collectionSites);
 

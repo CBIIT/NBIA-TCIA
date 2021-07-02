@@ -101,7 +101,7 @@
                     "dynamicQueryCriteriaSingleLineRadioDefault":2,
                     "dynamicQueryCriteriaClearButton":true,
                     "dynamicQueryCriteriaOpenCloseButton":true,
-                    "dynamicQueryCriteriaHeading":"Patient ID",
+                    "dynamicQueryCriteriaHeading":"Patient Name",
                     "dynamicQueryCriteriaSubHeading":"Enter Patient Name",
                     "dynamicQueryCriteriaApplyButton":true,
                     "dynamicQueryCriteriaApplyText":"Apply",
