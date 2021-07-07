@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="83341ce9-d639-4271-85f5-6c4c568df6e5" name="Default Changelist" comment="Adding widget configuration files that I missed in the last commit.">
+    <list default="true" id="83341ce9-d639-4271-85f5-6c4c568df6e5" name="Default Changelist" comment=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t',">
       <change afterPath="$PROJECT_DIR$/../nbia-api/nbia-api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/popup.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/popup.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/assets/properties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/properties.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,24 +37,43 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/constants.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/popup.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.spec.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.spec.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/card-nbia.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-released/query-released.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/btn-nbia.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/assets/properties.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/constants.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-released/query-released.component.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.ts" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="JupyterTrust" id="5f4b9c4e-0380-42c5-8300-1bdc5c35f79a" />
@@ -89,42 +113,86 @@
       <recent name="$PROJECT_DIR$/src/app/tools/display-dynamic-query" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.Angular Application">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+  <component name="RunManager" selected="Karma.UtilService">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DisplayDynamicQueryService.Test setCondition Greater than" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
-      <config-file value="$PROJECT_DIR$/karma.conf.js" />
-      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
-      <working-directory value="$PROJECT_DIR$" />
-      <node-interpreter value="project" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file-path value="$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service.spec.ts" />
-      <test-names>
-        <test-name value="DisplayDynamicQueryService" />
-        <test-name value="Test setCondition Greater than" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="ShortenRightPipe" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+    <configuration name="UtilService" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
       <config-file value="$PROJECT_DIR$/karma.conf.js" />
       <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
       <working-directory value="$PROJECT_DIR$" />
       <node-interpreter value="project" />
       <envs />
       <scope-kind value="SUITE" />
-      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/admin-common-pipe-module/pipes/shorten-right.pipe.spec.ts" />
+      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" />
       <test-names>
-        <test-name value="ShortenRightPipe" />
+        <test-name value="UtilService" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="UtilService.Test 02" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" />
+      <test-names>
+        <test-name value="UtilService" />
+        <test-name value="Test 02" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="UtilService.Test 03" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" />
+      <test-names>
+        <test-name value="UtilService" />
+        <test-name value="Test 03" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="UtilService.Test 04" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" />
+      <test-names>
+        <test-name value="UtilService" />
+        <test-name value="Test 04" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="UtilService.With letters" type="JavaScriptTestRunnerKarma" temporary="true" nameIsGenerated="true">
+      <config-file value="$PROJECT_DIR$/karma.conf.js" />
+      <karma-package-dir value="$PROJECT_DIR$/node_modules/@angular/cli" />
+      <working-directory value="$PROJECT_DIR$" />
+      <node-interpreter value="project" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file-path value="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" />
+      <test-names>
+        <test-name value="UtilService" />
+        <test-name value="With letters" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -150,51 +218,23 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="build-docs" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build-docs" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="startWithProxy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="startWithProxy" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="JavaScript Debug.Angular Application" />
-      <item itemvalue="Karma.DisplayDynamicQueryService.Test setCondition Greater than" />
-      <item itemvalue="Karma.ShortenRightPipe" />
+      <item itemvalue="Karma.UtilService.Test 02" />
+      <item itemvalue="Karma.UtilService.Test 03" />
+      <item itemvalue="Karma.UtilService.Test 04" />
+      <item itemvalue="Karma.UtilService" />
+      <item itemvalue="Karma.UtilService.With letters" />
       <item itemvalue="npm.Angular CLI Server" />
-      <item itemvalue="npm.build-docs" />
-      <item itemvalue="npm.build" />
-      <item itemvalue="npm.startWithProxy" />
       <item itemvalue="Protractor.E2E Tests (nbia-admin)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.startWithProxy" />
-        <item itemvalue="npm.build" />
-        <item itemvalue="npm.build-docs" />
+        <item itemvalue="Karma.UtilService" />
+        <item itemvalue="Karma.UtilService.With letters" />
+        <item itemvalue="Karma.UtilService.Test 04" />
+        <item itemvalue="Karma.UtilService.Test 03" />
+        <item itemvalue="Karma.UtilService.Test 02" />
       </list>
     </recent_temporary>
   </component>
@@ -258,7 +298,10 @@
       <workItem from="1623170258494" duration="106000" />
       <workItem from="1623170416370" duration="26285000" />
       <workItem from="1623257056809" duration="13949000" />
-      <workItem from="1623345193195" duration="15276000" />
+      <workItem from="1623345193195" duration="137864000" />
+      <workItem from="1625219595139" duration="559000" />
+      <workItem from="1625224137340" duration="77967000" />
+      <workItem from="1625563356877" duration="47428000" />
     </task>
     <task id="LOCAL-00001" summary="Adding widget configuration tool">
       <created>1610398273481</created>
@@ -435,7 +478,56 @@
       <option name="project" value="LOCAL" />
       <updated>1621445040424</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Fix Date criteria widgets">
+      <created>1623754084573</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1623754084573</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Trying to fix build problem">
+      <created>1623773076566</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1623773076566</updated>
+    </task>
+    <task id="LOCAL-00028" summary=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t',">
+      <created>1623781168869</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1623781168869</updated>
+    </task>
+    <task id="LOCAL-00029" summary="JIRA 1702 &amp; 1704">
+      <created>1624961267795</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1624961267795</updated>
+    </task>
+    <task id="LOCAL-00030" summary=" Updating version to 1.0.9">
+      <created>1624986680645</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1624986680645</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Fixed - parameter index not getting incremented for searches including &quot;Released&quot;">
+      <created>1625070274773</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1625070274773</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Fix for JIRA 1716 Perform QC: Only AND's show in the query indicator">
+      <created>1625670650731</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1625670650731</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -444,9 +536,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Adding widget configuration tool" />
-    <MESSAGE value="Adding preliminary criteria selection menu and &quot;Dynamic Search&quot; tab." />
-    <MESSAGE value="Updated the universal menu at the top of the page." />
     <MESSAGE value="Adding widget configuration set from server. Start of dynamic query building." />
     <MESSAGE value="JIRAs 1621, 1622, 1615(Buttons), and 1617&#10;1621 - Exclude commercial restricted series - series are still include in manifest file&#10;1622 - Fix universal menus&#10;1615 - Update intro screens - Fixed the bottons looking disabled, still need to update the screen shots&#10;1617 - popup when a shared query includes Collection(s) not accessable by the user - Updated for Bootstrap 4" />
     <MESSAGE value="Update JQuery to version 3.6.0" />
@@ -465,7 +554,31 @@
     <MESSAGE value="Put ngx-mydatepicker back in the package.json file." />
     <MESSAGE value="Fixes for JIRAs: 1668, 1666, 1665, 1660, 1658, 1661, 1657" />
     <MESSAGE value="Bug fixes for 7.8" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug fixes for 7.8" />
+    <MESSAGE value="Fix Date criteria widgets" />
+    <MESSAGE value="Trying to fix build problem" />
+    <MESSAGE value=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t'," />
+    <MESSAGE value="JIRA 1702 &amp; 1704" />
+    <MESSAGE value=" Updating version to 1.0.9" />
+    <MESSAGE value="Fixed - parameter index not getting incremented for searches including &quot;Released&quot;" />
+    <MESSAGE value="Fix for JIRA 1716 Perform QC: Only AND's show in the query indicator" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix for JIRA 1716 Perform QC: Only AND's show in the query indicator" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/admin-common/services/util.service.ts</url>
+          <line>131</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.html</url>
+          <line>206</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
