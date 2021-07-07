@@ -19,7 +19,9 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
     data = '';
     niceDisplayData = [];
     lastElementIndex = 0;
+    firstElementIndex = 0;
     properties = Properties;
+    first = true;
 
     constructor( private displayDynamicQueryService: DisplayDynamicQueryService, private apiService: ApiService,
                  private dynamicQueryBuilderService: DynamicQueryBuilderService, private utilService: UtilService ) {
@@ -35,9 +37,20 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
             ( data ) => {
                 this.niceDisplayData = data;
                 this.getLastElementIndex();
+                this.getLastFirstIndex();
             } );
     }
 
+
+    getLastFirstIndex(){
+        this.firstElementIndex = 0;
+        for( let f = 0; f < this.niceDisplayData.length; f++ ){
+            if( this.niceDisplayData[f] !== undefined ){
+                this.firstElementIndex = f;
+                break;
+            }
+        }
+    }
 
     getLastElementIndex() {
         this.lastElementIndex = 0;

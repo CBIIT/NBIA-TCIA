@@ -21,9 +21,15 @@
 
 
 <span *ngFor="let criteria of niceDisplayData; let i = index">
+
+
     <!-- Some can be empty -->
     <span *ngIf="criteria">
 
+        <!-- Don't show the first one -->
+        <span *ngIf="i > firstElementIndex"
+              class="criteria-and"
+        >{{criteria['andOr']}}</span>
 
         <span class="criteria-display-title">
             {{criteria["criteriaHeading"]}}
@@ -43,23 +49,19 @@
         >
             {{criteria['value']}}
         </span>
-
         <span *ngIf="criteria['value'].length > 1">
             <span *ngFor="let val of criteria['value']; let n = index">
                 <!-- Keep this all on the same line. -->
                 <span class="criteria-display-name display-wrap">{{val}}</span><span class="criteria-display-comma" *ngIf="n < (criteria['value'].length - 1 )">,</span>
-            </span>
-        </span>
-
-
+           </span>
+      </span>
         <span *ngIf="criteria['condition'].length < 1">
             )
         </span>
 
-        <span *ngIf="i < lastElementIndex"
-            class="criteria-and"
-        >{{criteria['andOr']}}</span>
-
+<!--        <span *ngIf="i < lastElementIndex"
+              class="criteria-and"
+        >{{criteria['andOr']}}</span>-->
 
     </span>
 </span>
