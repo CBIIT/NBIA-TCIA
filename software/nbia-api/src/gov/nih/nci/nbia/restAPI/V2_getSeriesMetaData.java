@@ -88,8 +88,21 @@ public class V2_getSeriesMetaData extends getData {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		
+		if (result[6] != null) {
+			//replace the "," character in the Study Description field 
+			// temp fix, will not need it when the client is getting data in json format
+			result[6] = (Object)(result[6].toString().replaceAll(",", " "));
+		}		
+		
+		if (result[8] != null) {
+			//replace the "," character in the Series Description field 
+			// temp fix, will not need it when the client is getting data in json format
+			result[8] = (Object)(result[8].toString().replaceAll(",", " "));
+		}
+		
 		if (result[9] != null) {
 			//replace the "," character in the manufacture field 
+			// temp fix, will not need it when the client is getting data in json format
 			result[9] = (Object)(result[9].toString().replaceAll(",", " "));
 		}
 		List<Object[]> data = new ArrayList<Object[]>();
