@@ -341,7 +341,7 @@ public class DownloadServletV4 extends HttpServlet {
 			return "NA";
 		else
 		if ((in != null) && (in.length() > 0)) {
-			String out = in.replaceAll("[^a-zA-Z0-9 .-]", "");
+			String out = in.replaceAll("[^a-zA-Z0-9 .-/:]", "");
 			if (out.isEmpty())
 				return "NA";
 			return out;

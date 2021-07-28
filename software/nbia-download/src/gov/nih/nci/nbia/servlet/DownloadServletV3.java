@@ -314,7 +314,7 @@ public class DownloadServletV3 extends HttpServlet {
 
 	private static String cleanStr(String in) {
 		if ((in != null) && (in.length() > 0)) {
-			String out = in.replaceAll("[^a-zA-Z0-9 .-]", "");
+			String out = in.replaceAll("[^a-zA-Z0-9 .-/:]", "");
 			return out;
 		} else
 			return null;
