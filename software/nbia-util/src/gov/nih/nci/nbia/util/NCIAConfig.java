@@ -824,7 +824,18 @@ public class NCIAConfig {
 		checkProperty("tomcat.server.port", propertyValue);
         return propertyValue;   	
     } 
-    
+    public static String getSolrType() {
+        String propertyValue = properties.getProperty("gov.nih.nci.ncia.solr.type");
+        return propertyValue;   	
+    } 
+    public static String getSolrUrls() {
+        String propertyValue = properties.getProperty("gov.nih.nci.ncia.solr.urls");
+        return propertyValue;   	
+    } 
+    public static String getSolrIndexer() {
+        String propertyValue = properties.getProperty("gov.nih.nci.ncia.solr.indexer");
+        return propertyValue;   	
+    } 
     public static String getSpeciesDescription() {
         String propertyValue = properties.getProperty("species.description");
         if (propertyValue==null) {

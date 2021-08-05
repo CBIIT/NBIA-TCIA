@@ -211,8 +211,22 @@ L-->
       rev="2.6.1"
       conf="compile->master;runtime->master"/>
       
-     
-      
+      <dependency org="org.apache.solr"
+                name="solr-core"
+                rev="8.9.0"
+                conf="compile->default;runtime->default"> 
+       </dependency>   
+
+
+   	   <dependency org="org.apache.solr"
+                name="solr-solrj"
+                rev="8.9.0"
+                conf="compile->default;runtime->master"   />
+                
+       <dependency org="io.dropwizard.metrics" name="metrics-core" rev="4.2.2"  conf="runtime->master"/>
+                <exclude org="javax.servlet.jsp" conf="runtime"/>
+                <exclude org="javax.servlet" conf="runtime"/>
+
 		<!-- end of dicom -->
 	</dependencies>
 </ivy-module>

@@ -2,12 +2,13 @@ package gov.nih.nci.nbia.textsupport;
 
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.common.params.GroupParams;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -35,7 +36,7 @@ public class SolrAccess {
 				  return returnValue;
 			  }
 			  SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
-			  SolrServer server = serverAccess.GetServer();
+			  SolrClient server = serverAccess.GetServer();
 			  String term;
 			  String tempterm="";
 			  String orginalTerm="";
@@ -85,7 +86,12 @@ public class SolrAccess {
 			   query.setParam(GroupParams.GROUP_MAIN, true);
 			   query.setParam(GroupParams.GROUP_FORMAT, "simple");
 			   query.setParam(GroupParams.GROUP_LIMIT, "1");
-			   QueryResponse rsp = server.query( query );
+			   QueryResponse rsp=null;
+			   try {
+				rsp = server.query( query );
+			   } catch (IOException e) {
+				  e.printStackTrace();
+			   }
 			   SolrDocumentList docs = rsp.getResults();
 			   for (SolrDocument doc : docs){
 				   String highlightedHit = "";

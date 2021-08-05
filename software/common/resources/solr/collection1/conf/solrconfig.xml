@@ -476,11 +476,11 @@
     <!-- Solr Internal Query Caches
 
          There are two implementations of cache available for Solr,
-         LRUCache, based on a synchronized LinkedHashMap, and
-         FastLRUCache, based on a ConcurrentHashMap.  
+         Cache, based on a synchronized LinkedHashMap, and
+         FastCache, based on a ConcurrentHashMap.  
 
-         FastLRUCache has faster gets and slower puts in single
-         threaded operation and thus is generally faster than LRUCache
+         FastCache has faster gets and slower puts in single
+         threaded operation and thus is generally faster than Cache
          when the hit ratio of the cache is high (> 75%), and may be
          faster under other scenarios on multi-cpu systems.
     -->
@@ -492,11 +492,11 @@
          new searcher is opened, its caches may be prepopulated or
          "autowarmed" using data from caches in the old searcher.
          autowarmCount is the number of items to prepopulate.  For
-         LRUCache, the autowarmed items will be the most recently
+         Cache, the autowarmed items will be the most recently
          accessed items.
 
          Parameters:
-           class - the SolrCache implementation LRUCache or
+           class - the SolrCache implementation Cache or
                (LRUCache or FastLRUCache)
            size - the maximum number of entries in the cache
            initialSize - the initial capacity (number of entries) of
@@ -526,8 +526,8 @@
          this cache will not be autowarmed.  
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
-                   initialSize="512"
+                   size="64"
+                   initialSize="64"
                    autowarmCount="0"/>
     
     <!-- custom cache currently used by block join --> 

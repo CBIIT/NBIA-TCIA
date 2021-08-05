@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
@@ -48,7 +48,7 @@ public class WorkflowExecutor {
 	{
     	  log.info("Workflow updated visibilities has been called");
     	  SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
-    	  SolrServer server = serverAccess.GetServer();
+    	  SolrClient server = serverAccess.GetServer();
     	  DateFormat df = new SimpleDateFormat("yyyyMMdd  HH:mm");
     	  String sdt = df.format(new Date(System.currentTimeMillis()));
 		  if (lastRan==null)  // either new installation or server restarted we will look for it in Solr
