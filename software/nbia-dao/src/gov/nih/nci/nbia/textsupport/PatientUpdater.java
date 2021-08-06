@@ -1,5 +1,7 @@
 package gov.nih.nci.nbia.textsupport;
 import java.util.*;
+
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -54,6 +56,11 @@ public class PatientUpdater {
     protected void updateSubmittedPatients() throws Exception
 	  {
     	  log.info("Solr update submitted patients has been called");
+    	  String indexer=NCIAConfig.getSolrIndexer();
+    	  if (indexer==null||(!indexer.equalsIgnoreCase("yes")){
+    		  System.out.println("not a solr indexer");
+    		  return;
+    	  }
     	  Date maxTimeStamp;
     	  SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
     	  SolrClient server = serverAccess.GetServer();
