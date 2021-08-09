@@ -26,6 +26,8 @@ import gov.nih.nci.nbia.dto.CollectionDescDTO;
 import gov.nih.nci.nbia.restUtil.RoleCache;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
+
+import io.swagger.annotations.*;
 @Path("/submitCollectionDescription")
 public class SubmitCollectioDescription extends getData{
 	private static final String column="Collection";
@@ -34,10 +36,20 @@ public class SubmitCollectioDescription extends getData{
 	@Context private HttpServletRequest httpRequest;
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
-
-	public Response constructResponse(@FormParam("name") String name,
+	@ApiOperation(value = "Submit a new or updated collection description",
+	  notes = "This method accepts a new collection description, if a description does not exist for the collection on is created")
+   @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "The collection description has been sucessfully processed"),
+      @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged.") })
+	public Response constructResponse(@ApiParam(name =  "name", 
+			   value = "The name of the collection to have the description", example = "4D-Lung", required = true) 
+	        @FormParam("name") String name,
+	        @ApiParam(name =  "description", 
+			   value = "The description of the collection", example = "This is my collection", required = true) 
 			@FormParam("description") String description,
-			@FormParam("license") Integer license) {
+	        @ApiParam(name =  "license", 
+			   value = "The license id for the collection", example = "2", required = false)
+	         @FormParam("license") Integer license) {
 
 		try {	
 			   Authentication authentication = SecurityContextHolder.getContext()

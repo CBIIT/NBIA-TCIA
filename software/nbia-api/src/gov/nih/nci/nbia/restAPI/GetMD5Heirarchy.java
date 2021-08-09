@@ -43,6 +43,7 @@ import gov.nih.nci.nbia.deletion.DeletionDisplayObject;
 import gov.nih.nci.nbia.deletion.ImageDeletionService;
 import gov.nih.nci.nbia.restUtil.QAUserUtil;
 import gov.nih.nci.nbia.restUtil.MD5Cache;
+import io.swagger.annotations.*;
 @Path("/getMD5Hierarchy")
 public class GetMD5Heirarchy extends getData{
 
@@ -55,11 +56,23 @@ public class GetMD5Heirarchy extends getData{
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-
-	public Response  constructResponse(@FormParam("SeriesInstanceUID") String seriesInstanceUID, 
-			                           @FormParam("StudyInstanceUID") String studyInstanceUID,
-			                           @FormParam("PatientID") String patientID,
-			                           @FormParam("Collection") String collection) {
+	@ApiOperation(value = "Get the new patients in a collection",
+	  notes = "This method returns a MD5 hash of the DICOM objects in a hierarchy, only one object level can be specified")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Returns the hash of the full heirarchy of DICOM objects requested"),
+        @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged.") })
+	public Response  constructResponse(@ApiParam(name =  "SeriesInstanceUID", 
+			   value = "The series when selecting a series level hash from", example = "1.3.6.1.4.1.14519.5.2.1.1610.1214.245363808374225692018717388133", required = false) 
+			@FormParam("SeriesInstanceUID") String seriesInstanceUID, 
+			@ApiParam(name =  "StudyInstanceUID", 
+			   value = "The study when selecting a study level hash from", example = "1.3.6.1.4.1.14519.5.2.1.1610.1214.245363808374225692018717388133", required = false) 
+			@FormParam("StudyInstanceUID") String studyInstanceUID,
+			@ApiParam(name =  "PatientID", 
+			   value = "The patient when selecting a patient level hash from", example = "subject01", required = false) 
+			@FormParam("PatientID") String patientID,
+			@ApiParam(name =  "Collection", 
+			   value = "The series when selecting a study level hash from", example = "4D-Lung", required = false) 
+			@FormParam("Collection") String collection) {
 		String md5 = "";
 		try {
 		Authentication authentication = SecurityContextHolder.getContext()
