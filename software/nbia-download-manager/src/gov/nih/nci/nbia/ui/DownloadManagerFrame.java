@@ -87,6 +87,7 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	public static JLabel errorLabel;
 	private JButton agreementButton;
 	private JButton commercialButton;
+	private MenuBar menuBar;
 
 	/* Currently selected download. */
 	private AbstractSeriesDownloader selectedDownload;
@@ -429,12 +430,12 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 	}
 
 	private void createMenuBar() {
-		JMenuBar menuBar = new MenuBar();
+		menuBar = new MenuBar();
 		setJMenuBar(menuBar);
 	}
 	
 	private void createMenuBar(String version, String helpDeskUrl) {
-		JMenuBar menuBar = new MenuBar(version, helpDeskUrl);
+		menuBar = new MenuBar(version, helpDeskUrl);
 		setJMenuBar(menuBar);
 	}	
 
@@ -752,9 +753,10 @@ public class DownloadManagerFrame extends JFrame implements Observer {
 			startButton.setEnabled(false);
 			return;
 		}
-		
+
+		AbstractSeriesDownloader.setCheckMD5(menuBar.isCheckMD5());
 		startButton.setEnabled(false);
-		//String path = this.directoryBrowserPanel.getDirectory();
+		String rootDir = this.directoryBrowserPanel.getDirectory();
 		if (!(this.directoryBrowserPanel.isDirWritable(path)))
 			return;
 		setSeriesDownloadersOutputDirectory(this.directoryBrowserPanel.getDirectory(),

@@ -46,6 +46,7 @@ public class ButtonUpdater implements ThreadPoolListener {
 	private JLabel errorLabel; // lrt - added errorLabel
 	private JTable table = null;
 	private boolean retry = false;
+//	private String rootDir = null;
 	private PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if ("status".equals(evt.getPropertyName())) {
@@ -71,6 +72,16 @@ public class ButtonUpdater implements ThreadPoolListener {
 		this.errorLabel = errorLabel;
 		this.table = table;
 	}
+
+// do checksum validation after each series is downloaded so this is not needed	
+//	public ButtonUpdater(JButton pauseButton, JButton resumeButton, JLabel errorLabel, JTable table, String rootDir) {
+//		this.pauseButton = pauseButton;
+//		this.resumeButton = resumeButton;
+//		// lrt added errorLabel to record final status
+//		this.errorLabel = errorLabel;
+//		this.table = table;
+//		this.rootDir = rootDir;
+//	}	
 	
    boolean stillDownloading() {
     	boolean ys = false;
@@ -94,9 +105,11 @@ public class ButtonUpdater implements ThreadPoolListener {
 			String downloadStatus = (String) table.getValueAt(i, DownloadsTableModel.STATUS_COLUMN);
 			if ((downloadStatus.equals("Downloading")||downloadStatus.equals("Not Started"))) {
 				stillDownloading =true;
+				break;
 			}
 			else if (!(downloadStatus.equals("Complete"))) {
 				hasIncomplete= true;
+				break;
 			}
 		}
 		
@@ -109,6 +122,10 @@ public class ButtonUpdater implements ThreadPoolListener {
 				if (!errorLabel.isVisible()) {
 					this.errorLabel.setText("Downloads Complete"); // lrt - let user know that we are done with all downloads
 																	// and retries
+					// do checksum validation after each series is downloaded so this is not needed						
+//					if (rootDir != null && AbstractSeriesDownloader.isCheckMD5()) {
+//						optionsForCheckMD5();
+//					}
 				}
 			}
 			else {	
@@ -175,6 +192,24 @@ public class ButtonUpdater implements ThreadPoolListener {
 	    }
 	    else return null;
 	}
+	
+//	private void optionsForCheckMD5() {
+//		if (table != null) {
+//			Object[] options = { "Go ahead", "No" };
+//
+//			int n = JOptionPane.showOptionDialog(table, "  Download is completed. Continue to verify the MD5 hash of each downloaded DICOM files or exit from the app?\n\n\n", "Info",
+//					JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+//
+//			if (n == 1) {
+//				System.exit(1);
+//			} else if (n == 0) {
+//				System.out.println("verify begins");
+//			}
+//		}
+//	}
+	
+	
+
 	
 
 	private void optionsForErrCondiction() {

@@ -19,6 +19,8 @@ public class ImageDTO2  implements Comparable<ImageDTO2>{
 	private Integer instanceNumber;
 	private Integer acquisitionNumber;
 	private String newFilename;
+	private String md5Digest;
+
 	public ImageDTO2(String SOPInstanceUID, String fileName, Long dicomSize, String project, String site, String ssg, int frameNum, Integer instanceNumber, Integer acquisitionNumber){
 		this.SOPInstanceUID = SOPInstanceUID;
 		this.fileName = fileName;
@@ -47,6 +49,26 @@ public class ImageDTO2  implements Comparable<ImageDTO2>{
 		this.instanceNumber=instanceNumber;
 		this.acquisitionNumber=acquisitionNumber;
 	}
+	
+	public ImageDTO2(String SOPInstanceUID, String fileName, Long dicomSize, String project, String site, String ssg, String frameNum, Integer instanceNumber, Integer acquisitionNumber, String md5Digest){
+		this.SOPInstanceUID = SOPInstanceUID;
+		this.fileName = fileName;
+		this.dicomSize = dicomSize;
+		this.project = project;
+		this.site = site;
+		this.ssg = ssg;
+		if (frameNum == null){
+			this.frameNum = 0;
+		}
+		else {
+			this.frameNum = Integer.parseInt(frameNum);
+		}
+		this.instanceNumber=instanceNumber;
+		this.acquisitionNumber=acquisitionNumber;
+		this.md5Digest = md5Digest;
+	}	
+	
+	
 	public String getSOPInstanceUID() {
 		return SOPInstanceUID;
 	}
@@ -98,6 +120,15 @@ public class ImageDTO2  implements Comparable<ImageDTO2>{
 	public void setNewFilename(String newFilename) {
 		this.newFilename = newFilename;
 	}
+	
+	
+	public String getMd5Digest() {
+		return md5Digest;
+	}
+
+	public void setMd5Digest(String md5Digest) {
+		this.md5Digest = md5Digest;
+	}	
 
 	/**
      * Used to sort.

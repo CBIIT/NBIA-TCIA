@@ -2,12 +2,14 @@
 package gov.nih.nci.nbia.restAPI;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +47,8 @@ public class V2_getDCMImage extends getData {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid, @QueryParam("IncludeAnnotation") String includeAnnotation) throws IOException {
+	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid, @QueryParam("IncludeAnnotation") String includeAnnotation,
+			@QueryParam("MD5Verification") String md5Verify) throws IOException {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
 		final String sid = seriesInstanceUid;
@@ -76,7 +79,12 @@ public class V2_getDCMImage extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				boolean addChecksum = false;
+				
+				if (md5Verify != null && md5Verify.equalsIgnoreCase("true")) {
+					addChecksum = true;
+				}
+				
 				try {
 //					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
@@ -85,8 +93,16 @@ public class V2_getDCMImage extends getData {
 //					Timestamp qetimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Done with querying the file name list and start to zip and stram--"
 //							+ sdf.format(qetimestamp));
+					StringBuffer sb= new StringBuffer();
+					if (addChecksum) {
+						sb.append("Filename,MD5Hash\n");
+					}
 
 					for (String [] filename : fileNames) {
+						if (addChecksum) {
+							int pos = filename[1].indexOf("^");
+							sb.append(filename[1].substring(pos+1) + "," +filename[2] + "\n");
+						}
 						in = new FileInputStream(new File(filename[0]));
 
 						if (in != null) {
@@ -103,6 +119,14 @@ public class V2_getDCMImage extends getData {
 							in.close();
 						}
 					}
+					
+					if (addChecksum) {
+						InputStream inputStream = new ByteArrayInputStream(sb.toString().getBytes(Charset.forName("UTF-8")));
+				        zip.putNextEntry(new ZipEntry("md5hashes.csv"));
+						IOUtils.copy(inputStream, zip);
+						zip.closeEntry();
+					}
+					
 					if (includeAnnotation.equalsIgnoreCase("true")) {
 						List <String> annNames = getAnnotations(sid);
 						for (String aName : annNames) {

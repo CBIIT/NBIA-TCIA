@@ -22,6 +22,7 @@ import gov.nih.nci.nbia.util.StringEncrypter;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,12 +30,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -43,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -135,10 +139,14 @@ public class DownloadServletV4 extends HttpServlet {
 			logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
 					+ " hasAnnotation: " + hasAnnotation);
 			boolean newFileNames=false;
+			boolean getMD5Hash = false;
             if (request.getParameter("newFileNames")!=null&&request.getParameter("newFileNames").length()>1) {
             	newFileNames=true;
             }
-			processRequest(response, seriesUid, userId, password, includeAnnotation, hasAnnotation, sopUids, newFileNames);
+            if (request.getParameter("getMD5Hash")!=null&&request.getParameter("getMD5Hash").equals("Yes")) {
+            	getMD5Hash=true;
+            }
+			processRequest(response, seriesUid, userId, password, includeAnnotation, hasAnnotation, sopUids, newFileNames, getMD5Hash);
 		}
 	}
 
@@ -170,7 +178,7 @@ public class DownloadServletV4 extends HttpServlet {
 	}
 
 	protected void processRequest(HttpServletResponse response, String seriesUid, String userId, String password,
-			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids, boolean newFileNames) throws IOException {
+			Boolean includeAnnotation, Boolean hasAnnotation, String sopUids, boolean newFileNames, boolean getMD5Hash) throws IOException {
 
 		DownloadProcessor processor = new DownloadProcessor();
 		List<AnnotationDTO> annoResults = new ArrayList<AnnotationDTO>();
@@ -194,7 +202,7 @@ public class DownloadServletV4 extends HttpServlet {
 			if (includeAnnotation && hasAnnotation) {
 				annoResults = processor.process(seriesUid);
 			}
-			sendResponse(response, imageResults, annoResults, newFileNames);
+			sendResponse(response, imageResults, annoResults, newFileNames, getMD5Hash);
 			// compute the size for this series
 			long size = computeContentLength(imageResults, annoResults);
 			try {
@@ -211,7 +219,7 @@ public class DownloadServletV4 extends HttpServlet {
 	}
 
 	private void sendResponse(HttpServletResponse response, List<ImageDTO2> imageResults,
-			List<AnnotationDTO> annoResults, boolean newFileNames) throws IOException {
+			List<AnnotationDTO> annoResults, boolean newFileNames, boolean getMD5Hash) throws IOException {
 
 		TarArchiveOutputStream tos = new TarArchiveOutputStream(response.getOutputStream());
 
@@ -221,7 +229,7 @@ public class DownloadServletV4 extends HttpServlet {
 			logger.info("images size: " + imageResults.size() + " anno size: " + annoResults.size());
 
 			sendAnnotationData(annoResults, tos);
-			sendImagesData(imageResults, tos, newFileNames);
+			sendImagesData(imageResults, tos, newFileNames, getMD5Hash);
 
 			logger.info("total time to send  files are " + (System.currentTimeMillis() - start) / 1000 + " ms.");
 		} finally {
@@ -229,12 +237,20 @@ public class DownloadServletV4 extends HttpServlet {
 		}
 	}
 
-	private void sendImagesData(List<ImageDTO2> imageResults, TarArchiveOutputStream tos, boolean newFileNames) throws IOException {
+	private void sendImagesData(List<ImageDTO2> imageResults, TarArchiveOutputStream tos, boolean newFileNames, boolean getMD5Hash) throws IOException {
 		InputStream dicomIn = null;
+		StringBuffer sb= new StringBuffer();		
 		try {
+			if (getMD5Hash) {
+				sb.append("Filename,MD5Hash\n");
+			}
 			for (ImageDTO2 imageDto : imageResults) {
 				String filePath = imageDto.getFileName();
 				String sop = imageDto.getSOPInstanceUID();
+
+				String newFileName = imageDto.getNewFilename();
+				int pos = newFileName.indexOf("^");
+				sb.append(newFileName.substring(pos+1) + "," +imageDto.getMd5Digest() + "\n");
 
 				logger.info("filepath: " + filePath + " filename: " + sop);
 				try {
@@ -258,10 +274,21 @@ public class DownloadServletV4 extends HttpServlet {
 					logger.info("DownloadServlet Image transferred at " + new Date().getTime());
 				}
 			}
+			if (getMD5Hash) {
+				final byte[] metaBytes = sb.toString().getBytes(Charset.forName("UTF-8"));
+			    final TarArchiveEntry attribEntry = new TarArchiveEntry("md5hashes.csv");
+			    attribEntry.setSize(metaBytes.length);
+			    tos.putArchiveEntry(attribEntry);
+			    tos.write(metaBytes);
+			    tos.closeArchiveEntry();
+			}
+		    
+		
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
+	} 
+
 
 	private void sendAnnotationData(List<AnnotationDTO> annoResults, TarArchiveOutputStream tos) throws IOException {
 		InputStream annoIn = null;
