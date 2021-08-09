@@ -624,13 +624,13 @@ public class StudyDAOImpl extends AbstractDAO
     			+" ( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = generalser1_.GENERAL_SERIES_PK_ID ) "
     			+ " as col_6_0_, generalser1_.SERIES_DESC , generalser1_.MODALITY , generalequ2_.MANUFACTURER, generalser1_.SERIES_NUMBER, generalser1_.ANNOTATIONS_FLAG ," 
                 + " ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = generalser1_.GENERAL_SERIES_PK_ID ) "
-                + " as col_12_0_, generalser1_.PATIENT_ID , trialdatap4_.PROJECT , "
+                + " as col_12_0_, generalser1_.PATIENT_ID , generalser1_.PROJECT , "
                 + " generalser1_.PATIENT_PK_ID , study0_.STUDY_ID , generalser1_.BODY_PART_EXAMINED , "
                 + " generalser1_.THIRD_PARTY_ANALYSIS , generalser1_.DESCRIPTION_URI , generalser1_.project, generalser1_.exclude_commercial  "
                 + " from STUDY study0_ inner join GENERAL_SERIES generalser1_ on study0_.STUDY_PK_ID=generalser1_.STUDY_PK_ID "
                 + " inner join GENERAL_EQUIPMENT generalequ2_ on generalser1_.GENERAL_EQUIPMENT_PK_ID=generalequ2_.GENERAL_EQUIPMENT_PK_ID, "
-                + " PATIENT patient3_, TRIAL_DATA_PROVENANCE trialdatap4_ "
-                + " where patient3_.TRIAL_DP_PK_ID=trialdatap4_.TRIAL_DP_PK_ID and study0_.PATIENT_PK_ID=patient3_.PATIENT_PK_ID "
+                + " PATIENT patient3_ "
+                + " where study0_.PATIENT_PK_ID=patient3_.PATIENT_PK_ID "
                 + " and (generalser1_.VISIBILITY in ('1')) ";
 
         String whereStmt = "";

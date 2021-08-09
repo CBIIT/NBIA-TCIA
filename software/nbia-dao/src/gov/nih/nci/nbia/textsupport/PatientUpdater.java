@@ -57,7 +57,7 @@ public class PatientUpdater {
 	  {
     	  log.info("Solr update submitted patients has been called");
     	  String indexer=NCIAConfig.getSolrIndexer();
-    	  if (indexer==null||(!indexer.equalsIgnoreCase("yes")){
+    	  if (indexer==null||(!indexer.equalsIgnoreCase("yes"))){
     		  System.out.println("not a solr indexer");
     		  return;
     	  }

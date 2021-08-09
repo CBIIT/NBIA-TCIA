@@ -53,7 +53,8 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 
         try {
 	        hql += (" series.study.id = " + study.getId());
-	        hql += (" and series.generalEquipment.id = " + equip.getId());
+	        // overwrite the equipment to prevent duplication errors
+	        // hql += (" and series.generalEquipment.id = " + equip.getId());
 	
 	        series.setStudy(study);
 	        series.setGeneralEquipment(equip);
