@@ -26,6 +26,7 @@ import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
+import io.swagger.annotations.*;
 
 
 @Path("/v1/getCollectionValues")
@@ -41,10 +42,17 @@ public class V1_getCollectionValues extends getData{
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
+	@ApiOperation(value = "Get the collections available to the user",
+	  notes = "This method returns collections that are available to anonymous users")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Returned collection objects"),
+            @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged.") })
 
-	public Response  constructResponse(@QueryParam("format") String format) {
+	public Response  constructResponse(  @ApiParam(name =  "format", 
+	   value = "Desired format (CSV, HTML, XML, and JSON)", example = "CSV", required = false) 
+	   @QueryParam("format") String format) {
 		List<String> authorizedCollections = new ArrayList<String>();
-		String user = NCIAConfig.getGuestUsername();
+		String user = NCIAConfig.getGuestUsername();   
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 		if (authorizedSiteData==null) {
 			try {
