@@ -72,7 +72,13 @@ public class PatientUpdater {
   
 				   String term = "id:NBIAsolrIndexingRun";
 				   SolrQuery query = new SolrQuery(term);
-				   QueryResponse rsp = server.query( query );
+				   QueryResponse rsp = null;
+			 	   try {
+					   rsp = server.query( query );
+				   } catch (Exception e) {
+					  System.out.println("---Unable to communicate with Solr Server");
+					  return;
+				   }
 				   SolrDocumentList docs = rsp.getResults();
 				   if (docs.size()<1)
 				   {  // can't find it, we need to re-index to be sure
