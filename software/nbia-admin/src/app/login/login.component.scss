@@ -6,27 +6,27 @@
     padding-bottom: 0;
 }
 
-.login-box {
+.login-box{
     width: 400px;
     left: calc(50% - 200px);
     padding: 0;
 }
 
-.login-td {
+.login-td{
     padding: 4px 0 0 10px;
 }
 
-.error-alert {
+.error-alert{
     margin-left: 20px;
 }
 
-.account-buttons {
+.account-buttons{
     float: right;
     margin-top: 0;
     padding-top: 0;
 }
 
-.account-help-button {
+.account-help-button{
     margin-left: 4px;
     margin-top: 0;
 
@@ -42,18 +42,19 @@
 
 
 // .cursor-draggable isn't working for me, this is a workaround.
-.login-panel-heading:hover {
+.login-panel-heading:hover{
     cursor: grab;
 }
 
 /*  Apply a "closed-hand" cursor during drag operation. */
-.login-panel-heading:active {
+.login-panel-heading:active{
     cursor: grabbing;
 }
 
 /*  Apply a "closed-hand" cursor during drag operation. */
-.login-panel-heading-moving {
-    cursor: grabbing;
+.login-panel-heading-moving{
+ //   cursor: grabbing !important;
+ //    background-color: #5e00bb;
 }
 
 .login-heading{

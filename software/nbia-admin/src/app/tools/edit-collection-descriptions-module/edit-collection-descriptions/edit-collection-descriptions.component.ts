@@ -154,35 +154,31 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         private utilService: UtilService,
         private querySectionService: QuerySectionService,
         private preferencesService: PreferencesService
-    ) {
+    ){
     }
 
-    ngOnInit() {
+    ngOnInit(){
 
         // Receive the Collection names and descriptions.
         this.apiService.collectionsAndDescriptionEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
-                this.collections = data;
-                if(
-                    !this.utilService.isNullOrUndefinedOrEmpty( this.collections )
-                ){
-                    this.currentCollection = this.collections[0]['name'];
-                    this.currentLicenseIndex = this.getLicIndexById(
-                        this.collections[0]['licenseId']
-                    );
-                    this.currentLicenseIndexTrailer = this.currentLicenseIndex;
-                    this.htmlContent = this.collections[0]['description'];
-                    this.textTrailer = this.htmlContent;
-                }
-            } );
+            .pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+            this.collections = data;
+            if(
+                !this.utilService.isNullOrUndefinedOrEmpty( this.collections )
+            ){
+                this.currentCollection = this.collections[0]['name'];
+                this.currentLicenseIndex = this.getLicIndexById( this.collections[0]['licenseId'] );
+                this.currentLicenseIndexTrailer = this.currentLicenseIndex;
+                this.htmlContent = this.collections[0]['description'];
+                this.textTrailer = this.htmlContent;
+            }
+        } );
 
         // When a Collection is selected from the search criteria on the left, it is received here.
         this.querySectionService.updateCollectionEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
-                this.onCollectionSelected( data );
-            } );
+            .pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+            this.onCollectionSelected( data );
+        } );
 
         // Get this users roles and make sure they have NCIA.MANAGE_COLLECTION_DESCRIPTION
         this.apiService.updatedUserRolesEmitter
@@ -227,7 +223,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     async init(){
         // Make sure we are logged in
-        while( ( this.accessTokenService.getAccessToken() === undefined ) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+        while( (this.accessTokenService.getAccessToken() === undefined) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
 
@@ -236,27 +232,23 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         this.apiService.getCollectionLicenses();
 
     }
+
     /**
      * Update with newly selected Collection data when user selects a Collection from the left side "Criteria Search".
      * @param i - Index in the this.collections array
      */
-    onCollectionSelected( i ) {
+    onCollectionSelected( i ){
         this.currentCollection = this.collections[i]['name'];
-        this.currentLicenseIndex = this.getLicIndexById(
-            this.collections[i]['licenseId']
-        );
+        this.currentLicenseIndex = this.getLicIndexById( this.collections[i]['licenseId'] );
         this.currentLicenseIndexTrailer = this.currentLicenseIndex;
         this.htmlContent = this.collections[i]['description'];
         this.textTrailer = this.htmlContent;
         this.currentCollectionIndex = i;
     }
 
-    onSave() {
+    onSave(){
         if( Properties.DEMO_MODE ){
-            console.log(
-                'Demo Mode Update Collection description ',
-                this.htmlContent
-            );
+            console.log( 'Demo Mode Update Collection description ', this.htmlContent );
         }else{
             if(
                 this.textTrailer !== this.htmlContent ||
@@ -269,22 +261,21 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
                 );
                 this.textTrailer = this.htmlContent;
                 this.currentLicenseIndexTrailer = this.currentLicenseIndex;
-                this.collections[this.currentCollectionIndex][
-                    'description'
-                    ] = this.htmlContent;
+                this.collections[this.currentCollectionIndex]['description'] = this.htmlContent;
+                this.collections[this.currentCollectionIndex]['licenseId'] = this.licData[this.currentLicenseIndex]['id'];
             }
         }
     }
 
-    onLicenseDropdownClick( i ) {
+    onLicenseDropdownClick( i ){
         this.currentLicenseIndex = i;
     }
 
-    onToggleShowHtml() {
+    onToggleShowHtml(){
         this.showHtml = !this.showHtml;
     }
 
-    getLicIndexById( id ) {
+    getLicIndexById( id ){
         let len = this.licData.length;
         for( let i = 0; i < len; i++ ){
             if( this.licData[i]['id'] === id ){
@@ -294,7 +285,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
         return 0;
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

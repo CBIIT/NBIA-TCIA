@@ -223,7 +223,7 @@
 
 
         <!-- ----- Calendar dates when collapsed ----- -->
-        <div class="ml-3" *ngIf="(! widgetShowCriteria) && date0 !== undefined && date1 !== undefined">
+        <div class="ml-3" *ngIf="(! widgetShowCriteria) && criteriaCalendar && date0 !== undefined && date1 !== undefined">
             <span *ngIf="applyState">
                 *
             </span>
@@ -440,8 +440,21 @@
         'dynamic-query-calendar-div-with-apply-button':  criteriaApplyButton ,
         'dynamic-query-calendar-div-with-apply-checkbox': criteriaApplyCheckbox,
         'cal-height-one-date': criteriaCalendarPrompt1.length < 1
-        }">
+        }"
+    >
         <nbia-widget-calendar
+           [prompt0]="criteriaCalendarPrompt0"
+           [prompt1]="criteriaCalendarPrompt1"
+           [placeHolder0]="criteriaCalendarPlaceHolder0"
+           [placeHolder1]="criteriaCalendarPlaceHolder1"
+           [(date0)]="date0"
+           [(date1)]="date1"
+           [(haveInput)]="haveInput"
+           [sequenceNumber]="sequenceNumber"
+        ></nbia-widget-calendar>
+
+<!--
+        <nbia-widget-calendar-bravo
             [prompt0]="criteriaCalendarPrompt0"
             [prompt1]="criteriaCalendarPrompt1"
             [placeHolder0]="criteriaCalendarPlaceHolder0"
@@ -450,13 +463,15 @@
             [(date1)]="date1"
             [(haveInput)]="haveInput"
         >
-
-        </nbia-widget-calendar>
+        </nbia-widget-calendar-bravo>
+-->
 
         <!-- -----  Apply Button for Calendar ----- -->
+        <div >
         <button
+
             *ngIf="criteriaApplyButton"
-            [disabled]="       (! haveInput) &&      (
+            [disabled]="(! haveInput) &&      (
                 (
                     (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
                     (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
@@ -479,6 +494,8 @@
         >
             {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </button>
+<!--criteriaClearButton: {{this.criteriaClearButton}}-->
+        </div>
         <!-- ----- END  Apply Button  for Calendar ----- -->
 
 

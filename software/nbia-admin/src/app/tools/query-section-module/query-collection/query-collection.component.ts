@@ -11,7 +11,6 @@ import { QuerySectionService } from '../services/query-section.service';
 import { Consts } from '@app/constants';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
 import { LoginService } from '@app/login/login.service';
-import { ResizedEvent } from 'angular-resize-event';
 import { PreferencesService } from '@app/preferences/preferences.service';
 
 
@@ -62,10 +61,10 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         private displayQueryService: DisplayQueryService,
         private loginService: LoginService,
         private preferencesService: PreferencesService
-    ) {
+    ){
     }
 
-    ngOnInit() {
+    ngOnInit(){
         // For Edit Collection descriptions we only need Collection, NOT Collection//Site.
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
             this.apiService.collectionsAndDescriptionEmitter
@@ -109,7 +108,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         this.currentFont = this.preferencesService.getFontSize();
     }
 
-    init( data ) {
+    init( data ){
         this.collections = data;
         // Sort
         this.collections.sort( ( a, b ) =>
@@ -135,32 +134,32 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         let h = Math.min( data.length, maxInitialCountHeight ) * 26;
         document.getElementById( 'collections' ).style.height = h + 'px';
     }
+/*
 
-    onResized( event: ResizedEvent ) {
+    onResized( event: ResizedEvent ){
         this.width = event.newWidth;
         this.height = event.newHeight;
     }
+*/
 
-    onShowCriteriaListClick( s ) {
+    onShowCriteriaListClick( s ){
         this.showCriteriaList = s;
     }
 
-    onCriteriaClicked( i ) {
+    onCriteriaClicked( i ){
         this.clearCBox();
         this.cBox[i] = true;
         this.currentCollection = i;
-        this.currentCollectionName = this.collections[this.currentCollection][
-            'name'
-            ];
+        this.currentCollectionName = this.collections[this.currentCollection]['name'];
         this.selectCollection();
     }
 
     /**
      * Tell other components that this Collection has been selected.
      */
-    selectCollection() {
+    selectCollection(){
         if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
-            this.querySectionService.emitCollection( this.currentCollection );
+            this.querySectionService.emitCollection( this.currentCollection );  // @CHECKME I don't think there are any subscribers.
         }else{
             this.querySectionService.updateSearchQuery(
                 this.currentTool,
@@ -171,7 +170,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         }
     }
 
-    clearCBox() {
+    clearCBox(){
         for( let i = 0; i < this.collections.length; i++ ){
             this.cBox[i] = false;
             // include is used to filter collections to show when the search/filter magnifying glass tool is used.
@@ -184,7 +183,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
      *
      * @note Clears the search text input when showSearch is switched to true
      */
-    onSearchGlassClick() {
+    onSearchGlassClick(){
         this.showSearch = !this.showSearch;
         /*
                 if( !this.showSearch ){
@@ -194,7 +193,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         */
     }
 
-    onSearchTextOutFocus( n ) {
+    onSearchTextOutFocus( n ){
         // Text
         if( n === 0 ){
             this.searchTextHasFocus = false;
@@ -207,7 +206,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         this.searchHasFocus = this.searchXHasFocus || this.searchTextHasFocus;
     }
 
-    onSearchTextFocus( n ) {
+    onSearchTextFocus( n ){
         // Text
         if( n === 0 ){
             this.searchTextHasFocus = true;
@@ -222,7 +221,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
     /**
      * When the search, within this criteria list changes, NOT the data search.
      */
-    onSearchChange() {
+    onSearchChange(){
         let n = 0;
 
         for( let item of this.collections ){
@@ -247,7 +246,7 @@ export class QueryCollectionComponent implements OnInit, OnDestroy{
         */
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

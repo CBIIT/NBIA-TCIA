@@ -93,10 +93,10 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         private searchResultByIndexService: SearchResultByIndexService,
         private preferencesService: PreferencesService,
         private searchResultsPagerService: SearchResultsPagerService
-    ) {
+    ){
     }
 
-    async ngOnInit() {
+    async ngOnInit(){
         // Check for config file which will take precedence
         let runaway = 100; // Just in case.
         while( !Properties.CONFIG_COMPLETE && runaway > 0 ){
@@ -189,49 +189,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             .subscribe( ( data ) => {
                 this.collectionSite = data;
             } );
-        /*
-
-                // @ts-ignore
-                $( function() {
-                    // @ts-ignore
-                    $( '#normal' ).colResizable( {
-                        liveDrag: true,
-                        gripInnerHtml: '<div class=\'grip\'></div>',
-                        draggingClass: 'dragging',
-                        resizeMode: 'fit'
-                    } );
-
-                    // @ts-ignore
-                    $( '#flex' ).colResizable( {
-                        liveDrag: true,
-                        gripInnerHtml: '<div class=\'grip\'></div>',
-                        draggingClass: 'dragging',
-                        resizeMode: 'flex'
-                    } );
-
-
-                    // @ts-ignore
-                    $( '#overflow' ).colResizable( {
-                        liveDrag: true,
-                        gripInnerHtml: '<div class=\'grip\'></div>',
-                        draggingClass: 'dragging',
-                        resizeMode: 'overflow'
-                    } );
-
-
-                    // @ts-ignore
-                    $( '#disabled' ).colResizable( {
-                        liveDrag: true,
-                        gripInnerHtml: '<div class=\'grip\'></div>',
-                        draggingClass: 'dragging',
-                        resizeMode: 'overflow',
-                        disabledColumns: [2]
-                    } );
-
-
-                } );
-
-        */
 
         this.preferencesService.setFontSizePreferencesEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
@@ -247,7 +204,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     /**
      * @FIXME  This doesn't work!!!!!!
      */
-    scrollToTop(): void {
+    scrollToTop(): void{
         try{
             this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
         }catch( err ){
@@ -255,7 +212,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
 
-    toggleTopSearchResultsCheckbox( c ) {
+    toggleTopSearchResultsCheckbox( c ){
         // If they are not all selected, checking this box turns them all on
         if( this.areAnyUnchecked() ){
             for( let i = 0; i < this.searchResults.length; i++ ){
@@ -276,7 +233,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
 
-    toggleSelectPage() {
+    toggleSelectPage(){
 
         if( this.areAnyUncheckedCurrentPage() ){
 
@@ -294,7 +251,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.getSelectedCheckboxCount();
     }
 
-    toggleSelectAll() {
+    toggleSelectAll(){
         // If they are not all selected, checking this box turns them all on
         if( this.areAnyUnchecked() ){
             for( let i = 0; i < this.searchResults.length; i++ ){
@@ -316,7 +273,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
 
-    toggleSearchResultsCheckbox( i, c ) {
+    toggleSearchResultsCheckbox( i, c ){
         this.setCheckbox( i, c );
         this.getSelectedCheckboxCount();
 
@@ -331,7 +288,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    getSelectedCheckboxCount() {
+    getSelectedCheckboxCount(){
         this.checkboxCount = 0;
         for( let state of this.searchResults ){
             if( state['selected'] ){
@@ -341,7 +298,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.resultsSelectCountUpdateBravoEmitter.emit( this.checkboxCount );
     }
 
-    areAnyUnchecked() {
+    areAnyUnchecked(){
         let anyUnchecked = false;
         for( let state of this.searchResults ){
             if( !state['selected'] ){
@@ -351,7 +308,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         return anyUnchecked;
     }
 
-    areAnyUncheckedCurrentPage() {
+    areAnyUncheckedCurrentPage(){
         let anyUnchecked = false;
         for( let state of this.searchResultsPageToDisplay ){
             if( !state['selected'] ){
@@ -361,13 +318,13 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         return anyUnchecked;
     }
 
-    setCheckbox( i, state ) {
+    setCheckbox( i, state ){
         this.searchResults[i]['selected'] = state;
         this.resultsUpdateBravoEmitter.emit( this.searchResults );
     }
 
     // Cine-mode viewer
-    onClickCineMode( i ) {
+    onClickCineMode( i ){
         i += (this.currentPage * this.pageLength);
         this.currentCineModeSeriesIndex = i;
 
@@ -379,7 +336,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
     // nbia-viewer
-    onThumbnailClick( i ) {
+    onThumbnailClick( i ){
         i += (this.currentPage * this.pageLength);
         window.open(
             Properties.API_SERVER_URL +
@@ -389,14 +346,14 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             encodeURI( this.searchResults[i]['seriesDescription'] ) +
             '&accessToken=' +
             this.accessTokenService.getAccessToken() + ':' +
-            this.accessTokenService.getRefreshToken()  + ':' +
+            this.accessTokenService.getRefreshToken() + ':' +
             this.accessTokenService.getExpiresIn(),
             '_blank'
         );
     }
 
     // OHIF Viewer
-    onOhifViewerClick( i ) {
+    onOhifViewerClick( i ){
         i += (this.currentPage * this.pageLength);
         let ohifUrl =
             Properties.OHIF_SERVER_URL +
@@ -409,7 +366,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         window.open( ohifUrl, '_blank' );
     }
 
-    onHeadingClick( i ) {
+    onHeadingClick( i ){
         // There are no results or this a non-sortable column don't do the sort.
         if(
             this.searchResultsCount > 0 &&
@@ -442,7 +399,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     /**
      * Initial sort when search results come back.
      */
-    doInitSort() {
+    doInitSort(){
         let i = -1;
         for( let state of this.columnHeadings ){
             i++;
@@ -456,46 +413,35 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
      * Sort when a heading is clicked.
      * @param column
      */
-    doSort( column ) {
+    doSort( column ){
         this.loadingDisplayService.setLoading( true, 'Sorting...' );
+
+        // console.log('MHL this.columnHeadings[column][\'name\']: ', this.columnHeadings[column]['name']);
         // Use name instead of index in case we make column order changeable.
         switch( this.columnHeadings[column]['name'] ){
             case 'Submission date':
                 this.searchResults.sort(
-                    ( row1, row2 ) =>
-                        <any>(
-                            new Date(
-                                row1.dateTime.replace( /[APap](M|m) *$/, '' )
-                            )
-                        ) -
-                        <any>(
-                            new Date(
-                                row2.dateTime.replace( /[APap](M|m) *$/, '' )
-                            )
-                        ) *
-                        (this.columnHeadings[column]['sortState'] ===
-                        SortState.SORT_DOWN
-                            ? -1
-                            : 1)
+                    ( row1, row2 ): number => {
+                        return (<any>new Date( row1['dateTime'].valueOf().replace( /[APap](M|m) *$/, '' ) ) - (<any>new Date( row2['dateTime'].valueOf().replace( /[APap](M|m) *$/, '' ) ))) *
+                            (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                    }
                 );
                 break;
 
-            case 'Trial ID':
-                this.searchResults.sort(
-                    ( row1, row2 ) =>
-                        row1.trialDpPkId.localeCompare( row2.trialDpPkId ) *
-                        (this.columnHeadings[column]['sortState'] ===
-                        SortState.SORT_DOWN
-                            ? -1
-                            : 1)
-                );
+            case  'Trial ID': this.searchResults.sort(
+                ( row1, row2 ): number => {
+                    return row1.trialDpPkId.localeCompare( row2.trialDpPkId ) *
+                    (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                });
                 break;
 
             // There can only be one of these so no sorting for this column
-            case 'Collection//Site':
+            case            'Collection//Site'            :
                 break;
 
-            case 'Study':
+            case
+            'Study'
+            :
                 this.searchResults.sort(
                     ( row1, row2 ) =>
                         row1.study.localeCompare( row2.study ) *
@@ -508,27 +454,33 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
             case 'Patient':
                 this.searchResults.sort(
-                    ( row1, row2 ) =>
-                        row1.patientId.localeCompare( row2.patientId ) *
-                        (this.columnHeadings[column]['sortState'] ===
-                        SortState.SORT_DOWN
-                            ? -1
-                            : 1)
+                    ( row1, row2 ) => {
+                        return  row1.patientId.localeCompare( row2.patientId ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                    }
                 );
                 break;
 
-            case 'Series':
+            case 'Subject ID':
+                this.searchResults.sort(
+                    ( row1, row2 ) => {
+                        return  row1.patientId.localeCompare( row2.patientId ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                    }
+                );
+                break;
+
+            case
+            'Series'
+            :
                 this.searchResults.sort(
                     ( row1, row2 ) =>
                         row1.series.localeCompare( row2.series ) *
-                        (this.columnHeadings[column]['sortState'] ===
-                        SortState.SORT_DOWN
-                            ? -1
-                            : 1)
+                        (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1)
                 );
                 break;
 
-            case 'Description':
+            case
+            'Description'
+            :
                 // this.searchResults.sort( ( row1, row2 ) => row1.seriesDescription.localeCompare( row2.seriesDescription ) *
                 this.searchResults.sort(
                     ( row1, row2 ) =>
@@ -551,8 +503,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 );
                 break;
 
-            case 'Modality':
-                this.searchResults.sort(
+            case
+            'Modality': this.searchResults.sort(
                     ( row1, row2 ) =>
                         (this.utilService.isNullOrUndefinedOrEmpty(
                                 row1.modality
@@ -573,7 +525,9 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 );
                 break;
 
-            case 'Visibility':
+            case
+            'Visibility'
+            :
                 this.searchResults.sort(
                     ( row1, row2 ) =>
                         (this.utilService.isNullOrUndefinedOrEmpty(
@@ -598,20 +552,25 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
 
         // @TODO Update the Page
-        this.setupPage();
+        this
+            .setupPage();
 
-        this.loadingDisplayService.setLoading( false );
+        this
+            .loadingDisplayService
+            .setLoading(
+                false
+            );
     }
 
-    pageChanged( e ) {
+    pageChanged( e ){
         this.setupPage();
     }
 
-    onPageLengthChange() {
-        if( this.pageLength < 1){
+    onPageLengthChange(){
+        if( this.pageLength < 1 ){
             this.pageLength = 1;
         }
-        if( this.pageLength > this.maxPageLength){
+        if( this.pageLength > this.maxPageLength ){
             this.pageLength = this.maxPageLength;
         }
         this.pageCount = Math.ceil( this.searchResultsCount / this.pageLength );
@@ -619,16 +578,16 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.setupPage();
     }
 
-    setupPage() {
+    setupPage(){
         this.searchResultsPageToDisplay = this.searchResults.slice( this.pageLength * this.currentPage, this.pageLength * (this.currentPage + 1) );
         this.scrollToTop();
     }
 
-    hideShowCineMode() {
+    hideShowCineMode(){
         this.cineModeService.hideCineMode();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

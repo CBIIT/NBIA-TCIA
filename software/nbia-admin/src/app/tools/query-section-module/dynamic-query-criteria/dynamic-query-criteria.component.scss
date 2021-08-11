@@ -4,49 +4,49 @@ $list-content-left-margin: 18px;
 $dynamic-query-criteria-heading-bottom-margin: 6px;
 
 // FIXME this will change after full glyph cleanup
-.close-x-icon {
+.close-x-icon{
     position: absolute;
     padding-top: 2px;
     left: $left-section-width - 27px;
 }
 
-
-
 // And/Or radio buttons
-.dynamic-query-and-or-radio-button {
+.dynamic-query-and-or-radio-button{
     margin-right: 3px;
     margin-left: 8px;
 }
 
-
 // And/Or radio buttons
-.dynamic-query-all-any-radio-button {
+.dynamic-query-all-any-radio-button{
     margin-right: 3px;
     margin-left: 8px;
 }
 
 // Checkboxes in a Query list
-.dynamic-query-list-checkbox {
+.dynamic-query-list-checkbox{
     margin-right: 4px;
-
 }
 
 .dynamic-query-calendar-div{
     margin-left: $query-criteria-content-left-margin;
     height: 82px;
 }
+
 .dynamic-query-calendar-div-with-apply-checkbox{
     @extend .dynamic-query-calendar-div;
+
     height: 104px;
 }
+
 .dynamic-query-calendar-div-with-apply-button{
     @extend .dynamic-query-calendar-div;
+
     height: 118px;
 }
 
 // TODO rename this, I think it is only for text inputs
-.dynamic-query-vertical-expand-div {
-   // padding-top: 12px;
+.dynamic-query-vertical-expand-div{
+    // padding-top: 12px;
     margin-bottom: 0;
     resize: vertical;
     overflow: auto;
@@ -54,7 +54,7 @@ $dynamic-query-criteria-heading-bottom-margin: 6px;
 }
 
 .dynamic-query-list-scroller{
-  //   height: 100%;
+    //   height: 100%;
     height: calc(100% - 35px);
     border: #f59bb5;
 }
@@ -63,59 +63,59 @@ $dynamic-query-criteria-heading-bottom-margin: 6px;
     padding-bottom: 50px;
 }
 
-
 // List
 $dynamic-query-list-line-height-extra-small: 12px;
 $dynamic-query-list-line-height-small: 17px;
 $dynamic-query-list-line-height-medium: 21px;
 $dynamic-query-list-line-height-large: 24px;
 
-.dynamic-query-list-line {
+.dynamic-query-list-line{
     color: #3a3a3a;
     margin-left: $list-content-left-margin;
     margin-bottom: 2px;
 }
 
-.dynamic-query-list-line-extra-small {
+.dynamic-query-list-line-extra-small{
     @extend .dynamic-query-list-line;
+
     height: $dynamic-query-list-line-height-extra-small;
 }
 
-.dynamic-query-list-line-small {
+.dynamic-query-list-line-small{
     @extend .dynamic-query-list-line;
+
     height: $dynamic-query-list-line-height-small;
 }
 
-.dynamic-query-list-line-medium {
+.dynamic-query-list-line-medium{
     @extend .dynamic-query-list-line;
+
     height: $dynamic-query-list-line-height-medium;
 }
 
-.dynamic-query-list-line-large {
+.dynamic-query-list-line-large{
     @extend .dynamic-query-list-line;
+
     height: $dynamic-query-list-line-height-large;
 }
-
-
-
 
 // ////////////////////////////////////////////
 // List Search/Filter
 // ////////////////////////////////////////////
 
 // The list count in a Search/Filter, on the right side of the Search input frame
-.dynamic-query-list-search-count {
+.dynamic-query-list-search-count{
     color: $disabled-text;
     margin: 6px 4px 0 0;
     float: right;
 }
 
 // Don't show frame around interior item(input) of the Search/Filter input on Chrome
-.dynamic-query-list-search-box-with-focus {
+.dynamic-query-list-search-box-with-focus{
     outline: none;
 }
 
-.dynamic-query-list-search-box {
+.dynamic-query-list-search-box{
     border: solid 1px $criteriaQueryBorderColor;
     border-radius: 4px;
     padding: 0 0 0 12px;
@@ -125,20 +125,19 @@ $dynamic-query-list-line-height-large: 24px;
     width: calc(100% - 22px);
 }
 
-.dynamic-query-list-search-text-area {
+.dynamic-query-list-search-text-area{
     color: #000;
     border-style: none;
     height: 30px;
     width: calc(100% - 48px);
 }
 
-
 // ////////////////////////////////////////////
 // Top right buttons
 // ////////////////////////////////////////////
-.dynamic-query-top-right-button-box {
-    background: rgba(255, 255, 255, 0.0);
-   // background: rgba(255, 0, 255, 0.4) ;
+.dynamic-query-top-right-button-box{
+    background: rgba(255, 255, 255, 0);
+    // background: rgba(255, 0, 255, 0.4) ;
 }
 
 $dynamic-query-list-button-box-size-extra-small: 20px;
@@ -146,11 +145,9 @@ $dynamic-query-list-button-box-size-small: 50px;
 $dynamic-query-list-button-box-size-medium: 70px;
 $dynamic-query-list-button-box-size-large: 84px;
 
-
-
-.dynamic-query-top-right-inner-button-box {
+.dynamic-query-top-right-inner-button-box{
     float: right;
-   // background-color: #44ffaa;
+    // background-color: #44ffaa;
 }
 
 $dynamic-query-list-button-icon-size-extra-small: 11px;
@@ -158,67 +155,70 @@ $dynamic-query-list-button-icon-size-small: 14px;
 $dynamic-query-list-button-icon-size-medium: 16px;
 $dynamic-query-list-button-icon-size-large: 19px;
 
-.dynamic-query-list-button-icon {
+.dynamic-query-list-button-icon{
     // to preserve the aspect ratio of the image
     height: auto;
 }
 
-.dynamic-query-list-button-icon-extra-small {
+.dynamic-query-list-button-icon-extra-small{
     @extend .dynamic-query-list-button-icon;
-    height: $dynamic-query-list-button-icon-size-extra-small;
 
+    height: $dynamic-query-list-button-icon-size-extra-small;
 }
 
-.dynamic-query-list-button-icon-small {
+.dynamic-query-list-button-icon-small{
     @extend .dynamic-query-list-button-icon;
+
     height: $dynamic-query-list-button-icon-size-small;
 }
 
-.dynamic-query-list-button-icon-medium {
+.dynamic-query-list-button-icon-medium{
     @extend .dynamic-query-list-button-icon;
+
     height: $dynamic-query-list-button-icon-size-medium;
 }
 
-.dynamic-query-list-button-icon-large {
+.dynamic-query-list-button-icon-large{
     @extend .dynamic-query-list-button-icon;
+
     height: $dynamic-query-list-button-icon-size-large;
 }
-
 
 // Smaller moves it to the right
 $dynamic-query-list-button-box-offset: 80px;
 
-.dynamic-query-list-button-box {
+.dynamic-query-list-button-box{
     position: absolute;
     margin: 0;
     padding: 0;
 }
 
-.dynamic-query-list-button-box-extra-small {
+.dynamic-query-list-button-box-extra-small{
     @extend .dynamic-query-list-button-box;
+
     left: $left-section-width-extra-small - $dynamic-query-list-button-box-offset;
     width: $dynamic-query-list-button-box-size-extra-small;
-
 }
 
-.dynamic-query-list-button-box-small {
+.dynamic-query-list-button-box-small{
     @extend .dynamic-query-list-button-box;
+
     left: $left-section-width-small - $dynamic-query-list-button-box-offset;
     width: $dynamic-query-list-button-box-size-small;
-
 }
 
-.dynamic-query-list-button-box-medium {
+.dynamic-query-list-button-box-medium{
     @extend .dynamic-query-list-button-box;
+
     left: $left-section-width-medium - $dynamic-query-list-button-box-offset;
     width: $dynamic-query-list-button-box-size-medium;
 }
 
-.dynamic-query-list-button-box-large {
+.dynamic-query-list-button-box-large{
     @extend .dynamic-query-list-button-box;
+
     left: $left-section-width-large - $dynamic-query-list-button-box-offset;
     width: $dynamic-query-list-button-box-size-large;
-
 }
 
 $dynamic-query-button-top-margin: 10px;
@@ -226,15 +226,18 @@ $dynamic-query-button-bottom-margin: 10px;
 $dynamic-query-apply-button-right-margin: 23px;
 
 .dynamic-query-button{
-    float:right;
+    float: right;
+
     /*
     margin-top: $dynamic-query-button-top-margin;
     padding-bottom: $dynamic-query-button-top-margin;
     */
 }
 
+// this is not working correctly. horizontally to far left.
 .dynamic-query-apply-button{
     @extend .dynamic-query-button;
+
     margin-right: $dynamic-query-apply-button-right-margin;
 }
 
@@ -254,26 +257,29 @@ $dynamic-query-apply-button-right-margin: 23px;
 
 .dynamic-query-small-text-input{
     @extend .dynamic-query-text-input;
+
     height: 30px;
     margin-bottom: 5px; // A little space between the text area and the apply button if there is one
-    overflow:auto;
+    overflow: auto;
 }
 
 .dynamic-query-large-text-input{
     @extend .dynamic-query-text-input;
-    overflow:auto;
+
+    overflow: auto;
     height: calc(100% - 16px); // Space between textArea (and apply button or checkbox if there) and the bottom of the widget
 }
 
-.dynamic-query-large-text-input-with-apply {
+.dynamic-query-large-text-input-with-apply{
     @extend.dynamic-query-large-text-input;
+
     height: calc(100% - 50px); // Space between textArea (and apply button or checkbox if there) and the bottom of the widget
 }
 
 
 
-/*For the individual query entry panels */
-.dynamic-query-panel-heading {
+/* For the individual query entry panels */
+.dynamic-query-panel-heading{
     color: $heading-text-color;
     background-color: #fff;
     padding: 7px 0 0 0;
@@ -291,11 +297,10 @@ $dynamic-query-apply-button-right-margin: 23px;
 }
 
 .single-line-radio-input-text{
-    color: #000000;
+    color: #000;
 }
 
 .widget-display-div{
     overflow-y: scroll;
     height: 80vh;
-
 }

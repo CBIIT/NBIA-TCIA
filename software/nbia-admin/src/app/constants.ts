@@ -93,9 +93,10 @@ export const Consts = {
 
     API_ACCESS_TOKEN_URL: 'nbia-api/oauth/token',
 
+    // Dont' use this anymore,  these will come from the server
     QC_STATUSES: ['Not Yet Reviewed', 'Visible', 'Not Visible',
-        'To Be Deleted', 'First Review', 'Second Review', 'Third Review',
-        'Fourth Review', 'Fifth Review', 'Sixth Review', 'Seventh Review', 'Downloadable'],
+        'To Be Deleted', '1st Review', '2nd Review', '3rd Review',
+        '4th Review', '5th Review', '6th Review', '7th Review', 'Downloadable'],
 
     NO_SEARCH: 'NO_SEARCH'
 

@@ -4,11 +4,16 @@ import { EventEmitter, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class WidgetCalendarService {
-    dateChange = new EventEmitter();
+    date0Change = new EventEmitter();
+    date1Change = new EventEmitter();
 
   constructor() { }
 
-    dateChanged(){
-      this.dateChange.emit();
+    date0Changed( seq, d ){
+      this.date0Change.emit({'sequenceNumber': seq, 'date0Data': d});
+    }
+
+    date1Changed( seq, d ){
+      this.date1Change.emit({'sequenceNumber': seq, 'date1Data': d});
     }
 }

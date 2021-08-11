@@ -262,8 +262,8 @@ export class DynamicQueryCriteriaService{
             dynamicQueryCriteriaAndOrDefault: 'or',
             dynamicQueryCriteria: 'testCriteriaTypeSeven',
             dynamicQueryCriteriaCheckboxArray: ['Not Yet Reviewed', 'Visible', 'Not Visible',
-                'To Be Deleted', 'First Review', 'Second Review', 'Third Review',
-                'Fourth Review', 'Fifth Review', 'Sixth Review', 'Seventh Review', 'Downloadable'],
+                'To Be Deleted', '1st Review', '2nd Review', '3rd Review',
+                '4th Review', '5th Review', '6th Review', '7th Review', 'Downloadable'],
 
             sequenceNumber: Properties.dynamicQueryCriteriaSequenceNumber
         };

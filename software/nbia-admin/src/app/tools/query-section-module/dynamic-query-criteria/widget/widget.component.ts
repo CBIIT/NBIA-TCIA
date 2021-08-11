@@ -129,8 +129,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
     isApplyCheckboxSet = false;
 
-    date0;
-    date1;
+    date0={};
+    date1={};
 
     //  haveInput = false;
 
@@ -163,19 +163,18 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         } );
 
         // To know when the date has changed in Widget-calender
-         this.widgetCalendarService.dateChange.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
-
+         this.widgetCalendarService.date0Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
             // If applyState is true, than we have a selected Apply Checkbox
              if(this.applyState){
                  this.onApplyCheckboxClick( true );
              }
-
-             // If applyState is false, than we have an un-selected Apply Checkbox or an Apply Button
-            /*
-             if(! this.applyState){
-                console.log('MHL applyState: ', this.applyState);
-            }
-            */
+        });
+        // To know when the date has changed in Widget-calender
+         this.widgetCalendarService.date1Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+            // If applyState is true, than we have a selected Apply Checkbox
+             if(this.applyState){
+                 this.onApplyCheckboxClick( true );
+             }
         });
 
 
@@ -257,6 +256,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
             this.criteriaCalendarPrompt1 = '';
         }
         this.criteriaCalendarPlaceHolder0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder0'];
+
         this.criteriaCalendarPlaceHolder1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder1'];
         this.criteriaCalendarPlaceHolder1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder1'];
         this.criteriaCalendarAllowOneEmpty = this.queryCriteriaData['dynamicQueryCriteriaCalendarAllowOneEmpty'];

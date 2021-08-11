@@ -19,14 +19,13 @@ import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { PerformOnlineDeletionModule } from '../perform-online-deletion-module/perform-online-deletion.module';
 import { MomentModule } from 'ngx-moment';
 import { AngularDraggableModule } from 'angular2-draggable';
-import { AngularResizedEventModule } from 'angular-resize-event';
-import { TabsModule } from 'ngx-tabs';
 import { DynamicQueryCriteriaComponent } from './dynamic-query-criteria/dynamic-query-criteria.component';
 import { WidgetComponent } from './dynamic-query-criteria/widget/widget.component';
 import { WidgetTestSettingsComponent } from './dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component';
 import { WidgetCalendarComponent } from './dynamic-query-criteria/widget/widget-calendar/widget-calendar.component';
 import { LeftSectionDynamicComponent } from './left-section-dynamic/left-section-dynamic.component';
 import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-module/admin-common-pipe.module';
+import { WidgetCalendarBravoComponent } from './dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component';
 
 
 export enum WIDGET_TYPE{
@@ -55,7 +54,8 @@ export enum WIDGET_TYPE{
         WidgetComponent,
         WidgetTestSettingsComponent,
         WidgetCalendarComponent,
-        LeftSectionDynamicComponent
+        LeftSectionDynamicComponent,
+        WidgetCalendarBravoComponent
     ],
     exports: [
         LeftSectionComponent,
@@ -83,8 +83,6 @@ export enum WIDGET_TYPE{
         PerformOnlineDeletionModule,
         MomentModule,
         AngularDraggableModule,
-        TabsModule,
-        AngularResizedEventModule,
         AdminCommonPipeModule
     ]
 } )
