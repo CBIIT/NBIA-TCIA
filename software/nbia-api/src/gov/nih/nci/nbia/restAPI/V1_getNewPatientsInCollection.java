@@ -55,7 +55,7 @@ public class V1_getNewPatientsInCollection extends getData{
 			   value = "The collection to get new patients from", example = "4D-Lung", required = true) 
 			@QueryParam("Collection") String collection, 
 			@ApiParam(name =  "Date", 
-			   value = "The date to get new patients from", example = "10-28-2014", required = true) 
+			   value = "The date to get new patients from", example = "2010/08/16", required = true) 
 			@QueryParam("Date") String dateFrom,
 			@ApiParam(name =  "format", 
 			   value = "Desired format (CSV, HTML, XML, and JSON)", example = "CSV", required = false) 
