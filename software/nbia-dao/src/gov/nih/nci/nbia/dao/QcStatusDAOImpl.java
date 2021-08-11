@@ -139,14 +139,16 @@ public class QcStatusDAOImpl extends AbstractDAO
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED)
-	public List<QcSearchResultDTO> findSeries(Map<String, QCSearchCriteria>criteria, Map<String, AdvancedCriteriaDTO> criteriaMap, int maxRows) throws DataAccessException {
+	public List<QcSearchResultDTO> findSeries(Map<String, QCSearchCriteria>criteria, Map<String, AdvancedCriteriaDTO> criteriaMap, List<String> crtieriaList, int maxRows) throws DataAccessException {
 		QCSearchCriteria qcStatusCriteria = criteria.get("qcstatus");
 		String[]qcStatus=null;
+		Map <String,String> hqlMap=new HashMap<String,String>();
 		if (qcStatusCriteria!=null) {
 			List<String>qcStatusList=((ListCriteria)qcStatusCriteria).getlistObjects();
 			qcStatus = new String[qcStatusList.size()];
 			qcStatus= qcStatusList.toArray(qcStatus);
 			criteria.remove("qcstatus");
+			hqlMap.put("qcstatus", computeVisibilityCriteria(qcStatus));
 		}
 		qcStatusCriteria = criteria.get("collection");
 		List<String>collectionSites=null;
@@ -154,6 +156,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 			collectionSites=((ListCriteria)qcStatusCriteria).getlistObjects();
 			collectionSites=CollectionSiteUtil.getOriginalCollectionSites(collectionSites);
 			criteria.remove("collection");
+			hqlMap.put("collection",computeCollectionCriteria(collectionSites));
 		}
 		qcStatusCriteria = criteria.get("complete");
 		List<String>released=null;
@@ -171,11 +174,12 @@ public class QcStatusDAOImpl extends AbstractDAO
 			((ListCriteria)qcStatusCriteria).setlistObjects(newReleased);
 		}
         int i=0;
-        String andStmt="";
+        
         boolean joinImage=false;
         boolean joinManfacturing=false;
         Map<String, Object> parameters=new HashMap<String, Object>();
 	    for (Map.Entry<String, QCSearchCriteria> entry : criteria.entrySet()) {
+	    	   String andStmt="";
 		       System.out.println(entry.getKey() + ":" + entry.getValue());
 		       System.out.println(entry.getValue().getClass().getName());
 		       String fieldName=null;
@@ -214,6 +218,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeDateToCriteria(fieldName, dateCriteria.getToDate());
 		      }
+		      hqlMap.put(entry.getKey(),andStmt);
 		      System.out.println("fieldName-"+fieldName);
 		      if (fieldName.startsWith("gi.")){
 		    	  joinImage=true;
@@ -244,12 +249,12 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 			
 		
-		String whereStmt = " where 1=1 "+
-		                   computeVisibilityCriteria(qcStatus) +
-		                   computeCollectionCriteria(collectionSites);
+		String whereStmt = " where 1=1 ";
 
-        if (andStmt!=null&&andStmt.length()>0) {
-		     whereStmt = whereStmt +andStmt;
+        for (String item:crtieriaList) {
+		     if (hqlMap.get(item)!=null) {
+		    	 whereStmt=whereStmt+hqlMap.get(item);
+		     }
         }
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
 
@@ -272,6 +277,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    }
 		q.setFirstResult(0);
 		q.setMaxResults(maxRows);
+		System.out.println("maxRows-"+maxRows);
 		List<Object[]> searchResults = q.list();
 
 		for (Object[] row : searchResults) {

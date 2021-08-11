@@ -191,6 +191,10 @@ public class StandaloneDMDispatcher {
 								|| args[i].equals("--FORCE")) {
 							dr.force = true;
 						}
+						if (args[i].equals("-m") || args[i].equals("-M") || args[i].equals("--md5")
+								|| args[i].equals("--MD5")) {
+							dr.md5Verify = true;
+						}								
 					}
 					dr.configLogger(downloadDir);
 

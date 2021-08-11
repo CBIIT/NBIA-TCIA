@@ -135,6 +135,9 @@ L-->
 		<copy todir="${webapp.dir}/WEB-INF/lib">
 			<fileset dir="${project.lib.dir}/runtime">
 				<exclude name="*1.17.1.*" />
+				<exclude name="*jersey*1.19.jar" />
+				<exclude name="noggit*" />
+				<exclude name="log4j*2.13.2.jar" />
 		   </fileset> 
 		</copy>
 		<copy todir="${webapp.dir}/WEB-INF/classes">

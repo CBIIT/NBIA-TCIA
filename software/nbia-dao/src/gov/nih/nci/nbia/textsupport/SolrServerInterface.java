@@ -1,8 +1,8 @@
 package gov.nih.nci.nbia.textsupport;
 
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 
 public interface SolrServerInterface {
-	public SolrServer GetServer();
+	public SolrClient GetServer();
 	
 }

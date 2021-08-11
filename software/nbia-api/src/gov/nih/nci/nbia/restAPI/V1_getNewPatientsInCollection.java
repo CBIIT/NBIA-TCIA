@@ -29,7 +29,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
+import io.swagger.annotations.*;
 
 @Path("/v1/NewPatientsInCollection")
 public class V1_getNewPatientsInCollection extends getData{
@@ -44,8 +44,21 @@ public class V1_getNewPatientsInCollection extends getData{
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
-
-	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("Date") String dateFrom,
+	@ApiOperation(value = "Get the new patients in a collection",
+	  notes = "This method returns patients that have been added since a specific date")
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = "Returned patient objects"),
+          @ApiResponse(code = 400, message = "Required parameters not supplied."),
+          @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged.") })
+	
+	public Response  constructResponse(	@ApiParam(name =  "collection", 
+			   value = "The collection to get new patients from", example = "4D-Lung", required = true) 
+			@QueryParam("Collection") String collection, 
+			@ApiParam(name =  "Date", 
+			   value = "The date to get new patients from", example = "2010/08/16", required = true) 
+			@QueryParam("Date") String dateFrom,
+			@ApiParam(name =  "format", 
+			   value = "Desired format (CSV, HTML, XML, and JSON)", example = "CSV", required = false) 
 			@QueryParam("format") String format) {
 		List<String> authorizedCollections = null;
 		if (collection == null||dateFrom == null) {

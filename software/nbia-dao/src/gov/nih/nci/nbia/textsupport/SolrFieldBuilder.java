@@ -8,7 +8,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.apache.solr.common.params.GroupParams;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -39,7 +39,7 @@ public class SolrFieldBuilder {
     public static void refeshMap() {
     	dicomFieldMap=new HashMap<String,String>();
     	SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
-	    SolrServer server = serverAccess.GetServer();
+	    SolrClient server = serverAccess.GetServer();
 /*	    try {
 			CoreAdminRequest.reloadCore("collection1", server);
 		} catch (SolrServerException e1) {

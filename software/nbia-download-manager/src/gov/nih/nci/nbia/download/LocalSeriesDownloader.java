@@ -8,22 +8,31 @@
 
 package gov.nih.nci.nbia.download;
 
+import gov.nih.nci.nbia.util.MD5Validator;
 import gov.nih.nci.nbia.util.NBIAIOUtils;
 import gov.nih.nci.nbia.util.StringUtil;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProxySelector;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
@@ -86,6 +95,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		computeTotalSize();
 		URL url = new URL(serverUrl);
 		this.connectAndReadFromURL(url, 0);
+		
 	}
 
 // /////////////////////////////////////////PRIVATE//////////////////////////////////////
@@ -199,7 +209,13 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		// this is ignored
 		postParams.add(new BasicNameValuePair("Range", "bytes=" + downloaded + "-"));
 		postParams.add(new BasicNameValuePair("password", password));		
-		postParams.add(new BasicNameValuePair("newFileNames", "Yes"));	
+		postParams.add(new BasicNameValuePair("newFileNames", "Yes"));
+		if (AbstractSeriesDownloader.isCheckMD5() ) {
+			postParams.add(new BasicNameValuePair("getMD5Hash", "Yes"));
+		} else {
+			postParams.add(new BasicNameValuePair("getMD5Hash", "No"));
+		}
+		
 		httpPostMethod.addHeader("password", password);
 		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
 			@Override
@@ -343,7 +359,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 										// recovery
 		long downloadedImgSize = 0;
 		long downloadedAnnoSize = 0;
-		
+
 		// End lrt additions
 		try {
 			// the pause button affects this loop
@@ -358,39 +374,38 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 				// Begin lrt additions
 				long fileSize = tarArchiveEntry.getSize();
 				long startDownloaded = downloaded;
-				// End lrt additions
+
 				OutputStream outputStream = null;
 				String fileName = tarArchiveEntry.getName();
 				String sop = null;
-
-				boolean annotation=true;
+				boolean annotation = true;
 				if (fileName.contains("^")) {
-					annotation=false;
+					annotation = false;
 					int pos = fileName.indexOf("^");
-					sop=fileName.substring(0, pos);
-					String newFileName=fileName.substring(pos+1);
+					sop = fileName.substring(0, pos);
+					String newFileName = fileName.substring(pos + 1);
 					outputStream = new FileOutputStream(location + File.separator + newFileName);
-				}  else {
+				} else {
 					int pos = fileName.indexOf(".dcm");
 					if (pos > 0) {
-						sop=fileName.substring(0, pos);
-						annotation=false;
+						sop = fileName.substring(0, pos);
+						annotation = false;
 					} else {
-						sop=fileName;
+						sop = fileName;
 					}
 					if (!annotation) {
 						// sopUidsList.add(sop.substring(0, pos)); - lrt moved to
 						// below, after file size check
-						outputStream = new FileOutputStream(location + File.separator + StringUtil.displayAsSixDigitString(imageCnt)+".dcm");
+						outputStream = new FileOutputStream(
+								location + File.separator + StringUtil.displayAsSixDigitString(imageCnt) + ".dcm");
 					} else {
 						outputStream = new FileOutputStream(location + File.separator + sop);
 					}
-				}				
+				}
 
 				try {
 					NBIAIOUtils.copy(zis, outputStream, progressUpdater);
-				} 
-				finally {
+				} finally {
 					outputStream.flush();
 					outputStream.close();
 				}
@@ -399,6 +414,7 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 
 				// Begin lrt additions
 				long bytesDownloaded = downloaded - startDownloaded;
+
 				if (bytesDownloaded != fileSize) {
 					additionalInfo.append(" file size mismatch for instance " + sop + "\n");
 					error();
@@ -407,59 +423,57 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 						downloadedImgSize += bytesDownloaded;
 						sopUidsList.add(sop);
 					} else { // annotation file
+						if (!fileName.equals("md5hashes.csv"))
 						downloadedAnnoSize += bytesDownloaded;
 					}
 				}
-				// End lrt additions
+
+			}  //while
+			
+			if (status == COMPLETE) {
+				if (downloadedImgSize != imagesSize) {
+					additionalInfo.append(this.seriesInstanceUid + " total size of image files mismatch.  Was "
+							+ downloadedImgSize + " should be " + imagesSize);
+					error();
+				}
+				if (downloadedAnnoSize != annoSize) {
+					additionalInfo.append(this.seriesInstanceUid + " total size of annotation files mismatch.  Was "
+							+ downloadedAnnoSize + " should be " + annoSize + "\n");
+
+					error();
+				}										
+				// End lrt additions				
+		
+			if (sopUidsList.size() != Integer.valueOf(numberOfImages).intValue()) {
+				additionalInfo.append("Number of image files mismatch. It Was supposed to be " + numberOfImages
+						+ " image files but we found " + sopUidsList.size() + " at server side\n");
+				error();
+			} 
 			}
+			
+			if (status == COMPLETE) {
+				downloaded = size;
+				updateDownloadProgress(size);
+
+				if (this.standalone) {
+					writeToMetaData();
+					if (checkMD5) {
+						String validateResult = MD5Validator.verifyCheckSum(location);
+						if (validateResult.length() != 0) {
+							additionalInfo.append(validateResult);
+							error();
+						}						
+						// else should report the md5 validation is successful;
+					}
+				}
+			}	
 		} finally {
 			org.apache.commons.io.IOUtils.closeQuietly(zis);
-		}
-
-		// Begin lrt additions
-		if (status == COMPLETE) {
-			if (sopUidsList.size() != Integer.valueOf(numberOfImages).intValue()) {
-				additionalInfo
-						.append("Number of image files mismatch. It Was supposed to be " + numberOfImages
-								+ " image files but we found " + sopUidsList.size() + " at server side\n");
-//				System.out.println(this.seriesInstanceUid + additionalInfo);
-				error();
-			}
-			else {
-				downloaded= size;
-	            //stateChanged();
-	            updateDownloadProgress(size);
-
-	            if (this.standalone)
-	            	writeToMetaData();	            
-			}
-			if (downloadedImgSize != imagesSize) {
-				additionalInfo
-				.append(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
-				System.out.println(this.seriesInstanceUid + " total size of image files mismatch.  Was " + downloadedImgSize+" should be "+imagesSize);
-			}
-			if (downloadedAnnoSize != annoSize) {
-				additionalInfo
-				.append(this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
-				System.out.println( this.seriesInstanceUid + " total size of annotation files mismatch.  Was " +downloadedAnnoSize+" should be "+annoSize+"\n");
-			}
-			/*
-			 * Cannot use this sanity check, since image sizes are not always
-			 * recorded correct in NBIA 5.0 - lrt else if (downloadedImgSize !=
-			 * imagesSize) { System.out.println(this.seriesInstanceUid+
-			 * " total size of image files mismatch.  Was "
-			 * +downloadedImgSize+" should be "+imagesSize); error(); }
-			 * 
-			 * else if (downloadedAnnoSize != annoSize) { additionalInfo.append(
-			 * " total size of annotation files mismatch.  Was "
-			 * +downloadedAnnoSize+" should be "+annoSize+"\n");
-			 * System.out.println(this.seriesInstanceUid + additionalInfo);
-			 * error(); }
-			 */
-			// End lrt additions			
-		}
+		}		
 	}
 	
+	
+		
 	private void writeToMetaData() {
 		String fileName  = outputDirectory.getAbsolutePath() + File.separator
 				+ System.getProperty("databasketId").replace(".tcia", "")
@@ -487,31 +501,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
 		if (!file.exists()) {
 			System.out.println("System Error: metadata file has not created.  It should be done already.Exit from the program.");
 			System.exit(ERROR);
-//        	try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
-//			{
-//        		String header = "Series UID" + "," +
-//       				 "Collection" + "," + 
-//       				 "3rd Party Analysis" + "," + 
-//       				 "Data Description URI" + "," + 
-//       				 "Subject ID" + "," + 
-//       				 "Study UID" + "," + 
-//       				 "Study Description" + "," + 
-//       				 "Study Date" + "," + 
-//       				 "Series Description" + "," + 
-//       				 "Manufacturer" + "," + 
-//       				 "Modality" + "," + 
-//       				 "SOP Class Name" + "," + 
-//       				 "SOP Class UID" + "," + 
-//       				 "Number of Images" + "," + 
-//       				 "File Size" + "," + 
-//       				 "File Location" + "," + 
-//       				 "Download Timestamp";
-//        		output.printf("%s\r\n", header);
-//			    output.printf("%s\r\n", newLine);
-//			} 
-//			catch (Exception e) {
-//				e.printStackTrace();
-//			}
         }
         else {
 			try(PrintWriter output = new PrintWriter(new FileWriter(fileName,true))) 
@@ -530,12 +519,6 @@ public class LocalSeriesDownloader extends AbstractSeriesDownloader {
         }
 	}
 
-	// static {
-	// Protocol.registerProtocol("https",
-	// new Protocol("https",
-	// new EasySSLProtocolSocketFactory(),
-	// 443));
-	// }
 	private String createDownloadDir(boolean dirType){
 		String fileLoc;
 		String databasketId = System.getProperty("databasketId");

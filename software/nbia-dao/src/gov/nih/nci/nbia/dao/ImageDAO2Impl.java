@@ -66,7 +66,7 @@ public class ImageDAO2Impl extends AbstractDAO
     public List<ImageDTO2> findImagesBySeriesUid(String seriesUid,
     		                                    String exclusionSopUidList) throws DataAccessException {
     	String query="";
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber, gimg.md5Digest " +
     				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid + "'";
@@ -101,7 +101,8 @@ public class ImageDAO2Impl extends AbstractDAO
         			(String)row[6], 
         			(String)row[3],
         			(Integer)row[7],
-        			(Integer)row[8]);
+        			(Integer)row[8],
+        			(String)row[9]);
         	imageResults.add(image);
         }
         Collections.sort(imageResults);
@@ -121,13 +122,87 @@ public class ImageDAO2Impl extends AbstractDAO
         return imageResults;
     }
 	
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+    public List<ImageDTO2> findImageChecksumsBySeriesUid(String seriesUid,
+    		                                    String exclusionSopUidList, List<String>authorizedCollections) throws DataAccessException {
+    	String query="";
+//    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber, gimg.md5Digest " +
+//    				"from GeneralImage gimg join gimg.generalSeries gs " +
+//    				"where gimg.seriesInstanceUID = '"+
+//                    seriesUid + "'";
+    		
+    		query = "select distinct gimg.SOPInstanceUID, gimg.instanceNumber, gimg.acquisitionNumber, gimg.md5Digest, gs.project, gs.site " +
+    				"from GeneralImage gimg join gimg.generalSeries gs " +
+    				"where gimg.seriesInstanceUID = '"+
+                    seriesUid + "'";    		
+    	// Submit the search
+        long start = System.currentTimeMillis();
+    	logger.info("Issuing query: ");
+        List results = getHibernateTemplate().find(query);
+        long end = System.currentTimeMillis();
+        logger.info("total query time: " + (end - start) + " ms");
+        List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
+
+        if(results == null || results.isEmpty()){
+        	logger.info("No image found for request seriesuid="+seriesUid);
+        	return imageResults;
+        }
+
+        String project = (String)((Object[])results.get(0))[4];
+        String site = (String)((Object[])results.get(0))[5];
+        boolean hasAccess = false;
+        for (String csCombo : authorizedCollections) {
+        	if (csCombo.equals("'"+project+"//"+site+"'")) {
+        		hasAccess = true;
+        		break;
+        	}
+        		
+        }
+         
+        if (!hasAccess) {
+        	return null;
+        }
+        for(Object item: results){
+           	Object[] row = (Object[]) item;
+        	ImageDTO2 image = new ImageDTO2((String)row[0], 
+        			null, 
+        			null, 
+        			null, 
+        			null, 
+        			null, 
+        			null, 
+        			(Integer)row[1],
+        			(Integer)row[2],
+        			(String)row[3]);
+
+        	imageResults.add(image);
+        }
+        Collections.sort(imageResults);
+        setNewFileNames(imageResults);
+        try {
+			if (exclusionSopUidList!=null&&exclusionSopUidList.length()>1) {
+			   for (Iterator<ImageDTO2> iterator = imageResults.iterator(); iterator.hasNext(); ) {
+				   ImageDTO2 image = iterator.next();
+					  if (exclusionSopUidList.contains(image.getSOPInstanceUID())) {
+						  iterator.remove();
+					  }
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return imageResults;
+    }	
+	
+	
     /**
      * Return all the images names for a given series.  
      */
 	@Transactional(propagation=Propagation.REQUIRED)
     public List<String []> getImageNamesBySeriesUid(String seriesUid) throws DataAccessException {
     	String query="";
-    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber " +
+    		query = "select distinct gimg.SOPInstanceUID, gimg.filename, gimg.dicomSize, gimg.usFrameNum,gs.project, gs.site, gs.securityGroup, gimg.instanceNumber, gimg.acquisitionNumber, gimg.md5Digest " +
     				"from GeneralImage gimg join gimg.generalSeries gs " +
     				"where gimg.seriesInstanceUID = '"+
                     seriesUid + "'" + " and gs.visibility in ('1','12')";
@@ -163,7 +238,8 @@ public class ImageDAO2Impl extends AbstractDAO
         			(String)row[6], 
         			(String)row[3],
         			(Integer)row[7],
-        			(Integer)row[8]);
+        			(Integer)row[8],
+        			(String)row[9]);
         	imageResults.add(image);
         }
         Collections.sort(imageResults);
@@ -172,7 +248,7 @@ public class ImageDAO2Impl extends AbstractDAO
         for (ImageDTO2 obj: imageResults) {
         	String newName = obj.getNewFilename();
         	String newFileName = newName.substring(newName.indexOf("^")+1);
-        	String [] twoNames = {obj.getFileName(),  newFileName}; 
+        	String [] twoNames = {obj.getFileName(),  newFileName, obj.getMd5Digest()}; 
         	fileNames.add(twoNames);
         }
 

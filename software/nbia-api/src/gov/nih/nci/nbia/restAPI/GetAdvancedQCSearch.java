@@ -84,6 +84,7 @@ public class GetAdvancedQCSearch extends getData{
         if (inFormParams.get("boolean0")!=null) {
         	inFormParams.get("boolean0").set(0, "AND");
         }
+        List<String>criteriaList=new ArrayList<String>();
 		while (inFormParams.get("criteriaType"+i)!=null)
 		{
 			String criteriaType = inFormParams.get("criteriaType"+i).get(0);
@@ -95,11 +96,13 @@ public class GetAdvancedQCSearch extends getData{
 				   criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				   criteria.setQueryField(criteriaType);
 				   advancedCriteria.put(criteriaType,criteria);
+				   criteriaList.add(criteriaType);
 				} else {
 					ListCriteria criteria=(ListCriteria)advancedCriteria.get(criteriaType);
 					criteria.setListValue(inFormParams.get("value"+i).get(0));
 					criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 					criteria.setQueryField(criteriaType);
+					criteriaList.add(criteriaType);
 				}
 			}
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("commaSeperatedList")){
@@ -118,6 +121,7 @@ public class GetAdvancedQCSearch extends getData{
 				   criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				   criteria.setQueryField(criteriaType);
 				   advancedCriteria.put(criteriaType,criteria);
+				   criteriaList.add(criteriaType);
 				} else {
 					ListCriteria criteria=(ListCriteria)advancedCriteria.get(criteriaType);
 					   String seperatedValue=inFormParams.get("value"+i).get(0);
@@ -131,6 +135,7 @@ public class GetAdvancedQCSearch extends getData{
 					   }	
 					criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 					criteria.setQueryField(criteriaType);
+					criteriaList.add(criteriaType);
 				}
 			}
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("contains")){
@@ -140,6 +145,7 @@ public class GetAdvancedQCSearch extends getData{
 				   criteria.setQueryField(criteriaType);
 				   criteria.setQueryType("contains");
 				   advancedCriteria.put(criteriaType,criteria);
+				   criteriaList.add(criteriaType);
 			}
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("startsWith")){
 					TextCriteria criteria=new TextCriteria();
@@ -148,6 +154,7 @@ public class GetAdvancedQCSearch extends getData{
 					criteria.setQueryField(criteriaType);
 					criteria.setQueryType("startsWith");
 					advancedCriteria.put(criteriaType,criteria);
+					criteriaList.add(criteriaType);
 			}
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("dateRange")){
 				if (advancedCriteria.get(criteriaType)==null){
@@ -156,6 +163,7 @@ public class GetAdvancedQCSearch extends getData{
 				    criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				    criteria.setQueryField(criteriaType);
 				    advancedCriteria.put(criteriaType,criteria);
+				    criteriaList.add(criteriaType);
 				} else {
 					DateRangeCriteriaForQCSearch criteria=(DateRangeCriteriaForQCSearch)advancedCriteria.get(criteriaType);
 					criteria.addDate(getDate(inFormParams.get("value"+i).get(0)));
@@ -167,6 +175,7 @@ public class GetAdvancedQCSearch extends getData{
 				criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				criteria.setQueryField(criteriaType);
 				advancedCriteria.put(criteriaType,criteria);
+				criteriaList.add(criteriaType);
 			}
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("dateTo")){
 				DateToCriteriaForQCSearch criteria=new DateToCriteriaForQCSearch();
@@ -174,12 +183,13 @@ public class GetAdvancedQCSearch extends getData{
 				criteria.setBooleanOperator(inFormParams.get("boolean"+i).get(0));
 				criteria.setQueryField(criteriaType);
 				advancedCriteria.put(criteriaType,criteria);
+				criteriaList.add(criteriaType);
 			}
 			i++;
 		}
         String maxRows=NCIAConfig.getQctoolSearchResultsMaxNumberOfRows();
-        Map<String, AdvancedCriteriaDTO> criteriaList=JSONDeserializer.getAdvancedCriteriaFromJson();
-        List<QcSearchResultDTO> qsrDTOList = qcStatusDAO.findSeries(advancedCriteria, criteriaList, Integer.valueOf(maxRows));
+        Map<String, AdvancedCriteriaDTO> criteriaListMap=JSONDeserializer.getAdvancedCriteriaFromJson();
+        List<QcSearchResultDTO> qsrDTOList = qcStatusDAO.findSeries(advancedCriteria, criteriaListMap, criteriaList, Integer.valueOf(maxRows));
         List<QcSearchResultDTOLight> qsrDTOListLight=new ArrayList<QcSearchResultDTOLight>();
 		for (QcSearchResultDTO dto:qsrDTOList){
 			QcSearchResultDTOLight dtol=new QcSearchResultDTOLight(dto);

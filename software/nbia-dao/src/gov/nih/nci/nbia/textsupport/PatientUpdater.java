@@ -1,12 +1,14 @@
 package gov.nih.nci.nbia.textsupport;
 import java.util.*;
+
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
@@ -31,6 +33,7 @@ public class PatientUpdater {
     public void runUpdates()
     {
     	try{
+    		System.out.println("Running updates");
     		if (stillRunning) 
     		{
     			log.info("Previous update is still running");
@@ -53,17 +56,29 @@ public class PatientUpdater {
     protected void updateSubmittedPatients() throws Exception
 	  {
     	  log.info("Solr update submitted patients has been called");
+    	  String indexer=NCIAConfig.getSolrIndexer();
+    	  if (indexer==null||(!indexer.equalsIgnoreCase("yes"))){
+    		  System.out.println("not a solr indexer");
+    		  return;
+    	  }
     	  Date maxTimeStamp;
     	  SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
-    	  SolrServer server = serverAccess.GetServer();
+    	  SolrClient server = serverAccess.GetServer();
     	  DateFormat df = new SimpleDateFormat("yyyyMMdd  HH:mm");
     	  String sdt = df.format(new Date(System.currentTimeMillis()));
+    	  System.out.println("have server");
 		  if (lastRan==null)  // either new installation or server restarted we will look for it in Solr
 		  {
   
 				   String term = "id:NBIAsolrIndexingRun";
 				   SolrQuery query = new SolrQuery(term);
-				   QueryResponse rsp = server.query( query );
+				   QueryResponse rsp = null;
+			 	   try {
+					   rsp = server.query( query );
+				   } catch (Exception e) {
+					  System.out.println("---Unable to communicate with Solr Server------");
+					  return;
+				   }
 				   SolrDocumentList docs = rsp.getResults();
 				   if (docs.size()<1)
 				   {  // can't find it, we need to re-index to be sure
@@ -78,7 +93,12 @@ public class PatientUpdater {
 						   lastRan = null;
 					   } else 
 					   {
-					       lastRan = df.parse(docs.get(0).get("lastRan").toString());
+						   System.out.println(docs.get(0).get("lastRan").toString());
+						   String clean=docs.get(0).get("lastRan").toString().replace("[", "");
+					       
+					       clean=clean.replace("]", "");
+					       System.out.println("clean  "+clean.toString());
+					       lastRan = df.parse(clean);
 					       log.info("The patient updater was last run - "+lastRan);
 					   }
 			       }
@@ -112,7 +132,6 @@ public class PatientUpdater {
 		   log.info("Last ran = "+solrDoc.toString());
 		   server.add(solrDoc);
 		   server.commit();
-		   CoreAdminRequest.reloadCore("collection1", server);
 		   //server.optimize();
 	  
 
@@ -127,7 +146,7 @@ public class PatientUpdater {
 		localList.addAll(collectionList);
 		collectionList.clear();
 		SolrServerInterface serverAccess = (SolrServerInterface)SpringApplicationContext.getBean("solrServer");
-		SolrServer server = serverAccess.GetServer();
+		SolrClient server = serverAccess.GetServer();
 		SolrStorage solrStorage = new SolrStorage();
     	for (String collection:localList)
     	{

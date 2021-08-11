@@ -37,4 +37,5 @@ public interface ImageDAO2 {
     public String getImage(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;	
     public String getLicenseContent(String seriesInstanceUID);
 	public List<MD5DTO>  getImageAndMD5Hash(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;
+	public List<ImageDTO2> findImageChecksumsBySeriesUid(String seriesUid,String exclusionSopUidList, List<String>authorizedCollections) throws DataAccessException;
 }

@@ -15,12 +15,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 public class MenuBar extends JMenuBar{	
+	public boolean checkMD5 = false;
 
 	public MenuBar() {
 		JMenu fileMenu = new JMenu("File");
@@ -51,6 +53,26 @@ public class MenuBar extends JMenuBar{
 	public MenuBar(String version, String helpDeskUrl) {
 		JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
+        
+        JCheckBoxMenuItem checkBoxMenuItem
+        = new JCheckBoxMenuItem("Checksum Verification");
+        checkBoxMenuItem.setSelected(false);
+        checkBoxMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               if (checkBoxMenuItem.isSelected()) {
+            	   System.out.println("Yes for checksum verification");
+            	   checkMD5 = true;
+            	   //System.setProperty("checkMD5", "true");
+               }
+               else {
+            	   System.out.println("no for checksum verification");
+            	   checkMD5 = false;
+            	   //System.setProperty("checkMD5", "false");
+               }
+            }
+        });
+        fileMenu.add(checkBoxMenuItem);
+         
         JMenuItem fileExitMenuItem = new JMenuItem("Exit",
                 KeyEvent.VK_X);
         fileExitMenuItem.addActionListener(new ActionListener() {
@@ -83,7 +105,7 @@ public class MenuBar extends JMenuBar{
         		KeyEvent.VK_A);
         aboutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	ImageIcon image = new ImageIcon(this.getClass().getClassLoader().getResource("TCIADownloader.png"));
+            	ImageIcon image = new ImageIcon(this.getClass().getClassLoader().getResource("nbia-data-retriever.png"));
             	JOptionPane.showOptionDialog(null, "Version: " +version, 
             			"About", JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE, image, new Object[]{}, null);
             }
@@ -97,4 +119,8 @@ public class MenuBar extends JMenuBar{
 	private void actionExit() {
         System.exit(0);
     }
+
+	public boolean isCheckMD5() {
+		return checkMD5;
+	}
 }

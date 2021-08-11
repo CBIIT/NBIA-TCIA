@@ -13,7 +13,7 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 public class SolrStorage {
   static Logger log = Logger.getLogger(SolrStorage.class);
   private SolrServerInterface serverAccess;
-  private SolrServer server;
+  private SolrClient server;
   public void  addPatientDocument(PatientDocument patientDocument)
   {
 	  log.warn("Solr asked to store patient document for -"+patientDocument.getId());

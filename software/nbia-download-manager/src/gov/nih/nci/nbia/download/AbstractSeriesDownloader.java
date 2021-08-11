@@ -35,10 +35,21 @@ public abstract class AbstractSeriesDownloader extends Observable implements Run
     public static final int NO_DATA =6;
     public static final int NOT_AUTHORIZED =7;    
 
-    /* Constructor for SeriesDownloader */
+    public static boolean checkMD5 = false;
+ 
+
+	/* Constructor for SeriesDownloader */
     public AbstractSeriesDownloader() {
         status = NOT_STARTED;
     }
+    
+    public static boolean isCheckMD5() {
+ 		return checkMD5;
+ 	}
+
+ 	public static void setCheckMD5(boolean checkMD5) {
+ 		AbstractSeriesDownloader.checkMD5 = checkMD5;
+ 	}   
 
     /* Get this download's size.*/
     public long getSize() {

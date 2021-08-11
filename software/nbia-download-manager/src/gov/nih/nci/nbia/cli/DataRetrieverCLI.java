@@ -80,6 +80,7 @@ import org.xml.sax.InputSource;
 import gov.nih.nci.nbia.cli.oauthClient.OAuth2Details;
 import gov.nih.nci.nbia.cli.oauthClient.OAuthConstants;
 import gov.nih.nci.nbia.cli.oauthClient.OAuthUtils;
+import gov.nih.nci.nbia.util.MD5Validator;
 
 /**
  * @author Q. Pan
@@ -105,7 +106,8 @@ public class DataRetrieverCLI {
 	public boolean verbose = false;
 	public boolean quiet = false;
 	public boolean force = false;
-
+	public boolean md5Verify = false;
+	
 	public final Logger logger = Logger.getGlobal();
 	private String setProperty;
 	private String duaText = null;
@@ -150,6 +152,10 @@ public class DataRetrieverCLI {
 						|| args[i].equals("--FORCE")) {
 					dr.force = true;
 				}
+				if (args[i].equals("-m") || args[i].equals("-M") || args[i].equals("--md5")
+						|| args[i].equals("--MD5")) {
+					dr.md5Verify = true;
+				}				
 			}
 			dr.configLogger(downloadDir);
 
@@ -162,24 +168,6 @@ public class DataRetrieverCLI {
 			}
 
 			dr.performDownload(downloadDir, fileName, userName, passWord);
-
-//			loadSOPClassDefinition();
-//			
-//			rootDir = fileName.substring(fileName.lastIndexOf(File.separator)+1, fileName.indexOf("."));
-//			System.out.println("RootDir: " + rootDir);
-//			System.out.println("Reading manifest file: " + fileName + ".");
-//			if ((fileName != null) && fileName.endsWith(".tcia")) {
-//				DataRetriever cmdDR = new DataRetriever();
-//				cmdDR.loadManifestFile(fileName);
-//				if (userName == null || passWord == null) {
-//					System.out
-//							.println("As user name and/or password are not provided, only public data is downloaded.");
-//					downloadPublicData(directoryType);
-//				} else if ((userName != null) && (passWord != null)) {
-//					downloadAllData();
-//				}
-//			} else
-//				System.out.println("Not finding a manifest file which has extension \".tcia\"");
 		} else {
 			System.out.println("Please provide a manifest file name");
 
@@ -543,55 +531,6 @@ public class DataRetrieverCLI {
 		return newToken;
 	}
 
-//	void downloadAllData(String userName, String passWord, String directoryType) {
-////		// Load the properties file
-////		Properties config = OAuthUtils.getClientConfigProps(OAuthConstants.CONFIG_FILE_PATH);
-////
-////		// Generate the OAuthDetails bean from the config properties file
-////		OAuth2Details oauthDetails = OAuthUtils.createOAuthDetails(config);
-////		oauthDetails.setUsername(userName);
-////		oauthDetails.setPassword(passWord);
-////		oauthDetails.setAuthenticationServerUrl(serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet", "nbia-api/oauth/token"));
-////		String accessToken = null;
-////
-////		if (oauthDetails.isAccessTokenRequest()) {
-////			// Generate new Access token
-////			accessToken = OAuthUtils.getAccessToken(oauthDetails);
-////			System.out.println("accessToken=" + accessToken);
-////			if (OAuthUtils.isValid(accessToken)) {
-////				System.out.println(
-////						"Successfully generated Access token for client_credentials grant_type: " + accessToken);
-////			} else {
-////				System.out.println("Could not generate Access token for client_credentials grant_type="
-////						+ oauthDetails.getGrantType() + " server url=" + oauthDetails.getAuthenticationServerUrl()
-////						+ " client_id=" + oauthDetails.getClientId() + " client-secret="
-////						+ oauthDetails.getClientSecret());
-////			}
-////		}
-//		
-//		String accessToken = getAccessToken(userName, passWord);
-//
-//		for (Object seriesUid : seriesList) {
-//			System.out.print("Downloading series: " + (String) seriesUid + " ... ");
-//			
-//			String filePath = null;
-//			if (dataType.equalsIgnoreCase("DICOM")) {
-//				String[] metaData = getMetaData((String) seriesUid, accessToken);  //needs to be oauth token
-//				filePath = constrcutFilePath(metaData, directoryType);
-//				createLicenseFile(rootDir, metaData[1], metaData[16], metaData[17]);
-//				//downloadPublicSeries(seriesUid, filePath);
-//				downloadPrivateSeries((String) seriesUid, accessToken, filePath);
-//				writeToMetaData(metaData, filePath);
-//			}
-//			//TBD for the download of restricted none DICOM data
-//			//else downloadPublicSeries((String) seriesUid, seriesUid);
-//			System.out.println("Complete.");
-//			
-//			
-//			
-//			//downloadPrivateSeries((String) seriesUid, accessToken);
-//		}
-//	}
 
 	int downloadSingleSeries(String seriesUid, String filePath, String accessToken) {
 		URL urlForGetRequest;
@@ -600,13 +539,13 @@ public class DataRetrieverCLI {
 		try {
 			if (accessToken != null) {
 				url = bothApiUrl + "getDCMImage?SeriesInstanceUID=" + seriesUid + "&IncludeAnnotation="
-						+ includeAnnotation;
+						+ includeAnnotation + "&MD5Verification="+ md5Verify;
 			} else {
 				if (dataType != null && dataType.equalsIgnoreCase("other")) {
 					url = pubApiUrl + "getImageOther?SeriesInstanceUID=" + seriesUid;
 				} else
 					url = pubApiUrl + "getDCMImage?SeriesInstanceUID=" + seriesUid + "&IncludeAnnotation="
-							+ includeAnnotation;
+							+ includeAnnotation + "&MD5Verification="+ md5Verify;
 			}
 
 			urlForGetRequest = new URL(url);
@@ -640,19 +579,13 @@ public class DataRetrieverCLI {
 				unzip(zis, filePath);
 				is.close();
 				bis.close();
-				// System.out.println("file location=" + location);
-
-				// FileOutputStream out = new FileOutputStream(location);
-				// InputStream is = conection.getInputStream();
-				//
-				// int len = 0;
-				// byte[] buffer = new byte[4096];
-				// while ((len = is.read(buffer)) != -1) {
-				// out.write(buffer, 0, len);
-				// }
-				// out.flush();
-				// out.close();
-				// is.close();
+				if (md5Verify) {
+					String validateResult = MD5Validator.verifyCheckSum(rootDir + filePath);
+					if (validateResult.length()==0) {
+						logger.info("MD5 hashs of all DICOM files for series " + seriesUid + " match with the records in database");
+					}
+					else logger.severe(validateResult);
+				}
 			}
 
 		} catch (IOException e) {
@@ -661,102 +594,6 @@ public class DataRetrieverCLI {
 		}
 		return code;
 	}
-
-//	void downloadPrivateSeries(String seriesUid, String accessToken, String filePath) {
-//		URL urlForGetRequest;
-//		try {
-//			urlForGetRequest = new URL(
-//					"http://localhost:8080/nbia-api/services/v2/getImage?SeriesInstanceUID=" + seriesUid);
-//			
-//			if (dataType != null && dataType.equalsIgnoreCase("other")) {
-//				//TBD 
-//				//url = bothApiUrl + "getImageOther?SeriesInstanceUID=" + seriesUid;
-//			} else 
-//				url = bothApiUrl + "getDCMImage?SeriesInstanceUID=" + seriesUid + "&IncludeAnnotation=" + includeAnnotation;
-//			
-//
-////	    String readLine = null;
-//			HttpURLConnection conection = (HttpURLConnection) urlForGetRequest.openConnection();
-//			conection.setRequestMethod("GET");
-//			String authString = "Bearer " + accessToken;
-//			conection.setRequestProperty("Authorization", authString);
-//			// conection.setRequestProperty("SeriesInstanceUID", seriesUid);
-//
-//			System.out.println("url=" + conection.getURL().toString());
-//			System.out.println("filename=" + conection.getHeaderField("Content-Disposition"));
-//			String location = conection.getHeaderField("Content-Disposition").split("\"")[1];
-//			int status = conection.getResponseCode();
-//			System.out.println("status= " + status);
-//			
-//			InputStream is = conection.getInputStream();
-//			BufferedInputStream bis = new BufferedInputStream(is);
-//			ZipInputStream zis = new ZipInputStream(bis);
-//
-//			unzip(zis, filePath);
-//			is.close();
-//			bis.close();
-////			System.out.println("file location=" + location);
-//
-////			FileOutputStream out = new FileOutputStream(location);
-////			InputStream is = conection.getInputStream();
-////
-////			int len = 0;
-////			byte[] buffer = new byte[4096];
-////			while ((len = is.read(buffer)) != -1) {
-////				out.write(buffer, 0, len);
-////			}
-////			out.flush();
-////			out.close();
-////			is.close();
-//
-//		} catch (IOException e) {
-//
-//			e.printStackTrace();
-//		}
-//	}
-
-//	void downloadPublicSeries(String seriesUid, String filePath) {
-//		URL urlForGetRequest;
-//		String url = null;
-//		try {
-//			if (dataType != null && dataType.equalsIgnoreCase("other")) {
-//				url = pubApiUrl + "getImageOther?SeriesInstanceUID=" + seriesUid;
-//			} else 
-//				url = pubApiUrl + "getDCMImage?SeriesInstanceUID=" + seriesUid + "&IncludeAnnotation=" + includeAnnotation;
-//
-//			urlForGetRequest = new URL(url);
-//			HttpURLConnection conection = (HttpURLConnection) urlForGetRequest.openConnection();
-//			conection.setRequestMethod("GET");
-//
-//			//System.out.println("url=" + conection.getURL().toString());
-//			int status = conection.getResponseCode();
-//			System.out.println("status= " + status);
-//			//System.out.println("filename=" + conection.getHeaderField("Content-Disposition"));
-//			//String location = conection.getHeaderField("Content-Disposition").split("\"")[1];
-//
-//			//System.out.println("file location=" + location);
-//			InputStream is = conection.getInputStream();
-//			BufferedInputStream bis = new BufferedInputStream(is);
-//			ZipInputStream zis = new ZipInputStream(bis);
-//
-//			unzip(zis, filePath);
-////			FileOutputStream out = new FileOutputStream(location);
-////			
-////			
-////			int len = 0;
-////			byte[] buffer = new byte[4096];
-////			while ((len = is.read(buffer)) != -1) {
-////				out.write(buffer, 0, len);
-////			}
-////			out.flush();
-////			out.close();
-//			is.close();
-//
-//		} catch (IOException e) {
-//
-//			e.printStackTrace();
-//		}
-//	}
 
 	String[] getMetaData(String seriesUid, String accessToken) {
 		URL urlForGetRequest;
@@ -1027,9 +864,6 @@ public class DataRetrieverCLI {
 
 	private void unzip(ZipInputStream zis, String subRoot) {
 		try {
-			// TarArchiveInputStream zis = new TarArchiveInputStream(is);
-
-			// TarArchiveEntry entry;
 			ZipEntry entry;
 
 			while ((entry = zis.getNextEntry()) != null) {
@@ -1053,42 +887,6 @@ public class DataRetrieverCLI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		OutputStream outputStream = null;
-//		while (true) {
-//		try {
-//		TarArchiveEntry tarArchiveEntry = zis.getNextTarEntry();
-//		if (tarArchiveEntry == null) {
-//			break;
-//		}
-//		// Begin lrt additions
-//		long fileSize = tarArchiveEntry.getSize();
-//
-//		
-//		String fileName = tarArchiveEntry.getName();
-//		System.out.println("unzip file:"+fileName);
-//		//outputStream = new FileOutputStream(location + File.separator + newFileName);
-//		outputStream = new FileOutputStream(rootDir + File.separator +subRoot +File.separator+ fileName);
-//			
-//			byte buffer[] = new byte[4096];
-//
-//				for (int n = 0; -1 != (n = zis.read(buffer));) {
-//					outputStream.write(buffer, 0, n);
-//				}
-//		}
-//		catch (IOException e){
-//			
-//		}
-//		finally {
-//				try {
-//					outputStream.flush();
-//					outputStream.close();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//			}	
-//			}	
 	}
 
 	public String getAccessToken(OAuth2Details oauthDetails) {
@@ -1098,8 +896,7 @@ public class DataRetrieverCLI {
 		String scope = oauthDetails.getScope();
 		logger.fine("Getting access token: grant-type=" + oauthDetails.getGrantType());
 		logger.fine("AuthenticationServerUrl=" + oauthDetails.getAuthenticationServerUrl());
-//oauthDetails.setUsername("panq");
-//oauthDetails.setPassword("Nbia123$");
+
 		List<BasicNameValuePair> parametersBody = new ArrayList<BasicNameValuePair>();
 		parametersBody.add(new BasicNameValuePair("grant_type", "password"));
 		parametersBody.add(new BasicNameValuePair(OAuthConstants.USERNAME, oauthDetails.getUsername()));
