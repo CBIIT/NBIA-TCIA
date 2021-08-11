@@ -76,7 +76,7 @@ public class PatientUpdater {
 			 	   try {
 					   rsp = server.query( query );
 				   } catch (Exception e) {
-					  System.out.println("---Unable to communicate with Solr Server");
+					  System.out.println("---Unable to communicate with Solr Server------");
 					  return;
 				   }
 				   SolrDocumentList docs = rsp.getResults();
