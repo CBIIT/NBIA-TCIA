@@ -138,6 +138,7 @@ L-->
 				<exclude name="*jersey*1.19.jar" />
 				<exclude name="noggit*" />
 				<exclude name="log4j*2.13.2.jar" />
+				<exclude name="jsr311-api-1.1.1.jar" />
 		   </fileset> 
 		</copy>
 		<copy todir="${webapp.dir}/WEB-INF/classes">
