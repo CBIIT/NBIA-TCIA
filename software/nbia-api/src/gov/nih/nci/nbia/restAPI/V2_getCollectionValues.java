@@ -45,7 +45,7 @@ public class V2_getCollectionValues extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
 	public Response  constructResponse(@QueryParam("format") String format) {
-		List<String> authorizedCollections = null;
+		List<String> authorizedCollections = new ArrayList<String>();
 		Authentication authentication = SecurityContextHolder.getContext()
 				.getAuthentication();
 		String userName = (String) authentication.getPrincipal();
