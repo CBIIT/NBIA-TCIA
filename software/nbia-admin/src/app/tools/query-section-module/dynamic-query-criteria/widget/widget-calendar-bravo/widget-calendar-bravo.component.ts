@@ -196,7 +196,10 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
     }
 
     onDayClick( i, d, m, y ){
-        if( new Date() > new Date( y, m, d ) ){
+        let d1 = new Date();
+        let d2 = new Date(y,m,d);
+
+        if( d2 > d1){
             alert( 'Records from the future can not be accessed.' );
             return;
         }
