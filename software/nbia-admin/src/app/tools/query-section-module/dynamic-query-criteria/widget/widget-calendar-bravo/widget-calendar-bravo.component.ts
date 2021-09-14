@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { UtilService } from '@app/admin-common/services/util.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Consts } from '@app/constants';
 import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
 
 @Component( {
@@ -48,13 +46,13 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private utilService: UtilService,private widgetCalendarService: WidgetCalendarService ){
+    constructor( private utilService: UtilService, private widgetCalendarService: WidgetCalendarService ){
         this.prompt0 = '';
-/*
-        this.date0Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
-            console.log('MHL XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX WidgetCalendarBravoComponent: ', data );
-        });
-*/
+        /*
+                this.date0Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+                    console.log('MHL XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX WidgetCalendarBravoComponent: ', data );
+                });
+        */
 
         // @TESTING we will set these to NOW.  We will eventually let the parent set this.
         /*
@@ -167,10 +165,10 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
             this.setDaysArray();
         }
 
-        if( this.id === 0){
+        if( this.id === 0 ){
             this.widgetCalendarService.date0Changed( this.sequenceNumber, this.date3 );
         }
-        if( this.id === 1){
+        if( this.id === 1 ){
             this.widgetCalendarService.date1Changed( this.sequenceNumber, this.date3 );
         }
 
@@ -183,23 +181,26 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
         this.setDaysArray();
         this.updateDisplayDate();
 
- /*       this.date3 = new Date();
-        this.year = this.date3.getFullYear();
-        this.month = this.date3.getMonth();
-        this.day = this.date3.getDate();
-        console.log('MHL ZED 00 this.year: ', this.year);
-        console.log('MHL ZED 01 this.month: ', this.month + 1);
-        console.log('MHL ZED 02 this.day: ', this.day);
+        /*       this.date3 = new Date();
+               this.year = this.date3.getFullYear();
+               this.month = this.date3.getMonth();
+               this.day = this.date3.getDate();
+               console.log('MHL ZED 00 this.year: ', this.year);
+               console.log('MHL ZED 01 this.month: ', this.month + 1);
+               console.log('MHL ZED 02 this.day: ', this.day);
+               this.currentDateDisplay0 = (this.month + 1) + '/' + this.day + '/' + this.year;
+       */
         this.currentDateDisplay0 = (this.month + 1) + '/' + this.day + '/' + this.year;
-*/
-        this.currentDateDisplay0 = (this.month + 1) + '/' + this.day + '/' + this.year;
-        this.onDayClick( -1,  this.day, this.month, this.year);
+        this.onDayClick( -1, this.day, this.month, this.year );
         this.isDateValid = this.utilService.isGoodDate( this.currentDateDisplay0 );
     }
 
     onDayClick( i, d, m, y ){
-
-        let needToUpdatePopup = ( ( m !== this.month) || ( y !== this.year) );
+        if( new Date() > new Date( y, m, d ) ){
+            alert( 'Records from the future can not be accessed.' );
+            return;
+        }
+        let needToUpdatePopup = ((m !== this.month) || (y !== this.year));
 
         this.month = m;
         this.year = y;
@@ -218,10 +219,10 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
             this.setDaysArray();
             this.showCalendar0 = false;
         }
-        if( this.id === 0){
+        if( this.id === 0 ){
             this.widgetCalendarService.date0Changed( this.sequenceNumber, this.date3 );
         }
-        if( this.id === 1){
+        if( this.id === 1 ){
             this.widgetCalendarService.date1Changed( this.sequenceNumber, this.date3 );
         }
 
@@ -278,39 +279,41 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
         if( m === undefined ){
             m = this.month;
         }
-/*
-        console.log( 'MHL isToday d: ', d );
-        console.log( 'MHL isToday this.day: ', this.day );
-        console.log( 'MHL m: ', m );
-*/
+        /*
+                console.log( 'MHL isToday d: ', d );
+                console.log( 'MHL isToday this.day: ', this.day );
+                console.log( 'MHL m: ', m );
+        */
 
         return d === this.day;
     }
 
-    log(val) { console.log(val); }
+    log( val ){
+        console.log( val );
+    }
 
     /////////////////////////
     onDragBegin( e ){
         this.handleMoving = true;
-       // console.log('MHL [' + this.handleMoving + '] onDragBegin: ', e);
+        // console.log('MHL [' + this.handleMoving + '] onDragBegin: ', e);
     }
 
     onDragEnd( e ){
-      //  console.log('MHL [' + this.handleMoving + '] onDragEnd: ', e);
+        //  console.log('MHL [' + this.handleMoving + '] onDragEnd: ', e);
     }
 
     onMoving( e ){
-      //  console.log('MHL [' + this.handleMoving + '] onMoving: ', e);
+        //  console.log('MHL [' + this.handleMoving + '] onMoving: ', e);
         this.handleMoving = true;
     }
 
     onMoveEnd( e ){
-      //  console.log('MHL [' + this.handleMoving + '] onMoveEnd: ', e);
+        //  console.log('MHL [' + this.handleMoving + '] onMoveEnd: ', e);
         this.handleMoving = false;
     }
 
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }
