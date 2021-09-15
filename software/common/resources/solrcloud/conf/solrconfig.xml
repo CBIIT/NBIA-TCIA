@@ -439,8 +439,8 @@
          document).  Since Lucene internal document ids are transient,
          this cache will not be autowarmed.
       -->
-    <documentCache size="512"
-                   initialSize="512"
+    <documentCache size="32"
+                   initialSize="32"
                    autowarmCount="0"/>
 
     <!-- custom cache currently used by block join -->
