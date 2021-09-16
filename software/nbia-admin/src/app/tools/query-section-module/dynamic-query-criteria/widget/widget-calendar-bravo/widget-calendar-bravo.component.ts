@@ -196,6 +196,9 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
     }
 
     onDayClick( i, d, m, y ){
+/*
+        This was to prevent future dates, it is no longer needed. We can handle future dates.
+
         let d1 = new Date();
         let d2 = new Date(y,m,d);
 
@@ -203,6 +206,8 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
             alert( 'Records from the future can not be accessed.' );
             return;
         }
+*/
+
         let needToUpdatePopup = ((m !== this.month) || (y !== this.year));
 
         this.month = m;

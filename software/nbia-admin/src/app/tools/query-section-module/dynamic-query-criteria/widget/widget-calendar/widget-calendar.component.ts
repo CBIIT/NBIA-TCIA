@@ -43,7 +43,7 @@ export class WidgetCalendarComponent implements OnInit, OnDestroy{
             } );
         this.widgetCalendarService.date1Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-               this.date1['formatted']  =  (data['date1Data']['month'] + 1) + '/' + data['date1Data']['day'] + '/' + data['date1Data']['year'];
+                this.date1['formatted']  =  (data['date1Data'].getMonth() + 1) + '/' + data['date1Data'].getDate() + '/' + data['date1Data'].getFullYear();
             }
         );
     }

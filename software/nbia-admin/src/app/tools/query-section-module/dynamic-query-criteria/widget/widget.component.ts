@@ -497,6 +497,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
                 date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
                 formatted: (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear()
             }
+
             date.setDate( date.getDate() - 1 );
             this.date0 = {
                 date: { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() },
@@ -549,6 +550,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         }
 
         if( this.criteriaCalendar ){
+            this.haveInput  = true;// @CHECKME TESTING
             this.criteriaSingleCheckboxCalender = false;
         }
 
