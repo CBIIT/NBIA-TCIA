@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -27,12 +28,12 @@ public class NBIASolrServer implements SolrServerInterface{
 		   try {
 			String solrType=NCIAConfig.getSolrType();
 			
-			if (solrType!=null&&!solrType.equalsIgnoreCase("external")) {
+			if (solrType!=null&&!solrType.equalsIgnoreCase("external")&&!solrType.equalsIgnoreCase("single")) {
 				System.out.println("SolrHome is " + solrHome);
 				Path serverPath = Paths.get(solrHome);
 				server = new EmbeddedSolrServer(serverPath, "nbia");
 				log.info("Embedded Solr Server started successfully");
-			} else {
+			} else if (solrType!=null&&solrType.equalsIgnoreCase("external")) {
 				String solrUrls=NCIAConfig.getSolrUrls();
 				if (solrUrls==null||solrUrls.isEmpty()) {
 					throw new Exception("Solr URLs not specified");
@@ -41,6 +42,14 @@ public class NBIASolrServer implements SolrServerInterface{
 				CloudSolrClient client=new CloudSolrClient.Builder(solrUrlList).build();
 				client.setDefaultCollection("nbia");
 				System.out.println("----------External Solr Servers----------->"+solrUrlList);
+				server =client;
+			} else {
+				String solrUrls=NCIAConfig.getSolrUrls();
+				if (solrUrls==null||solrUrls.isEmpty()) {
+					throw new Exception("Solr URLs not specified");
+				}
+				HttpSolrClient client=new HttpSolrClient.Builder(solrUrls+"/nbia").build();
+				System.out.println("----------External Solr Servers----------->"+solrUrls);
 				server =client;
 			}
 
