@@ -403,7 +403,7 @@ L-->
 		</if>
 		<!-- should be part of the new database creation script TBD -->
 		<!--antcall target="create-guest-account and super user account"/-->
-		<antcall target="create.initial.account.in.db" />
+		<!--antcall target="create.initial.account.in.db" /-->
 	</target>
 
 	<target name="build:db:update" description="Update database" depends="common:common:init">

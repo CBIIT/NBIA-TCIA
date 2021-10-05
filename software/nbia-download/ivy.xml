@@ -72,12 +72,12 @@ L-->
 
     <dependency org="commons-io"
                 name="commons-io"
-                rev="1.4"
+                rev="2.8.0"
                 conf="compile->master;runtime->master"/>
 	
     <dependency org="commons-lang"
                 name="commons-lang"
-                rev="2.4"
+                rev="2.6"
                 conf="compile->master;runtime->master"/>
 
     <dependency org="commons-logging"

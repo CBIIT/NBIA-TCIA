@@ -48,5 +48,6 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/spring-test-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/junit-4.5.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-ctp/test/commons-lang-2.6.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

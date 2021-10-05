@@ -4,8 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-dao"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/commons-compress-1.4.1.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/commons-io-1.4.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/commons-lang-2.4.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/commons-io-2.8.0.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/commons-lang-2.6.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/runtime/hibernate-3.2.6.ga.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/log4j-1.2.15.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/servlet-api-2.4.jar"/>
@@ -15,5 +15,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-domain"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download/compile/csmapi-5.2.0.1.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
