@@ -521,7 +521,7 @@ public class StudyDAOImpl extends AbstractDAO
 		if (seriesPkIds.size() == 0) {
 			return new ArrayList<StudyDTO>();
 		}
-		String selectStmt = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, gs.project, series.annotationTotalSize , ge.manufacturerModelName, ge.softwareVersions, series.patientPkId ";
+		String selectStmt = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, series.project, series.annotationTotalSize , ge.manufacturerModelName, ge.softwareVersions, series.patientPkId ";
 		String fromStmt = SQL_QUERY_FROM;
 		String whereStmt = SQL_QUERY_WHERE;
 		String oderBy = " Order by series.project,series.patientId,study.studyDate, study.studyDesc, series.modality, series.seriesDesc,ge.manufacturer, ge.manufacturerModelName, ge.softwareVersions, series.seriesInstanceUID";
