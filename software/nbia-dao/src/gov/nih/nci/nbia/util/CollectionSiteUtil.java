@@ -11,7 +11,9 @@ public class CollectionSiteUtil {
 		List<String> returnValue=new ArrayList<String>();
 		for (SiteData collectionsite:collectionSites) {
 			String collection=collectionsite.getCollectionSite();
-			String collectionTruncated=collectionsite.getCollection().substring(0, Math.min(collectionsite.getCollection().length(), 24));
+			// we used to truncate the collection
+			// String collectionTruncated=collectionsite.getCollection().substring(0, Math.min(collectionsite.getCollection().length(), 24));
+			String collectionTruncated=collectionsite.getCollection();
 			String site=collectionsite.getSiteName();
 			String collectionSiteTruncated=collectionTruncated+collectionsite.getDelimiter()+site;
 			returnValue.add(collectionSiteTruncated);
