@@ -27,5 +27,5 @@ public interface AnnotationDAO  {
 	
 	public List<AnnotationDTO> findAnnotationBySeriesUid(String seriesInstanceUid) throws DataAccessException;
 	
-	public List<String> getAnnotationFileNamesBySeriesUid(String seriesInstanceUid) throws DataAccessException;
+	public List<String []> getAnnotationFileNamesBySeriesUid(String seriesInstanceUid) throws DataAccessException;
 }

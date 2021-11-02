@@ -287,7 +287,7 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
    </bean>
-    <!-- Define all the services below -->
+ <!-- Define all the services below -->
    <bean id="annotation" class="gov.nih.nci.nbia.internaldomain.Annotation" scope="prototype"/>
    <bean id="series" class="gov.nih.nci.nbia.internaldomain.GeneralSeries" scope="prototype" />
    <bean id="submissionHistory" class="gov.nih.nci.nbia.internaldomain.SubmissionHistory" scope="prototype"/>

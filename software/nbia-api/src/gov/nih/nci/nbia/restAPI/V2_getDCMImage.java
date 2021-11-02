@@ -30,9 +30,11 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
 import gov.nih.nci.nbia.dao.AnnotationDAO;
+import gov.nih.nci.nbia.dao.DownloadDataDAO;
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.exception.DataAccessException;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 
@@ -80,6 +82,7 @@ public class V2_getDCMImage extends getData {
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
 				boolean addChecksum = false;
+				long size = 0;
 				
 				if (md5Verify != null && md5Verify.equalsIgnoreCase("true")) {
 					addChecksum = true;
@@ -117,6 +120,7 @@ public class V2_getDCMImage extends getData {
 							IOUtils.copy(in, zip);
 							zip.closeEntry();
 							in.close();
+							size += Long.parseLong(filename[3]);
 						}
 					}
 					
@@ -127,13 +131,13 @@ public class V2_getDCMImage extends getData {
 						zip.closeEntry();
 					}
 					
-					if (includeAnnotation.equalsIgnoreCase("true")) {
-						List <String> annNames = getAnnotations(sid);
-						for (String aName : annNames) {
-							in = new FileInputStream(new File(aName));
+					if (includeAnnotation != null && includeAnnotation.equalsIgnoreCase("true")) {
+						List <String []> annNames = getAnnotations(sid);
+						for (String[] aName : annNames) {
+							in = new FileInputStream(new File(aName[0]));
 							if (in != null) {
 								// Add Zip Entry
-								String fileNameInZip = aName.substring(aName.lastIndexOf(File.separator)+1);
+								String fileNameInZip = aName[0].substring(aName[0].lastIndexOf(File.separator)+1);
 								System.out.println("expected file annotation name in zipping file: "+fileNameInZip);
 								//zip.putNextEntry(new ZipEntry(directoryInZip + fileNameInZip));
 								zip.putNextEntry(new ZipEntry(fileNameInZip));
@@ -141,6 +145,7 @@ public class V2_getDCMImage extends getData {
 								IOUtils.copy(in, zip);
 								zip.closeEntry();
 								in.close();
+								size += Long.parseLong(aName[1]);
 							}
 						}
 					}
@@ -163,6 +168,8 @@ public class V2_getDCMImage extends getData {
 					if (in != null)
 						in.close();
 				}
+				
+				recodeDownload(seriesInstanceUid, size);
 			}
 		};
 
@@ -184,8 +191,8 @@ public class V2_getDCMImage extends getData {
 		return (List<String []>) results;
 	}
 	
-	protected List<String> getAnnotations(String seriesInstanceUid) {
-		List<String> results = null;
+	protected List<String []> getAnnotations(String seriesInstanceUid) {
+		List<String []> results = null;
 		
 		try {
 			AnnotationDAO aDao = (AnnotationDAO)SpringApplicationContext.getBean("annotationDao2");
@@ -195,5 +202,16 @@ public class V2_getDCMImage extends getData {
 			ex.printStackTrace();
 		}
 		return results;
+	}
+	
+	private void recodeDownload (String seriesInstanceUid, long size) {
+		try {
+			String userName = NCIAConfig.getGuestUsername();
+			DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");					
+			downloadDAO.record(seriesInstanceUid, userName, "CLI/API", size);
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 }

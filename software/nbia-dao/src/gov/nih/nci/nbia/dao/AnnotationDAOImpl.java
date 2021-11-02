@@ -117,9 +117,9 @@ public class AnnotationDAOImpl extends AbstractDAO
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)
-	public List<String> getAnnotationFileNamesBySeriesUid(String seriesInstanceUid) throws DataAccessException {
+	public List<String []> getAnnotationFileNamesBySeriesUid(String seriesInstanceUid) throws DataAccessException {
 
-		List<String> annotationList = new ArrayList<String>();
+		List<String []> annotationList = new ArrayList<String []>();
 
 		 String query = "select distinct ann from Annotation ann  where ann.seriesInstanceUID = '"+
 	                    seriesInstanceUid + "'";
@@ -127,7 +127,8 @@ public class AnnotationDAOImpl extends AbstractDAO
 
         List<Annotation> results = getHibernateTemplate().find(query);
         for(Annotation a:results){
-        	annotationList.add(a.getFilePath());
+        	String [] annotationInfo = {a.getFilePath(), a.getFileSize().toString()};
+        	annotationList.add(annotationInfo);
 
         }
         return annotationList;

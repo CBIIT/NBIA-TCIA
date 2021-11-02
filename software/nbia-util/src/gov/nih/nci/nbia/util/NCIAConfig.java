@@ -785,6 +785,12 @@ public class NCIAConfig {
         return propertyValue;   	
     } 
     
+    public static String getNoUpgradeMinimumVersion() {
+        String propertyValue = properties.getProperty("no.upgrade.minimum.version");
+        checkProperty("no.upgrade.minimum.version", propertyValue);
+        return propertyValue;   	
+    }     
+    
     public static String getDownloaderAppHelpDeskLink() {
         String propertyValue = properties.getProperty("help.desk.url");
         checkProperty("help.desk.url", propertyValue);

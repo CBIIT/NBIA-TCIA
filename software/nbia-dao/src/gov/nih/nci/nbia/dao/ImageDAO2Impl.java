@@ -248,7 +248,7 @@ public class ImageDAO2Impl extends AbstractDAO
         for (ImageDTO2 obj: imageResults) {
         	String newName = obj.getNewFilename();
         	String newFileName = newName.substring(newName.indexOf("^")+1);
-        	String [] twoNames = {obj.getFileName(),  newFileName, obj.getMd5Digest()}; 
+        	String [] twoNames = {obj.getFileName(),  newFileName, obj.getMd5Digest(), obj.getDicomSize().toString()}; 
         	fileNames.add(twoNames);
         }
 
