@@ -42,6 +42,8 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
     cBox = [];
 
+    showUpdateCollectionSite = false;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
     constructor( private utilService: UtilService, private apiService: ApiService,
                  private preferencesService: PreferencesService) {

@@ -15,6 +15,7 @@ import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/dis
 import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
 import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
+import { Properties } from '@assets/properties';
 
 export enum WIDGET_TYPE{
     UNKNOWN,
@@ -131,6 +132,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
     date0={};
     date1={};
+
+    properties = Properties;
 
     //  haveInput = false;
 
