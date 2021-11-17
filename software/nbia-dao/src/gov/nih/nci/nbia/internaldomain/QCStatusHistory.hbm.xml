@@ -30,6 +30,9 @@ L-->
 		<property name="oldSubmissionType" type="string" column="oldSubmissionType"/>
 		<property name="newSubmissionType" type="string" column="newSubmissionType"/>
 		<property name="oldReleasedStatus" type="string" column="oldReleasedStatus"/>
-		<property name="newReleasedStatus" type="string" column="newReleasedStatus"/>			
+		<property name="newReleasedStatus" type="string" column="newReleasedStatus"/>		
+		<property name="dateReleased" type="java.util.Date" column="DATE_RELEASED"/>
+		<property name="site" type="string" column="site"/>	
+		<property name="Uri" type="string" column="URI"/>	
 	</class>
 </hibernate-mapping>

@@ -610,6 +610,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				seriesDTO.setDescription(Util.nullSafeString(row[11]));
 				seriesDTO.setModality(row[12].toString());
 				seriesDTO.setPatientPkId(row[13].toString());
+				seriesDTO.setCommercialRestrictions(false);
+				if (row[14] != null && ((String)row[14]).equalsIgnoreCase("yes")) {
+					seriesDTO.setCommercialRestrictions(true);
+				}
 				resultSets.add(seriesDTO);
 			}
 		}
@@ -944,7 +948,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 	private static int CHUNK_SIZE = 500;
 
-	private static String SQL_QUERY_SELECT = "SELECT series.id, patient.patientId, study.studyInstanceUID, series.seriesInstanceUID, study.id, series.imageCount, series.totalSize, dp.project, series.annotationsFlag, series.annotationTotalSize, series.seriesNumber, series.seriesDesc, series.modality, series.patientPkId ";
+	private static String SQL_QUERY_SELECT = "SELECT series.id, patient.patientId, study.studyInstanceUID, series.seriesInstanceUID, study.id, series.imageCount, series.totalSize, dp.project, series.annotationsFlag, series.annotationTotalSize, series.seriesNumber, series.seriesDesc, series.modality, series.patientPkId, series.excludeCommercial ";
 	private static String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join study.patient patient join patient.dataProvenance dp ";
 	private static String SQL_QUERY_WHERE = "WHERE ";
 
@@ -1551,5 +1555,33 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			e.printStackTrace();
 		}
 		return result;
-}
+   }
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException{
+		Set <String>siteList=null;
+		if (seriesIds==null || seriesIds.size()<1) {
+			return null;
+		}
+		String hql = "select project, site from GeneralSeries where seriesInstanceUID in (:ids)";
+		Query query=getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameterList("ids", seriesIds);
+		List<Object[]> siteRows = query.list();
+		boolean firstTime=true;
+		String onlyCollection =null;
+		for (Object[] siteRow : siteRows) {
+			if (firstTime) {
+				onlyCollection=(String)siteRow[0];
+				siteList=new HashSet<String>();
+				firstTime=false;
+			}
+			if (!onlyCollection.equalsIgnoreCase((String)siteRow[0])){
+				//more than one collection
+				return null;
+			}
+			siteList.add((String)siteRow[1]);
+		}
+		List<String> returnValue=new ArrayList<String>();
+		returnValue.addAll(siteList);
+		return returnValue;
+	}
 }
