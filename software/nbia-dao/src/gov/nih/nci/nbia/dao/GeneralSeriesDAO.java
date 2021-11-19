@@ -112,4 +112,5 @@ public interface GeneralSeriesDAO  {
 	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException;
 	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException;
 	public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException;
+	public void cacheMD5ForAllCollections()throws DataAccessException;
 }

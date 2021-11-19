@@ -1421,19 +1421,27 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		}
 		return returnValue;
 	}
+	
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
-		String sqlString = "select patientId, project from GeneralSeries where visibility=1 and project=:project and (";
-		boolean first=true;
-		for (SiteData sd : authorizedSites) {
-			if (first) {
-				sqlString+="(site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
-			    first=false;
-			} else {
-				sqlString+=" or (site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
-			}
+	public void cacheMD5ForAllCollections()throws DataAccessException{
+		Set<String> projectSet = new HashSet<String>();
+		List<SiteData> siteData=new ArrayList<SiteData>();
+		String sqlString = "select project, site from GeneralSeries where visibility=1 group by project, site";
+		List<String[]> resultsData  = getHibernateTemplate().find(sqlString);
+		for (Object item[] : resultsData) {
+			projectSet.add(item[0].toString());
+			SiteData site=new SiteData(item[0].toString(), item[1].toString());
+			siteData.add(site);
 		}
-		sqlString+=")";		
+		for (String project:projectSet) {
+			cacheMD5ForCollection(project, siteData);
+		}
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	private void cacheMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select patientId, project from GeneralSeries where visibility=1 and project=:project";
+		boolean first=true;
 		sqlString += " group by patientId, project";
 		List<String[]> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
 		String md5Concat="";
@@ -1448,9 +1456,30 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			}
 		}
 		if (md5Concat.length()==0) {
-			return md5Concat;
+			return;
 		}
-		return digest(md5Concat);
+		String md5hash = digest(md5Concat);
+		try {
+			sqlString = "update collection_descriptions set md5hash=:md5hash where collection_name in(:project)";
+			SQLQuery qu = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
+			qu.setParameter("md5hash", md5hash);
+			qu.setParameter("project", project);
+			int count = qu.executeUpdate();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select md5hash from CollectionDesc where collectionName=:project";
+		List<String[]> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
+		for (String item[] : resultsData) {
+			return item[0];
+		}
+		return null;
 	}
 	
 	

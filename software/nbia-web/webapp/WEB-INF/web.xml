@@ -181,11 +181,7 @@ L-->
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-  <servlet>
-    <servlet-name>Startup Servlet</servlet-name>
-    <servlet-class>gov.nih.nci.nbia.servlet.StartupServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+
   <servlet>
     <servlet-name>thumbnailViewer</servlet-name>
     <servlet-class>gov.nih.nci.nbia.servlet.ThumbnailServer</servlet-class>
