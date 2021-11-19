@@ -1475,9 +1475,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
 		String sqlString = "select md5hash from CollectionDesc where collectionName=:project";
-		List<String[]> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
-		for (String item[] : resultsData) {
-			return item[0];
+		List<String> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
+		for (String item : resultsData) {
+			return item;
 		}
 		return null;
 	}
