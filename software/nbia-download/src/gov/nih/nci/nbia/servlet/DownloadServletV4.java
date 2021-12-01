@@ -368,13 +368,26 @@ public class DownloadServletV4 extends HttpServlet {
 			return "NA";
 		else
 		if ((in != null) && (in.length() > 0)) {
-			String out = in.replaceAll("[^a-zA-Z0-9 .-/:]", "");
+			String out = in.replaceAll("[^a-zA-Z0-9 .-]", "");
 			if (out.isEmpty())
 				return "NA";
 			return out;
 		}
 		return in;
 	}
+	
+	private static String cleanURIStr(String in) {
+		if ((in == null) || (in.length() == 0))
+			return "NA";
+		else
+		if ((in != null) && (in.length() > 0)) {
+			String out = in.replaceAll("[^a-zA-Z0-9 .-/:]", "");
+			if (out.isEmpty())
+				return "NA";
+			return out;
+		}
+		return in;
+	}	
 
 	private static List<String> getManifestRec(List<String> seriesUids, String loginName) {
 		AuthorizationManager am;
@@ -426,7 +439,7 @@ public class DownloadServletV4 extends HttpServlet {
 				String study_id = cleanStr(series.getStudy_id());
 				String seriesNumber = series.getSeriesNumber();
 				String thirdPartyAnalysis= series.getThirdPartyAnalysis();
-				String dataDescURI = cleanStr(series.getDescriptionURI());
+				String dataDescURI = cleanURIStr(series.getDescriptionURI());
 				String manufacturer = cleanStr(series.getManufacturer());
 				String modality = series.getModality();
 				String sopClassUid = series.getSopClassUID();
