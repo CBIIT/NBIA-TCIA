@@ -54,6 +54,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -80,6 +81,8 @@ import org.xml.sax.InputSource;
 import gov.nih.nci.nbia.cli.oauthClient.OAuth2Details;
 import gov.nih.nci.nbia.cli.oauthClient.OAuthConstants;
 import gov.nih.nci.nbia.cli.oauthClient.OAuthUtils;
+import gov.nih.nci.nbia.download.LocalSeriesDownloader;
+import gov.nih.nci.nbia.ui.DownloadsTableModel;
 import gov.nih.nci.nbia.util.MD5Validator;
 
 /**
@@ -367,12 +370,28 @@ public class DataRetrieverCLI {
 		if ((fileName != null) && fileName.endsWith(".tcia")) {
 //			DataRetriever cmdDR = new DataRetriever();
 			loadManifestFile(fileName);
+
 			String text = getUserAgreementTxt();
 			if (text != null && !text.isEmpty()) {
 				retrieveUsersAns(text);
 			}
+			
+			
 			if (dataType.equals("DICOM")) {
-				hasPermission = validateAccess(seriesList, userName);
+				if (downloadDir == null)
+					downloadDir = ".";
+
+				List <String> existSeriesList = scanDataDir(downloadDir);
+				if (existSeriesList != null) {
+					seriesList.removeAll(existSeriesList);
+				}
+				
+				if (seriesList.size() == 0) {
+					System.out.println("All series are downloaded");	
+					System.exit(0);
+				}
+				else
+					hasPermission = validateAccess(seriesList, userName);
 			} else {
 				hasPermission = true; // not checking permission for none DICOM data at this point
 			}
@@ -1184,4 +1203,100 @@ public class DataRetrieverCLI {
 			}
 		}
 	}
+	
+	public List<String> scanDataDir(String filePath) {
+		String line = "";
+		String splitBy = ",";
+		int seriesUidColumnNum = 0;
+		int onlyHeaderSize = 243;
+		ArrayList<String> existSeriesList = null;
+		String prompt = "Some of this data has already been downloaded. Do you want to download only the missing data or all of the data?\n"
+		+"Note that selecting \"Download all\" will clean up the existing download folder to get rid of possible obsolete data. Please backup the files\n" +
+		"you want to keep. ";
+	//		String fileName = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
+		//				+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+		String fileName = filePath + File.separator
+						+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+
+		File f = new File(fileName);
+		if (f.exists() && !f.isDirectory()) {
+			String answer = null;
+
+			if (f.length() > onlyHeaderSize) {
+				System.out.println(prompt);
+				Scanner kbd = new Scanner(System.in);
+				System.out.println("Do you want to download all or download only missing series?\nEnter A for downloading all, M for downloading missing series. E for exiting the program:");
+				boolean bk = false;
+
+				while (bk == false) {
+					answer = kbd.nextLine();
+					switch (answer) {
+					case "A":
+					case "a": bk = true;
+						break;
+					case "M":
+					case "m": bk = true;
+						break;
+					case "E":
+					case "e":
+						System.exit(0);
+					default:
+						System.out.println("Invalid answer. Enter A for downloading all series or M for downloading missing series: ");
+						break;
+					}
+				}				
+
+			} else
+				return null;
+
+			if (answer.equalsIgnoreCase("A")) {
+				//clean directory
+				String dir = filePath+ File.separator + System.getProperty("databasketId").replace(".tcia", "");
+				//File directory = new File(dir);
+				File directoryToBeDeleted = new File(dir);			
+				deleteDirectory(directoryToBeDeleted);
+				//renameDirectory(dir);
+				
+				return null;
+			}
+			else {
+				// get the series list
+				existSeriesList = new ArrayList<String>();
+				try {
+					// parsing a CSV file into BufferedReader class constructor
+					BufferedReader br = new BufferedReader(new FileReader(fileName));
+					
+					int lc = 0;
+					while ((line = br.readLine()) != null) // returns a Boolean value
+					{
+						if (lc == 0) {
+							++lc;
+						} else {
+							String[] seriesInfo = line.split(splitBy); // use comma as separator
+							//System.out.println("series instance uid =" + seriesInfo[seriesUidColumnNum]);
+							existSeriesList.add(seriesInfo[seriesUidColumnNum]);
+							++lc;
+						}
+					}
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				return existSeriesList;
+			}
+		} else
+			return null;
+	}
+	
+	boolean deleteDirectory(File directoryToBeDeleted) {
+		//File directoryToBeDeleted = new File(dir);
+		    File[] allContents = directoryToBeDeleted.listFiles();
+	    if (allContents != null) {
+	        for (File file : allContents) {
+	            deleteDirectory(file);
+	        }
+	    }
+	    return directoryToBeDeleted.delete();
+	}	
 }

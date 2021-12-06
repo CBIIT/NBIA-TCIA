@@ -109,6 +109,9 @@ export class PeComponent implements OnInit {
 //    }
 	
 	peExists(nameKey1, nameKey2, myArray): boolean{
+		if (myArray == null)
+			return false;
+		
 		for (var i=0; i < myArray.length; i++) {
 			if (myArray[i].collection.toUpperCase() == nameKey1.toUpperCase()&& myArray[i].site.toUpperCase() == nameKey2.toUpperCase()) {
 				return true;
