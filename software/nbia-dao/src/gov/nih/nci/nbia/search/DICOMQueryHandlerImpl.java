@@ -1117,8 +1117,16 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             if (toDate != null) {
                 toDateString = sdf.format(toDate);
             }
-
-			return CrossDatabaseUtil.curationTimeStampRange(fromDateString, toDateString);
+    		if (((fromDateString != null) && (fromDateString.length() > 0)) &&
+    			    ((toDateString != null) && (toDateString.length() > 0))) {
+    	         	return "and to_days(gs.dateReleased) >= to_days('" +
+    	            	       fromDateString +
+    	            	       "') and to_days(gs.dateReleased) <= to_days('" +
+    	            	       toDateString + "')";
+    	        }
+    	        else {
+    				return "";
+    			}
         }
 
         return "";
