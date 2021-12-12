@@ -204,7 +204,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
         throws CSObjectNotFoundException {
         Set<TableProtectionElement> retSet = new HashSet<TableProtectionElement>();
         Map<String, TableProtectionElement> tempHastable = new Hashtable<String, TableProtectionElement>();
-        System.out.println("-----------user id-"+userId+"----------------------------------");
+
         //userRoles = combination of user PG and users groups PGs
         List<ProtectionGroupRoleContext> userRoles = new ArrayList<ProtectionGroupRoleContext>();
 
@@ -214,11 +214,8 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
         //step 2 get PG tied to all the groups the user is a member of
         Set<Group> groups = upm.getGroups(userId);
-        System.out.println("-----------group size-"+groups.size()+"----------------------------------");
         for(Group group : groups) {
-        	System.out.println("-----------group id-"+group.getGroupId()+"----------------------------------");
         	Set<ProtectionGroupRoleContext> groupRoles = upm.getProtectionGroupRoleContextForGroup(Long.toString(group.getGroupId()));
-        	System.out.println("-----------groupRoles-"+groupRoles.size()+"----------------------------------");
         	userRoles.addAll(groupRoles);
         }
 
