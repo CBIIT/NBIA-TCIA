@@ -49,7 +49,8 @@ public class SetQCVisibilityForDataAdmin extends getData{
 			@FormParam("released") String released,
 			@FormParam("comment") String comment,
 			@FormParam("site") String site,
-			@FormParam("dateReleased") String dateReleased) {
+			@FormParam("dateReleased") String dateReleased,
+			@FormParam("url") String url) {
 		
 		
 		if (seriesIdList.size() < 1) {
@@ -97,7 +98,7 @@ public class SetQCVisibilityForDataAdmin extends getData{
 							statusList.add(result.get("oldStatus"));
 						}
 						System.out.println("newQcStatus-"+newQcStatus);
-						qDao.updateQcStatus(seriesList, newQcStatus, batch, complete, releasedYesNo, user, comment, site, null, releasedDateValue);
+						qDao.updateQcStatus(seriesList, newQcStatus, batch, complete, releasedYesNo, user, comment, site, url, releasedDateValue);
 						status = "ok";
 					}
 				}

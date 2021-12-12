@@ -1587,7 +1587,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
    }
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException{
-		Set <String>siteList=null;
 		if (seriesIds==null || seriesIds.size()<1) {
 			return null;
 		}
@@ -1600,17 +1599,25 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		for (Object[] siteRow : siteRows) {
 			if (firstTime) {
 				onlyCollection=(String)siteRow[0];
-				siteList=new HashSet<String>();
 				firstTime=false;
 			}
 			if (!onlyCollection.equalsIgnoreCase((String)siteRow[0])){
 				//more than one collection
 				return null;
 			}
-			siteList.add((String)siteRow[1]);
 		}
 		List<String> returnValue=new ArrayList<String>();
-		returnValue.addAll(siteList);
+		String protectionElementQuery="select distinct protection_element_name "+
+				" from csm_protection_element where protection_element_name like '"+
+				NCIAConfig.getCsmApplicationName()+"."+onlyCollection+"//%'";
+		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(protectionElementQuery).list();
+	    for (String result:results) {
+	    	System.out.println("result-"+result);
+	    	String[] parts=result.split("//");
+	    	if (parts.length>1) {
+	    		returnValue.add(parts[1]);
+	    	}
+	    }
 		return returnValue;
 	}
 }
