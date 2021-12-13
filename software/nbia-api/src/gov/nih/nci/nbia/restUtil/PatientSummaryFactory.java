@@ -55,8 +55,11 @@ public class PatientSummaryFactory {
     	Map<String, Integer> minTimepoint=new HashMap<String, Integer>();
     	for (PatientSearchResultWithModilityAndBodyPart item:input.getResultSet()) {
     		try {
-				if (item.getBodyParts()!=null) {
+				if (item.getBodyParts()!=null&&item.getBodyParts().size()>0) {
 					for (String part: item.getBodyParts()) {
+						 if (part==null||part.isEmpty()) {
+							 part="NOT SPECIFIED";
+						 }
 					     if (bodyParts.get(part)!=null){
 					    	 Integer count = bodyParts.get(part);
 					    	 count++;
@@ -66,6 +69,7 @@ public class PatientSummaryFactory {
 					     }
 					}
 				} else {
+
 				     if (bodyParts.get("NOT SPECIFIED")!=null){
 				    	 Integer count = bodyParts.get("NOT SPECIFIED");
 				    	 count++;
