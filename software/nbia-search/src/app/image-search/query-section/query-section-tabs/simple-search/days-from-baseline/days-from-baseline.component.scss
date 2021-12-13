@@ -4,6 +4,11 @@
 
 }
 
+.red-clear-from-base-line {
+  position: absolute;
+  left: $left-section-width - 60px;
+}
+
 .from-base-line-number-input{
   width: 47px;
   margin-right: 2px;
@@ -16,7 +21,6 @@
 
   padding: 4px;
   margin: 0 2px 5px 0;
-
 }
 
 .days-from-baseline-dropdown-empty-button{

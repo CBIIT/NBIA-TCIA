@@ -146,7 +146,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     // TODO see if we can get rid of unused columns.  Problem is dealing with older cookies.
     // Adding 'collection' to 0,3, and 5, to have a default for missing sort columns that might be in an old cookie.
     // sortColumns = ['', 'collection', 'subject', '', 'study', '', 'series'];
-    sortColumns = ['collection', 'collection', 'subject', 'collection', 'study', 'collection', 'series'];
+    sortColumns = ['collection', 'collection', 'subject', 'collection', 'study', 'totalNumberOfStudies', 'series', 'totalNumberOfSeries', 'series', 'collection', '10'];
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 

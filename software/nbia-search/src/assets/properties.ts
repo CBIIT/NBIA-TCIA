@@ -132,7 +132,7 @@ export let Properties = {
 
     SHOW_SUMMARY_TAB: true,
 
-    CONFIRM_EXIT: true,
+    CONFIRM_EXIT: false,
 
     SHOW_ROLES: false,
 
