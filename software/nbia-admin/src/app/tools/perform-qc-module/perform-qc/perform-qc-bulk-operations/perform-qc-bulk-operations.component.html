@@ -137,8 +137,25 @@
 
                 <!-- ----- Released  ----- -->
                 <div class="qc-bulk-complete-radios">
-                    Released<br/>
-                    <input
+                    <span class="mr-2">Released</span>
+
+                    <!--  FIXME just commenting this out for a commit -->
+<!--
+
+                    <span class="released-date">
+                        <input class="m-0"
+                               type="text"
+                               value="The date here"
+                        >
+
+                        <img [ngStyle]="{height: '20px'}"
+                             class="cal-button-image ml-3 mb-1"
+                             src="assets/images/calendar_icon_2.png"
+                             alt="Calendar button">
+                    </span>
+                    <br/>
+-->
+                     <input
                         type="radio"
                         class="clicker"
                         id="radio-qc-bulk-released-yes"
@@ -180,34 +197,51 @@
                     >
                         No Change
                     </label>
+
                 </div>
                 <!-- ----- END Released  ----- -->
-                <!--
 
-                               <span class="qc-bulk-complete-radios ml-1" style="display: inline-block;">
-                                  <input
-                                       class="mt-3" type="checkbox" id="updateSiteCheckbox"
-                                       [(ngModel)]="showUpdateCollectionSite"
-                                   >
-                                   <label
-                                       class="ml-1"
-                                       for="updateSiteCheckbox"
-                                   >Update Site</label>
+                <span class="qc-bulk-complete-radios ml-1" style="display: inline-block;">
 
-                                   <span *ngIf="showUpdateCollectionSite">
-                                       <select class="custom-select">
-                                           <option selected value="1">Site One</option>
-                                           <option value="2">Site Two</option>
-                                           <option value="3">Site Three</option>
-                                           <option value="4">Site Four</option>
-                                           <option value="5">Site Five</option>
-                                       </select>
-                                   </span>
+                    <!-- Checkbox -->
+                      <input
+                          class="mt-3" type="checkbox" id="updateSiteCheckbox"
+                          [(ngModel)]="showUpdateCollectionSite"
+                          (click)="onShowUpdateCollectionSiteClick()"
+                      >
+                    <!-- END Checkbox -->
+
+                    <!-- Update Site text -->
+                       <label
+                           class="ml-1"
+                           for="updateSiteCheckbox"
+                       >Update Site</label>
+                    <!-- END Update Site text -->
+
+<!--
+                    searchResults.length:{{searchResults.length}}
+                    searchResults[0]['selected']:{{searchResults[0]['selected']}}
+-->
 
 
+                    <span *ngIf="showUpdateCollectionSite">
 
-                               </span>
-               -->
+                           <select class="custom-select"
+                                   id="newSite"
+                                   name="newSite"
+                                   ngModel
+                           >
+
+                               <option *ngFor="let i of siteDropdownArray"
+                                       selected value=i
+                               >
+                                   {{i}}
+                               </option>
+                           </select>
+
+
+                       </span>
+                </span>
 
             </div>
         </div>
@@ -235,9 +269,7 @@
                         <button
                             class="btn nbia-button qc-bulk-update-button"
                             [ngClass]="{
-                                'nbia-button-disabled':
-                                    visible < 0 ||
-                                    searchResultsSelectedCount < 1,
+                                'nbia-button-disabled': ( visible < 0 && (! useBatchNumber ) && logText.length < 1  && ( isReleased === NO_CHANGE)   && ( isComplete === NO_CHANGE) )  || searchResultsSelectedCount < 1 ,
                                 'font-extra-small': currentFont === '0',
                                 'font-small': currentFont === '1',
                                 'font-medium': currentFont === '2',

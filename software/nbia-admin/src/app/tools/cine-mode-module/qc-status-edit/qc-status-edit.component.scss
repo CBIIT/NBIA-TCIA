@@ -8,37 +8,45 @@
 
 $qc-status-radio-label-font-size: 13px;
 
-.qc-status-edit-log-text {
+.qc-status-released-date-text{
+    color: #e83e8c;
+}
+
+.qc-status-released-date-text-input{
+    color: #3eade8;
+}
+
+.qc-status-edit-log-text{
     width: 100%;
     border: solid $data-table-body-border-color 1px;
     margin: 14px 0 0 0;
 }
 
-.qc-status-outer-div {
+.qc-status-outer-div{
     border: solid $data-table-body-border-color 1px;
 }
 
-.bulk-qc-status-table-frame {
+.bulk-qc-status-table-frame{
     padding: 8px;
 }
 
-.qc-status-radios {
+.qc-status-radios{
     border: solid $data-table-body-border-color 1px;
     // padding-right: 1px;
     padding: 6px;
 }
 
-.qc-status-complete-radios {
+.qc-status-complete-radios{
     border: solid $data-table-body-border-color 1px;
     // padding-right: 1px;
     padding: 6px 18px 6px 18px;
 }
 
-.qc-status-radio-label {
+.qc-status-radio-label{
     padding-left: 4px;
 }
 
-.qc-status-batch-number-spinner {
+.qc-status-batch-number-spinner{
     border: solid 1px #686868;
     border-radius: 3px;
     position: relative;
@@ -49,7 +57,7 @@ $qc-status-radio-label-font-size: 13px;
     height: 28px;
 }
 
-.qc-status-update-button {
+.qc-status-update-button{
     //margin: 6px 12px 0 0 ;
     // margin: 10px;
     margin: 4px 8px 0 0;

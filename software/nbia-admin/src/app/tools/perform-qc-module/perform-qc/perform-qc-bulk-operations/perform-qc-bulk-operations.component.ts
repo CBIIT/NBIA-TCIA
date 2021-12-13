@@ -14,6 +14,7 @@ import { Properties } from '@assets/properties';
 import { takeUntil } from 'rxjs/operators';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import { Subject } from 'rxjs';
+import { SearchResultsSectionBravoService } from '@app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.service';
 
 
 @Component( {
@@ -41,54 +42,112 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     currentFont;
 
     cBox = [];
-
+    selectedSiteIdArray = [];
+    siteDropdownArray = [];
     showUpdateCollectionSite = false;
 
+    newSite = 0;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+
     constructor( private utilService: UtilService, private apiService: ApiService,
-                 private preferencesService: PreferencesService) {
+                 private preferencesService: PreferencesService, private searchResultsSectionBravoService: SearchResultsSectionBravoService ){
     }
 
-    ngOnInit() {
+    ngOnInit(){
 
         this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentFont = data;
             } );
 
+        this.searchResultsSectionBravoService.selectionChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.upDateSelectedSiteIdArray();
+            } );
+
+
+        this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                console.log( 'MHL 00 getSitesForSeriesEmitter: ', data );
+                this.siteDropdownArray = data;
+                console.log( 'MHL 01 getSitesForSeriesEmitter: ', this.siteDropdownArray );
+            } );
+
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
     }
 
-    onQcBulkStatusClick( i ) {
+    onShowUpdateCollectionSiteClick(){
+        console.log( 'MHL onShowUpdateCollectionSiteClick showUpdateCollectionSite: ', this.showUpdateCollectionSite );
+        this.upDateSelectedSiteIdArray();
+    }
+
+    /**
+     * Makes an array of selected series IDs  this.selectedSiteIdArray
+     */
+    upDateSelectedSiteIdArray(){
+        this.selectedSiteIdArray = [];
+
+        for( let f = 0; f < this.searchResults.length; f++ ){
+            if( this.searchResults[f]['selected'] ){
+                console.log( 'MHL searchResults[' + f + '][\'selected\']' );
+                console.log( 'MHL searchResults[' + f + ']: ', this.searchResults[f]['series'] );
+                this.selectedSiteIdArray.push( this.searchResults[f]['series'] );
+            }
+        }
+        console.log( 'MHL selectedSiteIdArray: ', this.selectedSiteIdArray );
+        this.getSitesForDropdown();
+    }
+
+    getSitesForDropdown(){
+        this.updateSiteList();
+    }
+
+    async updateSiteList(){
+        let runaway = 10;
+        console.log( 'MHL 000a seriesData: ', this.selectedSiteIdArray );
+        console.log( 'MHL 000b runaway: ', runaway );
+        this.apiService.getSites( this.selectedSiteIdArray );
+
+        while( (this.selectedSiteIdArray === undefined || this.selectedSiteIdArray.length === undefined || this.selectedSiteIdArray.length < 1) && runaway > 0 ){
+//            console.log( 'MHL 001 seriesData[' + runaway +']: ', this.seriesData );
+            runaway--;
+            await this.utilService.sleep( 500 );
+        }
+        console.log( 'MHL 002 seriesData: ', this.selectedSiteIdArray );
+    }
+
+
+    onQcBulkStatusClick( i ){
         this.visible = i;
     }
 
-    onQcBulkStatusCompleteClick( c ) {
+    onQcBulkStatusCompleteClick( c ){
         this.isComplete = c;
     }
 
-    onQcBulkStatusReleasedClick( r ) {
+    onQcBulkStatusReleasedClick( r ){
         this.isReleased = r;
     }
 
     onQcBulkUpdateClick(){
         let query = 'projectSite=' + this.collectionSite;
-        for(let row of this.searchResults ){
+        for( let row of this.searchResults ){
             if( row['selected'] ){
                 query += '&seriesId=' + row['series'];
             }
         }
-        if(  this.isComplete === this.YES ){
+        if( this.isComplete === this.YES ){
             query += '&complete=Complete';
         }
-        if(  this.isComplete === this.NO ){
+        if( this.isComplete === this.NO ){
             query += '&complete=NotComplete';
         }
-        if(  this.isReleased === this.YES ){
+        if( this.isReleased === this.YES ){
             query += '&released=released';
         }
-        if(  this.isReleased === this.NO ){
+        if( this.isReleased === this.NO ){
             query += '&released=NotReleased';
         }
 
@@ -96,38 +155,53 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             query += '&batch=' + this.batchNumber;
         }
 
-        if( this.visible >= 0){
-             query += '&newQcStatus=' + Consts.QC_STATUSES[this.visible];
+        if( this.visible >= 0 ){
+            query += '&newQcStatus=' + Consts.QC_STATUSES[this.visible];
         }
 
-        if(! this.utilService.isNullOrUndefinedOrEmpty( this.logText)){
+        if( !this.utilService.isNullOrUndefinedOrEmpty( this.logText ) ){
             query += '&comment=' + this.logText;
         }
 
-        if( Properties.DEMO_MODE){
-            console.log('DEMO mode: Perform QC  Update ', query );
-        }
-        else{
+        if( Properties.DEMO_MODE ){
+            console.log( 'DEMO mode: Perform QC  Update ', query );
+        }else{
             // apiService
-            this.apiService.doSubmit(Consts.TOOL_BULK_QC, query);
+            this.apiService.doSubmit( Consts.TOOL_BULK_QC, query );
+        }
+
+        // Update the series site if "Update" checkbox is selected
+        if( this.showUpdateCollectionSite ){
+            console.log( 'MHL 00 selectedSiteIdArray: ', this.selectedSiteIdArray );
+            console.log( 'MHL 01 newSite: ', this.siteDropdownArray[this.newSite] );  // The site
+
+            let seriesForNewSite = [];
+            for( let row of this.searchResults ){
+                if( row['selected'] ){
+                    console.log('MHL WWWW: ', row['series']);
+                    seriesForNewSite.push( row['series'] );
+                }
+            }
+
+            this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
         }
     }
 
 
     onQcStatusHistoryReportClick(){
         let query = '';
-        for(let row of this.searchResults ){
+        for( let row of this.searchResults ){
             if( row['selected'] ){
                 query += '&seriesId=' + row['series'];
             }
         }
 
-        this.apiService.doSubmit( Consts.GET_HISTORY_REPORT, query);
+        this.apiService.doSubmit( Consts.GET_HISTORY_REPORT, query );
     }
 
     onDownloadClick(){
         let query = '';
-        for(let row of this.searchResults ){
+        for( let row of this.searchResults ){
             if( row['selected'] ){
                 query += '&list=' + row['series'];
             }
@@ -165,7 +239,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

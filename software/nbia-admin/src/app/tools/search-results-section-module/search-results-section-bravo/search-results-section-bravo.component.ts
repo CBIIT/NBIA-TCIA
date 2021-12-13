@@ -19,6 +19,7 @@ import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-brav
 import { IKeyboardShortcutListenerOptions, KeyboardKeys, } from 'ngx-keyboard-shortcuts';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import { SearchResultsPagerService } from '@app/tools/search-results-section-module/search-results-pager/search-results-pager.service';
+import { SearchResultsSectionBravoService } from '@app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.service';
 
 
 @Component( {
@@ -92,6 +93,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         private modalityDescriptionsService: ModalityDescriptionsService,
         private searchResultByIndexService: SearchResultByIndexService,
         private preferencesService: PreferencesService,
+        private searchResultsSectionBravoService: SearchResultsSectionBravoService,
         private searchResultsPagerService: SearchResultsPagerService
     ){
     }
@@ -116,6 +118,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.searchResultByIndexService.searchResultsByIndexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
             if( this.currentCineModeSeriesIndex < this.searchResults.length - 1 ){
                 this.currentCineModeSeriesIndex++;
+                console.log( 'MHL 01 CALLING onClickCineMode: cineModeService.openCineMode this.collectionSite: ', this.collectionSite );
 
                 this.cineModeService.openCineMode(
                     this.searchResults[this.currentCineModeSeriesIndex],
@@ -141,6 +144,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // New search results have arrived.
         this.apiService.searchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
+                console.log('MHL NOG06 searchResultsEmitter: ', data );
                 if( data[0] === Consts.NO_SEARCH ){
                     this.noSearch = true;
                     data = [];
@@ -184,9 +188,9 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 this.loadingDisplayService.setLoading( false );
             } );
 
-        this.apiService.collectionSiteEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.apiService.collectionSiteEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                console.log( 'MHL X X X X X X X collectionSiteEmitter: ', data );
                 this.collectionSite = data;
             } );
 
@@ -274,6 +278,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
 
     toggleSearchResultsCheckbox( i, c ){
+        console.log('MHL AAAAA XXXXX SearchResultsSectionBravoComponent.toggleSearchResultsCheckbox i: ', i );
+        console.log('MHL AAAAA XXXXX SearchResultsSectionBravoComponent.toggleSearchResultsCheckbox c: ', c );
         this.setCheckbox( i, c );
         this.getSelectedCheckboxCount();
 
@@ -319,15 +325,21 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     }
 
     setCheckbox( i, state ){
-        this.searchResults[i]['selected'] = state;
-        this.resultsUpdateBravoEmitter.emit( this.searchResults );
+        this.searchResults[i]['selected'] = state; // @TODO get this to  "Update Site"
+        console.log('MHL ****calling resultsUpdateBravoEmitter**** emit: ', this.searchResults[i]);
+        this.resultsUpdateBravoEmitter.emit( this.searchResults ); // @TODO replace this with a NON-Output emitter
+        this.searchResultsSectionBravoService.selectionChange( this.searchResults ); // @TODO replace above with this
+
     }
 
     // Cine-mode viewer
     onClickCineMode( i ){
+        console.log( 'MHL 00 onClickCineMode: ', i );
+        console.log( 'MHL 01 onClickCineMode: ', this.searchResults );
         i += (this.currentPage * this.pageLength);
         this.currentCineModeSeriesIndex = i;
-
+console.log('MHL collectionSite collectionSite: ', this.collectionSite);
+console.log('MHL collectionSite this.searchResults[' + i + ']: ', this.searchResults[i]);
         this.cineModeService.openCineMode(
             this.searchResults[i],
             this.collectionSite,
@@ -428,11 +440,12 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 );
                 break;
 
-            case  'Trial ID': this.searchResults.sort(
-                ( row1, row2 ): number => {
-                    return row1.trialDpPkId.localeCompare( row2.trialDpPkId ) *
-                    (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
-                });
+            case  'Trial ID':
+                this.searchResults.sort(
+                    ( row1, row2 ): number => {
+                        return row1.trialDpPkId.localeCompare( row2.trialDpPkId ) *
+                            (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                    } );
                 break;
 
             // There can only be one of these so no sorting for this column
@@ -455,7 +468,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             case 'Patient':
                 this.searchResults.sort(
                     ( row1, row2 ) => {
-                        return  row1.patientId.localeCompare( row2.patientId ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                        return row1.patientId.localeCompare( row2.patientId ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
                     }
                 );
                 break;
@@ -463,7 +476,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             case 'Subject ID':
                 this.searchResults.sort(
                     ( row1, row2 ) => {
-                        return  row1.patientId.localeCompare( row2.patientId ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                        return row1.patientId.localeCompare( row2.patientId ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
                     }
                 );
                 break;
@@ -504,7 +517,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                 break;
 
             case
-            'Modality': this.searchResults.sort(
+            'Modality':
+                this.searchResults.sort(
                     ( row1, row2 ) =>
                         (this.utilService.isNullOrUndefinedOrEmpty(
                                 row1.modality

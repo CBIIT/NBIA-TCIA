@@ -37,6 +37,8 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     qcStatuses; //  = Consts.QC_STATUSES;
     currentFont;
 
+    releasedDate;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -44,10 +46,10 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         private utilService: UtilService,
         private searchResultByIndexService: SearchResultByIndexService,
         private preferencesService: PreferencesService
-    ) {
+    ){
     }
 
-    ngOnInit() {
+    ngOnInit(){
         this.apiService.visibilitiesEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
             .subscribe( ( data ) => {
@@ -64,31 +66,51 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+
+        this.updateSiteList();
+
+
     }
 
-    onQcBulkStatusClick( n ) {
+    // @CHECKME
+    async updateSiteList(){
+        let runaway = 10;
+        console.log( 'MHL 000a seriesData: ', this.seriesData );
+        console.log( 'MHL 000b runaway: ', runaway );
+
+        while( ( this.seriesData === undefined || this.seriesData.length === undefined ||  this.seriesData.length < 1 ) && runaway > 0 ){
+//            console.log( 'MHL 001 seriesData[' + runaway +']: ', this.seriesData );
+            runaway--;
+            await this.utilService.sleep( 500 );
+        }
+        this.apiService.getSites( this.seriesData );
+        console.log( 'MHL 002 seriesData: ', this.seriesData );
+    }
+
+
+    onQcBulkStatusClick( n ){
         this.visible = n;
     }
 
-    onQcBulkStatusCompleteClick( c ) {
+    onQcBulkStatusCompleteClick( c ){
         this.isComplete = c;
     }
 
-    onQcBulkStatusReleasedClick( r ) {
+    onQcBulkStatusReleasedClick( r ){
         this.isReleased = r;
     }
 
-    onQcUpdateNextClick() {
+    onQcUpdateNextClick(){
         this.onQcUpdate();
         this.searchResultByIndexService.updateCurrentSearchResultByIndex( 0 );
     }
 
-    onQcSkipNextClick() {
+    onQcSkipNextClick(){
         // TODO this is for the high light in the search results, it must be renamed
         this.searchResultByIndexService.updateCurrentSearchResultByIndex( 0 );
     }
 
-    onQcUpdate() {
+    onQcUpdate(){
         let query = 'projectSite=' + this.collectionSite;
 
         query += '&seriesId=' + this.seriesData['series'];
@@ -124,7 +146,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

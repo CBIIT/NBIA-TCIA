@@ -390,7 +390,17 @@
                             'font-medium': currentFont === '2',
                             'font-large': currentFont === '3'
                         }">
+<!--mhl
                             {{item['value'] | shorten : 32}}
+-->
+
+                            <span *ngIf="item['value'].length > properties.MAX_CRITERIA_LEN "
+                                  title="{{item['value']}}">
+                            {{item['value'] | shorten : properties.MAX_CRITERIA_LEN}}<b>...</b>
+                            </span>
+                            <span *ngIf="item['value'].length <= properties.MAX_CRITERIA_LEN ">
+                            {{item['value']}}
+                            </span>
                         </label>
                     </span>
                     <!-- END Checkbox list -->
@@ -399,7 +409,7 @@
                         <input type="radio" name="dynamic-query-list-radio-{{sequenceNumber}}"
                                class="dynamic-query-list-checkbox"
                                id="dynamic-query-list-radio-test{{ i }}-{{sequenceNumber}}"
-                               [checked]="listCheckboxes[i]" (click)="onCriteriaListItemClicked(i)"/>
+                               [checked]="listCheckboxes[i]" (click)="onCriteriaListItemClicked(i, $event)"/>  <!--  @CHECKME  -->
                         <label [attr.for]="'dynamic-query-list-radio-test' + i + '-' + sequenceNumber" [ngClass]="{
                             'font-extra-small': currentFont === '0',
                             'font-small': currentFont === '1',
@@ -494,7 +504,8 @@
         >
             {{queryCriteriaData['dynamicQueryCriteriaApplyText']}}
         </button>
-<!--criteriaClearButton: {{this.criteriaClearButton}}-->
+
+            <!--criteriaClearButton: {{this.criteriaClearButton}}-->
         </div>
         <!-- ----- END  Apply Button  for Calendar ----- -->
 

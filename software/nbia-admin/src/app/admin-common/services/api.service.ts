@@ -69,6 +69,9 @@ export class ApiService{
     getDynamicCriteriaSelectionMenuDataResultsEmitter = new EventEmitter();
     getDynamicCriteriaSelectionMenuDataErrorEmitter = new EventEmitter();
 
+    getSitesForSeriesEmitter = new EventEmitter();
+
+
     trailerQuery = '';
 
     constructor( private utilService: UtilService, private parameterService: ParameterService,
@@ -90,7 +93,7 @@ export class ApiService{
             await this.utilService.sleep( Consts.waitTime );
         }
         this.update();
-        this.getWikiUrlParam();
+        await this.getWikiUrlParam();
     }
 
     update(){
@@ -219,8 +222,10 @@ export class ApiService{
         }
 
         if( tool === Consts.TOOL_PERFORM_QC ){
+            console.log( 'MHL tool === Consts.TOOL_PERFORM_QC' );
             // Do the search if we have at least one QC Status.
             if( queryParameters.includes( '&visibilities=' ) ){
+                console.log( 'MHL queryParameters: ', queryParameters );
                 this.getPerformQcSearch( queryParameters.substr( 1 ) );
             }else{
                 // Don't do the search, and send back Consts.NO_SEARCH, this will tell the Search results screen don't show results count or pager at the top(not the same as a search with no results).
@@ -262,6 +267,64 @@ export class ApiService{
             ( err ) => {
                 this.submitDeleteLicenseErrorEmitter.emit( err );
             } );
+    }
+
+    submitSiteForSeries(site, seriesIdArray){
+        console.log('MHL submitSiteForSeries site: ', site );
+        let seriesIdArg = 'site=' + site + '&';
+
+        for( let f = 0; f < seriesIdArray.length; f++ ){
+            console.log('MHL seriesIdArray[' + f + ']: ', seriesIdArray[f]);
+            seriesIdArg += 'seriesId=' + seriesIdArray[f] + '&';
+        }
+
+
+
+        // Remove last "&"
+        seriesIdArg = seriesIdArg.slice( 0, -1 );
+
+        console.log('MHL submitSiteForSeries seriesIdArg: ', seriesIdArg);
+
+        this.doPost( 'submitSiteForSeries', seriesIdArg ).subscribe(
+            ( data ) => {
+
+                console.log( 'MHL submitSiteForSeries: ', data );
+            },
+            error => {
+                console.error('MHL ERROR submitSiteForSeries: ', error);
+                console.error('MHL ERROR submitSiteForSeries: ', error.toString());
+                alert(  'submitSiteForSeries (' + error['status'] + ') - ' + error['error'] );
+            }
+        )
+    }
+
+
+    /**
+     * wITH LIST OF SERIES GET LIST OF SITES FOR DROP DOWN
+     * @param idList
+     */
+    getSites(idList){
+        console.log( 'MHL getSites idList: ', idList );
+        let seriesIdArg = '';
+        for( let f = 0; f < idList.length; f++ ){
+             seriesIdArg += 'seriesId=' + idList[f] + '&';
+        }
+        // Remove last "&"
+        seriesIdArg = seriesIdArg.slice( 0, -1 );
+
+        console.log('MHL getSites seriesIdArg: ', seriesIdArg);
+        this.doPost( 'getSitesForSeries', seriesIdArg ).subscribe(
+            ( data ) => {
+
+                console.log( 'MHL getSites: ', data );
+                this.getSitesForSeriesEmitter.emit( data );
+            },
+            error => {
+                console.error('MHL ERROR getSites: ', error);
+                console.error('MHL ERROR getSites: ', error.toString());
+                alert(  ' (' + error['status'] + ') - ' + error['error'] );
+            }
+        )
     }
 
     getDynamicCriteriaSelectionMenuData(){
@@ -428,11 +491,12 @@ export class ApiService{
      */
     doAdvancedQcSearch( query, rerun = false ){
         // If the query has not changed, don't run it again.
-        if( this.trailerQuery === query && (! rerun) ){
+        if( this.trailerQuery === query && (!rerun) ){
             return;
         }
-
+        console.log( 'MHL ZEB00 doAdvancedQcSearch: ', query );
         this.trailerQuery = query;
+        console.log( 'MHL 04 query: ', query );
         this.displayDynamicQueryService.query( query );
         this.loadingDisplayService.setLoading( true, 'Loading data...' );
 
@@ -823,7 +887,13 @@ export class ApiService{
      */
     doGet( queryType, query ? ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+        console.log( 'MHL getUrl: ', queryType );
+        console.log( 'MHL query: ', query );
+        if( query !== undefined ){
+            getUrl += '?' + query;
+            console.log( 'MHL query: ', getUrl );
 
+        }
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
             console.log( curl );

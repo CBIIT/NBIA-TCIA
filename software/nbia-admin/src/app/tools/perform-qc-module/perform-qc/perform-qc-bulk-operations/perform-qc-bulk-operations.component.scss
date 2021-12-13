@@ -9,12 +9,19 @@
 @import '../../../../app.component';
 @import '../../../../data-table';
 
-.qc-bulk-outer-div {
+.released-date{
+    padding: 0;
+    border: solid #e83e8c 2px;
+    background-color: #2dde2d;
+    height: 26px;
+}
+
+.qc-bulk-outer-div{
     border: solid $data-table-body-border-color;
     margin-top: 10px;
 }
 
-.qc-bulk-heading {
+.qc-bulk-heading{
     color: $heading-text-color;
     background-color: #fff;
     margin: 6px 0 0 6px;
@@ -24,7 +31,7 @@
     padding: 8px;
 }
 
-.qc-bulk-radios {
+.qc-bulk-radios{
     border: solid $data-table-body-border-color 1px;
     padding: 6px;
 }
@@ -34,11 +41,11 @@
     padding: 6px 18px 6px 18px;
 }
 
-.qc-bulk-radio-label {
+.qc-bulk-radio-label{
     padding-left: 4px;
 }
 
-.qc-bulk-batch-number-spinner {
+.qc-bulk-batch-number-spinner{
     border: solid 1px #686868;
     border-radius: 3px;
     position: relative;
@@ -56,5 +63,5 @@
 }
 
 .qc-bulk-update-button{
-    margin: 6px 12px 0 0 ;
+    margin: 6px 12px 0 0;
 }
