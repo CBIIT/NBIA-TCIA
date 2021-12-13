@@ -58,6 +58,13 @@ public class SiteData implements Serializable {
                                                        collectionSiteCombination.length());
     }
 
+    public SiteData(String collection, String site) {
+    	this.collection=collection;
+    	this.siteName=site;
+    	
+    }
+    
+    
     /**
      * Getter for collection
      */

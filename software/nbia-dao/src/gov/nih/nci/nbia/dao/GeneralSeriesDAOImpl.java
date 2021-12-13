@@ -610,6 +610,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				seriesDTO.setDescription(Util.nullSafeString(row[11]));
 				seriesDTO.setModality(row[12].toString());
 				seriesDTO.setPatientPkId(row[13].toString());
+				seriesDTO.setCommercialRestrictions(false);
+				if (row[14] != null && ((String)row[14]).equalsIgnoreCase("yes")) {
+					seriesDTO.setCommercialRestrictions(true);
+				}
 				resultSets.add(seriesDTO);
 			}
 		}
@@ -944,7 +948,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 	private static int CHUNK_SIZE = 500;
 
-	private static String SQL_QUERY_SELECT = "SELECT series.id, patient.patientId, study.studyInstanceUID, series.seriesInstanceUID, study.id, series.imageCount, series.totalSize, dp.project, series.annotationsFlag, series.annotationTotalSize, series.seriesNumber, series.seriesDesc, series.modality, series.patientPkId ";
+	private static String SQL_QUERY_SELECT = "SELECT series.id, patient.patientId, study.studyInstanceUID, series.seriesInstanceUID, study.id, series.imageCount, series.totalSize, dp.project, series.annotationsFlag, series.annotationTotalSize, series.seriesNumber, series.seriesDesc, series.modality, series.patientPkId, series.excludeCommercial ";
 	private static String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join study.patient patient join patient.dataProvenance dp ";
 	private static String SQL_QUERY_WHERE = "WHERE ";
 
@@ -1417,19 +1421,27 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		}
 		return returnValue;
 	}
+	
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
-		String sqlString = "select patientId, project from GeneralSeries where visibility=1 and project=:project and (";
-		boolean first=true;
-		for (SiteData sd : authorizedSites) {
-			if (first) {
-				sqlString+="(site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
-			    first=false;
-			} else {
-				sqlString+=" or (site='"+sd.getSiteName()+"' and project='"+sd.getCollection()+"')";
-			}
+	public void cacheMD5ForAllCollections()throws DataAccessException{
+		Set<String> projectSet = new HashSet<String>();
+		List<SiteData> siteData=new ArrayList<SiteData>();
+		String sqlString = "select project, site from GeneralSeries where visibility=1 group by project, site";
+		List<String[]> resultsData  = getHibernateTemplate().find(sqlString);
+		for (Object item[] : resultsData) {
+			projectSet.add(item[0].toString());
+			SiteData site=new SiteData(item[0].toString(), item[1].toString());
+			siteData.add(site);
 		}
-		sqlString+=")";		
+		for (String project:projectSet) {
+			cacheMD5ForCollection(project, siteData);
+		}
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	private void cacheMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select patientId, project from GeneralSeries where visibility=1 and project=:project";
+		boolean first=true;
 		sqlString += " group by patientId, project";
 		List<String[]> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
 		String md5Concat="";
@@ -1444,9 +1456,30 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			}
 		}
 		if (md5Concat.length()==0) {
-			return md5Concat;
+			return;
 		}
-		return digest(md5Concat);
+		String md5hash = digest(md5Concat);
+		try {
+			sqlString = "update collection_descriptions set md5hash=:md5hash where collection_name in(:project)";
+			SQLQuery qu = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
+			qu.setParameter("md5hash", md5hash);
+			qu.setParameter("project", project);
+			int count = qu.executeUpdate();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException{
+		String sqlString = "select md5hash from CollectionDesc where collectionName=:project";
+		List<String> resultsData  = getHibernateTemplate().findByNamedParam(sqlString, "project", project);
+		for (String item : resultsData) {
+			return item;
+		}
+		return null;
 	}
 	
 	
@@ -1551,5 +1584,40 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			e.printStackTrace();
 		}
 		return result;
-}
+   }
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException{
+		if (seriesIds==null || seriesIds.size()<1) {
+			return null;
+		}
+		String hql = "select project, site from GeneralSeries where seriesInstanceUID in (:ids)";
+		Query query=getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameterList("ids", seriesIds);
+		List<Object[]> siteRows = query.list();
+		boolean firstTime=true;
+		String onlyCollection =null;
+		for (Object[] siteRow : siteRows) {
+			if (firstTime) {
+				onlyCollection=(String)siteRow[0];
+				firstTime=false;
+			}
+			if (!onlyCollection.equalsIgnoreCase((String)siteRow[0])){
+				//more than one collection
+				return null;
+			}
+		}
+		List<String> returnValue=new ArrayList<String>();
+		String protectionElementQuery="select distinct protection_element_name "+
+				" from csm_protection_element where protection_element_name like '"+
+				NCIAConfig.getCsmApplicationName()+"."+onlyCollection+"//%'";
+		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(protectionElementQuery).list();
+	    for (String result:results) {
+	    	System.out.println("result-"+result);
+	    	String[] parts=result.split("//");
+	    	if (parts.length>1) {
+	    		returnValue.add(parts[1]);
+	    	}
+	    }
+		return returnValue;
+	}
 }

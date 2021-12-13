@@ -179,4 +179,42 @@ L-->
           ADD COLUMN posda_transfer_id int(20) NULL;    
          </sql>
        </changeSet>
+       <changeSet id="8.0.add.datereleased" author="gustafss" dbms="mysql">
+         <comment>
+           add date received to general series
+         </comment>          
+         <sql>       
+          ALTER TABLE general_series 
+          ADD COLUMN date_released datetime DEFAULT NULL;    
+         </sql>
+       </changeSet>
+              <changeSet id="8.0.add.updatedatereleased" author="gustafss" dbms="mysql">
+         <comment>
+           set the original value to max_submission_timestamp
+         </comment>          
+         <sql>       
+          update general_series 
+          set date_released = max_submission_timestamp;    
+         </sql>
+       </changeSet>
+       <changeSet id="8.0.add.daterqctracking" author="gustafss" dbms="mysql">
+         <comment>
+           adds new fields to qc status history
+         </comment>          
+         <sql>       
+          ALTER TABLE qc_status_history 
+          ADD COLUMN site  varchar(200) DEFAULT NULL,
+          ADD COLUMN uri  varchar(200) DEFAULT NULL,
+          ADD COLUMN date_released datetime DEFAULT NULL;    
+         </sql>
+       </changeSet>
+       <changeSet id="8.0.add.mdfforcollection" author="gustafss" dbms="mysql">
+         <comment>
+           adds new fields to collection descriptions
+         </comment>          
+         <sql>       
+          ALTER TABLE collection_descriptions 
+          ADD COLUMN md5hash varchar(100) DEFAULT NULL;    
+         </sql>
+       </changeSet>
 </databaseChangeLog>

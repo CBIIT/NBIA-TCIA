@@ -26,6 +26,7 @@ import org.apache.commons.io.IOUtils;
  */
 public class DownloadServletVersion extends HttpServlet {
 	private static String osParam = "os";
+	private static String appVersionParam = "appVersion";
 	private static String winUrl = NCIAConfig.getWinInstallerLink();
 	private static String macUrl = NCIAConfig.getMacInstallerLink();
 	private static String centOsUrl = NCIAConfig.getCentOSInstallerLink();
@@ -49,6 +50,8 @@ public class DownloadServletVersion extends HttpServlet {
 		} else if (os.equals("Ubuntu")) {
 			urlForDownload = ubuntuUrl;
 		}
+		
+		String appVersion = request.getParameter(appVersionParam);
 
 		String forcedGrade = null;
 		try {
@@ -59,6 +62,22 @@ public class DownloadServletVersion extends HttpServlet {
 			//ex.printStackTrace();
 		}
 
+		String minimumVersion = null;
+		try {
+			minimumVersion = NCIAConfig.getNoUpgradeMinimumVersion();
+		}
+		catch (RuntimeException ex) {
+			//ex.printStackTrace();
+		}	
+
+		if (minimumVersion != null) {
+			if (appVersion == null) {
+				forcedGrade = "true";
+			} 
+			else if (new Float(minimumVersion).floatValue() > new Float(appVersion).floatValue()) 
+				forcedGrade = "true";
+		}
+			
 		response.setStatus(HttpServletResponse.SC_OK);
 
 		List<String> readLines = new ArrayList<String>();

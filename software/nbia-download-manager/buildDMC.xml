@@ -27,7 +27,7 @@ ant -f buildDMC.xml
 	<property name="application.title" value="NBIA Data Retriever" />
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
-	<property name="package.version" value="4.2" />
+	<property name="package.version" value="4.3" />
 	<property name="copyright" value="(c) 2021 NCI, Leidos, Ellumen" />
 	<property name="icon.file.name" value="nbia-data-retriever.png" />
 

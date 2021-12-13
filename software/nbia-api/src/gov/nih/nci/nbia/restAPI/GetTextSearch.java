@@ -37,6 +37,7 @@ import gov.nih.nci.nbia.textsupport.SolrAllDocumentMetaData;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
+import gov.nih.nci.nbia.restUtil.SearchUtil;
 
 //import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
@@ -58,50 +59,13 @@ public class GetTextSearch extends getData{
 	public Response constructResponse(@FormParam("textValue") String textValue) {
 
 		try {	
-		Authentication authentication = SecurityContextHolder.getContext()
-				.getAuthentication();
-		String userName = (String) authentication.getPrincipal();
-		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
-		if (authorizedSiteData==null){
-		     AuthorizationManager am = new AuthorizationManager(userName);
-		     authorizedSiteData = am.getAuthorizedSites();
-		     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
-		}
-		List<String> seriesSecurityGroups = new ArrayList<String>();
-		List <DynamicSearchCriteria> criteria=new ArrayList<DynamicSearchCriteria>();
-//		int i=0;
-		QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
-		System.out.println("Searching Solr for"+textValue);
-		List<SolrAllDocumentMetaData> results = qh.searchSolr(textValue);
-		StringBuffer patientIDs = new StringBuffer();
-		Map<String, SolrAllDocumentMetaData> patientMap=new HashMap<String, SolrAllDocumentMetaData>();
-		for (SolrAllDocumentMetaData result : results)
-		{
-			patientIDs.append(result.getPatientId()+",");
-			patientMap.put(result.getPatientId(), result);
-		}
-		if (patientIDs.toString().length()<2) patientIDs.append("zzz33333###"); // no patients found
-		DynamicSearchCriteria dsc = new DynamicSearchCriteria();
-		dsc.setField("patientId");
-		dsc.setDataGroup("Patient");
-		Operator op = new Operator();
-		op.setValue("contains");
-		dsc.setOperator(op);
-		dsc.setValue(patientIDs.toString());
-
-		criteria.clear();
-		criteria.add(dsc);
-
-
-			qh.setStudyNumberMap(ApplicationFactory.getInstance().getStudyNumberMap());
-			qh.setQueryCriteria(criteria, "AND", authorizedSiteData, seriesSecurityGroups);
-			qh.query();
-			List<PatientSearchResult> patients = qh.getPatients();
+	        SearchUtil util=new SearchUtil();
+	        List<PatientSearchResult> patients=util.getPatients(textValue);
 			List<PatientSearchResult> textPatients = new ArrayList<PatientSearchResult>();
 			for (PatientSearchResult patient:patients)
 			{
 				PatientTextSearchResult textResult=new PatientTextSearchResultImpl(patient);
-				SolrAllDocumentMetaData solrResult =  patientMap.get(textResult.getSubjectId());
+				SolrAllDocumentMetaData solrResult =  util.getPatientMap().get(textResult.getSubjectId());
 				if (solrResult==null)
 				{
 					System.out.println("******* can't find id in patient map " + textResult.getSubjectId());

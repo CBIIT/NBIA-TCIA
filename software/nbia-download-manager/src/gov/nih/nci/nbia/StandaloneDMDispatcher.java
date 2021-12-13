@@ -114,6 +114,7 @@ public class StandaloneDMDispatcher {
 //	private final static String appVersion = "3.2";
 	private static String appVersion = null;
 	private static final String osParam = "os";
+	private static String appVersionParam = "appVersion";
 	private static final String installBtnLbl = "Update automatically";
 	private static final String downloadBtnLbl = "Update manually";
 	private static final String remindMeBtnLbl = "Remind me later";
@@ -149,7 +150,7 @@ public class StandaloneDMDispatcher {
 //				sdmp.getUserAgreementTxt();
 				sdmp.launch();
 			}
-			else if (os.toLowerCase().contains("linux"))
+			else  if (os.toLowerCase().contains("linux"))
 			{ // command line interface
 //				console.printf("CLI Application");
 				String fileName = null;
@@ -209,7 +210,7 @@ public class StandaloneDMDispatcher {
 					dr.performDownload(downloadDir, fileName, userName, passWord);
 				}
 			}
-			else System.out.println("NBIA Data Retriever is only supporting Linux operating system currently.");
+			else System.out.println("NBIA Data Retriever CLI is only supporting Linux operating system currently.");
 		} else {			
 		    // for copying style
 		    JLabel label = new JLabel();
@@ -697,6 +698,7 @@ public class StandaloneDMDispatcher {
 
 			List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
 			postParams.add(new BasicNameValuePair(osParam, os));
+			postParams.add(new BasicNameValuePair(appVersionParam, appVersion));
 			
 			HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
 				@Override

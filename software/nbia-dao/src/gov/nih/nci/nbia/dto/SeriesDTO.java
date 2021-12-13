@@ -53,7 +53,7 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String sopClassUID;
     private String licenseName;
     private String licenseUrl;    
-    
+    private boolean commercialRestrictions;
     public Date getStudyDate() {
 		return studyDate;
 	}
@@ -339,5 +339,14 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
 	public void setLicenseUrl(String licenseUrl) {
 		this.licenseUrl = licenseUrl;
 	}
+
+	public boolean isCommercialRestrictions() {
+		return commercialRestrictions;
+	}
+
+	public void setCommercialRestrictions(boolean commercialRestrictions) {
+		this.commercialRestrictions = commercialRestrictions;
+	}
+	
 }
 

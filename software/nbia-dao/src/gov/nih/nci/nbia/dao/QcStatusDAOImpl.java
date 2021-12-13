@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
@@ -464,7 +466,10 @@ public class QcStatusDAOImpl extends AbstractDAO
 			                   String submissionType,
 			                   String releasedStatus,
 			                   String userName, 
-			                   String comment) throws DataAccessException {
+			                   String comment,
+			                   String site,
+			                   String url,
+			                   Date dateReleased) throws DataAccessException {
 		
 		//System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - statusList size is: " + statusList.size());
 		
@@ -474,7 +479,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 			String seriesId = seriesList.get(i);
 			
 
-			updateDb(seriesId, newStatus, batch, submissionType, releasedStatus, userName, comment);
+			updateDb(seriesId, newStatus, batch, submissionType, releasedStatus, userName, comment, site, url, dateReleased);
 			
 		}
 		
@@ -786,11 +791,19 @@ public class QcStatusDAOImpl extends AbstractDAO
 			      String submissionType,
 			      String releasedStatus,
 			      String userName, 
-			      String comment) {
+			      String comment,
+		          String site,
+		          String url,
+		          Date dateReleased) {
 		    System.out.println("newStatus-"+newStatus);
-		    Integer visibility=VisibilityStatus.stringStatusFactory(newStatus).getNumberValue();
+		    Integer visibility=null;
+		    if (newStatus!=null) {
+		      visibility=VisibilityStatus.stringStatusFactory(newStatus).getNumberValue();
+	        }
 			QCStatusHistory qsh = new QCStatusHistory();
-			qsh.setNewValue(visibility.toString());
+			if (visibility!=null) {
+			      qsh.setNewValue(visibility.toString());
+			}
 			qsh.setHistoryTimestamp(new Date());
 			qsh.setSeriesInstanceUid(seriesId);
 			qsh.setUserId(userName);
@@ -805,7 +818,9 @@ public class QcStatusDAOImpl extends AbstractDAO
 				GeneralSeries gs = (GeneralSeries) (searchResults.get(0));
 				
 				qsh.setOldValue(gs.getVisibility());
-				gs.setVisibility(visibility.toString());
+				if (visibility!=null) {				
+				    gs.setVisibility(visibility.toString());
+				}
 				if (gs.getBatch()!=null) {
 					qsh.setOldBatch(gs.getBatch().toString());
             	}
@@ -827,15 +842,41 @@ public class QcStatusDAOImpl extends AbstractDAO
 					gs.setReleasedStatus(releasedStatus);
 					qsh.setNewReleasedStatus(releasedStatus);
 				}
-					
+				if (url!=null) {
+					gs.setDescriptionURI(url);
+					qsh.setUri(url);
+				}
+				if (site!=null) {
+					gs.setSite(site);;
+					qsh.setSite(site);
+				}	
+				if (dateReleased!=null) {
+					gs.setDateReleased(dateReleased);;
+					qsh.setDateReleased(dateReleased);;
+				}
 				getHibernateTemplate().update(gs);
 				getHibernateTemplate().bulkUpdate(updateHql);	
 				getHibernateTemplate().saveOrUpdate(qsh);
 				
 			}
 	}	
-	
-	
+	@Transactional(propagation=Propagation.REQUIRED)	
+	public void setSiteForSeries(List<String> seriesList, 
+            String site) throws DataAccessException{
+		
+		try {
+			String sqlString = "update general_series set site=:site where series_instance_uid in(:series)";
+			SQLQuery qu = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
+			qu.setParameter("site", site);
+			qu.setParameterList("series", seriesList);
+			int count = qu.executeUpdate();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+	}
 	private String createUpdateCurationTStatement(String seriesId){
 	    String hql = "update GeneralImage set curationTimestamp = current_timestamp() where seriesInstanceUID = '"+seriesId+"'";
 	    return hql;

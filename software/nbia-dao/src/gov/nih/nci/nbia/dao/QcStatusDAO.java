@@ -49,8 +49,12 @@ public interface QcStatusDAO {
             String submissionType,
             String releasedStatus,
             String userName, 
-            String comment) throws DataAccessException;
+            String comment,
+            String site,
+            String url,
+            Date dateReleased) throws DataAccessException;
 	
 	public List<Map<String,String>> findExistingStatus(String project, String site, List<String> seriesUids) throws DataAccessException;
-	
+	public void setSiteForSeries(List<String> seriesList, 
+            String site) throws DataAccessException;
 }

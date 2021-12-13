@@ -9,6 +9,7 @@
 package gov.nih.nci.nbia.internaldomain;
 
 import java.io.Serializable;
+import java.util.Date;
 	/**
 	* 	**/
 public class QCStatusHistory  implements Serializable
@@ -174,7 +175,41 @@ public class QCStatusHistory  implements Serializable
 		this.newReleasedStatus = newReleasedStatus;
 	}
 	
+	
+	private Date dateReleased;
+	private String uri;
+	private String site;
+	
+	
+	
+	
 	//----------------------------------------------------------------
+
+
+
+	public String getUri() {
+		return uri;
+	}
+
+	public Date getDateReleased() {
+		return dateReleased;
+	}
+
+	public void setDateReleased(Date dateReleased) {
+		this.dateReleased = dateReleased;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
+	}
 
 	/**
 	* An associated gov.nih.nci.ncia.security.NCIAUser object

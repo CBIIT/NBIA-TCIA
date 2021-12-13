@@ -838,6 +838,14 @@ public class GeneralSeries  implements Serializable
 		this.excludeCommercial = excludeCommercial;
 	}
 	
-	
+	private Date dateReleased;
+	public Date getDateReleased() {
+		return dateReleased;
+	}
+
+	public void setDateReleased(Date dateReleased) {
+		this.dateReleased = dateReleased;
+	}
+
 	
 }

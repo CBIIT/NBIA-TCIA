@@ -28,6 +28,7 @@ public class CollectionDesc  implements Serializable
 	private String userName;
 	private Integer licenseID;
 	private License license;
+	private String md5hash;
 	public Integer getId() {
 		return id;
 	}
@@ -72,6 +73,16 @@ public class CollectionDesc  implements Serializable
 	}
 	public void setLicense(License license) {
 		this.license = license;
+	}
+	
+	
+	
+	
+	public String getMd5hash() {
+		return md5hash;
+	}
+	public void setMd5hash(String md5hash) {
+		this.md5hash = md5hash;
 	}
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same
