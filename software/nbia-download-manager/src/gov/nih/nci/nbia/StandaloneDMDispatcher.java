@@ -376,14 +376,15 @@ public class StandaloneDMDispatcher {
 			sdm.setKey(key);
 			sdm.launch(seriesList);
 		}
-		else if (manifestVersion.startsWith("3.")) {			
-		if (1 == showUserAgreementTxt(getUserAgreementTxt()))
-			System.exit(0);
-		StandaloneDMV4 sdm = new StandaloneDMV4();
-		sdm.setKey(key);
-		sdm.launch(seriesList);
-		
-	}
+		else if (manifestVersion.startsWith("3.")) {
+			String text = getUserAgreementTxt();
+			
+			if (1 == showUserAgreementTxt(text))
+				System.exit(0);
+			StandaloneDMV4 sdm = new StandaloneDMV4();
+			sdm.setKey(key);
+			sdm.launch(seriesList);
+		}
 		else {
 			JOptionPane.showMessageDialog(null, "The version of manifest file, " + manifestVersion
 					+ ", might be incompatible with this version of app. Please upgrade your app.");
@@ -934,15 +935,21 @@ public class StandaloneDMDispatcher {
 	
 	private String getUserAgreementTxt() {
 		String text = null;
+		int responseCode = 0;
 		try {
 			String pubApiUrl = serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet",
 					"nbia-api/services/v1/getUserAgreementTxt");
 			URL urlForGetRequest = new URL(pubApiUrl);
 
-			HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();
+			HttpURLConnection connection = (HttpURLConnection) urlForGetRequest.openConnection();		
 			connection.setRequestMethod("GET");
 
-			int responseCode = connection.getResponseCode();
+			try {
+				responseCode = connection.getResponseCode();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			if (responseCode != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + connection.getResponseCode());
@@ -960,6 +967,7 @@ public class StandaloneDMDispatcher {
 			}
 
 		} catch (Exception e) {
+			throw new RuntimeException("Failed : HTTP error code : " + responseCode);
 		}
 
 		return text;

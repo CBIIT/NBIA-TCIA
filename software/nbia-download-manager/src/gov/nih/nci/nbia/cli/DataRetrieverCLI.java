@@ -371,7 +371,7 @@ public class DataRetrieverCLI {
 //			DataRetriever cmdDR = new DataRetriever();
 			loadManifestFile(fileName);
 
-			String text = getUserAgreementTxt();
+			String text = getUserAgreementTxt();			
 			if (text != null && !text.isEmpty()) {
 				retrieveUsersAns(text);
 			}
