@@ -887,8 +887,8 @@ export class ApiService{
      */
     doGet( queryType, query ? ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
-        console.log( 'MHL getUrl: ', queryType );
-        console.log( 'MHL query: ', query );
+       // console.log( 'MHL getUrl: ', queryType );
+       // console.log( 'MHL query: ', query );
         if( query !== undefined ){
             getUrl += '?' + query;
             console.log( 'MHL query: ', getUrl );
