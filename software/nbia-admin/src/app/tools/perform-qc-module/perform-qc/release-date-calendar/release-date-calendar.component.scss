@@ -1,0 +1,185 @@
+@import '../../../../tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component';
+
+$calInputFontSize: 12px;
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.widget-calendar-heading-moving{
+    // cursor: grabbing;
+}
+
+// .cursor-draggable isn't working for me, this is a workaround.
+.widget-calendar-heading-moving:hover{
+    // cursor: grab;
+}
+
+/*  Apply a "closed-hand" cursor during drag operation. */
+.widget-calendar-heading-moving:active{
+    cursor: grabbing;
+}
+
+.widget-calendar-heading-not-moving{
+    cursor: grab;
+}
+
+.btn-nbia-widget-calendar{
+    height: 12px;
+}
+
+.widget-calendar-month-clicker-div{
+    // z-index: 21;
+    //  border: solid #5e00bb 1px;
+    // padding: 2px 0 0 0;
+    padding: 0;
+    //   background-color: #00bb80;
+    float: left;
+}
+
+.widget-calendar-year-clicker-div{
+    // z-index: 21;
+    //  border: solid #bb00a2 1px;
+    // padding: 2px 0 0 0;
+    padding: 0;
+    //   background-color: #64bb00;
+    float: right;
+}
+
+.widget-calendar-button-icon{
+    height: 12px;
+}
+
+.calendar-table{
+    width: 100%;
+    padding: 2px;
+    //  border: solid #2ed053 2px;
+    border-collapse: collapse;
+}
+
+.widget-calendar-month-clicker-month{
+    width: 42px;
+    text-align: center;
+}
+
+.day-td{
+    width: 24px;
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    text-align: center;
+
+    &:hover{
+        background-color: #ddd;
+        border: solid 0 #000;
+        border-radius: 4px;
+    }
+}
+
+.widget-calendar-th{
+    background-color: #ddd;
+    color: #036;
+    font-size: 12px;
+}
+
+.heading-td{
+    width: 33%;
+}
+
+.widget-calendar-today-button{
+    height: 28px;
+    padding-top: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    // padding: 0 0 19px 0;
+    margin: 0 0 0 0;
+}
+
+/*
+.widget-calendar-today{
+    background-color: #bf14fd;
+    text-decoration: underline;
+    text-decoration-color: blue;
+}
+*/
+
+.widget-calendar-today{
+    background-color: #8ebfff !important;
+    border: solid 0 #8ebfff;
+    border-radius: 4px;
+}
+
+.widget-calendar-previous-month{
+    background-color: #fff;
+    color: #969696;
+}
+
+.widget-calendar-previous-month-weekend{
+    background-color: #fff;
+    color: #d87474;
+}
+
+.widget-calendar-next-month-weekend{
+    background-color: #fff;
+    // background-color: #faeeee;
+    color: #d87474;
+}
+
+.widget-calendar-this-month{
+    background-color: #f6f6f6;
+    color: #036;
+}
+
+.widget-calendar-this-month-weekend{
+    background-color: #f6f6f6;
+    color: #c30100;
+}
+
+.widget-calendar-next-month{
+    background-color: #fff;
+    // background-color: #faeeee;
+    color: #969696;
+}
+
+// @FIXME move this
+.invalid-text-input{
+    background-color: #ffd4d4;
+}
+
+.release-cal-button-image{
+    @extend .clicker;
+    float: right;
+    margin: 5px;
+}
+
+// Shouldn't need this
+.release-cal-prompt{
+    background-color: #eee;
+    border-right: solid #ccc 1px;
+    border-bottom: solid #ccc 1px;
+    padding: 6px 4px 4px 4px;
+}
+
+// Shouldn't need this
+.release-cal-text{
+    border: none;
+    padding: 6px 0 4px 10px;
+    width: 190px;
+    font-size: $calInputFontSize;
+    outline: none;
+    box-shadow: none !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.release-cal-div{
+    position: absolute;
+    //top: 200px;
+    //left: 200px;
+    width: 300px;
+    z-index: 60; //@FIXME make sure higher than all search results elements
+    .center {
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -30,6 +30,9 @@ export class CineModeBravoService{
      * @param searchResultsIndex
      */
     openCineMode( series, collectionSite, searchResultsIndex ) {
+        console.log('MHL openCineMode series: ', series);
+        console.log('MHL openCineMode collectionSite: ', collectionSite);
+        console.log('MHL openCineMode searchResultsIndex: ', searchResultsIndex);
         this.displayCineModeBravoImagesEmitter.emit( {
             series,
             collectionSite,

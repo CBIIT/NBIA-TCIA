@@ -269,21 +269,20 @@ export class ApiService{
             } );
     }
 
-    submitSiteForSeries(site, seriesIdArray){
-        console.log('MHL submitSiteForSeries site: ', site );
+    submitSiteForSeries( site, seriesIdArray ){
+        console.log( 'MHL submitSiteForSeries site: ', site );
         let seriesIdArg = 'site=' + site + '&';
 
         for( let f = 0; f < seriesIdArray.length; f++ ){
-            console.log('MHL seriesIdArray[' + f + ']: ', seriesIdArray[f]);
+            console.log( 'MHL seriesIdArray[' + f + ']: ', seriesIdArray[f] );
             seriesIdArg += 'seriesId=' + seriesIdArray[f] + '&';
         }
-
 
 
         // Remove last "&"
         seriesIdArg = seriesIdArg.slice( 0, -1 );
 
-        console.log('MHL submitSiteForSeries seriesIdArg: ', seriesIdArg);
+        console.log( 'MHL submitSiteForSeries seriesIdArg: ', seriesIdArg );
 
         this.doPost( 'submitSiteForSeries', seriesIdArg ).subscribe(
             ( data ) => {
@@ -291,9 +290,9 @@ export class ApiService{
                 console.log( 'MHL submitSiteForSeries: ', data );
             },
             error => {
-                console.error('MHL ERROR submitSiteForSeries: ', error);
-                console.error('MHL ERROR submitSiteForSeries: ', error.toString());
-                alert(  'submitSiteForSeries (' + error['status'] + ') - ' + error['error'] );
+                console.error( 'MHL ERROR submitSiteForSeries: ', error );
+                console.error( 'MHL ERROR submitSiteForSeries: ', error.toString() );
+                alert( 'submitSiteForSeries (' + error['status'] + ') - ' + error['error'] );
             }
         )
     }
@@ -303,16 +302,16 @@ export class ApiService{
      * wITH LIST OF SERIES GET LIST OF SITES FOR DROP DOWN
      * @param idList
      */
-    getSites(idList){
+    getSites( idList ){
         console.log( 'MHL getSites idList: ', idList );
         let seriesIdArg = '';
         for( let f = 0; f < idList.length; f++ ){
-             seriesIdArg += 'seriesId=' + idList[f] + '&';
+            seriesIdArg += 'seriesId=' + idList[f] + '&';
         }
         // Remove last "&"
         seriesIdArg = seriesIdArg.slice( 0, -1 );
 
-        console.log('MHL getSites seriesIdArg: ', seriesIdArg);
+        console.log( 'MHL getSites seriesIdArg: ', seriesIdArg );
         this.doPost( 'getSitesForSeries', seriesIdArg ).subscribe(
             ( data ) => {
 
@@ -320,9 +319,8 @@ export class ApiService{
                 this.getSitesForSeriesEmitter.emit( data );
             },
             error => {
-                console.error('MHL ERROR getSites: ', error);
-                console.error('MHL ERROR getSites: ', error.toString());
-                alert(  ' (' + error['status'] + ') - ' + error['error'] );
+                console.error( 'MHL ERROR getSites: ', error );
+               // alert( ' (' + error['status'] + ') - ' + error['error'] );
             }
         )
     }
@@ -887,8 +885,8 @@ export class ApiService{
      */
     doGet( queryType, query ? ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
-       // console.log( 'MHL getUrl: ', queryType );
-       // console.log( 'MHL query: ', query );
+        console.log( 'MHL getUrl: ', queryType );
+        console.log( 'MHL query: ', query );
         if( query !== undefined ){
             getUrl += '?' + query;
             console.log( 'MHL query: ', getUrl );

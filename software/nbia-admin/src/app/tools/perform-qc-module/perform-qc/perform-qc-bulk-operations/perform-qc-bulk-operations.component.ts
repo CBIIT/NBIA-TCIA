@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import { Subject } from 'rxjs';
 import { SearchResultsSectionBravoService } from '@app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.service';
+import { ReleaseDateCalendarService } from '@app/tools/perform-qc-module/perform-qc/release-date-calendar/release-date-calendar.service';
 
 
 @Component( {
@@ -38,6 +39,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     isReleased = this.NO_CHANGE;
     visible = -1;
 
+    showReleaseCalendar = false;
     qcStatuses = Consts.QC_STATUSES;
     currentFont;
 
@@ -45,13 +47,19 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     selectedSiteIdArray = [];
     siteDropdownArray = [];
     showUpdateCollectionSite = false;
-
+    showUpdateDescriptionUri = false;
+    descriptionUri = '';
+    showReleasedDateCalendar = false; // TODO rename this
     newSite = 0;
+
+    releaseDate;
+    badReleasedDate;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private utilService: UtilService, private apiService: ApiService,
-                 private preferencesService: PreferencesService, private searchResultsSectionBravoService: SearchResultsSectionBravoService ){
+                 private preferencesService: PreferencesService, private searchResultsSectionBravoService: SearchResultsSectionBravoService,
+                 private releaseDateCalendarService: ReleaseDateCalendarService ){
     }
 
     ngOnInit(){
@@ -59,6 +67,16 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentFont = data;
+            } );
+
+        this.releaseDateCalendarService.showPopupCalendarEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showReleaseCalendar = data;
+            } );
+
+        this.releaseDateCalendarService.releaseDateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.releaseDate = data.date['month'] + '/' + data.date['day'] + '/' + data.date['year'];
             } );
 
         this.searchResultsSectionBravoService.selectionChangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -78,10 +96,15 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         this.currentFont = this.preferencesService.getFontSize();
     }
 
+    releasedCalendarIconClick( e ){
+        this.showReleaseCalendar = ! this.showReleaseCalendar;
+    }
+
     onShowUpdateCollectionSiteClick(){
         console.log( 'MHL onShowUpdateCollectionSiteClick showUpdateCollectionSite: ', this.showUpdateCollectionSite );
         this.upDateSelectedSiteIdArray();
     }
+
 
     /**
      * Makes an array of selected series IDs  this.selectedSiteIdArray
@@ -128,24 +151,39 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     onQcBulkStatusReleasedClick( r ){
+        console.log('MHL onQcBulkStatusReleasedClick >' + r + '<');
+        this.showReleasedDateCalendar = r === this.YES;
         this.isReleased = r;
+    }
+    onQcBulkStatusReleasedClickYes(event){
+        console.log('MHL onQcBulkStatusReleasedClickYes $event: ', event);
+        this.showReleasedDateCalendar =true;
     }
 
     onQcBulkUpdateClick(){
-        let query = 'projectSite=' + this.collectionSite;
+        // @CHECKME let query = 'projectSite=' + this.collectionSite;
+        let query = '';
         for( let row of this.searchResults ){
             if( row['selected'] ){
                 query += '&seriesId=' + row['series'];
             }
         }
+
+
         if( this.isComplete === this.YES ){
             query += '&complete=Complete';
         }
         if( this.isComplete === this.NO ){
             query += '&complete=NotComplete';
         }
+
+        if( this.showUpdateDescriptionUri){
+            query += '&url=' + this.descriptionUri;
+        }
+
+        // Add Yes for isReleased and released Date
         if( this.isReleased === this.YES ){
-            query += '&released=released';
+            query += '&released=released&dateReleased=' + this.releaseDate;
         }
         if( this.isReleased === this.NO ){
             query += '&released=NotReleased';
@@ -171,9 +209,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         }
 
         // Update the series site if "Update" checkbox is selected
-        if( this.showUpdateCollectionSite ){
-            console.log( 'MHL 00 selectedSiteIdArray: ', this.selectedSiteIdArray );
-            console.log( 'MHL 01 newSite: ', this.siteDropdownArray[this.newSite] );  // The site
+        if( this.showUpdateCollectionSite){
 
             let seriesForNewSite = [];
             for( let row of this.searchResults ){
@@ -182,8 +218,11 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
                     seriesForNewSite.push( row['series'] );
                 }
             }
-
-            this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
+            if( Properties.DEMO_MODE){
+                console.log('MHL submitSiteForSeries', this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite ));
+            }else{
+                this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
+            }
         }
     }
 
@@ -236,6 +275,35 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
             }
         );
+    }
+
+    calendarTextInputChange(){
+        let m = -1;
+        let d = -1;
+        let y = -1;
+        let date3 = new Date();
+
+        this.badReleasedDate = true;
+
+        // Do we have a good date
+        if( this.utilService.isGoodDate( this.releaseDate ) ){
+            this.badReleasedDate = false;
+            let parts = this.releaseDate.split( '/' );
+
+            m = +parts[0] - 1;
+            // this.date3.setMonth( this.month - 1 );
+            date3.setMonth( m );
+
+            d = +parts[1];
+            date3.setDate( +parts[1] );
+
+            y = +parts[2];
+            date3.setFullYear( y );
+        }
+        else{
+            this.badReleasedDate = true;
+        }
+
     }
 
 
