@@ -31,8 +31,7 @@
                 'heading-font-medium': currentFont === '2',
                 'heading-font-large': currentFont === '3'
             }"
-        >New Status</span
-        >
+        >New Status</span>
     </div>
     <div class="bulk-qc-status-table-frame">
         <div class="container-fluid">
@@ -139,22 +138,29 @@
                 <div class="qc-bulk-complete-radios">
                     <span class="mr-2">Released</span>
 
-                    <!--  FIXME just commenting this out for a commit -->
-<!--
+                    <!--  Calendar  -->
+                    <span *ngIf="showReleasedDateCalendar"
+                        class="released-date"
+                    >
+                        <input class="m-0 w-50"
+                               [ngClass]="{
+                                    'red-text': badReleasedDate
+                                }"
 
-                    <span class="released-date">
-                        <input class="m-0"
                                type="text"
                                value="The date here"
+                               [(ngModel)]="releaseDate"
+                               (ngModelChange)="calendarTextInputChange()"
                         >
 
                         <img [ngStyle]="{height: '20px'}"
-                             class="cal-button-image ml-3 mb-1"
+                             class="cal-button-image ml-1 mb-1"
                              src="assets/images/calendar_icon_2.png"
-                             alt="Calendar button">
+                             alt="Calendar button"
+                             (click)="releasedCalendarIconClick($event)">
                     </span>
                     <br/>
--->
+
                      <input
                         type="radio"
                         class="clicker"
@@ -197,10 +203,15 @@
                     >
                         No Change
                     </label>
+                    <nbia-release-date-calendar
+                        *ngIf="showReleaseCalendar"
+                    >
+                    </nbia-release-date-calendar>
 
                 </div>
                 <!-- ----- END Released  ----- -->
 
+                <!-- ----- Update Site ----- -->
                 <span class="qc-bulk-complete-radios ml-1" style="display: inline-block;">
 
                     <!-- Checkbox -->
@@ -223,27 +234,56 @@
                     searchResults[0]['selected']:{{searchResults[0]['selected']}}
 -->
 
-
+                    <!-- ----- Site Dropdown ----- -->
                     <span *ngIf="showUpdateCollectionSite">
 
-                           <select class="custom-select"
-                                   id="newSite"
-                                   name="newSite"
-                                   ngModel
+                        <select class="custom-select"
+                            id="newSite"
+                            name="newSite"
+                            ngModel
+                        >
+
+                           <option *ngFor="let i of siteDropdownArray"
+                                   selected value=i
                            >
-
-                               <option *ngFor="let i of siteDropdownArray"
-                                       selected value=i
-                               >
-                                   {{i}}
-                               </option>
-                           </select>
+                               {{i}}
+                           </option>
+                       </select>
 
 
-                       </span>
+                    </span>
+                    <!-- ----- END Site Dropdown ----- -->
+
+                </span>
+                <!-- ----- END Update Site ----- -->
+
+                <!-- ----- Update Description URI ----- -->
+                <span class="qc-bulk-complete-radios ml-1" style="display: inline-block;">
+                    <span>
+                    <!-- Checkbox -->
+                      <input
+                          class="mt-3" type="checkbox" id="updateDescriptionUri"
+                          [(ngModel)]="showUpdateDescriptionUri"
+                      >
+                    <!-- END Checkbox -->
+                         <label
+                             class="ml-1"
+                             for="updateDescriptionUri"
+                         >Update Description URI
+                         </label>
+
                 </span>
 
-            </div>
+                    <div  *ngIf="showUpdateDescriptionUri">
+                        <input
+                            [(ngModel)]="descriptionUri"
+                            type="text"
+                        >
+                    </div>
+                </span>
+                <!-- ----- END Update Description URI ----- -->
+
+            </div> <!-- ----- END row ----- -->
         </div>
 
         <table width="100%">

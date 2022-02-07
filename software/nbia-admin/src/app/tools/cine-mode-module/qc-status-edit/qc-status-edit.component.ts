@@ -12,6 +12,7 @@ import { SearchResultByIndexService } from '@app/tools/search-results-section-mo
 import { Consts } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { ReleaseDateCalendarService } from '@app/tools/perform-qc-module/perform-qc/release-date-calendar/release-date-calendar.service';
 
 
 @Component( {
@@ -38,6 +39,11 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     currentFont;
 
     releasedDate;
+    showReleasedDateCalendar = false;
+    badReleasedDate = false;
+
+    showUpdateDescriptionUri = false;
+    descriptionUri = '';
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -45,8 +51,13 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         private apiService: ApiService,
         private utilService: UtilService,
         private searchResultByIndexService: SearchResultByIndexService,
-        private preferencesService: PreferencesService
+        private preferencesService: PreferencesService,
+        private releaseDateCalendarService: ReleaseDateCalendarService
     ){
+        let d = new Date();
+
+        this.releasedDate = ( d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+        console.log('MHL 00 releasedDate: ', this.releasedDate);
     }
 
     ngOnInit(){
@@ -54,6 +65,14 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
             .pipe( takeUntil( this.ngUnsubscribe ) )
             .subscribe( ( data ) => {
                 this.qcStatuses = data;
+            } );
+
+
+        this.releaseDateCalendarService.releaseDateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.releasedDate = data.date['month'] + '/' + data.date['day'] + '/' + data.date['year'];
+                this.showReleasedDateCalendar = false;
+                this.cineCalendarTextInputChange();
             } );
 
         this.apiService.getVisibilities();
@@ -66,10 +85,10 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+    }
 
-        this.updateSiteList();
-
-
+    onShowUpdateDescriptionUriClick(){
+        console.log( 'MHL Cine onShowUpdateDescriptionUriClick showUpdateDescriptionUri: ', this.showUpdateDescriptionUri );
     }
 
     // @CHECKME
@@ -78,7 +97,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         console.log( 'MHL 000a seriesData: ', this.seriesData );
         console.log( 'MHL 000b runaway: ', runaway );
 
-        while( ( this.seriesData === undefined || this.seriesData.length === undefined ||  this.seriesData.length < 1 ) && runaway > 0 ){
+        while( (this.seriesData === undefined || this.seriesData.length === undefined || this.seriesData.length < 1) && runaway > 0 ){
 //            console.log( 'MHL 001 seriesData[' + runaway +']: ', this.seriesData );
             runaway--;
             await this.utilService.sleep( 500 );
@@ -111,8 +130,8 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     }
 
     onQcUpdate(){
-        let query = 'projectSite=' + this.collectionSite;
-
+        // @CHECKME let query = 'projectSite=' + this.collectionSite;
+        let query = '';
         query += '&seriesId=' + this.seriesData['series'];
 
         if( this.isComplete === this.YES ){
@@ -128,6 +147,10 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
             query += '&released=NotReleased';
         }
 
+        if( this.showUpdateDescriptionUri ){
+            query += '&url=' + this.descriptionUri;
+        }
+
         if( this.useBatchNumber ){
             query += '&batch=' + this.batchNumber;
         }
@@ -139,11 +162,52 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         if( !this.utilService.isNullOrUndefinedOrEmpty( this.logText ) ){
             query += '&comment=' + this.logText;
         }
+
+        // console.log('MHL QcStatusEditComponent.onQcUpdate  showUpdateDescriptionUri: ', this.showUpdateDescriptionUri);
+        console.log( 'MHL QcStatusEditComponent.onQcUpdate  showUpdateDescriptionUri query: ', query );
         if( Properties.DEMO_MODE ){
             console.log( 'DEMO mode: Perform QC  Update ', query );
         }else{
             this.apiService.doSubmit( Consts.TOOL_BULK_QC, query );
         }
+    }
+
+
+    cineCalendarTextInputChange(){
+        console.log('MHL cineCalendarTextInputChange: ', this.releasedDate);
+        let m = -1;
+        let d = -1;
+        let y = -1;
+        let date3 = new Date();
+
+        this.badReleasedDate = true;
+
+        // Do we have a good date
+        if( this.utilService.isGoodDate( this.releasedDate ) ){
+            this.badReleasedDate = false;
+            let parts = this.releasedDate.split( '/' );
+
+            m = +parts[0] - 1;
+            // this.date3.setMonth( this.month - 1 );
+            date3.setMonth( m );
+
+            d = +parts[1];
+            date3.setDate( +parts[1] );
+
+            y = +parts[2];
+            date3.setFullYear( y );
+            console.log('MHL Good date');
+        }
+        else{
+            this.badReleasedDate = true;
+            console.log('MHL BAD date');
+        }
+
+    }
+
+    releasedCalendarIconClick( e ){
+        console.log( 'MHL releasedCalendarIconClick: ', e );
+        this.showReleasedDateCalendar = (!this.showReleasedDateCalendar);
     }
 
     ngOnDestroy(): void{

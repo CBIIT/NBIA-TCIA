@@ -5,36 +5,36 @@
 
 <!-- Row of radio buttons across the top with each of the possible statuses. -->
 <div class="qc-status-outer-div pb-0 mb-0">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- qcStatuses is the list of possible statuses sent from the server -->
-                <div
-                    *ngFor="let criteria of qcStatuses; let n = index"
-                    class="qc-status-radios"
-                >
-                    <input
-                        class="clicker"
-                        type="radio"
-                        id="radio-qc-status-status{{ n }}"
-                        name="qcBulkRadio"
-                        (click)="onQcBulkStatusClick(n)"
-                    />
-                    <label
-                        class="qc-status-radio-label clicker"
-                        [ngClass]="{
+    <div class="container-fluid">
+        <div class="row">
+            <!-- qcStatuses is the list of possible statuses sent from the server -->
+            <div
+                *ngFor="let criteria of qcStatuses; let n = index"
+                class="qc-status-radios"
+            >
+                <input
+                    class="clicker"
+                    type="radio"
+                    id="radio-qc-status-status{{ n }}"
+                    name="qcBulkRadio"
+                    (click)="onQcBulkStatusClick(n)"
+                />
+                <label
+                    class="qc-status-radio-label clicker"
+                    [ngClass]="{
                             'font-extra-small': currentFont === '0',
                             'font-small': currentFont === '1',
                             'font-medium': currentFont === '2',
                             'font-large': currentFont === '3'
                         }"
-                        [attr.for]="'radio-qc-status-status' + n"
-                    >
-                        {{ criteria }}
-                    </label>
-                </div>
+                    [attr.for]="'radio-qc-status-status' + n"
+                >
+                    {{ criteria }}
+                </label>
             </div>
         </div>
-        <!-- END container-fluid -->
+    </div>
+    <!-- END container-fluid -->
 
 
     <div class="ml-1 mt-0 mb-0 p-0">
@@ -73,7 +73,6 @@
     </div>
 
 
-
     <!-- Second row: "Batch Number", "Confirmed as Complete", and "Released". -->
     <div class="bulk-qc-status-table-frame">
         <table class="bulk-qc-status-table">
@@ -104,7 +103,7 @@
                     />
                 </td>
                 <!-- ----- Confirmed as Complete  ----- -->
-                <td class="qc-status-complete-radios">
+                <td class="complete-radios">
                     Confirmed as Complete<br/>
                     <input
                         class="clicker"
@@ -149,10 +148,45 @@
                         No Change
                     </label>
                 </td>
-                <td>Released</td>
+
+
+                <!-- Popup Calendar -->
+                <td class="popup-cal">
+                    <nbia-release-date-calendar
+                        *ngIf="showReleasedDateCalendar && isReleased === YES"
+                    >
+                    </nbia-release-date-calendar>
+                </td>
+
+
                 <!-- ----- Released  ----- -->
-                <td class="qc-status-complete-radios">
-                    Released<br/>
+                <td class="complete-radios">
+
+
+                    <div class="mr-2">Released
+
+                        <!--  Calendar  -->
+                        <span *ngIf="isReleased === YES"
+                              class="released-date"
+                        >
+                            <input class="m-0 w-50"
+                                   [ngClass]="{
+                                        'red-text': badReleasedDate
+                                    }"
+
+                                   type="text"
+                                   value="The date here"
+                                   [(ngModel)]="releasedDate"
+                                   (ngModelChange)="cineCalendarTextInputChange()"
+                            >
+
+                            <img [ngStyle]="{height: '20px'}"
+                                 class="cal-button-image ml-1 mb-1"
+                                 src="assets/images/calendar_icon_2.png"
+                                 alt="Calendar button"
+                                 (click)="releasedCalendarIconClick($event)">
+                        </span>
+                    </div>
                     <input
                         class="clicker"
                         type="radio"
@@ -196,14 +230,48 @@
                         No Change
                     </label>
                 </td>
+                <td class="complete-radios">
+
+                    <!-- ----- Update Description URI ----- -->
+<!--
+                    <span class="complete-radios ml-1" style="display: inline-block;">
+-->
+                    <span>
+                    <!-- Checkbox -->
+                        <input
+                           class="mt-3" type="checkbox" id="updateDescriptionUriCine"
+                           [(ngModel)]="showUpdateDescriptionUri"
+                           (click)="onShowUpdateDescriptionUriClick()"
+                        >
+                        <!-- END Checkbox -->
+                         <label
+                             class="ml-1"
+                             for="updateDescriptionUriCine"
+                         >Update Description URI
+                         </label>
+                    </span>
+
+                    <div  *ngIf="showUpdateDescriptionUri">
+                        <input
+                            [(ngModel)]="descriptionUri"
+                            type="text"
+                        >
+                    </div>
+<!--
+                </span>
+-->
+                    <!-- ----- END Update Description URI ----- -->
+
+                </td>
             </tr>
         </table>
-                <div>
-                    <textarea
-                        class="qc-status-edit-log-text"
-                        [(ngModel)]="logText"
-                        placeholder="Enter change log here..."
-                    ></textarea>
-                </div>
+        <div>
+            <textarea
+                class="qc-status-edit-log-text"
+                [(ngModel)]="logText"
+                placeholder="Enter change log here..."
+            ></textarea>
+        </div>
+
     </div>
 </div>

@@ -7,6 +7,7 @@ import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-modul
 import { QcHistoryReportModuleModule } from '../qc-history-report-module/qc-history-report-module.module';
 import { DeleteCinemodeSeriesComponent } from './delete-cinemode-series/delete-cinemode-series.component';
 import { CineModeBravoComponent } from './cine-mode-bravo/cine-mode-bravo.component';
+import { PerformQcModule } from '@app/tools/perform-qc-module/perform-qc.module';
 
 
 @NgModule( {
@@ -23,7 +24,8 @@ import { CineModeBravoComponent } from './cine-mode-bravo/cine-mode-bravo.compon
         AngularDraggableModule,
         FormsModule,
         AdminCommonPipeModule,
-        QcHistoryReportModuleModule
+        QcHistoryReportModuleModule,
+        PerformQcModule
     ]
 } )
 export class CineModeModule{

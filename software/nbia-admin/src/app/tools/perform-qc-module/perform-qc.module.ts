@@ -20,16 +20,18 @@ import { SearchResultsSectionModule } from '../search-results-section-module/sea
 import { QcHistoryReportModuleModule } from '../qc-history-report-module/qc-history-report-module.module';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { DisplayDynamicQueryModule } from '@app/tools/display-dynamic-query/display-dynamic-query.module';
+import { ReleaseDateCalendarComponent } from './perform-qc/release-date-calendar/release-date-calendar.component';
 
 
 @NgModule( {
     declarations: [
         PerformQcComponent,
-        PerformQcBulkOperationsComponent
-
+        PerformQcBulkOperationsComponent,
+        ReleaseDateCalendarComponent
     ],
     exports: [
-        PerformQcComponent
+        PerformQcComponent,
+        ReleaseDateCalendarComponent
 
     ],
     imports: [

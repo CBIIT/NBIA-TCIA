@@ -36,10 +36,14 @@ $qc-status-radio-label-font-size: 13px;
     padding: 6px;
 }
 
-.qc-status-complete-radios{
+.complete-radios{
     border: solid $data-table-body-border-color 1px;
     // padding-right: 1px;
     padding: 6px 18px 6px 18px;
+}
+
+.qc-status-released-radios{
+    border: solid $data-table-body-border-color 1px;
 }
 
 .qc-status-radio-label{
@@ -61,4 +65,16 @@ $qc-status-radio-label-font-size: 13px;
     //margin: 6px 12px 0 0 ;
     // margin: 10px;
     margin: 4px 8px 0 0;
+}
+
+.popup-cal{
+    position: relative;
+    top: 50px;
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+}
+
+.red-text{
+    color: #f00;  //@FIXME
 }

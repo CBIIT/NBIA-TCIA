@@ -11,8 +11,6 @@
 
 .released-date{
     padding: 0;
-    border: solid #e83e8c 2px;
-    background-color: #2dde2d;
     height: 26px;
 }
 
@@ -64,4 +62,8 @@
 
 .qc-bulk-update-button{
     margin: 6px 12px 0 0;
+}
+
+.red-text{
+    color: #f00;  //@FIXME
 }
