@@ -167,7 +167,6 @@ L-->
 			<fileset dir="${dist.exploded.dir}/nbia-wars">
 				<include name="ncia.war"/>
 				<include name="nbia-api.war"/>
-				<include name="oviyam2.war"/>
 				<include name="nbia-download.war"/>
 			</fileset>
 		</copy>
@@ -499,11 +498,6 @@ L-->
 								<attribute name="Trusted-Library" value="${jar.manifest.secure.attribute.Trusted-Library}"/>
 							</manifest>
 						</jar>
-						<signjar destDir="${target.dir}/dist/exploded/nbia-download-manager" alias="${jar-signing.keystore.alias}" keystore="${jar-signing.keystore.location}" storepass="${jar-signing.keystore.password}" keypass="${jar-signing.keystore.password}" tsaurl="http://timestamp.digicert.com/" lazy="true">
-							<path>
-								<fileset dir="${target.dir}/dist/exploded/nbia-download-manager" includes="${just.jar.filename}"/>
-							</path>
-						</signjar>
 					</sequential>
 				</for>
 				<!--sign-jars jars.dir="${target.dir}/dist/exploded/nbia-download-manager"/-->
@@ -859,7 +853,6 @@ L-->
 		  </copy>
 		  <delete dir="${gov.nih.nci.ncia.tomcat.home}/webapps/ncia"/>
 		  <delete dir="${gov.nih.nci.ncia.tomcat.home}/webapps/ncia-api"/>
-		  <delete dir="${gov.nih.nci.ncia.tomcat.home}/webapps/oviyam2"/>
 		  <delete dir="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-download"/>
 	</target>
 
