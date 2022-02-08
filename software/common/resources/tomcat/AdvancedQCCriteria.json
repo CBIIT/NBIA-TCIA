@@ -418,30 +418,6 @@
 
     },
     {
-        "parentMenuName":"Collection",
-        "criteriaObjects":[
-            {
-                "criteriaMenuText":"Select from List",
-                "configuration":{
-                    "dynamicQueryCriteriaMultiChoiceList": true,
-                    "dynamicQueryCriteriaSingleLineRadioDefault": 2,
-                    "dynamicQueryCriteriaClearButton": true,
-                    "dynamicQueryCriteriaOpenCloseButton": true,
-                    "dynamicQueryCriteriaHeading": "Collection",
-                    "dynamicQueryCriteriaSearchable": true,
-                    "dynamicQueryCriteriaSort": true,
-                    "dynamicQueryCriteriaListData": ["GE"],
-                    "dynamicQueryCriteriaAllowNoChoice": true,
-                    "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
-                    "dynamicQueryCriteriaRequired": true,
-                    "criteriaType":"collection",
-                    "inputType":"list"
-                }
-            }
-        ]
-
-    },
-    {
         "parentMenuName":"QC Status",
         "criteriaObjects":[
             {
@@ -459,6 +435,30 @@
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
                     "dynamicQueryCriteriaRequired": true,
                     "criteriaType":"qcstatus",
+                    "inputType":"list"
+                }
+            }
+        ]
+
+    },
+    {
+        "parentMenuName":"Collection",
+        "criteriaObjects":[
+            {
+                "criteriaMenuText":"Select from List",
+                "configuration":{
+                    "dynamicQueryCriteriaMultiChoiceList": true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault": 2,
+                    "dynamicQueryCriteriaClearButton": true,
+                    "dynamicQueryCriteriaOpenCloseButton": true,
+                    "dynamicQueryCriteriaHeading": "Collection",
+                    "dynamicQueryCriteriaSearchable": true,
+                    "dynamicQueryCriteriaSort": true,
+                    "dynamicQueryCriteriaListData": ["GE"],
+                    "dynamicQueryCriteriaAllowNoChoice": true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed": true,
+                    "dynamicQueryCriteriaRequired": true,
+                    "criteriaType":"collection",
                     "inputType":"list"
                 }
             }
