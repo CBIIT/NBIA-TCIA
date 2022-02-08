@@ -77,11 +77,15 @@ public class SetQCVisibilityForDataAdmin extends getData{
                 }
   			    String status = "Not submitted.";
 				String releasedYesNo=null;
+				System.out.println("&&&&&&&&&&&&"+released);
 				if (released!=null&&released.equalsIgnoreCase("released")) {
 					releasedYesNo="Yes";
-				}  else {
+				}  else if (released!=null&&released.equalsIgnoreCase("NotReleased")){
 					releasedYesNo="No";
+				} else {
+					releasedYesNo=null;
 				}
+
 				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
 				Date releasedDateValue=getDate(dateReleased);
 				try {
