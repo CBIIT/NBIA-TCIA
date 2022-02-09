@@ -54,6 +54,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -128,7 +129,7 @@ public class StandaloneDMDispatcher {
 	private boolean majorityPublic = true;
 	private double serverVersion = 0.0;
 	
-	
+	JFrame frmOpt;  //dummy JFrame
 
 	/**
 	 * @param args
@@ -975,6 +976,12 @@ public class StandaloneDMDispatcher {
 	
 	private int showUserAgreementTxt(String text) {
 		int n = 0;
+		if (frmOpt == null) {
+	        frmOpt = new JFrame();
+	    }
+	    frmOpt.setVisible(true);
+	    frmOpt.setLocation(100, 100);
+	    frmOpt.setAlwaysOnTop(true);
 
 		if (text != null && !text.isEmpty()) {
 			Object[] options = { "Agree", "Disagree" };
@@ -984,13 +991,13 @@ public class StandaloneDMDispatcher {
 			textArea.setWrapStyleWord(true);
 			scrollPane.setPreferredSize(new Dimension(500, 500));
 
-			n = JOptionPane.showOptionDialog(null, scrollPane, "Data Usage Policy", JOptionPane.YES_NO_OPTION,
+			n = JOptionPane.showOptionDialog(frmOpt, scrollPane, "Data Usage Policy", JOptionPane.YES_NO_OPTION,
 					JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 			if (n == JOptionPane.CLOSED_OPTION) {
 				n = 1;
 			}
 		}
-
+		frmOpt.dispose();
 		return n;
 	}
 }
