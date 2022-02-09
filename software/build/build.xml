@@ -1232,6 +1232,7 @@ L-->
 				<sequential>
 					<exec dir="${nbia-search.base.dir}" executable="cmd" >
 						<arg line="/c npm 'install'"/>
+						<!--arg line="/c npm 'install' --force"/-->
 					</exec>	
 					
 					<exec dir="${nbia-search.base.dir}" executable="cmd" >
@@ -1276,6 +1277,7 @@ L-->
 				<sequential>
 					<exec dir="${nbia-viewer.base.dir}" executable="cmd" >
 						<arg line="/c npm 'install'"/>
+						<!--arg line="/c npm 'install' --force"/-->
 					</exec>	
 					
 					<exec dir="${nbia-viewer.base.dir}" executable="cmd" >
@@ -1320,6 +1322,7 @@ L-->
 				<sequential>
 					<exec dir="${nbia-admin.base.dir}" executable="cmd" >
 						<arg line="/c npm 'install'"/>
+						<!--arg line="/c npm 'install' --force"/-->
 					</exec>	
 					
 					<exec dir="${nbia-admin.base.dir}" executable="cmd" >
