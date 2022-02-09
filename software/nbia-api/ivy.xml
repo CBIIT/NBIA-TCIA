@@ -2,7 +2,6 @@
 <!--L
    Copyright SAIC, Ellumen and RSNA (CTP)
 
-
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/national-biomedical-image-archive/LICENSE.txt for details.
 L-->
@@ -22,6 +21,9 @@ L-->
 		<artifact name="nbia-api" type="war" conf="default, compile, runtime"/>
 	</publications>
 	<dependencies>
+	    <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
+        <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.17.1"  conf="compile->master;runtime->master"/>
+          <dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
 		<dependency org="org.owasp.esapi" name="esapi" rev="2.1.0" conf="compile->master;runtime->master"/>
 		<dependency org="asm" name="asm" rev="3.1" conf="compile->master;runtime->master"/>
 		<dependency org="cglib" name="cglib" rev="2.2" conf="compile->master;runtime->master"/>
@@ -103,7 +105,9 @@ L-->
 		<dependency org="org.springframework.security.oauth" name="spring-security-oauth2" rev="1.0.5.RELEASE" conf="compile->master;runtime->master"/>
 		<!-- begin of Sring security -->
 		<dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="compile->master"/>
-		
+
+
+
 		<!-- end of Spring 3.2.8-->
 		
 		     <dependency org="dcm4che"
@@ -205,11 +209,11 @@ L-->
       rev="3.3"
       conf="compile->master;runtime->master"/>
       
-      <dependency
+<!--       <dependency
       org="com.fasterxml.jackson.dataformat"
       name="jackson-dataformat-yaml"
       rev="2.6.1"
-      conf="compile->master;runtime->master"/>
+      conf="compile->master;runtime->master"/>  -->
       
       <dependency org="org.apache.solr"
                 name="solr-core"

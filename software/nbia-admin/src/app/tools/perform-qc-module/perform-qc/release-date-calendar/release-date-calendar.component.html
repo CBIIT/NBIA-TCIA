@@ -1,0 +1,250 @@
+<div *ngIf="showCalendar0" class="release-cal-div">
+
+    <!-- Add "'widget-calendar-heading-not-moving': ! handleMoving" to the ngClass below if you want the hand icon on hover -->
+    <div
+        ngDraggable
+        [handle]="PanelHandle"
+        class="card card-nbia-default alert-box-shadow unselectable"
+        [ngClass]="{
+            'widget-calendar-heading-moving': handleMoving
+        }"
+        [ngDraggable]="true"
+        (started)="onDragBegin($event)"
+        (endOffset)="onMoveEnd($event)"
+    >
+        <div
+            #PanelHandle
+            class="card-header card-nbia-header-default calendar-panel-heading"
+        >
+            <div class="card-title">
+                <div width="100%" class="row">
+
+
+                    <!-- Month clicker top left -->
+                    <span class="widget-calendar-month-clicker-div float-left col-sm-4">
+                                    <label
+                                        title="Previous month"
+                                        (click)="onPreviousMonthClick()"
+                                    >
+                                        <img
+                                            class="widget-calendar-button-icon"
+                                            src="assets/images/AV/play_back_arrow-black.png"
+                                            alt="Previous Month"
+                                        />
+                                    </label>
+
+                        <!-- Month display in Month clicker -->
+                                    <label
+                                        class="
+                                            widget-calendar-month-clicker-month
+                                        "
+                                    >
+                                        {{ monthName[month] }}
+                                    </label>
+
+                                    <label
+                                        class="btn-nbia-widget-calendar
+                                            d-inline-flex
+                                            mt-1
+                                            pt-1
+                                        "
+                                        title="Next Month"
+                                        (click)="onNextMonthClick()"
+                                    >
+                                        <img
+                                            class="widget-calendar-button-icon"
+                                            src="assets/images/AV/play_arrow_black.png"
+                                            alt="Next Month"
+                                        />
+                                    </label>
+                                </span>
+                    <!-- END Month clicker top left -->
+
+                    <!-- Today button -->
+                    <div
+                        class="col-sm-4"
+                    >
+                        <button
+                            class="btn btn-nbia-default widget-calendar-today-button"
+                            (click)="onTodayClick()"
+                            type="button"
+                        >
+                            Today
+                        </button>
+                    </div>
+                    <!-- END Today button -->
+
+
+                    <!-- Year clicker top right -->
+                    <span class="widget-calendar-year-clicker-div col-sm-4">
+                        <span class="float-right">
+                                    <label
+                                        title="Previous year"
+                                        (click)="onPreviousYearClick()"
+                                    >
+                                        <img
+                                            class="widget-calendar-button-icon"
+                                            src="assets/images/AV/play_back_arrow-black.png"
+                                            alt="Previous year"
+                                        />
+                                    </label>
+
+                            <!-- Year display in Year clicker -->
+                                     <label
+                                         class="widget-calendar-month-clicker-month "
+                                     >
+                                        {{ year }}
+                                    </label>
+
+                                    <label
+                                        class="
+                                            btn-nbia-widget-calendar
+                                            d-inline-flex
+                                            mt-1
+                                            pt-1
+                                        "
+                                        title="Next year"
+                                        (click)="onNextYearClick()"
+                                    >
+                                        <img
+                                            class="widget-calendar-button-icon"
+                                            src="assets/images/AV/play_arrow_black.png"
+                                            alt="Next year"
+                                        />
+                                    </label>
+                                </span>
+                            </span>
+                    <!-- END Year clicker top right -->
+                </div>
+            </div>
+            <!-- END of top heading -->
+        </div>
+
+
+        <div class="card-body bg-white p-0">
+            <!-- Calendar table -->
+            <table class="calendar-table">
+                <tr>
+                    <td *ngFor="let day of dayName"
+                        style="text-align: center;"
+                        class="widget-calendar-th p-0 m-0"
+                    >
+                        {{ day }}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td
+                        *ngFor="let d of daysArray; let i = index"
+                        [ngClass]="{
+                            'hide': i > 6,
+                            'widget-calendar-today': ( ( d['day'] === day ) && ( d['month'] === month ) && ( d['year'] === year ) ),
+                            'widget-calendar-this-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && (d['day'] <= 7) && ( d['day'] !== day ),
+                            'widget-calendar-previous-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && (d['day'] > 7) && ( d['day'] !== day ),
+                            'widget-calendar-previous-month': d['day'] > 7 && ( ! (((i%7) === 0) || ((i%7) === 6)) ) && ( d['day'] !== day ),
+                            'widget-calendar-this-month': (d['day'] <= 7) && ( d['day'] !== day )
+                        }"
+                        class="day-td"
+                        (click)="onDayClick(i, d['day'], d['month'], d['year'])"
+                    >
+                        {{d['day']}}
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        *ngFor="let d of daysArray; let i = index"
+                        class="day-td"
+                        [ngClass]="{
+                            'hide': i < 7 || i > 13,
+                            'widget-calendar-today': ( ( d['day'] === day ) && ( d['month'] === month ) && ( d['year'] === year ) ),
+                            'widget-calendar-this-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && ( d['day'] !== day ),
+                            'widget-calendar-this-month': (! (((i%7) === 0) || ((i%7) === 6))) && ( d['day'] !== day )
+                        }"
+                        (click)="onDayClick(i, d['day'], d['month'], d['year'])"
+                    >
+                        {{d['day']}}
+                        <!--
+                                                {{log('mhl [' + i + ']d day: ' + d['day']  + '===' + day)}}
+                                                {{log('mhl [' + i + ']d month: ' + d['month']  + '===' + month)}}
+                                                {{log('mhl [' + i + ']d year: ' + d['year']  + '===' + year)}}
+                        -->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td
+                        *ngFor="let d of daysArray; let i = index"
+                        [ngClass]="{
+                            hide: i < 14 || i > 20,
+                            'widget-calendar-today': ( ( d['day'] === day ) && ( d['month'] === month ) && ( d['year'] === year ) ),
+                            'widget-calendar-this-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && ( d['day'] !== day ),
+                            'widget-calendar-this-month': ( ! ((i%7) === 0) || ((i%7) === 6)) && ( d['day'] !== day )
+                        }"
+                        class="day-td"
+                        (click)="onDayClick(i, d['day'], d['month'], d['year'])"
+                    >
+                        {{d['day']}}
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        *ngFor="let d of daysArray; let i = index"
+                        [ngClass]="{
+                            hide: i < 21 || i > 27,
+                            'widget-calendar-today': ( ( d['day'] === day ) && ( d['month'] === month ) && ( d['year'] === year ) ),
+                            'widget-calendar-this-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && ( d['day'] !== day ),
+                            'widget-calendar-this-month': ( ! ((i%7) === 0) || ((i%7) === 6)) && ( d['day'] !== day )
+                        }"
+                        class="day-td"
+                        (click)="onDayClick(i, d['day'], d['month'], d['year'])"
+                    >
+                        {{d['day']}}
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        *ngFor="let d of daysArray; let i = index"
+                        [ngClass]="{
+                            hide: i < 28 || i > 34 ,
+                            'widget-calendar-today': ( ( d['day'] === day ) && ( d['month'] === month ) && ( d['year'] === year ) ),
+                            'widget-calendar-this-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && (d['day']> 14),
+                            'widget-calendar-next-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && (d['day'] <= 14),
+                            'widget-calendar-next-month': d['day'] <= 14 && ( ! (((i%7) === 0) || ((i%7) === 6)) ),
+                            'widget-calendar-this-month': d['day']> 14
+                        }"
+                        class="day-td"
+                        (click)="onDayClick(i, d['day'], d['month'], d['year'])"
+                    >
+                        {{d['day']}}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td
+                        *ngFor="let d of daysArray; let i = index"
+                        [ngClass]="{
+                            hide: i < 35 || i > 42 || d['day'] > daysInMonth,
+                            'widget-calendar-today': ( ( d['day'] === day ) && ( d['month'] === month ) && ( d['year'] === year ) ),
+
+                            'widget-calendar-this-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && (d['day']> 14),
+                            'widget-calendar-next-month-weekend': (((i%7) === 0) || ((i%7) === 6)) && (d['day'] <= 14),
+                            'widget-calendar-next-month': d['day'] <= 14 && (!(((i%7) === 0) || ((i%7) === 6)) ),
+                            'widget-calendar-this-month': d['day']> 14
+                         }"
+                        class="day-td"
+                        (click)="onDayClick(i, d['day'], d['month'], d['year'])"
+                    >
+                        {{d['day']}}
+                        <!-- {{log('mhl d: ' + d['month'] + '/' + d['day'] + '/' + d['year'] )}}   -->
+                    </td>
+                </tr>
+            </table>
+            <!-- END Calendar table -->
+
+            <!--
+                        day: {{ day }}  year: {{ year }}  month: {{ monthName[month] }}
+            -->
+        </div>
+    </div>
+</div>

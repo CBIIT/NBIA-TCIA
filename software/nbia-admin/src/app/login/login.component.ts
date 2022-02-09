@@ -7,7 +7,6 @@ import { AccessTokenService } from '../admin-common/services/access-token.servic
 import { UtilService } from '../admin-common/services/util.service';
 import { ApiService } from '../admin-common/services/api.service';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component( {
     selector: 'nbia-login',
@@ -32,21 +31,22 @@ export class LoginComponent implements OnInit, OnDestroy{
         private accessTokenService: AccessTokenService,
         private utilService: UtilService,
         private apiService: ApiService
-    ) {
+    ){
     }
 
-    ngOnInit() {
-        this.loginService.loginEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
-                this.showLogin = true;
-                // No token, expired token.  So we can display reason for login at the top of the login screen
-                this.loginType = data;
-            } );
+    ngOnInit(){
+        this.loginService.loginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
+            console.log('MHL zed 01 loginEmitter  data: ', data);
+
+            this.showLogin = true;
+            // No token, expired token.  So we can display reason for login at the top of the login screen
+            this.loginType = data;
+        } );
     }
 
-    async onSubmit() {
-         this.accessTokenService.getAccessTokenFromServer(
+    async onSubmit(){
+        console.log('MHL zed 02 onSubmit');
+        this.accessTokenService.getAccessTokenFromServer(
             this.loginForm.value.username,
             this.loginForm.value.password
         );
@@ -90,18 +90,17 @@ export class LoginComponent implements OnInit, OnDestroy{
                 ///////////////////////////////////////////////////
 
 
-
                 break;
         }
     }
 
-    onPasswordFocus() {
+    onPasswordFocus(){
         if( this.statusMessage0.length > 0 ){
             this.statusMessage0 = '';
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

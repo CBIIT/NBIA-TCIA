@@ -178,6 +178,7 @@ L-->
     <javac srcdir="${src.java.dir}" destdir="${web.classes.dir}" debug="true" includeantruntime="false">
       <classpath refid="project.compile.classpath" />
       <classpath refid="project.compile.web.classpath" />
+    	<compilerarg value="-proc:none" />
     </javac>
   </target>
 
@@ -253,7 +254,7 @@ L-->
          excludes="*.war">
       	</war>
     <jar destfile="${target.dir}/${war.name}.tmp">
-        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar"/>
+        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar, **/log4j-1.2.*"/>
     </jar>
      <delete file="${target.dir}/${war.name}" />
      <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />
@@ -267,8 +268,7 @@ L-->
     <ivy:report todir="${reports.dir}/ivy/" graph="false"/>  
     <!--antcall target="jboss-config.files"/-->
     	
-    <copy file="${oviyam.dir}/oviyam2.war" tofile="${target.dir}/oviyam2.war">
-    </copy>
+
   </target>
 
  <target name="jboss-config.files">

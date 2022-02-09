@@ -96,16 +96,16 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         private accessTokenService: AccessTokenService,
         private querySectionService: QuerySectionService,
         private preferencesService: PreferencesService
-    ) {
+    ){
     }
 
-    ngOnInit() {
-        this.cineModeService.displayCineModeBravoImagesEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+    ngOnInit(){
+        this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                console.log( 'MHL * * * * * * * displayCineModeBravoImagesEmitter: ', data );
                 this.collectionSite = data['collectionSite'];
                 this.seriesData = data['series'];
-                this.searchResultsIndex = data['searchResultsIndex']; // FIXMENOW  We will not be using this get rid of it here and at the source
+                this.searchResultsIndex = data['searchResultsIndex']; // FIXME  We will not be using this get rid of it here and at the source
                 this.showCineModeViewer = true;
                 if( this.currentTool === Consts.TOOL_PERFORM_QC ){
                     this.sectionHeading = this.sectionHeadings[0];
@@ -115,13 +115,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
                 this.reset();
 
-                // TESTING!!!!
                 this.getFirstImage();
-                // END TESTING
-                // this.getImages();
-
-
-                //  this.getImages();
                 this.apiService.doSubmit(
                     Consts.GET_HISTORY_REPORT_TABLE,
                     '&seriesId=' + this.seriesData['series']
@@ -144,10 +138,10 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                     row1['series'] < row2['series']
                         ? 1
                         : row1['series'] > row2['series']
-                        ? 1
-                        : row1['timeStamp'] < row2['timeStamp']
-                            ? -1
-                            : 1
+                            ? 1
+                            : row1['timeStamp'] < row2['timeStamp']
+                                ? -1
+                                : 1
                 );
             } );
 
@@ -193,7 +187,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.currentFont = this.preferencesService.getFontSize();
     }
 
-    checkCurrentImageNumber() {
+    checkCurrentImageNumber(){
         this.currentImage = +this.currentImage;
         if( this.currentImage === null ){
             this.currentImage = 1;
@@ -201,7 +195,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.updateDicom();
     }
 
-    onOpenImageClick( image ) {
+    onOpenImageClick( image ){
         if( this.last > 0 ){
             this.apiService.downLoadDicomImageFile(
                 image.seriesInstanceUid,
@@ -211,7 +205,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    async onPlayClick() {
+    async onPlayClick(){
         // If we already have the images, this will just return
         this.getImages();
 
@@ -237,7 +231,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    async onPlayBackwardsClick() {
+    async onPlayBackwardsClick(){
         // Wait for images to load
         while( this.justFirstImage ){
             await this.utilService.sleep( Consts.waitTime );
@@ -258,18 +252,18 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    onPause() {
+    onPause(){
         this.playState = this.STOP;
         this.currentImageWiggleRoom = this.currentImage;
         this.updateDicom();
     }
 
-    onFirstFrameClick() {
+    onFirstFrameClick(){
         this.playState = this.STOP;
         this.setCurrentImage( 1 );
     }
 
-    async onPreviousFrameClick() {
+    async onPreviousFrameClick(){
         // Wait for images to load
         while( this.justFirstImage ){
             await this.utilService.sleep( Consts.waitTime );
@@ -280,7 +274,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.decCurrentImage();
     }
 
-    async onNextFrameClick() {
+    async onNextFrameClick(){
 
         // If we already have the images, this will just return
         this.getImages();
@@ -295,7 +289,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.incCurrentImage();
     }
 
-    async onLastFrameClick() {
+    async onLastFrameClick(){
         // If we already have the images, this will just return
         this.getImages();
 
@@ -309,7 +303,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.setCurrentImage( this.imageCount );
     }
 
-    decCurrentImage() {
+    decCurrentImage(){
         this.currentImage--;
         if( this.currentImage < 1 ){
             this.currentImage = 1;
@@ -317,7 +311,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.updateDicom();
     }
 
-    incCurrentImage() {
+    incCurrentImage(){
         this.currentImage++;
         if( this.currentImage > this.imageCount ){
             this.currentImage = this.imageCount;
@@ -325,12 +319,12 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.updateDicom();
     }
 
-    setCurrentImage( i ) {
+    setCurrentImage( i ){
         this.currentImage = i;
         this.updateDicom();
     }
 
-    updateFirstImageDicom() {
+    updateFirstImageDicom(){
         if( this.showDicomData ){
             if( this.firstImage ){
                 this.dicomData = [];
@@ -348,7 +342,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    updateDicom() {
+    updateDicom(){
         if( this.showDicomData ){
             if( this.images[this.currentImage - 1] !== undefined ){
                 this.dicomData = [];
@@ -370,7 +364,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    getDicomData( query ) {
+    getDicomData( query ){
         let getUrl =
             Properties.API_SERVER_URL +
             '/nbia-api/services/' +
@@ -410,14 +404,14 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    closeCineMode() {
+    closeCineMode(){
         this.showCineModeViewer = false;
         this.cineModeService.closeCineMode();
         this.reset();
         this.loadingX = false;
     }
 
-    reset() {
+    reset(){
         this.progress = 100;
         this.images = [];
         this.currentImage = 1;
@@ -428,7 +422,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.haveDicomData = false;
     }
 
-    getImageDrillDownData(): Observable<any> {
+    getImageDrillDownData(): Observable<any>{
         let query = 'list=' + this.seriesData['seriesPkId'];
 
         if( Properties.DEBUG_CURL ){
@@ -456,7 +450,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         return this.httpClient.post( imageDrillDownUrl, query, options );
     }
 
-    getFirstImage() {
+    getFirstImage(){
         this.justFirstImage = true;
         this.getImageDrillDownData().subscribe(
             ( data ) => {
@@ -526,7 +520,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
             } );
     }
 
-    async getImages() {
+    async getImages(){
         if( !this.justFirstImage ){
             return;
         }
@@ -571,7 +565,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
 
                             // If there is only one image, don't divide by zer0
-                            if( (this.last === 0) || ( i === this.last) ){
+                            if( (this.last === 0) || (i === this.last) ){
                                 this.progress = 100;
                             }else{
                                 this.progress = Math.trunc(
@@ -662,7 +656,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
     }
 
-    getThumbnails( seriesUid, objectId, accessToken ): Observable<any> {
+    getThumbnails( seriesUid, objectId, accessToken ): Observable<any>{
         let post_url =
             Properties.API_SERVER_URL + '/nbia-api/services/getThumbnail';
         let headers = new HttpHeaders( {
@@ -694,7 +688,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         return this.httpClient.post( post_url, data, options );
     }
 
-    toggleDicomCheckbox() {
+    toggleDicomCheckbox(){
         if( this.showDicomData ){
             let query =
                 'imageID=' + this.images[this.currentImage - 1]['imagePkId'];
@@ -707,24 +701,24 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    onShowQcHistoryClick( s ) {
+    onShowQcHistoryClick( s ){
         this.showQcHistory = s;
     }
 
-    onShowQcStatusClick( s ) {
+    onShowQcStatusClick( s ){
         this.showQcStatus = s;
     }
 
-    onShowSeriesDataClick( s ) {
+    onShowSeriesDataClick( s ){
         this.showSeriesData = s;
     }
 
     /////////////////////////
-    onDragBegin( e ) {
+    onDragBegin( e ){
         this.handleMoving = true;
     }
 
-    onMoveEnd( e ) {
+    onMoveEnd( e ){
         this.handleMoving = false;
     }
 
@@ -737,7 +731,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     }
 */
 
-    fullCineMode() {
+    fullCineMode(){
         if( this.fullSize ){
             this.fullSize = false;
             this.divTop = this.divTopHold;
@@ -755,7 +749,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         }
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

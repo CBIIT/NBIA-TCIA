@@ -84,6 +84,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
         // Rerun the current query after the user has made changes, not to the query, but to the data.
         this.apiService.submitBulkQcResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
+                console.log('MHL ZEB ZEB00 subscribe: 00');
                 this.apiService.doAdvancedQcSearch(this.dynamicQueryBuilderService.buildServerQuery(), true ); // @CHECKME Does this update Search results screen
             } );
 
@@ -93,6 +94,8 @@ export class PerformQcComponent implements OnInit, OnDestroy{
         this.apiService.searchResultsEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
             .subscribe( ( data ) => {
+                console.log('MHL NOG05 data: ', data);
+
                 this.showBulkOperations =
                     data[0] !== Consts.NO_SEARCH && data.length > 0;
             } );
@@ -119,6 +122,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
     // This method is bound to resultsUpdateBravoEmitter in search-results-section-bravo component.
     onSearchResultsUpdate( e ){
+        console.log('MHL ZZZZZ PerformQcComponent.onSearchResultsUpdate onSearchResultsUpdate: ', e );
         if( !this.utilService.isNullOrUndefinedOrEmpty( e ) ){
             this.searchResults = e;
         }
@@ -126,6 +130,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
     // This method is bound to resultsSelectCountUpdateBravoEmitter in search-results-section-bravo component.
     onResultsSelectCountUpdate( e ){
+        console.log('MHL AAAA PerformQcComponent.onResultsSelectCountUpdate onResultsSelectCountUpdate e: ', e);
         this.searchResultsSelectedCount = e;
     }
 
