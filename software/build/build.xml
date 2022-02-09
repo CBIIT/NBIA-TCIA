@@ -912,6 +912,7 @@ L-->
 			 	<filter token="latest.TCIA.downloader.version" value="${latest.TCIA.downloader.version}"/>
 				<filter token="latest.manifest.version" value="${latest.manifest.version}"/>
 			 	<filter token="force.downloader.upgrade" value="${force.downloader.upgrade}"/>
+				<filter token="no.upgrade.minimum.version" value="${no.upgrade.minimum.version}"/>
 			 	<filter token="help.desk.url" value="${help.desk.url}"/>
 				<filter token="online.help.url" value="${online.help.url}"/>
 				<filter token="user.agreement.file.location" value="${user.agreement.file.location}"/>
@@ -1225,7 +1226,7 @@ L-->
 				<sequential>
 					<exec dir="${nbia-search.base.dir}" executable="cmd" >
 						<arg line="/c npm 'install'"/>
-						<!--arg line="/c npm 'install' --force"/-->
+						<arg line="/c npm 'install' --force"/>
 					</exec>	
 					
 					<exec dir="${nbia-search.base.dir}" executable="cmd" >
@@ -1269,8 +1270,7 @@ L-->
 				<echo message="Windows build environment"/>
 				<sequential>
 					<exec dir="${nbia-viewer.base.dir}" executable="cmd" >
-						<arg line="/c npm 'install'"/>
-						<!--arg line="/c npm 'install' --force"/-->
+						<arg line="/c npm 'install' --force"/>
 					</exec>	
 					
 					<exec dir="${nbia-viewer.base.dir}" executable="cmd" >
@@ -1314,8 +1314,7 @@ L-->
 				<echo message="Windows build environment"/>
 				<sequential>
 					<exec dir="${nbia-admin.base.dir}" executable="cmd" >
-						<arg line="/c npm 'install'"/>
-						<!--arg line="/c npm 'install' --force"/-->
+						<arg line="/c npm 'install' --force"/>
 					</exec>	
 					
 					<exec dir="${nbia-admin.base.dir}" executable="cmd" >
