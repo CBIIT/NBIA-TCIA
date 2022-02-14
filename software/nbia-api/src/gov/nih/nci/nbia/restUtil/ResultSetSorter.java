@@ -28,6 +28,12 @@ public class ResultSetSorter {
         if (sortField.equalsIgnoreCase("series")) {
         	comp=new PSRMBSeriesCompare();
         }
+        if (sortField.equalsIgnoreCase("totalNumberOfSeries")) {
+        	comp=new PSRMBTotalSeriesCompare();
+        }
+        if (sortField.equalsIgnoreCase("totalNumberOfStudies")) {
+        	comp=new PSRMBTotalStudiesCompare();
+        }
         if (comp==null) {
         	comp=new PSRMBCollectionCompare();
         }
@@ -68,13 +74,25 @@ public class ResultSetSorter {
 		{
 			PatientSearchResultWithModilityAndBodyPart p1=(PatientSearchResultWithModilityAndBodyPart)o1;
 			PatientSearchResultWithModilityAndBodyPart p2=(PatientSearchResultWithModilityAndBodyPart)o2;
-			if (p1.getTotalNumberOfStudies()>p2.getTotalNumberOfStudies()) return 1;
-			if (p1.getTotalNumberOfStudies()<p2.getTotalNumberOfStudies()) return -1;
+			if (p1.computeFilteredNumberOfStudies()>p2.computeFilteredNumberOfStudies()) return 1;
+			if (p1.computeFilteredNumberOfStudies()<p2.computeFilteredNumberOfStudies()) return -1;
 			return 0;
 		}
 		
 	}
 	private class PSRMBSeriesCompare implements Comparator{
+		
+		public int compare(Object o1, Object o2)
+		{
+			PatientSearchResultWithModilityAndBodyPart p1=(PatientSearchResultWithModilityAndBodyPart)o1;
+			PatientSearchResultWithModilityAndBodyPart p2=(PatientSearchResultWithModilityAndBodyPart)o2;
+			if (p1.computeFilteredNumberOfSeries()>p2.computeFilteredNumberOfSeries()) return 1;
+			if (p1.computeFilteredNumberOfSeries()<p2.computeFilteredNumberOfSeries()) return -1;
+			return 0;
+		}
+		
+	}
+	private class PSRMBTotalSeriesCompare implements Comparator{
 		
 		public int compare(Object o1, Object o2)
 		{
@@ -86,5 +104,17 @@ public class ResultSetSorter {
 		}
 		
 	}
-	
+	private class PSRMBTotalStudiesCompare implements Comparator{
+		
+		public int compare(Object o1, Object o2)
+		{
+			System.out.println("totalStudyCompare");
+			PatientSearchResultWithModilityAndBodyPart p1=(PatientSearchResultWithModilityAndBodyPart)o1;
+			PatientSearchResultWithModilityAndBodyPart p2=(PatientSearchResultWithModilityAndBodyPart)o2;
+			if (p1.getTotalNumberOfStudies()>p2.getTotalNumberOfStudies()) return 1;
+			if (p1.getTotalNumberOfStudies()<p2.getTotalNumberOfStudies()) return -1;
+			return 0;
+		}
+		
+	}
 }
