@@ -37,7 +37,6 @@ export class ReleaseDateCalendarComponent implements OnInit{
         this.releaseDateCalendarService.releaseDateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.date3 = data;
-                console.log( 'MHL this.releaseDate date3: ', this.date3 );
             } );
 
 
@@ -115,7 +114,7 @@ export class ReleaseDateCalendarComponent implements OnInit{
 
 
     onDateTextFocus(){
-        console.log( 'MHL onDateTextFocus' );
+       // console.log( 'MHL onDateTextFocus' );
     }
 
     onDayClick( i, d, m, y ){

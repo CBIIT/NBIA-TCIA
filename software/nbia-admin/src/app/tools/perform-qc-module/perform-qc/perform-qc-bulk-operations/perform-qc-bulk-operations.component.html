@@ -140,7 +140,7 @@
 
                     <!--  Calendar  -->
                     <span *ngIf="showReleasedDateCalendar"
-                        class="released-date"
+                          class="released-date"
                     >
                         <input class="m-0 w-50"
                                [ngClass]="{
@@ -161,7 +161,7 @@
                     </span>
                     <br/>
 
-                     <input
+                    <input
                         type="radio"
                         class="clicker"
                         id="radio-qc-bulk-released-yes"
@@ -212,35 +212,41 @@
                 <!-- ----- END Released  ----- -->
 
                 <!-- ----- Update Site ----- -->
-                <span class="qc-bulk-complete-radios ml-1" style="display: inline-block;">
+                <span class="qc-bulk-complete-radios ml-1" style="display: inline-block;"
 
+                >
+<!--
+searchResultsSelectedCount:{{searchResultsSelectedCount}}  showUpdateCollectionSite:{{showUpdateCollectionSite}}
+-->
                     <!-- Checkbox -->
                       <input
                           class="mt-3" type="checkbox" id="updateSiteCheckbox"
                           [(ngModel)]="showUpdateCollectionSite"
                           (click)="onShowUpdateCollectionSiteClick()"
+                          [ngClass]="{
+                                'nbia-button-disabled': searchResultsSelectedCount < 1
+                                }"
+                          [disabled]="searchResultsSelectedCount < 1"
                       >
                     <!-- END Checkbox -->
 
                     <!-- Update Site text -->
                        <label
                            class="ml-1"
+                           [ngClass]="{
+                                'nbia-button-disabled':  searchResultsSelectedCount < 1
+                                }"
                            for="updateSiteCheckbox"
                        >Update Site</label>
                     <!-- END Update Site text -->
 
-<!--
-                    searchResults.length:{{searchResults.length}}
-                    searchResults[0]['selected']:{{searchResults[0]['selected']}}
--->
-
                     <!-- ----- Site Dropdown ----- -->
-                    <span *ngIf="showUpdateCollectionSite">
+                    <span *ngIf="showUpdateCollectionSite && ( searchResultsSelectedCount > 0 )">
 
                         <select class="custom-select"
-                            id="newSite"
-                            name="newSite"
-                            ngModel
+                                id="newSite"
+                                name="newSite"
+                                ngModel
                         >
 
                            <option *ngFor="let i of siteDropdownArray"
@@ -265,16 +271,16 @@
                           class="mt-3" type="checkbox" id="updateDescriptionUri"
                           [(ngModel)]="showUpdateDescriptionUri"
                       >
-                    <!-- END Checkbox -->
+                        <!-- END Checkbox -->
                          <label
                              class="ml-1"
                              for="updateDescriptionUri"
-                         >Update Description URI
+                         >Update Desc. URI
                          </label>
 
                 </span>
 
-                    <div  *ngIf="showUpdateDescriptionUri">
+                    <div *ngIf="showUpdateDescriptionUri">
                         <input
                             [(ngModel)]="descriptionUri"
                             type="text"

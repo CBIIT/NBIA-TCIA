@@ -181,15 +181,6 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
         this.setDaysArray();
         this.updateDisplayDate();
 
-        /*       this.date3 = new Date();
-               this.year = this.date3.getFullYear();
-               this.month = this.date3.getMonth();
-               this.day = this.date3.getDate();
-               console.log('MHL ZED 00 this.year: ', this.year);
-               console.log('MHL ZED 01 this.month: ', this.month + 1);
-               console.log('MHL ZED 02 this.day: ', this.day);
-               this.currentDateDisplay0 = (this.month + 1) + '/' + this.day + '/' + this.year;
-       */
         this.currentDateDisplay0 = (this.month + 1) + '/' + this.day + '/' + this.year;
         this.onDayClick( -1, this.day, this.month, this.year );
         this.isDateValid = this.utilService.isGoodDate( this.currentDateDisplay0 );
@@ -237,8 +228,6 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
     }
 
     onTestButtonClick(){
-        console.log( 'MHL date0: ', this.date0 );
-        console.log( 'MHL date3: ', this.date3 );
     }
 
     // CHECKME

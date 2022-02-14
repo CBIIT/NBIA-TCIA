@@ -118,8 +118,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.searchResultByIndexService.searchResultsByIndexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
             if( this.currentCineModeSeriesIndex < this.searchResults.length - 1 ){
                 this.currentCineModeSeriesIndex++;
-                console.log( 'MHL 01 CALLING onClickCineMode: cineModeService.openCineMode this.collectionSite: ', this.collectionSite );
-
                 this.cineModeService.openCineMode(
                     this.searchResults[this.currentCineModeSeriesIndex],
                     this.collectionSite,
@@ -144,7 +142,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // New search results have arrived.
         this.apiService.searchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                console.log('MHL NOG06 searchResultsEmitter: ', data );
                 if( data[0] === Consts.NO_SEARCH ){
                     this.noSearch = true;
                     data = [];
@@ -190,7 +187,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
         this.apiService.collectionSiteEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                console.log( 'MHL X X X X X X X collectionSiteEmitter: ', data );
                 this.collectionSite = data;
             } );
 
@@ -278,8 +274,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
 
     toggleSearchResultsCheckbox( i, c ){
-        console.log('MHL AAAAA XXXXX SearchResultsSectionBravoComponent.toggleSearchResultsCheckbox i: ', i );
-        console.log('MHL AAAAA XXXXX SearchResultsSectionBravoComponent.toggleSearchResultsCheckbox c: ', c );
         this.setCheckbox( i, c );
         this.getSelectedCheckboxCount();
 
@@ -326,7 +320,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     setCheckbox( i, state ){
         this.searchResults[i]['selected'] = state; // @TODO get this to  "Update Site"
-        console.log('MHL ****calling resultsUpdateBravoEmitter**** emit: ', this.searchResults[i]);
         this.resultsUpdateBravoEmitter.emit( this.searchResults ); // @TODO replace this with a NON-Output emitter
         this.searchResultsSectionBravoService.selectionChange( this.searchResults ); // @TODO replace above with this
 
@@ -334,12 +327,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     // Cine-mode viewer
     onClickCineMode( i ){
-        console.log( 'MHL 00 onClickCineMode: ', i );
-        console.log( 'MHL 01 onClickCineMode: ', this.searchResults );
         i += (this.currentPage * this.pageLength);
         this.currentCineModeSeriesIndex = i;
-console.log('MHL collectionSite collectionSite: ', this.collectionSite);
-console.log('MHL collectionSite this.searchResults[' + i + ']: ', this.searchResults[i]);
         this.cineModeService.openCineMode(
             this.searchResults[i],
             this.collectionSite,

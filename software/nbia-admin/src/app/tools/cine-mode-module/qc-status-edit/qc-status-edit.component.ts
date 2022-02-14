@@ -13,6 +13,7 @@ import { Consts } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import { ReleaseDateCalendarService } from '@app/tools/perform-qc-module/perform-qc/release-date-calendar/release-date-calendar.service';
+import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service';
 
 
 @Component( {
@@ -43,21 +44,23 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     badReleasedDate = false;
 
     showUpdateDescriptionUri = false;
+    showCineUpdateCollectionSite = false;
     descriptionUri = '';
-
+    siteArray = []; // For Update site dropdown
+    newSiteCine = 'XXX';
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(
+        private cineModeService: CineModeBravoService,
         private apiService: ApiService,
         private utilService: UtilService,
         private searchResultByIndexService: SearchResultByIndexService,
         private preferencesService: PreferencesService,
-        private releaseDateCalendarService: ReleaseDateCalendarService
+        private releaseDateCalendarService: ReleaseDateCalendarService,
     ){
         let d = new Date();
 
-        this.releasedDate = ( d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
-        console.log('MHL 00 releasedDate: ', this.releasedDate);
+        this.releasedDate = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
     }
 
     ngOnInit(){
@@ -67,6 +70,17 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
                 this.qcStatuses = data;
             } );
 
+        this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                this.siteArray = data;
+            } );
+
+        this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                this.seriesData = undefined;  // So we can tell when it has been (re)populated
+                this.apiService.getSites( [data.series['series'] ]);
+                this.updateSiteList();
+            } );
 
         this.releaseDateCalendarService.releaseDateEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -85,27 +99,28 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+
     }
 
     onShowUpdateDescriptionUriClick(){
-        console.log( 'MHL Cine onShowUpdateDescriptionUriClick showUpdateDescriptionUri: ', this.showUpdateDescriptionUri );
+       // console.log( 'MHL Cine onShowUpdateDescriptionUriClick showUpdateDescriptionUri: ', this.showUpdateDescriptionUri );
     }
 
-    // @CHECKME
+
+
     async updateSiteList(){
         let runaway = 10;
-        console.log( 'MHL 000a seriesData: ', this.seriesData );
-        console.log( 'MHL 000b runaway: ', runaway );
 
-        while( (this.seriesData === undefined || this.seriesData.length === undefined || this.seriesData.length < 1) && runaway > 0 ){
-//            console.log( 'MHL 001 seriesData[' + runaway +']: ', this.seriesData );
+        while( (this.seriesData === undefined) && runaway > 0 ){
             runaway--;
             await this.utilService.sleep( 500 );
         }
-        this.apiService.getSites( this.seriesData );
-        console.log( 'MHL 002 seriesData: ', this.seriesData );
+        this.apiService.getSites( [this.seriesData['series'] ]);
     }
 
+    onShowCineUpdateCollectionSiteClick(){
+        // console.log( 'MHL onShowCineUpdateCollectionSiteClick' );
+    }
 
     onQcBulkStatusClick( n ){
         this.visible = n;
@@ -142,6 +157,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         }
         if( this.isReleased === this.YES ){
             query += '&released=released';
+            query += '&dateReleased=' + this.releasedDate;
         }
         if( this.isReleased === this.NO ){
             query += '&released=NotReleased';
@@ -164,17 +180,28 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         }
 
         // console.log('MHL QcStatusEditComponent.onQcUpdate  showUpdateDescriptionUri: ', this.showUpdateDescriptionUri);
-        console.log( 'MHL QcStatusEditComponent.onQcUpdate  showUpdateDescriptionUri query: ', query );
         if( Properties.DEMO_MODE ){
             console.log( 'DEMO mode: Perform QC  Update ', query );
         }else{
             this.apiService.doSubmit( Consts.TOOL_BULK_QC, query );
+
+            // Make the call to update the Site for this series
+            if( this.showCineUpdateCollectionSite ){
+                if( Properties.DEMO_MODE ){
+                    console.log( 'DEMO mode - NOT updating Series Site.' );
+                }else{
+                    this.apiService.submitSiteForSeries( this.newSiteCine, [this.seriesData['series']] ); // It's expecting an array
+                }
+            }
         }
     }
 
+    // This should not be needed, but the ngModel for the Select isn't setting newSiteCine
+    onSiteOptionClick( s ){
+        this.newSiteCine = s;
+    }
 
     cineCalendarTextInputChange(){
-        console.log('MHL cineCalendarTextInputChange: ', this.releasedDate);
         let m = -1;
         let d = -1;
         let y = -1;
@@ -196,21 +223,19 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
             y = +parts[2];
             date3.setFullYear( y );
-            console.log('MHL Good date');
-        }
-        else{
+        }else{
             this.badReleasedDate = true;
-            console.log('MHL BAD date');
         }
 
     }
 
     releasedCalendarIconClick( e ){
-        console.log( 'MHL releasedCalendarIconClick: ', e );
         this.showReleasedDateCalendar = (!this.showReleasedDateCalendar);
     }
 
-    ngOnDestroy(): void{
+    ngOnDestroy()
+        :
+        void{
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

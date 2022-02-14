@@ -35,7 +35,7 @@ export class AccessTokenService{
             let cycleTimeSeconds = this.expiresIn - Properties.TOKEN_REFRESH_TIME_MARGIN;
             setInterval(() => {
                 this.getAccessTokenWithRefresh( this.getRefreshToken() );
-                console.log('MHL getAccessTokenWithRefresh: ', this.getRefreshToken() );
+                // console.log('MHL getAccessTokenWithRefresh: ', this.getRefreshToken() );
             }, cycleTimeSeconds * 1000);
         }
 // @TESTING
@@ -66,9 +66,6 @@ export class AccessTokenService{
      * @param password
      */
     getAccessTokenFromServer( user, password ) {
-        console.log('MHL ZED getAccessTokenFromServer user: ', user);
-        console.log('MHL ZED getAccessTokenFromServer password: ', password);
-
         if( this.currentlyGettingToken ){
             return;
         }
@@ -91,13 +88,8 @@ export class AccessTokenService{
                     headers: headers,
                     method: 'post'
                 };
-console.log('MHL zed 04 ', post_url);
-console.log('MHL zed 05 ', data);
-console.log('MHL zed 06 ', options);
             this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
                 accessTokenData => {
-console.log('MHL zed 07 ', accessTokenData);
-
                     this.setAccessToken( accessTokenData['access_token'] );
                     this.setRefreshToken( accessTokenData['refresh_token'] );
                     this.setExpiresIn( accessTokenData['expires_in'] );
@@ -120,8 +112,6 @@ console.log('MHL zed 07 ', accessTokenData);
 
                 },
                 err => {
-                    console.log('MHL zed 08 err: ', err);
-
                     console.error( 'Get new token error: ', err );
                     this.setAccessTokenStatus( TokenStatus.BAD_TOKEN );
                     this.currentlyGettingToken = false;
@@ -143,7 +133,6 @@ console.log('MHL zed 07 ', accessTokenData);
      * @param password
      */
     getAccessTokenWithRefresh( refreshToken ) {
-        console.log('MHL ZED 10 getAccessTokenWithRefresh: ', refreshToken);
         if( this.currentlyGettingToken ){
             return;
         }
@@ -165,13 +154,8 @@ console.log('MHL zed 07 ', accessTokenData);
                 method: 'post'
             };
 
-        console.log('MHL ZED 11 DOING POST for getAccessTokenWithRefresh post_url: ', post_url);
-        console.log('MHL ZED 12 DOING POST for getAccessTokenWithRefresh data: ', data);
-        console.log('MHL ZED 13 DOING POST for getAccessTokenWithRefresh options: ', options);
-
         this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
             accessTokenData => {
-                console.log('MHL ZED 14 Back from POST for getAccessTokenWithRefresh accessTokenData: ', accessTokenData);
                 this.setAccessToken( accessTokenData['access_token'] );
                 this.setRefreshToken( accessTokenData['refresh_token'] );
                 this.setExpiresIn( accessTokenData['expires_in'] );

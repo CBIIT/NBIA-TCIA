@@ -36,8 +36,6 @@ export class LoginComponent implements OnInit, OnDestroy{
 
     ngOnInit(){
         this.loginService.loginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( ( data ) => {
-            console.log('MHL zed 01 loginEmitter  data: ', data);
-
             this.showLogin = true;
             // No token, expired token.  So we can display reason for login at the top of the login screen
             this.loginType = data;
@@ -45,7 +43,6 @@ export class LoginComponent implements OnInit, OnDestroy{
     }
 
     async onSubmit(){
-        console.log('MHL zed 02 onSubmit');
         this.accessTokenService.getAccessTokenFromServer(
             this.loginForm.value.username,
             this.loginForm.value.password

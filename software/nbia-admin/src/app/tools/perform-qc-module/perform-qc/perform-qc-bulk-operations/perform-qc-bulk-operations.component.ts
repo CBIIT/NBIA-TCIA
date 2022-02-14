@@ -60,6 +60,8 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     constructor( private utilService: UtilService, private apiService: ApiService,
                  private preferencesService: PreferencesService, private searchResultsSectionBravoService: SearchResultsSectionBravoService,
                  private releaseDateCalendarService: ReleaseDateCalendarService ){
+        let d = new Date();
+        this.releaseDate = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
     }
 
     ngOnInit(){
@@ -87,21 +89,36 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
         this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                console.log( 'MHL 00 getSitesForSeriesEmitter: ', data );
-                this.siteDropdownArray = data;
-                console.log( 'MHL 01 getSitesForSeriesEmitter: ', this.siteDropdownArray );
-            } );
+                if( typeof data === 'object' && data[0].length > 1 ){
+                    this.siteDropdownArray = data;
+                }else{
+                    if( data.startsWith( 'The series do not belong to one collection' ) ){
+                        if( this.showUpdateCollectionSite ){
+                            alert( 'Can not update Series Sites for series from multiple Collections.\nDeselecting "Update Site"' );
+                            this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
+                        }
+                    }else{
+                        this.siteDropdownArray = data;
+                        alert( 'The series DO 01 belong to one collection' );
+                    }
+
+                }
+
+            },
+            err => {
+                alert( 'HEY err: ' + err['message'] );
+            }
+        );
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
     }
 
     releasedCalendarIconClick( e ){
-        this.showReleaseCalendar = ! this.showReleaseCalendar;
+        this.showReleaseCalendar = !this.showReleaseCalendar;
     }
 
     onShowUpdateCollectionSiteClick(){
-        console.log( 'MHL onShowUpdateCollectionSiteClick showUpdateCollectionSite: ', this.showUpdateCollectionSite );
         this.upDateSelectedSiteIdArray();
     }
 
@@ -111,34 +128,27 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
      */
     upDateSelectedSiteIdArray(){
         this.selectedSiteIdArray = [];
-
+        let tempSearchResultsSelectedCount = 0;
         for( let f = 0; f < this.searchResults.length; f++ ){
             if( this.searchResults[f]['selected'] ){
-                console.log( 'MHL searchResults[' + f + '][\'selected\']' );
-                console.log( 'MHL searchResults[' + f + ']: ', this.searchResults[f]['series'] );
                 this.selectedSiteIdArray.push( this.searchResults[f]['series'] );
+                tempSearchResultsSelectedCount++;
             }
         }
-        console.log( 'MHL selectedSiteIdArray: ', this.selectedSiteIdArray );
-        this.getSitesForDropdown();
-    }
-
-    getSitesForDropdown(){
+        if( tempSearchResultsSelectedCount < 1 ){
+            this.showUpdateCollectionSite = false;
+        }
         this.updateSiteList();
     }
 
     async updateSiteList(){
         let runaway = 10;
-        console.log( 'MHL 000a seriesData: ', this.selectedSiteIdArray );
-        console.log( 'MHL 000b runaway: ', runaway );
         this.apiService.getSites( this.selectedSiteIdArray );
 
         while( (this.selectedSiteIdArray === undefined || this.selectedSiteIdArray.length === undefined || this.selectedSiteIdArray.length < 1) && runaway > 0 ){
-//            console.log( 'MHL 001 seriesData[' + runaway +']: ', this.seriesData );
             runaway--;
             await this.utilService.sleep( 500 );
         }
-        console.log( 'MHL 002 seriesData: ', this.selectedSiteIdArray );
     }
 
 
@@ -151,13 +161,13 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     onQcBulkStatusReleasedClick( r ){
-        console.log('MHL onQcBulkStatusReleasedClick >' + r + '<');
         this.showReleasedDateCalendar = r === this.YES;
         this.isReleased = r;
     }
-    onQcBulkStatusReleasedClickYes(event){
-        console.log('MHL onQcBulkStatusReleasedClickYes $event: ', event);
-        this.showReleasedDateCalendar =true;
+
+    onQcBulkStatusReleasedClickYes( event ){
+        // console.log( 'MHL onQcBulkStatusReleasedClickYes $event: ', event );
+        this.showReleasedDateCalendar = true;
     }
 
     onQcBulkUpdateClick(){
@@ -177,7 +187,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             query += '&complete=NotComplete';
         }
 
-        if( this.showUpdateDescriptionUri){
+        if( this.showUpdateDescriptionUri ){
             query += '&url=' + this.descriptionUri;
         }
 
@@ -209,17 +219,16 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         }
 
         // Update the series site if "Update" checkbox is selected
-        if( this.showUpdateCollectionSite){
+        if( this.showUpdateCollectionSite ){
 
             let seriesForNewSite = [];
             for( let row of this.searchResults ){
                 if( row['selected'] ){
-                    console.log('MHL WWWW: ', row['series']);
                     seriesForNewSite.push( row['series'] );
                 }
             }
-            if( Properties.DEMO_MODE){
-                console.log('MHL submitSiteForSeries', this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite ));
+            if( Properties.DEMO_MODE ){
+                console.log( 'DEMO mode submitSiteForSeries', this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite ) );
             }else{
                 this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
             }
@@ -299,8 +308,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
             y = +parts[2];
             date3.setFullYear( y );
-        }
-        else{
+        }else{
             this.badReleasedDate = true;
         }
 

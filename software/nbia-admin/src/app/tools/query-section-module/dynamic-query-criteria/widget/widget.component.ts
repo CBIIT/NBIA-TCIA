@@ -135,8 +135,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
     properties = Properties;
 
-    //  haveInput = false;
-
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private preferencesService: PreferencesService, private dynamicQueryBuilderService: DynamicQueryBuilderService,

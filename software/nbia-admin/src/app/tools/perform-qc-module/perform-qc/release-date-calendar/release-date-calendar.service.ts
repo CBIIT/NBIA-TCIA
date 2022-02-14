@@ -15,7 +15,6 @@ export class ReleaseDateCalendarService{
     }
 
     setReleaseDate( d ){
-        console.log('MHL setReleaseDate: ', d );
         this.releaseDate = d;
         this.releaseDateEmitter.emit( d );
     }

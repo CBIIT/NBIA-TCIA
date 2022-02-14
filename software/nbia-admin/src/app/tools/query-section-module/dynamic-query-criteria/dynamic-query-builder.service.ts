@@ -127,7 +127,7 @@ export class DynamicQueryBuilderService{
                 break;
 
             case WIDGET_TYPE.ONE_CHECKBOX:
-                console.log( 'MHL 05 buildServerQueryPart: ', widget.userInput );
+                // console.log( 'MHL 05 buildServerQueryPart: ', widget.userInput );
                 break;
 
             case WIDGET_TYPE.CALENDAR:

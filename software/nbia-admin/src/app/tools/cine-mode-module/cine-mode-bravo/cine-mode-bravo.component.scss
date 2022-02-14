@@ -7,8 +7,10 @@
 @import "../../../../app/data-table";
 @import "../../../popup";
 
-$cineModeWidth: 90%;
-$cineModeHeight: 90%;
+// Size the Cine mode popup
+$cineModeWidth: 94%;
+$cineModeHeight: 94%;
+
 $cineModeImageWidth: 512px;
 $cineModeImageHeight: 512px;
 $cineModeImageTdWidth: 538px;
@@ -157,8 +159,10 @@ $cineModeSeriesDataHeight: 200px;
     margin-bottom: 0;
     overflow-y: auto;
 }
+
 .dicom-scroll-area-long{
     @extend .dicom-scroll-area;
+
     height: 552px;
 }
 

@@ -11,7 +11,6 @@ export class SearchResultsSectionBravoService{
     }
 
     selectionChange( searchResults ){
-        console.log( 'MHL selectionChange: ', searchResults );
         this.selectionChangeEmitter.emit( searchResults );
     }
 }

@@ -222,10 +222,8 @@ export class ApiService{
         }
 
         if( tool === Consts.TOOL_PERFORM_QC ){
-            console.log( 'MHL tool === Consts.TOOL_PERFORM_QC' );
             // Do the search if we have at least one QC Status.
             if( queryParameters.includes( '&visibilities=' ) ){
-                console.log( 'MHL queryParameters: ', queryParameters );
                 this.getPerformQcSearch( queryParameters.substr( 1 ) );
             }else{
                 // Don't do the search, and send back Consts.NO_SEARCH, this will tell the Search results screen don't show results count or pager at the top(not the same as a search with no results).
@@ -270,28 +268,21 @@ export class ApiService{
     }
 
     submitSiteForSeries( site, seriesIdArray ){
-        console.log( 'MHL submitSiteForSeries site: ', site );
         let seriesIdArg = 'site=' + site + '&';
 
         for( let f = 0; f < seriesIdArray.length; f++ ){
-            console.log( 'MHL seriesIdArray[' + f + ']: ', seriesIdArray[f] );
             seriesIdArg += 'seriesId=' + seriesIdArray[f] + '&';
         }
-
 
         // Remove last "&"
         seriesIdArg = seriesIdArg.slice( 0, -1 );
 
-        console.log( 'MHL submitSiteForSeries seriesIdArg: ', seriesIdArg );
-
         this.doPost( 'submitSiteForSeries', seriesIdArg ).subscribe(
             ( data ) => {
-
-                console.log( 'MHL submitSiteForSeries: ', data );
+               // console.log( 'postMHL submitSiteForSeries: ', data );
             },
             error => {
-                console.error( 'MHL ERROR submitSiteForSeries: ', error );
-                console.error( 'MHL ERROR submitSiteForSeries: ', error.toString() );
+                console.error( 'ERROR submitSiteForSeries: ', error.toString() );
                 alert( 'submitSiteForSeries (' + error['status'] + ') - ' + error['error'] );
             }
         )
@@ -303,7 +294,6 @@ export class ApiService{
      * @param idList
      */
     getSites( idList ){
-        console.log( 'MHL getSites idList: ', idList );
         let seriesIdArg = '';
         for( let f = 0; f < idList.length; f++ ){
             seriesIdArg += 'seriesId=' + idList[f] + '&';
@@ -311,16 +301,12 @@ export class ApiService{
         // Remove last "&"
         seriesIdArg = seriesIdArg.slice( 0, -1 );
 
-        console.log( 'MHL getSites seriesIdArg: ', seriesIdArg );
         this.doPost( 'getSitesForSeries', seriesIdArg ).subscribe(
             ( data ) => {
-
-                console.log( 'MHL getSites: ', data );
                 this.getSitesForSeriesEmitter.emit( data );
             },
             error => {
-                console.error( 'MHL ERROR getSites: ', error );
-               // alert( ' (' + error['status'] + ') - ' + error['error'] );
+                this.getSitesForSeriesEmitter.emit( error['error'] );
             }
         )
     }
@@ -492,9 +478,7 @@ export class ApiService{
         if( this.trailerQuery === query && (!rerun) ){
             return;
         }
-        console.log( 'MHL ZEB00 doAdvancedQcSearch: ', query );
         this.trailerQuery = query;
-        console.log( 'MHL 04 query: ', query );
         this.displayDynamicQueryService.query( query );
         this.loadingDisplayService.setLoading( true, 'Loading data...' );
 
@@ -885,12 +869,8 @@ export class ApiService{
      */
     doGet( queryType, query ? ){
         let getUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
-        console.log( 'MHL getUrl: ', queryType );
-        console.log( 'MHL query: ', query );
         if( query !== undefined ){
             getUrl += '?' + query;
-            console.log( 'MHL query: ', getUrl );
-
         }
         if( Properties.DEBUG_CURL ){
             let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
@@ -978,7 +958,8 @@ export class ApiService{
             queryType === Consts.SUBMIT_ONLINE_DELETION ||
             queryType === Consts.SUBMIT_COLLECTION_LICENSES ||
             queryType === Consts.SUBMIT_DELETE_COLLECTION_LICENSES ||
-            queryType === Consts.SUBMIT_QC_STATUS_UPDATE
+            queryType === Consts.SUBMIT_QC_STATUS_UPDATE ||
+            queryType === Consts.SUBMIT_SITE_FOR_SERIES
         ){
             options = {
                 headers: headers,

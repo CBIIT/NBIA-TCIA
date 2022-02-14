@@ -2,7 +2,6 @@
 <!----------                    QC Edit for Cine mode only                    ------------>
 <!----------  Used in the bottom section of "Perform Quality Control" cine mode  --------->
 <!---------------------------------------------------------------------------------------->
-
 <!-- Row of radio buttons across the top with each of the possible statuses. -->
 <div class="qc-status-outer-div pb-0 mb-0">
     <div class="container-fluid">
@@ -231,38 +230,69 @@
                     </label>
                 </td>
                 <td class="complete-radios">
+                    <!-- ----- Update Site ----- -->
+
+                    <!-- Checkbox -->
+                    <input
+                        class="mt-3" type="checkbox" id="cineUpdateSiteCheckbox"
+                        [(ngModel)]="showCineUpdateCollectionSite"
+                        (click)="onShowCineUpdateCollectionSiteClick()"
+                    >
+                    <!-- END Checkbox -->
+
+                    <!-- Update Site text -->
+                    <label
+                        class="ml-1"
+                        for="cineUpdateSiteCheckbox"
+                    >Update Site</label>
+                    <!-- END Update Site text -->
+
+                    <span *ngIf="showCineUpdateCollectionSite">
+                        <select class="custom-select"
+                            id="newSiteCine"
+                            name="newSiteCine"
+                            ngModel
+                        >
+                            <option *ngFor="let site of siteArray"
+                                (click)="onSiteOptionClick( site )"
+                            >
+                                {{site}}
+                            </option>
+                        </select>
+
+                    </span>
+
+                    <!-- ----- END Update Site ----- -->
+                </td>
+
+
+                <td class="complete-radios">
 
                     <!-- ----- Update Description URI ----- -->
-<!--
-                    <span class="complete-radios ml-1" style="display: inline-block;">
--->
                     <span>
                     <!-- Checkbox -->
                         <input
-                           class="mt-3" type="checkbox" id="updateDescriptionUriCine"
-                           [(ngModel)]="showUpdateDescriptionUri"
-                           (click)="onShowUpdateDescriptionUriClick()"
+                            class="mt-3" type="checkbox" id="updateDescriptionUriCine"
+                            [(ngModel)]="showUpdateDescriptionUri"
+                            (click)="onShowUpdateDescriptionUriClick()"
                         >
                         <!-- END Checkbox -->
                          <label
                              class="ml-1"
                              for="updateDescriptionUriCine"
-                         >Update Description URI
+                         >Update Desc. URI
                          </label>
                     </span>
 
-                    <div  *ngIf="showUpdateDescriptionUri">
+                    <div *ngIf="showUpdateDescriptionUri">
                         <input
                             [(ngModel)]="descriptionUri"
                             type="text"
                         >
                     </div>
-<!--
-                </span>
--->
                     <!-- ----- END Update Description URI ----- -->
-
                 </td>
+
             </tr>
         </table>
         <div>

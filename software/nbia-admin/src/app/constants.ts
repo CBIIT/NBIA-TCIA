@@ -78,7 +78,7 @@ export const Consts = {
     SUBMIT_QC_STATUS_UPDATE: 'submitQCVisibilityForDataAdmin',
     SUBMIT_SERIES_DELETION: 'submitDeleteVisibility',
     SUBMIT_ONLINE_DELETION: 'submitOnlineDeletion',
-
+    SUBMIT_SITE_FOR_SERIES: 'submitSiteForSeries',
     DICOM_TAGS: 'getDicomTags',
     DICOM_TAGS_BY_IMAGE: 'getDicomTagsByImageID',
     API_MANIFEST_URL: 'nbia-api/services/getManifestTextV2',

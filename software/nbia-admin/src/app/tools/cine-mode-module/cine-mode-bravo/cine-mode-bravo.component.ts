@@ -102,7 +102,6 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                console.log( 'MHL * * * * * * * displayCineModeBravoImagesEmitter: ', data );
                 this.collectionSite = data['collectionSite'];
                 this.seriesData = data['series'];
                 this.searchResultsIndex = data['searchResultsIndex']; // FIXME  We will not be using this get rid of it here and at the source

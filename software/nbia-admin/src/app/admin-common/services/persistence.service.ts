@@ -77,7 +77,6 @@ export class PersistenceService {
      * @returns {any}  The contents of the the item that has been retrieved.
      */
     get( key ) {
-        console.log('MHL get: ', key + '  -  ' + this.data[key]);
         return this.data[key];
     }
 
