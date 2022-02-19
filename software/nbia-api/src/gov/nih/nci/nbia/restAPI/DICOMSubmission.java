@@ -104,33 +104,12 @@ public class DICOMSubmission extends getData{
  				   return Response.status(400)
  							.entity(status).build();
                 }
-	       } catch (NestedRuntimeException e) {
-				e.printStackTrace();
-				return Response.status(500)
-						.entity(e.getMostSpecificCause().getMessage()).build();
-	        } catch (Exception e) {
+
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return Response.status(500)
 							.entity(e.getMessage()).build();
 			}
 
-	}
-	
-	private boolean allowToGoOn(String project, String site) {
-		if (NCIAConfig.getCtpBlockCreationNewProjectSite().trim().equals("true")) {
-			TrialDataProvenanceDAO tDao = (TrialDataProvenanceDAO) SpringApplicationContext
-					.getBean("trialDataProvenanceDAO");
-			try {
-			if (tDao.hasExistingProjSite(project, site)) 
-				return true;
-			else return false;
-			}
-			catch (DataAccessException ex) {
-				ex.printStackTrace();
-				return false;
-			}
-		}
-		else return true;
 	}
 }

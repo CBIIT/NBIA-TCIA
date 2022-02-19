@@ -107,6 +107,11 @@ L-->
                 rev="1.5"
                 conf="compile->master;runtime->master"/>
 
+    <dependency org="commons-collections"
+                name="commons-collections"
+                rev="3.2.2"
+                conf="runtime->master"/>
+
     <!--dependency org="org.icefaces"
                 name="icefaces"
                 rev="1.8.3nci"
