@@ -78,6 +78,11 @@ public class GetQCHistoryReport extends getData{
             
         	QcStatusDAO qcStatusDAO = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
         	List<QcStatusHistoryDTO> qshDTOList =qcStatusDAO.findQcStatusHistoryInfo(seriesList);
+        	for (QcStatusHistoryDTO dto:qshDTOList){
+        		if (dto.getNewStatus()==null) {
+        			dto.setNewStatus(dto.getOldStatus());
+        		}
+        	}
 		return Response.ok(JSONUtil.getJSONforQcStatusHistory(qshDTOList)).type("application/json")
 				.build();
 		} catch (Exception e) {
