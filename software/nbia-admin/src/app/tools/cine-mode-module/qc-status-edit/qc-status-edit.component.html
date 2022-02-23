@@ -41,14 +41,16 @@
             <button
                 class="btn nbia-button qc-status-update-button"
                 [ngClass]="{
-                    'nbia-button-disabled': visible < 0,
+                    'nbia-button-disabled': visible < 0  && (! showCineUpdateCollectionSite ),
                     'font-extra-small': currentFont === '0',
                     'font-small': currentFont === '1',
                     'font-medium': currentFont === '2',
                     'font-large': currentFont === '3'
                 }"
-                [disabled]="visible < 0"
+
+                [disabled]="visible < 0 && (! showCineUpdateCollectionSite )"
                 type="button"
+
                 (click)="onQcUpdateNextClick()"
             >
                 Update / Next Series
@@ -248,7 +250,7 @@
                     <!-- END Update Site text -->
 
                     <span *ngIf="showCineUpdateCollectionSite">
-                        <select class="custom-select"
+                        <select class="custom-select  show-tick"
                             id="newSiteCine"
                             name="newSiteCine"
                             ngModel

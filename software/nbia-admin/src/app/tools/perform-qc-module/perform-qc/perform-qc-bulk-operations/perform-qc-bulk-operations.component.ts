@@ -50,7 +50,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     showUpdateDescriptionUri = false;
     descriptionUri = '';
     showReleasedDateCalendar = false; // TODO rename this
-    newSite = 0;
+    newSite = this.siteDropdownArray[0];
 
     releaseDate;
     badReleasedDate;
@@ -91,6 +91,8 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             data => {
                 if( typeof data === 'object' && data[0].length > 1 ){
                     this.siteDropdownArray = data;
+                    this.newSite = this.siteDropdownArray[0];
+
                 }else{
                     if( data.startsWith( 'The series do not belong to one collection' ) ){
                         if( this.showUpdateCollectionSite ){
@@ -99,14 +101,14 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
                         }
                     }else{
                         this.siteDropdownArray = data;
-                        alert( 'The series DO 01 belong to one collection' );
+                        alert( 'getSitesForSeriesEmitter error' );
                     }
 
                 }
 
             },
             err => {
-                alert( 'HEY err: ' + err['message'] );
+                alert( 'err: ' + err['message'] );
             }
         );
 
@@ -149,6 +151,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             runaway--;
             await this.utilService.sleep( 500 );
         }
+
     }
 
 
@@ -228,11 +231,17 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
                 }
             }
             if( Properties.DEMO_MODE ){
-                console.log( 'DEMO mode submitSiteForSeries', this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite ) );
+                console.log( 'DEMO mode submitSiteForSeries', this.apiService.submitSiteForSeries( this.newSite, seriesForNewSite ) );
+                // console.log( 'DEMO mode submitSiteForSeries', this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite ) );
             }else{
-                this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
+                this.apiService.submitSiteForSeries( this.newSite, seriesForNewSite );
+                // this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
             }
         }
+    }
+
+    onSiteOptionClick(i){
+        this.newSite = i;
     }
 
 

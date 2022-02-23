@@ -243,13 +243,14 @@ searchResultsSelectedCount:{{searchResultsSelectedCount}}  showUpdateCollectionS
                     <!-- ----- Site Dropdown ----- -->
                     <span *ngIf="showUpdateCollectionSite && ( searchResultsSelectedCount > 0 )">
 
-                        <select class="custom-select"
+                        <select class="custom-select  show-tick"
                                 id="newSite"
                                 name="newSite"
                                 ngModel
                         >
 
                            <option *ngFor="let i of siteDropdownArray"
+                                   (click)="onSiteOptionClick( i )"
                                    selected value=i
                            >
                                {{i}}
@@ -315,20 +316,41 @@ searchResultsSelectedCount:{{searchResultsSelectedCount}}  showUpdateCollectionS
                         <button
                             class="btn nbia-button qc-bulk-update-button"
                             [ngClass]="{
-                                'nbia-button-disabled': ( visible < 0 && (! useBatchNumber ) && logText.length < 1  && ( isReleased === NO_CHANGE)   && ( isComplete === NO_CHANGE) )  || searchResultsSelectedCount < 1 ,
+                                'nbia-button-disabled':(
+                                     searchResultsSelectedCount < 1 ||
+                                     (
+                                         visible < 0 &&
+                                         (! useBatchNumber ) &&
+                                         logText.length < 1  &&
+                                         (! showUpdateCollectionSite) &&
+                                         ( isReleased === NO_CHANGE) &&
+                                         ( isComplete === NO_CHANGE)
+                                     )
+                                 ),
                                 'font-extra-small': currentFont === '0',
                                 'font-small': currentFont === '1',
                                 'font-medium': currentFont === '2',
                                 'font-large': currentFont === '3'
                             }"
                             [disabled]="
-                                ( visible < 0 && (! useBatchNumber ) && logText.length < 1  && ( isReleased === NO_CHANGE)   && ( isComplete === NO_CHANGE) )  || searchResultsSelectedCount < 1
+                                (
+                                     searchResultsSelectedCount < 1 ||
+                                     (
+                                         visible < 0 &&
+                                         (! useBatchNumber ) &&
+                                         logText.length < 1  &&
+                                         ( isReleased === NO_CHANGE) &&
+                                         (! showUpdateCollectionSite) &&
+                                         ( isComplete === NO_CHANGE)
+                                     )
+                                 )
                             "
                             type="button"
                             (click)="onQcBulkUpdateClick()"
                         >
                             Update
                         </button>
+
                         <button
                             class="btn nbia-button qc-bulk-update-button"
                             [ngClass]="{
