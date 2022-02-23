@@ -78,6 +78,10 @@ public class SetSiteForSeries extends getData{
 					   QAUserUtil.setUserQA(user);
 				   }
                 }
+    			System.out.println("++++++++++++++++++++++Site-"+site);
+    			for (String series:seriesIdList) {
+    				System.out.println("series-"+series);
+    			}
 				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
 				qDao.setSiteForSeries(seriesIdList, site);
 			    return Response.ok("ok").type("application/text")

@@ -81,7 +81,8 @@ public class GetSitesForSeries extends getData{
 			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
             List<String>sites=generalSeriesDAO.getSitesForSeries(list);
             if (sites==null) {
-            	throw new Exception();
+        		return Response.ok(JSONUtil.getJSONforStringList(new ArrayList<String>())).type("application/json")
+        				.build();
             }
         		return Response.ok(JSONUtil.getJSONforStringList(sites)).type("application/json")
         				.build();

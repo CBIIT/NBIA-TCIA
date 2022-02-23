@@ -1590,7 +1590,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		if (seriesIds==null || seriesIds.size()<1) {
 			return null;
 		}
-		String hql = "select project, site from GeneralSeries where seriesInstanceUID in (:ids)";
+		String hql = "select distinct project, site from GeneralSeries where seriesInstanceUID in (:ids)";
 		Query query=getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
 		query.setParameterList("ids", seriesIds);
 		List<Object[]> siteRows = query.list();
@@ -1607,16 +1607,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			}
 		}
 		List<String> returnValue=new ArrayList<String>();
-		String protectionElementQuery="select distinct protection_element_name "+
-				" from csm_protection_element where protection_element_name like '"+
-				NCIAConfig.getCsmApplicationName()+"."+onlyCollection+"//%'";
+		String protectionElementQuery="select  distinct s.dp_site_name "+
+				" from trial_data_provenance tdp, site s where s.trial_dp_pk_id =tdp.trial_dp_pk_id and project like '"+
+				onlyCollection+"'";
 		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(protectionElementQuery).list();
 	    for (String result:results) {
 	    	System.out.println("result-"+result);
-	    	String[] parts=result.split("//");
-	    	if (parts.length>1) {
-	    		returnValue.add(parts[1]);
-	    	}
+    		returnValue.add(result);
 	    }
 		return returnValue;
 	}

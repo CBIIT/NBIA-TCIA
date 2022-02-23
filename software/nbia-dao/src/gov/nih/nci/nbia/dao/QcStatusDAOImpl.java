@@ -847,6 +847,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 					qsh.setUri(url);
 				}
 				if (site!=null) {
+					System.out.println("Site Sent-"+site);
 					gs.setSite(site);;
 					qsh.setSite(site);
 				}	
