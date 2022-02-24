@@ -41,14 +41,14 @@
             <button
                 class="btn nbia-button qc-status-update-button"
                 [ngClass]="{
-                    'nbia-button-disabled': visible < 0  && (! showCineUpdateCollectionSite ),
+                    'nbia-button-disabled': visible < 0  && (! showCineUpdateCollectionSite ) && (! showUpdateDescriptionUri ),
                     'font-extra-small': currentFont === '0',
                     'font-small': currentFont === '1',
                     'font-medium': currentFont === '2',
                     'font-large': currentFont === '3'
                 }"
 
-                [disabled]="visible < 0 && (! showCineUpdateCollectionSite )"
+                [disabled]="visible < 0 && (! showCineUpdateCollectionSite ) && (! showUpdateDescriptionUri )"
                 type="button"
 
                 (click)="onQcUpdateNextClick()"
