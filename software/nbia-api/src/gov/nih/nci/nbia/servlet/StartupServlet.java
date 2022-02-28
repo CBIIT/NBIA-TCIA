@@ -142,8 +142,8 @@ public class StartupServlet extends HttpServlet {
             //Job 1 - Latest Curation Date
             scheduler.scheduleJob(latestCurationDateJobDetail, latestCurationDateTrigger);
             scheduler.scheduleJob(md5HashCacheJobDetail, md5CacheTrigger);
-
-            scheduler.start();
+            scheduler.startDelayed(172800);
+           // scheduler.start();
         	//GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
         	//tDao.cacheMD5ForAllCollections();
         } catch (SchedulerException se) {
