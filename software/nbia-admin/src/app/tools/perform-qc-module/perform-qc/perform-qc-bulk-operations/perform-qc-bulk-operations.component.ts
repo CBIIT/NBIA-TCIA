@@ -169,7 +169,6 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     onQcBulkStatusReleasedClickYes( event ){
-        // console.log( 'MHL onQcBulkStatusReleasedClickYes $event: ', event );
         this.showReleasedDateCalendar = true;
     }
 
@@ -181,7 +180,6 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
                 query += '&seriesId=' + row['series'];
             }
         }
-
 
         if( this.isComplete === this.YES ){
             query += '&complete=Complete';
@@ -221,6 +219,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             this.apiService.doSubmit( Consts.TOOL_BULK_QC, query );
         }
 
+
         // Update the series site if "Update" checkbox is selected
         if( this.showUpdateCollectionSite ){
 
@@ -240,10 +239,9 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         }
     }
 
-    onSiteOptionClick(i){
+    onSiteOptionClick( i ){
         this.newSite = i;
     }
-
 
     onQcStatusHistoryReportClick(){
         let query = '';

@@ -242,22 +242,20 @@ searchResultsSelectedCount:{{searchResultsSelectedCount}}  showUpdateCollectionS
 
                     <!-- ----- Site Dropdown ----- -->
                     <span *ngIf="showUpdateCollectionSite && ( searchResultsSelectedCount > 0 )">
-
                         <select class="custom-select  show-tick"
                                 id="newSite"
                                 name="newSite"
-                                ngModel
+                                [(ngModel)]="newSite"
                         >
 
                            <option *ngFor="let i of siteDropdownArray"
                                    (click)="onSiteOptionClick( i )"
                                    selected value=i
+                                   value = {{i}}
                            >
                                {{i}}
                            </option>
                        </select>
-
-
                     </span>
                     <!-- ----- END Site Dropdown ----- -->
 
