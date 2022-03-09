@@ -73,6 +73,8 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
                 this.siteArray = data;
+                // Set a starting value
+                this.newSiteCine = this.siteArray[0];
             } );
 
         this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
