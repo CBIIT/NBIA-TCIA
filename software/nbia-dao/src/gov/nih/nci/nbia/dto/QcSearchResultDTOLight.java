@@ -28,6 +28,7 @@ public class QcSearchResultDTOLight {
 	private String submissionType;
 	private String releasedStatus;
 	private String seriesPkId;
+	private String collectionSite;
 	
 	
 
@@ -45,12 +46,25 @@ public class QcSearchResultDTOLight {
 		setSubmissionType(obj.getSubmissionType());		
 		setReleasedStatus(obj.getReleasedStatus());	
 		setSeriesPkId(obj.getSeriesPkId());
+		setCollectionSite(obj.getCollectionSite());
 
 		
 }
 
 
 	
+	public String getCollectionSite() {
+		return collectionSite;
+	}
+
+
+
+	public void setCollectionSite(String collectionSite) {
+		this.collectionSite = collectionSite;
+	}
+
+
+
 	public String getPatientId() {
 		return patientId;
 	}
