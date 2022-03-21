@@ -239,8 +239,6 @@ export class ApiService{
             },
             ( err ) => {
                 this.submitBulkQcErrorEmitter.emit( err );
-                console.error( 'submitBulkQc err: ', err['error'] );
-                console.error( 'submitBulkQc err: ', err );
             } );
     }
 
@@ -487,7 +485,6 @@ export class ApiService{
             this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
             return;
         }
-
 
         // We don't know if Collection was a query criteria, so only send it if it is.
         if( query.includes( 'collectionSite=' ) ){

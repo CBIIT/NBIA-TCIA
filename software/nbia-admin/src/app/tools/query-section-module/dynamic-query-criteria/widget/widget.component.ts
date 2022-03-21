@@ -485,9 +485,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * @param doNotRerunTheQuery
      */
    onClearClick( rerunTheQuery: boolean = true ) {
+
         if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.criteriaTextInputText = '';
         }else if( this.criteriaSingleLineRadio ){
+            this.criteriaHeadingAddOn = this.criteriaSingleLineRadioOptions[this.criteriaSingleLineRadioDefault];
             this.criteriaSingleLineRadioCurrent = this.criteriaSingleLineRadioDefault;
         }else if( this.criteriaCalendar ){
 

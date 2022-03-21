@@ -2,7 +2,7 @@ export let Properties = {
     // 29_JUN_2021
     VERSION: '1.0.9',
     // 02_MAR_2022
-    TEST_VERSION: '1.0.9L',
+    TEST_VERSION: '1.0.9m',
 
     MAX_CRITERIA_LEN: 32,
 

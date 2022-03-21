@@ -331,7 +331,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.currentCineModeSeriesIndex = i;
         this.cineModeService.openCineMode(
             this.searchResults[i],
-            this.collectionSite,
+            this.searchResults[i]['collectionSite'],  // @TODO  this.collectionSite was previously used for this value, before it was a part of searchResults[i] - Clean that up
             i
         );
     }
