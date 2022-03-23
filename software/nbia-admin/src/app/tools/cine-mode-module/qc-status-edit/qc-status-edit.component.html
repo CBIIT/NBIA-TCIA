@@ -41,14 +41,14 @@
             <button
                 class="btn nbia-button qc-status-update-button"
                 [ngClass]="{
-                    'nbia-button-disabled': visible < 0  && (! showCineUpdateCollectionSite ) && (! showUpdateDescriptionUri ),
+                    'nbia-button-disabled': visible < 0 && (! showCineUpdateCollectionSite ) && (! showUpdateDescriptionUri ) && (! useBatchNumber ) && (  this.isComplete === this.NO_CHANGE)  && ( this.isReleased === this.NO_CHANGE ),
                     'font-extra-small': currentFont === '0',
                     'font-small': currentFont === '1',
                     'font-medium': currentFont === '2',
                     'font-large': currentFont === '3'
                 }"
 
-                [disabled]="visible < 0 && (! showCineUpdateCollectionSite ) && (! showUpdateDescriptionUri )"
+                [disabled]="visible < 0 && (! showCineUpdateCollectionSite ) && (! showUpdateDescriptionUri ) && (! useBatchNumber ) && (  this.isComplete === this.NO_CHANGE)  && ( this.isReleased === this.NO_CHANGE )"
                 type="button"
 
                 (click)="onQcUpdateNextClick()"
@@ -251,14 +251,14 @@
 
                     <span *ngIf="showCineUpdateCollectionSite">
                         <select class="custom-select show-tick"
-                            id="newSiteCine"
-                            name="newSiteCine"
-                            [(ngModel)]="newSiteCine"
+                                id="newSiteCine"
+                                name="newSiteCine"
+                                [(ngModel)]="newSiteCine"
                         >
                             <option *ngFor="let site of siteArray"
-                                (click)="onSiteOptionClick( site )"
-                                selected value=site
-                                value = {{site}}
+                                    (click)="onSiteOptionClick( site )"
+                                    selected value=site
+                                    value={{site}}
                             >
                                 {{site}}
                             </option>

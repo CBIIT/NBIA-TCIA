@@ -564,7 +564,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
 
                             // If there is only one image, don't divide by zer0
-                            if( (this.last === 0) || (i === this.last) ){
+                            if( (this.last === 0) || (i >= (this.last - 1) ) ){  // Sometimes we get rounded to %99 JIRA 1856
                                 this.progress = 100;
                             }else{
                                 this.progress = Math.trunc(
