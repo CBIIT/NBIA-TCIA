@@ -154,10 +154,10 @@ public class SolrStorage {
 				server.commit();
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		}
         return totalImages;
@@ -166,8 +166,8 @@ public class SolrStorage {
 	{
 		if (equipment==null) return document;
 		String equipmentIdentifier=seriesIndentifier+"Equipment^";
-		document.addField(equipmentIdentifier+"id", equipment.getId());
 		equipmentIdentifier="f_"+equipmentIdentifier;
+		document.addField(equipmentIdentifier+"id", equipment.getId());
 		document.addField(equipmentIdentifier+"deviceSerialNumber",equipment.getDeviceSerialNumber());
 		document.addField(equipmentIdentifier+"manufacturer",equipment.getManufacturer());
 		document.addField(equipmentIdentifier+"institutionName",equipment.getInstitutionName());
@@ -288,7 +288,7 @@ public class SolrStorage {
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
