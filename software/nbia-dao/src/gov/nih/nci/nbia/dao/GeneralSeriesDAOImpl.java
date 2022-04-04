@@ -15,6 +15,7 @@ import java.text.ParseException;
 import gov.nih.nci.nbia.dto.EquipmentDTO;
 import gov.nih.nci.nbia.dto.SeriesDTO;
 import gov.nih.nci.nbia.dto.DOIDTO;
+import gov.nih.nci.nbia.internaldomain.CollectionDesc;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
@@ -1460,11 +1461,20 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		}
 		String md5hash = digest(md5Concat);
 		try {
-			sqlString = "update collection_descriptions set md5hash=:md5hash where collection_name in(:project)";
-			SQLQuery qu = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString);
-			qu.setParameter("md5hash", md5hash);
-			qu.setParameter("project", project);
-			int count = qu.executeUpdate();
+	        DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+	        criteria.add(Restrictions.eq("collectionName", project));
+	        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+	        if (collectionDescList!=null) {
+	        	for (CollectionDesc cd: collectionDescList) {
+	        		if (!(cd.getMd5hash().equalsIgnoreCase(project))){
+	        			cd.setMd5hash(md5hash);
+	        			System.out.println("Updating MD5 for "+project);
+	        			getHibernateTemplate().update(cd);
+	        			getHibernateTemplate().flush();
+	        		}
+	        		
+	        	}
+	        }
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
