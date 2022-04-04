@@ -1466,7 +1466,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
 	        if (collectionDescList!=null) {
 	        	for (CollectionDesc cd: collectionDescList) {
-	        		if (!(cd.getMd5hash().equalsIgnoreCase(project))){
+	        		if ((cd.getMd5hash()!==null)&&!(cd.getMd5hash().equalsIgnoreCase(project))){
 	        			cd.setMd5hash(md5hash);
 	        			System.out.println("Updating MD5 for "+project);
 	        			getHibernateTemplate().update(cd);
