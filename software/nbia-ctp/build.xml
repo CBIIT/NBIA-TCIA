@@ -136,7 +136,7 @@ L-->
     <echo message="*                unzip ctp-installer.jar               *"/>
     <echo message="********************************************************"/>
     <mkdir dir="${ctp.dir.name}"/>
-    <unjar src="${project.lib.dir}/compile/ctp-installer-X101.jar" dest="${ctp.dir.name}"/>
+    <unjar src="${project.lib.dir}/compile/ctp-installer-X206.jar" dest="${ctp.dir.name}"/>
   </target>
   
    <target name="compile" depends="clean,init, ivy-compile">
@@ -153,7 +153,7 @@ L-->
     <echo message="*                unzip ctp-installer.jar               *"/>
     <echo message="********************************************************"/>
     <mkdir dir="${ctp.dir.name}"/>
-    <unjar src="${project.lib.dir}/compile/ctp-installer-X101.jar" dest="${ctp.dir.name}"/>
+    <unjar src="${project.lib.dir}/compile/ctp-installer-X206.jar" dest="${ctp.dir.name}"/>
   </target>
 
   <target name="config-db">

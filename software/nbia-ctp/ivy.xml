@@ -60,14 +60,17 @@ L-->
                 conf="runtime->master"/>
 
     <!-- log4j and dcmche should be in runtime, but CTP has its own version of lib -->
-    <dependency org="log4j"
+    <!--dependency org="log4j"
                 name="log4j"
                 rev="1.2.15"
-                conf="compile->master;"/>
+                conf="compile,runtime->master"/-->
+	<dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.17.2" conf="compile,runtime->master"/>
+	<dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.17.2" conf="compile,runtime->master"/>
+	<dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.17.2" conf="compile,runtime->master"/>	
 
     <dependency org="dcm4che"
                 name="dcm4che"
-                rev="1.4.23_X101"
+                rev="1.4_X206"
                 conf="compile->master;test->master"/>
     <!-- end of removing lib -->
 
@@ -98,12 +101,12 @@ L-->
                 
    <dependency org="rsna"
                 name="ctp"
-                rev="X101"
+                rev="X206"
                 conf="compile,test->master;"/>
 
     <dependency org="rsna"
                 name="ctp-installer"
-                rev="X101"
+                rev="X206"
                 conf="compile->master;runtime->master"/>
              
     <dependency org="org.springframework"
@@ -178,7 +181,7 @@ L-->
                 
 	<dependency org="rsna"
                 name="util"
-                rev="X101"
+                rev="X206"
                 conf="compile,test->master;"/>
                 
  <!-- garbage from log4j as second order dependency -->
