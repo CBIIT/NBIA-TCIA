@@ -60,7 +60,7 @@
 	</head>
 	<body>
 		<center>
-		<h1>RSNA CTP @NIH</h1>
+		<h1>RSNA CTP @NCI</h1>
 		<div align="center"> 		  <font color="gray" size="-2" face="arial">NBIA Release {NCIA_RELEASE_VERSION}&nbsp;&nbsp;Build "{NCIA_PROD_BUILD_TAG}"</font>        </div>		<table>
 
 		<table>
