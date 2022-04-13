@@ -986,6 +986,7 @@ public class StandaloneDMDispatcher {
 		if (text != null && !text.isEmpty()) {
 			Object[] options = { "Agree", "Disagree" };
 			JTextArea textArea = new JTextArea(text);
+			textArea.setEditable(false);
 			JScrollPane scrollPane = new JScrollPane(textArea);
 			textArea.setLineWrap(true);
 			textArea.setWrapStyleWord(true);
