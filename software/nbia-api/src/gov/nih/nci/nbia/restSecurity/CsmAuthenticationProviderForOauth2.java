@@ -29,6 +29,10 @@ public class CsmAuthenticationProviderForOauth2 implements AuthenticationProvide
 				name=NCIAConfig.getGuestUsername();
 				password=null;
 			}
+			System.out.print("name:"+name);
+			if (name==null||name.equalsIgnoreCase("undefined")) {
+				name=NCIAConfig.getGuestUsername();
+			}
 	        String guestAccount  = NCIAConfig.getEnabledGuestAccount();
 	        System.out.println("--------"+NCIAConfig.getEnabledGuestAccount());
 	        System.out.println("--------"+NCIAConfig.getGuestUsername());
