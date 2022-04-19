@@ -19,13 +19,21 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 public class CsmAuthenticationProviderForOauth2 implements AuthenticationProvider {
 	 
 	    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-	        String name = authentication.getName();
-	        String password = authentication.getCredentials().toString();
+	        String name;
+			String password;
+			try {
+				name = authentication.getName();
+				password = authentication.getCredentials().toString();
+			} catch (Exception e) {
+				// Authentication has null
+				name=NCIAConfig.getGuestUsername();
+				password=null;
+			}
 	        String guestAccount  = NCIAConfig.getEnabledGuestAccount();
 	        System.out.println("--------"+NCIAConfig.getEnabledGuestAccount());
 	        System.out.println("--------"+NCIAConfig.getGuestUsername());
 	        if (guestAccount.equalsIgnoreCase("yes")){
-	        	if(NCIAConfig.getGuestUsername().equalsIgnoreCase(name)){
+	        	if((NCIAConfig.getGuestUsername().equalsIgnoreCase(name))){
 		        	List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 		            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 		            //Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
