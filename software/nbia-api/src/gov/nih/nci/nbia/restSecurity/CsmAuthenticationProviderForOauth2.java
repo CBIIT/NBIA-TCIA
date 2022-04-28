@@ -63,7 +63,7 @@ public class CsmAuthenticationProviderForOauth2 implements AuthenticationProvide
 	        }
 	        catch (Exception ex) {
 	        	ex.printStackTrace();
-	        	return null;
+	        	throw new BadCredentialsException("Bad User Credentials.");
 	        }
 	        
 //	        if (name.equals("admin") && password.equals("system")) {
