@@ -163,14 +163,21 @@ public class StandaloneDMDispatcher {
 
 				if (args != null && (args.length > 0)) {
 					for (int i = 0; i < args.length; ++i) {
-						if (args[i].equals("-c") || args[i].equals("-C") || args[i].equals("--cli") || args[i].equals("--CLI"))
+						if (args[i].equals("-c") || args[i].equals("-C") || args[i].equals("--cli") || args[i].equals("--CLI")) {
 							fileName = args[i + 1];
-						if (args[i].equals("-u") || args[i].equals("-U"))
+							++i;
+						}
+						if (args[i].equals("-u") || args[i].equals("-U")) {
 							userName = args[i + 1];
-						if (args[i].equals("-p") || args[i].equals("-P"))
+							++i;
+						}
+						if (args[i].equals("-p") || args[i].equals("-P")) {
 							passWord = args[i + 1];
+							++i;
+						}
 						if (args[i].equals("-d") || args[i].equals("-D")) {
 							downloadDir = args[i + 1];
+							++i;
 						}
 						if (args[i].equals("-l") || args[i].equals("-L")) {
 //							if (args.length == (i + 1))
@@ -179,6 +186,7 @@ public class StandaloneDMDispatcher {
 								userName = System.getProperty("userName");
 								passWord = System.getProperty("passWord");
 							}
+							++i;
 						}
 						if (args[i].equals("-v") || args[i].equals("-V") || args[i].equals("--verbose")
 								|| args[i].equals("--VERBOSE")) {
@@ -187,7 +195,6 @@ public class StandaloneDMDispatcher {
 						if (args[i].equals("-q") || args[i].equals("-Q") || args[i].equals("--quiet")
 								|| args[i].equals("--QUIET")) {
 							dr.quiet = true;
-
 						}
 						if (args[i].equals("-f") || args[i].equals("-F") || args[i].equals("--force")
 								|| args[i].equals("--FORCE")) {

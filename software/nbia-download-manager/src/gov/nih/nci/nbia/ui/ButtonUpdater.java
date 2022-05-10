@@ -215,6 +215,7 @@ public class ButtonUpdater implements ThreadPoolListener {
 	private void optionsForErrCondiction() {
 		if (table != null) {
 			Object[] options = { "Retry failed series", "Save error report", "Exit" };
+			Object[] options2 = { "Retry failed series", "Exit" };
 
 			int n = JOptionPane.showOptionDialog(table, "  Download completed with one or more errors detected.\n\n\n", "Error Handling Options",
 					JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -225,6 +226,18 @@ public class ButtonUpdater implements ThreadPoolListener {
 				retry = false;
 				String csvName = getCSVNameFromUser();
 				writeErrRpt(csvName, table);
+				
+				int nr = JOptionPane.showOptionDialog(table, "  Error Report is saved. Do you want to retry failed series? \n\n\n", "Error Handling Options",
+						JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, options2[0] );
+				
+				if (nr == 1) {
+					System.exit(1);
+				}
+				else {
+					retry = true;
+					resetAndRetry();
+				}
+				
 			} else if (n == 0) {
 				retry = true;
 				resetAndRetry();
