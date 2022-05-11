@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { PersistenceService } from '@app/common/services/persistence.service';
-import { UtilService } from '@app/common/services/util.service';
+import {Injectable} from '@angular/core';
+import {PersistenceService} from '@app/common/services/persistence.service';
+import {UtilService} from '@app/common/services/util.service';
 
 /**
  * This Service is used to do all of the sorting for the Cart page.
  */
 
 @Injectable()
-export class CartSortService{
+export class CartSortService {
 
     /**
      * Each element is one column, a value other than State.NONE indicates that this is the column to sort by.
@@ -24,13 +24,13 @@ export class CartSortService{
      * Sort stats
      * @type {Readonly<{NONE: number; UP: number; DOWN: number}>}
      */
-    State = Object.freeze( {
+    State = Object.freeze({
         NONE: 0,
         UP: 1,
         DOWN: 2
-    } );
+    });
 
-    constructor( private persistenceService: PersistenceService, private utilService: UtilService ) {
+    constructor(private persistenceService: PersistenceService, private utilService: UtilService) {
     }
 
 
@@ -39,27 +39,27 @@ export class CartSortService{
      *
      * @param columns  List of columns indicating which is sorting key column, and which direction to sort.
      */
-    initSortState( columns ) {
+    initSortState(columns) {
 
         this.cartSortColumns = columns;
         // Check for a saved value
-        try{
-            this.cartSortState = JSON.parse( this.persistenceService.get( this.persistenceService.Field.CART_SORT_STATE ) );
-        }catch( e ){
+        try {
+            this.cartSortState = JSON.parse(this.persistenceService.get(this.persistenceService.Field.CART_SORT_STATE));
+        } catch (e) {
         }
 
         // If the cartSortState array is empty, initialize it.
-        if( (this.utilService.isNullOrUndefined( this.cartSortState )) || (this.cartSortState.length < 1) ){
+        if ((this.utilService.isNullOrUndefined(this.cartSortState)) || (this.cartSortState.length < 1)) {
 
             // Clear the sort states
-            for( let f = 0; f < this.cartSortColumns.length; f++ ){
+            for (let f = 0; f < this.cartSortColumns.length; f++) {
                 this.cartSortState[f] = 0;
             }
 
             // Set subjectId as default
             this.cartSortState[2] = this.State.UP;
 
-            this.persistenceService.put( this.persistenceService.Field.CART_SORT_STATE, JSON.stringify( this.cartSortState ) );
+            this.persistenceService.put(this.persistenceService.Field.CART_SORT_STATE, JSON.stringify(this.cartSortState));
 
         }
     }
@@ -71,7 +71,7 @@ export class CartSortService{
      * @param field
      * @returns {any}
      */
-    getSortState( field ) {
+    getSortState(field) {
         return this.cartSortState[field];
     }
 
@@ -93,23 +93,23 @@ export class CartSortService{
      *
      * @param i
      */
-    updateCartSortState( i ) {
+    updateCartSortState(i) {
         // Clear the other sort states
-        for( let f = 0; f < this.cartSortColumns.length; f++ ){
-            if( f !== i ){
+        for (let f = 0; f < this.cartSortColumns.length; f++) {
+            if (f !== i) {
                 this.cartSortState[f] = 0;
             }
         }
 
-        if( this.cartSortState[i] === this.State.NONE ){
+        if (this.cartSortState[i] === this.State.NONE) {
             this.cartSortState[i] = this.State.UP;
-        }else if( this.cartSortState[i] === this.State.UP ){
+        } else if (this.cartSortState[i] === this.State.UP) {
             this.cartSortState[i] = this.State.DOWN;
-        }else if( this.cartSortState[i] === this.State.DOWN ){
+        } else if (this.cartSortState[i] === this.State.DOWN) {
             this.cartSortState[i] = this.State.UP;
         }
 
-        this.persistenceService.put( this.persistenceService.Field.CART_SORT_STATE, JSON.stringify( this.cartSortState ) );
+        this.persistenceService.put(this.persistenceService.Field.CART_SORT_STATE, JSON.stringify(this.cartSortState));
     }
 
 
@@ -118,55 +118,55 @@ export class CartSortService{
      *
      * @param cartList
      */
-    doSort( cartList ) {
-        this.cleanUpList( cartList );
+    doSort(cartList) {
+        this.cleanUpList(cartList);
         let field = this.getCurrentSortField();
         // If there is no cart to sort, just return
-        if( (this.utilService.isNullOrUndefined( cartList )) || (cartList.length < 1) ){
+        if ((this.utilService.isNullOrUndefined(cartList)) || (cartList.length < 1)) {
             return;
         }
-        switch( field ){
+        switch (field) {
             case 1:
-                this.collectionSort( cartList, this.cartSortState[field] );
+                this.collectionSort(cartList, this.cartSortState[field]);
                 break;
             case 2:
                 // Sort by patientId
-                this.subjectIdSort( cartList, this.cartSortState[field] );
+                this.subjectIdSort(cartList, this.cartSortState[field]);
                 break;
 
             case 3:
                 // Sort by study Uid
-                this.studyUidSort( cartList, this.cartSortState[field] );
+                this.studyUidSort(cartList, this.cartSortState[field]);
                 break;
 
             case 4:
                 // Sort by studyDate
-                this.studyDateSort( cartList, this.cartSortState[field] );
+                this.studyDateSort(cartList, this.cartSortState[field]);
                 break;
 
             case 5:
                 // Sort by studyDescription
-                this.studyDescriptionSort( cartList, this.cartSortState[field] );
+                this.studyDescriptionSort(cartList, this.cartSortState[field]);
                 break;
 
             case 6:
                 // Sort by seriesId
-                this.seriesIdSort( cartList, this.cartSortState[field] );
+                this.seriesIdSort(cartList, this.cartSortState[field]);
                 break;
 
             case 7:
                 // Sort by seriesDescription
-                this.seriesDescriptionSort( cartList, this.cartSortState[field] );
+                this.seriesDescriptionSort(cartList, this.cartSortState[field]);
                 break;
 
             case 8:
                 // Sort by seriesNumberOfImages
-                this.seriesNumberOfImagesSort( cartList, this.cartSortState[field] );
+                this.seriesNumberOfImagesSort(cartList, this.cartSortState[field]);
                 break;
 
             case 9:
                 // Sort by seriesFileSize
-                this.seriesFileSizeSort( cartList, this.cartSortState[field] );
+                this.seriesFileSizeSort(cartList, this.cartSortState[field]);
                 break;
             /*
 
@@ -183,8 +183,8 @@ export class CartSortService{
      * @returns {number}
      */
     getCurrentSortField() {
-        for( let f = 0; f < this.cartSortState.length; f++ ){
-            if( this.cartSortState[f] !== this.State.NONE ){
+        for (let f = 0; f < this.cartSortState.length; f++) {
+            if (this.cartSortState[f] !== this.State.NONE) {
                 return f;
             }
         }
@@ -196,9 +196,9 @@ export class CartSortService{
      * @param cartList
      * @param order 1=up  2=down  0=do nothing - we should never get 0
      */
-    subjectIdSort( cartList, order ) {
+    subjectIdSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => row1.patientId.localeCompare( row2.patientId ) * multiplier );
+        cartList.sort((row1, row2) => row1.patientId.localeCompare(row2.patientId) * multiplier);
     }
 
     /**
@@ -206,9 +206,9 @@ export class CartSortService{
      * @param cartList
      * @param order 1=up  2=down  0=do nothing - we should never get 0
      */
-    studyUidSort( cartList, order ) {
+    studyUidSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => row1.studyId.localeCompare( row2.studyId ) * multiplier );
+        cartList.sort((row1, row2) => row1.studyId.localeCompare(row2.studyId) * multiplier);
     }
 
     /**
@@ -216,10 +216,11 @@ export class CartSortService{
      *
      * @param cartList
      * @param order 1=up  2=down  0=do nothing - we should never get 0
+     * YYY-MM-DD
      */
-    studyDateSort( cartList, order ) {
+    studyDateSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => (row1.studyDate - row2.studyDate) * multiplier );
+        cartList.sort((row1, row2) => row1.studyDate.localeCompare(row2.studyDate) * multiplier);
     }
 
     /**
@@ -227,9 +228,9 @@ export class CartSortService{
      * @param cartList
      * @param order  1=up  2=down  0=do nothing - we should never get 0
      */
-    studyDescriptionSort( cartList, order ) {
+    studyDescriptionSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => row1.studyDescription.localeCompare( row2.studyDescription ) * multiplier );
+        cartList.sort((row1, row2) => row1.studyDescription.localeCompare(row2.studyDescription) * multiplier);
     }
 
     /**
@@ -237,9 +238,9 @@ export class CartSortService{
      * @param cartList
      * @param order  1=up  2=down  0=do nothing - we should never get 0
      */
-    collectionSort( cartList, order ) {
+    collectionSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => row1.project.localeCompare( row2.project ) * multiplier );
+        cartList.sort((row1, row2) => row1.project.localeCompare(row2.project) * multiplier);
     }
 
     /**
@@ -247,20 +248,9 @@ export class CartSortService{
      * @param cartList
      * @param order  1=up  2=down  0=do nothing - we should never get 0
      */
-    seriesIdSort( cartList, order ) {
+    seriesIdSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => row1.seriesId.localeCompare( row2.seriesId ) * multiplier );
-
-    }
-
-    /**
-     *
-     * @param cartList
-     * @param order  1=up  2=down  0=do nothing - we should never get 0
-     */
-    seriesDescriptionSort( cartList, order ) {
-        let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => row1.description.localeCompare( row2.description ) * multiplier );
+        cartList.sort((row1, row2) => row1.seriesId.localeCompare(row2.seriesId) * multiplier);
 
     }
 
@@ -269,9 +259,20 @@ export class CartSortService{
      * @param cartList
      * @param order  1=up  2=down  0=do nothing - we should never get 0
      */
-    seriesNumberOfImagesSort( cartList, order ) {
+    seriesDescriptionSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => (row1.numberImages - row2.numberImages) * multiplier );
+        cartList.sort((row1, row2) => row1.description.localeCompare(row2.description) * multiplier);
+
+    }
+
+    /**
+     *
+     * @param cartList
+     * @param order  1=up  2=down  0=do nothing - we should never get 0
+     */
+    seriesNumberOfImagesSort(cartList, order) {
+        let multiplier = (order === this.State.DOWN) ? -1 : 1;
+        cartList.sort((row1, row2) => (row1.numberImages - row2.numberImages) * multiplier);
     }
 
 
@@ -280,9 +281,9 @@ export class CartSortService{
      * @param cartList
      * @param order  1=up  2=down  0=do nothing - we should never get 0
      */
-    seriesFileSizeSort( cartList, order ) {
+    seriesFileSizeSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort( ( row1, row2 ) => (row1.exactSize - row2.exactSize) * multiplier );
+        cartList.sort((row1, row2) => (row1.exactSize - row2.exactSize) * multiplier);
     }
 
     /**
@@ -290,10 +291,10 @@ export class CartSortService{
      * @param cartList
      * @param order  1=up  2=down  0=do nothing - we should never get 0
      */
-    seriesAnnotationsSizeSort( cartList, order ) {
+    seriesAnnotationsSizeSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
         // cartList.sort( ( row1, row2 ) => (row1.seriesFileSize - (row2.seriesFileSize === 'N/A' ? 0 : row2.seriesFileSize)) * multiplier );
-        cartList.sort( ( row1, row2 ) => (row1.annotationsSize - row2.annotationsSize) * multiplier );
+        cartList.sort((row1, row2) => (row1.annotationsSize - row2.annotationsSize) * multiplier);
     }
 
 
@@ -302,9 +303,9 @@ export class CartSortService{
      *
      * @param cartList
      */
-    cleanUpList( cartList ) {
-        for( let row of cartList ){
-            if( this.utilService.isNullOrUndefined( row.studyDescription ) ){
+    cleanUpList(cartList) {
+        for (let row of cartList) {
+            if (this.utilService.isNullOrUndefined(row.studyDescription)) {
                 row.studyDescription = '';
             }
         }
