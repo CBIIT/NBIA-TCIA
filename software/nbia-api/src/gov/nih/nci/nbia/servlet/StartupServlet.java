@@ -30,7 +30,7 @@
 *
 */
 package gov.nih.nci.nbia.servlet;
-
+import java.time.*;
 import gov.nih.nci.nbia.factories.ApplicationFactory;
 import gov.nih.nci.nbia.restUtil.LatestCurationDateJob;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -87,13 +87,6 @@ public class StartupServlet extends HttpServlet {
        JobDetail  latestCurationDateJobDetail = new JobDetail("LatestCurationDate",
                                                               Scheduler.DEFAULT_GROUP,
                                                               LatestCurationDateJob.class);
-       Trigger md5CacheTrigger = TriggerUtils.makeDailyTrigger(0, 0);
-       md5CacheTrigger.setName("Daily Trigger for md5HashCache");
-       JobDetail  md5HashCacheJobDetail = new JobDetail("md5HashCache",
-                                                              Scheduler.DEFAULT_GROUP,
-                                                              md5CacheUpdateJob.class);
-
-
        // wait an 1 min before starting solrUpdates
        long startTime = System.currentTimeMillis() + 6000L;
        Long interval = null;
@@ -105,6 +98,20 @@ public class StartupServlet extends HttpServlet {
 		    System.out.println("unable to read solr interval, defaulting to one hour");
 	     	e1.printStackTrace();
 	   }
+
+       SimpleTrigger md5CacheTrigger = new SimpleTrigger("md5CacheTrigger",
+               null,
+               new Date(startTime),
+               null,
+               SimpleTrigger.REPEAT_INDEFINITELY,
+               86400000L);
+       md5CacheTrigger.setName("Daily Trigger for md5HashCache");
+       JobDetail  md5HashCacheJobDetail = new JobDetail("md5HashCache",
+                                                              Scheduler.DEFAULT_GROUP,
+                                                              md5CacheUpdateJob.class);
+
+
+
 
 
        SimpleTrigger solrTrigger = new SimpleTrigger("myTrigger",
@@ -141,7 +148,7 @@ public class StartupServlet extends HttpServlet {
             scheduler.scheduleJob(propertiesUpdateJobDetail, propertiesTrigger);
             //Job 1 - Latest Curation Date
             scheduler.scheduleJob(latestCurationDateJobDetail, latestCurationDateTrigger);
-            scheduler.scheduleJob(md5HashCacheJobDetail, md5CacheTrigger);
+          //  scheduler.scheduleJob(md5HashCacheJobDetail, md5CacheTrigger);
             scheduler.startDelayed(10);
            // scheduler.start();
         	//GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");

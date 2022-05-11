@@ -44,7 +44,7 @@ L-->
          wmin="512"/>
     </StorageService>
 
-    <ExportService
+    <!--ExportService
        adapterClass="gov.nih.nci.nbia.dbadapter.NCIADatabase"
        class="org.rsna.ctp.stdstages.DatabaseExportService"
        fileStorageServiceID="storage"
@@ -52,7 +52,7 @@ L-->
        port="@ctp.server.verifier.port@"
        quarantine="quarantines/database-export"
        requireAuthentication="@ctp.server.require_authentication@"
-       root="roots/database-export"/>
+       root="roots/database-export"/-->
 
     <Anonymizer
        class="org.rsna.ctp.stdstages.DicomAnonymizer"

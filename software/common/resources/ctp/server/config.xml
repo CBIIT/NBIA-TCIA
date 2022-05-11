@@ -38,7 +38,7 @@ L-->
       <jpeg frame="all" wmax="512" wmin="512" q="-1" />
     </StorageService>
 
-    <ExportService
+    <!--ExportService
           name="Database Export"
           class="org.rsna.ctp.stdstages.DatabaseExportService"
           adapterClass="gov.nih.nci.nbia.dbadapter.NCIADatabase"
@@ -46,7 +46,7 @@ L-->
           root="roots/database-export"
           quarantine="quarantines/database-export"
           requireAuthentication="no"
-          port="23304"/>
+          port="23304"/-->
 
     <Anonymizer
            name="Anonymizer"
