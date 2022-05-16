@@ -1,8 +1,8 @@
 export let Properties = {
     // 21_MAR_2022
     VERSION: '1.0.8',
-    // 11_AUG_2021
-    TEST_VERSION: '1.0.8a',
+    // 16_MAY_22
+    TEST_VERSION: '1.0.8b',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -10,7 +10,7 @@ export let Properties = {
 
     // //////////////////////////////////////////////////////////////////////////
     // //////////////////////////////////////////////////////////////////////////
-    //  The following values can be over ridden in the assets/configuration file
+    //  The following values can be over-ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
     // This value can be changed in the config file.
     BANNER_TEXT: '',
@@ -80,7 +80,7 @@ export let Properties = {
     //  The following values will by set by the "Brand"
     // //////////////////////////////////////////////////////////////////////////
     NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
-    ACCOUNT_HELP: 'https://public.cancerimagingarchive.net/ncia/accountSupport.jsf',
+    ACCOUNT_HELP: 'https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+Account+Help',  // Be advised, this can be replaced by the values
     TEXT_SEARCH_DOCUMENTATION: 'https://wiki.nci.nih.gov/display/NBIA/Performing+a+Text+Search+7.0',
     CUSTOM_MENU_DATA: [],
     LOGO_FILE: '',

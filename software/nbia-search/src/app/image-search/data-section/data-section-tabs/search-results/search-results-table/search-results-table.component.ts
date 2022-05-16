@@ -629,6 +629,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      */
     runSearch() {
         let query = this.apiServerService.buildSimpleSearchQuery( this.allData );
+        let downloadManifestQuery = this.apiServerService.buildSimpleSearchQuery( this.allData );
         // If the query is empty
         if( query.length < 1 ){
             this.clearSearch();
@@ -639,6 +640,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             if( this.properties.PAGED_SEARCH ){
                 this.rowsPerPage = this.commonService.getResultsPerPage();
                 query += '&sortField=' + this.sortColumns[this.sortService.getCurrentSortField()];
+                downloadManifestQuery += '&sortField=' + this.sortColumns[this.sortService.getCurrentSortField()];
                 let order = this.sortService.getSortState( this.sortService.getCurrentSortField() ) === 2 ? 'descending' : 'ascending'
                 query += '&sortDirection=' + order;
                 query += '&start=' + this.currentPage * this.rowsPerPage;
@@ -647,9 +649,11 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             this.apiServerService.doSearch( Consts.SIMPLE_SEARCH, query );
             this.loadingDisplayService.setLoading( true, 'Searching...' );
         }
-        // this.showAllQueryData();
 
         // Tells the Query display at the top of the Search results section, that this is the current/changed query.
+        downloadManifestQuery += '&sortDirection=descending&start=0&size=1000000';
+
+        this.commonService.setDownloadManifestQuery( downloadManifestQuery );
         this.commonService.emitSimpleSearchQueryForDisplay( this.allData );
     }
 

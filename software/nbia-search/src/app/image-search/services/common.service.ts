@@ -253,7 +253,8 @@ export class CommonService{
     // FIXME this is a quick fix that needs to be revisited. this will hold the "Summary" or "Search Results" tab, so it can be restored when coming back from Text Search;
     simpleSearchDataTab = 1;
 
-
+    downloadManifestQuery = '';
+    downloadTextSearchManifestQuery = '';
     offsetHeight;
     offsetHeightEmitter = new EventEmitter();
 
@@ -609,12 +610,28 @@ export class CommonService{
         this.resetAllTextSearchEmitter.emit();
     }
 
+    setDownloadManifestQuery(dlmq){
+        this.downloadManifestQuery = dlmq;
+    }
+
+    getDownloadManifestQuery(){
+        return this.downloadManifestQuery;
+    }
+
+    setTextSearchDownloadManifestQuery(dltmq){
+        this.downloadTextSearchManifestQuery = dltmq;
+    }
+
+    getTextSearchDownloadManifestQuery(){
+        return this.downloadTextSearchManifestQuery;
+    }
+
     /**
      * Sends to the query display at the top of the Search results section, an array of the query elements in a format that displayQuery expects.
      * @param allData  an array of selected criteria
      */
     emitSimpleSearchQueryForDisplay( allData ) {
-        let maxCriteriaLen = 15; // FIXME make this a constant
+        let maxCriteriaLen = 15; // @FIXME make this a constant
         let displayQuery = [];
 
 

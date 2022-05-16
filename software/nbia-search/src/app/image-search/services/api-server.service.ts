@@ -301,7 +301,8 @@ export class ApiServerService implements OnDestroy {
                 {
                     'expires_in': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN),
                     'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN),
-                    'refresh_token': this.persistenceService.get(this.persistenceService.Field.REFRESH_TOKEN)});
+                    'refresh_token': this.persistenceService.get(this.persistenceService.Field.REFRESH_TOKEN)
+                });
             this.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
             this.setCurrentPassword('');
 
@@ -544,7 +545,7 @@ export class ApiServerService implements OnDestroy {
         } else {
             this.accessToken = t['access_token'];
             this.refreshToken = t['refresh_token'];
-            this.tokenLifeSpan =  t['expires_in'];
+            this.tokenLifeSpan = t['expires_in'];
             this.gotToken();
         }
         this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN, this.accessToken);
@@ -584,7 +585,7 @@ export class ApiServerService implements OnDestroy {
         return this.showRefreshToken();
     }
 
-   showTokenLifeSpan() {
+    showTokenLifeSpan() {
         return this.tokenLifeSpan;
     }
 
@@ -1004,7 +1005,6 @@ export class ApiServerService implements OnDestroy {
      * @param accessToken
      */
     doPost(queryType, query, accessToken ?) {
-
         if (accessToken === undefined) {
             accessToken = this.accessToken;
         }
@@ -1029,6 +1029,10 @@ export class ApiServerService implements OnDestroy {
             (queryType === Consts.DELETE_SHARED_LIST) ||
             (queryType === Consts.GET_HOST_NAME) ||
             (queryType === Consts.DICOM_TAGS_BY_IMAGE) ||
+            (queryType === Consts.API_MANIFEST_FROM_SEARCH_RESULTS) ||
+            (queryType === Consts.API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS) ||
+            (queryType === Consts.API_MANIFEST_FROM_TEXT_SEARCH_RESULTS) ||
+            (queryType === Consts.API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS) ||
             (queryType === Consts.LOG_ENTRY)) {
             options = {
                 headers: headers,

@@ -141,19 +141,80 @@
 
 
     <!----- Download  ----->
-    <span
-            class="application-menu-item unselectable"
+      <span class="dropdown">
+          <span
+            class="application-menu-item unselectable dropdown-toggle mb-0"
             [ngClass]="{
-            'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled ),
-            'application-menu-disabled-item':( cartCount === 0 || disabled )
+            'application-menu-mouse-over': (menuMouseOver[menuItem.DOWNLOAD_MENU_ITEM] && cartCount > 0) && (! disabled )
         }"
-            (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
+            data-toggle="dropdown"
             (mouseover)="onMouseOver(menuItem.DOWNLOAD_MENU_ITEM)"
             (mouseout)="onMouseOut(menuItem.DOWNLOAD_MENU_ITEM)"
     >
+        <img  class="application-menu-icon" src="assets/images/TOOLS/download_black.png">
+
+<!--
+                          (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
+                          'application-menu-disabled-item':( cartCount === 0 || disabled )
+-->
+
+<!--
         <img *ngIf="cartCount !== 0 && !disabled" class="application-menu-icon" src="assets/images/TOOLS/download_black.png">
         <img *ngIf="cartCount === 0 || disabled" class="application-menu-icon" src="assets/images/TOOLS/download_disabled.png">
+-->
+
+
         Download
+    </span>
+          <!-- Dropdown part -->
+        <div class="dropdown-menu application-menu-dropdown-menu-data-admin ml-0 mt-0 pt-0">
+
+            <!-- Download Cart -->
+            <div
+                 class="dropdown-item application-menu-dropdown-menu-item-data-admin"
+                 [ngClass]="{
+                        'disabled':cartCount === 0,
+                        'application-menu-mouse-over': menuMouseOver[menuItem.DOWNLOAD_CART_MENU_ITEM] && cartCount > 0
+                    }"
+                 (click)="onMenuItemClick(menuItem.DOWNLOAD_CART_MENU_ITEM)"
+                 (mouseover)="onMouseOver(menuItem.DOWNLOAD_CART_MENU_ITEM)"
+                 (mouseout)="onMouseOut(menuItem.DOWNLOAD_CART_MENU_ITEM)"
+            >
+                    Download Cart
+            </div>
+            <!-- END Download Cart -->
+
+
+            <!-- Download Query -->
+            <div
+                 class="dropdown-item application-menu-dropdown-menu-item-data-admin"
+                 [ngClass]="{
+                        'application-menu-mouse-over':menuMouseOver[menuItem.DOWNLOAD_QUERY_MENU_ITEM]
+                    }"
+                 (click)="onMenuItemClick(menuItem.DOWNLOAD_QUERY_MENU_ITEM)"
+                 (mouseover)="onMouseOver(menuItem.DOWNLOAD_QUERY_MENU_ITEM)"
+                 (mouseout)="onMouseOut(menuItem.DOWNLOAD_QUERY_MENU_ITEM)"
+            >
+                    Download Query
+            </div>
+            <!-- END Download Query -->
+
+
+            <a
+                 class="dropdown-item application-menu-dropdown-menu-item-data-admin"
+                 [ngClass]="{
+                        'application-menu-mouse-over':menuMouseOver[menuItem.DOWNLOAD_DATA_RETRIEVER_MENU_ITEM]
+                    }"
+                 (mouseover)="onMouseOver(menuItem.DOWNLOAD_DATA_RETRIEVER_MENU_ITEM)"
+                 (mouseout)="onMouseOut(menuItem.DOWNLOAD_DATA_RETRIEVER_MENU_ITEM)"
+                 [href]=properties.DOWNLOADER_URL
+                     TARGET="_blank"
+                >
+                    Get NBIA Data Retriever
+                </a>
+        </div>
+
+
     </span>
     <!----- END Download  ----->
 

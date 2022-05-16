@@ -6,6 +6,9 @@ export enum MenuItems{
     SAVE_SHARED_LIST_MENU_ITEM,
     SAVE_SHARED_LIST_CART_MENU_ITEM,
     SAVE_CART_MENU_ITEM,
+    DOWNLOAD_CART_MENU_ITEM,
+    DOWNLOAD_QUERY_MENU_ITEM,
+    DOWNLOAD_DATA_RETRIEVER_MENU_ITEM,
     SAVE_SHARED_LIST_SUBJECT_ID_INPUT_MENU_ITEM,
     SAVE_SHARED_LIST_SERIES_ID_INPUT_MENU_ITEM,
     DISPLAY_QUERY_URL,
@@ -30,7 +33,11 @@ export const Consts = {
 
         API_ACCESS_TOKEN_URL: 'nbia-api/oauth/token',
         API_LOGOUT_URL: 'nbia-api/logout',
-        API_MANIFEST_URL: 'nbia-api/services/getManifestTextV2',
+        API_MANIFEST_FROM_SEARCH_RESULTS: 'getManifestForSimpleSearch',
+        API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS: 'getRestrictionsForSimpleSearch',
+        API_MANIFEST_FROM_TEXT_SEARCH_RESULTS: 'getManifestForTextSearch',
+        API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS: 'getRestrictionsForTextSearch',
+
         // API_SAVE_SHARED_LIST_URL: 'nbia-api/services/createSharedList',
 
         waitTime: 50,
@@ -144,7 +151,7 @@ export const Consts = {
         LOG_ENTRY: 'addClientAudit',
         GET_USER_ROLES: 'getRoles',
         GET_COLLECTION_LICENSES: 'getLicenses',
-
+        API_MANIFEST_URL: 'getManifestTextV2',
         SEARCH_TYPE_DEFAULT: 0,  // Simple Search = 0, Free Text = 1, Query Builder = 2
     //
         GET_SPECIES_TAX: 'getSpeciesTax',

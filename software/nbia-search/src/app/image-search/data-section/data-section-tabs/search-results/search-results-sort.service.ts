@@ -85,7 +85,6 @@ export class SearchResultsSortService {
      * @TODO this should all be done on the server side now - Clean this up
      */
     doSort(searchResults) {
-        return; // @FIXME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         let field = this.getCurrentSortField();
 
         // If there are no search results to sort, just return
@@ -93,7 +92,6 @@ export class SearchResultsSortService {
             return;
         }
 
-        // FIXME these should be constants
         switch (field) {
             case 0:
                 // First sort by Subject ID
