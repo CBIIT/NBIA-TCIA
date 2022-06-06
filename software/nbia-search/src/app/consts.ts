@@ -26,7 +26,12 @@ export enum MenuItems{
     DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM,
     DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM,
     DATA_ADMIN_EDIT_LICENSE_ITEMS_MENU_ITEM,
+}
 
+export enum DownloadTools{
+    CART,
+    SEARCH_QUERY,
+    TEXT_QUERY
 }
 
 export const Consts = {
@@ -151,7 +156,7 @@ export const Consts = {
         LOG_ENTRY: 'addClientAudit',
         GET_USER_ROLES: 'getRoles',
         GET_COLLECTION_LICENSES: 'getLicenses',
-        API_MANIFEST_URL: 'getManifestTextV2',
+        API_MANIFEST_URL: 'nbia-api/services/getManifestTextV2',
         SEARCH_TYPE_DEFAULT: 0,  // Simple Search = 0, Free Text = 1, Query Builder = 2
     //
         GET_SPECIES_TAX: 'getSpeciesTax',
