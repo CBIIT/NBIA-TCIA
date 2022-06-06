@@ -379,7 +379,7 @@ public class DataRetrieverCLI {
 			
 			if (dataType.equals("DICOM")) {
 				if (downloadDir == null)
-					downloadDir = ".";
+					downloadDir = System.getenv("PWD");
 
 				List <String> existSeriesList = scanDataDir(downloadDir);
 				if (existSeriesList != null) {
@@ -399,7 +399,7 @@ public class DataRetrieverCLI {
 			if (hasPermission || force) {
 				loadSOPClassDefinition();
 				if (downloadDir == null)
-					downloadDir = ".";
+					downloadDir = System.getenv("PWD");
 				rootDir = downloadDir + File.separator
 						+ fileName.substring(fileName.lastIndexOf(File.separator) + 1, fileName.indexOf("."));
 				logger.info("Downloaded files will be put to " + rootDir);
