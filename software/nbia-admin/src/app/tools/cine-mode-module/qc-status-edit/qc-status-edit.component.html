@@ -16,6 +16,8 @@
                     type="radio"
                     id="radio-qc-status-status{{ n }}"
                     name="qcBulkRadio"
+
+                    [checked]="radioStatus[n]"
                     (click)="onQcBulkStatusClick(n)"
                 />
                 <label
@@ -28,7 +30,7 @@
                         }"
                     [attr.for]="'radio-qc-status-status' + n"
                 >
-                    {{ criteria }}
+                    {{ criteria }}MHL
                 </label>
             </div>
         </div>
@@ -80,6 +82,7 @@
             <tr>
                 <!-- ----- Batch number  ----- -->
                 <td class="qc-status-radios">
+                    useBatchNumber: {{useBatchNumber}}
                     <input
                         class="clicker"
                         type="checkbox"
@@ -111,21 +114,23 @@
                         type="radio"
                         id="radio-qc-status-complete-yes"
                         name="qcBulkRadioComplete"
-                        (click)="onQcBulkStatusCompleteClick(YES)"
+                        [checked]="radioCompleteStatus[0]"
+                        (click)="onQcBulkStatusCompleteClick(YES, 0)"
                     />
                     <label
                         class="qc-status-radio-label clicker"
                         [attr.for]="'radio-qc-status-complete-yes'"
                     >
                         Yes
-                    </label>
+                    </label>radioCompleteStatus[1]: {{radioCompleteStatus[1]}}
                     &nbsp;&nbsp;
                     <input
                         class="clicker"
                         type="radio"
                         id="radio-qc-status-complete-no"
+                        [checked]="radioCompleteStatus[1]"
                         name="qcBulkRadioComplete"
-                        (click)="onQcBulkStatusCompleteClick(NO)"
+                        (click)="onQcBulkStatusCompleteClick(NO, 1)"
                     />
                     <label
                         [attr.for]="'radio-qc-status-complete-no'"
@@ -139,8 +144,8 @@
                         type="radio"
                         id="radio-qc-status-complete-no-change"
                         name="qcBulkRadioComplete"
-                        [checked]="true"
-                        (click)="onQcBulkStatusCompleteClick(NO_CHANGE)"
+                        [checked]="radioCompleteStatus[2]"
+                        (click)="onQcBulkStatusCompleteClick(NO_CHANGE, 2)"
                     />
                     <label
                         class="qc-status-radio-label clicker"
@@ -162,8 +167,6 @@
 
                 <!-- ----- Released  ----- -->
                 <td class="complete-radios">
-
-
                     <div class="mr-2">Released
 
                         <!--  Calendar  -->
@@ -193,7 +196,8 @@
                         type="radio"
                         id="radio-qc-status-released-yes"
                         name="qcBulkRadioReleased"
-                        (click)="onQcBulkStatusReleasedClick(YES)"
+                        [checked]="radioReleasedStatus[0]"
+                        (click)="onQcBulkStatusReleasedClick(YES, 0)"
                     />
                     <label
                         class="qc-status-radio-label clicker"
@@ -207,7 +211,8 @@
                         type="radio"
                         id="radio-qc-status-released-no"
                         name="qcBulkRadioReleased"
-                        (click)="onQcBulkStatusReleasedClick(NO)"
+                        [checked]="radioReleasedStatus[1]"
+                        (click)="onQcBulkStatusReleasedClick(NO, 1)"
                     />
                     <label
                         class="qc-status-radio-label clicker"
@@ -221,8 +226,8 @@
                         type="radio"
                         id="radio-qc-status-released-no-change"
                         name="qcBulkRadioReleased"
-                        [checked]="true"
-                        (click)="onQcBulkStatusReleasedClick(NO_CHANGE)"
+                        [checked]="radioReleasedStatus[2]"
+                        (click)="onQcBulkStatusReleasedClick(NO_CHANGE, 2)"
                     />
                     <label
                         class="qc-status-radio-label clicker"
@@ -303,7 +308,7 @@
             <textarea
                 class="qc-status-edit-log-text"
                 [(ngModel)]="logText"
-                placeholder="Enter change log here..."
+                placeholder="Enter change log here...MHL00"
             ></textarea>
         </div>
 

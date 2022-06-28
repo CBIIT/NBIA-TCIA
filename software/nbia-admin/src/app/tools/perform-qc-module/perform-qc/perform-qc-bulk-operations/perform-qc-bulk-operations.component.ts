@@ -114,6 +114,8 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+
+        this.logText = '';
     }
 
     releasedCalendarIconClick( e ){

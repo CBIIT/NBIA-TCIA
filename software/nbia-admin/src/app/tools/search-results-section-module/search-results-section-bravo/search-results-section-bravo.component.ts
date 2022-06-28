@@ -12,14 +12,22 @@ import { Subject } from 'rxjs';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 import { PersistenceService } from '@app/admin-common/services/persistence.service';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
-import { ModalityDescriptionsService } from '@app/tools/search-results-section-module/services/modality-descriptions.service';
-import { SearchResultByIndexService } from '@app/tools/search-results-section-module/services/search-result-by-index.service';
+import {
+    ModalityDescriptionsService
+} from '@app/tools/search-results-section-module/services/modality-descriptions.service';
+import {
+    SearchResultByIndexService
+} from '@app/tools/search-results-section-module/services/search-result-by-index.service';
 import { takeUntil } from 'rxjs/operators';
 import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service';
 import { IKeyboardShortcutListenerOptions, KeyboardKeys, } from 'ngx-keyboard-shortcuts';
 import { PreferencesService } from '@app/preferences/preferences.service';
-import { SearchResultsPagerService } from '@app/tools/search-results-section-module/search-results-pager/search-results-pager.service';
-import { SearchResultsSectionBravoService } from '@app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.service';
+import {
+    SearchResultsPagerService
+} from '@app/tools/search-results-section-module/search-results-pager/search-results-pager.service';
+import {
+    SearchResultsSectionBravoService
+} from '@app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.service';
 
 
 @Component( {
@@ -132,9 +140,8 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         } );
 
         // closeCineModeEmitter
-        this.cineModeService.closeCineModeEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( () => {
+        this.cineModeService.closeCineModeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            () => {
                 this.currentCineModeSeriesIndex = -1;
             } );
 

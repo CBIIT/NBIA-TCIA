@@ -8,11 +8,15 @@ import { ApiService } from '@app/admin-common/services/api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/admin-common/services/util.service';
-import { SearchResultByIndexService } from '@app/tools/search-results-section-module/services/search-result-by-index.service';
+import {
+    SearchResultByIndexService
+} from '@app/tools/search-results-section-module/services/search-result-by-index.service';
 import { Consts } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { PreferencesService } from '@app/preferences/preferences.service';
-import { ReleaseDateCalendarService } from '@app/tools/perform-qc-module/perform-qc/release-date-calendar/release-date-calendar.service';
+import {
+    ReleaseDateCalendarService
+} from '@app/tools/perform-qc-module/perform-qc/release-date-calendar/release-date-calendar.service';
 import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service';
 
 
@@ -39,6 +43,10 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     qcStatuses; //  = Consts.QC_STATUSES;
     currentFont;
 
+    radioStatus = [];
+    radioCompleteStatus = [];
+    radioReleasedStatus = [];
+
     releasedDate;
     showReleasedDateCalendar = false;
     badReleasedDate = false;
@@ -64,10 +72,19 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(){
-        this.apiService.visibilitiesEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe( ( data ) => {
+        this.apiService.visibilitiesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
                 this.qcStatuses = data;
+/*
+                let n = 0;
+
+                for( let r in data ){
+                    this.radioStatus[n]  = false;
+                    n++;
+                }
+*/
+                this.clear( data.length)
+                console.log('MHL visibilitiesEmitter: ', data );
             } );
 
         this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -75,12 +92,13 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
                 this.siteArray = data;
                 // Set a starting value
                 this.newSiteCine = this.siteArray[0];
+                this.clear(  data.length );
             } );
 
         this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
                 this.seriesData = undefined;  // So we can tell when it has been (re)populated
-                this.apiService.getSites( [data.series['series'] ]);
+                this.apiService.getSites( [data.series['series']] );
                 this.updateSiteList();
             } );
 
@@ -105,9 +123,37 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     }
 
     onShowUpdateDescriptionUriClick(){
-       // console.log( 'MHL Cine onShowUpdateDescriptionUriClick showUpdateDescriptionUri: ', this.showUpdateDescriptionUri );
+        // console.log( 'MHL Cine onShowUpdateDescriptionUriClick showUpdateDescriptionUri: ', this.showUpdateDescriptionUri );
     }
 
+
+    clear( dataCount?){
+        console.log('MHL clear');
+        this.useBatchNumber = false;
+        this.batchNumber = 1;
+        this.logText = ''; // @CHECKME clears logtext on next or skip for cinemode they may not want this cleared for all fields
+        this.showUpdateDescriptionUri = false;
+        this.descriptionUri = '';
+        this.showCineUpdateCollectionSite = false;
+        this.newSiteCine = '';
+        this.showUpdateDescriptionUri = false;
+        this.descriptionUri = '';
+        let n = 0;
+        if( dataCount !== undefined){
+            for( let n = 0; n < dataCount; n++ ){
+                this.radioStatus[n] = false;
+            }
+        }
+        for( let n = 0; n < 3; n++){
+            this.radioCompleteStatus[n] = false;
+        }
+
+        for( let n = 0; n < 3; n++){
+            this.radioReleasedStatus[n] = false;
+        }
+        this.isComplete = this.NO_CHANGE;
+        this.isReleased = this.NO_CHANGE;
+    }
 
 
     async updateSiteList(){
@@ -117,7 +163,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
             runaway--;
             await this.utilService.sleep( 500 );
         }
-        this.apiService.getSites( [this.seriesData['series'] ]);
+        this.apiService.getSites( [this.seriesData['series']] );
     }
 
     onShowCineUpdateCollectionSiteClick(){
@@ -125,25 +171,45 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     }
 
     onQcBulkStatusClick( n ){
+        console.log('MHL n=' + n );
         this.visible = n;
+        this.radioStatus[n]  = true;
     }
 
-    onQcBulkStatusCompleteClick( c ){
+    onQcBulkStatusCompleteClick( c, i ){
         this.isComplete = c;
+        for( let n = 0; n < 3; n++){
+            this.radioCompleteStatus[n] = false;
+        }
+        this.radioCompleteStatus[i] = true;
     }
 
-    onQcBulkStatusReleasedClick( r ){
+    onQcBulkStatusReleasedClick( r, i ){
         this.isReleased = r;
+        for( let n = 0; n < 3; n++){
+            this.radioReleasedStatus[n] = false;
+        }
+        this.radioReleasedStatus[i] = true;
     }
 
     onQcUpdateNextClick(){
         this.onQcUpdate();
         this.searchResultByIndexService.updateCurrentSearchResultByIndex( 0 );
+        let n = 0;
+        for( let r in this.qcStatuses ){
+            this.radioStatus[n]  = false;
+            n++;
+        }
+
     }
 
     onQcSkipNextClick(){
-        // TODO this is for the high light in the search results, it must be renamed
         this.searchResultByIndexService.updateCurrentSearchResultByIndex( 0 );
+        let n = 0;
+        for( let r in this.qcStatuses ){
+            this.radioStatus[n]  = false;
+            n++;
+        }
     }
 
     onQcUpdate(){
