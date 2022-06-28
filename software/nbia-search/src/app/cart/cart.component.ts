@@ -3,7 +3,7 @@ import { CartService } from '@app/common/services/cart.service';
 import { MenuService } from '@app/common/services/menu.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { CommonService } from '@app/image-search/services/common.service';
-import { Consts, MenuItems } from '@app/consts';
+import {Consts, DownloadTools, MenuItems} from '@app/consts';
 import { CartSortService } from '@app/cart/cart-sort.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 import { UtilService } from '@app/common/services/util.service';
@@ -363,8 +363,11 @@ export class CartComponent implements OnInit, OnDestroy{
         // Called by CartButtonGroupComponent.onDownloadClick() -> CommonService.cartListDownLoadButton()
         // Creates and downloads a manifest file named NBIA-manifest-<EPOCH>.tcia
         this.commonService.cartListDownLoadEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-
+            ( data ) => {
+                if( data !== DownloadTools.CART){
+                    // Need to use this emitter for text and query downloads now also
+                    return;
+                }
                 this.buildSeriesList();
 
                 // Send to log

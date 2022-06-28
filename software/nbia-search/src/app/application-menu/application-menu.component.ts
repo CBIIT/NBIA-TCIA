@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertBoxButtonType, AlertBoxType} from '@app/common/components/alert-box/alert-box-consts';
-import {Consts, MenuItems} from '@app/consts';
+import {Consts, DownloadTools, MenuItems} from '@app/consts';
 import {Properties} from '@assets/properties';
 import {MenuService} from '@app/common/services/menu.service';
 import {CartService} from '@app/common/services/cart.service';
@@ -12,6 +12,7 @@ import {HistoryLogService} from '@app/common/services/history-log.service';
 import {UtilService} from '@app/common/services/util.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {DownloadDownloaderService} from "@app/cart/downloader-download/download-downloader.service";
 
 @Component({
     selector: 'nbia-application-menu',
@@ -119,7 +120,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 private apiServerService: ApiServerService,
                 private commonService: CommonService, private persistenceService: PersistenceService,
                 private alertBoxService: AlertBoxService, private historyLogService: HistoryLogService,
-                private utilService: UtilService) {
+                private utilService: UtilService, private downloadDownloaderService: DownloadDownloaderService) {
     }
 
     ngOnInit() {
@@ -140,6 +141,16 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 this.menuLock = <boolean>data;
             }
         );
+
+        this.downloadDownloaderService.doDownloadEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                if (data === DownloadTools.SEARCH_QUERY) {
+                    this.downloadQueryAsManifestRestrictionCheck();
+                }
+                if (data === DownloadTools.TEXT_QUERY) {
+                    this.downloadTextQueryAsManifestRestrictionCheck();
+                }
+            });
 
         this.apiServerService.simpleSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
@@ -436,13 +447,43 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
             // ------------- Download Query (as manifest)-------------
             case this.menuItem.DOWNLOAD_QUERY_MENU_ITEM:
-                if( this.haveTextSearchQuery ){
-                    // For text search
-                    this.downloadTextQueryAsManifestRestrictionCheck()
-                }else{
-                    // For simple search
-                    this.downloadQueryAsManifestRestrictionCheck();
+                // Get the current state of persistenceService.Field.SHOW_DOWNLOADER_DOWNLOAD
+                try {
+                    this.showDownloaderDownload = JSON.parse(this.persistenceService.get(this.persistenceService.Field.SHOW_DOWNLOADER_DOWNLOAD));
+                } catch (e) {
                 }
+                if (this.utilService.isNullOrUndefined(this.showDownloaderDownload)) {
+                    // If it is not persisted, set it to true
+                    this.showDownloaderDownload = true;
+                }
+
+                if (this.showDownloaderDownload) {
+                    if (this.haveTextSearchQuery) {
+                        this.commonService.downloaderDownLoadButton(DownloadTools.TEXT_QUERY);
+                    } else if (!this.haveTextSearchQuery) {
+                        this.commonService.downloaderDownLoadButton(DownloadTools.SEARCH_QUERY);
+                    }
+                } else {
+                    if (this.haveTextSearchQuery) {
+                        // For text search
+                        this.downloadTextQueryAsManifestRestrictionCheck()
+                    } else {
+                        // For simple search
+                        this.downloadQueryAsManifestRestrictionCheck();
+                    }
+                }
+
+                /*
+                                if( this.haveTextSearchQuery ){
+                                    console.log('MHL DOWNLOAD_QUERY_MENU_ITEM haveTextSearchQuery');
+                                    // For text search
+                                    this.downloadTextQueryAsManifestRestrictionCheck()
+                                }else{
+                                    console.log('MHL DOWNLOAD_QUERY_MENU_ITEM NOT haveTextSearchQuery');
+                                    // For simple search
+                                    this.downloadQueryAsManifestRestrictionCheck();
+                                }
+                */
                 break;
 
 
@@ -500,39 +541,47 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
         // Check for restrictions
         this.apiServerService.doPost(Consts.API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS, this.commonService.getDownloadManifestQuery(), this.apiServerService.showToken()).subscribe(
             (restrictionData: any) => {
+
                 // No restrictions, download the manifest
-                if( restrictionData.upper === 'NO' ){
+                if (restrictionData.toUpperCase() === 'NO') {
                     this.downloadQueryAsManifest();
-                }else{
-                    if (confirm("Includes restricted data") == true) {
+                } else {
+                    // Has restrictions, ask user to confirm or cancel
+                    if (confirm("Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.") == true) {
                         this.downloadQueryAsManifest();
                     } else {
                         console.log('User has canceled download');
                     }
-
                 }
+            },
+            (error) => {
+                console.error('downloadQueryAsManifestRestrictionCheck: ', error);
             });
-
     }
+
     downloadTextQueryAsManifestRestrictionCheck() {
         // Check for restrictions
-        this.apiServerService.doPost(Consts.API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS,this.apiServerService.getTextSearchQueryHold(), this.apiServerService.showToken()).subscribe(
+        this.apiServerService.doPost(Consts.API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS, this.apiServerService.getTextSearchQueryHold(), this.apiServerService.showToken()).subscribe(
             (restrictionData: any) => {
                 // No restrictions, download the manifest
-                if( restrictionData.upper === 'NO' ){
+                if (restrictionData.toUpperCase() === 'NO') {
                     this.downloadTextQueryAsManifest();
-                }else{
-                    if (confirm("Includes restricted data") == true) {
+                } else {
+                    if (confirm("Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.") == true) {
                         this.downloadTextQueryAsManifest();
                     } else {
                         console.log('User has canceled download');
                     }
                 }
+            },
+            (error) => {
+                console.error('downloadTextQueryAsManifestRestrictionCheck: ', error);
             });
     }
 
 
     downloadQueryAsManifest() {
+        console.log('MHL downloadQueryAsManifest');
 
         this.apiServerService.doPost(Consts.API_MANIFEST_FROM_SEARCH_RESULTS, this.commonService.getDownloadManifestQuery(), this.apiServerService.showToken()).subscribe(
             (manifestData: any) => {
@@ -597,10 +646,10 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
         // Just launch the cart download.
         if (!this.showDownloaderDownload) {
-            this.commonService.cartListDownLoadButton();
+            this.commonService.cartListDownLoadButton(DownloadTools.CART);
         } else {
             // Launch the popup with the TCIA downloader link.
-            this.commonService.downloaderDownLoadButton();
+            this.commonService.downloaderDownLoadButton(DownloadTools.CART);
         }
     }
 
@@ -611,6 +660,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
      */
     onMouseOver(n) {
         this.menuMouseOver[n] = true;
+        console.log('MHL onMouseOver');
     }
 
     /**

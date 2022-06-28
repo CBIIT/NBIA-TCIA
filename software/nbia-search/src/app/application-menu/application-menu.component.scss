@@ -135,7 +135,6 @@ $application-menu-spacing: 1px; // These are times 2
     margin-left: 10px;
     // margin-left:  calc(100% - 200px);
     padding: 0;
-    cursor: default;
 }
 .application-menu-dropdown-menu-item-data-admin {
     color: #fff;
@@ -184,4 +183,12 @@ $application-menu-spacing: 1px; // These are times 2
     margin-left: 6px;
     top: 0;
     font-size: 8pt;
+}
+
+
+menu-item-disabled{
+  background-color: #8a4182;
+  cursor: not-allowed;
+  color: #2dde2d;
+  background-color: transparent;
 }

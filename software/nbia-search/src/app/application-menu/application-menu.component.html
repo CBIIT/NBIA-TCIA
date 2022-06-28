@@ -152,30 +152,19 @@
             (mouseout)="onMouseOut(menuItem.DOWNLOAD_MENU_ITEM)"
     >
         <img  class="application-menu-icon" src="assets/images/TOOLS/download_black.png">
-
-<!--
-                          (click)="onMenuItemClick(menuItem.DOWNLOAD_MENU_ITEM)"
-                          'application-menu-disabled-item':( cartCount === 0 || disabled )
--->
-
-<!--
-        <img *ngIf="cartCount !== 0 && !disabled" class="application-menu-icon" src="assets/images/TOOLS/download_black.png">
-        <img *ngIf="cartCount === 0 || disabled" class="application-menu-icon" src="assets/images/TOOLS/download_disabled.png">
--->
-
-
         Download
     </span>
           <!-- Dropdown part -->
         <div class="dropdown-menu application-menu-dropdown-menu-data-admin ml-0 mt-0 pt-0">
 
             <!-- Download Cart -->
-            <div
-                 class="dropdown-item application-menu-dropdown-menu-item-data-admin"
+            <div *ngIf="cartCount > 0"
+                 class="dropdown-item application-menu-dropdown-menu-item-data-admin menu-item-disabled"
                  [ngClass]="{
-                        'disabled':cartCount === 0,
-                        'application-menu-mouse-over': menuMouseOver[menuItem.DOWNLOAD_CART_MENU_ITEM] && cartCount > 0
+                        'application-menu-mouse-over': menuMouseOver[menuItem.DOWNLOAD_CART_MENU_ITEM] && cartCount > 0,
+                        'menu-item-disabled': cartCount < 1
                     }"
+
                  (click)="onMenuItemClick(menuItem.DOWNLOAD_CART_MENU_ITEM)"
                  (mouseover)="onMouseOver(menuItem.DOWNLOAD_CART_MENU_ITEM)"
                  (mouseout)="onMouseOut(menuItem.DOWNLOAD_CART_MENU_ITEM)"

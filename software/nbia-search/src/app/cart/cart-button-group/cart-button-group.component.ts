@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { UtilService } from '@app/common/services/util.service';
-import { Consts } from '@app/consts';
+import {Consts, DownloadTools} from '@app/consts';
 import { CartService } from '@app/common/services/cart.service';
 import { Subject } from 'rxjs';
 
@@ -49,12 +49,12 @@ export class CartButtonGroupComponent implements OnInit{
         // Just launch the cart download.
         if( !this.showDownloaderDownload ){
             if( ! this.allDisabled) {
-                this.commonService.cartListDownLoadButton();
+                this.commonService.cartListDownLoadButton(DownloadTools.CART);
             }
         }
         else{
             // Launch the popup with the TCIA downloader link.
-            this.commonService.downloaderDownLoadButton( );
+            this.commonService.downloaderDownLoadButton( DownloadTools.CART );
         }
     }
 

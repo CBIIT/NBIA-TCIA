@@ -918,15 +918,15 @@ export class CommonService{
     /**
      * Tell cartComponent that save shared list button has been clicked
      */
-    cartListDownLoadButton() {
-        this.cartListDownLoadEmitter.emit();
+    cartListDownLoadButton(downloadTool) {
+        this.cartListDownLoadEmitter.emit( downloadTool);
     }
 
     /**
      * Tells downloader-download component that we need to launch the Popup with the link to the TCIA Download app.
      */
-    downloaderDownLoadButton() {
-        this.downloaderDownLoadEmitter.emit();
+    downloaderDownLoadButton( downloadTool ) {
+        this.downloaderDownLoadEmitter.emit( downloadTool );
     }
 
     /**

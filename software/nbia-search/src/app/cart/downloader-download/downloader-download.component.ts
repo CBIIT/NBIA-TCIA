@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { Properties } from '@assets/properties';
@@ -6,6 +6,8 @@ import { MenuService } from '@app/common/services/menu.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {DownloadTools} from "@app/consts";
+import {DownloadDownloaderService} from "@app/cart/downloader-download/download-downloader.service";
 
 @Component( {
     selector: 'nbia-downloader-download',
@@ -14,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 } )
 
 export class DownloaderDownloadComponent implements OnInit, OnDestroy{
+    downLoadTool;
 
     /**
      * We only show this popup (set showDownloaderDownload = true) if downloaderDownLoadEmitter emits.
@@ -37,20 +40,21 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private persistenceService: PersistenceService,
-                 private menuService: MenuService ) {
+                 private menuService: MenuService, private downloadDownloaderService: DownloadDownloaderService ) {
     }
 
     ngOnInit() {
 
-        // The cart download button has been clicked
+        // The cart download button has been clicked (no longer just for cart, @TODO rename things)
         this.commonService.downloaderDownLoadEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            () => {
+            ( data ) => {
+                this.downLoadTool = data;
+                console.log('MHL 300 downLoadTool: ', this.downLoadTool);
                 this.showDownloaderDownload = true;
                 this.menuService.lockMenu();
-
             }
         );
-
+        console.log('MHL downLoadTool: ', this.downLoadTool);
     }
 
     /**
@@ -69,16 +73,38 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
 
     /**
      * "Continue Cart Download" button
+     * For Cart we can run it here for search query & text query we will emit
      */
     onContinueCartDownloadClick() {
-        this.commonService.cartListDownLoadButton();
-        this.showDownloaderDownload = false;
+        console.log('MHL onContinueCartDownloadClick 01 downLoadTool: ', this.downLoadTool);
 
-        // Unlock the menu as soon as the download dialog is displayed.
-        this.menuService.unlockMenu();
+        switch( this.downLoadTool ){
+            case DownloadTools.CART:
+                this.commonService.cartListDownLoadButton(DownloadTools.CART);
+                this.showDownloaderDownload = false;
 
-        // Make sure the TciaDownloader download button is visible next time.
-        this.showTciaDownloaderButton = true;
+                // Unlock the menu as soon as the download dialog is displayed.
+                this.menuService.unlockMenu();
+
+                // Make sure the TciaDownloader download button is visible next time.
+                this.showTciaDownloaderButton = true;
+
+                break;
+
+            case DownloadTools.SEARCH_QUERY:
+                this.downloadDownloaderService.doDownload(DownloadTools.SEARCH_QUERY);
+                this.menuService.unlockMenu();
+                this.showDownloaderDownload = false;
+                break;
+
+            case DownloadTools.TEXT_QUERY:
+                this.downloadDownloaderService.doDownload(DownloadTools.TEXT_QUERY);
+                this.menuService.unlockMenu();
+                this.showDownloaderDownload = false;
+                break;
+
+        }
+
     }
 
     /**
