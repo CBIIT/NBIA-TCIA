@@ -272,13 +272,18 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
                 // The complete reset we need.
                 this.resetFlag = true;
-                this.completeCriteriaList = null;
+                this.completeCriteriaList = undefined;
 
                 // Get the list of all Collections in the database and the number of records which contain each collection.
                 this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
-                while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
+
+                while( (this.completeCriteriaList === undefined) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );
                 }
+                // @TESTING MHL
+                await this.commonService.sleep( 600 );
+
+
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
 
                 // Was there a search passed in with the URL
