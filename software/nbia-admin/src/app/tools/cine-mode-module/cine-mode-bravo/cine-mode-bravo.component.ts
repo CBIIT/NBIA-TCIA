@@ -372,12 +372,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
             query;
 
         if( Properties.DEBUG_CURL ){
-            let curl =
-                'curl -H \'Authorization:Bearer  ' +
-                this.accessTokenService.getAccessToken() +
-                '\' -k \'' +
-                getUrl +
-                '\'';
+            let curl = 'curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + getUrl + '\'';
             console.log( 'getDicomData: ' + curl );
         }
 
@@ -393,9 +388,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
         let results;
         try{
-            results = this.httpClient
-                .get( getUrl, options )
-                .pipe( timeout( Properties.HTTP_TIMEOUT ) );
+            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
             return results;
         }catch( e ){
             // TODO react to error.
@@ -425,14 +418,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         let query = 'list=' + this.seriesData['seriesPkId'];
 
         if( Properties.DEBUG_CURL ){
-            let curl =
-                ' curl -H \'Authorization:Bearer  ' +
-                this.accessTokenService.getAccessToken() +
-                '\' -k \'' +
-                Properties.API_SERVER_URL +
-                '/nbia-api/services/getImageDrillDown\' -d \'' +
-                query +
-                '\'';
+            let curl = ' curl -H \'Authorization:Bearer  ' + this.accessTokenService.getAccessToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/getImageDrillDown\' -d \'' + query + '\'';
             console.log( 'doPost: ', curl );
         }
 
@@ -564,7 +550,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
 
                             // If there is only one image, don't divide by zer0
-                            if( (this.last === 0) || (i >= (this.last - 1) ) ){  // Sometimes we get rounded to %99 JIRA 1856
+                            if( (this.last === 0) || (i >= (this.last - 1)) ){  // Sometimes we get rounded to %99 JIRA 1856
                                 this.progress = 100;
                             }else{
                                 this.progress = Math.trunc(
