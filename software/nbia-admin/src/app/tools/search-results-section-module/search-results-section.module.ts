@@ -6,12 +6,14 @@ import { SearchResultsSectionBravoComponent } from './search-results-section-bra
 import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';
 import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 import { SearchResultsPagerComponent } from './search-results-pager/search-results-pager.component';
+import { RemoveSitePipe } from './search-results-section-bravo/remove-site.pipe';
 
 
 @NgModule( {
     declarations: [
         SearchResultsSectionBravoComponent,
-        SearchResultsPagerComponent
+        SearchResultsPagerComponent,
+        RemoveSitePipe
     ],
 
     exports: [

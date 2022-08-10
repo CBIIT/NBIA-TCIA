@@ -36,7 +36,7 @@ export class QuerySectionService{
     }
 
     updateSearchQuery( tool, criteria, data ) {
-        // Do we have this criteria yet?
+        // Do we have these criteria yet?
         let i = this.entryExists( tool, criteria );
 
         // It exists and must be changed
@@ -46,7 +46,7 @@ export class QuerySectionService{
             }else{
                 this.updateToQueryArray( i, data );
             }
-        // It dose not exist in the query array, so add it.
+        // It does not exist in the query array, so add it.
         }else{
             if( ! this.utilService.isNullOrUndefined( data ) ){
                 this.addToQueryArray( { tool, criteria, data } );

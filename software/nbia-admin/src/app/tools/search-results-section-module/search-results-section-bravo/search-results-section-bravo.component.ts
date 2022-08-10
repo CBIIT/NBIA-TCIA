@@ -59,9 +59,12 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     // @TODO init from browser cookie if there.
     columnHeadings = [
-        { name: 'Submission date', sortState: SortState.SORT_DOWN }, // Default  TODO save and restore from browser cookie
+        { name: 'Submission date', sortState: SortState.NO_SORT }, // Default  TODO save and restore from browser cookie
         // { 'name': 'Trial ID', 'sortState': SortState.NO_SORT },
-        // { 'name': 'Collection//Site', 'sortState': SortState.NO_SORT },
+
+        { name: 'Collection//Site', 'sortState': SortState.SORT_DOWN }, // There is a pipe in the HTML that removes the //site  @TODO see if the want the sit included
+        // { name: 'Collection', 'sortState': SortState.NO_SORT }, // There is a pipe in the HTML that removes the //site  @TODO see if the want the sit included
+
         { name: 'Subject ID', sortState: SortState.NO_SORT },
         { name: 'Study', sortState: SortState.NO_SORT },
         { name: 'Series', sortState: SortState.NO_SORT },
@@ -378,7 +381,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // There are no results or this a non-sortable column don't do the sort.
         if(
             this.searchResultsCount > 0 &&
-            this.columnHeadings[i]['name'] !== 'Collection//Site' &&
+           // this.columnHeadings[i]['name'] !== 'Collection//Site' &&
             this.columnHeadings[i]['name'] !== 'Viewers'
         ){
 
@@ -424,7 +427,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     doSort( column ){
         this.loadingDisplayService.setLoading( true, 'Sorting...' );
 
-        // console.log('MHL this.columnHeadings[column][\'name\']: ', this.columnHeadings[column]['name']);
         // Use name instead of index in case we make column order changeable.
         switch( this.columnHeadings[column]['name'] ){
             case 'Submission date':
@@ -444,12 +446,15 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                     } );
                 break;
 
-            // There can only be one of these so no sorting for this column
-            case            'Collection//Site'            :
+            case 'Collection//Site':
+                this.searchResults.sort(
+                    ( row1, row2 ) => {
+                        return row1.collectionSite.localeCompare( row2.collectionSite ) * (this.columnHeadings[column]['sortState'] === SortState.SORT_DOWN ? -1 : 1);
+                    }
+                );
                 break;
 
-            case
-            'Study'
+            case 'Study'
             :
                 this.searchResults.sort(
                     ( row1, row2 ) =>

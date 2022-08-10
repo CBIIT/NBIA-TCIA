@@ -137,8 +137,6 @@
                             [ngClass]="{
                                 clicker:
                                     searchResultsCount > 0 &&
-                                    columnHeadings[i]['name'] !==
-                                        'Collection//Site' &&
                                     columnHeadings[i]['name'] !== 'Viewers'
                             }"
                             title="Click to sort"
@@ -149,8 +147,6 @@
                             <span
                                 *ngIf="
                                     searchResultsCount > 0 &&
-                                    columnHeadings[i]['name'] !==
-                                        'Collection//Site' &&
                                     columnHeadings[i]['name'] !== 'View'
                                 "
                             >
@@ -227,6 +223,18 @@
                             {{dataRow['collectionSite']}}
                         </td>
                         -->
+
+
+                    <td class="data-table-body-td">
+                        {{dataRow['collectionSite'] }}
+                    </td>
+<!--
+                   <td class="data-table-body-td">
+                        {{dataRow['collectionSite'] | removeSite }}
+                    </td>
+-->
+
+
                     <td class="data-table-body-td">
                         {{ dataRow["patientId"] }}
                     </td>
