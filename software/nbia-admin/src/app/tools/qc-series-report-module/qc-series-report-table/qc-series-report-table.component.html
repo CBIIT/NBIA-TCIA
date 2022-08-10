@@ -1,0 +1,59 @@
+<!------------------------------------------------------------------------------------------->
+<!-------------------------     Table section of Series report      ------------------------>
+<!------------------------------------------------------------------------------------------->
+
+<div class="series-series-table-outer-div">
+    <table class="qc-series-report-table">
+        <thead>
+        <tr class="data-table-thead-tr">
+            <th class="data-table-thead-th">
+                Series ID
+            </th>
+            <th class="data-table-thead-th">
+                Visibility
+            </th>
+            <th class="data-table-thead-th">
+                Release Status
+            </th>
+            <th class="data-table-thead-th">
+                Release Date
+            </th>			
+            <th class="data-table-thead-th">
+                DOI
+            </th>
+            <th class="data-table-thead-th">
+                License
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr
+            *ngFor="let row of qcSeriesReportResults; let odd = odd"
+            class="data-table-body-tr"
+            [ngClass]="{
+                    'data-table-body-dark-tr': odd
+                }"
+        >
+            <td class="data-table-body-td">
+                {{ row["SeriesInstanceUID"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["Visibility"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["ReleaseStatus"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["ReleaseDate"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["Doi"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["LicenseName"] }}
+            </td>			
+        </tr>
+        </tbody>
+    </table>
+</div>

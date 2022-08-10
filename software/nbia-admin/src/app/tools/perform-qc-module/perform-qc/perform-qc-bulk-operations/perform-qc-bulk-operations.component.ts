@@ -255,6 +255,17 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
         this.apiService.doSubmit( Consts.GET_HISTORY_REPORT, query );
     }
+	
+	onSeriesReportClick(){
+        let query = '';
+        for( let row of this.searchResults ){
+            if( row['selected'] ){
+                query += '&seriesId=' + row['series'];
+            }
+        }
+
+        this.apiService.doSubmit( Consts.GET_SERIES_REPORT, query );
+    }
 
     onDownloadClick(){
         let query = '';
