@@ -17,6 +17,7 @@ import gov.nih.nci.nbia.dto.SeriesDTO;
 import gov.nih.nci.nbia.dto.DOIDTO;
 import gov.nih.nci.nbia.internaldomain.CollectionDesc;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
+import gov.nih.nci.nbia.qctool.VisibilityStatus;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
@@ -171,12 +172,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
 			rs = getHibernateTemplate().find(hql + where.toString() + order, values);
-			System.out.println("!!!!where.toString()=" + where.toString());
-
 		} else {
 			rs = getHibernateTemplate().find(hql + where.toString() + order);
-			System.out.println("!!!!where.toString()=" + where.toString());
-
 		}
 
 		return rs;
@@ -1142,6 +1139,22 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		seriesDTOList = getSeriesDTOs(false, seriesIds, authorizedSites);
 		return seriesDTOList;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<Object []> findSeriesQCInfoBySeriesInstanceUIDs(List<String> seriesIds, List<String> authorizedSite) throws DataAccessException {
+		List<Object[]> seriesDTOList = null;
+
+		if (seriesIds == null || seriesIds.size() <= 0) {			
+			return null;
+		}
+		
+		if (authorizedSite == null || authorizedSite.size() == 0){		
+			return null;
+		}	
+
+		seriesDTOList = getSeriesQCInfoDTOs(seriesIds, authorizedSite);
+		return seriesDTOList;
+	}	
 
 	/**
 	 * Return all the series for a given list of series instance UIDs, but only when
@@ -1332,6 +1345,40 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	    }
 		return returnValue;	
 	}
+	
+	private List<Object []> getSeriesQCInfoDTOs(List<String> seriesIds, List <String> authorizedSites) {
+		String sQL = "select s.SERIES_INSTANCE_UID, s.VISIBILITY, s.RELEASED_STATUS, s.DATE_RELEASED, " +
+				"( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, "+
+				" s.DESCRIPTION_URI, "+
+				"(select l.long_name from collection_descriptions cd, license l where s.PROJECT = cd.collection_name and cd.license_id = l.license_id) as license "+
+				"from GENERAL_SERIES s";	
+		
+		StringBuffer where = new StringBuffer();
+		where = where.append(" and concat(concat(s.project, '//'), s.site) in (");
+
+		for (Iterator<String> projAndSites = authorizedSites.iterator(); projAndSites.hasNext();) {
+			String str = projAndSites.next();
+			where.append(str);
+ 
+			if (projAndSites.hasNext()) {
+				where.append(",");
+			}
+		}
+		where.append(")");		
+		String seriesIdWhereClause=" where s.SERIES_INSTANCE_UID IN (:ids) ";
+		String fullSQL=sQL + seriesIdWhereClause + where.toString();
+
+		List<Object[]> seriesResults= (this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(fullSQL).setParameterList("ids", seriesIds)).list();
+
+		List<Object[]> modifiedResults = new ArrayList<Object[]>();
+		for (Object[] objs : seriesResults) {
+			objs[1] = VisibilityStatus.statusFactory(Integer.parseInt((String) objs[1])).getText();
+			System.out.println("new visibility="+objs[1]);
+			modifiedResults.add(objs);
+		}
+		return modifiedResults;
+	}	
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int updateDOIForSeries(String project, String doi)throws DataAccessException {
 		int returnValue=0;
@@ -1622,7 +1669,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				onlyCollection+"'";
 		List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(protectionElementQuery).list();
 	    for (String result:results) {
-	    	System.out.println("result-"+result);
     		returnValue.add(result);
 	    }
 		return returnValue;

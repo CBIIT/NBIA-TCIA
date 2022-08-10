@@ -35,7 +35,6 @@ public class V3_modifyUser extends getData{
 		try {
 			UserProvisioningManager upm = getUpm();
 			User user = getUserByLoginName(loginName);
-System.out.println("!!!!user email="+email +" active status="+active);
 
 			user.setEmailId(email);
 			if (Boolean.parseBoolean(active))

@@ -113,4 +113,5 @@ public interface GeneralSeriesDAO  {
 	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException;
 	public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException;
 	public void cacheMD5ForAllCollections()throws DataAccessException;
+	public List<Object[]> findSeriesQCInfoBySeriesInstanceUIDs(List<String> seriesIds, List<String> authorizedSite) throws DataAccessException;
 }

@@ -59,8 +59,6 @@ public class getData {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext()
 					.getAuthentication();
-			System.out.println("!!!!!user name="
-					+ authentication.getPrincipal());
 			String userName = (String) authentication.getPrincipal();
 			authorizedCollections = AuthorizationService
 						.getAuthorizedCollections(userName);
@@ -374,6 +372,19 @@ public class getData {
 		}
 		return (List<Object[]>) results;
 	}
+	
+	protected List<Object[]> getSeriesQCInfo(List<String> seriesList, List<String> authorizedCollections) {
+		List<Object[]> results = null;
+
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		try {
+			results = tDao.findSeriesQCInfoBySeriesInstanceUIDs(seriesList, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}	
 
 	protected List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedCollections,
 			String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer, String seriesInstanceUID) {
