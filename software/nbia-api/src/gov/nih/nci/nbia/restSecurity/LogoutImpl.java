@@ -39,10 +39,8 @@ public class LogoutImpl implements LogoutSuccessHandler  {
 public void removeaccess(HttpServletRequest req){
 
 		String tokens=req.getHeader("Authorization");
-		System.out.println(tokens);
 		String value=tokens.substring(tokens.indexOf(" ")).trim();
 		DefaultOAuth2AccessToken token= new DefaultOAuth2AccessToken(value);
-		System.out.println(token);
 		tokenstore.removeAccessToken(value);
 		System.out.println("\n\tAccess Token Removed Successfully!!!!!!!!");
 

@@ -351,6 +351,23 @@ searchResultsSelectedCount:{{searchResultsSelectedCount}}  showUpdateCollectionS
                             Update
                         </button>
 
+                       <button
+                            class="btn nbia-button qc-bulk-update-button"
+                            [ngClass]="{
+                                'nbia-button-disabled':
+                                    searchResultsSelectedCount < 1,
+                                'font-extra-small': currentFont === '0',
+                                'font-small': currentFont === '1',
+                                'font-medium': currentFont === '2',
+                                'font-large': currentFont === '3'
+                            }"
+                            [disabled]="searchResultsSelectedCount < 1"
+                            type="button"
+                            (click)="onSeriesReportClick()"
+                        >
+                            Series Report
+                        </button>
+
                         <button
                             class="btn nbia-button qc-bulk-update-button"
                             [ngClass]="{

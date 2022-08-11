@@ -39,10 +39,16 @@ export class ApiService{
 
     qcHistoryResultsEmitter = new EventEmitter();
     qcHistoryErrorEmitter = new EventEmitter();
+	
+    qcSeriesResultsEmitter = new EventEmitter();
+    qcSeriesErrorEmitter = new EventEmitter();	
 
     qcHistoryResultsTableEmitter = new EventEmitter();
     qcHistoryTableErrorEmitter = new EventEmitter();
-
+ 
+	qcSeriesResultsTableEmitter = new EventEmitter();
+    qcSeriesTableErrorEmitter = new EventEmitter();
+	
     visibilitiesEmitter = new EventEmitter();
     visibilitiesErrorEmitter = new EventEmitter();
 
@@ -115,7 +121,15 @@ export class ApiService{
             case Consts.SUBMIT_DELETE_COLLECTION_LICENSES:
                 this.submitDeleteLicense( submitData );
                 break;
-
+				
+            case Consts.GET_SERIES_REPORT:
+                this.getQcSeriesReport( submitData );
+                break;
+				
+            case Consts.GET_SERIES_REPORT_TABLE:
+                this.getQcSeriesReportTable( submitData );
+                break;				
+				
             case Consts.GET_HISTORY_REPORT:
                 this.getQcHistoryReport( submitData );
                 break;
@@ -397,6 +411,31 @@ export class ApiService{
                 console.error( 'getQcHistoryReport err: ', err );
             } );
     }
+	
+    getQcSeriesReport( query ){
+        this.doPost( Consts.GET_SERIES_REPORT, query ).subscribe(
+           ( data ) => {
+                this.qcSeriesResultsEmitter.emit( data );
+           },
+           ( err ) => {
+               this.qcSeriesErrorEmitter.emit( err );
+               console.error( 'getQcSeriesReport err: ', err['error'] );
+               console.error( 'getQcSeriesReport err: ', err );
+            } );
+    }
+
+    getQcSeriesReportTable( query ){
+        this.doPost( Consts.GET_SERIES_REPORT, query ).subscribe(
+            ( data ) => {
+                this.qcSeriesResultsTableEmitter.emit( data );
+            },
+            ( err ) => {
+                this.qcSeriesTableErrorEmitter.emit( err );
+                console.error( 'getQcSeriesReportTable err: ', err['error'] );
+                console.error( 'getQcSeriesReportTable err: ', err );
+            } );
+
+    }	
 
     getQcHistoryReportTable( query ){
         this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(

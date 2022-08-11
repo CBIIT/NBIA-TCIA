@@ -1,0 +1,30 @@
+// -------------------------------------------------------------------------------------------
+// ------------  Series Info - popup in "Perform Quality Control"  not Cine mode  ---------
+// -------------------------------------------------------------------------------------------
+
+@import "../../../app.component";
+@import "../../../popup.scss";
+
+$qcReportTop: 100px;
+$qcReportWidth: calc(100% - 40px);
+$qcReportPadding: 6px;
+
+.perform-qc-series-report-div {
+    z-index: 5;
+    position: absolute;
+    top: $qcReportTop;
+    width: $qcReportWidth;
+    left: calc(50% - #{($qcReportWidth) / 2});
+    margin: 0;
+    resize: vertical;
+}
+
+.application-menu-icon{
+    width: 14px;
+    height: 14px;
+}
+
+.exportSpreadsheetButton{
+	margin-left: 6px;
+	margin-top: 3px;
+}

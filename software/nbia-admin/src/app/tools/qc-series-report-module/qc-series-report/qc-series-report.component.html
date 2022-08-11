@@ -1,0 +1,52 @@
+<!------------------------------------------------------------------------------------------->
+<!------------  Series Info - popup in "Perform Quality Control"                    --------->
+<!------------------------------------------------------------------------------------------->
+
+
+<!--The parent div/ bootstrap panel-->
+<div id="seriesDragPanel"
+    *ngIf="showReport"
+     ngDraggable [handle]="PanelHandle"
+     class="card card-nbia-default  alert-box-div alert-box-shadow unselectable perform-qc-series-report-div"
+     [ngClass]="{
+        'alert-box-heading-moving': handleMoving
+    }"
+     [ngDraggable]=" true"
+
+     (started)="onDragBegin($event)"
+     (endOffset)="onMoveEnd($event)"
+>
+
+    <!-- The panel heading, this is the draggable part -->
+    <div #PanelHandle class="card-header card-nbia-header-default unselectable alert-box-heading" >
+        <span class="card-title">Series Report</span>
+        <span class="close-x clicker unselectable" (click)="closeQcSeriesReportClick()">
+            X
+        </span>
+    </div>
+
+    <nbia-qc-series-report-table
+        [qcSeriesReportResults]="qcSeriesReportResults"
+    ></nbia-qc-series-report-table>
+	
+    <div class="card-header card-nbia-header-default m-0 p-0">
+		<span>
+		   <button
+			type="button"
+			class="btn nbia-button exportSpreadsheetButton"
+			[ngClass]="{
+						'nbia-button-disabled': allDisabled
+					}"
+			(click)="onDownloadCsvClick()">
+			<img class="application-menu-icon" src="assets/images/TOOLS/download_white.png">
+			<span>
+				&nbsp;Export spreadsheet
+			</span>
+			</button>
+		</span>
+        <span class="close-x clicker unselectable" (click)="closeQcSeriesReportClick()">		
+            X
+        </span>
+    </div>
+
+</div>

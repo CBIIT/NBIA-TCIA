@@ -1,0 +1,24 @@
+// -------------------------------------------------------------------------------------------
+// -------------------------     Table section of Series Info     ------------------------
+// -------------------------------------------------------------------------------------------
+
+@import "../../../app.component";
+@import "src/app/data-table";
+@import "../../../tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.scss";
+
+.qc-series-report-table {
+    width: 100%;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+}
+
+.series-series-table-outer-div {
+    height: 300px;
+    padding-bottom: 12px;
+    resize: vertical;
+    overflow: auto;
+    cursor: default;
+}
