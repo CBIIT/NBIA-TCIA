@@ -1373,7 +1373,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<Object[]> modifiedResults = new ArrayList<Object[]>();
 		for (Object[] objs : seriesResults) {
 			objs[1] = VisibilityStatus.statusFactory(Integer.parseInt((String) objs[1])).getText();
-			System.out.println("new visibility="+objs[1]);
 			modifiedResults.add(objs);
 		}
 		return modifiedResults;
