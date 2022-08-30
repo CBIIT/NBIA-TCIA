@@ -18,6 +18,7 @@ import gov.nih.nci.nbia.dto.DOIDTO;
 import gov.nih.nci.nbia.internaldomain.CollectionDesc;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.qctool.VisibilityStatus;
+import gov.nih.nci.nbia.security.AuthorizationManager;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.Util;
@@ -1471,16 +1472,24 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void cacheMD5ForAllCollections()throws DataAccessException{
+		System.out.println("Caching MD5");
 		Set<String> projectSet = new HashSet<String>();
 		List<SiteData> siteData=new ArrayList<SiteData>();
+		AuthorizationManager am = null;
+	    try {
+			am = new AuthorizationManager(NCIAConfig.getGuestUsername());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     siteData = am.getAuthorizedSites();
 		String sqlString = "select project, site from GeneralSeries where visibility=1 group by project, site";
 		List<String[]> resultsData  = getHibernateTemplate().find(sqlString);
-		for (Object item[] : resultsData) {
-			projectSet.add(item[0].toString());
-			SiteData site=new SiteData(item[0].toString(), item[1].toString());
-			siteData.add(site);
+		for (SiteData item : siteData) {
+			projectSet.add(item.getCollection());
 		}
 		for (String project:projectSet) {
+			System.out.println("cache-"+project);
 			cacheMD5ForCollection(project, siteData);
 		}
 	}
@@ -1495,11 +1504,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<String> sortedList=new ArrayList<String>();
 		for (Object item[] : resultsData) {
 			sortedList.add(getMD5ForPatientId(item[0].toString(),item[1].toString(), authorizedSites));
+			System.out.println("adding patient-"+item[0].toString()+" for "+project);
 		}
 		Collections.sort(sortedList);
 		for (String item : sortedList) {
 			if (item != null) {
 				md5Concat+=item;
+				System.out.println("patientMD5-"+item+" for "+project);
 			}
 		}
 		if (md5Concat.length()==0) {
@@ -1512,7 +1523,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 	        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
 	        if (collectionDescList!=null) {
 	        	for (CollectionDesc cd: collectionDescList) {
-	        		if ((cd.getMd5hash()!=null)&&!(cd.getMd5hash().equalsIgnoreCase(md5hash))){
+	        		if ((cd.getMd5hash()==null)||!(cd.getMd5hash().equalsIgnoreCase(md5hash))){
 	        			cd.setMd5hash(md5hash);
 	        			System.out.println("Updating MD5 for "+project);
 	        			getHibernateTemplate().update(cd);
