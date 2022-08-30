@@ -111,6 +111,24 @@
                     "criteriaType":"patientName",
                     "inputType":"startsWith"
                 }
+            },
+            {
+                "criteriaMenuText":"Contains",
+                "configuration":{
+                    "dynamicQueryCriteriaSmallTextInput":true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault":2,
+                    "dynamicQueryCriteriaClearButton":true,
+                    "dynamicQueryCriteriaOpenCloseButton":true,
+                    "dynamicQueryCriteriaHeading":"Patient Name",
+                    "dynamicQueryCriteriaSubHeading":"Enter Patient Name",
+                    "dynamicQueryCriteriaApplyButton":true,
+                    "dynamicQueryCriteriaApplyText":"Apply",
+                    "dynamicQueryCriteriaSort":true,
+                    "dynamicQueryCriteriaAllowNoChoice":true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+                    "criteriaType":"patientName",
+                    "inputType":"contains"
+                }
             }
         ]
     },
