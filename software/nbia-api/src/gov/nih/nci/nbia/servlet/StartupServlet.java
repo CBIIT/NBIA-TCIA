@@ -136,7 +136,7 @@ public class StartupServlet extends HttpServlet {
 
        JobDetail propertiesUpdateJobDetail = new JobDetail("Properties",
                Scheduler.DEFAULT_GROUP,
-               md5CacheUpdateJob.class);
+               PropertiesUpdateJob.class);
         //Schedule the tasks...
         try {
             SchedulerFactory sf = new StdSchedulerFactory();
@@ -148,11 +148,9 @@ public class StartupServlet extends HttpServlet {
             scheduler.scheduleJob(propertiesUpdateJobDetail, propertiesTrigger);
             //Job 1 - Latest Curation Date
             scheduler.scheduleJob(latestCurationDateJobDetail, latestCurationDateTrigger);
-          //  scheduler.scheduleJob(md5HashCacheJobDetail, md5CacheTrigger);
+            scheduler.scheduleJob(md5HashCacheJobDetail, md5CacheTrigger);
             scheduler.startDelayed(10);
            // scheduler.start();
-        	//GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-        	//tDao.cacheMD5ForAllCollections();
         } catch (SchedulerException se) {
         	logger.error(se);
         }catch(Exception e){
