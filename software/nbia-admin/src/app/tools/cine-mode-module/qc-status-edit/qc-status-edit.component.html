@@ -30,7 +30,7 @@
                         }"
                     [attr.for]="'radio-qc-status-status' + n"
                 >
-                    {{ criteria }}MHL
+                    {{ criteria }}
                 </label>
             </div>
         </div>
@@ -82,7 +82,6 @@
             <tr>
                 <!-- ----- Batch number  ----- -->
                 <td class="qc-status-radios">
-                    useBatchNumber: {{useBatchNumber}}
                     <input
                         class="clicker"
                         type="checkbox"
@@ -122,7 +121,7 @@
                         [attr.for]="'radio-qc-status-complete-yes'"
                     >
                         Yes
-                    </label>radioCompleteStatus[1]: {{radioCompleteStatus[1]}}
+                    </label>
                     &nbsp;&nbsp;
                     <input
                         class="clicker"
@@ -308,7 +307,7 @@
             <textarea
                 class="qc-status-edit-log-text"
                 [(ngModel)]="logText"
-                placeholder="Enter change log here...MHL00"
+                placeholder="Enter change log here..."
             ></textarea>
         </div>
 
