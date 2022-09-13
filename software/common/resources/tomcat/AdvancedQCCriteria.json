@@ -111,6 +111,24 @@
                     "criteriaType":"patientName",
                     "inputType":"startsWith"
                 }
+            },
+            {
+                "criteriaMenuText":"Contains",
+                "configuration":{
+                    "dynamicQueryCriteriaSmallTextInput":true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault":2,
+                    "dynamicQueryCriteriaClearButton":true,
+                    "dynamicQueryCriteriaOpenCloseButton":true,
+                    "dynamicQueryCriteriaHeading":"Patient Name",
+                    "dynamicQueryCriteriaSubHeading":"Enter Patient Name",
+                    "dynamicQueryCriteriaApplyButton":true,
+                    "dynamicQueryCriteriaApplyText":"Apply",
+                    "dynamicQueryCriteriaSort":true,
+                    "dynamicQueryCriteriaAllowNoChoice":true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+                    "criteriaType":"patientName",
+                    "inputType":"contains"
+                }
             }
         ]
     },
@@ -176,6 +194,24 @@
                     "criteriaType":"seriesUID",
                     "inputType":"startsWith"
                 }
+            },
+            {
+                "criteriaMenuText":"Contains",
+                "configuration":{
+                    "dynamicQueryCriteriaSmallTextInput":true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault":2,
+                    "dynamicQueryCriteriaClearButton":true,
+                    "dynamicQueryCriteriaOpenCloseButton":true,
+                    "dynamicQueryCriteriaHeading":"Series UID",
+                    "dynamicQueryCriteriaSubHeading":"Enter Series UID",
+                    "dynamicQueryCriteriaApplyButton":true,
+                    "dynamicQueryCriteriaApplyText":"Apply",
+                    "dynamicQueryCriteriaSort":true,
+                    "dynamicQueryCriteriaAllowNoChoice":true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+                    "criteriaType":"seriesUID",
+                    "inputType":"contains"
+                }
             }
         ]
     },
@@ -216,6 +252,24 @@
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
                     "criteriaType":"sopUID",
                     "inputType":"startsWith"
+                }
+            },
+            {
+                "criteriaMenuText":"Contains",
+                "configuration":{
+                    "dynamicQueryCriteriaSmallTextInput":true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault":2,
+                    "dynamicQueryCriteriaClearButton":true,
+                    "dynamicQueryCriteriaOpenCloseButton":true,
+                    "dynamicQueryCriteriaHeading":"SOP UID",
+                    "dynamicQueryCriteriaSubHeading":"Enter SOP UID",
+                    "dynamicQueryCriteriaApplyButton":true,
+                    "dynamicQueryCriteriaApplyText":"Apply",
+                    "dynamicQueryCriteriaSort":true,
+                    "dynamicQueryCriteriaAllowNoChoice":true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+                    "criteriaType":"sopUID",
+                    "inputType":"contains"
                 }
             }
         ]
@@ -285,6 +339,24 @@
                     "criteriaType":"studyUID",
                     "inputType":"startsWith"
                 }
+            },
+            {
+                "criteriaMenuText":"Contains",
+                "configuration":{
+                    "dynamicQueryCriteriaSmallTextInput":true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault":2,
+                    "dynamicQueryCriteriaClearButton":true,
+                    "dynamicQueryCriteriaOpenCloseButton":true,
+                    "dynamicQueryCriteriaHeading":"Study UID",
+                    "dynamicQueryCriteriaSubHeading":"Enter Study UID",
+                    "dynamicQueryCriteriaApplyButton":true,
+                    "dynamicQueryCriteriaApplyText":"Apply",
+                    "dynamicQueryCriteriaSort":true,
+                    "dynamicQueryCriteriaAllowNoChoice":true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+                    "criteriaType":"studyUID",
+                    "inputType":"contains"
+                }
             }
         ]
     },
@@ -307,6 +379,24 @@
                     "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
                     "criteriaType":"patientID",
                     "inputType":"startsWith"
+                }
+            },
+            {
+                "criteriaMenuText":"Contains",
+                "configuration":{
+                    "dynamicQueryCriteriaSmallTextInput":true,
+                    "dynamicQueryCriteriaSingleLineRadioDefault":2,
+                    "dynamicQueryCriteriaClearButton":true,
+                    "dynamicQueryCriteriaOpenCloseButton":true,
+                    "dynamicQueryCriteriaHeading":"Patient ID",
+                    "dynamicQueryCriteriaSubHeading":"Enter Patient ID",
+                    "dynamicQueryCriteriaApplyButton":true,
+                    "dynamicQueryCriteriaApplyText":"Apply",
+                    "dynamicQueryCriteriaSort":true,
+                    "dynamicQueryCriteriaAllowNoChoice":true,
+                    "dynamicQueryCriteriaSelectionInHeadingCollapsed":true,
+                    "criteriaType":"patientID",
+                    "inputType":"contains"
                 }
             }
         ]

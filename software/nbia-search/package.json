@@ -5,6 +5,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --host 0.0.0.0",
+        "startWithProxy": "ng serve --proxy-config proxy.conf.json --host 0.0.0.0 --port 4400",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
@@ -40,7 +41,8 @@
         "typedoc": "^0.15.4",
         "util": "^0.10.3",
         "web-animations-js": "^2.3.1",
-        "zone.js": "^0.8.26"
+        "zone.js": "^0.8.26",
+        "@types/geojson": "7946.0.8"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.801.2",

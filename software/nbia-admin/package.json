@@ -32,7 +32,8 @@
         "rxjs": "~6.4.0",
         "ts-promise": "^2.2.0",
         "tslib": "^1.10.0",
-        "zone.js": "~0.9.1"
+        "zone.js": "~0.9.1",
+        "@types/geojson": "7946.0.8"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.803.0",

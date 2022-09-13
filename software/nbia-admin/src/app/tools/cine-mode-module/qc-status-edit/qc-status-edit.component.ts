@@ -84,7 +84,6 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
                 }
 */
                 this.clear( data.length)
-                console.log('MHL visibilitiesEmitter: ', data );
             } );
 
         this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -128,7 +127,6 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
 
     clear( dataCount?){
-        console.log('MHL clear');
         this.useBatchNumber = false;
         this.batchNumber = 1;
         this.logText = ''; // @CHECKME clears logtext on next or skip for cinemode they may not want this cleared for all fields
@@ -171,7 +169,6 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     }
 
     onQcBulkStatusClick( n ){
-        console.log('MHL n=' + n );
         this.visible = n;
         this.radioStatus[n]  = true;
     }
