@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response.Status;
 
 @Path("/v2/getSeriesQCInfo")
 public class V2_getSeriesQCInfo extends getData {
-	private static final String[] columns={"SeriesInstanceUID", "Visibility", "ReleaseStatus", "ReleaseDate", "ImagineCount", "Doi",  "LicenseName"};
+	private static final String[] columns={"SeriesInstanceUID", "Visibility", "ReleaseStatus", "ReleaseDate", "ImageCount", "Doi",  "LicenseName"};
 	public final static String TEXT_CSV = "text/csv"; 
 
 	@Context private HttpServletRequest httpRequest;
