@@ -23,5 +23,6 @@ L-->
 		<property name="dpSiteName" type="string" column="DP_SITE_NAME"/>
 		<!-- Associations mapping for the TrialDataProvenance class -->
         <many-to-one name="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" column="TRIAL_DP_PK_ID" lazy="proxy" />
+        <many-to-one name="license" class="gov.nih.nci.nbia.internaldomain.License" column="LICENSE_ID" lazy="proxy"/>
 	</class>
 </hibernate-mapping>

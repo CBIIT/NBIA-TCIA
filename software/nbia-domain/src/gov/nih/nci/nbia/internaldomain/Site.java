@@ -69,7 +69,7 @@ public class Site {
 	private TrialDataProvenance trialDataProvenance;
 	
 	
-
+     
 
 	public TrialDataProvenance getTrialDataProvenance() {
 		return trialDataProvenance;
@@ -77,6 +77,18 @@ public class Site {
 
 	public void setTrialDataProvenance(TrialDataProvenance trialDataProvenance) {
 		this.trialDataProvenance = trialDataProvenance;
+	}
+	
+	private License license;
+	
+	
+
+	public License getLicense() {
+		return license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
 	}
 
 	/**
