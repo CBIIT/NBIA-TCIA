@@ -49,13 +49,15 @@ public class SiteOperation extends DomainOperation implements SiteOperationInter
 		    } else {
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Collection is null");
 		    }
-		    if ((temp = (String) numbers.get(DicomConstants.SITE_ID)) != null) {
+		/** No more matching site id
+		     if ((temp = (String) numbers.get(DicomConstants.SITE_ID)) != null) {
+
 		        hql += ("site.dpSiteId = '" + temp.trim() + "' and ");
 		        site.setDpSiteId(temp.trim());
 		    } else {
 		    	throw new Exception("Exception in Site: Site id is null");
 		    }
-		
+				 */
 		    if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
 		        hql += ("lower(site.dpSiteName) = '" + temp.trim().toLowerCase() +
 		        "' ");

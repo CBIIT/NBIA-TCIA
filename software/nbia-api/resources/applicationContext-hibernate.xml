@@ -347,6 +347,11 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
       <ref bean="sessionFactory"/>
     </property>
    </bean>
+   <bean id="siteDAO" class="gov.nih.nci.nbia.dao.SiteDAOImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+   </bean>
    <bean id="downloadDataDAO" class="gov.nih.nci.nbia.dao.DownloadDataDAOImpl">
     <property name="sessionFactory">
       <ref bean="sessionFactory"/>
