@@ -139,6 +139,7 @@ L-->
 				<exclude name="noggit*" />
 				<exclude name="log4j*2.13.2.jar" />
 				<exclude name="jsr311-api-1.1.1.jar" />
+				<exclude name="asm-8.0.1.jar" />
 		   </fileset> 
 		</copy>
 		<copy todir="${webapp.dir}/WEB-INF/classes">
