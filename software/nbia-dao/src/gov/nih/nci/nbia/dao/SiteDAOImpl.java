@@ -56,13 +56,15 @@ public class SiteDAOImpl extends AbstractDAO
 			dto.setCollectionName(s.getTrialDataProvenance().getProject());
 			dto.setSiteName(s.getDpSiteName());
 			LicenseDTO licenseDTO=new LicenseDTO();
-			licenseDTO.setCommercialUse(s.getLicense().getCommercialUse());
-			licenseDTO.setId(s.getLicense().getId());
-			licenseDTO.setLicenseURL(s.getLicense().getUrl());
-			licenseDTO.setLicenseText(s.getLicense().getLicenseText());
-			licenseDTO.setShortName(s.getLicense().getShortName());
-			licenseDTO.setLongName(s.getLicense().getLongName());
-			dto.setLicenseDTO(licenseDTO);
+			if (s.getLicense()!=null) {
+			   licenseDTO.setCommercialUse(s.getLicense().getCommercialUse());
+			   licenseDTO.setId(s.getLicense().getId());
+			   licenseDTO.setLicenseURL(s.getLicense().getUrl());
+			   licenseDTO.setLicenseText(s.getLicense().getLicenseText());
+			   licenseDTO.setShortName(s.getLicense().getShortName());
+			   licenseDTO.setLongName(s.getLicense().getLongName());
+			   dto.setLicenseDTO(licenseDTO);
+			}
 		}
 		System.out.println(dto);
 		return dto;
