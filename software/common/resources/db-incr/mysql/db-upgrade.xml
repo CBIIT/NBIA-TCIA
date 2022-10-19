@@ -281,7 +281,7 @@ L-->
            drop foreign key license_id_fk;   
          </sql>
        </changeSet>
-       <changeSet id="8.2.remove.licenseidfromcollectiondescriptions" author="gustafss" dbms="mysql">
+<!--       <changeSet id="8.2.remove.licenseidfromcollectiondescriptions" author="gustafss" dbms="mysql">
          <comment>
            removes license id from collection descriptions
          </comment>          
@@ -289,5 +289,5 @@ L-->
           ALTER TABLE collection_descriptions 
           DELETE license_id;    
          </sql>
-       </changeSet>
+       </changeSet> -->
 </databaseChangeLog>
