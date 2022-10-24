@@ -1,8 +1,16 @@
 <div class="widget-display-div">
     <span *ngFor="let criteria of queryCriteriaData; let i = index">
-        <!-- Don't show -->
         <nbia-widget
-            *ngIf="criteria.criteriaType !== 'qcstatus' || currentTool !== consts.TOOL_APPROVE_DELETIONS"
+            *ngIf=" (
+                        (
+                            criteria.criteriaType !== 'qcstatus' ||
+                            currentTool !== consts.TOOL_APPROVE_DELETIONS
+                        ) &&
+                        (
+                            currentTool !== consts.TOOL_EDIT_SITE_LICENSE ||
+                            criteria['criteriaType'] === 'collection'
+                        )
+                    )"
             [queryCriteriaData]="criteria"
         ></nbia-widget>
     </span>

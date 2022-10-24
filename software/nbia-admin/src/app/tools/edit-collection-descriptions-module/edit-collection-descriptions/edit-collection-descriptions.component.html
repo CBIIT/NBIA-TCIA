@@ -57,63 +57,7 @@
             ></textarea>
         </div>
 
-        <!-- License selection section -->
-        <div *ngIf="!properties.NO_LICENSE" class="row lic-and-save-div">
-            <div
-                [ngClass]="{
-                    'heading-font-extra-small': currentFont === '0',
-                    'heading-font-small': currentFont === '1',
-                    'heading-font-medium': currentFont === '2',
-                    'heading-font-large': currentFont === '3'
-                }"
-            >
-                License:
-            </div>
 
-            <!-- -----  Dropdown menu of Long names  -----  -->
-            <span class="dropdown clicker">
-                <button
-                    class="btn admin-dropdown-button text-left dropdown-toggle"
-                    data-toggle="dropdown"
-                    type="button"
-                >
-                    <span
-                        [ngClass]="{
-                            'font-extra-small': currentFont === '0',
-                            'font-small': currentFont === '1',
-                            'font-medium': currentFont === '2',
-                            'font-large': currentFont === '3'
-                        }"
-                    >
-                        {{ licData[currentLicenseIndex].longName }}
-                    </span>
-                </button>
-
-                <div class="dropdown-menu pb-0">
-                    <a
-                        class="dropdown-item admin-dropdown-outline"
-                        *ngFor="let lic of licData; let c = index"
-                        (click)="onLicenseDropdownClick(c)"
-                    >
-                        <span
-                            [ngClass]="{
-                                'font-extra-small': currentFont === '0',
-                                'font-small': currentFont === '1',
-                                'font-medium': currentFont === '2',
-                                'font-large': currentFont === '3'
-                            }"
-                        >
-                            <img
-                                *ngIf="c === currentLicenseIndex"
-                                src="assets/images/check.png"
-                                alt=""
-                            />
-                            {{ lic.longName }}
-                        </span>
-                    </a>
-                </div>
-            </span>
-            <!--  END Dropdown of License longname(s)  -->
 
             <!--  Save button  -->
             <span>
@@ -134,7 +78,6 @@
             </span>
         </div>
     </div>
-</div>
 
 <h4 *ngIf="!roleIsGood && userRoles !== undefined">
     <p>

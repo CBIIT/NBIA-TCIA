@@ -145,30 +145,19 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
             } );
 
         // Receive DICOM data by image.
-        this.cineModeService.getDicomTagsByImageEmitter
-            .pipe( takeUntil( this.ngUnsubscribe ) )
-            .subscribe(
-                ( data ) => {
-                    if(
-                        data['id'] ===
-                        'imageID=' +
-                        this.images[this.currentImage - 1][
-                            'imagePkId'
-                            ] ||
-                        data['id'] ===
-                        'imageID=' +
-                        this.images[this.currentImageWiggleRoom - 1][
-                            'imagePkId'
-                            ]
-                    ){
-                        this.dicomData = data['res'];
-                        this.haveDicomData = true;
-                    }
-                },
-                ( err ) => {
-                    console.error( 'Error getting DICOM Data: ', err );
+        this.cineModeService.getDicomTagsByImageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                if( data['id'] === 'imageID=' + this.images[this.currentImage - 1]['imagePkId'] ||
+                    data['id'] === 'imageID=' + this.images[this.currentImageWiggleRoom - 1]['imagePkId']
+                ){
+                    this.dicomData = data['res'];
+                    this.haveDicomData = true;
                 }
-            );
+            },
+            ( err ) => {
+                console.error( 'Error getting DICOM Data: ', err );
+            }
+        );
 
         this.querySectionService.updateCollectionEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
@@ -439,11 +428,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
         this.justFirstImage = true;
         this.getImageDrillDownData().subscribe(
             ( data ) => {
-                this.getThumbnails(
-                    data[0]['seriesInstanceUid'],
-                    data[0]['sopInstanceUid'],
-                    this.accessTokenService.getAccessToken()
-                ).subscribe(
+                this.getThumbnails( data[0]['seriesInstanceUid'], data[0]['sopInstanceUid'], this.accessTokenService.getAccessToken() ).subscribe(
                     ( thumbnailData ) => {
                         this.currentImage = 1;
                         this.loadingX = false;
@@ -463,8 +448,9 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
                             seq: 0
                         }
+                        this.images.push( this.firstImage );
 
-                        // get the DICOM data for just this one image
+                            // get the DICOM data for just this one image
                         this.updateFirstImageDicom();
 
                         //   this.getImages();
@@ -573,6 +559,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                         // we still want to display the frame with the "View Image" button
                         // because the DICOM image may still there.
                         ( thumbnailError ) => {
+
                             console.error(
                                 'Error thumbnailError: ',
                                 thumbnailError['statusText']

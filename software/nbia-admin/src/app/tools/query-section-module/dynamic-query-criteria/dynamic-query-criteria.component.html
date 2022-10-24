@@ -13,7 +13,6 @@
 
 <div class="widget-display-div">
 <span *ngFor="let criteria of queryCriteriaData">
-
     <!-- [queryCriteriaData]="criteria" is used by the widget test page -->
         <nbia-widget *ngIf="criteria['dynamicQueryCriteriaType'] === dynamicQueryCriteriaTypes.WIDGET"
                      [queryCriteriaData]="criteria"

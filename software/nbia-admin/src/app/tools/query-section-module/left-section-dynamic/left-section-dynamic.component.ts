@@ -80,19 +80,14 @@ export class LeftSectionDynamicComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this.dynamicQueryCriteriaService.addWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
+                if( this.currentTool === Consts.TOOL_EDIT_SITE_LICENSE){
+                    data["dynamicQueryCriteriaMultiChoiceList"] = false;
+                    data["dynamicQueryCriteriaSingleChoiceList"] = true;
+                }
                 // Add sequenceNumber here
                 data['sequenceNumber'] = Properties.dynamicQueryCriteriaSequenceNumber++;
-
-                //
-                if( this.currentTool === Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS ){
-                    if( data['dynamicQueryCriteriaHeading'] === 'Collection'){
-                        this.addQueryCriteria( data );
-                    }
-                }else{
-                   // console.log('MHL DATA: ', data );
-                   // console.log('MHL currentTool: ', this.currentTool );
-                    this.addQueryCriteria( data );
-                }
+                data['tool'] = this.currentTool; // @CHECKME
+                this.addQueryCriteria( data );
             } );
 
         this.dynamicQueryCriteriaService.deleteWidgetEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(

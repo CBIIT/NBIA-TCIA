@@ -157,7 +157,6 @@ export class DynamicQueryCriteriaComponent implements OnInit, OnDestroy {
     }
 
     addQueryCriteria(qCriteriaData) {
-
         if(this.queryCriteriaData.length >= this.ShowSampleCount){
             this.queryCriteriaData.pop();
         }

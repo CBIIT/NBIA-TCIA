@@ -4,7 +4,7 @@
 
 <span
     style="float: right;"
-    *ngIf="show"
+    *ngIf="show && (currentTool !== consts.TOOL_EDIT_SITE_LICENSE)"
     class="search-query-closer"
     (click)="onCloserOpenerClick()"
 >
@@ -76,15 +76,20 @@
         }"
         (click)="onTabClick(consts.DYNAMIC_SEARCH)"
     >
-        Search
-<!--
-        <img *ngIf="currentTool === consts.TOOL_PERFORM_QC || currentTool === consts.TOOL_APPROVE_DELETIONS"
--->
+        <span *ngIf="currentTool === consts.TOOL_EDIT_SITE_LICENSE">
+            Select
+        </span>
+       <span  *ngIf="currentTool !== consts.TOOL_EDIT_SITE_LICENSE">
+            Search
+        </span>
+        <!--
+                <img *ngIf="currentTool === consts.TOOL_PERFORM_QC || currentTool === consts.TOOL_APPROVE_DELETIONS"
+        -->
         <img *ngIf="currentTool === consts.TOOL_PERFORM_QC"
-            (click)="onAddCriteriaClick()"
-            class="add-criteria-plus"
-            src="assets/images/green_plus.png"
-            alt="Add Criteria"
+             (click)="onAddCriteriaClick()"
+             class="add-criteria-plus"
+             src="assets/images/green_plus.png"
+             alt="Add Criteria"
         >
 
     </span>
@@ -100,12 +105,12 @@
         'query-section-large': currentFont === '3'
     }"
 >
-<!--  This is the old search FIXME We still use it for searches that should not use Dynamic search -->
+    <!--  This is the old search FIXME We still use it for searches that should not use Dynamic search -->
     <nbia-left-section *ngIf="currentTool === consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
-        [currentTool]="currentTool"
+                       [currentTool]="currentTool"
     ></nbia-left-section>
 
-    <nbia-left-section-dynamic  *ngIf="currentTool !== consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
-        [currentTool]="currentTool"
+    <nbia-left-section-dynamic *ngIf="currentTool !== consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS"
+                               [currentTool]="currentTool"
     ></nbia-left-section-dynamic>
 </div>

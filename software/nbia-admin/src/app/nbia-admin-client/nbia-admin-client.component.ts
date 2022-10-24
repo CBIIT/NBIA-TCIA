@@ -32,6 +32,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
     showDataAdminApproveDeletions = false;
     showPerformOnlineDeletions = false;
     showDataAdminPerformQcButton = false;
+    showSetSiteLicButton = false;
     showDynamicSearchTestButton = false;
     showEditCollectionDescriptions = false;
     showEditLicense = false;
@@ -152,6 +153,9 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
            if( tool === ToolItems.DATA_ADMIN_PERFORM_QC_MENU_ITEM ){
                 this.currentTool = Consts.TOOL_PERFORM_QC;
             }
+          if( tool === ToolItems.DATA_ADMIN_SET_SITE_LICENSE ){
+                this.currentTool = Consts.TOOL_EDIT_SITE_LICENSE;
+            }
             if( tool === ToolItems.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM ){
                 this.currentTool = Consts.TOOL_APPROVE_DELETIONS;
             }
@@ -188,6 +192,7 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
 
         // TODO find out what access NCIA.CURATE has
         if( this.userRoles.indexOf( 'NCIA.CURATE' ) > -1 ){
+            this.showSetSiteLicButton = true;
         }
 
         if( this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1 ){
@@ -195,10 +200,12 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
         }
 
         if( this.userRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+            this.showSetSiteLicButton = true;
             this.showEditCollectionDescriptions = true;
         }
 
         if( this.userRoles.indexOf( 'NCIA.MANAGE_COLLECTION_DESCRIPTION' ) > -1 ){
+            this.showSetSiteLicButton = true;
             this.showEditLicense = true;
         }
     }

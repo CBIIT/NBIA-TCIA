@@ -53,6 +53,9 @@ export class ToolTitleComponent implements OnInit{
         }else if( this.currentTool === Consts.TOOL_EDIT_LICENSE ){
             this.currentToolTitle = 'Add/Edit License';
             this.helpUrl += '#DataAdministrationToolGuide-EditCollectionLicense';
+        }else if( this.currentTool === Consts.TOOL_EDIT_SITE_LICENSE ){
+            this.currentToolTitle = 'Edit Site License';
+            this.helpUrl += '#DataAdministrationToolGuide-EditCollectionLicense'; // TODO GET a help page for this
         }else if( this.currentTool === Consts.TOOL_DYNAMIC_SEARCH_TEST && (! Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE) ){
             this.currentToolTitle = 'Unrecognized tool parameter: ' + this.currentTool;
         }else if( this.currentTool === Consts.TOOL_DYNAMIC_SEARCH_TEST && ( Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE) ){

@@ -69,7 +69,8 @@ export enum WIDGET_TYPE{
         QuerySectionComponent,
         DynamicQueryCriteriaComponent,
         WidgetTestSettingsComponent,
-        WidgetComponent
+        WidgetComponent,
+        LeftSectionDynamicComponent
     ],
     imports: [
         CommonModule,

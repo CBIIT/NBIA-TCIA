@@ -51,6 +51,10 @@
         <nbia-edit-license *ngIf="currentTool === consts.TOOL_EDIT_LICENSE">
         </nbia-edit-license>
 
+
+        <nbia-edit-site-license *ngIf="currentTool === consts.TOOL_EDIT_SITE_LICENSE">
+        </nbia-edit-site-license>
+
         <nbia-perform-online-deletion
             *ngIf="currentTool === consts.TOOL_PERFORM_ONLINE_DELETION"
         >
@@ -83,8 +87,6 @@
     >
         Dynamic search widget tester
     </span>
-
-
 
 
     <span
@@ -186,6 +188,28 @@
     >
         Edit Collection License&nbsp;
         <p class="required-role" *ngIf="!showEditLicense">
+            (Required role: MANAGE_COLLECTION_DESCRIPTION)
+        </p>
+        <!-- TODO Make sure this is the right role!!!  -->
+    </span>
+
+
+
+    <span
+        *ngIf="!properties.NO_LICENSE"
+        class="row btn admin-tool-button nbia-button"
+        [ngClass]="{
+            'disabled-tool nbia-button-disabled': !showSetSiteLicButton
+        }"
+        (click)="
+            onToolItemClicked(
+                toolItems.DATA_ADMIN_SET_SITE_LICENSE,
+                showSetSiteLicButton
+            )
+        "
+    >
+        Set Site License&nbsp;
+        <p class="required-role" *ngIf="!showSetSiteLicButton">
             (Required role: MANAGE_COLLECTION_DESCRIPTION)
         </p>
         <!-- TODO Make sure this is the right role!!!  -->

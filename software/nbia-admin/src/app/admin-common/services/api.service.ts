@@ -8,7 +8,10 @@ import { Properties } from '@assets/properties';
 import { AccessTokenService } from './access-token.service';
 import { Observable, of } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
-import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import {
+    DisplayDynamicQueryService
+} from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import { errorObject } from 'rxjs/internal-compatibility';
 
 @Injectable( {
     providedIn: 'root'
@@ -19,6 +22,7 @@ export class ApiService{
     collectionNames;
     collectionDescriptions;
     collectionLicenses;
+    siteLicenses;
     collectionSitesAndDescriptions = [];
     collectionsAndDescriptions = [];
 
@@ -37,18 +41,21 @@ export class ApiService{
     collectionLicensesResultsEmitter = new EventEmitter();
     collectionLicensesErrorEmitter = new EventEmitter();
 
+    siteLicensesResultsEmitter = new EventEmitter();
+    siteLicensesResultsErrorEmitter = new EventEmitter();
+
     qcHistoryResultsEmitter = new EventEmitter();
     qcHistoryErrorEmitter = new EventEmitter();
-	
+
     qcSeriesResultsEmitter = new EventEmitter();
-    qcSeriesErrorEmitter = new EventEmitter();	
+    qcSeriesErrorEmitter = new EventEmitter();
 
     qcHistoryResultsTableEmitter = new EventEmitter();
     qcHistoryTableErrorEmitter = new EventEmitter();
- 
-	qcSeriesResultsTableEmitter = new EventEmitter();
+
+    qcSeriesResultsTableEmitter = new EventEmitter();
     qcSeriesTableErrorEmitter = new EventEmitter();
-	
+
     visibilitiesEmitter = new EventEmitter();
     visibilitiesErrorEmitter = new EventEmitter();
 
@@ -121,15 +128,15 @@ export class ApiService{
             case Consts.SUBMIT_DELETE_COLLECTION_LICENSES:
                 this.submitDeleteLicense( submitData );
                 break;
-				
+
             case Consts.GET_SERIES_REPORT:
                 this.getQcSeriesReport( submitData );
                 break;
-				
+
             case Consts.GET_SERIES_REPORT_TABLE:
                 this.getQcSeriesReportTable( submitData );
-                break;				
-				
+                break;
+
             case Consts.GET_HISTORY_REPORT:
                 this.getQcHistoryReport( submitData );
                 break;
@@ -291,7 +298,7 @@ export class ApiService{
 
         this.doPost( 'submitSiteForSeries', seriesIdArg ).subscribe(
             ( data ) => {
-               // console.log( 'postMHL submitSiteForSeries: ', data );
+                // console.log( 'postMHL submitSiteForSeries: ', data );
             },
             error => {
                 console.error( 'ERROR submitSiteForSeries: ', error.toString() );
@@ -411,16 +418,16 @@ export class ApiService{
                 console.error( 'getQcHistoryReport err: ', err );
             } );
     }
-	
+
     getQcSeriesReport( query ){
         this.doPost( Consts.GET_SERIES_REPORT, query ).subscribe(
-           ( data ) => {
+            ( data ) => {
                 this.qcSeriesResultsEmitter.emit( data );
-           },
-           ( err ) => {
-               this.qcSeriesErrorEmitter.emit( err );
-               console.error( 'getQcSeriesReport err: ', err['error'] );
-               console.error( 'getQcSeriesReport err: ', err );
+            },
+            ( err ) => {
+                this.qcSeriesErrorEmitter.emit( err );
+                console.error( 'getQcSeriesReport err: ', err['error'] );
+                console.error( 'getQcSeriesReport err: ', err );
             } );
     }
 
@@ -435,7 +442,7 @@ export class ApiService{
                 console.error( 'getQcSeriesReportTable err: ', err );
             } );
 
-    }	
+    }
 
     getQcHistoryReportTable( query ){
         this.doPost( Consts.GET_HISTORY_REPORT, query ).subscribe(
@@ -668,6 +675,7 @@ export class ApiService{
             } );
     }
 
+    // @TODO this will not be needed @SEE getSiteLicenses()
     getCollectionLicenses(){
         this.doGet( Consts.GET_COLLECTION_LICENSES ).subscribe(
             ( collectionLicensesData ) => {
@@ -685,6 +693,44 @@ export class ApiService{
 
             } );
     }
+
+    // Get back license data for a Collection//Site
+    getSiteLicense( query ){
+        this.doPost( Consts.GET_SITE_LICENSE, query ).subscribe(
+            ( siteLicensesData ) => {
+                this.siteLicenses = siteLicensesData;
+                // Emit here
+                this.siteLicensesResultsEmitter.emit( this.siteLicenses );
+            },
+            ( siteLicensesDataError ) => {
+                if( siteLicensesDataError.status === 401 ){
+                    this.userRoles = [Consts.ERROR_401];
+                }else{
+                    console.error( 'Could not get Site licenses from server: ', siteLicensesDataError );
+                    this.userRoles = [Consts.ERROR, siteLicensesDataError.status];
+                }
+            } );
+    }
+
+    /**
+     *
+     * @param collectionName
+     * @param siteName
+     * @param licenseName
+     */
+    setSiteLicense( collectionName, siteName, licenseName ){
+        let q = 'collectionName=' + collectionName + '&siteName=' + siteName + '&licenseName=' + licenseName;
+        this.doPost( Consts.SUBMIT_SITE_LICENSE, q ).subscribe(
+            ( setSiteLicensesData ) => {
+               // console.log( 'MHL IN setSiteLicense Return data: ', setSiteLicensesData );
+            },
+            ( setSiteLicensesDataError ) => {
+               // console.error( 'setSiteLicensesDataError: ', setSiteLicensesDataError );
+
+            } );
+
+    }
+
 
     getCollectionSitesAndDescription(){
         this.doGet( Consts.GET_COLLECTION_NAMES_AND_SITES ).subscribe(
@@ -1011,12 +1057,11 @@ export class ApiService{
 
     // CHECKME Should a license be optional?
     updateCollectionDescription( name, description, licenseId ){
-        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name +
-            '&description=' + encodeURIComponent( description ) +
-            '&license=' + licenseId
+        this.doPost( Consts.UPDATE_COLLECTION_DESCRIPTION, 'name=' + name + '&description=' + encodeURIComponent( description )
+          //  + '&license=' + licenseId  // We have changed this to per site
         ).subscribe(
             data => {
-                console.log( 'updateCollectionDescription response: ', data );
+               // console.log( 'updateCollectionDescription response: ', data );
             },
             error => {
                 console.error( 'ERROR updateCollectionDescription doPost: ', error );

@@ -7,15 +7,28 @@ import {
     AndOrTypes,
     CriteriaTypes
 } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component';
-import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
-import { DynamicCriteriaQueryPart } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-criteria-query-part';
-import { DynamicQueryCriteriaService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
+import {
+    DynamicQueryBuilderService
+} from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
+import {
+    DynamicCriteriaQueryPart
+} from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-criteria-query-part';
+import {
+    DynamicQueryCriteriaService
+} from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service';
 import { ApiService } from '@app/admin-common/services/api.service';
-import { DisplayDynamicQueryService } from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
+import {
+    DisplayDynamicQueryService
+} from '@app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.service';
 import { Consts } from '@app/constants';
 import { UtilService } from '@app/admin-common/services/util.service';
-import { WidgetCalendarService } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
+import {
+    WidgetCalendarService
+} from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service';
 import { Properties } from '@assets/properties';
+import {
+    WidgetSiteLicenseService
+} from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-site-license.service';
 
 export enum WIDGET_TYPE{
     UNKNOWN,
@@ -58,6 +71,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     showListSearch = false;
     listSearchInput = '';
     itemList = [];
+    itemListOrig = [];
     listSearchInputHold = '';
     listSearchResultsCount = 0;
     listCheckboxes = [];
@@ -130,8 +144,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
     isApplyCheckboxSet = false;
 
-    date0={};
-    date1={};
+    date0 = {};
+    date1 = {};
 
     properties = Properties;
 
@@ -140,11 +154,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     constructor( private preferencesService: PreferencesService, private dynamicQueryBuilderService: DynamicQueryBuilderService,
                  private dynamicQueryCriteriaService: DynamicQueryCriteriaService, private apiService: ApiService,
                  private displayDynamicQueryService: DisplayDynamicQueryService, private utilService: UtilService,
-                 private widgetCalendarService: WidgetCalendarService ) {
+                 private widgetCalendarService: WidgetCalendarService, private widgetSiteLicenseService: WidgetSiteLicenseService ){
 
     }
 
-    ngOnInit() {
+    ngOnInit(){
         if( this.criteriaCalendar ){
             this.onClearClick( false ); // false = Do not rerun the query
         }
@@ -164,19 +178,19 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         } );
 
         // To know when the date has changed in Widget-calender
-         this.widgetCalendarService.date0Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
-            // If applyState is true, than we have a selected Apply Checkbox
-             if(this.applyState){
-                 this.onApplyCheckboxClick( true );
-             }
-        });
+        this.widgetCalendarService.date0Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+            // If applyState is true, then we have a selected Apply Checkbox
+            if( this.applyState ){
+                this.onApplyCheckboxClick( true );
+            }
+        } );
         // To know when the date has changed in Widget-calender
-         this.widgetCalendarService.date1Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
-            // If applyState is true, than we have a selected Apply Checkbox
-             if(this.applyState){
-                 this.onApplyCheckboxClick( true );
-             }
-        });
+        this.widgetCalendarService.date1Change.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+            // If applyState is true, then we have a selected Apply Checkbox
+            if( this.applyState ){
+                this.onApplyCheckboxClick( true );
+            }
+        } );
 
 
         this.initParameters();
@@ -189,7 +203,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     /**
      * I don't use the queryCriteriaData['xxx'] directly because I anticipate a future need to modify these values.
      */
-    initParameters() {
+    initParameters(){
         this.criteriaQueryType = this.queryCriteriaData['criteriaType'];
         this.criteriaQueryInputType = this.queryCriteriaData['inputType'];
         this.criteriaLevelAndOrOr = this.queryCriteriaData['widgetAndOrOr'];
@@ -331,7 +345,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
     }
 
-    async initCalendar() {
+    async initCalendar(){
         await this.utilService.sleep( Consts.waitTime );
         this.onClearClick( false ); // false = Do not rerun the query
 
@@ -344,15 +358,22 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * Initializes the listCheckboxes array (which is named badly, they may be radio buttons)
      * @param origList
      */
-    initItemList( origList ) {
+    initItemList( origList ){
         for( let n = 0; n < origList.length; n++ ){
             this.itemList[n] = {};
             this.itemList[n]['value'] = origList[n];
             this.itemList[n]['include'] = true;
             this.listCheckboxes[n] = false;
         }
+
+
         // Sort
+        if( this.itemListOrig.length < 1 ){
+            this.itemListOrig = this.itemList.slice();
+        }
+
         if( this.criteriaSort ){
+
             this.itemList.sort( ( a, b ) =>
                 a['value'].toUpperCase().localeCompare( b['value'].toUpperCase() )
             );
@@ -384,7 +405,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * @param i
      * @param e
      */
-    onCriteriaListItemClicked( i, e ) {
+    onCriteriaListItemClicked( i, e ){
 
         // Radio buttons
         if( this.criteriaSingleChoiceList ){
@@ -394,17 +415,26 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
             this.listCheckboxes[i] = true;
             this.criteriaHeadingAddOn = this.itemList[i]['value'];
+
+
+            // @CHECKME workaround for site license
+            if( this.queryCriteriaData['tool'] === Consts.TOOL_EDIT_SITE_LICENSE ){
+                this.widgetSiteLicenseService.setSiteLicenseSite( this.itemList[i] );  //listen for this in Edit Site License to pre-select in dropdown
+            }
         }
 
         // Checkboxes
         else if( this.criteriaMultiChoiceList ){
             this.listCheckboxes[i] = e.target.checked;
         }
-        this.doHaveInput();
-        this.onChange();
+
+        if( this.queryCriteriaData['tool'] !== Consts.TOOL_EDIT_SITE_LICENSE ){
+            this.doHaveInput();
+            this.onChange();
+        }
     }
 
-    clearItemList() {
+    clearItemList(){
         for( let n = 0; n < this.listCheckboxes.length; n++ ){
             this.listCheckboxes[n] = false;
         }
@@ -422,11 +452,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     /**
      * @TODO Need Calendar, etc. tested here!!!!!
      */
-    doHaveInput() {
+    doHaveInput(){
         // @TODO Cleanup how calendar works
         if( !this.criteriaCalendar ){
             this.haveInput = false;
-        }else {
+        }else{
             // Calendar always has input
             this.haveInput = this.applyState;
         }
@@ -446,21 +476,21 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
 
-    onShowCriteriaClick( state ) {
+    onShowCriteriaClick( state ){
         this.widgetShowCriteria = state;
     }
 
     /**
      * When the top right red X is clicked
      */
-    onRemoveCriteriaClick() {
+    onRemoveCriteriaClick(){
         // This service is just used by the tester.  //BE Shore to wire up delete
         this.dynamicQueryCriteriaService.deleteWidget( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
         this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.queryCriteriaData['criteriaType'], this.queryCriteriaData['inputType'] );
         this.displayDynamicQueryService.removeFromDisplayQuery( this.sequenceNumber );
     }
 
-    onSearchGlassClick() {
+    onSearchGlassClick(){
         this.showListSearch = (!this.showListSearch);
         if( !this.showListSearch ){
             this.onSearchReset();
@@ -472,7 +502,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         this.onSearchChange( this.listSearchInput );
     }
 
-    onSearchReset() {
+    onSearchReset(){
         for( let item of this.itemList ){
             item['include'] = true;
         }
@@ -484,7 +514,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      *
      * @param doNotRerunTheQuery
      */
-   onClearClick( rerunTheQuery: boolean = true ) {
+    onClearClick( rerunTheQuery: boolean = true ){
 
         if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.criteriaTextInputText = '';
@@ -543,8 +573,6 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
             if( this.criteriaApplyButton ){
                 this.onApplyButtonClick();
             }
-        }else{
-           // console.log('MHL 3011 WidgetComponent.onClearClick if NOT rerunTheQuery');
         }
 
         if( this.criteriaSingleLineRadio ){
@@ -553,7 +581,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         }
 
         if( this.criteriaCalendar ){
-            this.haveInput  = true;// @CHECKME TESTING
+            this.haveInput = true;// @CHECKME TESTING
             this.criteriaSingleCheckboxCalender = false;
         }
 
@@ -561,7 +589,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
     }
 
-    onTextInputChange() {
+    onTextInputChange(){
         this.doHaveInput();
     }
 
@@ -570,7 +598,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      *
      * @param e
      */
-    onSearchChange( e ) {
+    onSearchChange( e ){
         this.currentFilterSearch = e;
         this.listSearchResultsCount = 0;
         let n = 0;
@@ -589,20 +617,20 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
 
-    onSearchTextOutFocus( n ) {
-       // console.log( 'MHL onSearchTextOutFocus: ', n );
+    onSearchTextOutFocus( n ){
+        // console.log( 'MHL onSearchTextOutFocus: ', n );
     }
 
-    onSearchTextFocus( n ) {
-      //  console.log( 'MHL onSearchTextFocus: ', n );
+    onSearchTextFocus( n ){
+        //  console.log( 'MHL onSearchTextFocus: ', n );
     }
 
-    onWidgetAndOrRadioClick( i ) {
+    onWidgetAndOrRadioClick( i ){
         // 0 is AND, 1 is OR
         this.onChange();
     }
 
-    onWidgetAllAnyRadioClick( i ) {
+    onWidgetAllAnyRadioClick( i ){
         // 0 is 1, false is ANY
         this.onChange();
     }
@@ -610,7 +638,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     /**
      * @param i
      */
-    onSingleLineRadioChange( i ) {
+    onSingleLineRadioChange( i ){
         this.criteriaSingleLineRadioCurrent = i;
         this.criteriaHeadingAddOn = this.criteriaSingleLineRadioOptions[i];
         this.onChange();
@@ -620,7 +648,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      *
      * @param e
      */
-    onApplyCheckboxClick( e ) {
+    onApplyCheckboxClick( e ){
         if( typeof e === 'boolean' ){
             this.applyState = e;
             if( this.applyState ){
@@ -650,8 +678,8 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * @param seq
      * @param state
      */
-    onApplyButtonClick() {
-        this.onApplyCheckboxClick(true);
+    onApplyButtonClick(){
+        this.onApplyCheckboxClick( true );
         this.applyState = false;
     }
 
@@ -662,9 +690,12 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * When an apply checkbox is included, but is false we need to remove this from the query.
      * If an apply button is included, we should do nothing until the Apply Button is clicked.
      */
-    onChange( ignoreApplyState: boolean = false ) {
-        if( this.applyState || ignoreApplyState ){
-            this.updateQuery(ignoreApplyState);
+    onChange( ignoreApplyState: boolean = false ){
+        // A quick workaround to add site License  @CHECKME
+        if( this.queryCriteriaData['tool'] === Consts.TOOL_EDIT_SITE_LICENSE ){
+
+        }else if( this.applyState || ignoreApplyState ){
+            this.updateQuery( ignoreApplyState );
         }
     }
 
@@ -672,7 +703,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
      * @CHECKME This might not be needed. An empty query criteria part in updateQuery() should be all that's needed.  BUT
      * Used by onApplyCheckboxClick
      */
-    removeQuery( rerunQuery = true ) {
+    removeQuery( rerunQuery = true ){
         // Remove this criteria's part of the query and rerun the query
         this.dynamicQueryBuilderService.deleteCriteriaQueryPart( this.criteriaQueryType, this.criteriaQueryInputType, rerunQuery );
         this.displayDynamicQueryService.removeFromDisplayQuery( this.sequenceNumber );
@@ -681,7 +712,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     /**
      *  Hastily adding "clear" for clear button on Calendar
      */
-    updateQuery( clear: boolean = false) {
+    updateQuery( clear: boolean = false ){
         let userInput = [];
         let displayQuery = {};
 
@@ -724,7 +755,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
                 break;
 
             case WIDGET_TYPE.ONE_CHECKBOX:
-                console.log( 'MHL ONE_CHECKBOX: ', this.criteriaSingleCheckboxDefault );
+                // console.log( 'MHL ONE_CHECKBOX: ', this.criteriaSingleCheckboxDefault );
                 break;
 
             case WIDGET_TYPE.CALENDAR:
@@ -811,11 +842,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit(): void{
         //  this.displayParameters();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

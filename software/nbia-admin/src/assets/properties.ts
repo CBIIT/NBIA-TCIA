@@ -1,8 +1,8 @@
 export let Properties = {
-    // 29_JUN_2021
-    VERSION: '1.0.9',
-    //14_APR_2022
-    TEST_VERSION: '1.0.9n',
+    // 11_OCT_2021
+    VERSION: '1.0.10',
+    //23_OCT_2022
+    TEST_VERSION: '1.0.10b',
 
     MAX_CRITERIA_LEN: 32,
 
@@ -35,7 +35,7 @@ export let Properties = {
 
 
     // //////////////////////////////////////////////////////////////////////////
-    //  The following values will by set by the "Brand"
+    //  The following values will be set by the "Brand"
     // //////////////////////////////////////////////////////////////////////////
     NEW_ACCOUNT_REGISTRATION: 'https://public.cancerimagingarchive.net/ncia/legalRules.jsf',
     ACCOUNT_HELP: 'https://public.cancerimagingarchive.net/ncia/accountSupport.jsf',
@@ -76,7 +76,7 @@ export let Properties = {
     // Show in console, curl version of post & get calls.
     DEBUG_CURL: false,
 
-    // This value can be changed in the config file.  FIXME  No, this is not yet in the config file!
+    // This value can be changed in the config file.  @FIXME  No, this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
 
     DEV_MODE: false,
