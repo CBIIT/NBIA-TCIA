@@ -57,6 +57,8 @@ L-->
 	<property name="descriptionURI" type="string" column="DESCRIPTION_URI"/>
 	<property name="excludeCommercial" type="string" column="EXCLUDE_COMMERCIAL"/>	
     <property name="dateReleased" type="java.util.Date" column="DATE_RELEASED"/>
+    <property name="licenseName" type="string" column="LICENSE_NAME"/>
+    <property name="licenseURL" type="string" column="LICENSE_URL"/>
     <!-- Associations mapping for the GeneralSeries class -->
     <many-to-one name="study" class="gov.nih.nci.nbia.internaldomain.Study" column="STUDY_PK_ID" lazy="proxy" />
     <set name="generalImageCollection" lazy="true">
@@ -70,7 +72,6 @@ L-->
       <key column="GENERAL_SERIES_PK_ID" />
       <one-to-many class="gov.nih.nci.nbia.internaldomain.Annotation"/>
     </set>
-
     <!--  return the sum of the annotation file size for
           this series, or else 0 if no rows to sum
           coalesce returns the first non-null entry in its args -->

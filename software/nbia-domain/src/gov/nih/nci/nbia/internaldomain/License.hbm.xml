@@ -10,19 +10,21 @@ L-->
 
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.nbia.internaldomain">
-	<class name="CollectionDesc" table="COLLECTION_DESCRIPTIONS" lazy="true" polymorphism="explicit">
+	<class name="License" table="LICENSE" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" column="COLLECTION_DESCRIPTIONS_PK_ID" unsaved-value="0">
+		<id name="id" column="LICENSE_ID" unsaved-value="0">
 			<generator class="org.hibernate.id.TableHiLoGenerator">
   	  			<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>
 		</id>
 		<!-- Attributes mapping for the CustomSeriesList class -->
-		<property name="collectionName" type="string" column="COLLECTION_NAME"/>
-		<property name="description" type="string" column="DESCRIPTION"/>
-		<property name="userName" type="string" column="USER_NAME" />
-		<property name="md5hash" type="string" column="md5hash" />
-		<property name="collectionDescTimestamp" type="java.util.Date" column="COLLECTION_DESCRIPTIONS_TIMEST"/>
+		<property name="longName" type="string" column="LONG_NAME"/>
+		<property name="shortName" type="string" column="SHORT_NAME"/>
+		<property name="url" type="string" column="LICENSE_URL" />
+		<property name="commercialUse" type="string" column="COMMERCIAL_USE" />
+		<property name="licenseText" type="string" column="LICENSE_TEXT" />
+	
+		
 	</class>
 </hibernate-mapping>

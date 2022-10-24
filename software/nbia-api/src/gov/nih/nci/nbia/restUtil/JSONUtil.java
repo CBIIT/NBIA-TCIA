@@ -317,4 +317,16 @@ public class JSONUtil {
 		}
 		return jsonInString;
 	}
+	public static String getJSONforSite(SiteDTO site){
+		String jsonInString = null;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			jsonInString = mapper.writeValueAsString(site);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return("Unable to map to JSON");
+		}
+		return jsonInString;
+	}
 }

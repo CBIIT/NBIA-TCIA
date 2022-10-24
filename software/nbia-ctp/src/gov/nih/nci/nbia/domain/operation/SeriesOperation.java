@@ -11,6 +11,7 @@
  */
 package gov.nih.nci.nbia.domain.operation;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import gov.nih.nci.nbia.internaldomain.GeneralEquipment;
 import gov.nih.nci.nbia.internaldomain.GeneralSeries;
 import gov.nih.nci.nbia.internaldomain.Patient;
 import gov.nih.nci.nbia.internaldomain.Study;
+import gov.nih.nci.nbia.internaldomain.License;
 import gov.nih.nci.nbia.util.AdapterUtil;
 import gov.nih.nci.nbia.util.DicomConstants;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
@@ -84,7 +86,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 				series.setStudyInstanceUID(study.getStudyInstanceUID());
 				series.setProject(patient.getDataProvenance().getProject());
 				series.setSite(site);
-				setExcludeCommercial(series, patient.getDataProvenance().getProject());
+				setExcludeCommercial(series, patient.getDataProvenance().getProject(), site);
 			}
 			//does this cause any possible issue with parallelism?
 	        //multiple images submitted to same series at "same time"?
@@ -234,15 +236,31 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 		series.setDescriptionURI(descriptionURI);
              
 	} 
-	private void setExcludeCommercial(GeneralSeries series, String project) throws Exception {
+	private void setExcludeCommercial(GeneralSeries series, String project, String site) throws Exception {
 	    
-        String SQLQuery="select collection_descriptions_pk_id from  collection_descriptions where license_id in (select license_id from license where commercial_use='YES') and collection_name='"+project+"'";
+        String SQLQuery="select long_name, commercial_use, license_url from license where license_id in \n" + 
+        		"(select license_id from site where dp_site_name='"+project+"' and trial_dp_pk_id in\n" + 
+        		"(select trial_dp_pk_id from trial_data_provenance where project='"+project+"'))";
+
 		List<Object[]> data= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
         .list();
-		if (!(data!=null&&data.size()>0)) {
-		    series.setExcludeCommercial("YES");
+		Iterator<Object[]> iter = data.iterator();
+		if (!iter.hasNext()) return;
+		Object[] row = iter.next();
+		if (row[0]!=null) {
+	        	series.setLicenseName(row[0].toString());
 		}
-
+		if (row[1]!=null) {
+			String excludeCommercial="YES";
+		       if (row[1].toString()==null||row[1].toString().equalsIgnoreCase("YES")) {
+		    	   excludeCommercial="NO";
+		       }
+		   series.setExcludeCommercial(excludeCommercial);
+		}
+		if (row[2]!=null) {
+			   series.setLicenseURL(row[2].toString());
+		}
+		
 	} 
 	
 }

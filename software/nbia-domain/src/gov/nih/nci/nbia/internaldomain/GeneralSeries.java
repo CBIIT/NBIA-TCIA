@@ -847,5 +847,22 @@ public class GeneralSeries  implements Serializable
 		this.dateReleased = dateReleased;
 	}
 
+	private String licenseName;
+	public String getLicenseName() {
+		return licenseName;
+	}
+
+	public void setLicenseName(String licenseName) {
+		this.licenseName = licenseName;
+	}
+    private String licenseURL;
+	public String getLicenseURL() {
+		return licenseURL;
+	}
+
+	public void setLicenseURL(String licenseURL) {
+		this.licenseURL = licenseURL;
+	}
+    
 	
 }

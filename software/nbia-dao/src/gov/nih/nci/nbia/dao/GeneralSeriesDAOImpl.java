@@ -1267,7 +1267,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 				"ge.manufacturer as MANUFACTURER, "+
 				"G.MODALITY, " +
 				"( SELECT gi.SOP_CLASS_UID FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID LIMIT 1) as SOPCLASSUID, "+
-				"( select CONCAT_WS('||', l.long_name,  l.license_url) from collection_descriptions cd, license l where G.PROJECT = cd.collection_name and cd.license_id = l.license_id) as license "+
+				"( select CONCAT_WS('||', l.license_name,  l.license_url) from license l where G.LICENSE_NAME = l.long_name) as license "+
 				"from GENERAL_SERIES G, STUDY S, general_equipment ge where S.STUDY_PK_ID=G.STUDY_PK_ID " +
 				"and ge.GENERAL_EQUIPMENT_PK_ID = G.GENERAL_EQUIPMENT_PK_ID";		
 		
@@ -1351,7 +1351,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		String sQL = "select s.SERIES_INSTANCE_UID, s.VISIBILITY, s.RELEASED_STATUS, s.DATE_RELEASED, " +
 				"( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, "+
 				" s.DESCRIPTION_URI, "+
-				"(select l.long_name from collection_descriptions cd, license l where s.PROJECT = cd.collection_name and cd.license_id = l.license_id) as license "+
+				"(license_name as license "+
 				"from GENERAL_SERIES s";	
 		
 		StringBuffer where = new StringBuffer();

@@ -170,6 +170,7 @@ L-->
    <bean id="trialSite" class="gov.nih.nci.nbia.internaldomain.TrialSite" scope="prototype"/>
    <bean id="site" class="gov.nih.nci.nbia.internaldomain.Site" scope="prototype"/>
    <bean id="trialDataProvenance" class="gov.nih.nci.nbia.internaldomain.TrialDataProvenance" scope="prototype"/>
+   <bean id="license" class="gov.nih.nci.nbia.internaldomain.license" scope="prototype"/>
 
   <!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
 

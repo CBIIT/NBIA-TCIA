@@ -43,7 +43,7 @@ public class LicenseDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
 	public void save(LicenseDTO license) throws DataAccessException {
 
-		getHibernateTemplate().saveOrUpdate(license.getLicense());
+		getHibernateTemplate().saveOrUpdate(license.theLicense());
 		setExcludeCommercialForSeries(license);
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -83,15 +83,15 @@ public class LicenseDAOImpl extends AbstractDAO
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	private void setExcludeCommercialForSeries(LicenseDTO license)  {
-		
-       
-		if (license.getCommercialUse().equalsIgnoreCase("YES")) {
-			String queryString = "update general_series s set exclude_commercial=null where project in (select collection_name from collection_descriptions where license_id="+license.getId()+")";
-			int result= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(queryString).executeUpdate();
-		}  else {
-			String queryString = "update general_series s set exclude_commercial='YES' where project in (select  collection_name from collection_descriptions where license_id="+license.getId()+")";
-			int result= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(queryString).executeUpdate();
-		}
+		String excludeCommercial="YES";
+       if (license.getCommercialUse()==null||license.getCommercialUse().equalsIgnoreCase("YES")) {
+    	   excludeCommercial="NO";
+       }
+		String queryString = "update GeneralSeries s set excludeCommercial='"+excludeCommercial+
+				"'licenseURL='"+license.getLicenseURL()+
+				"' where licenseName='"+license.getLongName()+"'";
+        Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+        int count = query.executeUpdate();
 
 	} 
 

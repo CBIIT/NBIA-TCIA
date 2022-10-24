@@ -64,7 +64,7 @@ public class LicenseDTO {
 	   this.shortName=license.getShortName();
 	   this.licenseURL=license.getUrl();
    }
-   public License getLicense() {
+   public License theLicense() {
 	   License returnValue=new License();
 	   returnValue.setCommercialUse(commercialUse);
 	   returnValue.setId(id);

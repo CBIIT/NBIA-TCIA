@@ -217,4 +217,77 @@ L-->
           ADD COLUMN md5hash varchar(100) DEFAULT NULL;    
          </sql>
        </changeSet>
+       <changeSet id="8.2.add.licensetoseries" author="gustafss" dbms="mysql">
+         <comment>
+           adds license id to general series
+         </comment>          
+         <sql>       
+          ALTER TABLE general_series 
+          ADD COLUMN license_name VARCHAR(255) NULL;   
+         </sql>
+       </changeSet>
+       <changeSet id="8.2.add.licenseurltoseries" author="gustafss" dbms="mysql">
+         <comment>
+           adds license id to general series
+         </comment>          
+         <sql>       
+          ALTER TABLE general_series 
+          add license_url VARCHAR(255) NULL;   
+         </sql>
+       </changeSet>
+       <changeSet id="8.2.add.licensetosite" author="gustafss" dbms="mysql">
+         <comment>
+           adds license id to site
+         </comment>          
+         <sql>       
+          ALTER TABLE site 
+          ADD COLUMN license_id BIGINT(20) DEFAULT NULL;    
+         </sql>
+       </changeSet>
+       <changeSet id="8.2.add.updatelicenseingeneralseries" author="gustafss" dbms="mysql">
+         <comment>
+           updates the license in general series to the one for the current collection
+         </comment>          
+         <sql>       
+          update general_series 
+          set license_name = (select long_name from license where license_id in (select license_id from collection_descriptions where collection_name=general_series.project));   
+         </sql>
+       </changeSet>
+       <changeSet id="8.2.add.updatelicenseurlingeneralseries" author="gustafss" dbms="mysql">
+         <comment>
+           updates the license in general series to the one for the current collection
+         </comment>          
+         <sql>       
+          update general_series 
+          set license_url = (select license_url from license where license_id in (select license_id from collection_descriptions where collection_name=general_series.project));   
+         </sql>
+       </changeSet>
+       <changeSet id="8.2.add.updatelicenseinsite" author="gustafss" dbms="mysql">
+         <comment>
+           updates the license in site to the one for the current collection
+         </comment>          
+         <sql>       
+          update site
+          set license_id = (select license_id from collection_descriptions where collection_name=
+          (select project from trial_data_provenance tdp where tdp.trial_dp_pk_id=site.trial_dp_pk_id))   ; 
+         </sql>
+       </changeSet>
+       <changeSet id="8.2.remove.licensefkfromcollectiondescriptions" author="gustafss" dbms="mysql">
+         <comment>
+           removes license id foriegn key from collection descriptions
+         </comment>          
+         <sql>       
+           alter table collection_descriptions 
+           drop foreign key license_id_fk;   
+         </sql>
+       </changeSet>
+<!--       <changeSet id="8.2.remove.licenseidfromcollectiondescriptions" author="gustafss" dbms="mysql">
+         <comment>
+           removes license id from collection descriptions
+         </comment>          
+         <sql>       
+          ALTER TABLE collection_descriptions 
+          DELETE license_id;    
+         </sql>
+       </changeSet> -->
 </databaseChangeLog>
