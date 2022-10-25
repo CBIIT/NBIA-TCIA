@@ -365,6 +365,14 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
                 break;
 
+            // Edit Site License descriptions
+            case this.menuItem.DATA_ADMIN_EDIT_SITE_LICENSE_ITEMS_MENU_ITEM:
+                window.open(Properties.API_SERVER_URL +
+                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_SITE_LICENSE + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
+                    '_blank');
+
+                break;
+
             // Manage Workflow Items
             case this.menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM:
                 window.open(Properties.API_SERVER_URL +
@@ -408,11 +416,15 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 }
 
                 // Only switch to the Login screen if the default user is logged in.
+                console.log('MHL 00 menuService.getCurrentItem() ', this.menuService.getCurrentItem() );
                 if (this.menuService.getCurrentItem() !== this.menuItem.LOGIN_MENU_ITEM) {
+                    console.log('MHL 01 menuService.getCurrentItem() ', this.menuService.getCurrentItem() );
 
                     if (this.currentUser === Properties.DEFAULT_USER) {
+                        console.log('MHL 02 menuService.getCurrentItem() menuChoice: ', menuChoice );
                         this.menuService.setCurrentItem(menuChoice);
                     } else {
+                        console.log('MHL 03 menuService.getCurrentItem() logOutCurrentUser' );
                         this.apiServerService.logOutCurrentUser();
                     }
                 }
@@ -581,7 +593,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
 
     downloadQueryAsManifest() {
-        console.log('MHL downloadQueryAsManifest');
+        console.log('MHL 006 downloadQueryAsManifest');
 
         this.apiServerService.doPost(Consts.API_MANIFEST_FROM_SEARCH_RESULTS, this.commonService.getDownloadManifestQuery(), this.apiServerService.showToken()).subscribe(
             (manifestData: any) => {
@@ -596,8 +608,9 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 let objectUrl = (<any>window).URL.createObjectURL(cartManifestFile);
                 let a = (<any>window).document.createElement('a');
                 a.href = objectUrl;
-
-                a.download = databasketId[1];
+console.log('MHL 007 objectUrl: ' , objectUrl);
+console.log('MHL 008 databasketId: ' , databasketId);
+                a.download = 'MHL_' + databasketId[1]; // This is the file name
                 (<any>window).document.body.appendChild(a);
                 a.click();
                 (<any>window).document.body.removeChild(a);

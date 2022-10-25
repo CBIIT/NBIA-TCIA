@@ -26,6 +26,7 @@ export enum MenuItems{
     DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM,
     DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM,
     DATA_ADMIN_EDIT_LICENSE_ITEMS_MENU_ITEM,
+    DATA_ADMIN_EDIT_SITE_LICENSE_ITEMS_MENU_ITEM,
 }
 
 export enum DownloadTools{
@@ -95,6 +96,7 @@ export const Consts = {
         TOOL_APPROVE_DELETIONS: 'approve-deletions',
         TOOL_EDIT_COLLECTION_DESCRIPTIONS: 'edit-collection-descriptions',
         TOOL_EDIT_LICENSE: 'edit-license',
+        TOOL_EDIT_SITE_LICENSE: 'edit-site-license',
         TOOL_MANAGE_WORKFLOW_ITEMS: 'manage-workflow-items',
         TOOL_PERFORM_ONLINE_DELETION: 'perform-online-deletion',
         TOOL_VIEW_SUBMISSION_REPORTS: 'view-submission-reports',

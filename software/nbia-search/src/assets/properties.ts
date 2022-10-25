@@ -1,8 +1,8 @@
 export let Properties = {
-    // 21_MAR_2022
-    VERSION: '1.0.8',
-    // 16_MAY_22
-    TEST_VERSION: '1.0.8b',
+    // 11_OCT_22
+    VERSION: '1.0.10',
+    // 25_OCT_22
+    TEST_VERSION: '1.0.10c',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -55,12 +55,12 @@ export let Properties = {
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
     // API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
+    // API_SERVER_URL: 'https://nbia.cancerimagingarchive.net',
 
     // API_SERVER_URL: 'http://192.168.1.21:8080',
-
-     API_SERVER_URL: '',
+    API_SERVER_URL: '',
     // //////////////////////////////////////////////////////////////////////////
-    //  End of values that can be over ridden in the assets/configuration file
+    //  End of values that can be over-ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
     // //////////////////////////////////////////////////////////////////////////
 
