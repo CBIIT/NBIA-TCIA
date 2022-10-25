@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.nbia.dto.LicenseDTO;
-import gov.nih.nci.nbia.internaldomain.CollectionDesc;
+import gov.nih.nci.nbia.internaldomain.Site;
 import gov.nih.nci.nbia.internaldomain.License;
 
 /**
@@ -59,18 +59,18 @@ public class LicenseDAOImpl extends AbstractDAO
         if (licenseToDelete==null) {
         	return "No license with id="+id;
         }
-        DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Site.class);
         criteria.add(Restrictions.eq("license", licenseToDelete));
         int i=0;
-        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
-        for (CollectionDesc colDes : collectionDescList) {
+        List<Site> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+        for (Site colDes : collectionDescList) {
         	if (i==0) {
         		returnValue="";
         		i++;
         	} else {
         		returnValue=returnValue+", ";
         	}
-        	returnValue=returnValue+colDes.getCollectionName();
+        	returnValue=returnValue+colDes.getTrialDataProvenance().getProject()+"//"+colDes.getDpSiteName();
         }
         if (returnValue!=null) {
         	return returnValue;
@@ -88,7 +88,7 @@ public class LicenseDAOImpl extends AbstractDAO
     	   excludeCommercial="NO";
        }
 		String queryString = "update GeneralSeries s set excludeCommercial='"+excludeCommercial+
-				"'licenseURL='"+license.getLicenseURL()+
+				"', licenseURL='"+license.getLicenseURL()+
 				"' where licenseName='"+license.getLongName()+"'";
         Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
         int count = query.executeUpdate();
