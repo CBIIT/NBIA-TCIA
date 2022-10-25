@@ -66,7 +66,7 @@ public class DeleteLicense extends getData{
 		  		   .entity("License deleted")
 				   .build();
            } else {
-        	 returnValue="Unable to delete, the following collection descriptions use this id: "+returnValue;
+        	 returnValue="Unable to delete, the following sites use this id: "+returnValue;
 		     return Response.status(500)
 			  		   .entity(returnValue)
 					   .build();
