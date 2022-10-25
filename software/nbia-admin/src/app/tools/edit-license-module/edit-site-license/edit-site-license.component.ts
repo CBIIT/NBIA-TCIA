@@ -77,7 +77,7 @@ export class EditSiteLicenseComponent implements OnInit{
 
 
                 for( let lic of this.licData ){
-                       this.longNameList.push( lic['longName']);
+                    this.longNameList.push( lic['longName']);
                 }
 
 
