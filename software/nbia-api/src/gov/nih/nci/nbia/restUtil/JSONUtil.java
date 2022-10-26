@@ -320,8 +320,12 @@ public class JSONUtil {
 	public static String getJSONforSite(SiteDTO site){
 		String jsonInString = null;
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			jsonInString = mapper.writeValueAsString(site);
+			if (site.getSiteName()!=null) {
+			  ObjectMapper mapper = new ObjectMapper();
+			  jsonInString = mapper.writeValueAsString(site);
+			} else {
+				jsonInString="{}";
+			}
 		} catch (Exception e) {
 
 			e.printStackTrace();
