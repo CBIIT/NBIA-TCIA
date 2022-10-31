@@ -2,51 +2,59 @@
     <tr>
 
 
-                    <td>
-                        <nbia-query-section
-                            [currentTool]="consts.TOOL_EDIT_SITE_LICENSE"
-                        ></nbia-query-section>
-                    </td>
-
+        <td>
+            <nbia-query-section
+                [currentTool]="consts.TOOL_EDIT_SITE_LICENSE"
+            ></nbia-query-section>
+        </td>
 
         <td>
             <table>
-                            <tr>
-                                <td>
-                                    {{statusText}}
+                <tr>
+                    <td>
+                        {{statusText}}
+                    </td>
+                    <td class="save-button-td">
+                        <div class="save-button-span">
+                            <button
+                                class="btn nbia-button ml-2"
+                                (click)="reset()"
+                                [disabled]="(currentSelectedSiteLicenseLongName === currentSelectedSiteLicenseLongNameTrailer ||
+                                                            currentSelectedSiteLicenseLongName === noLicText)"
+                            >
+                                Reset
+                            </button>
+                            <button
+                                class="btn nbia-button ml-2"
+                                (click)="save()"
+                                [disabled]="(currentSelectedSiteLicenseLongName === currentSelectedSiteLicenseLongNameTrailer ||
+                                                            currentSelectedSiteLicenseLongName === noLicText)"
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </td>
+                </tr>
 
-                                </td>
-                                <td class="save-button-td" >
-                                    <div class="save-button-span">
-                                        <button
-                                            class="btn nbia-button ml-2"
-                                            (click)="reset()"
-                                        >
-                                            Reset
-                                        </button>
-                                         <button
-                                             class="btn nbia-button ml-2"
-                                             (click)="save()"
-                                             [disabled]="currentSelectedSiteLicenseLongName === currentSelectedSiteLicenseLongNameTrailer"
-                                         >
-                                            Save
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
 
+                <tr>
+                    <td colspan="2" class="lic-dropdown">
+                        <select name="licMenuData" id="lic-menu-data"
+                                [disabled]="collectionName===''"
+                                [(ngModel)]="currentSelectedSiteLicenseLongName"
+                        >
+                            <option
 
-                            <tr>
-                                <td colspan="2" class="lic-dropdown">
-                                    <select name="licMenuData" id="lic-menu-data"
-                                            [(ngModel)]="currentSelectedSiteLicenseLongName"
-                                    >
-                                        <option *ngFor="let lic of longNameList; let i = index">
-                                            {{lic}}
-                                        </option>
-                                    </select>
-                                </td>
-                            </tr>
+                                (click)="noLicense()"
+                            >{{noLicText}}</option>
+                            <option
+                                (click)="onLicSelect(i)"
+                                *ngFor="let lic of longNameList; let i = index">
+                                {{lic}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
 
             </table>
         </td>

@@ -219,8 +219,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         }
 
         this.sequenceNumber = this.queryCriteriaData['sequenceNumber'];
-
-        this.criteriaHeading = this.queryCriteriaData['dynamicQueryCriteriaHeading'];
+        if( this.queryCriteriaData['tool'] === Consts.TOOL_EDIT_SITE_LICENSE ){
+            this.criteriaHeading = this.queryCriteriaData['dynamicQueryCriteriaHeading'] + '//Site'; // @CHECKME A quick fix for "Edit Site License"
+        }else{
+            this.criteriaHeading = this.queryCriteriaData['dynamicQueryCriteriaHeading'];
+        }
         this.criteriaRequired = this.queryCriteriaData['dynamicQueryCriteriaRequired'];
         this.criteriaSubheading = this.queryCriteriaData['dynamicQueryCriteriaSubHeading'];
         this.criteriaApplyButton = this.queryCriteriaData['dynamicQueryCriteriaApplyButton'];
@@ -420,6 +423,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
             // @CHECKME workaround for site license
             if( this.queryCriteriaData['tool'] === Consts.TOOL_EDIT_SITE_LICENSE ){
                 this.widgetSiteLicenseService.setSiteLicenseSite( this.itemList[i] );  //listen for this in Edit Site License to pre-select in dropdown
+                this.criteriaHeading = 'Site';
             }
         }
 

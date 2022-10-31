@@ -21,7 +21,7 @@ export class EditSiteLicenseComponent implements OnInit{
     currentSelectedSiteLicenseLongName = '';
     currentSelectedSiteLicenseLongNameTrailer = '';
     statusText = '';
-
+    noLicText = 'Select Site license';
     /**
      * The list of licenses we are working with.
      * This one object/license is a placeholder for the HTML until the license data makes its way back from the server.
@@ -95,15 +95,17 @@ export class EditSiteLicenseComponent implements OnInit{
                 this.siteName = data['siteName'];
 
                 if( data['licenseDTO'] === null || data['licenseDTO'] === undefined || data['licenseDTO']['longName'] === undefined ){
-                    this.statusText = 'Warning: Could not get current license for this site';
-                    this.currentSelectedSiteLicenseLongName = this.longNameList[0];  // If they have no License use the first one until/unless they select another
+                   // this.statusText = 'Warning: Could not get current license for this site'; // @TODO we should be able to remove statusText
+                   // this.currentSelectedSiteLicenseLongName = this.longNameList[0];  // If they have no License use the first one until/unless they select another
+                    this.currentSelectedSiteLicenseLongName = this.noLicText;
                 }
                 else{
                     // Got a license for this site, continue
                     this.currentSelectedSiteLicenseLongName = data['licenseDTO']['longName'];
-                    this.currentSelectedSiteLicenseLongNameTrailer = this.currentSelectedSiteLicenseLongName;
                     this.statusText = '';
                 }
+                this.currentSelectedSiteLicenseLongNameTrailer = this.currentSelectedSiteLicenseLongName;
+
             },
             ( err ) => {
                 console.log( 'Error siteLicensesResultsEmitter error: ', err );
@@ -111,13 +113,27 @@ export class EditSiteLicenseComponent implements OnInit{
         );
     }
 
-    reset(){
+
+    noLicense(){
         this.currentSelectedSiteLicenseLongName = this.currentSelectedSiteLicenseLongNameTrailer;
     }
+
+    onLicSelect(i){
+    }
+
 
     save(){
         this.apiService.setSiteLicense(this.collectionName, this.siteName, this.currentSelectedSiteLicenseLongName);
         this.statusText = '';
         this.currentSelectedSiteLicenseLongNameTrailer = this.currentSelectedSiteLicenseLongName;
     }
+
+    reset(){
+        // Empty string
+        if( this.currentSelectedSiteLicenseLongNameTrailer.length < 1){
+            this.currentSelectedSiteLicenseLongNameTrailer = this.noLicText;
+        }
+        this.currentSelectedSiteLicenseLongName = this.currentSelectedSiteLicenseLongNameTrailer;
+    }
+
 }
