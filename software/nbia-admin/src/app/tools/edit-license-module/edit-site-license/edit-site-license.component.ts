@@ -58,7 +58,6 @@ export class EditSiteLicenseComponent implements OnInit{
             }
          );
 
-// siteLicensesResultsEmitter
         // Get the list of licenses and their associated data.
         this.apiService.collectionLicensesResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
@@ -75,13 +74,9 @@ export class EditSiteLicenseComponent implements OnInit{
                     );
                 }
 
-
                 for( let lic of this.licData ){
                     this.longNameList.push( lic['longName']);
                 }
-
-
-
             } );
 
         this.apiService.getCollectionLicenses();
@@ -122,7 +117,12 @@ export class EditSiteLicenseComponent implements OnInit{
     }
 
 
-    save(){
+   async save(){
+        let runaway = 1000; // @TESTING  @CHECKME
+        while( (runaway > 0 ) && ( this.collectionName === undefined || this.siteName === undefined || this.currentSelectedSiteLicenseLongName === undefined )){
+           runaway--;
+            await this.utilService.sleep( Consts.waitTime );
+        }
         this.apiService.setSiteLicense(this.collectionName, this.siteName, this.currentSelectedSiteLicenseLongName);
         this.statusText = '';
         this.currentSelectedSiteLicenseLongNameTrailer = this.currentSelectedSiteLicenseLongName;
