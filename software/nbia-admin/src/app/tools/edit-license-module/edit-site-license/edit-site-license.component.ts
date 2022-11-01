@@ -117,16 +117,7 @@ export class EditSiteLicenseComponent implements OnInit{
     }
 
 
-   async save(){
-        let runaway = 1000; // @TESTING  @CHECKME
-        while( (runaway > 0 ) && ( this.collectionName === undefined || this.siteName === undefined || this.currentSelectedSiteLicenseLongName === undefined )){
-           runaway--;
-            await this.utilService.sleep( Consts.waitTime );
-        }
-        if( runaway < 1 ){
-            console.error('MHL NO collectionName & siteName');
-        }
-
+    save(){
         this.apiService.setSiteLicense(this.collectionName, this.siteName, this.currentSelectedSiteLicenseLongName);
         this.statusText = '';
         this.currentSelectedSiteLicenseLongNameTrailer = this.currentSelectedSiteLicenseLongName;
