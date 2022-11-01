@@ -86,7 +86,14 @@ export class EditSiteLicenseComponent implements OnInit{
         // A Site radio button has been clicked
         this.apiService.siteLicensesResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
+                console.log('MHL siteLicensesResultsEmitter data: ', data );
                 this.collectionName = data['collectionName'];
+
+                // @TESTING
+                if( data['siteName'] === undefined){
+                    console.log('MHL  data[\'siteName\'] === undefined');
+                }
+                
                 this.siteName = data['siteName'];
 
                 if( data['licenseDTO'] === null || data['licenseDTO'] === undefined || data['licenseDTO']['longName'] === undefined ){
