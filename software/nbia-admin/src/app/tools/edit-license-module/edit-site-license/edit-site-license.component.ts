@@ -123,6 +123,10 @@ export class EditSiteLicenseComponent implements OnInit{
            runaway--;
             await this.utilService.sleep( Consts.waitTime );
         }
+        if( runaway < 1 ){
+            console.error('MHL NO collectionName & siteName');
+        }
+
         this.apiService.setSiteLicense(this.collectionName, this.siteName, this.currentSelectedSiteLicenseLongName);
         this.statusText = '';
         this.currentSelectedSiteLicenseLongNameTrailer = this.currentSelectedSiteLicenseLongName;
