@@ -18,7 +18,7 @@ export enum TokenStatus{
     GOOD_TOKEN
 }
 
-export const Consts = {
+export let Consts = {
     URL_KEY_TOOL: 'tool',
     URL_KEY_TOKEN: 'accessToken',
 
@@ -98,11 +98,6 @@ export const Consts = {
     waitTime: 11,
 
     API_ACCESS_TOKEN_URL: 'nbia-api/oauth/token',
-
-    // Dont' use this anymore,  these will come from the server
-    QC_STATUSES: ['Not Yet Reviewed', 'Visible', 'Not Visible',
-        'To Be Deleted', '1st Review', '2nd Review', '3rd Review',
-        '4th Review', '5th Review', '6th Review', '7th Review', 'Downloadable'],
 
     NO_SEARCH: 'NO_SEARCH'
 

@@ -40,7 +40,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     isComplete = this.NO_CHANGE;
     isReleased = this.NO_CHANGE;
     visible = -1;
-    qcStatuses; //  = Consts.QC_STATUSES;
+    qcStatuses = Properties.QC_STATUSES;
     currentFont;
 
     radioStatus = [];
@@ -74,17 +74,9 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this.apiService.visibilitiesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                this.qcStatuses = data;
-/*
-                let n = 0;
-
-                for( let r in data ){
-                    this.radioStatus[n]  = false;
-                    n++;
-                }
-*/
                 this.clear( data.length)
             } );
+        this.apiService.getVisibilities();
 
         this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
@@ -108,7 +100,6 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
                 this.cineCalendarTextInputChange();
             } );
 
-        this.apiService.getVisibilities();
 
         this.preferencesService.setFontSizePreferencesEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )
@@ -237,7 +228,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         }
 
         if( this.visible >= 0 ){
-            query += '&newQcStatus=' + Consts.QC_STATUSES[this.visible];
+            query += '&newQcStatus=' + Properties.QC_STATUSES[this.visible];
         }
 
         if( !this.utilService.isNullOrUndefinedOrEmpty( this.logText ) ){

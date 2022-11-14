@@ -1,8 +1,8 @@
 export let Properties = {
     // 11_OCT_2021
     VERSION: '1.0.10',
-    //23_OCT_2022
-    TEST_VERSION: '1.0.10b',
+    //09_NOV_2022
+    TEST_VERSION: '1.0.10d',
 
     MAX_CRITERIA_LEN: 32,
 
@@ -52,6 +52,9 @@ export let Properties = {
     HELP_BASE_URL: 'https://wiki.cancerimagingarchive.net/display/NBIA',
     HELP_PATH: 'Data+Administration+Tool+Guide',
 
+    QC_STATUSES: ['Not Yet Reviewed', 'Visible', 'Not Visible',
+        'To Be Deleted', '1st Review', 'MHL_PROP_2nd Review', '3rd Review',
+        '4th Review', '5th Review', '6th Review', '7th Review', 'Downloadable'],
 
     BRAND_DIR: 'brand',
     VERSION_SUFFIX: 'PLACE_HOLDER',  // Don't change this, it is needed by branding.service.ts to know if it is initialized before appending to the version.

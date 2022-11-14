@@ -40,7 +40,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     visible = -1;
 
     showReleaseCalendar = false;
-    qcStatuses = Consts.QC_STATUSES;
+    qcStatuses = Properties.QC_STATUSES;
     currentFont;
 
     cBox = [];
@@ -65,7 +65,12 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(){
-
+ /*       this.apiService.visibilitiesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                this.qcStatuses = data;
+            } );
+        this.apiService.getVisibilities();
+*/
         this.preferencesService.setFontSizePreferencesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.currentFont = data;
@@ -207,7 +212,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         }
 
         if( this.visible >= 0 ){
-            query += '&newQcStatus=' + Consts.QC_STATUSES[this.visible];
+            query += '&newQcStatus=' + Properties.QC_STATUSES[this.visible];
         }
 
         if( !this.utilService.isNullOrUndefinedOrEmpty( this.logText ) ){
@@ -255,7 +260,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
         this.apiService.doSubmit( Consts.GET_HISTORY_REPORT, query );
     }
-	
+
 	onSeriesReportClick(){
         let query = '';
         for( let row of this.searchResults ){

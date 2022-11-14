@@ -8,6 +8,7 @@ import { DisplayQueryService } from './display-query.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Consts } from '@app/constants';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -66,7 +67,7 @@ export class DisplayQueryComponent implements OnInit, OnDestroy{
                     q[i]['displayData'] = [];
                     for( let f = 0; f < q[i]['data'].length; f++ ){
                         if( q[i]['data'][f] ){
-                            q[i]['displayData'].push( Consts.QC_STATUSES[f] );
+                            q[i]['displayData'].push( Properties.QC_STATUSES[f] );
                         }
                     }
                     break;

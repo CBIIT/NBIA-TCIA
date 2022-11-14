@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DisplayQueryService } from '../../display-query-module/display-query/display-query.service';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { Properties } from '@assets/properties';
 
 
 @Component( {
@@ -28,7 +29,7 @@ export class QueryQcStatusComponent implements OnInit, OnDestroy{
     hasChecked = false;
     cBox = [];
     currentFont;
-    qcStatuses = Consts.QC_STATUSES;
+    qcStatuses = Properties.QC_STATUSES;
     consts = Consts;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();

@@ -110,6 +110,12 @@ export class NbiaAdminClientComponent implements OnInit, OnDestroy{
             Properties.OHIF_SERVER_URL = Properties.API_SERVER_URL;
         }
         this.showDynamicSearchTestButton = Properties.SHOW_DYNAMIC_QUERY_CRITERIA_TEST_PAGE;
+
+        this.apiService.visibilitiesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            ( data ) => {
+                Properties.QC_STATUSES = data;
+            } );
+        this.apiService.getVisibilities();
     }
 
     async initAccess() {
