@@ -56,7 +56,7 @@ export class QueryUrlComponent implements OnInit, OnDestroy{
         // Tells us when the Header components "Share" -> "Share my query" menu item has been selected
         this.commonService.showQueryUrlEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
-                this.menuService.lockMenu();
+                // this.menuService.lockMenu();  // @CHECKME
 
                 if( this.commonService.getResultsDisplayMode() === Consts.TEXT_SEARCH ){
                     this.showQueryUrl = true;
@@ -72,7 +72,7 @@ export class QueryUrlComponent implements OnInit, OnDestroy{
                         this.queryUrlService.getQueryForLogging() ) );
                 }
                 else{
-                    console.error( 'Got unknown search typ in QueryUrlComponent' );
+                    console.error( 'Got unknown search type in QueryUrlComponent' );
                 }
             }
         );
