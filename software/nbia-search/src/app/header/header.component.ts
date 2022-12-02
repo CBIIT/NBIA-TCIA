@@ -11,6 +11,7 @@ import { Properties } from '@assets/properties';
 export class HeaderComponent implements OnInit{
 
     properties = Properties;
+
     constructor(  ) {
     }
 

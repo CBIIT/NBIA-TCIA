@@ -26,8 +26,8 @@
                     *ngFor="let colName of columnHeadings; let i = index"
                     class="thead-td"
                     [ngClass]="{
-            'hide-item': i===3 || i === 6 || i === 9 || i === 10
-            }"
+                        'hide-item': i===3 || i === 6 || i === 9 || i === 10
+                    }"
             >
                 <!-- If it is not the first column, add the header for this column -->
                 <span *ngIf="i>0 ">

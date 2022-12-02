@@ -181,6 +181,13 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
         );
 
 
+        // Lock the menu when popups are visible
+        this.menuService.menuLockEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                this.menuLock = <boolean>data;
+            }
+        );
+
         // When the (logged in) user changes.
         this.apiServerService.userSetEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
@@ -416,15 +423,14 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 }
 
                 // Only switch to the Login screen if the default user is logged in.
-                console.log('MHL 00 menuService.getCurrentItem() ', this.menuService.getCurrentItem() );
                 if (this.menuService.getCurrentItem() !== this.menuItem.LOGIN_MENU_ITEM) {
-                    console.log('MHL 01 menuService.getCurrentItem() ', this.menuService.getCurrentItem() );
+
+                    // Clear the search criteria on the left when users login or out
+                    this.commonService.resetAllSimpleSearch();
 
                     if (this.currentUser === Properties.DEFAULT_USER) {
-                        console.log('MHL 02 menuService.getCurrentItem() menuChoice: ', menuChoice );
                         this.menuService.setCurrentItem(menuChoice);
                     } else {
-                        console.log('MHL 03 menuService.getCurrentItem() logOutCurrentUser' );
                         this.apiServerService.logOutCurrentUser();
                     }
                 }
@@ -433,7 +439,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
             // ------------- Cart -------------
             case this.menuItem.CART_MENU_ITEM:
-                // If Cart is empty or we are already in the cart, don't do anything
+                // If Cart is empty, or we are already in the cart, don't do anything
                 if ((this.menuService.getCurrentItem() !== this.menuItem.CART_MENU_ITEM) && (this.cartCount > 0) && (!this.disabled)) {
                     this.menuService.setCurrentItem(menuChoice);
                 }
@@ -593,8 +599,6 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
 
     downloadQueryAsManifest() {
-        console.log('MHL 006 downloadQueryAsManifest');
-
         this.apiServerService.doPost(Consts.API_MANIFEST_FROM_SEARCH_RESULTS, this.commonService.getDownloadManifestQuery(), this.apiServerService.showToken()).subscribe(
             (manifestData: any) => {
                 let databasketId = manifestData.match(/databasketId=(.*)/);
@@ -608,9 +612,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 let objectUrl = (<any>window).URL.createObjectURL(cartManifestFile);
                 let a = (<any>window).document.createElement('a');
                 a.href = objectUrl;
-console.log('MHL 007 objectUrl: ' , objectUrl);
-console.log('MHL 008 databasketId: ' , databasketId);
-                a.download = 'MHL_' + databasketId[1]; // This is the file name
+                a.download = databasketId[1]; // This is the file name
                 (<any>window).document.body.appendChild(a);
                 a.click();
                 (<any>window).document.body.removeChild(a);
