@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 } )
 
 /**
- * Convert value to the largest unit of measure and add a space ans its abbreviation to rhe right.
+ * Convert value to the largest unit of measure and add a space and its abbreviation to the right.
  *
  * @param value
  * @param {number} decimalPlaces
@@ -13,9 +13,15 @@ import { Pipe, PipeTransform } from '@angular/core';
  */
 export class ToMbGbPipe implements PipeTransform{
     transform( value: any, decimalPlaces = 0 ): string {
+/*      JIRA 1899 
         let kb = 1024.0;
         let mb = 1048576.0;
         let gb = 1073741824.0;
+*/
+
+        let kb = 1000.0;
+        let mb = 1000000.0;
+        let gb = 1000000000.0;
 
         let bLabel = '';
         let kbLabel = 'KB';
