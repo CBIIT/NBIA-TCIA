@@ -63,28 +63,31 @@ public class GetManifestForSimpleSearch extends getData{
 		try {	
 
 	    SearchUtil util=new SearchUtil();
+		System.out.println("searching for patients");
 		PatientSearchSummary  search=util.getPatients(inFormParams);
+		System.out.println("patients found");
 		long currentTimeMillis = System.currentTimeMillis();
 		String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 		List<String> list=new ArrayList<String>();
 		
 		List<PatientSearchResultWithModilityAndBodyPart> patients = search.getResultSet();
+		List<Integer> seriesList = new ArrayList<Integer>();
+		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 		for (PatientSearchResultWithModilityAndBodyPart patient:patients) {
 			StudyIdentifiers[] studies=patient.getStudyIdentifiers();
 			for (StudyIdentifiers study:studies) {
-				GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 				if (study.getSeriesIdentifiers()!=null) {
-					List<Integer> seriesList = Arrays.asList(study.getSeriesIdentifiers());
-					List<SeriesDTO> seriesDTOs=generalSeriesDAO.findSeriesBySeriesPkId(seriesList);
-					for (SeriesDTO seriesDTO:seriesDTOs) {
-						list.add(seriesDTO.getSeriesUID());
-					}
+					seriesList.addAll(Arrays.asList(study.getSeriesIdentifiers()));
 				}
-				
-				
 			}
-			
 		}
+		System.out.println("searching for series"+seriesList.size());
+		List<SeriesDTO> seriesDTOs=generalSeriesDAO.findSeriesBySeriesPkId(seriesList);
+
+		for (SeriesDTO seriesDTO:seriesDTOs) {
+			list.add(seriesDTO.getSeriesUID());
+		}
+		System.out.println("searching for series done");
 		String manifest=ManifestMaker.getManifextFromSeriesIds(list, "false", manifestFileName);
 		return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
 

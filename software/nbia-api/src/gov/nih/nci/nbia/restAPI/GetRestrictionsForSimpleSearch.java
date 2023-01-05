@@ -66,23 +66,24 @@ public class GetRestrictionsForSimpleSearch extends getData{
 		PatientSearchSummary  search=util.getPatients(inFormParams);
 		List<String> list=new ArrayList<String>();
 		List<PatientSearchResultWithModilityAndBodyPart> patients = search.getResultSet();
+		List<Integer> seriesList = new ArrayList<Integer>();
+		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 		for (PatientSearchResultWithModilityAndBodyPart patient:patients) {
 			StudyIdentifiers[] studies=patient.getStudyIdentifiers();
 			for (StudyIdentifiers study:studies) {
-				GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
 				if (study.getSeriesIdentifiers()!=null) {
-					List<Integer> seriesList = Arrays.asList(study.getSeriesIdentifiers());
-					List<SeriesDTO> seriesDTOs=generalSeriesDAO.findSeriesBySeriesPkId(seriesList);
-					for (SeriesDTO seriesDTO:seriesDTOs) {
-						if (seriesDTO.isCommercialRestrictions()) {
-							return Response.ok("yes").type("application/text").build();
-						}			
-					}
+					seriesList.addAll(Arrays.asList(study.getSeriesIdentifiers()));
 				}
-				
 			}	
 		}
-
+		System.out.println("searching for series commercial restrictions"+seriesList.size());
+		List<SeriesDTO> seriesDTOs=generalSeriesDAO.findSeriesBySeriesPkId(seriesList);
+		for (SeriesDTO seriesDTO:seriesDTOs) {
+			if (seriesDTO.isCommercialRestrictions()) {
+				return Response.ok("yes").type("application/text").build();
+			}			
+		}
+		System.out.println("searching for series commercial restrictions done");
 		return Response.ok("no").type("application/x-nbia-manifest-file").build();
 
 		} catch (Exception e) {
