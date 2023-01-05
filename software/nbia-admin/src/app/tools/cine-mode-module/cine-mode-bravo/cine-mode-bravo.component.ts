@@ -3,7 +3,7 @@
 // -------  Used in "Approve Deletion" and "Perform Quality Control"  ------
 // -------------------------------------------------------------------------
 
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, Inject, ViewEncapsulation } from '@angular/core';
 import { Consts } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { Observable, Subject } from 'rxjs';
@@ -16,12 +16,14 @@ import { UtilService } from '@app/admin-common/services/util.service';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 import { QuerySectionService } from '@app/tools/query-section-module/services/query-section.service';
 import { PreferencesService } from '@app/preferences/preferences.service';
+import { POPOUT_MODAL_DATA, PopoutData } from '@app/tools/cine-mode-module/cine-mode-bravo/popout.tokens';
 
 
 @Component( {
     selector: 'nbia-cine-mode-bravo',
     templateUrl: './cine-mode-bravo.component.html',
     styleUrls: ['./cine-mode-bravo.component.scss'],
+    encapsulation: ViewEncapsulation.ShadowDom,
 } )
 
 export class CineModeBravoComponent implements OnInit, OnDestroy{
@@ -88,6 +90,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(
+        @Inject(POPOUT_MODAL_DATA) public data: PopoutData,
         private cineModeService: CineModeBravoService,
         private apiService: ApiService,
         private httpClient: HttpClient,
@@ -100,6 +103,17 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(){
+        this.currentTool = this.data.currentTool;
+        this.seriesData = this.cineModeService.getSeries();
+        this.collectionSite = this.cineModeService.getCollectionSite();
+        this.searchResultsIndex = this.cineModeService.getSearchResultsIndex();
+        this.sectionHeading = this.sectionHeadings[0];
+        this.reset();
+        this.getFirstImage()
+        this.apiService.doSubmit(
+                    Consts.GET_HISTORY_REPORT_TABLE,
+                    '&seriesId=' + this.seriesData['series']
+                );
         this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
                 this.collectionSite = data['collectionSite'];
@@ -119,7 +133,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
                     Consts.GET_HISTORY_REPORT_TABLE,
                     '&seriesId=' + this.seriesData['series']
                 );
-            } );
+            }, (err) => console.log(err) );
 
         this.cineModeService.hideCineModeEmitter
             .pipe( takeUntil( this.ngUnsubscribe ) )

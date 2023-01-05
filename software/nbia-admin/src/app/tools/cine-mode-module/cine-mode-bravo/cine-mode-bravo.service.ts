@@ -15,6 +15,10 @@ export class CineModeBravoService{
     hideCineModeEmitter = new EventEmitter();
     getDicomTagsByImageEmitter = new EventEmitter();
 
+    series = {};
+    collectionSite = '';
+    searchResultsIndex = 0;
+
     properties = Properties;
 
     hideCine = false;
@@ -40,7 +44,22 @@ export class CineModeBravoService{
             collectionSite,
             searchResultsIndex,
         } );
+        this.series = series;
+        this.collectionSite = collectionSite;
+        this.searchResultsIndex = searchResultsIndex;
         this.hideCineMode( false );
+    }
+
+    getSeries() {
+        return this.series;
+    }
+
+    getCollectionSite() {
+        return this.collectionSite;
+    }
+
+    getSearchResultsIndex() {
+        return this.searchResultsIndex;
     }
 
     /**

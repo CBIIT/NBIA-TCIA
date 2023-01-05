@@ -29,6 +29,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { DynamicQueryTestModule } from '@app/tools/dynamic-query-test-module/dynamic-query-test.module';
 import { CriteriaSelectionMenuComponent } from './criteria-selection-menu/criteria-selection-menu.component';
 import { SearchResultsSectionModule } from '@app/tools/search-results-section-module/search-results-section.module';
+import { CineModeBravoComponent } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component';
 
 @NgModule( {
     declarations: [
@@ -65,6 +66,7 @@ import { SearchResultsSectionModule } from '@app/tools/search-results-section-mo
         DynamicQueryTestModule,
         SearchResultsSectionModule
     ],
+    entryComponents: [ CineModeBravoComponent ],
     providers: [
         AccessTokenService,
         CookieService

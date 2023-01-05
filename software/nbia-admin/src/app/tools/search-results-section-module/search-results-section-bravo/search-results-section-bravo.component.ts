@@ -20,6 +20,8 @@ import {
 } from '@app/tools/search-results-section-module/services/search-result-by-index.service';
 import { takeUntil } from 'rxjs/operators';
 import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service';
+import { PopoutService } from '@app/tools/cine-mode-module/cine-mode-bravo/popout.service';
+import { POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData, PopoutModalName } from '@app/tools/cine-mode-module/cine-mode-bravo/popout.tokens';
 import { IKeyboardShortcutListenerOptions, KeyboardKeys, } from 'ngx-keyboard-shortcuts';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import {
@@ -97,6 +99,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     constructor(
         private apiService: ApiService,
         private cineModeService: CineModeBravoService,
+        private popoutService: PopoutService,
         private accessTokenService: AccessTokenService,
         private persistenceService: PersistenceService,
         private utilService: UtilService,
@@ -146,6 +149,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         this.cineModeService.closeCineModeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.currentCineModeSeriesIndex = -1;
+                this.popoutService.closePopoutModal();
             } );
 
 
@@ -209,6 +213,36 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
 
+    }
+
+    openCinePopout(currentTool: string) {
+        console.log(currentTool);
+        const modalData = {
+            modalName: PopoutModalName.cineMode,
+            currentTool: currentTool,
+        };
+
+        const cinePopoutDetails = POPOUT_MODALS[PopoutModalName.cineMode];
+
+        if (!this.popoutService.isPopoutWindowOpen()) {
+            this.popoutService.openPopoutModal(modalData);
+            POPOUT_MODALS['windowInstance'].addEventListener('beforeunload', (event) => {
+              this.cineModeService.closeCineMode();
+            });
+        } else {
+            this.popoutService.focusPopoutWindow();
+            // const sameSeries = POPOUT_MODALS['componentInstance'].series === series;
+            // // When popout modal is open and there is no change in data, focus on popout modal
+            // if (sameSeries) {
+            //     this.popoutService.focusPopoutWindow();
+            // } else {
+            //     POPOUT_MODALS['outlet'].detach();
+            //     const injector = this.popoutService.createInjector(modalData);
+            //     const componentInstance = this.popoutService.attachContainer(POPOUT_MODALS['outlet'], injector);
+            //     POPOUT_MODALS['componentInstance'] = componentInstance;
+            //     this.popoutService.focusPopoutWindow();
+            // }
+        }
     }
 
     /**
@@ -335,8 +369,14 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
     }
 
+
+    sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
     // Cine-mode viewer
     onClickCineMode( i ){
+        this.openCinePopout(Consts.TOOL_PERFORM_QC);
         i += (this.currentPage * this.pageLength);
         this.currentCineModeSeriesIndex = i;
         this.cineModeService.openCineMode(

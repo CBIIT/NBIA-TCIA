@@ -111,3 +111,8 @@ td{
     color: #686868;
     // margin-bottom: 12px;
 }
+
+.long-break {
+    max-width: 245px;
+    word-wrap: break-word;
+}
