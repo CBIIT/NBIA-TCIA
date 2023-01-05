@@ -1490,7 +1490,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 			projectSet.add(item.getCollection());
 		}
 		for (String project:projectSet) {
-			System.out.println("cache-"+project);
 			cacheMD5ForCollection(project, siteData);
 		}
 	}
@@ -1510,7 +1509,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		for (String item : sortedList) {
 			if (item != null) {
 				md5Concat+=item;
-				System.out.println("patientMD5-"+item+" for "+project);
 			}
 		}
 		if (md5Concat.length()==0) {
