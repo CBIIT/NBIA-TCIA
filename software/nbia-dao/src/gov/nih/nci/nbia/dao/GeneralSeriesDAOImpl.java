@@ -1505,7 +1505,6 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 		List<String> sortedList=new ArrayList<String>();
 		for (Object item[] : resultsData) {
 			sortedList.add(getMD5ForPatientId(item[0].toString(),item[1].toString(), authorizedSites));
-			System.out.println("adding patient-"+item[0].toString()+" for "+project);
 		}
 		Collections.sort(sortedList);
 		for (String item : sortedList) {
