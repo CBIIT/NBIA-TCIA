@@ -81,7 +81,10 @@ public class GetSeriesMetadata2 extends getData{
 			return Response.status(500)
 					.entity("Server was not able to process your request due to exception").build();
 		}
-		String[] columns={"Subject ID","Study UID","Study Description","Study Date","Series ID","Series Description","Number of images","File Size (Bytes)", "Collection Name", "Modality", "Manufacturer"};
+		String[] columns={"Subject ID","Study UID","Study Description","Study Date","Series ID","Series Description",
+				"Number of images","File Size (Bytes)", "Collection Name", "Modality", "Manufacturer", "3rd Party Analysis",
+				"Data Description URI", "Series Number", "License Name", "License URL"};
+
 		return formatResponse("CSV-DOWNLOAD", results, columns);
 	}
 }
