@@ -32,6 +32,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -459,7 +460,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	}
 	
 	
-	@Transactional(propagation=Propagation.REQUIRED)
+	@Transactional
 	public void updateQcStatus(List<String> seriesList,
 			                   String newStatus, 
 			                   String batch,
@@ -474,7 +475,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		//System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - statusList size is: " + statusList.size());
 		
 		
-		
+		Transaction transaction = getHibernateTemplate().getSessionFactory().getCurrentSession().beginTransaction();
 		for (int i = 0; i < seriesList.size(); ++i) {
 			String seriesId = seriesList.get(i);
 			
@@ -483,6 +484,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 			
 		}
 		
+
 	}
 	
 	
@@ -784,7 +786,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		}
 	}
 
-	@Transactional(propagation=Propagation.REQUIRED)	
+	
 	private void updateDb(String seriesId,
 			      String newStatus, 
 			      String batch,
