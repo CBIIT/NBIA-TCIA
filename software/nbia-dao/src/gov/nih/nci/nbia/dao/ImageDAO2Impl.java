@@ -430,7 +430,7 @@ public class ImageDAO2Impl extends AbstractDAO
 		}
 		String sqlString = " select project, general_series.license_url, license.short_name "+
 				" from license, general_series "+
-				" where license.license_long_name=general_series.license_name"+
+				" where license.long_name=general_series.license_name"+
 				" and series_instance_uid=:id";
 		List<Object[]> resultsData = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sqlString).setParameter("id", seriesInstanceUID).list();
 		String collection=null;
