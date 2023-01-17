@@ -57,6 +57,8 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.subjectText = '';
+                this.queryUrlService.clear( this.queryUrlService.SUBJECT_ID );
+
             }
         );
 

@@ -175,7 +175,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                 this.apiServerService.setToken( res );
                 this.persistenceService.put( this.persistenceService.Field.USER, this.loginForm.value.username );
 
-                // Rest charts
+                // Reset charts
                 this.commonService.reInitCharts();
 
 
@@ -184,7 +184,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                 this.commonService.clearSimpleSearchResults();
 
                 // For clearing all queries, search results, and resetting available Collections, Image Modality, etc, for a newly logged in user,
-                // this.commonService.resetAllSimpleSearch();  // FIXME Make sure we don't need this
+                // this.commonService.resetAllSimpleSearch();  // CHECKME Make sure we don't need this
 
                 // Clear the Text Search
                 this.commonService.clearTextSearchUserInput();
@@ -202,6 +202,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                         while( this.initMonitorService.getAnyRunning() ){
                             await this.commonService.sleep( 10 );
                         }
+
                         this.parameterService.resetUrlQuery();
                     }, 10 );
                 }

@@ -280,11 +280,6 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
                 while( (this.completeCriteriaList === undefined) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );
                 }
-                // @TESTING MHL
-                // console.log('MHL 00 this.completeCriteriaList.length: ', this.completeCriteriaList.length);
-                // console.log('MHL 01 this.completeCriteriaList.length: ', (this.completeCriteriaList.length/300) * 1000 );
-                await this.commonService.sleep( (this.completeCriteriaList.length/300) * 1000 );
-
 
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
 

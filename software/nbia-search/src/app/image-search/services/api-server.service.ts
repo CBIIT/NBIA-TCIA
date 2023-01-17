@@ -1142,7 +1142,6 @@ export class ApiServerService implements OnDestroy {
             await this.commonService.sleep(100);
         }
 
-
         this.doGet(queryType, accessToken).subscribe(
             // Good results, return the search results.
             (res) => {

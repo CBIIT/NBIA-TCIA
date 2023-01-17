@@ -34,6 +34,7 @@ export class CommercialUseComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.excludeCom = false;
+                this.queryUrlService.clear( this.queryUrlService.EXCLUDE_COMMERCIAL );
                 this.initMonitorService.setExcludeCommercialInit( true );
             }
         );

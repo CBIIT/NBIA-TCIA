@@ -190,9 +190,10 @@ export class PieChartCollectionsComponent implements OnInit, OnDestroy{
     }
 
 
-    // CHECKME Testing - need to refresh after a new login
+    // @TODO - need to refresh after a new login
     async reInit() {
         // The call to trigger populating this.completeCriteriaList (above), and wait for the results.
+/*
         this.completeCriteriaList = null;
         this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
         while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
@@ -202,6 +203,7 @@ export class PieChartCollectionsComponent implements OnInit, OnDestroy{
         // Initialize criteriaList with completeCriteriaList here at the start, before there is any searching
         this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
         this.updateChart();
+*/
     }
 
 

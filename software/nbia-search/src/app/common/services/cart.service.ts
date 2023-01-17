@@ -68,7 +68,6 @@ export class CartService implements OnDestroy{
         let fileSize = 0;
         // Size of files including disabled.
         let fullFileSize = 0;
-
         let len = this.cart.length;
         for( let f = 0; f < len; f++ ){
             fullFileSize += (+this.cart[f].size);
@@ -76,7 +75,10 @@ export class CartService implements OnDestroy{
                 count++;
                 fileSize += (+this.cart[f].size);
             }
+
+
         }
+
         this.cartCount = count;
         this.cartCountEmitter.emit( { count, fileSize, fullFileSize } );
     }

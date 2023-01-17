@@ -82,6 +82,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.onClinicalTimepointsClearAllClick();
+                this.onApplyFromBaselineCheckboxClick( false );
             }
         );
 
@@ -99,6 +100,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             () => {
                 this.getInitialMinMaxTimePoints();
                 this.onClinicalTimepointsClearAllClick();
+                this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
             } );
 
         // Used when there are query parameters in the URL.
@@ -277,10 +279,11 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             this.displayFromBaseLineFrom = this.getMinByEvent( this.eventTypeList[this.currentEventTypeIndex] );
             this.displayFromBaseLineTo = this.getMaxByEvent( this.eventTypeList[this.currentEventTypeIndex] );
 
-        }else{
+        }
+        if( ! checked )
+        {
             // Remove daysFromBaseline (if any) in the queryUrlService
             this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
-
             // If user has unchecked or have changed the event to none ("Select") or has no To AND From values, remove Days from baseline from the query
             daysFromBaselineForQuery.slice( 0, 1 );
         }

@@ -109,6 +109,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.totalQueryClear();
+this.onDateRangeClearAllClick( false ); // @CHECKME
             }
         );
 
@@ -178,6 +179,8 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
     onDateRangeClearAllClick( totalClear: boolean ) {
+        this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
+
         this.commonService.setHaveUserInput( true );
 
         this.setToDateToToday();
