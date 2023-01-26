@@ -1,16 +1,8 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=csv
-
-
 package gov.nih.nci.nbia.restAPI;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -18,12 +10,12 @@ import javax.ws.rs.core.Response;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
 import gov.nih.nci.nbia.restUtil.SearchUtil;
+
 @Path("/getSimpleSearchWithModalityAndBodyPartPaged")
 public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
-	private static final String column="Collection";
+
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a set of all collection names
 	 *

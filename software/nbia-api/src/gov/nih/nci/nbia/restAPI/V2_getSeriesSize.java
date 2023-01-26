@@ -1,19 +1,11 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=csv
-
-
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,7 +17,6 @@ public class V2_getSeriesSize extends getData{
 	private static final String[] columns={"TotalSizeInBytes", "ObjectCount"};
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a set of Manufacturer filtered by query keys
 	 *

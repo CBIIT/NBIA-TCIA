@@ -1,37 +1,3 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&PatientID=1.3.6.1.4.1.9328.50.1.0001&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?PatientID=1.3.6.1.4.1.9328.50.1.0001&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?Collection=RIDER Pilot&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getSeries?StudyInstanceUID=1.3.6.1.4.1.9328.50.1.3&format=csv
-
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
@@ -52,16 +18,15 @@ import org.apache.log4j.Logger;
 
 import com.sun.research.ws.wadl.Application;
 
+import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.wadosupport.*;
 
 @Path("/getThumbnail")
 public class GetThumbnail extends getData {
 	private static final Logger log = Logger.getLogger(GetThumbnail.class);
-	private static final String[] columns={"SopIUID", "InstanceNumber", "SopClassUID", "NumberOfFrames", "Rows"};
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a set of instances filtered by query keys
 	 *
@@ -73,18 +38,21 @@ public class GetThumbnail extends getData {
 			@FormParam("objectUID") String objectUID) {
 
 
-        Authentication authentication = SecurityContextHolder.getContext()
-		.getAuthentication();
-		String userName=null;
-		if (authentication==null){
-			userName =  NCIAConfig.getGuestUsername();
-		} else {
-           userName = (String) authentication.getPrincipal();
-	    }
-		if (userName==null){
-			userName =  NCIAConfig.getGuestUsername();
-		}
-        System.out.println("series"+seriesUID);
+//        Authentication authentication = SecurityContextHolder.getContext()
+//		.getAuthentication();
+//		String userName=null;
+//		if (authentication==null){
+//			userName =  NCIAConfig.getGuestUsername();
+//		} else {
+//           userName = (String) authentication.getPrincipal();
+//	    }
+//		if (userName==null){
+//			userName =  NCIAConfig.getGuestUsername();
+//		}
+//        System.out.println("series"+seriesUID);
+        
+		String userName	= getUserName(); 
+
 		WADOSupportDTO wdto = getThumbnail(objectUID, seriesUID, userName);
 		if (wdto.getErrors()!=null){
 			log.error("WADO Error: " + wdto.getErrors());

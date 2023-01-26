@@ -1,6 +1,3 @@
-//To Test: 
-//curl -X POST -d "project=testPROJ&siteName=site&seriesId=1.1&seriesId=2.2&seriesId=3.3&newQcStatus=1" -H "Authorization:Bearer ec6c2120-63ec-4a49-9643-19a7f47de9fc" -k "http://localhost:8080/nbia-api/services/submitQCVisibility"
-
 package gov.nih.nci.nbia.restAPI;
 
 import java.text.DateFormat;
@@ -31,8 +28,6 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 @Path("/submitQCVisibilityForDataAdmin")
 public class SetQCVisibilityForDataAdmin extends getData{
 	public final static String TEXT_CSV = "text/csv";
-
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method set 
 	 *
@@ -62,9 +57,10 @@ public class SetQCVisibilityForDataAdmin extends getData{
 
 		try {	
 			
-			   Authentication authentication = SecurityContextHolder.getContext()
-						.getAuthentication();
-				String user = (String) authentication.getPrincipal();
+//			   Authentication authentication = SecurityContextHolder.getContext()
+//						.getAuthentication();
+//				String user = (String) authentication.getPrincipal();
+			String user = getUserName();
                 if (!QAUserUtil.isUserQA(user)) {
                 	System.out.println("Not QA User!!!!");
 				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");

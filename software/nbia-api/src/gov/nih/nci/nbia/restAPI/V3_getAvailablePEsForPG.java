@@ -1,4 +1,4 @@
-//To Test: http://localhost:8080/nbia-auth/services/v3/getAvailablePEsForPG?PGName=NCIA.IDRI//IDRI&format=html
+//To Test: http://localhost:8080/nbia-api/v3/getAvailablePEsForPG?PGName=NCIA.IDRI//IDRI&format=html
 
 package gov.nih.nci.nbia.restAPI;
 
@@ -35,8 +35,6 @@ public class V3_getAvailablePEsForPG extends getData{
 	private static final String[] columns={"label", "value"};
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
-
 	/**
 	 * This method get a list of protection element names
 	 *
@@ -46,6 +44,9 @@ public class V3_getAvailablePEsForPG extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
 	public Response  constructResponse(@QueryParam("PGName") String pgName, @QueryParam("format") String format) {
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
 		Set<String> allPENames = null;
 		
 		List<String> results = null;

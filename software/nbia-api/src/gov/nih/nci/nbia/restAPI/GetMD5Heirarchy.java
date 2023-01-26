@@ -1,9 +1,3 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=csv
-
-
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.*;
@@ -28,6 +22,7 @@ import gov.nih.nci.nbia.dynamicsearch.DynamicSearchCriteria;
 import gov.nih.nci.nbia.dynamicsearch.Operator;
 import gov.nih.nci.nbia.dynamicsearch.QueryHandler;
 import gov.nih.nci.nbia.lookup.StudyNumberMap;
+import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;
@@ -75,9 +70,11 @@ public class GetMD5Heirarchy extends getData{
 			@FormParam("Collection") String collection) {
 		String md5 = "";
 		try {
-		Authentication authentication = SecurityContextHolder.getContext()
-					.getAuthentication();
-		String user = (String) authentication.getPrincipal();
+//		Authentication authentication = SecurityContextHolder.getContext()
+//					.getAuthentication();
+//		String user = (String) authentication.getPrincipal();
+			String user = getUserName(); 
+
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 		if (authorizedSiteData==null){
 		     AuthorizationManager am = new AuthorizationManager(user);

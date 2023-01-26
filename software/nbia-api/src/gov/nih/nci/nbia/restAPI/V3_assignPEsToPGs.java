@@ -1,4 +1,4 @@
-//To Test: http://localhost:8080/nbia-auth/services/v3/assignPEsToPG?projAndSite=TCGA//DUKE&PGName=NCIA.Test
+//To Test: http://localhost:8080/nbia-api/v3/assignPEsToPG?projAndSite=TCGA//DUKE&PGName=NCIA.Test
 
 package gov.nih.nci.nbia.restAPI;
 
@@ -31,6 +31,10 @@ public class V3_assignPEsToPGs extends getData{
 	@Produces({MediaType.APPLICATION_JSON})
 
 	public Response  constructResponse(@QueryParam("PENames") String peNames, @QueryParam("PGNames") String pgNames) {
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
+		
 		String [] pgList = pgNames.split(",");
 		StringBuffer status = new StringBuffer();
 		for (int i = 0; i < pgList.length; ++i) {

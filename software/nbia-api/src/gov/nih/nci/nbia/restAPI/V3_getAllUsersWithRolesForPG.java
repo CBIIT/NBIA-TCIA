@@ -1,13 +1,6 @@
-//To Test: http://localhost:8080/nbia-auth/services/v3/getAllPGsWithPEs?format=html
-//To Test: http://localhost:8080/nbia-auth/services/v3/getAllPGsWithPEs?format=json
-
 package gov.nih.nci.nbia.restAPI;
 
-import gov.nih.nci.nbia.util.NCIAConfig;
-import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
@@ -18,12 +11,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -33,7 +24,6 @@ public class V3_getAllUsersWithRolesForPG extends getData{
 	private static final String[] columns={"Login Name", "Protection Group", "Role"};
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a list of users with associated protection group and roles
 	 * 
@@ -42,6 +32,9 @@ public class V3_getAllUsersWithRolesForPG extends getData{
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 	public Response  constructResponse(@QueryParam("format") String format) {
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
 		List<Object []> result = new ArrayList<Object[]>();
 		try {
 			UserProvisioningManager upm = getUpm();

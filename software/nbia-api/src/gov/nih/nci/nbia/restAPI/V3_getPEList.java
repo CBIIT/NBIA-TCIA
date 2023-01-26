@@ -1,10 +1,7 @@
-//To Test: http://localhost:8080/nbia-auth/services/v3/getUserList?format=html
-
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
-//import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
@@ -33,8 +30,6 @@ public class V3_getPEList extends getData{
 	private static final String[] columns={"collection", "site"};
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
-
 	/**
 	 * This method get a list of collection and site available in database
 	 *
@@ -44,6 +39,9 @@ public class V3_getPEList extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
 	public Response  constructResponse(@QueryParam("format") String format) {
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
 		List<String> results = null;
 		List<Object[]> data = null;
 

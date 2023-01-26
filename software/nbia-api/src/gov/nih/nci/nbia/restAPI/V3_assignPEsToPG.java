@@ -9,18 +9,15 @@ import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.exceptions.CSException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/v3/assignPEsToPG")
 public class V3_assignPEsToPG extends getData{
-	@Context private HttpServletRequest httpRequest;
 
 	/**
 	 * This method assign a combination of Project and Site to a Protection Group
@@ -31,6 +28,10 @@ public class V3_assignPEsToPG extends getData{
 	@Produces({MediaType.APPLICATION_JSON})
 
 	public Response  constructResponse(@QueryParam("PENames") String peNames, @QueryParam("PGName") String pgName) {
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
+		
 		String [] projSites = peNames.split(",");
 		StringBuffer status = new StringBuffer();
 		for (int i = 0; i < projSites.length; ++i) {

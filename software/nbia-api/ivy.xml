@@ -39,11 +39,12 @@ L-->
 		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.jersey.media" name="jersey-media-json-jackson" rev="2.9.1" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.jersey.media" name="jersey-media-multipart" rev="2.28" conf="compile->master;runtime->master"/>
-		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-json-provider" rev="2.9.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-base" rev="2.9.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.9.1" conf="compile->master;runtime->master"/>
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.9.1" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-json-provider" rev="2.13.4" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-base" rev="2.13.4" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.13.4" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.13.4.2" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.13.4" conf="compile->master;runtime->master"/>
+		<dependency org="com.fasterxml.jackson.module" name="jackson-module-jaxb-annotations" rev="2.14.0-rc2" conf="compile->master;runtime->master"/>
 		<dependency org="jdom" name="jdom" rev="1.0" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet" rev="2.27" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet-core" rev="2.27" conf="compile->master;runtime->master"/>
@@ -209,11 +210,75 @@ L-->
       rev="3.3"
       conf="compile->master;runtime->master"/>
       
-<!--       <dependency
+     <!--dependency
+      org="org.keycloak"
+      name="keycloak-spring-security-adapter"
+      rev="19.0.1"
+      conf="compile->master;runtime->master"/>
+      
+      <dependency
+      org="org.keycloak"
+      name="keycloak-installed-adapter"
+      rev="19.0.1"
+      conf="compile->master;runtime->master"/>
+           
+      <dependency
+      org="org.keycloak"
+      name="keycloak-core"
+      rev="19.0.1"
+      conf="compile->master;runtime->master"/> 
+      
+      <dependency
+      org="org.keycloak"
+      name="keycloak-common"
+      rev="19.0.1"
+      conf="compile->master;runtime->master"/>
+      
+      <dependency
+      org="org.keycloak"
+      name="keycloak-adapter-core"
+      rev="19.0.1"
+      conf="compile->master;runtime->master"/>
+      
+      <dependency 
+      org="com.fasterxml.jackson.core" 
+      name="jackson-core" rev="2.9.8"
+      conf="compile->master;runtime->master"/>
+      
+ 	  <dependency 
+ 	  org="com.fasterxml.jackson.core" 
+ 	  name="jackson-databind" rev="2.9.8"
+ 	  conf="compile->master;runtime->master"/>
+ 	  
+ 	  <dependency 
+ 	  org="org.jboss.logging" 
+ 	  name="jboss-logging" 
+ 	  rev="3.5.0.Final"
+ 	  conf="compile->master;runtime->master"/>
+ 	  
+  	  <dependency 
+ 	  org="org.keycloak" 
+ 	  name="keycloak-crypto-default" 
+ 	  rev="19.0.1"
+ 	  conf="compile->master;runtime->master"/>
+ 	  
+ 	  <dependency 
+ 	  org="org.bouncycastle" 
+ 	  name="bcprov-jdk15on" 
+ 	  rev="1.70"
+ 	  conf="compile->master;runtime->master"/-->
+ 	  
+ 	  <!--dependency 
+ 	  org="com.fasterxml.jackson.core" 
+ 	  name="jackson-annotations" 
+ 	  rev="2.9.8"
+ 	  conf="compile->master;runtime->master"/>	
+ 	      	 	  	                                
+ 	  <dependency
       org="com.fasterxml.jackson.dataformat"
       name="jackson-dataformat-yaml"
       rev="2.6.1"
-      conf="compile->master;runtime->master"/>  -->
+      conf="compile->master;runtime->master"/-->
       
       <dependency org="org.apache.solr"
                 name="solr-core"
@@ -226,15 +291,25 @@ L-->
                 rev="1.6.1"
                 conf="*->master"/>
 
-   	   <dependency org="org.apache.solr"
+	<dependency org="org.apache.solr"
                 name="solr-solrj"
                 rev="8.9.0"
-                conf="compile->default;runtime->master"   />
+                conf="compile->default;runtime->master"/>
+	
+	<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" conf="compile->default;runtime->default"/>				
                 
-       <dependency org="io.dropwizard.metrics" name="metrics-core" rev="4.2.2"  conf="runtime->master"/>
+	<dependency org="io.dropwizard.metrics" name="metrics-core" rev="4.2.2"  conf="runtime->master"/>
                 <exclude org="javax.servlet.jsp" conf="runtime"/>
                 <exclude org="javax.servlet" conf="runtime"/>
+                
+		
+		<!--  dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.5" conf="compile->master;runtime->master"/>
+		<dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.2.5" conf="compile->master;runtime->master"/>
+		<dependency org="org.apache.httpcomponents" name="httpcore" rev="4.2.4" conf="compile->master;runtime->master"/>
+		<dependency org="org.apache.httpcomponents" name="httpmime" rev="4.2.5" conf="compile->master;runtime->master"/>
+		<dependency org="commons-codec" name="commons-codec" rev="1.7" conf="compile->master;runtime->master"/-->
 
-		<!-- end of dicom -->
+                
+        <!-- end of dicom -->		
 	</dependencies>
 </ivy-module>
