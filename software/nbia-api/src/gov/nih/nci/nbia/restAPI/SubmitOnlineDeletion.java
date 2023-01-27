@@ -8,43 +8,25 @@ package gov.nih.nci.nbia.restAPI;
 
 import java.util.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.text.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import gov.nih.nci.nbia.dynamicsearch.DynamicSearchCriteria;
-import gov.nih.nci.nbia.dynamicsearch.Operator;
-import gov.nih.nci.nbia.dynamicsearch.QueryHandler;
 import gov.nih.nci.nbia.executors.AsynchonousServices;
 import gov.nih.nci.nbia.executors.ImageDeletionMessage;
-import gov.nih.nci.nbia.lookup.StudyNumberMap;
-import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;
-import gov.nih.nci.nbia.util.NCIAConfig;
-import gov.nih.nci.nbia.util.SiteData;
-import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
-import gov.nih.nci.nbia.restUtil.JSONUtil;
-import gov.nih.nci.nbia.dto.QcSearchResultDTO;
-import gov.nih.nci.nbia.dto.StudyDTO;
-import gov.nih.nci.nbia.dao.QcStatusDAO;
-import gov.nih.nci.nbia.dao.StudyDAO;
-import gov.nih.nci.nbia.restUtil.QAUserUtil;
 import gov.nih.nci.nbia.restUtil.RoleCache;
+
 @Path("/submitOnlineDeletion")
 public class SubmitOnlineDeletion extends getData{
 
@@ -62,9 +44,10 @@ public class SubmitOnlineDeletion extends getData{
 		String user = null;
         String email = null;
 		try {	
-			   Authentication authentication = SecurityContextHolder.getContext()
-						.getAuthentication();
-				user = (String) authentication.getPrincipal();
+//			   Authentication authentication = SecurityContextHolder.getContext()
+//						.getAuthentication();
+//				user = (String) authentication.getPrincipal();
+				user = getUserName();			
 				NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
 				email = sm.getUserEmail(user);
 

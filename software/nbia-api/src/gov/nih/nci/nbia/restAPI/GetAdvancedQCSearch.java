@@ -9,46 +9,28 @@ package gov.nih.nci.nbia.restAPI;
 import java.util.*;
 import java.text.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import gov.nih.nci.ncia.criteria.*;
-import gov.nih.nci.nbia.dynamicsearch.DynamicSearchCriteria;
-import gov.nih.nci.nbia.dynamicsearch.Operator;
-import gov.nih.nci.nbia.dynamicsearch.QueryHandler;
-import gov.nih.nci.nbia.lookup.StudyNumberMap;
-import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.NCIAConfig;
-import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.dto.AdvancedCriteriaDTO;
-import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONDeserializer;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.dto.QcSearchResultDTO;
 import gov.nih.nci.nbia.dto.QcSearchResultDTOLight;
-import gov.nih.nci.nbia.dto.StudyDTO;
 import gov.nih.nci.nbia.dao.QcStatusDAO;
-import gov.nih.nci.nbia.dao.StudyDAO;
 import gov.nih.nci.nbia.restUtil.QAUserUtil;
-import gov.nih.nci.nbia.restUtil.RoleCache;
+
 @Path("/getAdvancedQCSearch")
 public class GetAdvancedQCSearch extends getData{
 
-
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a set of all collection names
 	 *
@@ -58,12 +40,14 @@ public class GetAdvancedQCSearch extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(MultivaluedMap<String, String> inFormParams) {
-		String user = null;
+		//String user = null;
 
 		try {	
-			  Authentication authentication = SecurityContextHolder.getContext()
-						.getAuthentication();
-				user = (String) authentication.getPrincipal();
+//			  Authentication authentication = SecurityContextHolder.getContext()
+//						.getAuthentication();
+//				user = (String) authentication.getPrincipal();
+	 		String user = getUserName();
+
                 if (!QAUserUtil.isUserQA(user)) {
                 	System.out.println("Not QA User!!!!");
 				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");

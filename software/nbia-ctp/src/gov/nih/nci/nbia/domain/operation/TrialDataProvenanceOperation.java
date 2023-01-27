@@ -40,11 +40,6 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Collection is null");
 		    }
 		
-		    if ((temp = (String) numbers.get(DicomConstants.SITE_ID)) != null) {
-		        hql += ("s.dpSiteId = '" + temp.trim() + "' and ");
-		    } else {
-		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site id is null");
-		    }
 		
 		    if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
 		        hql += ("lower(s.dpSiteName) = '" + temp.trim().toLowerCase() +
@@ -56,6 +51,7 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		    List ret = getHibernateTemplate().find(hql);
 		    if(ret != null  && ret.size() > 0) {
 		    	if (ret.size() == 1) {
+		    		System.out.println("tdp found");
 		    		tdp = (TrialDataProvenance) ret.get(0);
 		    	}
 		    	else if (ret.size() > 1)

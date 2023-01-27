@@ -1,9 +1,3 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=csv
-
-
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.ArrayList;
@@ -30,10 +24,8 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import io.swagger.annotations.*;
 @Path("/submitCollectionDescription")
 public class SubmitCollectioDescription extends getData{
-	private static final String column="Collection";
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@ApiOperation(value = "Submit a new or updated collection description",
@@ -41,6 +33,7 @@ public class SubmitCollectioDescription extends getData{
    @ApiResponses(value = {
       @ApiResponse(code = 200, message = "The collection description has been sucessfully processed"),
       @ApiResponse(code = 500, message = "An unexpected error has occurred. The error has been logged.") })
+
 	public Response constructResponse(@ApiParam(name =  "name", 
 			   value = "The name of the collection to have the description", example = "4D-Lung", required = true) 
 	        @FormParam("name") String name,
@@ -52,9 +45,10 @@ public class SubmitCollectioDescription extends getData{
 	         @FormParam("license") Integer license) {
 
 		try {	
-			   Authentication authentication = SecurityContextHolder.getContext()
-						.getAuthentication();
-				String user = (String) authentication.getPrincipal();
+//			   Authentication authentication = SecurityContextHolder.getContext()
+//						.getAuthentication();
+//				String user = (String) authentication.getPrincipal();
+			String user = getUserName();
 				List<String> roles=RoleCache.getRoles(user);
                 if (roles==null) {
                 	roles=new ArrayList<String>();

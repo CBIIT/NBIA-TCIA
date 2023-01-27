@@ -1,4 +1,4 @@
-//To Test: https://imaging-dev.nci.nih.gov/nbia-api/services/v1/getImage?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.2103.7010.217057652328318927727295709419
+//To Test: https://imaging-dev.nci.nih.gov/nbia-api/v2/getImage?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.2103.7010.217057652328318927727295709419
 
 package gov.nih.nci.nbia.restAPI;
 
@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -41,7 +39,6 @@ import gov.nih.nci.nbia.dto.MD5DTO;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
 import gov.nih.nci.nbia.security.AuthorizationManager;
-import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 

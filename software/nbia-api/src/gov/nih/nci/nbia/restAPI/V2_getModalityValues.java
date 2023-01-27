@@ -1,20 +1,20 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?BodyPartExamined=ABDOMEN&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?BodyPartExamined=ABDOMEN&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?BodyPartExamined=ABDOMEN&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?BodyPartExamined=ABDOMEN&format=csv
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getModalityValues?Collection=IDRI&format=csv
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?format=xml
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?format=html
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?format=json
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?format=csv
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=xml
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=html
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=json
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&BodyPartExamined=ABDOMEN&format=csv
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?BodyPartExamined=ABDOMEN&format=xml
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?BodyPartExamined=ABDOMEN&format=html
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?BodyPartExamined=ABDOMEN&format=json
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?BodyPartExamined=ABDOMEN&format=csv
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&format=xml
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&format=html
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&format=json
+//To Test: http://localhost:8080/nbia-api/v2/getModalityValues?Collection=IDRI&format=csv
 
 package gov.nih.nci.nbia.restAPI;
 

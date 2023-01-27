@@ -8,6 +8,7 @@ import gov.nih.nci.nbia.dao.PatientDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
 import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
 import gov.nih.nci.nbia.dto.CustomSeriesListDTO;
+import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.restSecurity.AuthorizationService;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -28,12 +29,16 @@ import gov.nih.nci.nbia.wadosupport.WADOParameters;
 import gov.nih.nci.nbia.wadosupport.WADOSupportDAO;
 import gov.nih.nci.nbia.wadosupport.WADOSupportDTO;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
+import gov.nih.nci.nbia.restUtil.RoleCache;
+import gov.nih.nci.nbia.security.NCIASecurityManager;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.springframework.dao.DataAccessException;
@@ -44,6 +49,41 @@ import javax.ws.rs.core.Response.*;
 
 public class getData {
 	String applicationName = NCIAConfig.getCsmApplicationName();
+	@Context private HttpServletRequest httpRequest;
+	
+	protected String getUserName() {
+		String userName; 
+
+		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
+			String token = httpRequest.getHeader("Authorization");
+			userName = AuthenticationWithKeycloak.getInstance().getUserName(token.substring(7));
+System.out.println("@@@@@@@@@@@@keycloak get user name="+ userName);
+		}
+		else {
+			Authentication authentication = SecurityContextHolder.getContext()
+					.getAuthentication();
+			userName = (String) authentication.getPrincipal();
+		}			
+		return userName;
+	}
+	
+	protected boolean hasAdminRole() {
+		String user = getUserName();		
+		List<String> roles=RoleCache.getRoles(user);
+        if (roles==null) {
+        	roles=new ArrayList<String>();
+        	System.out.println("geting roles for user");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		    roles.addAll(sm.getRoles(user));
+		    RoleCache.setRoles(user, roles);
+        }
+        for (String role: roles) {
+        	System.out.println("role for user =" + user +":"+ role);
+        	if (role.equalsIgnoreCase(NCIAConfig.getProtectionElementPrefix() + "ADMIN"))
+        		return true;
+        }
+        return false;
+	}
 	
 	public UserProvisioningManager getUpm() throws CSException, CSConfigurationException {
 		UserProvisioningManager upm = SecurityServiceProvider.getUserProvisioningManager(applicationName);
@@ -57,9 +97,10 @@ public class getData {
 	protected List<String> getAuthorizedCollections() throws Exception {
 		List<String> authorizedCollections = null;
 		try {
-			Authentication authentication = SecurityContextHolder.getContext()
-					.getAuthentication();
-			String userName = (String) authentication.getPrincipal();
+//			Authentication authentication = SecurityContextHolder.getContext()
+//					.getAuthentication();
+//			String userName = (String) authentication.getPrincipal();
+			String userName = getUserName(); 		
 			authorizedCollections = AuthorizationService
 						.getAuthorizedCollections(userName);
 		} catch (Exception ex) {
@@ -204,9 +245,10 @@ public class getData {
 	}
 	protected boolean isUserHasAccess(String userName, Map<String, String> paramMap){
 		if (userName == null) {
-			Authentication authentication = SecurityContextHolder.getContext()
-					.getAuthentication();
-			userName = (String) authentication.getPrincipal();
+//			Authentication authentication = SecurityContextHolder.getContext()
+//					.getAuthentication();
+//			userName = (String) authentication.getPrincipal();
+			String useName = getUserName();  		
 		}
 
 		return AuthorizationService.isGivenUserHasAccess(userName, paramMap);

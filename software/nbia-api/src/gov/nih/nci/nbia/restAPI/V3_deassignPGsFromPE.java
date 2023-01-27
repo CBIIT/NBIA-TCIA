@@ -2,28 +2,22 @@
 
 package gov.nih.nci.nbia.restAPI;
 
-import java.util.Set;
-
-import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 @Path("/v3/deassignPGsFromPE")
 public class V3_deassignPGsFromPE extends getData{
-	@Context private HttpServletRequest httpRequest;
 
 	/**
 	 * This method deassign a combination of Project and Site to a Protection Group
@@ -34,7 +28,10 @@ public class V3_deassignPGsFromPE extends getData{
 	@Produces({MediaType.APPLICATION_JSON})
 
 	public Response constructResponse(@QueryParam("PGNames") String pgNames, @QueryParam("PEName") String peName) {
-		// String projName = null;
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
+		
 		if ((peName == null) || peName.isEmpty()) {
 			return Response.status(Status.BAD_REQUEST).entity("A value for PEName is needed.").build();
 		}

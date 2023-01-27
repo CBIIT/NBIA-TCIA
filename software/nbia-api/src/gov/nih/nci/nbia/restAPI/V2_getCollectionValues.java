@@ -1,8 +1,7 @@
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=json
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=html
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=xml
-//To Test: http://localhost:8080/nbia-api/api/v1/getCollectionValues?format=csv
-
+//To Test: http://localhost:8080/nbia-api/v2/getCollectionValues?format=json
+//To Test: http://localhost:8080/nbia-api/v2/getCollectionValues?format=html
+//To Test: http://localhost:8080/nbia-api/v2/getCollectionValues?format=xml
+//To Test: http://localhost:8080/nbia-api/v2/getCollectionValues?format=csv
 
 package gov.nih.nci.nbia.restAPI;
 
@@ -16,9 +15,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import gov.nih.nci.nbia.dao.ValueAndCountDAO;
 import gov.nih.nci.nbia.dto.ValuesAndCountsDTO;
@@ -45,10 +41,9 @@ public class V2_getCollectionValues extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
 	public Response  constructResponse(@QueryParam("format") String format) {
+		String userName = getUserName(); 
+
 		List<String> authorizedCollections = new ArrayList<String>();
-		Authentication authentication = SecurityContextHolder.getContext()
-				.getAuthentication();
-		String userName = (String) authentication.getPrincipal();
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
 		if (authorizedSiteData==null){
 			try {

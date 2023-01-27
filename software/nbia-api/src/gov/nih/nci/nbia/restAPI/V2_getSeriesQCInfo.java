@@ -4,14 +4,10 @@ package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -20,8 +16,6 @@ import javax.ws.rs.core.Response.Status;
 public class V2_getSeriesQCInfo extends getData {
 	private static final String[] columns={"SeriesInstanceUID", "Visibility", "ReleaseStatus", "ReleaseDate", "ImageCount", "Doi",  "LicenseName"};
 	public final static String TEXT_CSV = "text/csv"; 
-
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a set of series info filtered by series instance UID
 	 *

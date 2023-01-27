@@ -9,19 +9,16 @@ import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
 @Path("/v3/modifyRolesOfGroupForPG")
 public class V3_modifyRolesOfGroupForPG extends getData{
-	@Context private HttpServletRequest httpRequest;
 
 	/**
 	 * This method deassign an user to a protection group with a role
@@ -32,6 +29,9 @@ public class V3_modifyRolesOfGroupForPG extends getData{
 	@Produces({MediaType.APPLICATION_JSON})
 
 	public Response  constructResponse(@QueryParam("groupName") String groupName, @QueryParam("PGName") String pgName, @QueryParam("roleNames") String roleNames) {
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}
 		try {
 			UserProvisioningManager upm = getUpm();
 			//getProtection using protection group name

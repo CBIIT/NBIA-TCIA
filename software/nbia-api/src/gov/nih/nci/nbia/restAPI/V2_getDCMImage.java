@@ -1,4 +1,4 @@
-//To Test: https://imaging-dev.nci.nih.gov/nbia-api/services/v1/getImage?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.2103.7010.217057652328318927727295709419
+//To Test: https://imaging-dev.nci.nih.gov/nbia-api/v2/getImage?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.2103.7010.217057652328318927727295709419
 package gov.nih.nci.nbia.restAPI;
 
 import java.io.BufferedOutputStream;
@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,7 +29,6 @@ import org.apache.commons.io.IOUtils;
 
 import gov.nih.nci.nbia.dao.AnnotationDAO;
 import gov.nih.nci.nbia.dao.DownloadDataDAO;
-import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.exception.DataAccessException;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -40,7 +37,6 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 @Path("/v2/getDCMImage")
 public class V2_getDCMImage extends getData {
-	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 
 	/**
 	 * This method get a set of images in a zip file

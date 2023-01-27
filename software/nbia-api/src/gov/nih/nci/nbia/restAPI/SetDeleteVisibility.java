@@ -1,6 +1,3 @@
-//To Test: 
-//curl -X POST -d "project=testPROJ&siteName=site&seriesId=1.1&seriesId=2.2&seriesId=3.3&newQcStatus=1" -H "Authorization:Bearer ec6c2120-63ec-4a49-9643-19a7f47de9fc" -k "http://localhost:8080/nbia-api/services/submitQCVisibility"
-
 package gov.nih.nci.nbia.restAPI;
 
 import java.util.List;
@@ -46,7 +43,6 @@ import gov.nih.nci.nbia.security.NCIASecurityManager;
 public class SetDeleteVisibility extends getData{
 	public final static String TEXT_CSV = "text/csv";
 
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method set 
 	 *
@@ -67,9 +63,10 @@ public class SetDeleteVisibility extends getData{
 			
 
 		try {	
-			   Authentication authentication = SecurityContextHolder.getContext()
-						.getAuthentication();
-				String user = (String) authentication.getPrincipal();
+//			   Authentication authentication = SecurityContextHolder.getContext()
+//						.getAuthentication();
+//				String user = (String) authentication.getPrincipal();
+			String user = getUserName();
 				List<String> roles=RoleCache.getRoles(user);
                 if (roles==null) {
                 	roles=new ArrayList<String>();

@@ -89,7 +89,7 @@
        replication is in use, this should match the replication
        configuration.
     -->
-  <dataDir>${solr.data.dir:}</dataDir>
+  <dataDir>/data/solr/</dataDir>
 
 
   <!-- The DirectoryFactory to use for indexes.
@@ -439,8 +439,8 @@
          document).  Since Lucene internal document ids are transient,
          this cache will not be autowarmed.
       -->
-    <documentCache size="512"
-                   initialSize="512"
+    <documentCache size="32"
+                   initialSize="32"
                    autowarmCount="0"/>
 
     <!-- custom cache currently used by block join -->
@@ -1161,7 +1161,7 @@
   </updateProcessor>
 
   <!-- The update.autoCreateFields property can be turned to false to disable schemaless mode -->
-  <updateRequestProcessorChain name="add-unknown-fields-to-the-schema" default="${update.autoCreateFields:true}"
+  <updateRequestProcessorChain name="add-unknown-fields-to-the-schema" default="${update.autoCreateFields:false}"
            processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields">
     <processor class="solr.LogUpdateProcessorFactory"/>
     <processor class="solr.DistributedUpdateProcessorFactory"/>

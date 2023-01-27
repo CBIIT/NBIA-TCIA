@@ -1,5 +1,3 @@
-//To Test: http://localhost:8080/nbia-auth/services/v3/assignDataSetToPG?projAndSite=TCGA//DUKE&PGName=NCIA.Test
-
 package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -8,18 +6,15 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/v3/assignDataSetToPG")
 public class V3_assignDataSetToPG extends getData{
-	@Context private HttpServletRequest httpRequest;
 
 	/**
 	 * This method assign a combination of Project and Site to a Protection Group
@@ -30,7 +25,9 @@ public class V3_assignDataSetToPG extends getData{
 	@Produces({MediaType.APPLICATION_JSON})
 
 	public Response  constructResponse(@QueryParam("projAndSite") String projAndSite, @QueryParam("PGName") String pgName) {
-		
+		if (!hasAdminRole()) {
+			return Response.status(401, "Not authorized to use this API.").build();
+		}		
 		String projName = null;
 		String [] parsedS = projAndSite.split("//");
 		if ((parsedS != null) && (parsedS.length == 2)){
