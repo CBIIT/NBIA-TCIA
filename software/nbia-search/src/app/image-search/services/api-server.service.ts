@@ -305,7 +305,6 @@ export class ApiServerService implements OnDestroy {
                 });
             this.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
             this.setCurrentPassword('');
-
         }
     }
 
@@ -553,7 +552,7 @@ export class ApiServerService implements OnDestroy {
         this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN, this.tokenLifeSpan);
         this.rawAccessToken = t;
 
-        // Get this users role(s)
+        // Get this user's role(s)
         this.doGet(Consts.GET_USER_ROLES, this.accessToken).subscribe(
             (resGetUserRoles) => {
                 this.currentUserRoles = resGetUserRoles;
@@ -1373,6 +1372,12 @@ export class ApiServerService implements OnDestroy {
      * @returns {Observable<R>}
      */
     getAccessToken(user, password, secret): Observable<any> {
+
+        // Guest user
+        if( user === undefined){
+            user = Properties.DEFAULT_USER;
+            password = Properties.DEFAULT_PASSWORD;
+        }
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
 
         let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
