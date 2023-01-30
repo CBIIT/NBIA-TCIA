@@ -165,6 +165,9 @@ L-->
 				</fileset>
 			</copy>
 		</case>
+		<default>
+         <echo message="The property value for authentication.config is ${authentication.config}" />
+       </default>
 		</switch>
 	    <!--if>
 	     <available file="${tomcat.dir}/ahp_nbia.properties"/>

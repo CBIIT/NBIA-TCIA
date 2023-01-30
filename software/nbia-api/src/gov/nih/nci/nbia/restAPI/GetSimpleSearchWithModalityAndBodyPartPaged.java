@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
 import gov.nih.nci.nbia.restUtil.SearchUtil;
+import gov.nih.nci.nbia.util.NCIAConfig;
 
 @Path("/getSimpleSearchWithModalityAndBodyPartPaged")
 public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
@@ -27,10 +28,14 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 	public Response constructResponse(MultivaluedMap<String, String> inFormParams) {
 
 		try {	
-
+			PatientSearchSummary  returnValue= null;	
         SearchUtil util=new SearchUtil();
-        
-		PatientSearchSummary  returnValue=util.getPatients(inFormParams);
+		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
+			String user = getUserName();
+			returnValue=util.getPatients(inFormParams, user, true);
+		}
+		else
+			returnValue=util.getPatients(inFormParams, null, false);
 		return Response.ok(JSONUtil.getJSONforPatientSearchSummary(returnValue)).type("application/json")
 				.build();
 		} catch (Exception e) {

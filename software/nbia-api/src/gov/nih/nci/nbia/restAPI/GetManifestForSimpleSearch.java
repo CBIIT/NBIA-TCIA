@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MultivaluedMap;
 
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.restUtil.*;
 import gov.nih.nci.nbia.restUtil.SearchUtil;
@@ -32,7 +33,16 @@ public class GetManifestForSimpleSearch extends getData{
 		try {	
 
 	    SearchUtil util=new SearchUtil();
-		PatientSearchSummary  search=util.getPatients(inFormParams);
+//		PatientSearchSummary  search=util.getPatients(inFormParams);
+		
+		PatientSearchSummary  search= null;
+		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
+			String user = getUserName();
+			search=util.getPatients(inFormParams, user, true);
+		}
+		else
+			search=util.getPatients(inFormParams, null, false);		
+				
 		long currentTimeMillis = System.currentTimeMillis();
 		String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 		List<String> list=new ArrayList<String>();

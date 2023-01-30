@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MultivaluedMap;
 
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.restUtil.SearchUtil;
 import gov.nih.nci.nbia.restUtil.PatientSearchSummary;
@@ -31,7 +32,15 @@ public class GetRestrictionsForSimpleSearch extends getData{
 		try {	
 
 	    SearchUtil util=new SearchUtil();
-		PatientSearchSummary  search=util.getPatients(inFormParams);
+//		PatientSearchSummary  search=util.getPatients(inFormParams);
+	    PatientSearchSummary  search= null;
+		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
+			String user = getUserName();
+			search=util.getPatients(inFormParams, user, true);
+		}
+		else
+			search=util.getPatients(inFormParams, null, false);		
+		
 		List<String> list=new ArrayList<String>();
 		List<PatientSearchResultWithModilityAndBodyPart> patients = search.getResultSet();
 		List<Integer> seriesList = new ArrayList<Integer>();
