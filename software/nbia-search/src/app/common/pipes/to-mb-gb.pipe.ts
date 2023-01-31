@@ -13,7 +13,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  */
 export class ToMbGbPipe implements PipeTransform{
     transform( value: any, decimalPlaces = 0 ): string {
-/*      JIRA 1899
+/*      JIRA 1889
         let kb = 1024.0;
         let mb = 1048576.0;
         let gb = 1073741824.0;

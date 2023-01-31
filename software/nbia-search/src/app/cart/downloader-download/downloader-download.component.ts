@@ -49,12 +49,10 @@ export class DownloaderDownloadComponent implements OnInit, OnDestroy{
         this.commonService.downloaderDownLoadEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             ( data ) => {
                 this.downLoadTool = data;
-                console.log('MHL 300 downLoadTool: ', this.downLoadTool);
                 this.showDownloaderDownload = true;
                 this.menuService.lockMenu();
             }
         );
-        console.log('MHL downLoadTool: ', this.downLoadTool);
     }
 
     /**

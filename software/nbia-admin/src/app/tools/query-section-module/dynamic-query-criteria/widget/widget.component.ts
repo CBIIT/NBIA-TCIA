@@ -514,12 +514,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
 
 
     /**
-     * @TODO Calendar
      *
-     * @param doNotRerunTheQuery
+     * @param rerunTheQuery
      */
     onClearClick( rerunTheQuery: boolean = true ){
-
+console.log('MHL onClearClick: ', rerunTheQuery );
         if( this.criteriaSmallTextInput || this.criteriaLargeTextInput ){
             this.criteriaTextInputText = '';
         }else if( this.criteriaSingleLineRadio ){

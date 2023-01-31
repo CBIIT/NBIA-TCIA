@@ -77,7 +77,7 @@ export let Properties = {
     HAVE_URL_TOKEN: false,
 
     // Show in console, curl version of post & get calls.
-    DEBUG_CURL: false,
+    DEBUG_CURL: true,
 
     // This value can be changed in the config file.  @FIXME  No, this is not yet in the config file!
     HTTP_TIMEOUT: 120000,

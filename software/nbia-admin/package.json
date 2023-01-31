@@ -14,15 +14,16 @@
     "private": true,
     "dependencies": {
         "@angular/animations": "~8.2.14",
+        "@angular/cdk": "~8.2.2",
         "@angular/common": "~8.2.14",
         "@angular/compiler": "~8.2.14",
         "@angular/core": "~8.2.14",
-        "@angular/cdk": "~8.2.2",
         "@angular/forms": "~8.2.14",
         "@angular/platform-browser": "~8.2.14",
         "@angular/platform-browser-dynamic": "~8.2.14",
         "@angular/router": "~8.2.14",
         "@kolkov/angular-editor": "^1.0.2",
+        "@types/geojson": "7946.0.8",
         "angular2-cookie": "^1.2.6",
         "angular2-draggable": "^2.3.2",
         "moment": "^2.24.0",
@@ -33,8 +34,7 @@
         "rxjs": "~6.4.0",
         "ts-promise": "^2.2.0",
         "tslib": "^1.10.0",
-        "zone.js": "~0.9.1",
-        "@types/geojson": "7946.0.8"
+        "zone.js": "~0.9.1"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.803.0",

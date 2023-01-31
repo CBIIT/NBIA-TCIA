@@ -1372,16 +1372,15 @@ export class ApiServerService implements OnDestroy {
      * @returns {Observable<R>}
      */
     getAccessToken(user, password, secret): Observable<any> {
-
         // Guest user
         if( user === undefined){
             user = Properties.DEFAULT_USER;
             password = Properties.DEFAULT_PASSWORD;
         }
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
-
         let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
 
+        console.log('TESTING user: ', user );
         let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
 
         if (Properties.DEBUG_CURL) {

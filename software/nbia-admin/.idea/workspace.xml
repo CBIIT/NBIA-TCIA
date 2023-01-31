@@ -1,37 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="83341ce9-d639-4271-85f5-6c4c568df6e5" name="Default Changelist" comment=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t',">
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../nbia-api/nbia-api.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/header-module/header/universal-menu/universal-menu.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/header-module/header/universal-menu/universal-menu.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/popup.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/popup.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/edit-license-module/edit-license/edit-license.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/edit-license-module/edit-license/edit-license.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/assets/properties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/properties.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/cart/downloader-download/downloader-download.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/cart/downloader-download/downloader-download.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/common/pipes/to-mb-gb.pipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/common/pipes/to-mb-gb.pipe.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/image-search/data-section/data-section-tabs/search-results/search-results-table/search-results-table.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/image-search/data-section/data-section-tabs/search-results/search-results-table/search-results-table.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/image-search/services/api-server.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/image-search/services/api-server.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/app/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/assets/configuration" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/assets/configuration" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nbia-search/src/assets/properties.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nbia-search/src/assets/properties.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,52 +36,98 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.scss" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.scss" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/constants.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/popup.scss" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.spec.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.spec.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/card-nbia.scss" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/btn-nbia.scss" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-released/query-released.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-license-module/edit-license/edit-license.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/node_modules/@angular/router/router.d.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/admin-common-pipe-module/pipes/month-day-year.pipe.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/access-token.service.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/api.service.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/assets/properties.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/configuration.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/parameter.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/util.service.spec.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/admin-common/services/util.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/app-routing.module.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/app.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/btn-nbia.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/card-nbia.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/constants.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/criteria-selection-menu/criteria-selection-menu.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/header-module/header.module.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/login/login.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/nbia-admin-client/nbia-admin-client.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/popup.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/preferences/preferences.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/deletion-bulk-operations/deletion-bulk-operations.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.spec.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/cine-mode-module/qc-status-edit/qc-status-edit.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/display-dynamic-query/display-dynamic-query/display-dynamic-query.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/display-query-module/display-query/display-query.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/display-query-module/display-query/display-query.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-collection-descriptions-module/edit-collection-descriptions/edit-collection-descriptions.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-license-module/edit-license/edit-license.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-license-module/edit-site-license/edit-site-license.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/edit-license-module/edit-site-license/edit-site-license.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-online-deletion-module/perform-online-deletion/perform-online-deletion.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.spec.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc-bulk-operations/perform-qc-bulk-operations.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/perform-qc-module/perform-qc/perform-qc.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/dynamic-query-criteria.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.scss" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-calendar/widget-calendar.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget-site-license.service.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/dynamic-query-criteria/widget/widget.component.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/app/tools/approve-deletions-module/approve-deletions/approve-deletions.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section-dynamic/left-section-dynamic.component.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/left-section/left-section.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-confirmed/query-confirmed.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-qc-status/query-qc-status.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-released/query-released.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section.module.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.html" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/query-section/query-section.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/query-section-module/services/query-section.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-pager/search-results-pager.service.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/remove-site.pipe.spec.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/remove-site.pipe.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/app/tools/search-results-section-module/search-results-section-bravo/search-results-section-bravo.component.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/bootstrap-4.5.2-dist/css/bootstrap.css" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/brand/nbia/footer.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/brand/tcia/footer.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/configuration" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/assets/properties.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/index.html" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="JupyterTrust" id="5f4b9c4e-0380-42c5-8300-1bdc5c35f79a" />
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="e1kj79a8" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="1jhKRiWrVjPBSfmfu17HNlQ7X6B" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -104,25 +136,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="TODO_SCOPE" value="All Places" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.stylelint" value="true" />
-    <property name="node.js.selected.package.stylelint" value="$PROJECT_DIR$/node_modules/stylelint" />
-    <property name="nodejs.protractor.protractor_package" value="$PROJECT_DIR$/node_modules/protractor" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.stylesheets.stylelint" />
-    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lerner/code/work_stuff/NBIA/NBIA-TCIA/software/nbia-admin/src/assets/properties.ts&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;/home/lerner/code/work_stuff/NBIA/NBIA-TCIA/software/nbia-admin/node_modules/stylelint&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/lerner/code/work_stuff/NBIA/NBIA-TCIA/software/nbia-admin/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/lerner/code/work_stuff/NBIA/NBIA-TCIA/software/nbia-admin/node_modules/typescript/lib&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -307,154 +332,45 @@
       <workItem from="1627570503493" duration="794000" />
       <workItem from="1627648574010" duration="3361000" />
       <workItem from="1628257109586" duration="32769000" />
-      <workItem from="1628426875316" duration="23881000" />
-    </task>
-    <task id="LOCAL-00001" summary="Adding widget configuration tool">
-      <created>1610398273481</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1610398273481</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Adding preliminary criteria selection menu and &quot;Dynamic Search&quot; tab.">
-      <created>1611767200505</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1611767200505</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Adding widget configuration files that I missed in the last commit.">
-      <created>1611827668775</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1611827668775</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Adding widget configuration files that I missed in the last commit.">
-      <created>1611854538216</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1611854538216</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Adding widget configuration files that I missed in the last commit.">
-      <created>1611857122331</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1611857122331</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Updated the universal menu at the top of the page.">
-      <created>1613559579753</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1613559579753</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Adding widget configuration set from server. Start of dynamic query building.">
-      <created>1613990161217</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1613990161217</updated>
-    </task>
-    <task id="LOCAL-00008" summary="JIRAs 1621, 1622, 1615(Buttons), and 1617&#10;1621 - Exclude commercial restricted series - series are still include in manifest file&#10;1622 - Fix universal menus&#10;1615 - Update intro screens - Fixed the bottons looking disabled, still need to update the screen shots&#10;1617 - popup when a shared query includes Collection(s) not accessable by the user - Updated for Bootstrap 4">
-      <created>1615216598960</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1615216598960</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Update JQuery to version 3.6.0">
-      <created>1616416114142</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1616416114142</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Turned off Dynamic search criteria in the configuration file.">
-      <created>1616506800094</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1616506800094</updated>
-    </task>
-    <task id="LOCAL-00011" summary="committing Dynamic search, still a work in progress. Cine mode only loads and displays first image until/unless user needs more.&#10;Added paging to search results.">
-      <created>1618351428317</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1618351428317</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Single line radio button input">
-      <created>1618391103339</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1618391103339</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Fixed bad Markdown formatting">
-      <created>1618395402323</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1618395402323</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Refresh token use">
-      <created>1618500428792</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1618500428792</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Adding widget configuration files that I missed in the last commit.">
-      <created>1618501901858</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1618501901858</updated>
-    </task>
-    <task id="LOCAL-00016" summary="A little clean up of widget menu configuration JSON">
-      <created>1618504092174</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1618504092174</updated>
-    </task>
-    <task id="LOCAL-00017" summary="More work on Dynamic search.">
-      <created>1618576948292</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1618576948292</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Adding widget configuration files that I missed in the last commit.">
-      <created>1618746566406</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1618746566406</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Configuration tweak">
-      <created>1618747470594</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1618747470594</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Removed typedoc from package.json">
-      <created>1618846467285</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1618846467285</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Fixing &quot;Showing X - Y of Z Series&quot; at the top">
-      <created>1618919631955</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1618919631955</updated>
+      <workItem from="1628426875316" duration="27659000" />
+      <workItem from="1629721155179" duration="42078000" />
+      <workItem from="1631864756837" duration="10637000" />
+      <workItem from="1633525630656" duration="943000" />
+      <workItem from="1633552114945" duration="7256000" />
+      <workItem from="1634557725252" duration="3245000" />
+      <workItem from="1634746598814" duration="14178000" />
+      <workItem from="1635253065959" duration="4844000" />
+      <workItem from="1635419021976" duration="598000" />
+      <workItem from="1635494748891" duration="599000" />
+      <workItem from="1635507475063" duration="24367000" />
+      <workItem from="1636979016855" duration="55365000" />
+      <workItem from="1639331065682" duration="29000" />
+      <workItem from="1639331117310" duration="13984000" />
+      <workItem from="1639488407743" duration="92000" />
+      <workItem from="1639488525987" duration="1567000" />
+      <workItem from="1640102183736" duration="652000" />
+      <workItem from="1642511729193" duration="52287000" />
+      <workItem from="1643815621736" duration="41966000" />
+      <workItem from="1644446771213" duration="105683000" />
+      <workItem from="1648636646473" duration="5461000" />
+      <workItem from="1650289793940" duration="577000" />
+      <workItem from="1651250216030" duration="1347000" />
+      <workItem from="1651943627010" duration="17197000" />
+      <workItem from="1653676003709" duration="604000" />
+      <workItem from="1653677172090" duration="259396000" />
+      <workItem from="1656323711192" duration="1778000" />
+      <workItem from="1657017947411" duration="11636000" />
+      <workItem from="1658862622736" duration="1925000" />
+      <workItem from="1659010032388" duration="651000" />
+      <workItem from="1659010717701" duration="599000" />
+      <workItem from="1659349407086" duration="40850000" />
+      <workItem from="1663411938108" duration="7766000" />
+      <workItem from="1664737070723" duration="1257000" />
+      <workItem from="1665513743639" duration="91879000" />
+      <workItem from="1667293048206" duration="18904000" />
+      <workItem from="1668181299312" duration="4740000" />
+      <workItem from="1670946382181" duration="12675000" />
+      <workItem from="1675190855157" duration="597000" />
     </task>
     <task id="LOCAL-00022" summary="Fixes authentication issue when &quot;Home&quot; button is clicked">
       <created>1620222926670</created>
@@ -540,7 +456,266 @@
       <option name="project" value="LOCAL" />
       <updated>1625686225424</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t',">
+      <created>1628700976238</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1628700976238</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Adding icon for calendar">
+      <created>1629317322436</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1629317322436</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Added menu items to header menu">
+      <created>1630423093371</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1630423093371</updated>
+    </task>
+    <task id="LOCAL-00037" summary=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t',">
+      <created>1631626585189</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1631626585189</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Fix local IPs in property file and No future dates  NBIA-1761">
+      <created>1631626758021</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1631626758021</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Change to future date check">
+      <created>1631631252573</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1631631252573</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Updated Downloader Install Path Properties">
+      <created>1631635626792</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1631635626792</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fix for - Date on the search bar as &quot;NaN/undefined/undefined&quot;  JIRA-1761">
+      <created>1631787943893</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1631787943893</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Update version to trouble shoot build problem">
+      <created>1632143138245</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1632143138245</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Fix for QC update status button being disabled when there are changes that should have enabled it.">
+      <created>1636552061955</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1636552061955</updated>
+    </task>
+    <task id="LOCAL-00044" summary="A little cleanup of QC New Status">
+      <created>1636553421856</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1636553421856</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Adding site selection for series - still in progress">
+      <created>1639415163905</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1639415163905</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Add new file for Search Results services">
+      <created>1639484032419</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1639484032419</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Adding Released date, Update site, and Update Description URI">
+      <created>1644249196881</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1644249196881</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Update Collection Site, Update description URI, Add Released date">
+      <created>1644840461624</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1644840461624</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Updating a Collection Site for a series will enable the Update buttons regardless of, no status selected. JIRA 1845 1791">
+      <created>1645644963990</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1645644963990</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Enable &quot;Update&quot; button with no visibility selected">
+      <created>1645717812991</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1645717813007</updated>
+    </task>
+    <task id="LOCAL-00051" summary="fix for dropdown (select/option) not working on Chrome browser">
+      <created>1646238282943</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1646238282943</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Fix for default text rather than New Site sent by Cinemode">
+      <created>1646841065297</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1646841065298</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Update copyright year">
+      <created>1647871510196</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1647871510196</updated>
+    </task>
+    <task id="LOCAL-00054" summary="JIRAs 1862 1852 1851 1777  &quot;8.0&quot;">
+      <created>1647873438697</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1647873438697</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Perform Quality Control (Cine Mode): Update/Next Series Button remains disabled when Selecting Batch Number, Confirmed as Complete, or Released status. Probably fixed Progress bar stuck at %99">
+      <created>1648042896890</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1648042896890</updated>
+    </task>
+    <task id="LOCAL-00056" summary="1855 and 1857 Clearing fields for New or Nnext series">
+      <created>1656418535859</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1656418535859</updated>
+    </task>
+    <task id="LOCAL-00057" summary="JIRA 1894  Adding collection &amp; site to search results">
+      <created>1659444510753</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1659444510753</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Pipe if we need to remove site from collection//site">
+      <created>1660246371966</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1660246371966</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Possible fix for error in @types/geojson. Specified a known working version.  We should be able to remove this when the geojson default dependency is fixed.">
+      <created>1662553847764</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1662553847764</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Removed debugging output that was left in.">
+      <created>1662982248317</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1662982248317</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Fixed Collection//Site not updated after &quot;Next&quot; or &quot;Skip&quot;">
+      <created>1664189818436</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1664189818437</updated>
+    </task>
+    <task id="LOCAL-00062" summary="JIRA 1906  change license to site level">
+      <created>1666620205762</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1666620205763</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Changing wording in Home tool menu">
+      <created>1666709694418</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1666709694418</updated>
+    </task>
+    <task id="LOCAL-00064" summary="JIRA -1939 Edit Site license Save and Rest buttons enable/disable issues">
+      <created>1667233932208</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1667233932208</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Testing - site license undefined parameters">
+      <created>1667318876557</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1667318876557</updated>
+    </task>
+    <task id="LOCAL-00066" summary="TEST">
+      <created>1667319154448</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1667319154448</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Removing test code in site license section">
+      <created>1667324236549</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1667324236549</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Test code - Edit site license">
+      <created>1667325483815</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1667325483816</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Clean up test code">
+      <created>1667398188306</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1667398188306</updated>
+    </task>
+    <task id="LOCAL-00070" summary="JIRA 1739 &quot;New Status&quot; labels need to always come from the server">
+      <created>1668425892925</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1668425892925</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -556,37 +731,36 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="JIRAs 1621, 1622, 1615(Buttons), and 1617&#10;1621 - Exclude commercial restricted series - series are still include in manifest file&#10;1622 - Fix universal menus&#10;1615 - Update intro screens - Fixed the bottons looking disabled, still need to update the screen shots&#10;1617 - popup when a shared query includes Collection(s) not accessable by the user - Updated for Bootstrap 4" />
-    <MESSAGE value="Update JQuery to version 3.6.0" />
-    <MESSAGE value="Turned off Dynamic search criteria in the configuration file." />
-    <MESSAGE value="committing Dynamic search, still a work in progress. Cine mode only loads and displays first image until/unless user needs more.&#10;Added paging to search results." />
-    <MESSAGE value="Single line radio button input" />
-    <MESSAGE value="Fixed bad Markdown formatting" />
-    <MESSAGE value="Refresh token use" />
-    <MESSAGE value="A little clean up of widget menu configuration JSON" />
-    <MESSAGE value="More work on Dynamic search." />
-    <MESSAGE value="Adding widget configuration files that I missed in the last commit." />
-    <MESSAGE value="Configuration tweak" />
-    <MESSAGE value="Removed typedoc from package.json" />
-    <MESSAGE value="Fixing &quot;Showing X - Y of Z Series&quot; at the top" />
-    <MESSAGE value="Fixes authentication issue when &quot;Home&quot; button is clicked" />
-    <MESSAGE value="Put ngx-mydatepicker back in the package.json file." />
-    <MESSAGE value="Fixes for JIRAs: 1668, 1666, 1665, 1660, 1658, 1661, 1657" />
-    <MESSAGE value="Bug fixes for 7.8" />
-    <MESSAGE value="Fix Date criteria widgets" />
-    <MESSAGE value="Trying to fix build problem" />
-    <MESSAGE value=" Updating version suffix for the version seen when mouse is on the version in the footer.TEST_VERSION: '1.0.8t'," />
-    <MESSAGE value="JIRA 1702 &amp; 1704" />
-    <MESSAGE value=" Updating version to 1.0.9" />
-    <MESSAGE value="Fixed - parameter index not getting incremented for searches including &quot;Released&quot;" />
-    <MESSAGE value="Fix for JIRA 1716 Perform QC: Only AND's show in the query indicator" />
-    <MESSAGE value="Removed stray output" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed stray output" />
+    <MESSAGE value="Add new file for Search Results services" />
+    <MESSAGE value="Adding Released date, Update site, and Update Description URI" />
+    <MESSAGE value="Update Collection Site, Update description URI, Add Released date" />
+    <MESSAGE value="Updating a Collection Site for a series will enable the Update buttons regardless of, no status selected. JIRA 1845 1791" />
+    <MESSAGE value="Enable &quot;Update&quot; button with no visibility selected" />
+    <MESSAGE value="fix for dropdown (select/option) not working on Chrome browser" />
+    <MESSAGE value="Fix for default text rather than New Site sent by Cinemode" />
+    <MESSAGE value="Update copyright year" />
+    <MESSAGE value="JIRAs 1862 1852 1851 1777  &quot;8.0&quot;" />
+    <MESSAGE value="Perform Quality Control (Cine Mode): Update/Next Series Button remains disabled when Selecting Batch Number, Confirmed as Complete, or Released status. Probably fixed Progress bar stuck at %99" />
+    <MESSAGE value="1855 and 1857 Clearing fields for New or Nnext series" />
+    <MESSAGE value="JIRA 1894  Adding collection &amp; site to search results" />
+    <MESSAGE value="Pipe if we need to remove site from collection//site" />
+    <MESSAGE value="Possible fix for error in @types/geojson. Specified a known working version.  We should be able to remove this when the geojson default dependency is fixed." />
+    <MESSAGE value="Removed debugging output that was left in." />
+    <MESSAGE value="Fixed Collection//Site not updated after &quot;Next&quot; or &quot;Skip&quot;" />
+    <MESSAGE value="JIRA 1906  change license to site level" />
+    <MESSAGE value="Changing wording in Home tool menu" />
+    <MESSAGE value="JIRA -1939 Edit Site license Save and Rest buttons enable/disable issues" />
+    <MESSAGE value="Testing - site license undefined parameters" />
+    <MESSAGE value="TEST" />
+    <MESSAGE value="Removing test code in site license section" />
+    <MESSAGE value="Test code - Edit site license" />
+    <MESSAGE value="Clean up test code" />
+    <MESSAGE value="JIRA 1739 &quot;New Status&quot; labels need to always come from the server" />
+    <option name="LAST_COMMIT_MESSAGE" value="JIRA 1739 &quot;New Status&quot; labels need to always come from the server" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -594,7 +768,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/app/tools/query-section-module/query-collection/query-collection.component.html</url>
           <line>92</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
