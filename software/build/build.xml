@@ -845,8 +845,13 @@ L-->
 			<property name="nbia.api.oauth2.client.id" value="${nbia.api.oauth2.client.id}"/>
 			<property name="nbia.api.oauth2.client.secret" value="${nbia.api.oauth2.client.secret}"/>
 			<property name="nbia.api.oauth2.token.validity.in.seconds" value="${nbia.api.oauth2.token.validity.in.seconds}"/>
+			<property name="authentication.config" value="${authentication.config}"/>
 		</ant>
+		<!--copy overwrite="true" file="${dist.exploded.dir}/nbia-wars/nbia-api.war" tofile="${gov.nih.nci.ncia.tomcat.home}/webapps/nbia-api.war">
+		</copy-->
 	</target>
+	
+	
 	<target name="build:all:deploy" depends="build:all">
 		  <copy todir="${gov.nih.nci.ncia.tomcat.home}/webapps">
 		    <fileset dir="${dist.exploded.dir}/nbia-wars"/>

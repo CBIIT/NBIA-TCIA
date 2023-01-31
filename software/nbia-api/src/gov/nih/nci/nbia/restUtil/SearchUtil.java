@@ -44,11 +44,19 @@ import gov.nih.nci.ncia.criteria.TimePointCriteria;
 
 public class SearchUtil {
 	private Map<String, SolrAllDocumentMetaData> patientMap=null;
-	public PatientSearchSummary getPatients(MultivaluedMap<String, String> inFormParams) throws Exception{
-		Authentication authentication = SecurityContextHolder.getContext()
-				.getAuthentication();
-		String userName = (String) authentication.getPrincipal();
+	public PatientSearchSummary getPatients(MultivaluedMap<String, String> inFormParams, String user, boolean useKeycloak) throws Exception{
+		String userName = user;
+		if (!useKeycloak) {
+			Authentication authentication = SecurityContextHolder.getContext()
+					.getAuthentication();
+			userName = (String) authentication.getPrincipal();			
+		}
+//		Authentication authentication = SecurityContextHolder.getContext()
+//				.getAuthentication();
+//		String userName = (String) authentication.getPrincipal();
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+		
+		
 		if (authorizedSiteData==null){
 		     AuthorizationManager am = new AuthorizationManager(userName);
 		     authorizedSiteData = am.getAuthorizedSites();

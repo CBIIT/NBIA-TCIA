@@ -156,6 +156,19 @@ L-->
 				<include name="cache.ccf"/>
 			</fileset>
 		</copy>
+		<switch value="${authentication.config}">
+		<case value="keycloak">
+			<echo>copying ${resources.dir}/keycloak to ${webapp.dir}/WEB-INF</echo>
+			<copy todir="${webapp.dir}/WEB-INF" overwrite="true">
+				<fileset dir="${resources.dir}/keycloak">
+					<include name="*.xml" />
+				</fileset>
+			</copy>
+		</case>
+		<default>
+         <echo message="The property value for authentication.config is ${authentication.config}" />
+       </default>
+		</switch>
 	    <!--if>
 	     <available file="${tomcat.dir}/ahp_nbia.properties"/>
 	      <then>
