@@ -27,26 +27,26 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 	@Transactional(propagation=Propagation.REQUIRED)
 	public Object validate(Map numbers) throws Exception {
 		String temp;
-	    String hql = "Select tdp from TrialDataProvenance tdp join tdp.siteCollection s where ";
+	    String hql = "Select tdp from TrialDataProvenance tdp where ";
 	
 	    TrialDataProvenance tdp = (TrialDataProvenance)SpringApplicationContext.getBean("trialDataProvenance");
 	
 	    try {
 		    if ((temp = (String) numbers.get(DicomConstants.PROJECT_NAME)) != null) {
 		        hql += ("lower(tdp.project) = '" + temp.trim().toLowerCase() +
-		        "' and ");
+		        "'");
 		        tdp.setProject(temp.trim());
 		    } else {
 		    	throw new Exception("Exception in TrialDataProvenanceOperation: Collection is null");
 		    }
 		
 		
-		    if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
-		        hql += ("lower(s.dpSiteName) = '" + temp.trim().toLowerCase() +
-		        "' ");
-		    } else {
-		    	throw new Exception("Exception in TrialDataProvenanceOperation: Site name is null");
-		    }
+		    // if ((temp = (String) numbers.get(DicomConstants.SITE_NAME)) != null) {
+		    //     hql += ("lower(s.dpSiteName) = '" + temp.trim().toLowerCase() +
+		    //     "' ");
+		    // } else {
+		    // 	throw new Exception("Exception in TrialDataProvenanceOperation: Site name is null");
+		    // }
 		
 		    List ret = getHibernateTemplate().find(hql);
 		    if(ret != null  && ret.size() > 0) {

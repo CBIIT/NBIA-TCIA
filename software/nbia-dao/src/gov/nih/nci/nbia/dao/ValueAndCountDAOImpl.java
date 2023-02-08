@@ -444,7 +444,9 @@ public class ValueAndCountDAOImpl extends AbstractDAO
             // Return empty list
             //logger.info("No results returned because user does not have access to any sites");
 
-            return null;
+
+            // This returning null was breaking any potential queries for a fresh database.
+            return "";
         }
         else {
             // Build HQL for sites

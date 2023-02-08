@@ -18,10 +18,6 @@ export class PopoutService implements OnDestroy {
 
   ngOnDestroy() {}
 
-  sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
-
   openPopoutModal(data) {
     const windowInstance = this.openOnce(
       'popout.html',
@@ -30,11 +26,7 @@ export class PopoutService implements OnDestroy {
 
     // Wait for window instance to be created
     setTimeout(() => {
-      // FF needs this?????
-      this.sleep(1);
       this.createCDKPortal(data, windowInstance);
-      // FF needs this?????
-      this.sleep(1);
     }, 1000);
   }
 
