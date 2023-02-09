@@ -13,6 +13,7 @@ You will find more details about NBIA in the following links:
   * [Community Wiki](https://wiki.nci.nih.gov/x/E4b3Ag)
   * [Developer Guide](https://wiki.nci.nih.gov/x/kIHxC)
   * [Installation Guide](https://wiki.nci.nih.gov/x/kgKYFg)
+  * [Release History](https://wiki.nci.nih.gov/x/QY1eFw)
     
 Please join us in further developing and improving NBIA. Submit any issues you may find to GitHub's issue tracker. Contact [Application Support](mailto:NCIAppSupport@mail.nih.gov) for information about open-source development and NBIA.
 

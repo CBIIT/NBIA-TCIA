@@ -1,8 +1,8 @@
 export let Properties = {
-    // 11_OCT_2021
-    VERSION: '1.0.10',
-    //09_NOV_2022
-    TEST_VERSION: '1.0.10d',
+    // 08_FEB_23
+    VERSION: '1.0.12',
+    // 08_FEB_23
+    TEST_VERSION: '1.0.12a',
 
     MAX_CRITERIA_LEN: 32,
 
