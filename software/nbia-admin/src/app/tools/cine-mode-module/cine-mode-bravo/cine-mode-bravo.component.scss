@@ -249,6 +249,10 @@ $cineModeSeriesDataHeight: 200px;
     width: $cineModeImageTdWidth;
 }
 
+.viewing-buttons {
+    display: flex;
+}
+
 .cine-mode-progress-bar{
     z-index: 30;
     width: $cineModeProgressWidth;
