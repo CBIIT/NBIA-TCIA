@@ -66,3 +66,13 @@ input{
 .div-4{
     margin: 0 0 0 4px;
 }
+
+.apply-checkbox{
+    @extend .nbia-button;
+    position: absolute;
+    left: 248px;
+    margin-top: 2px;
+    padding-bottom: 5px;
+    padding-top: 4px;
+    height: 36px;
+}

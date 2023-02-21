@@ -1,5 +1,3 @@
-// @TODO Move this higher, it is going to bw used by cine-mode-module/qc-status-edit too
-
 import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable( {

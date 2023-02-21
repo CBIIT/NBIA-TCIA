@@ -1,8 +1,8 @@
 export let Properties = {
     // 08_FEB_23
     VERSION: '1.0.12',
-    // 08_FEB_23
-    TEST_VERSION: '1.0.12a',
+    // 17_FEB_23
+    TEST_VERSION: '1.0.12b',
 
     MAX_CRITERIA_LEN: 32,
 
@@ -21,7 +21,7 @@ export let Properties = {
      Public
      API_SERVER_URL: 'https://public-dev.cancerimagingarchive.net',
      API_SERVER_URL: 'https://public.cancerimagingarchive.net',
- */
+   */
 
     API_SERVER_URL: '',
 
@@ -77,7 +77,7 @@ export let Properties = {
     HAVE_URL_TOKEN: false,
 
     // Show in console, curl version of post & get calls.
-    DEBUG_CURL: true,
+    DEBUG_CURL: false,
 
     // This value can be changed in the config file.  @FIXME  No, this is not yet in the config file!
     HTTP_TIMEOUT: 120000,
