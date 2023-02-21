@@ -226,9 +226,11 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
         if (!this.popoutService.isPopoutWindowOpen()) {
             this.popoutService.openPopoutModal(modalData);
-            POPOUT_MODALS['windowInstance'].addEventListener('beforeunload', (event) => {
-              this.cineModeService.closeCineMode();
-            });
+            // this listener is not currently working, and has caused problems in the past
+            // windowInstance.addEventListener('beforeunload', (event) => {
+            //     console.log(event);
+            //     this.cineModeService.closeCineMode();
+            // });
         } else {
             this.popoutService.focusPopoutWindow();
             // const sameSeries = POPOUT_MODALS['componentInstance'].series === series;
