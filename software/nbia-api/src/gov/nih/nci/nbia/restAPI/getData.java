@@ -2,16 +2,17 @@ package gov.nih.nci.nbia.restAPI;
 
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.CustomSeriesListDAO;
+import gov.nih.nci.nbia.dao.DownloadDataDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dao.InstanceDAO;
 import gov.nih.nci.nbia.dao.PatientDAO;
 import gov.nih.nci.nbia.dao.StudyDAO;
 import gov.nih.nci.nbia.dao.TrialDataProvenanceDAO;
 import gov.nih.nci.nbia.dto.CustomSeriesListDTO;
-import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.restSecurity.AuthorizationService;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.nbia.security.AuthenticationWithKeycloak;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.Role;
@@ -56,8 +57,12 @@ public class getData {
 
 		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
 			String token = httpRequest.getHeader("Authorization");
-			userName = AuthenticationWithKeycloak.getInstance().getUserName(token.substring(7));
-System.out.println("@@@@@@@@@@@@keycloak get user name="+ userName);
+
+			if (token.equalsIgnoreCase("Bearer undefined")) {
+				userName = NCIAConfig.getGuestUsername();
+			}
+			else
+				userName = AuthenticationWithKeycloak.getInstance().getUserName(token.substring(7));
 		}
 		else {
 			Authentication authentication = SecurityContextHolder.getContext()
@@ -66,6 +71,16 @@ System.out.println("@@@@@@@@@@@@keycloak get user name="+ userName);
 		}			
 		return userName;
 	}
+	
+	protected void recodeDownload (String seriesInstanceUid, long size, String type, String userName) {
+		try {
+			DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");					
+			downloadDAO.record(seriesInstanceUid, userName, type, size);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}		
 	
 	protected boolean hasAdminRole() {
 		String user = getUserName();		

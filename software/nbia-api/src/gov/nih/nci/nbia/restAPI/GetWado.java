@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.sun.research.ws.wadl.Application;
 
-import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
+import gov.nih.nci.nbia.security.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.wadosupport.*;
 

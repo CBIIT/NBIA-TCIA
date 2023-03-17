@@ -30,7 +30,7 @@ import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.restUtil.JSONUtil;
 import gov.nih.nci.nbia.restUtil.QAUserUtil;
 import gov.nih.nci.nbia.restUtil.RoleCache;
-import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
+import gov.nih.nci.nbia.security.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.util.CollectionSiteUtil;
 import java.text.SimpleDateFormat;
 

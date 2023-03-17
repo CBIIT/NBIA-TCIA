@@ -6,8 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -24,15 +25,20 @@ public class KeycloakLogout extends getData{
 	private static final String KEYCLOAK_TOKEN_URL = NCIAConfig.getKeycloakTokenUrl();
 	private static final String KEYCLOAK_LOGOUT_URL = KEYCLOAK_TOKEN_URL.substring(0, KEYCLOAK_TOKEN_URL.lastIndexOf("/")).concat("/logout");
     
-	@POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@GET
+	@Produces({MediaType.APPLICATION_JSON})
+//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response logout() throws URISyntaxException, UnsupportedEncodingException {
-System.out.println("keycloak logout url="+KEYCLOAK_LOGOUT_URL);
-String token = httpRequest.getHeader("Authorization");
-System.out.println("token ="+ token);
+
+	String token = httpRequest.getHeader("Authorization");
+
 		String authHeader = null;
         if (token != null) {
-            authHeader = "Bearer " + token;
+        	if (token.equals("Bearer undefined"))
+        		return Response.status(0, "No valid token.").build();
+        	else {
+        		token = token.replaceFirst("Bearer ", "");
+        	}
         } else {
             //no account to logout
         	//return Response.status(Response.Status.BAD_REQUEST).build();

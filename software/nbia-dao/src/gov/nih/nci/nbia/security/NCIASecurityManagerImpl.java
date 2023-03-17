@@ -158,11 +158,24 @@ public class NCIASecurityManagerImpl extends AbstractDAO
      * password @param username,password @return boolean
      */
 
-    public boolean login(String username, String password)
-        throws CSException {
-    	//logger.info("NCIASecurityManager: username is " + username + " password is " + password);
-        return am.login(username, password);
-    }
+    public boolean login(String username, String password) throws CSException {
+    	boolean loggedIn = false;
+    	if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
+    		loggedIn = AuthenticationWithKeycloak.getInstance().authenticateUser(username, password, NCIAConfig.getKeycloakClientId(), "");
+    		return loggedIn;
+    	}
+    	else {
+    	try {
+    		loggedIn = am.login(username, password);  		
+    	}
+    	catch (Exception ex) {
+    		ex.printStackTrace();
+    		throw ex;
+    	}
+    	}
+
+    	return loggedIn;
+}
 
 	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean isInLocalDB(String username) {
