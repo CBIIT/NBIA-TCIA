@@ -1,18 +1,18 @@
 <!-- ---------- Images Per Page  number input used in the Footer.  ---------- -->
 
 <span
-        class="images-per-page-span"
+  class="images-per-page-span"
 >
     Images per page:&nbsp;&nbsp;
     <input
-            type="number"
-            class="number-spinner"
-            min="1"
-            [ngClass]="{
+      type="number"
+      class="number-spinner"
+      min="1"
+      [(ngModel)]="imagesPerPage"
+      [ngClass]="{
                 'busy': ! haveData
             }"
-            [(ngModel)]="imagesPerPage"
-            (change)="onChangeMinimumMatchedStudies()"
+      (change)="onChangeMinimumMatchedStudies()"
     >
 </span>
 

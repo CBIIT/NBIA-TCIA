@@ -1,199 +1,199 @@
 @import '../app.component.scss';
 
 .heading-cell {
-    height: 48px;
+  height: 48px;
 }
 
 /* Series Description, Image count, and Zoom buttons. */
 .heading-label {
-    color: $button_foreground;
-    background-color: $button_background;
-    border: solid  $button_foreground 1px;
-    border-radius: 5px;
-    padding: 4px 8px 4px 8px;
-    margin-top: 10px;
-    font-size: 16pt;
+  color: $button_foreground;
+  background-color: $button_background;
+  border: solid  $button_foreground 1px;
+  border-radius: 5px;
+  padding: 4px 8px 4px 8px;
+  margin-top: 10px;
+  font-size: 16pt;
 }
 .loading-label {
-    color: #fff;
-    background-color: #337ab7;
-    border: solid  #337ab7 1px;
-    border-radius: 5px;
-    padding: 4px 8px 4px 8px;
-    margin-top: 10px;
-    font-size: 16pt;
+  color: #fff;
+  background-color: #337ab7;
+  border: solid  #337ab7 1px;
+  border-radius: 5px;
+  padding: 4px 8px 4px 8px;
+  margin-top: 10px;
+  font-size: 16pt;
 }
 .busy{
-    cursor: progress;
+  cursor: progress;
 }
 
 .image-grid-row {
-    margin-left: 1px;
-    width: 100%;
+  margin-left: 1px;
+  width: 100%;
 }
 
 .image-grid {
-    padding-top: 2px;
-    overflow-y: scroll;
+  padding-top: 2px;
+  overflow-y: scroll;
 }
 
 .grid-button-icon {
-    height: 24px;
+  height: 24px;
 }
 
 .zoom-button {
-    color: $button_foreground;
-    background-color: $button_background;
-    border: solid  $button_foreground 1px;
-    border-radius: 5px;
-    margin-top: -7px;
-    margin-left: 2px;
-    margin-right: 2px;
-    height: 37px;
+  color: $button_foreground;
+  background-color: $button_background;
+  border: solid  $button_foreground 1px;
+  border-radius: 5px;
+  margin-top: -7px;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 37px;
 }
 
 .zoom-button:disabled {
-    background-color: $disabled_button_background;
+  background-color: $disabled_button_background;
 }
 
 .zoom-button[disabled]:hover {
-    background-color: $disabled_button_background;
+  background-color: $disabled_button_background;
 }
 
 .zoom-button:hover {
-    background-color: $button_foreground;
+  background-color: $button_foreground;
 }
 
 .plus-minus {
-    float: right;
+  float: right;
 }
 
 .clicker {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .parent-image-div {
-    border: $image_border solid (0px + $border_thickness);
-    border-radius: 4px;
-    box-shadow: 0 0 2px 2px rgba(40, 96, 144, 0.3);
-    padding: 0px + $image_frame_margin;
+  border: $image_border solid (0px + $border_thickness);
+  border-radius: 4px;
+  box-shadow: 0 0 2px 2px rgba(40, 96, 144, 0.3);
+  padding: 0px + $image_frame_margin;
 }
 
 // So the horizontal margins match the vertical ( which is set in @mixin category )
 .topImage {
-    padding: 0;
-    margin-bottom: 2px * $outer_margin;
+  padding: 0;
+  margin-bottom: 2px * $outer_margin;
 }
 
 .parentImageMouseOver {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .image {
-    max-height: 100%;
-    max-width: 100%;
-    top: 0px + $image_frame_margin;
-    left: 0px + $image_frame_margin;
+  max-height: 100%;
+  max-width: 100%;
+  top: 0px + $image_frame_margin;
+  left: 0px + $image_frame_margin;
 }
 
 .image-mouseover {
-    z-index: 0;
-    margin-left: 0px + $outer_margin  +  $border_thickness;
-    margin-top: 0px +  $image_frame_margin  + $border_thickness;
-    height: calc(100% - #{ (0px + ( (2 * $border_thickness) + (2 * $image_frame_margin )) ) });
-    position: absolute;
-    top: 0;
+  z-index: 0;
+  margin-left: 0px + $outer_margin  +  $border_thickness;
+  margin-top: 0px +  $image_frame_margin  + $border_thickness;
+  height: calc(100% - #{ (0px + ( (2 * $border_thickness) + (2 * $image_frame_margin )) ) });
+  position: absolute;
+  top: 0;
 }
 
 .open-image-img {
-    z-index: 2;
-    opacity: 0.75;
+  z-index: 2;
+  opacity: 0.75;
 }
 
 .image-number-span {
-    z-index: 0;
-    margin-left: 10px + $image_frame_margin;
-    width: 100%;
-    position: absolute;
-    top: 0px + $image_number_top;
-    left: 0px;
+  z-index: 0;
+  margin-left: 10px + $image_frame_margin;
+  width: 100%;
+  position: absolute;
+  top: 0px + $image_number_top;
+  left: 0px;
 }
 
 .image-numberMouseOver {
-    z-index: 3;
-    opacity: 1;
-    font-weight: 900;
+  z-index: 3;
+  opacity: 1;
+  font-weight: 900;
 }
 
 .image-number {
-    -webkit-text-fill-color: white;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    margin-left: 0px + $image_number_left;
-    cursor: default;
-    font-size: 0pt + $image_number_font_size;
-    font-weight: 900;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  margin-left: 0px + $image_number_left;
+  cursor: default;
+  font-size: 0pt + $image_number_font_size;
+  font-weight: 900;
 }
 
 .hide-element {
-    display: none;
+  display: none;
 }
 
 // =================================================================
 
 @mixin category( $numberOfColumns ) {
-    padding-right: 0px + $outer_margin;
-    padding-left: 0px + $outer_margin;
-    min-height: 1px;
-    position: relative;
-    width: 100% / $numberOfColumns;
-    float: left;
+  padding-right: 0px + $outer_margin;
+  padding-left: 0px + $outer_margin;
+  min-height: 1px;
+  position: relative;
+  width: 100% / $numberOfColumns;
+  float: left;
 }
 
 .col-nbia-1 {
-    @include category(1);
+  @include category(1);
 }
 
 .col-nbia-2 {
-    @include category(2);
+  @include category(2);
 }
 
 .col-nbia-3 {
-    @include category(3);
+  @include category(3);
 }
 
 .col-nbia-4 {
-    @include category(4);
+  @include category(4);
 }
 
 .col-nbia-5 {
-    @include category(5);
+  @include category(5);
 }
 
 .col-nbia-6 {
-    @include category(6);
+  @include category(6);
 }
 
 .col-nbia-7 {
-    @include category(7);
+  @include category(7);
 }
 
 .col-nbia-8 {
-    @include category(8);
+  @include category(8);
 }
 
 .col-nbia-9 {
-    @include category(9);
+  @include category(9);
 }
 
 .col-nbia-10 {
-    @include category(10);
+  @include category(10);
 }
 
 .col-nbia-11 {
-    @include category(11);
+  @include category(11);
 }
 
 .col-nbia-12 {
-    @include category(12);
+  @include category(12);
 }

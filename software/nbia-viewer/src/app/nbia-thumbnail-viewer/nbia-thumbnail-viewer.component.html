@@ -1,40 +1,39 @@
 <!-- ----------  The scrolling grid of images  ---------- -->
 
-
 <!-- -----  Error display.  TODO need useful user friendly messages here.  ----- -->
 <h2 *ngIf="haveError">
-    <div *ngIf="errorMessage0.length > 0 " class="label label-danger">
-        {{errorMessage0}}
-        <br>
-    </div>
-    <div *ngIf="errorMessage1.length > 0 " class="label label-danger">
-        {{errorMessage1}}
-        <br>
-    </div>
-    <div *ngIf="errorMessage2.length > 0 " class="label label-danger">
-        {{errorMessage2}}
-    </div>
+  <div *ngIf="errorMessage0.length > 0 " class="label label-danger">
+    {{errorMessage0}}
+    <br>
+  </div>
+  <div *ngIf="errorMessage1.length > 0 " class="label label-danger">
+    {{errorMessage1}}
+    <br>
+  </div>
+  <div *ngIf="errorMessage2.length > 0 " class="label label-danger">
+    {{errorMessage2}}
+  </div>
 </h2>
 
 
 <!-- -----  Heading row with Series Description, Image count, Plus and Minus button.  ----- -->
 <div *ngIf="! haveError" class="container-fluid"
      [ngClass]="{
-                  'busy': ! haveData
-                  }"
+        'busy': ! haveData
+     }"
 >
 
-    <div class="row">
+  <div class="row mt-1">
 
-        <div class="panel-heading col-md-8  heading-cell"
-             [ngClass]="{
+    <div class="col-md-8  heading-cell"
+         [ngClass]="{
              'busy': ! haveData
          }"
-        >
+    >
             <span
-                *ngIf="( description.length > 0) && haveData"
-                class="heading-label"
-                [ngClass]="{
+              *ngIf="( description.length > 0) && haveData"
+              class="heading-label"
+              [ngClass]="{
                     'busy': ! haveData
                 }"
 
@@ -42,63 +41,49 @@
                 {{description}}
             </span>
 
-<!--
-
-            <span class="heading-label">
-                <label for="r0">&nbsp;All&nbsp;</label>
-                <input type="radio" name="imageLoadPick" id="r0" (click)="onRadioClick(0)">
-                <label for="r1">&nbsp;&nbsp;One page&nbsp;</label>
-                <input type="radio" name="imageLoadPick" id="r1" (click)="onRadioClick(1)">
-                <label for="r2">&nbsp;&nbsp;One image&nbsp;</label>
-                <input type="radio" name="imageLoadPick" id="r2" (click)="onRadioClick(2)">
-                &nbsp;{{properties.IMAGE_LOAD_MODE}}
-            </span>
-
--->
-
-            <span
-                *ngIf="! haveData"
-                class="loading-label"
-            >
+      <span
+        *ngIf="! haveData"
+        class="loading-label"
+      >
                 Loading Images
             </span>
-        </div>
+    </div>
 
-        <!-- Image count -->
-        <span class="panel-heading heading-cell col-md-2">
-            <span class="heading-label">
-                Images: {{commonService.getImageCount()}}
-            </span>
+    <!-- Image count -->
+    <span class="panel-heading heading-cell col-md-2">
+        <span class="heading-label">
+            Images: {{commonService.getImageCount()}}
         </span>
+    </span>
 
 
-        <!-- Plus & Minus buttons -->
-        <div class="panel-heading col-md-2 heading-cell">
+    <!-- Plus & Minus buttons -->
+    <div class="panel-heading col-md-2 heading-cell mt-1">
             <span class="plus-minus">
 
                 <button
-                    (mouseover)="onZoomOutMouseOver()"
-                    (mouseout)="onZoomOutMouseOut()"
-                    class="btn btn-default zoom-button"
-                    [disabled]="columns >= currentMaxColumns"
-                    (click)="onMinusClick()"
+                  (mouseover)="onZoomOutMouseOver()"
+                  (mouseout)="onZoomOutMouseOut()"
+                  class="btn btn-default zoom-button"
+                  [disabled]="columns >= currentMaxColumns"
+                  (click)="onMinusClick()"
                 >
                     <img [src]="zoomOutImgSrc" class="grid-button-icon"/>
                 </button>
 
                 <button
-                    (mouseover)="onZoomInMouseOver()"
-                    (mouseout)="onZoomInMouseOut()"
-                    class="btn btn-default zoom-button"
-                    [disabled]="columns < 2"
-                    (click)="onPlusClick()"
+                  (mouseover)="onZoomInMouseOver()"
+                  (mouseout)="onZoomInMouseOut()"
+                  class="btn btn-default zoom-button"
+                  [disabled]="columns < 2"
+                  (click)="onPlusClick()"
                 >
                     <img [src]="zoomInImgSrc" class="grid-button-icon"/>
 
                 </button>
             </span>
-        </div>
     </div>
+  </div>
 </div>
 
 
@@ -107,17 +92,19 @@
      [style.height]="innerHeight"
 >
 
-    <!-- -----  Images  ----- -->
-    <div class="row image-grid-row"
-         [ngClass]="{
+  <!-- -----  Images  ----- -->
+  <div class="row image-grid-row"
+       [ngClass]="{
              'busy': ! haveData
          }"
-    >
-        <!-- Loop through images for just this page. -->
-        <span
-            *ngFor="let image of images.slice(firstImage, firstImage + imagesPerPage); let i=index"
-            class="topImage"
-            [ngClass]="{
+  >
+
+
+    <!-- Loop through images for just this page. -->
+    <span
+      *ngFor="let image of images.slice(firstImage, firstImage + imagesPerPage); let i=index"
+      class="topImage"
+      [ngClass]="{
                   'col-nbia-1': columns === 1,
                   'col-nbia-2': columns === 2,
                   'col-nbia-3': columns === 3,
@@ -132,7 +119,7 @@
                   'col-nbia-12': columns === 12,
                   'busy': ! haveData
              }"
-        >
+    >
 
             <div class="parent-image-div"
                  [ngClass]="{
@@ -147,18 +134,18 @@
 
                     <!-- The Image -->
                     <img
-                        class="image "
-                        [ngClass]="{
+                      class="image "
+                      [ngClass]="{
                             'image-mouseover': mouseOver[i + firstImage],
                             'busy': ! haveData
                         }"
-                        [src]=image.thumbnailImage
+                      [src]=image.thumbnailImage
                     >
 
                     <span class="image-number-span">
                         <span
-                            class="image-number"
-                            [ngClass]="{
+                          class="image-number"
+                          [ngClass]="{
                                     'image-numberMouseOver': mouseOver[i + firstImage],
                                     'busy': ! haveData
                             }"
@@ -174,23 +161,23 @@
                     </span>
 
 
-                <!-- The transparent "Open Image" Image -->
+              <!-- The transparent "Open Image" Image -->
                     <img
-                        [ngClass]="{
+                      [ngClass]="{
                             'hide-element':! mouseOver[i + firstImage],
                             'busy': ! haveData
                         }"
-                        class="image open-image-img"
-                        src="assets/images/open_image_02.png"
+                      class="image open-image-img"
+                      src="assets/images/open_image_02.png"
                     >
             </div>
         </span>
-    </div>
+  </div>
 </div>
 <div *ngIf="! haveError">
-    <nbia-footer
-            [ngClass]="{
+  <nbia-footer
+    [ngClass]="{
                     'busy': ! haveData
                 }"
-    ></nbia-footer>
+  ></nbia-footer>
 </div>

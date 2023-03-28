@@ -38,7 +38,8 @@ export class ServerAccessService{
                  private route: ActivatedRoute, private router: Router
     ) {
         this.API_SERVER_URL = location.origin.toString();
-
+       // this.API_SERVER_URL = 'http:/192.168.1.21:8080'
+     // console.log('MHL 011 this.API_SERVER_URL: ', this.API_SERVER_URL);
         this.seriesId = this.route.snapshot.queryParams['thumbnailSeries'];
 
 
@@ -64,7 +65,7 @@ export class ServerAccessService{
      * @param imageNumber
      */
     async getImages( page?, imageNumber? ) {
-        this.loading = true;
+      this.loading = true;
         this.images = [];
         let len = 99999999;
         this.getImageDrillDownData().subscribe(
@@ -173,6 +174,7 @@ export class ServerAccessService{
         let options = {
             headers: headers,
         };
+
         return this.httpClient.post( imageDrillDownUrl, query, options );
     }
 
@@ -250,7 +252,6 @@ export class ServerAccessService{
      * @returns {Observable<any>}
      */
     getNewGuestServerAccessToken(): Observable<any> {
-        console.log( 'MHL getNewGuestServerAccessToken' );
         let post_url = this.API_SERVER_URL + '/nbia-api/oauth/token';
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
 
@@ -287,7 +288,6 @@ export class ServerAccessService{
                 this.token = tokens[0];
                 this.refreshToken = tokens[1];
                 this.expiresIn = tokens[2];
-
 
                 this.startRefreshTokenCycle();
 

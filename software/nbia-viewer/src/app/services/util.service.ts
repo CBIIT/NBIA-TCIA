@@ -1,77 +1,77 @@
 import { Injectable } from '@angular/core';
 
 @Injectable( {
-    providedIn: 'root'
+  providedIn: 'root'
 } )
 export class UtilService{
 
-    constructor() {
+  constructor() {
+  }
+
+
+  isNullOrUndefined( val: number | null ): boolean {
+    let res = false;
+    if( val == null ){
+      res = true;
     }
 
-
-    isNullOrUndefined( val ): boolean {
-        let res = false;
-        if( val == null ){
-            res = true;
-        }
-
-        if( val === null ){
-            res = true;
-        }
-
-        if( typeof val === 'undefined' ){
-            res = true;
-        }
-
-        return res;
+    if( val === null ){
+      res = true;
     }
 
-
-    /**
-     * A number or a boolean will return Empty (true)
-     * @param obj
-     * @returns {boolean}
-     */
-    isEmpty( obj ) {
-        for( let key in obj ){
-            if( obj.hasOwnProperty( key ) ){
-                return false;
-            }
-        }
-        return true;
+    if( typeof val === 'undefined' ){
+      res = true;
     }
 
+    return res;
+  }
 
-    isNullOrUndefinedOrEmpty( val ): boolean {
-        if( this.isNullOrUndefined( val ) ){
-            return true;
-        }
 
-        return( this.isEmpty(val));
+  /**
+   * A number or a boolean will return Empty (true)
+   * @param obj
+   * @returns {boolean}
+   */
+  isEmpty( obj ) {
+    for( let key in obj ){
+      if( obj.hasOwnProperty( key ) ){
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  isNullOrUndefinedOrEmpty( val ): boolean {
+    if( this.isNullOrUndefined( val ) ){
+      return true;
     }
 
-    isTrue( value ) {
-        if( this.isNullOrUndefined( value ) ){
-            return false;
-        }
+    return( this.isEmpty(val));
+  }
 
-        if( typeof value === 'number' ){
-            return value !== 0;
-        }
-
-        if( typeof value === 'boolean' ){
-            return value;
-        }
-
-        let val = '' + value.toUpperCase();
-        return (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1');
-
-
+  isTrue( value ) {
+    if( this.isNullOrUndefined( value ) ){
+      return false;
     }
 
-
-    sleep( ms ) {
-        return new Promise( resolve => setTimeout( resolve, ms ) );
+    if( typeof value === 'number' ){
+      return value !== 0;
     }
+
+    if( typeof value === 'boolean' ){
+      return value;
+    }
+
+    let val = '' + value.toUpperCase();
+    return (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1');
+
+
+  }
+
+
+  sleep( ms ) {
+    return new Promise( resolve => setTimeout( resolve, ms ) );
+  }
 
 }

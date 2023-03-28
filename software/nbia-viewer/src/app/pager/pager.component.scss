@@ -1,43 +1,43 @@
 @import '../app.component.scss';
 
 .pager-font {
-    font-size: 12pt;
+  font-size: 12pt;
 }
 
 .pager-button {
-    color: $button_foreground;
-    background-color: $button_background;
-    border: solid #8c8c8c 1px;
+  color: $button_foreground;
+  background-color: $button_background;
+  border: solid #8c8c8c 1px;
 
 }
 
 .pager-number {
-    color: $button_foreground;
-    background-color: $page_number_background;
-    cursor: default;
-    border: solid #8c8c8c 1px;
+  color: $button_foreground;
+  background-color: $page_number_background;
+  cursor: default;
+  border: solid #8c8c8c 1px;
 
 }
 
 .pager-button:hover {
-    //   color: $button_background;
-    background-color: $button_background_hover;
+  //   color: $button_background;
+  background-color: $button_background_hover;
 }
 
 .pager-parent-div {
-    padding: 2px;
-    margin: 0;
-    margin-top: -2px;
-    border-radius: 5px;
+  padding: 2px;
+  margin: 0;
+  margin-top: -2px;
+  border-radius: 5px;
 }
 
 .selected:hover, .selected {
-    background-color: $button_foreground;
-    color: $button_background;
+  background-color: $button_foreground;
+  color: $button_background;
 
 }
 
 .hide-button {
-    display: none;
+  display: none;
 }
 
