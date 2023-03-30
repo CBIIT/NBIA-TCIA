@@ -51,9 +51,9 @@ public class CsmAuthenticationProviderForOauth2 implements AuthenticationProvide
 	        NCIASecurityManager mgr = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
 //work around	        if(mgr.login(name, password)) {
 //boolean testResult = mgr.login(name, password);	        
-System.out.println("pass loging and always make it true");  
-System.out.println("user name is ="+name);
-System.out.println("password used="+password);
+//System.out.println("pass loging and always make it true");  
+//System.out.println("user name is ="+name);
+//System.out.println("password used="+password);
 	        if(true) {					
 	        	List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 	            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));

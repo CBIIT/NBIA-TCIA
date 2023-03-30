@@ -61,6 +61,8 @@ public class V1_getSingleImage extends getData {
 		String user =  NCIAConfig.getGuestUsername();
 
 		WADOSupportDTO wdto = getWadoImage(seriesInstanceUid, sOPInstanceUID, user);
+		int size = wdto.getImage().length;
+		recodeDownload(seriesInstanceUid, size, "v1API", user);
 		return Response.ok(wdto.getImage(), "application/dicom").header("Content-Disposition", "attachment; filename=" + sOPInstanceUID + ".dcm").build();
 	}
 }

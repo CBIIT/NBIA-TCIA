@@ -95,15 +95,20 @@ public class V1_getImageWithMD5Hash extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				int size = 0;
 				try {
 					int counter = 0;
 					ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
 					List<MD5DTO> dtos = tDao.getImageAndMD5Hash(sid, authorizedSiteData);
 					Map<String,String> fileMD5Map = new HashMap<String,String>();
+					
 					for (MD5DTO dto : dtos) {
 						String filename=dto.getFileName();
-						in = new FileInputStream(new File(filename));
+						//in = new FileInputStream(new File(filename));
+						
+						File afile = new File(filename);
+						in = new FileInputStream(afile);
+						size +=  afile.length();
 						if (in != null) {
 							// Add Zip Entry
 							String fileNameInZip = String.format("%08d", ++counter)
@@ -153,6 +158,7 @@ public class V1_getImageWithMD5Hash extends getData {
 					if (in != null)
 						in.close();
 				}
+				recodeDownload(seriesInstanceUid, size, "v1API", userName);
 			}
 		};
 

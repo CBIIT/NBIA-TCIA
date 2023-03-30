@@ -47,6 +47,7 @@ public class V2_getImage extends getData {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
 		final String sid = seriesInstanceUid;
+		String userName = getUserName();
 		if (sid == null) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, SeriesInstanceUID, is required for this API call.")
@@ -57,7 +58,7 @@ public class V2_getImage extends getData {
 		paramMap.put("seriesInstanceUID", sid);
 
 		//SecurityContextHolder will be used to get the user name later.
-		if (!isUserHasAccess(null, paramMap)) {
+		if (!isUserHasAccess(userName, paramMap)) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("The user has not been granted the access to image with given SeriesInstanceUID," + sid + ". Please contact System Admin to resolve this issue.")
 					.type(MediaType.APPLICATION_JSON).build();
@@ -73,7 +74,7 @@ public class V2_getImage extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				long size = 0;
 				try {
 //					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
@@ -86,7 +87,9 @@ public class V2_getImage extends getData {
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
 					for (String filename : fileNames) {
-						in = new FileInputStream(new File(filename));
+						File afile = new File(filename);
+						in = new FileInputStream(afile);
+						size +=  afile.length();
 
 						if (in != null) {
 							// Add Zip Entry
@@ -119,6 +122,7 @@ public class V2_getImage extends getData {
 					if (in != null)
 						in.close();
 				}
+				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
 			}
 		}; } else {
 		    stream = new StreamingOutput() {
@@ -126,6 +130,7 @@ public class V2_getImage extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
+				long size = 0;
 				zip.putNextEntry(new ZipEntry("LICENSE"));
 				IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 				zip.closeEntry();
@@ -133,8 +138,10 @@ public class V2_getImage extends getData {
 					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
 					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
 					for (ImageDTO2 imageResult : imageResults) {
-						in = new FileInputStream(new File(imageResult.getFileName()));
-
+						File afile = new File(imageResult.getFileName());
+						in = new FileInputStream(afile);
+						size +=  afile.length();
+						
 						if (in != null) {
 							// Add Zip Entry
 							String newFileName=imageResult.getNewFilename();
@@ -168,6 +175,7 @@ public class V2_getImage extends getData {
 					if (in != null)
 						in.close();
 				}
+				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
 			}
 		};
 		}
