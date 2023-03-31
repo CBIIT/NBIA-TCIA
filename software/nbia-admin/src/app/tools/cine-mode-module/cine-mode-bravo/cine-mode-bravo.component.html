@@ -74,12 +74,9 @@
 <div class="scroller-div">
     <!-- Image viewer and DICOM data -->
     <div>
-        <table class="table pb-0 mb-0"
-
-        >
+        <div class="viewer-dicom-row">
             <!-- ---------- This row is the image viewer and the DICOM data ---------- -->
-            <tr>
-                <td class="image-viewer-td"
+                <div class="m-1 image-viewer-td"
                     [ngClass]="{
                         'busy-mouse-pointer':  progress <100
                     }"
@@ -307,9 +304,9 @@
                     </span>
                     <!-- ----- END Image controls ----- -->
 
-                </td>
+                </div>
 
-                <td>
+                <div class="qc-status-flex">
 
                     <!-- ----- Change QC Status or Deletion----- -->
                     <div class="section-div">
@@ -405,24 +402,8 @@
                             </tbody>
                         </table>
                     </div>
-                </td>
-
-            </tr>
-
-            <!--  Show DICOM Checkbox - We don't want this. -->
-            <!--
-            <span class="show-dicom-checkbox">
-                <label for="showDicomCheckboxId"
-                >Show Dicom data&nbsp;</label
-                >
-                <input
-                    type="checkbox"
-                    id="showDicomCheckboxId"
-                    [(ngModel)]="showDicomData"
-                    (change)="toggleDicomCheckbox()"
-                />
-            </span>
-        --></table>
+                </div>
+        </div>
     </div>
     <!-- END Image viewer and DICOM data -->
 

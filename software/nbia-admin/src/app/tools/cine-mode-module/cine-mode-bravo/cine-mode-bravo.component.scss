@@ -90,14 +90,21 @@ $cineModeSeriesDataHeight: 200px;
 }
 
 .image{
-    height: $cineModeImageHeight;
-    width: $cineModeImageWidth;
+    // height: $cineModeImageHeight;
+    // width: $cineModeImageWidth;
+    width: 100%;
     padding: 0;
     margin: 0;
+    max-height: 80vh;
 }
 
 .cine-mode-slider{
-    width: $cineModeImageWidth;
+    width: 100%;
+}
+
+.qc-status-flex {
+    display: flex;
+    flex-direction: column;
 }
 
 .cine-mode-image-number-input{
@@ -156,10 +163,16 @@ $cineModeSeriesDataHeight: 200px;
 // The + 80px extends the dicom data to go down as far as the Image plus play video control buttons.
 .dicom-scroll-area{
     // height: calc(#{$cineModeImageHeight} + 80px);
-    height: 284px;
     padding-bottom: 0;
     margin-bottom: 0;
     overflow-y: auto;
+    max-height: 60vh;
+}
+
+.viewer-dicom-row {
+    display: flex;
+    justify-content: space-evenly;
+    max-height: 105vh;
 }
 
 .dicom-scroll-area-long{
@@ -189,7 +202,11 @@ $cineModeSeriesDataHeight: 200px;
 }
 
 .image-viewer-td{
-    width: $cineModeImageTdWidth;
+    // width: $cineModeImageTdWidth;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
 }
 
 .cine-mode-progress-bar{
