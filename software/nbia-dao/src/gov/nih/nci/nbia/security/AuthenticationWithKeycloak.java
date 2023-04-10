@@ -208,7 +208,7 @@ public class AuthenticationWithKeycloak {
 			}
 			else {
 				String json = EntityUtils.toString(response.getEntity());
-				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
+//				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
 				return json;
 			}
 		//	map = handleResponse(response);
@@ -305,7 +305,7 @@ public class AuthenticationWithKeycloak {
 			}
 			else {
 				String json = EntityUtils.toString(response.getEntity());
-				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
+//				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
 				return json;
 			}
 		//	map = handleResponse(response);

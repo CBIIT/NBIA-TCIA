@@ -24,5 +24,6 @@ L-->
 		<property name="userName" type="string" column="USER_NAME" />
 		<property name="md5hash" type="string" column="md5hash" />
 		<property name="collectionDescTimestamp" type="java.util.Date" column="COLLECTION_DESCRIPTIONS_TIMEST"/>
+		<property name="licenseID" type="integer" column="LICENSE_ID"/>
 	</class>
 </hibernate-mapping>
