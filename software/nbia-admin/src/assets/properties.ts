@@ -85,8 +85,8 @@ export let Properties = {
     DEV_MODE: false,
     DEV_PASSWORD: 'changeme',
     DEV_USER: 'mlerner',
-    DEFAULT_SECRET: 'ItsBetweenUAndMe',
-    DEFAULT_CLIENT_ID: 'nbiaRestAPIClient',
+    DEFAULT_SECRET: 'nbia-stage',
+    DEFAULT_CLIENT_ID: '',
 
     MAX_PAGER_BUTTONS: 6,
     DEFAULT_PAGE_LENGTH: 20,

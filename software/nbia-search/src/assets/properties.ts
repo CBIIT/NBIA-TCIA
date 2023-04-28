@@ -190,8 +190,8 @@ export let Properties = {
 
     DEFAULT_USER: 'nbia_guest',
     DEFAULT_PASSWORD: 'test',
-    DEFAULT_SECRET: 'ItsBetweenUAndMe',
-    DEFAULT_CLIENT_ID: 'nbiaRestAPIClient',
+    DEFAULT_SECRET: '',
+    DEFAULT_CLIENT_ID: 'nbia-stage',
 
     /* Search results and Cart pages */
     ROWS_PER_PAGE_CHOICE_DEFAULT: 10,
