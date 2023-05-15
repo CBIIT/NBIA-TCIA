@@ -1,8 +1,8 @@
 export let Properties = {
     // 08_FEB_23
     VERSION: '1.0.12',
-    // 17_FEB_23
-    TEST_VERSION: '1.0.12b',
+    // 15_MAY_23
+    TEST_VERSION: '1.0.12c',
 
     MAX_CRITERIA_LEN: 32,
 
@@ -86,7 +86,8 @@ export let Properties = {
     DEV_PASSWORD: 'changeme',
     DEV_USER: 'mlerner',
 
-    DEFAULT_SECRET: 'ItsBetweenUAndMe',  // CHECKME - Should we have this default here or only set in the configuration file?
+    DEFAULT_SECRET: '',
+    DEFAULT_CLIENT_ID: 'nbia-stage',
 
     MAX_PAGER_BUTTONS: 6,
     DEFAULT_PAGE_LENGTH: 20,
