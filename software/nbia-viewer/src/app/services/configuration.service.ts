@@ -67,6 +67,11 @@ export class ConfigurationService {
                         }
                     }
 
+                    if( key === 'DEFAULT_CLIENT_ID' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.DEFAULT_CLIENT_ID = value;
+                        }
+                    }
 
                 }
             }

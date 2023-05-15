@@ -7,4 +7,6 @@
 ################################################################################################################################
 # DEFAULT_USER = XXX
 # DEFAULT_PASSWORD = XXX
-# DEFAULT_SECRET = XXX
+# DEFAULT_SECRET = 'ItsBetweenUAndMe'
+# DEFAULT_CLIENT_ID = 'nbiaRestAPIClient'
+

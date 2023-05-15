@@ -256,7 +256,7 @@ export class ServerAccessService{
 
         let data = 'username=' + Properties.DEFAULT_USER +
             '&password=' + Properties.DEFAULT_PASSWORD +
-            '&client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET +
+            '&client_id=' + Properties.DEFAULT_CLIENT_ID + '=' + Properties.DEFAULT_SECRET +
             '&grant_type=password';
 
 
@@ -341,7 +341,7 @@ export class ServerAccessService{
 
 
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-        let data = 'client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=refresh_token&refresh_token=' + refreshToken;
+        let data = 'client_id=' + Properties.DEFAULT_CLIENT_ID + '&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=refresh_token&refresh_token=' + refreshToken;
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
