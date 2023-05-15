@@ -31,9 +31,10 @@ public class GetTextSearch extends getData{
 
 	public Response constructResponse(@FormParam("textValue") String textValue) {
 
-		try {	
+		try {
+			String userName = getUserName(); 
 	        SearchUtil util=new SearchUtil();
-	        List<PatientSearchResult> patients=util.getPatients(textValue);
+	        List<PatientSearchResult> patients=util.getPatients(textValue,userName);
 			List<PatientSearchResult> textPatients = new ArrayList<PatientSearchResult>();
 			for (PatientSearchResult patient:patients)
 			{

@@ -1,7 +1,7 @@
 /**
  *
  */
-package gov.nih.nci.nbia.restSecurity;
+package gov.nih.nci.nbia.security;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class AuthenticationWithKeycloak {
 //	static String pWord = "admin";
 //	static String clientId = "nbiaRestAPIClient";
 //	static String clientSecret = "oj1fWZcVnAk3CR31uEF8jmdNtl9ydiAb";
-	static String tokenUrl; //= "http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/token";
+	static String tokenUrl; //= "http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/KeycloakGetToken";
 	static String userInfoUrl; //= "http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/userinfo";
 	
 	 // Lazy  declaration and initialisation
@@ -71,7 +71,7 @@ public class AuthenticationWithKeycloak {
     // Private constructor of Class 2
     private AuthenticationWithKeycloak() {
     	tokenUrl = NCIAConfig.getKeycloakTokenUrl();
-    			//"http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/token";
+    			//"http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/KeycloakGetToken";
     	userInfoUrl = NCIAConfig.getKeycloakUserInfoUrl();
     	//"http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/userinfo";    	
     }
@@ -154,7 +154,7 @@ public class AuthenticationWithKeycloak {
 //
 //			if (code != HTTP_OK) {
 //				System.out.println("Could not authenticate using client credentials");
-//				throw new RuntimeException("Could not retrieve access token for client: " + clientId);
+//				throw new RuntimeException("Could not retrieve access KeycloakGetToken for client: " + clientId);
 //			}
 //			map = handleResponse(response);
 //		} catch (ClientProtocolException e) {
@@ -203,11 +203,12 @@ public class AuthenticationWithKeycloak {
 
 			if (code != HTTP_OK) {
 				System.out.println("Could not authenticate using client credentials");
-				throw new RuntimeException("Could not retrieve access token for client: " + clientId);
+				return EntityUtils.toString(response.getEntity());
+				//throw new RuntimeException("Could not authenticate using client credentials.Could not retrieve access KeycloakGetToken for client: " + clientId);
 			}
 			else {
 				String json = EntityUtils.toString(response.getEntity());
-				System.out.println("@@@@@@@@@@@@@@token = "+json);
+//				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
 				return json;
 			}
 		//	map = handleResponse(response);
@@ -225,8 +226,58 @@ public class AuthenticationWithKeycloak {
 //		return map;
 		return null;
 	}
+
+	public boolean authenticateUser(String uName, String pWord, String clientId, String clientSecret) {
+		System.out.println("tokenUrl="+tokenUrl);
+		System.out.println("getAccessToken/clientSecret="+clientSecret);
+		System.out.println("grant_type="+GRANT_TYPE_PASSWORD);
+		System.out.println("client_id="+clientId);
+		System.out.println("username="+uName);
+		System.out.println("password="+pWord);
+		System.out.println("client_secret="+clientSecret);
+		
+		HttpPost post = new HttpPost(tokenUrl);
+		Map<String, String> map = null;
+		ArrayList<NameValuePair> parameters;
+
+		parameters = new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("grant_type", GRANT_TYPE_PASSWORD));
+		parameters.add(new BasicNameValuePair("client_id", clientId));
+		parameters.add(new BasicNameValuePair("username", uName));
+		parameters.add(new BasicNameValuePair("password", pWord));
+		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
+		parameters.add(new BasicNameValuePair("scope", "openid"));
+
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpResponse response = null;
+
+		try {
+			post.addHeader("content-type", URL_ENCODED_CONTENT);
+			post.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
+			response = client.execute(post);
+			int code = response.getStatusLine().getStatusCode();
+
+			if (code != HTTP_OK) {
+				System.out.println("Could not authenticate using client credentials");
+				return false;
+				//throw new RuntimeException("Could not authenticate using client credentials.Could not retrieve access KeycloakGetToken for client: " + clientId);
+			}
+			else {
+				return true;
+			}
+		//	map = handleResponse(response);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}	
 	
-	// get a refresh token (and another access token)
+	// get a refresh KeycloakGetToken (and another access KeycloakGetToken)
 	public String getRefreshToken(String clientId, String clientSecret, String refreshToken) {
 		HttpPost post = new HttpPost(tokenUrl);
 		Map<String, String> map = null;
@@ -249,11 +300,12 @@ public class AuthenticationWithKeycloak {
 
 			if (code != HTTP_OK) {
 				System.out.println("Could not authenticate using client credentials");
-				throw new RuntimeException("Could not retrieve access token for client: " + clientId);
+				return EntityUtils.toString(response.getEntity());
+				//throw new RuntimeException("Could not retrieve access KeycloakGetToken for client: " + clientId);
 			}
 			else {
 				String json = EntityUtils.toString(response.getEntity());
-				System.out.println("@@@@@@@@@@@@@@token = "+json);
+//				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
 				return json;
 			}
 		//	map = handleResponse(response);
@@ -308,7 +360,7 @@ public class AuthenticationWithKeycloak {
 //
 //			if (code != HTTP_OK) {
 //				System.out.println("Could not authenticate using client credentials");
-//				throw new RuntimeException("Could not retrieve access token for client: " + clientId);
+//				throw new RuntimeException("Could not retrieve access KeycloakGetToken for client: " + clientId);
 //			}
 //			map = handleResponse(response);
 //		} catch (ClientProtocolException e) {
@@ -402,7 +454,7 @@ public class AuthenticationWithKeycloak {
 
 			conn.setRequestProperty("Authorization", "Bearer " + aToken);
 			System.out.println("aToken="+aToken);
-			// e.g. bearer token=
+			// e.g. bearer KeycloakGetToken=
 			// eyJhbGciOiXXXzUxMiJ9.eyJzdWIiOiPyc2hhcm1hQHBsdW1zbGljZS5jb206OjE6OjkwIiwiZXhwIjoxNTM3MzQyNTIxLCJpYXQiOjE1MzY3Mzc3MjF9.O33zP2l_0eDNfcqSQz29jUGJC-_THYsXllrmkFnk85dNRbAw66dyEKBP5dVcFUuNTA8zhA83kk3Y41_qZYx43T
 
 			conn.setRequestProperty("Content-Type", "application/json");
@@ -411,9 +463,9 @@ public class AuthenticationWithKeycloak {
 			code = conn.getResponseCode();
 			if (code != 200) {
 				if (code == 401 || code == 403) {
-					// Access token is invalid or expired.Regenerate the access token
-					System.out.println("Access token is invalid or expired. Regenerating access token please");
-					throw new RuntimeException("Invalid or expired token. HTTP error code: " + code);
+					// Access KeycloakGetToken is invalid or expired.Regenerate the access KeycloakGetToken
+					System.out.println("Access KeycloakGetToken is invalid or expired. Regenerating access KeycloakGetToken please");
+					throw new RuntimeException("Invalid or expired KeycloakGetToken. HTTP error code: " + code);
 				} else
 					throw new RuntimeException("Failed : HTTP error code : " + code);
 			} else if (code == 200) {

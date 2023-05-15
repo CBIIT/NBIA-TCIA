@@ -108,7 +108,7 @@ export class ParameterService{
     getAccessToken( user, password, secret ): Observable<any> {
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-        let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + secret + '&grant_type=password';
+        let data = 'username=' + user + '&password=' + password + '&client_id=' + Properties.DEFAULT_CLIENT_ID + '&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=password';
 
 /*      Don't show user and password
         if( Properties.DEBUG_CURL ){

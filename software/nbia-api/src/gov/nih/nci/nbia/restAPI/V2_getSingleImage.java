@@ -38,6 +38,8 @@ public class V2_getSingleImage extends getData {
 //		String user =  (String)authentication.getPrincipal();
 		String user = getUserName(); 
 		WADOSupportDTO wdto = getWadoImage(seriesInstanceUid, sOPInstanceUID, user);
+		int size = wdto.getImage().length;
+		recodeDownload(seriesInstanceUid, size, "v2API", user);
 		return Response.ok(wdto.getImage(), "application/dicom").header("Content-Disposition", "attachment; filename=" + sOPInstanceUID + ".dcm").build();
 	}
 }

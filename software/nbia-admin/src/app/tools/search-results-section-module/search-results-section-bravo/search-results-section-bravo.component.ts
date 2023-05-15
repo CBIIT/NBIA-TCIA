@@ -226,9 +226,11 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
 
         if (!this.popoutService.isPopoutWindowOpen()) {
             this.popoutService.openPopoutModal(modalData);
-            POPOUT_MODALS['windowInstance'].addEventListener('beforeunload', (event) => {
-              this.cineModeService.closeCineMode();
-            });
+            // this listener is not currently working, and has caused problems in the past
+            // windowInstance.addEventListener('beforeunload', (event) => {
+            //     console.log(event);
+            //     this.cineModeService.closeCineMode();
+            // });
         } else {
             this.popoutService.focusPopoutWindow();
             // const sameSeries = POPOUT_MODALS['componentInstance'].series === series;
@@ -260,7 +262,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // If they are not all selected, checking this box turns them all on
         if( this.areAnyUnchecked() ){
             for( let i = 0; i < this.searchResults.length; i++ ){
-                this.setCheckbox( i, true );
+                this.setCheckbox( i, true, false );
             }
             this.masterSearchResultsCheckbox = true;
             this.checkboxCount = this.searchResults.length;
@@ -268,12 +270,14 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             // All are checked
         {
             for( let i = 0; i < this.searchResults.length; i++ ){
-                this.setCheckbox( i, false );
+                this.setCheckbox( i, false, false );
             }
             this.masterSearchResultsCheckbox = false;
             this.checkboxCount = 0;
         }
         this.resultsSelectCountUpdateBravoEmitter.emit( this.checkboxCount );
+        this.resultsUpdateBravoEmitter.emit( this.searchResults ); // @TODO replace this with a NON-Output emitter
+        this.searchResultsSectionBravoService.selectionChange( this.searchResults ); // @TODO replace above with this
     }
 
 
@@ -299,7 +303,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         // If they are not all selected, checking this box turns them all on
         if( this.areAnyUnchecked() ){
             for( let i = 0; i < this.searchResults.length; i++ ){
-                this.setCheckbox( i, true );
+                this.setCheckbox( i, true, false );
             }
             this.masterSearchResultsCheckbox = true;
             this.checkboxCount = this.searchResults.length;
@@ -307,12 +311,14 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             // All are checked
         {
             for( let i = 0; i < this.searchResults.length; i++ ){
-                this.setCheckbox( i, false );
+                this.setCheckbox( i, false, false );
             }
             this.masterSearchResultsCheckbox = false;
             this.checkboxCount = 0;
         }
         this.resultsSelectCountUpdateBravoEmitter.emit( this.checkboxCount );
+        this.resultsUpdateBravoEmitter.emit( this.searchResults ); // @TODO replace this with a NON-Output emitter
+        this.searchResultsSectionBravoService.selectionChange( this.searchResults ); // @TODO replace above with this
 
     }
 
@@ -362,11 +368,12 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
         return anyUnchecked;
     }
 
-    setCheckbox( i, state ){
+    setCheckbox( i, state, fireEvents=true ){
         this.searchResults[i]['selected'] = state; // @TODO get this to  "Update Site"
-        this.resultsUpdateBravoEmitter.emit( this.searchResults ); // @TODO replace this with a NON-Output emitter
-        this.searchResultsSectionBravoService.selectionChange( this.searchResults ); // @TODO replace above with this
-
+        if(fireEvents){
+            this.resultsUpdateBravoEmitter.emit( this.searchResults ); // @TODO replace this with a NON-Output emitter
+            this.searchResultsSectionBravoService.selectionChange( this.searchResults ); // @TODO replace above with this
+        }
     }
 
 

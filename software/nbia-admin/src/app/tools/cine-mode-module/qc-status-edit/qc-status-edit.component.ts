@@ -29,6 +29,7 @@ import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-brav
 export class QcStatusEditComponent implements OnInit, OnDestroy{
     @Input() collectionSite;
     @Input() seriesData;
+    @Input() stickyRadios = false;
 
     searchResults;
     useBatchNumber = false;
@@ -74,7 +75,9 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     ngOnInit(){
         this.apiService.visibilitiesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                this.clear( data.length)
+                if(this.stickyRadios === false){
+                    this.clear( data.length)
+                }
             } );
         this.apiService.getVisibilities();
 
@@ -83,7 +86,9 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
                 this.siteArray = data;
                 // Set a starting value
                 this.newSiteCine = this.siteArray[0];
-                this.clear(  data.length );
+                if(this.stickyRadios === false){
+                    this.clear(  data.length );
+                }
             } );
 
         this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -118,6 +123,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
 
     clear( dataCount?){
+        console.log('clear called');
         this.useBatchNumber = false;
         this.batchNumber = 1;
         this.logText = ''; // @CHECKME clears logtext on next or skip for cinemode they may not want this cleared for all fields
@@ -185,7 +191,9 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         this.searchResultByIndexService.updateCurrentSearchResultByIndex( 0 );
         let n = 0;
         for( let r in this.qcStatuses ){
-            this.radioStatus[n]  = false;
+            if(this.stickyRadios === false){
+                this.radioStatus[n]  = false;
+            }
             n++;
         }
 
@@ -194,8 +202,11 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     onQcSkipNextClick(){
         this.searchResultByIndexService.updateCurrentSearchResultByIndex( 0 );
         let n = 0;
+        console.log(this.stickyRadios);
         for( let r in this.qcStatuses ){
-            this.radioStatus[n]  = false;
+            if(this.stickyRadios === false){
+                this.radioStatus[n]  = false;
+            }
             n++;
         }
     }

@@ -64,7 +64,8 @@ public class V2_getImageWithMD5Hash extends getData {
 		}
 		Authentication authentication = SecurityContextHolder.getContext()
 				.getAuthentication();
-		String userName = (String) authentication.getPrincipal();
+		
+		String userName = getUserName();
 		List<SiteData> authorizedSiteDataTemp = AuthorizationUtil.getUserSiteData(userName);
 		try {
 			if (authorizedSiteDataTemp==null){
@@ -81,7 +82,7 @@ public class V2_getImageWithMD5Hash extends getData {
 		paramMap.put("seriesInstanceUID", sid);
 
 		//SecurityContextHolder will be used to get the user name later.
-		if (!isUserHasAccess(null, paramMap)) {
+		if (!isUserHasAccess(userName, paramMap)) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("The user has not been granted the access to image with given SeriesInstanceUID," + sid + ". Please contact System Admin to resolve this issue.")
 					.type(MediaType.APPLICATION_JSON).build();
@@ -93,7 +94,7 @@ public class V2_getImageWithMD5Hash extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				int size = 0;
 				try {
 
 					int counter = 0;
@@ -102,7 +103,10 @@ public class V2_getImageWithMD5Hash extends getData {
 					Map<String,String> fileMD5Map = new HashMap<String,String>();
 					for (MD5DTO dto : dtos) {
 						String filename=dto.getFileName();
-						in = new FileInputStream(new File(filename));
+						
+						File afile = new File(filename);
+						in = new FileInputStream(afile);
+						size +=  afile.length();
 						if (in != null) {
 							// Add Zip Entry
 							String fileNameInZip = String.format("%08d", ++counter)
@@ -152,6 +156,7 @@ public class V2_getImageWithMD5Hash extends getData {
 					if (in != null)
 						in.close();
 				}
+				recodeDownload(seriesInstanceUid, size, "v2API", userName);
 			}
 		};
 

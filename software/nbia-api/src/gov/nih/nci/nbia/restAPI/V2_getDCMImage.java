@@ -50,6 +50,8 @@ public class V2_getDCMImage extends getData {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
 		final String sid = seriesInstanceUid;
+		String userName = getUserName();
+		
 		if (sid == null) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, SeriesInstanceUID, is required for this API call.")
@@ -65,7 +67,7 @@ public class V2_getDCMImage extends getData {
 		// determine if it is anonymousUser
 		// for prototype time being, the check is commented
 		
-		if (!isUserHasAccess(null, paramMap)) {
+		if (!isUserHasAccess(userName, paramMap)) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("Image with given SeriesInstanceUID," + sid + ", is not in public domain.")
 					.type(MediaType.APPLICATION_JSON).build();
@@ -165,7 +167,7 @@ public class V2_getDCMImage extends getData {
 						in.close();
 				}
 				
-				recodeDownload(seriesInstanceUid, size);
+				recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
 			}
 		};
 
@@ -200,14 +202,14 @@ public class V2_getDCMImage extends getData {
 		return results;
 	}
 	
-	private void recodeDownload (String seriesInstanceUid, long size) {
-		try {
-			String userName = NCIAConfig.getGuestUsername();
-			DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");					
-			downloadDAO.record(seriesInstanceUid, userName, "CLI/API", size);
-		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	
+//	private void recodeDownload (String seriesInstanceUid, long size) {
+//		try {
+//			String userName = getUserName();
+//			DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");					
+//			downloadDAO.record(seriesInstanceUid, userName, "CLI/API", size);
+//		} catch (DataAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}	
 }

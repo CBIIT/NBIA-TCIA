@@ -43,9 +43,10 @@ public class SubmitSite extends getData{
 	        @FormParam("licenseName") String licenseName) {
 
 		try {	
-			   Authentication authentication = SecurityContextHolder.getContext()
-						.getAuthentication();
-				String user = (String) authentication.getPrincipal();
+//			   Authentication authentication = SecurityContextHolder.getContext()
+//						.getAuthentication();
+//				String user = (String) authentication.getPrincipal();
+				String user = getUserName();				
 				List<String> roles=RoleCache.getRoles(user);
                if (roles==null) {
                 	roles=new ArrayList<String>();
@@ -55,7 +56,7 @@ public class SubmitSite extends getData{
 				    RoleCache.setRoles(user, roles);
                 }
                 boolean hasRole=false;
-                for (String role:roles) {
+                for (String role:roles) {               	
                 	if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
                 		hasRole=true;
                 	}

@@ -76,7 +76,7 @@ export class AccessTokenService{
 
             let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
             let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-            let data = 'username=' + user + '&password=' + password + '&client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=password';
+            let data = 'username=' + user + '&password=' + password + '&client_id=' + Properties.DEFAULT_CLIENT_ID + '&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=password';
 
             if( Properties.DEBUG_CURL ){
                 let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
@@ -141,7 +141,7 @@ export class AccessTokenService{
 
         let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
         let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-        let data = 'client_id=nbiaRestAPIClient&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=refresh_token&refresh_token=' + refreshToken;
+        let data = 'client_id=' + Properties.DEFAULT_CLIENT_ID + '&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=refresh_token&refresh_token=' + refreshToken;
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';

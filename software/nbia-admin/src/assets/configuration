@@ -46,7 +46,6 @@
 ###########################################################################################################
 # CINE_MODE_TOGGLE_KEY = 2
 
-# DEFAULT_SECRET = 'XXX'
 
 ###########################################################################################################
 # Enable the widget building tool. Default is false.
@@ -54,3 +53,6 @@
 # ENABLE_WIDGET_TESTER = true
 
 # SHOW_SERVER_QUERY = true
+
+# DEFAULT_SECRET = 'XXX'
+# DEFAULT_CLIENT_ID = XXX

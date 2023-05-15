@@ -95,8 +95,43 @@ public class CollectionDescDAOImpl extends AbstractDAO
 			getHibernateTemplate().evict(c);
 		}
 		return dto;
-	}	@Transactional(propagation=Propagation.REQUIRED)
-	
+	}	
+
+	@Transactional(propagation=Propagation.REQUIRED)
+	public CollectionDescDTO findCollectionDescByCollectionName(String collectionName, List<String> authorizedCollection) throws DataAccessException{
+		CollectionDescDTO dto = new CollectionDescDTO();
+		dto.setCollectionName(collectionName);
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+        if (authorizedCollection.contains(collectionName))
+        	criteria.add(Restrictions.eq("collectionName", collectionName));
+        else return null;
+        
+        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+
+		if(collectionDescList != null && collectionDescList.size() == 1)	{
+			CollectionDesc c = collectionDescList.get(0);
+			dto.setDescription(c.getDescription());
+			dto.setId(c.getId());
+			dto.setCollectionName(c.getCollectionName());
+			dto.setUserName(c.getUserName());
+			dto.setCollectionDescTimestamp(c.getCollectionDescTimestamp());
+			if (collectionName!=null) {
+				Map <String, String>doiMap=findCollectionNamesAndDOI(collectionName);
+			    dto.setDescriptionURI(doiMap.get(collectionName));
+			}
+			if (c.getLicense() != null)
+				dto.setLicenseId(c.getLicense().getId());
+			else dto.setLicenseId(null);
+			//calling this from save() causes duplicate object in session
+			//might be better to rework this so the find can just return
+			//that object and save update that instead of re-creating
+			getHibernateTemplate().evict(c);
+		}
+		return dto;
+	}	
+		
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<CollectionDescDTO> findCollectionDescs() throws DataAccessException{
 
 
@@ -120,6 +155,35 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		}
 		return returnValue;
 	}
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<CollectionDescDTO> findCollectionDescs(List<String> authorizedCollection) throws DataAccessException{
+
+
+        List<CollectionDescDTO> returnValue=new ArrayList<CollectionDescDTO>();
+        DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+        criteria.add(Restrictions.isNotNull("collectionName"));
+        if (authorizedCollection != null)
+        	criteria.add(Restrictions.in("collectionName", authorizedCollection));
+        List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
+		Map <String, String>doiMap=findCollectionNamesAndDOI(null);
+	    
+		for(CollectionDesc collectionDesc : collectionDescList)	{
+			CollectionDescDTO dto = new CollectionDescDTO();
+			dto.setDescription(collectionDesc.getDescription());
+			dto.setId(collectionDesc.getId());
+			dto.setCollectionName(collectionDesc.getCollectionName());
+			dto.setDescriptionURI(doiMap.get(collectionDesc.getCollectionName()));
+			dto.setUserName(collectionDesc.getUserName());
+			dto.setCollectionDescTimestamp(collectionDesc.getCollectionDescTimestamp());
+			if (collectionDesc.getLicense()== null)
+				dto.setLicenseId(null);
+			else 
+				dto.setLicenseId(collectionDesc.getLicense().getId());
+			returnValue.add(dto);
+		}
+		return returnValue;
+	}	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public long save(CollectionDescDTO collectionDescDTO) throws DataAccessException {
 

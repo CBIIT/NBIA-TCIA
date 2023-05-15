@@ -40,6 +40,7 @@ public class GetBodyPartValuesAndCounts extends getData{
 //						.getAuthentication();
 //				String user = (String) authentication.getPrincipal();
 	 		String user = getUserName(); 
+
 	 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 				if (authorizedSiteData==null){
 				     AuthorizationManager am = new AuthorizationManager(user);

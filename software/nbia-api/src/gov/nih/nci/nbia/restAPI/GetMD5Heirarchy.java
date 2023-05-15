@@ -22,7 +22,7 @@ import gov.nih.nci.nbia.dynamicsearch.DynamicSearchCriteria;
 import gov.nih.nci.nbia.dynamicsearch.Operator;
 import gov.nih.nci.nbia.dynamicsearch.QueryHandler;
 import gov.nih.nci.nbia.lookup.StudyNumberMap;
-import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
+import gov.nih.nci.nbia.security.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;

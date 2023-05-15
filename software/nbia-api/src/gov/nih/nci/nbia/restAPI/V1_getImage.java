@@ -30,6 +30,7 @@ import org.apache.commons.io.IOUtils;
 
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dto.ImageDTO2;
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import org.springframework.dao.DataAccessException;
 
@@ -50,6 +51,7 @@ public class V1_getImage extends getData {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
 		final String sid = seriesInstanceUid;
+		String userName = NCIAConfig.getGuestUsername();
 		if (sid == null) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, SeriesInstanceUID, is required for this API call.")
@@ -72,13 +74,14 @@ public class V1_getImage extends getData {
 		String fileContents=tDao.getLicenseContent(sid);
 		String zipName = sid + ".zip";
 		StreamingOutput stream = null;
+		
 		if (newFileNames==null||!(newFileNames.equalsIgnoreCase("yes"))) {
 		    stream = new StreamingOutput() {
 			public void write(OutputStream output) throws IOException, WebApplicationException {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				long size = 0;
 				try {
 //					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
@@ -90,8 +93,11 @@ public class V1_getImage extends getData {
 					zip.putNextEntry(new ZipEntry("LICENSE"));
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
+
 					for (String filename : fileNames) {
-						in = new FileInputStream(new File(filename));
+						File afile = new File(filename);
+						in = new FileInputStream(afile);
+						size +=  afile.length();
 
 						if (in != null) {
 							// Add Zip Entry
@@ -103,7 +109,7 @@ public class V1_getImage extends getData {
 							IOUtils.copy(in, zip);
 							zip.closeEntry();
 							in.close();
-						}
+						} 
 					}
 
 					zip.close();
@@ -124,14 +130,16 @@ public class V1_getImage extends getData {
 					if (in != null)
 						in.close();
 				}
+				recodeDownload(seriesInstanceUid, size, "v1API", userName);	
 			}
+			
 		}; } else {
 		    stream = new StreamingOutput() {
 			public void write(OutputStream output) throws IOException, WebApplicationException {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-
+				long size = 0;
 				try {
 					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
 					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
@@ -139,7 +147,10 @@ public class V1_getImage extends getData {
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
 					for (ImageDTO2 imageResult : imageResults) {
-						in = new FileInputStream(new File(imageResult.getFileName()));
+						File afile = new File(imageResult.getFileName());
+						in = new FileInputStream(afile);
+						size +=  afile.length();
+				
 						if (in != null) {
 							// Add Zip Entry
 							String newFileName=imageResult.getNewFilename();
@@ -173,6 +184,7 @@ public class V1_getImage extends getData {
 					if (in != null)
 						in.close();
 				}
+				recodeDownload(seriesInstanceUid, size, "v1API", userName);
 			}
 		};
 		}

@@ -953,7 +953,11 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("authentication.config");
         return propertyValue;   	
     }        
-    
+
+    public static String getKeycloakClientId() {
+        String propertyValue = properties.getProperty("keycloak.client.id");
+        return propertyValue;   	
+    } 
     
     /**
      * Utility method for retrieving a property

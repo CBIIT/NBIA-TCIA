@@ -604,7 +604,8 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     }
 
 
-    clearSearchResults() {
+   async clearSearchResults() {
+        await this.commonService.sleep(600);
         this.searchResults = [];
         this.searchResultsForDisplay = [];
 

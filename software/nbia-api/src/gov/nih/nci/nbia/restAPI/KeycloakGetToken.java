@@ -1,4 +1,4 @@
-//To Test: http://localhost:8080/nbia-api/oauth/token
+//To Test:  http://localhost:8080/nbia-api/oauth/token
 
 package gov.nih.nci.nbia.restAPI;
 
@@ -13,11 +13,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpResponse;
 
-import gov.nih.nci.nbia.restSecurity.AuthenticationWithKeycloak;
+import gov.nih.nci.nbia.security.AuthenticationWithKeycloak;
+import gov.nih.nci.nbia.util.NCIAConfig;
 
 
 @Path("/oauth/token")
-public class token extends getData{
+public class KeycloakGetToken extends getData{
 	//private static final String column="BodyPartExamined";
 	//public final static String TEXT_CSV = "text/csv";
 
@@ -38,8 +39,16 @@ public class token extends getData{
 			@FormParam("refresh_token") String refresh_token) {
 		
 		if (grant_type.equalsIgnoreCase("password")) {
-		String resp = AuthenticationWithKeycloak.getInstance().getAccessToken(username, password, client_id, client_secret);
-		return Response.ok(resp).type("application/json").build();
+			if (username.equals(NCIAConfig.getGuestUsername())) {
+				return Response.ok("undefined").type("application/json").build();
+			}
+			else {
+			client_id = NCIAConfig.getKeycloakClientId();
+			client_secret ="";
+			String resp = AuthenticationWithKeycloak.getInstance().getAccessToken(username, password, client_id, client_secret);
+
+			return Response.ok(resp).type("application/json").build();
+			}
 		}
 		else if (grant_type.equalsIgnoreCase("refresh_token")) {
 			String resp = AuthenticationWithKeycloak.getInstance().getRefreshToken(client_id, client_secret, refresh_token);
