@@ -2,16 +2,20 @@
 
 package gov.nih.nci.nbia.restAPI;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 
 import gov.nih.nci.nbia.security.AuthenticationWithKeycloak;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -19,43 +23,49 @@ import gov.nih.nci.nbia.util.NCIAConfig;
 
 @Path("/oauth/token")
 public class KeycloakGetToken extends getData{
-	//private static final String column="BodyPartExamined";
-	//public final static String TEXT_CSV = "text/csv";
+	// private static final String column="BodyPartExamined";
+	// public final static String TEXT_CSV = "text/csv";
+	public static final int HTTP_OK = 200;
+	@Context
+	private HttpServletRequest httpRequest;
 
-	@Context private HttpServletRequest httpRequest;
 	/**
 	 * This method get a set of body part values filtered by query keys
 	 *
 	 * @return String - set of patient
 	 */
 	@POST
-	@Produces({MediaType.APPLICATION_JSON})
+	@Produces({ MediaType.APPLICATION_JSON })
 
-	public Response  constructResponse(@FormParam("username") String username, 
-			@FormParam("password") String password,
-			@FormParam("client_id") String client_id, 
-			@FormParam("client_secret") String client_secret,
-			@FormParam("grant_type") String grant_type,
-			@FormParam("refresh_token") String refresh_token) {
-		
-		if (grant_type.equalsIgnoreCase("password")) {
-			if (username.equals(NCIAConfig.getGuestUsername())) {
-				return Response.ok("undefined").type("application/json").build();
-			}
-			else {
-			client_id = NCIAConfig.getKeycloakClientId();
-			client_secret ="";
-			String resp = AuthenticationWithKeycloak.getInstance().getAccessToken(username, password, client_id, client_secret);
+	public Response constructResponse(@FormParam("username") String username, @FormParam("password") String password,
+			@FormParam("client_id") String client_id, @FormParam("client_secret") String client_secret,
+			@FormParam("grant_type") String grant_type, @FormParam("refresh_token") String refresh_token) {
 
-			return Response.ok(resp).type("application/json").build();
+		try {
+			if (grant_type.equalsIgnoreCase("password")) {
+				if (username.equals(NCIAConfig.getGuestUsername())) {
+					return Response.ok("undefined").type("application/json").build();
+				} else {
+					client_id = NCIAConfig.getKeycloakClientId();
+					client_secret = "";
+					HttpResponse response = AuthenticationWithKeycloak.getInstance().getAccessTokenResp(username,
+							password, client_id, client_secret);
+					int code = response.getStatusLine().getStatusCode();
+					return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
+				}
+			} else if (grant_type.equalsIgnoreCase("refresh_token")) {
+				HttpResponse response = AuthenticationWithKeycloak.getInstance().getRefreshTokenResp(client_id, client_secret,
+						refresh_token);
+				int code = response.getStatusLine().getStatusCode();
+				return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
+			} else {
+				return Response.status(0, "Wrong grant_type entered. Valid grant_type is password or refresh_token.")
+						.build();
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else if (grant_type.equalsIgnoreCase("refresh_token")) {
-			String resp = AuthenticationWithKeycloak.getInstance().getRefreshToken(client_id, client_secret, refresh_token);
-			return Response.ok(resp).type("application/json").build();
-		}
-		else {
-			return Response.status(0, "Wrong grant_type entered. Valid grant_type is password or refresh_token.").build();
-		}
+		return null;
 	}
 }
