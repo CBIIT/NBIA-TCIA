@@ -41,21 +41,21 @@ public class KeycloakGetToken extends getData{
 			@FormParam("client_id") String client_id, @FormParam("client_secret") String client_secret,
 			@FormParam("grant_type") String grant_type, @FormParam("refresh_token") String refresh_token) {
 
+		if (username.equals(NCIAConfig.getGuestUsername()))
+			password = NCIAConfig.getGuestPassword();
 		try {
 			if (grant_type.equalsIgnoreCase("password")) {
-				if (username.equals(NCIAConfig.getGuestUsername())) {
-					return Response.ok("undefined").type("application/json").build();
-				} else {
-					client_id = NCIAConfig.getKeycloakClientId();
+				client_id = NCIAConfig.getKeycloakClientId();
+				if (client_secret == null)
 					client_secret = "";
-					HttpResponse response = AuthenticationWithKeycloak.getInstance().getAccessTokenResp(username,
-							password, client_id, client_secret);
-					int code = response.getStatusLine().getStatusCode();
-					return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
-				}
+
+				HttpResponse response = AuthenticationWithKeycloak.getInstance().getAccessTokenResp(username, password,
+						client_id, client_secret);
+				int code = response.getStatusLine().getStatusCode();
+				return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
 			} else if (grant_type.equalsIgnoreCase("refresh_token")) {
-				HttpResponse response = AuthenticationWithKeycloak.getInstance().getRefreshTokenResp(client_id, client_secret,
-						refresh_token);
+				HttpResponse response = AuthenticationWithKeycloak.getInstance().getRefreshTokenResp(client_id,
+						client_secret, refresh_token);
 				int code = response.getStatusLine().getStatusCode();
 				return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
 			} else {
