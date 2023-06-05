@@ -290,20 +290,20 @@ L-->
           DELETE license_id;    
          </sql>
        </changeSet> -->
-       <changeSet id="8.4.Add.uniquekey.to.project.in.trialdataprovenance" author="joseph" dbms="mysql">j
+       <changeSet id="8.4.Add.uniquekey.to.project.in.trialdataprovenance" author="joseph" dbms="mysql">
          <comment>
            add unique key to project in trial data provenance
          </comment>
          <sql>
-           ALTER TABLE trial_data_provenance ADD CONSTRAINT unique_project UNIQUE (project);   
+           ALTER TABLE trial_data_provenance ADD CONSTRAINT unique_project UNIQUE (project); 
          </sql>
        </changeSet>
-       <changeSet id="8.4.modify.column.data.type.for.posdatransferid" author="joseph" dbms="mysql">j
+       <changeSet id="8.4.modify.column.data.type.for.posdatransferid" author="joseph" dbms="mysql">
          <comment>
            change the column data type for posda transfer id
          </comment>
          <sql>
-           ALTER TABLE general_image ALTER COLUMN posda_transfer_id VARCHAR(50);  
+           ALTER TABLE general_image MODIFY COLUMN posda_transfer_id VARCHAR(50);
          </sql>
        </changeSet>
 </databaseChangeLog>

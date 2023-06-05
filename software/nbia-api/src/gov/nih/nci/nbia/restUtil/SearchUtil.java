@@ -344,6 +344,54 @@ public class SearchUtil {
 
 	}
 	
+	public List<PatientSearchResult> getPatients(String textValue, String user, boolean useKeycloak) throws Exception{
+		String userName = user;
+		if (!useKeycloak) {
+			Authentication authentication = SecurityContextHolder.getContext()
+					.getAuthentication();
+			userName = (String) authentication.getPrincipal();			
+		} 
+
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(userName);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
+		}
+		List<String> seriesSecurityGroups = new ArrayList<String>();
+		List <DynamicSearchCriteria> criteria=new ArrayList<DynamicSearchCriteria>();
+//		int i=0;
+		QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
+		System.out.println("Searching Solr for"+textValue);
+		List<SolrAllDocumentMetaData> results = qh.searchSolr(textValue);
+		StringBuffer patientIDs = new StringBuffer();
+		patientMap=new HashMap<String, SolrAllDocumentMetaData>();
+		for (SolrAllDocumentMetaData result : results)
+		{
+			patientIDs.append(result.getPatientId()+",");
+			patientMap.put(result.getPatientId(), result);
+		}
+		if (patientIDs.toString().length()<2) patientIDs.append("zzz33333###"); // no patients found
+		DynamicSearchCriteria dsc = new DynamicSearchCriteria();
+		dsc.setField("patientId");
+		dsc.setDataGroup("Patient");
+		Operator op = new Operator();
+		op.setValue("contains");
+		dsc.setOperator(op);
+		dsc.setValue(patientIDs.toString());
+
+		criteria.clear();
+		criteria.add(dsc);
+
+
+			qh.setStudyNumberMap(ApplicationFactory.getInstance().getStudyNumberMap());
+			qh.setQueryCriteria(criteria, "AND", authorizedSiteData, seriesSecurityGroups);
+			qh.query();
+			return qh.getPatients();
+
+	}
+		
+	
 	public List<PatientSearchResult> getPatients(String textValue, String userName) throws Exception{
 		
 //		Authentication authentication = SecurityContextHolder.getContext()

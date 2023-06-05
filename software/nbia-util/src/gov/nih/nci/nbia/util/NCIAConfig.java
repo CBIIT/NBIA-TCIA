@@ -457,7 +457,7 @@ public class NCIAConfig {
 
     /**
      * Externalized Property!
-     *  Property: enabled_guest_account
+     *  Property: guest_username
      *  This property is configured via the JBoss Property Service MDB (property-service.xml)
      *  to contain value whether guest account is enabled for the system.
      */
@@ -466,7 +466,18 @@ public class NCIAConfig {
         checkProperty("guest_username", propertyValue);
         return propertyValue;
     }
-
+    
+    /**
+     * Externalized Property!
+     *  Property: guest_password
+     *  This property is configured via the JBoss Property Service MDB (property-service.xml)
+     *  to contain value whether guest account is enabled for the system.
+     */
+    public static String getGuestPassword(){
+        String propertyValue = properties.getProperty("guest_password");
+        checkProperty("guest_password", propertyValue);
+        return propertyValue;
+    }
 
     /**
      * Externalized Property!

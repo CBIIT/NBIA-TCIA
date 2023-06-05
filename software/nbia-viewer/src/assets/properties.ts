@@ -1,15 +1,15 @@
 export let Properties = {
     // 06_NOV_2020
-   // VERSION: '1.0.67',
-    // 12_MAY_2021
-    VERSION: '1.0.67b',
+    // VERSION: '1.0.67',
+    // 15_MAY_2021
+    VERSION: '1.0.67c',
     TITLE: 'Image Viewer',
 
     VIEWER_COLUMNS_DEFAULT: 5,
 
     COOKIE_NAME: 'NBIA_data',
     WAIT_TIME: 50,
-    DEBUG_CURL: false,
+    DEBUG_CURL: true,
     DEBUG: false,
     LOAD_ALL: 0,
     LOAD_ONE_PAGE: 1,
@@ -18,8 +18,8 @@ export let Properties = {
 
     DEFAULT_USER: 'nbia_guest',
     DEFAULT_PASSWORD: 'test',
-    DEFAULT_SECRET: 'ItsBetweenUAndMe',
-
+    DEFAULT_SECRET: '',
+    DEFAULT_CLIENT_ID: 'nbia-stage',
 
     // This is a flag that is set to true by the ConfigurationService when all the configuration file settings have been set.
     // It used to determine if it is okay to start using the configured settings yet.

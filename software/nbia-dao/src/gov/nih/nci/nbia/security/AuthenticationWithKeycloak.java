@@ -6,27 +6,18 @@ package gov.nih.nci.nbia.security;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-//import java.nio.charset.Charset;
 import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
 import java.util.Map;
-//import java.util.Set;
-
 import java.net.URL;
 import java.net.HttpURLConnection;
 
-//import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-//import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-//import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -58,10 +49,6 @@ public class AuthenticationWithKeycloak {
 	public static final int HTTP_FORBIDDEN = 403;
 	public static final int HTTP_UNAUTHORIZED = 401;
 
-//	static String uName = "admin";
-//	static String pWord = "admin";
-//	static String clientId = "nbiaRestAPIClient";
-//	static String clientSecret = "oj1fWZcVnAk3CR31uEF8jmdNtl9ydiAb";
 	static String tokenUrl; //= "http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/KeycloakGetToken";
 	static String userInfoUrl; //= "http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/userinfo";
 	
@@ -71,9 +58,7 @@ public class AuthenticationWithKeycloak {
     // Private constructor of Class 2
     private AuthenticationWithKeycloak() {
     	tokenUrl = NCIAConfig.getKeycloakTokenUrl();
-    			//"http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/KeycloakGetToken";
-    	userInfoUrl = NCIAConfig.getKeycloakUserInfoUrl();
-    	//"http://localhost:8180/realms/NBIAKeycloak/protocol/openid-connect/userinfo";    	
+    	userInfoUrl = NCIAConfig.getKeycloakUserInfoUrl();  	
     }
  
     public static AuthenticationWithKeycloak getInstance()
@@ -128,57 +113,15 @@ public class AuthenticationWithKeycloak {
 		}
 	}
 
-//	public AuthenticationWithKeycloak() {
-//	}
 
-//	public static Map<String, String> getAccessToken(String uName, String pWord) {
-//		HttpPost post = new HttpPost(tokenUrl);
-//		Map<String, String> map = null;
-//		ArrayList<NameValuePair> parameters;
-//
-//		parameters = new ArrayList<NameValuePair>();
-//		parameters.add(new BasicNameValuePair("grant_type", GRANT_TYPE_PASSWORD));
-//		parameters.add(new BasicNameValuePair("client_id", clientId));
-//		parameters.add(new BasicNameValuePair("username", uName));
-//		parameters.add(new BasicNameValuePair("password", pWord));
-//		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
-//
-//		DefaultHttpClient client = new DefaultHttpClient();
-//		HttpResponse response = null;
-//
-//		try {
-//			post.addHeader("content-type", URL_ENCODED_CONTENT);
-//			post.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
-//			response = client.execute(post);
-//			int code = response.getStatusLine().getStatusCode();
-//
-//			if (code != HTTP_OK) {
-//				System.out.println("Could not authenticate using client credentials");
-//				throw new RuntimeException("Could not retrieve access KeycloakGetToken for client: " + clientId);
-//			}
-//			map = handleResponse(response);
-//		} catch (ClientProtocolException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-////		return accessToken;
-//		System.out.println(map.get(ACCESS_TOKEN));
-//		getUserName(map.get(ACCESS_TOKEN));
-//		return map;
-//	}
-//	
 	public String getAccessToken(String uName, String pWord, String clientId, String clientSecret) {
-		System.out.println("tokenUrl="+tokenUrl);
-		System.out.println("getAccessToken/clientSecret="+clientSecret);
-		System.out.println("grant_type="+GRANT_TYPE_PASSWORD);
-		System.out.println("client_id="+clientId);
-		System.out.println("username="+uName);
-		System.out.println("password="+pWord);
-		System.out.println("client_secret="+clientSecret);
+//		System.out.println("tokenUrl="+tokenUrl);
+//		System.out.println("getAccessToken/clientSecret="+clientSecret);
+//		System.out.println("grant_type="+GRANT_TYPE_PASSWORD);
+//		System.out.println("client_id="+clientId);
+//		System.out.println("username="+uName);
+//		System.out.println("password="+pWord);
+//		System.out.println("client_secret="+clientSecret);
 		
 		HttpPost post = new HttpPost(tokenUrl);
 		Map<String, String> map = null;
@@ -202,7 +145,7 @@ public class AuthenticationWithKeycloak {
 			int code = response.getStatusLine().getStatusCode();
 
 			if (code != HTTP_OK) {
-				System.out.println("Could not authenticate using client credentials");
+				System.out.println("Could not authenticate using client credentials");				
 				return EntityUtils.toString(response.getEntity());
 				//throw new RuntimeException("Could not authenticate using client credentials.Could not retrieve access KeycloakGetToken for client: " + clientId);
 			}
@@ -211,7 +154,6 @@ public class AuthenticationWithKeycloak {
 //				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
 				return json;
 			}
-		//	map = handleResponse(response);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -220,24 +162,60 @@ public class AuthenticationWithKeycloak {
 			e.printStackTrace();
 		}
 
-//		return accessToken;
-//		System.out.println(map.get(ACCESS_TOKEN));
-//		getUserName(map.get(ACCESS_TOKEN));
-//		return map;
 		return null;
 	}
-
-	public boolean authenticateUser(String uName, String pWord, String clientId, String clientSecret) {
-		System.out.println("tokenUrl="+tokenUrl);
-		System.out.println("getAccessToken/clientSecret="+clientSecret);
-		System.out.println("grant_type="+GRANT_TYPE_PASSWORD);
-		System.out.println("client_id="+clientId);
-		System.out.println("username="+uName);
-		System.out.println("password="+pWord);
-		System.out.println("client_secret="+clientSecret);
+	
+	public HttpResponse getAccessTokenResp(String uName, String pWord, String clientId, String clientSecret) {
+//		System.out.println("tokenUrl="+tokenUrl);
+//		System.out.println("getAccessToken/clientSecret="+clientSecret);
+//		System.out.println("grant_type="+GRANT_TYPE_PASSWORD);
+//		System.out.println("client_id="+clientId);
+//		System.out.println("username="+uName);
+//		System.out.println("password="+pWord);
+//		System.out.println("client_secret="+clientSecret);
 		
 		HttpPost post = new HttpPost(tokenUrl);
 		Map<String, String> map = null;
+		ArrayList<NameValuePair> parameters;
+
+		parameters = new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("grant_type", GRANT_TYPE_PASSWORD));
+		parameters.add(new BasicNameValuePair("client_id", clientId));
+		parameters.add(new BasicNameValuePair("username", uName));
+		parameters.add(new BasicNameValuePair("password", pWord));
+		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
+		parameters.add(new BasicNameValuePair("scope", "openid"));
+
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpResponse response = null;
+
+		try {
+			post.addHeader("content-type", URL_ENCODED_CONTENT);
+			post.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
+			response = client.execute(post);
+			return response;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+
+	public boolean authenticateUser(String uName, String pWord, String clientId, String clientSecret) {
+//		System.out.println("tokenUrl="+tokenUrl);
+//		System.out.println("getAccessToken/clientSecret="+clientSecret);
+//		System.out.println("grant_type="+GRANT_TYPE_PASSWORD);
+//		System.out.println("client_id="+clientId);
+//		System.out.println("username="+uName);
+//		System.out.println("password="+pWord);
+//		System.out.println("client_secret="+clientSecret);
+		
+		HttpPost post = new HttpPost(tokenUrl);
 		ArrayList<NameValuePair> parameters;
 
 		parameters = new ArrayList<NameValuePair>();
@@ -265,7 +243,6 @@ public class AuthenticationWithKeycloak {
 			else {
 				return true;
 			}
-		//	map = handleResponse(response);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -280,7 +257,6 @@ public class AuthenticationWithKeycloak {
 	// get a refresh KeycloakGetToken (and another access KeycloakGetToken)
 	public String getRefreshToken(String clientId, String clientSecret, String refreshToken) {
 		HttpPost post = new HttpPost(tokenUrl);
-		Map<String, String> map = null;
 		ArrayList<NameValuePair> parameters;
 
 		parameters = new ArrayList<NameValuePair>();
@@ -308,7 +284,6 @@ public class AuthenticationWithKeycloak {
 //				System.out.println("@@@@@@@@@@@@@@KeycloakGetToken = "+json);
 				return json;
 			}
-		//	map = handleResponse(response);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -317,131 +292,38 @@ public class AuthenticationWithKeycloak {
 			e.printStackTrace();
 		}
 
-//		return accessToken;
-//		System.out.println(map.get(ACCESS_TOKEN));
-//		getUserName(map.get(ACCESS_TOKEN));
-//		return map;
 		return null;
-	}	
+	}
 	
+	public HttpResponse getRefreshTokenResp(String clientId, String clientSecret, String refreshToken) {
+		HttpPost post = new HttpPost(tokenUrl);
+		ArrayList<NameValuePair> parameters;
 
-//	static public Map handleResponse(HttpResponse response) {
-//		String contentType = JSON_CONTENT;
-//		if (response.getEntity().getContentType() != null) {
-//			contentType = response.getEntity().getContentType().getValue();
-//		}
-//		if (contentType.contains(JSON_CONTENT)) {
-//			return handleJsonResponse(response);
-//		} else if (contentType.contains(URL_ENCODED_CONTENT)) {
-//			return handleURLEncodedResponse(response);
-//
-//		} else {
-//			// Unsupported Content type
-//			throw new RuntimeException("Cannot handle " + contentType
-//					+ " content type. Supported content types include JSON, XML and URLEncoded");
-//		}
-//
-//	}
+		parameters = new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("grant_type", REFRESH_TOKEN));
+		parameters.add(new BasicNameValuePair("client_id", clientId));
+		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
+		parameters.add(new BasicNameValuePair("refresh_token", refreshToken));
 
-//	public static String getToken(String uName, String pWord) {
-//		HttpPost post = new HttpPost(tokenUrl);
-//		DefaultHttpClient client = new DefaultHttpClient();
-//		HttpResponse response = null;
-//		Map<String, String> map = null;
-//
-//		try {
-//			post.addHeader("content-type", URL_ENCODED_CONTENT);
-//			StringEntity params = new StringEntity("username=" + uName + "&password=" + pWord + "&client_id=" + clientId
-//					+ "&client_secret=" + clientSecret + "&grant_type=" + GRANT_TYPE_PASSWORD);
-//			post.setEntity(params);
-//
-//			response = client.execute(post);
-//			int code = response.getStatusLine().getStatusCode();
-//
-//			if (code != HTTP_OK) {
-//				System.out.println("Could not authenticate using client credentials");
-//				throw new RuntimeException("Could not retrieve access KeycloakGetToken for client: " + clientId);
-//			}
-//			map = handleResponse(response);
-//		} catch (ClientProtocolException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		System.out.println(map.get(ACCESS_TOKEN));
-//		return map.get(ACCESS_TOKEN);
-//	}
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpResponse response = null;
 
-//	static Map handleURLEncodedResponse(HttpResponse response) {
-//		Map<String, Charset> map = Charset.availableCharsets();
-//		Map<String, String> oauthResponse = new HashMap<String, String>();
-//		Set<Map.Entry<String, Charset>> set = map.entrySet();
-//		Charset charset = null;
-//		HttpEntity entity = response.getEntity();
-//
-//		System.out.println();
-//		System.out.println("********** Response Received **********");
-//
-//		for (Map.Entry<String, Charset> entry : set) {
-//			System.out.println(String.format("  %s = %s", entry.getKey(), entry.getValue()));
-//			if (entry.getKey().equalsIgnoreCase(HTTP.UTF_8)) {
-//				charset = entry.getValue();
-//			}
-//		}
-//
-//		try {
-//			List<NameValuePair> list = URLEncodedUtils.parse(EntityUtils.toString(entity), Charset.forName(HTTP.UTF_8));
-//			for (NameValuePair pair : list) {
-////				logger.fine(String.format("  %s = %s", pair.getName(), pair.getValue()));
-//				oauthResponse.put(pair.getName(), pair.getValue());
-//			}
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			throw new RuntimeException("Could not parse URLEncoded Response");
-//		}
-//
-//		return oauthResponse;
-//	}
-//
-//	static public Map handleJsonResponse(HttpResponse response) {
-//		Map<String, String> oauthLoginResponse = null;
-//		String contentType = response.getEntity().getContentType().getValue();
-//
-//		System.out.println();
-//		System.out.println("********** " + contentType + " Response Received **********");
-//
-//		try {
-//			oauthLoginResponse = (Map<String, String>) new JSONParser()
-//					.parse(EntityUtils.toString(response.getEntity()));
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			throw new RuntimeException();
-//		} catch (org.json.simple.parser.ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			throw new RuntimeException();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			throw new RuntimeException();
-//		} catch (RuntimeException e) {
-//			System.out.println("Could not parse JSON response");
-//			throw e;
-//		}
-////		System.out.println();
-////		System.out.println("********** Response Received **********");
-////		for (Map.Entry<String, String> entry : oauthLoginResponse.entrySet()) {
-////			System.out.println(String.format("  %s = %s", entry.getKey(),
-////					entry.getValue()));
-////		}
-//		return oauthLoginResponse;
-//	}
-
+		try {
+			post.addHeader("content-type", URL_ENCODED_CONTENT);
+			post.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
+			response = client.execute(post);
+			
+			return response;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}		
+	
 	public String getUserName(String aToken) {
 		int code = 0;
 		String userName = null;
@@ -449,13 +331,11 @@ public class AuthenticationWithKeycloak {
 
 			// Sending get request
 			URL url = new URL(userInfoUrl);
-			System.out.println("userInfoUrl="+userInfoUrl);
+//			System.out.println("userInfoUrl="+userInfoUrl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 			conn.setRequestProperty("Authorization", "Bearer " + aToken);
-			System.out.println("aToken="+aToken);
-			// e.g. bearer KeycloakGetToken=
-			// eyJhbGciOiXXXzUxMiJ9.eyJzdWIiOiPyc2hhcm1hQHBsdW1zbGljZS5jb206OjE6OjkwIiwiZXhwIjoxNTM3MzQyNTIxLCJpYXQiOjE1MzY3Mzc3MjF9.O33zP2l_0eDNfcqSQz29jUGJC-_THYsXllrmkFnk85dNRbAw66dyEKBP5dVcFUuNTA8zhA83kk3Y41_qZYx43T
+//			System.out.println("aToken="+aToken);
 
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestMethod("GET");
@@ -484,7 +364,7 @@ public class AuthenticationWithKeycloak {
 				JSONObject jsonObject = (JSONObject) parser.parse(response.toString());
 
 				userName = (String) jsonObject.get("preferred_username");
-				System.out.println("userName:-" + userName);
+//				System.out.println("userName:-" + userName);
 				return userName;
 			}
 		} catch (Exception ex) {

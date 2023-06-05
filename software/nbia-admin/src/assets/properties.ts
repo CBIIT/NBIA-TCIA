@@ -1,8 +1,8 @@
 export let Properties = {
     // 08_FEB_23
     VERSION: '1.0.12',
-    // 17_FEB_23
-    TEST_VERSION: '1.0.12b',
+    // 15_MAY_23
+    TEST_VERSION: '1.0.12c',
 
     MAX_CRITERIA_LEN: 32,
 
@@ -85,8 +85,9 @@ export let Properties = {
     DEV_MODE: false,
     DEV_PASSWORD: 'changeme',
     DEV_USER: 'mlerner',
-    DEFAULT_SECRET: 'nbia-stage',
-    DEFAULT_CLIENT_ID: '',
+
+    DEFAULT_SECRET: '',
+    DEFAULT_CLIENT_ID: 'nbia-stage',
 
     MAX_PAGER_BUTTONS: 6,
     DEFAULT_PAGE_LENGTH: 20,
@@ -95,6 +96,10 @@ export let Properties = {
     // How many seconds before token end of life to refresh the token
     TOKEN_REFRESH_TIME_MARGIN: 60,
 
+    // DEV_PASSWORD: 'Froggy_127',
+    // DEV_USER: 'lernermh',
+
+    // Public.cancerimagingarchive.net
 
     // This is a flag that is set to true by the ConfigurationService when all the configuration file settings have been set.
     // It used to determine if it is okay to start using the configured settings yet.
