@@ -1085,15 +1085,15 @@ public class GeneralImage  implements Serializable
 		return false;
 	}
 
-	private Integer fileId;
+	private String fileId;
 	
 	
 	
-	public Integer getFileId() {
+	public String getFileId() {
 		return fileId;
 	}
 
-	public void setFileId(Integer fileId) {
+	public void setFileId(String fileId) {
 		this.fileId = fileId;
 	}
 
