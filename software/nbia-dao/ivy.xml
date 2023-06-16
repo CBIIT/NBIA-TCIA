@@ -207,11 +207,11 @@ L-->
                 name="commons-io"
                 rev="2.1"
                 conf="compile->master;runtime->master"/>  
-
-   	<dependency org="org.apache.httpcomponents"
-                name="httpclient"
-                rev="4.2.6"
-                conf="compile->master;runtime->master"/> 
+				
+	<dependency org="org.apache.httpcomponents" 
+				name="httpclient" 
+                rev="4.5.12"
+				conf="compile->master;runtime->master"/>				
 <!--  
    	<dependency org="org.apache.lucene"
                 name="lucene-analyzers-common"
@@ -301,7 +301,7 @@ L-->
                  
    	<dependency org="org.apache.httpcomponents"
                 name="httpcore"
-                rev="4.2.5"
+                rev="4.4.9"
                 conf="compile->master;runtime->master"/>                 
                 
     <dependency org="org.noggit"
