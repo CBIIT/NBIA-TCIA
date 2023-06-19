@@ -336,7 +336,7 @@ public class GeneralImageOperation extends DomainOperation implements GeneralIma
         if ((temp = (String)numbers.get(DicomConstants.FILE_ID)) != null&&
         		temp.trim().length()>0) {
         	try {
-        		Integer fileint = Integer.valueOf(temp.trim());
+        		String fileint = String.valueOf(temp.trim());
 				gi.setFileId(fileint);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
