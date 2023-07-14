@@ -290,4 +290,48 @@ L-->
           DELETE license_id;    
          </sql>
        </changeSet> -->
+       <changeSet id="8.4.Add.uniquekey.to.project.in.trialdataprovenance" author="joseph" dbms="mysql">
+         <comment>
+           add unique key to project in trial data provenance
+         </comment>
+         <sql>
+           ALTER TABLE trial_data_provenance ADD CONSTRAINT unique_project UNIQUE (project); 
+         </sql>
+       </changeSet>
+       <changeSet id="8.4.modify.column.data.type.for.posdatransferid" author="joseph" dbms="mysql">
+         <comment>
+           change the column data type for posda transfer id
+         </comment>
+         <sql>
+           ALTER TABLE general_image MODIFY COLUMN posda_transfer_id VARCHAR(50);
+         </sql>
+       </changeSet>
+       <changeSet id="8.4.1 modify.foreign.key.on.delete.action.on.mr.image" author="panq" dbms="mysql">
+         <comment>
+           modify the foreign key on delete action
+         </comment>
+         <sql>
+			ALTER TABLE mr_image 
+			DROP FOREIGN KEY FK_MR_GEN_IMAGE_PK_ID;
+			ALTER TABLE mr_image 
+			ADD CONSTRAINT FK_MR_GEN_IMAGE_PK_ID
+			FOREIGN KEY (IMAGE_PK_ID)
+			REFERENCES general_image (image_pk_id)
+			ON DELETE CASCADE;
+         </sql>
+       </changeSet>
+       <changeSet id="8.4.1 modify.foreign.key.on.delete.action.on.ct.image" author="panq" dbms="mysql">
+         <comment>
+           modify the foreign key on delete action
+         </comment>
+         <sql>
+			ALTER TABLE ct_image
+			DROP FOREIGN KEY fk_image_pk_id;
+			ALTER TABLE ct_image
+			ADD CONSTRAINT fk_image_pk_id
+			FOREIGN KEY (image_pk_id)
+			REFERENCES general_image (image_pk_id)
+			ON DELETE CASCADE;
+         </sql>
+       </changeSet>	   	   
 </databaseChangeLog>

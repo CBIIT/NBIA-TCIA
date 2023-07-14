@@ -51,10 +51,10 @@ public class ImageDAOImpl extends HibernateDaoSupport implements ImageDAO {
 					}
 				}
 				deleteImage(seriesIds);
-				if(isMR) {
-					deleteMRImage(seriesIds); //include MR images
-				}
-				deleteCTImage(seriesIds);
+//				if(isMR) {
+//					deleteMRImage(seriesIds); //include MR images
+//				}
+//				deleteCTImage(seriesIds);
 			}
 		}catch(org.springframework.dao.DataAccessException e)
 		{
@@ -82,7 +82,7 @@ public class ImageDAOImpl extends HibernateDaoSupport implements ImageDAO {
 		}
 	}
 
-	public void deleteCTImage(List<Integer> seriesIds)
+	public void deleteImage(List<Integer> seriesIds)
 	{
 		for(final Integer seriesId : seriesIds) {
 			getHibernateTemplate().execute(
@@ -90,9 +90,14 @@ public class ImageDAOImpl extends HibernateDaoSupport implements ImageDAO {
 		    	   public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
 		    		   Query deleteGiQuery = session.createQuery("delete from GeneralImage where seriesPKId = ?");
-		    		   deleteGiQuery.setInteger(0, seriesId);
+	    		   try {
+		    		   deleteGiQuery.setInteger(0, seriesId.intValue());
+		    		   logger.debug("@@@@@@@@delete from GeneralImage ="+ deleteGiQuery.getQueryString());			    		   
 		    		   /*int result = */deleteGiQuery.executeUpdate();
-
+	    		   }
+	    		   catch (Exception e) {
+	    			   e.printStackTrace();
+	    		   }
 		    		   return null;
 		    	   }
 		       }
@@ -100,17 +105,21 @@ public class ImageDAOImpl extends HibernateDaoSupport implements ImageDAO {
 		}
 	}
 
-	public void deleteImage (List<Integer> seriesIds)
+	public void deleteCTImage (List<Integer> seriesIds)
 	{
 		for(final Integer seriesId : seriesIds) {
 			getHibernateTemplate().execute(
 		       new HibernateCallback() {
 		    	   public Object doInHibernate(Session session) throws HibernateException, SQLException {
-
+		    		   try {
 		    		   Query deleteCtQuery = session.createQuery("delete from CTImage where seriesPKId = ?");
-		    		   deleteCtQuery.setInteger(0, seriesId);
+		    		   deleteCtQuery.setInteger(0, seriesId.intValue());
+		    		   logger.debug("@@@@@@@@@@delet from CTImage ="+ deleteCtQuery.getQueryString());			    		   
 		    		   /*int result = */deleteCtQuery.executeUpdate();
-
+		    		   }
+		    		   catch (Exception e) {
+		    			   e.printStackTrace();
+		    		   }
 		    		   return null;
 		    	   }
 		       }
