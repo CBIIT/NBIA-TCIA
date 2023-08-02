@@ -104,13 +104,13 @@ public class DataRetrieverCLI {
 	static Map<String, String> sopClassNameMap = new HashMap<String, String>();
 	//private String license_text = "<html><head><title>License Information</title></head><body><br/><p>The {0} collection is distributed under the {1} (<a href={2}>{2}</a>). </p><p>By downloading the data, you agree to abide by terms of this license.</p></body></html>";
 	private String license_text = "License\n\nThe {0} collection is distributed under the {1} ({2}). \nBy downloading the data, you agree to abide by terms of this license.\n";
-	private String directoryType = "Descriptive";
+	public String directoryType = "Descriptive";
 	private String refreshToken = null;
 	public boolean verbose = false;
 	public boolean quiet = false;
 	public boolean force = false;
 	public boolean md5Verify = false;
-	
+		
 	public final Logger logger = Logger.getGlobal();
 	private String setProperty;
 	private String duaText = null;
@@ -158,11 +158,18 @@ public class DataRetrieverCLI {
 				if (args[i].equals("-m") || args[i].equals("-M") || args[i].equals("--md5")
 						|| args[i].equals("--MD5")) {
 					dr.md5Verify = true;
+				}
+				if (args[i].equalsIgnoreCase("--dd") || args[i].equalsIgnoreCase("-dd")) {
+					dr.directoryType = "Descriptive";
 				}				
+				if (args[i].equalsIgnoreCase("--cd") || args[i].equalsIgnoreCase("-cd")) {
+					dr.directoryType = "Classic";
+				}								
 			}
 			dr.configLogger(downloadDir);
 
 			dr.logger.info("Using manifiest file: " + fileName);
+			
 			dr.logger.info(
 					"Running with option: quiet = " + dr.quiet + "; verbose = " + dr.verbose + "; force = " + dr.force);
 			if (fileName == null) {
@@ -407,8 +414,7 @@ public class DataRetrieverCLI {
 					logger.info("As user name and/or password are not provided, only public data is downloaded.");
 				} else
 					accessToken = getAccessToken(userName, passWord);
-
-				downloadData(directoryType, accessToken);
+					downloadData(directoryType, accessToken);
 			}
 
 //			//test
@@ -805,7 +811,7 @@ public class DataRetrieverCLI {
 
 	}
 
-	private String constrcutFilePath(String[] metaData, String directoryType) {
+	private String constrcutFilePath(String[] metaData, String directoryType) {	
 		String filePath = null;
 		if (metaData == null) {
 			return null;

@@ -151,7 +151,7 @@ public class StandaloneDMDispatcher {
 //				sdmp.getUserAgreementTxt();
 				sdmp.launch();
 			}
-			else  if (os.toLowerCase().contains("linux"))
+			else if (os.toLowerCase().contains("linux"))
 			{ // command line interface
 //				console.printf("CLI Application");
 				String fileName = null;
@@ -203,7 +203,13 @@ public class StandaloneDMDispatcher {
 						if (args[i].equals("-m") || args[i].equals("-M") || args[i].equals("--md5")
 								|| args[i].equals("--MD5")) {
 							dr.md5Verify = true;
-						}								
+						}
+						if (args[i].equalsIgnoreCase("--dd") || args[i].equalsIgnoreCase("-dd")) {
+							dr.directoryType = "Descriptive";
+						}				
+						if (args[i].equalsIgnoreCase("--cd") || args[i].equalsIgnoreCase("-cd")) {
+							dr.directoryType = "Classic";
+						}										
 					}
 					dr.configLogger(downloadDir);
 
