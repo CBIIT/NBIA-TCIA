@@ -10,8 +10,7 @@ Along with the Clinical Trial Processor software from the Radiological Society o
 NBIA is distributed under the BSD 3-clause license. Please see the NOTICE and LICENSE files for details.
 
 You will find more details about NBIA in the following links:
-  * [Community Wiki](https://wiki.nci.nih.gov/x/E4b3Ag)
-  * [Developer Guide](https://wiki.nci.nih.gov/x/kIHxC)
+  * [REST API Guides](https://wiki.cancerimagingarchive.net/display/Public/TCIA+Programmatic+Interface+REST+API+Guides)
   * [Installation Guide](https://wiki.nci.nih.gov/x/kgKYFg)
     
 Please join us in further developing and improving NBIA. Submit any issues you may find to GitHub's issue tracker. Contact [Application Support](mailto:NCIAppSupport@mail.nih.gov) for information about open-source development and NBIA.
