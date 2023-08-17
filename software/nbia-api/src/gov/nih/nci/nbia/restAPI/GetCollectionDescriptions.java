@@ -37,8 +37,14 @@ public class GetCollectionDescriptions extends getData{
 
 		try {	
 			
-	 		String userName = getUserName(); 
-	 		AuthorizationManager am = new AuthorizationManager(userName);
+	 		String userName = getUserName();
+	 		AuthorizationManager am;
+	 		if(userName==null) {
+	 			am = new AuthorizationManager();
+	 		}
+	 		else {
+	 			am = new AuthorizationManager(userName);
+	 		}
 	 		List<String> authorizedCollection = am.getAuthorizedCollections();
 			
 			if (collectionName==null || collectionName.equals("")){

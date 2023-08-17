@@ -41,7 +41,12 @@ public class GetMinMaxTimepoints extends getData{
 
 				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
+				     AuthorizationManager am;
+				     if(user == null){
+				     	am = new AuthorizationManager();
+				     } else {
+					    am = new AuthorizationManager(user);
+					 }
 				     authorizedSiteData = am.getAuthorizedSites();
 				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
 				}
