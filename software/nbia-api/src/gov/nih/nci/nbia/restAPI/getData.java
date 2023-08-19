@@ -60,11 +60,10 @@ public class getData {
 
 			if (token.equalsIgnoreCase("Bearer undefined")) {
 				userName = NCIAConfig.getGuestUsername();
-			}
-			else
+			} else {
 				userName = AuthenticationWithKeycloak.getInstance().getUserName(token.substring(7));
-		}
-		else {
+			}
+		} else {
 			Authentication authentication = SecurityContextHolder.getContext()
 					.getAuthentication();
 			userName = (String) authentication.getPrincipal();

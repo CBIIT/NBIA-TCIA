@@ -118,6 +118,8 @@ L-->
   <target name="package-hibernate" depends="compile">
     <copy file="${src.java.dir}/gov/nih/nci/nbia/security/NCIAUser.hbm.xml"
           tofile="${assembly.classes.dir}/gov/nih/nci/nbia/security/NCIAUser.hbm.xml" />
+    <copy file="${src.java.dir}/gov/nih/nci/nbia/security/FastPE.hbm.xml"
+          tofile="${assembly.classes.dir}/gov/nih/nci/nbia/security/FastPE.hbm.xml" />
     <copy todir="${assembly.classes.dir}/gov/nih/nci/nbia/internaldomain">
       <fileset dir="${src.java.dir}/gov/nih/nci/nbia/internaldomain"
                includes="*.hbm.xml" />

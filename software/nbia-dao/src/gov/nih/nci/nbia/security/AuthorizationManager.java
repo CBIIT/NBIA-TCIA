@@ -255,6 +255,10 @@ public class AuthorizationManager {
         List<String> returnValues = new ArrayList<String>();
 
         for (TableProtectionElement tpe : securityRights) {
+            // System.out.println(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
+            // System.out.println(tpe.getTableName() + " " + tpe.getAttributeName() + " " + tpe.getRoles());
+            // System.out.println(tableName + " " + columnName + " " + role);
+            // System.out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
             if (tableName.equals(tpe.getTableName()) &&
                 columnName.equals(tpe.getAttributeName()) &&
                 tpe.hasRole(role)) {

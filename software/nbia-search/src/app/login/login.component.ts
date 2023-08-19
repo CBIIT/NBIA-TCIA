@@ -139,6 +139,7 @@ export class LoginComponent implements OnInit, OnDestroy{
      * </ul>
      */
     async doLogin() {
+        /*
         // Log out current user.
         this.apiServerService.setLoggingOut( true );
         this.apiServerService.setSimpleSearchQueryHold( '' );
@@ -152,6 +153,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                 logout = true;
             },
             err => {
+                console.log("logout error occured");
                 logout = true;
             }
         );
@@ -165,6 +167,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         this.apiServerService.setLoggingOut( false );
 
         //  FIXME TEST delay await this.commonService.sleep( 1500 );
+        */
 
         // Try getting a new Access token
         this.apiServerService.getToken().subscribe(
@@ -250,6 +253,7 @@ export class LoginComponent implements OnInit, OnDestroy{
      */
     async loginAsDefaultUser( tabToGoto ) {
 
+        /*
         // Log out current user.
         this.apiServerService.setLoggingOut( true );
         this.apiServerService.setSimpleSearchQueryHold( '' );
@@ -273,6 +277,7 @@ export class LoginComponent implements OnInit, OnDestroy{
             await this.commonService.sleep( Consts.waitTime );
         }
         this.apiServerService.setLoggingOut( false );
+        */
 
         this.apiServerService.setCurrentUser( Properties.DEFAULT_USER );
         this.persistenceService.put( this.persistenceService.Field.USER, Properties.DEFAULT_USER );

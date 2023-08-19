@@ -968,8 +968,13 @@ public class NCIAConfig {
     public static String getKeycloakClientId() {
         String propertyValue = properties.getProperty("keycloak.client.id");
         return propertyValue;   	
-    } 
-    
+    }
+
+    public static boolean getDisableJobs() {
+        String propertyValue = properties.getProperty("disable.jobs");
+        return propertyValue.equalsIgnoreCase("yes");
+    }
+
     /**
      * Utility method for retrieving a property
      * Sets the value to -1 if not found or not an integer

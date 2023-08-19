@@ -40,7 +40,9 @@ package gov.nih.nci.nbia.security;
 import gov.nih.nci.nbia.dao.AbstractDAO;
 import gov.nih.nci.nbia.ldapService.UserLdapService;
 import gov.nih.nci.nbia.security.NCIASecurityManager.RoleType;
+import gov.nih.nci.nbia.security.FastPE;
 import gov.nih.nci.nbia.util.NCIAConfig;
+import gov.nih.nci.nbia.util.SimpleCache;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -101,6 +103,8 @@ public class NCIASecurityManagerImpl extends AbstractDAO
     private String applicationName = null;
     private UserProvisioningManager upm = null;
     private AuthenticationManager am = null;
+
+    private static SimpleCache<String, Set<TableProtectionElement>> userCache = new SimpleCache<String, Set<TableProtectionElement>>();
 
     /*
      * Constructor
@@ -202,6 +206,20 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		return flag;
 	}
 
+    @Transactional(propagation=Propagation.REQUIRED)
+    public List<FastPE> fastSecurityMapQuery(String userId) {
+        List<FastPE> results;
+        String hql = "select pe from FastPE pe where ";
+        hql = hql + "pe.userId = " + userId;
+        try {
+            results = getHibernateTemplate().find(hql);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Could not execute the query.");
+        }
+        return results;
+    }
+
     /*
      * Build up the set of "protection elements" for a given user.
      * These fake protection elements are used to decide whether
@@ -213,9 +231,51 @@ public class NCIASecurityManagerImpl extends AbstractDAO
      * way per "real" ProtectionElement in the CSM tables.
      */
 
-    public Set<TableProtectionElement> getSecurityMap(String userId)
-        throws CSObjectNotFoundException {
-        System.out.println("Starting getSecurityMap for user " + userId);
+    public Set<TableProtectionElement> getSecurityMap(String userId) throws CSObjectNotFoundException {
+        // if (userCache.containsKey(userId)) {
+        //     return userCache.get(userId);
+        // }
+        if(userId == null) {
+            throw new CSObjectNotFoundException("Invalid userId " + userId);
+        }
+        System.out.println("Starting fast getSecurityMap for user " + userId);
+        long startTime = System.currentTimeMillis();
+        List<FastPE> fastResults = fastSecurityMapQuery(userId);
+        System.out.println("Finished query in " + (System.currentTimeMillis() - startTime) + " ms");
+        startTime = System.currentTimeMillis();
+        Set<TableProtectionElement> retSet = new HashSet<TableProtectionElement>();
+        Map<String, TableProtectionElement> tempHastable = new Hashtable<String, TableProtectionElement>();
+
+        if(fastResults == null) {
+            throw new CSObjectNotFoundException("No results found for user " + userId);
+        }
+
+        //  Iterate over the protection groups
+        for (FastPE pe: fastResults) {
+            String peName = pe.getProtectionElementName();
+            if (tempHastable.containsKey(peName)) {
+                TableProtectionElement tempEl = tempHastable.get(peName);
+                tempEl.addRole(pe.getRoleName());
+
+                // if not, create a new protection element
+            }
+            else {
+                ProtectionElement pElement = new ProtectionElement();
+                pElement.setProtectionElementName(peName);
+                pElement.setAttribute(pe.getAttribute());
+                pElement.setProtectionElementDescription(NCIAConfig.getProtectionElementPrefix() + "TRIAL_DATA_PROVENANCE");
+                TableProtectionElement el = new TableProtectionElement(pElement);
+                el.addRole(pe.getRoleName());
+                tempHastable.put(peName, el);
+            }
+        }
+        retSet.addAll(tempHastable.values());
+
+        System.out.println("Total size of protection elements: " + retSet.size());
+
+        // userCache.put(userId, retSet);
+        return retSet;
+/*        System.out.println("Starting getSecurityMap for user " + userId);
         long startTime = System.currentTimeMillis();
         Set<TableProtectionElement> retSet = new HashSet<TableProtectionElement>();
         Map<String, TableProtectionElement> tempHastable = new Hashtable<String, TableProtectionElement>();
@@ -276,7 +336,9 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
         System.out.println("Total size of protection elements: " + retSet.size());
 
+        userCache.put(userId, retSet);
         return retSet;
+*/
     }
 
     /*

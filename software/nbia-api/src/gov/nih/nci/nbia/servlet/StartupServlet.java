@@ -53,6 +53,7 @@ import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.executors.PropertiesUpdateJob;
 import gov.nih.nci.nbia.executors.md5CacheUpdateJob;
 
+
 public class StartupServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -73,6 +74,11 @@ public class StartupServlet extends HttpServlet {
         }
         finally{
            	ApplicationFactory.getInstance().setLatestCurationDate(latestCurationDate);
+        }
+
+        if(NCIAConfig.getDisableJobs()){
+            System.out.println("Jobs are disabled in the configuration file.  Not starting jobs.");
+            return;
         }
 
         /*
