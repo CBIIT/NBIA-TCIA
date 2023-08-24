@@ -559,13 +559,11 @@ export class ApiServerService implements OnDestroy {
                 (resGetUserRoles) => {
                     this.currentUserRoles = resGetUserRoles;
                     this.currentUserRolesEmitter.emit(this.currentUserRoles);
-                    this.commonService.updateCollectionDescriptions();
                 },
                 (errGetUserRoles) => {
                     // If we can't get the users role(s), we will give them none.
                     this.currentUserRoles = [];
                     this.currentUserRolesEmitter.emit(this.currentUserRoles);
-                    this.commonService.updateCollectionDescriptions();
                 });
         } else {
             this.currentUserRoles = [];

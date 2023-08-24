@@ -197,7 +197,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                 this.cartService.clearCart();
 
                 // Update the Collection descriptions for the new user
-                // this.commonService.updateCollectionDescriptions();
+                this.commonService.updateCollectionDescriptions();
 
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
 
@@ -311,7 +311,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                 this.cartService.clearCart();
 
                 // Update the Collection descriptions for the new user
-                // this.commonService.updateCollectionDescriptions();
+                this.commonService.updateCollectionDescriptions();
 
 
                 // If there are query parameters passed in the URL, this is where rerun the search with the new users access.
