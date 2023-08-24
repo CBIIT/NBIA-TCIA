@@ -21,8 +21,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import gov.nih.nci.nbia.util.NCIAConfig;
+import gov.nih.nci.nbia.security.UnauthorizedException;
 
 /**
  * @author panq
@@ -255,12 +257,13 @@ public class AuthenticationWithKeycloak {
 	}	
 	
 	// get a refresh KeycloakGetToken (and another access KeycloakGetToken)
-	public String getRefreshToken(String clientId, String clientSecret, String refreshToken) {
+	public String getRefreshToken(String username, String clientId, String clientSecret, String refreshToken) {
 		HttpPost post = new HttpPost(tokenUrl);
 		ArrayList<NameValuePair> parameters;
 
 		parameters = new ArrayList<NameValuePair>();
 		parameters.add(new BasicNameValuePair("grant_type", REFRESH_TOKEN));
+		parameters.add(new BasicNameValuePair("username", username));
 		parameters.add(new BasicNameValuePair("client_id", clientId));
 		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
 		parameters.add(new BasicNameValuePair("refresh_token", refreshToken));
@@ -295,12 +298,13 @@ public class AuthenticationWithKeycloak {
 		return null;
 	}
 	
-	public HttpResponse getRefreshTokenResp(String clientId, String clientSecret, String refreshToken) {
+	public HttpResponse getRefreshTokenResp(String username, String clientId, String clientSecret, String refreshToken) {
 		HttpPost post = new HttpPost(tokenUrl);
 		ArrayList<NameValuePair> parameters;
 
 		parameters = new ArrayList<NameValuePair>();
 		parameters.add(new BasicNameValuePair("grant_type", REFRESH_TOKEN));
+		parameters.add(new BasicNameValuePair("username", username));
 		parameters.add(new BasicNameValuePair("client_id", clientId));
 		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
 		parameters.add(new BasicNameValuePair("refresh_token", refreshToken));
@@ -328,14 +332,13 @@ public class AuthenticationWithKeycloak {
 		int code = 0;
 		String userName = null;
 		try {
-
 			// Sending get request
 			URL url = new URL(userInfoUrl);
-//			System.out.println("userInfoUrl="+userInfoUrl);
+			// System.out.println("userInfoUrl="+userInfoUrl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 			conn.setRequestProperty("Authorization", "Bearer " + aToken);
-//			System.out.println("aToken="+aToken);
+			// System.out.println("aToken="+aToken);
 
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestMethod("GET");
@@ -344,10 +347,12 @@ public class AuthenticationWithKeycloak {
 			if (code != 200) {
 				if (code == 401 || code == 403) {
 					// Access KeycloakGetToken is invalid or expired.Regenerate the access KeycloakGetToken
-					System.out.println("Access KeycloakGetToken is invalid or expired. Regenerating access KeycloakGetToken please");
-					throw new RuntimeException("Invalid or expired KeycloakGetToken. HTTP error code: " + code);
-				} else
+					// System.out.println("Access KeycloakGetToken is invalid or expired. Regenerating access KeycloakGetToken please");
+					// throw new RuntimeException("Invalid or expired KeycloakGetToken. HTTP error code: " + code);
+					throw new UnauthorizedException();
+				} else {
 					throw new RuntimeException("Failed : HTTP error code : " + code);
+				}
 			} else if (code == 200) {
 				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 				String output;
@@ -359,17 +364,23 @@ public class AuthenticationWithKeycloak {
 
 				in.close();
 				// printing result from response
-//	        System.out.println("Response:-" + response.toString());	
+	//	        System.out.println("Response:-" + response.toString());	
 				JSONParser parser = new JSONParser();
 				JSONObject jsonObject = (JSONObject) parser.parse(response.toString());
 
 				userName = (String) jsonObject.get("preferred_username");
-//				System.out.println("userName:-" + userName);
+				// System.out.println("userName from keycloak: " + userName);
 				return userName;
 			}
-		} catch (Exception ex) {
+		} catch (IOException ex) {
 			ex.printStackTrace();
+			throw new RuntimeException("Problem connecting with Keycloak server.");
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("Problem parsing response from Keycloak server.");
 		}
+
+		System.out.println("Username is null");
 		return null;
 	}
 }

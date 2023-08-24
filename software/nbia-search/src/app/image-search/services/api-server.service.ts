@@ -85,6 +85,7 @@ export class ApiServerService implements OnDestroy {
      * @type {EventEmitter<any>}
      */
     textSearchResultsEmitter = new EventEmitter();
+    textSearchClearEmitter = new EventEmitter();
 
     /**
      * Used by emitPostError when doSearch is called.
@@ -552,18 +553,24 @@ export class ApiServerService implements OnDestroy {
         this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN, this.tokenLifeSpan);
         this.rawAccessToken = t;
 
-        // Get this user's role(s)
-        this.doGet(Consts.GET_USER_ROLES, this.accessToken).subscribe(
-            (resGetUserRoles) => {
-                this.currentUserRoles = resGetUserRoles;
-                this.currentUserRolesEmitter.emit(this.currentUserRoles);
-            },
-            (errGetUserRoles) => {
-                // If we can't get the users role(s), we will give them none.
-                this.currentUserRoles = [];
-                this.currentUserRolesEmitter.emit(this.currentUserRoles);
-            });
-
+        if(t !== null){
+            // Get this user's role(s)
+            this.doGet(Consts.GET_USER_ROLES, this.accessToken).subscribe(
+                (resGetUserRoles) => {
+                    this.currentUserRoles = resGetUserRoles;
+                    this.currentUserRolesEmitter.emit(this.currentUserRoles);
+                    this.commonService.updateCollectionDescriptions();
+                },
+                (errGetUserRoles) => {
+                    // If we can't get the users role(s), we will give them none.
+                    this.currentUserRoles = [];
+                    this.currentUserRolesEmitter.emit(this.currentUserRoles);
+                    this.commonService.updateCollectionDescriptions();
+                });
+        } else {
+            this.currentUserRoles = [];
+            this.currentUserRolesEmitter.emit(this.currentUserRoles);
+        }
     }
 
     /**
@@ -1170,7 +1177,7 @@ export class ApiServerService implements OnDestroy {
 
                             this.setCurrentUser(Properties.DEFAULT_USER);
                             this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
-                            this.loadingDisplayService.setLoadingOff();
+                            // this.loadingDisplayService.setLoadingOff();
                         }
 
                         // There is no need to tell the users this.
@@ -1398,24 +1405,27 @@ export class ApiServerService implements OnDestroy {
 
 
     logOut() {
-        let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
+        // let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
+        let postUrl = Properties.KEYCLOAK_LOGOUT_URL
         if (Properties.DEBUG_CURL) {
-            let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + getUrl + '\'';
-            console.log('doGet: ' + curl);
+            let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + postUrl + '\'';
+            console.log('doPost: ' + curl);
         }
         let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + this.accessToken
         });
 
+        let data = `refresh_token=${this.refreshToken}&token=${this.accessToken}&client_id=${Properties.DEFAULT_CLIENT_ID}`;
+
         let options =
             {
                 headers: headers,
-                method: 'get',
+                method: 'post',
                 responseType: 'text' as 'text'
             };
 
-        return this.httpClient.get(getUrl, options).pipe(timeout(Properties.HTTP_TIMEOUT));
+        return this.httpClient.post(postUrl, data, options).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
     /**

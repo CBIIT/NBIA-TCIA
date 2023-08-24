@@ -34,31 +34,13 @@ public class ClientAuditLog extends getData{
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@FormParam("action") String action) {
+	public Response constructResponse(@FormParam("action") String action) throws Exception {
 
-		try {	
-//	   Authentication authentication = SecurityContextHolder.getContext()
-//				.getAuthentication();
-		/**		String user = (String) authentication.getPrincipal();
-		System.out.println("Running!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-         List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-		if (authorizedSiteData==null){
-		     AuthorizationManager am = new AuthorizationManager(user);
-		     authorizedSiteData = am.getAuthorizedSites();
-		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-		} **/
 		GUIActionDAO guiActionDAO = (GUIActionDAO)SpringApplicationContext.getBean("GUIActionDAO");
 		guiActionDAO.record(action);
-		
 		return Response.ok().type("text/plain")
 				.entity("Action Recorded")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 	/**
 	 * Determine whether user has permission to see the seriesUids
@@ -67,24 +49,24 @@ public class ClientAuditLog extends getData{
 	 */
 	public List<String> validate(List<String> seriesUids, List<SiteData> authorizedSites){
 		List<String> noPermissionList = new ArrayList<String>();
-		    GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-			List<SeriesDTO> seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID(seriesUids, authorizedSites, null);
-			//user do not have permission to see any in the list.
-			if(seriesDTOsFound.isEmpty()){
-				System.out.println("The returned SeriesDTOs is empty. user do not have permission to see any series in the list.");
-				return seriesUids;
+	    GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		List<SeriesDTO> seriesDTOsFound = generalSeriesDAO.findSeriesBySeriesInstanceUID(seriesUids, authorizedSites, null);
+		//user do not have permission to see any in the list.
+		if(seriesDTOsFound.isEmpty()){
+			System.out.println("The returned SeriesDTOs is empty. user do not have permission to see any series in the list.");
+			return seriesUids;
+		}
+		//System.out.println("found: " + seriesDTOsFound.size());
+		List<String> seriesUidsFound = new ArrayList<String>();
+		for(SeriesDTO seriesDTO: seriesDTOsFound){
+			String seriesInstanceUid = seriesDTO.getSeriesUID();
+			seriesUidsFound.add(seriesInstanceUid);	
+		}
+		for(String seriesUid : seriesUids){
+			if(!seriesUidsFound.contains(seriesUid)){
+				noPermissionList.add(seriesUid);
 			}
-			//System.out.println("found: " + seriesDTOsFound.size());
-			List<String> seriesUidsFound = new ArrayList<String>();
-			for(SeriesDTO seriesDTO: seriesDTOsFound){
-				String seriesInstanceUid = seriesDTO.getSeriesUID();
-				seriesUidsFound.add(seriesInstanceUid);	
-			}
-			for(String seriesUid : seriesUids){
-				if(!seriesUidsFound.contains(seriesUid)){
-					noPermissionList.add(seriesUid);
-				}
-			}
+		}
 		return noPermissionList;
 	}
 }

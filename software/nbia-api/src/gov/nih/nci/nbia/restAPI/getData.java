@@ -32,6 +32,7 @@ import gov.nih.nci.nbia.wadosupport.WADOSupportDTO;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
 import gov.nih.nci.nbia.restUtil.RoleCache;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
+import gov.nih.nci.nbia.security.UnauthorizedException;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -59,12 +60,13 @@ public class getData {
 			String token = httpRequest.getHeader("Authorization");
 
 			if (token.equalsIgnoreCase("Bearer undefined")) {
+				// System.out.println("Token is undefined using NBIA_GUEST");
 				userName = NCIAConfig.getGuestUsername();
-			}
-			else
+			} else {
 				userName = AuthenticationWithKeycloak.getInstance().getUserName(token.substring(7));
-		}
-		else {
+				// System.out.println("User name from token is " + userName);
+			}
+		} else {
 			Authentication authentication = SecurityContextHolder.getContext()
 					.getAuthentication();
 			userName = (String) authentication.getPrincipal();
@@ -87,13 +89,13 @@ public class getData {
 		List<String> roles=RoleCache.getRoles(user);
         if (roles==null) {
         	roles=new ArrayList<String>();
-        	System.out.println("geting roles for user");
+        	// System.out.println("geting roles for user");
 		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
 		    roles.addAll(sm.getRoles(user));
 		    RoleCache.setRoles(user, roles);
         }
         for (String role: roles) {
-        	System.out.println("role for user =" + user +":"+ role);
+        	// System.out.println("role for user =" + user +":"+ role);
         	if (role.equalsIgnoreCase(NCIAConfig.getProtectionElementPrefix() + "ADMIN"))
         		return true;
         }

@@ -18,6 +18,7 @@ import gov.nih.nci.nbia.security.NCIASecurityManager.RoleType;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.nbia.security.UnauthorizedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,14 @@ public class AuthorizationManager {
      * @param userName
      * @throws Exception
      */
-    public AuthorizationManager(String userName) throws Exception {
+    public AuthorizationManager(String userName) {
 		NCIASecurityManager mgr = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-        String userId = mgr.getUserId(userName);
-        securityRights = mgr.getSecurityMap(userId);
+        try {
+            String userId = mgr.getUserId(userName);
+            securityRights = mgr.getSecurityMap(userId);
+        } catch (Exception e) {
+            throw new UnauthorizedException();
+        }
     }
 
     /**
@@ -72,9 +77,13 @@ public class AuthorizationManager {
      * @param userId
      * @throws Exception
      */
-    public AuthorizationManager(Long userId) throws Exception {
+    public AuthorizationManager(Long userId) {
 		NCIASecurityManager mgr = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-        securityRights = mgr.getSecurityMap(String.valueOf(userId));
+        try {
+            securityRights = mgr.getSecurityMap(String.valueOf(userId));
+        } catch (Exception e) {
+            throw new UnauthorizedException();
+        }
     }
 
     /**

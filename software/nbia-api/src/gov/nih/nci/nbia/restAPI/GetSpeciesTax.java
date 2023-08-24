@@ -31,36 +31,26 @@ public class GetSpeciesTax extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse() {
+	public Response constructResponse() throws Exception{
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
 			String user = getUserName(); 
 
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-				List<String> seriesSecurityGroups = new ArrayList<String>();
-				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
-				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-				criteria.setObjectType("SPECIES");
-				criteria.setAuth(auth);
-				List<SpeciesDTO> values = valueAndCountDAO.speciesTax(criteria);
-				return Response.ok(JSONUtil.getJSONforSpecies(values)).type("application/json")
-						.build();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+			if (authorizedSiteData==null){
+			     AuthorizationManager am = new AuthorizationManager(user);
+			     authorizedSiteData = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+			}
+			AuthorizationCriteria auth = new AuthorizationCriteria();
+			auth.setSeriesSecurityGroups(new ArrayList<String>());
+			auth.setSites(authorizedSiteData);
+			List<String> seriesSecurityGroups = new ArrayList<String>();
+			ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
+			ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
+			criteria.setObjectType("SPECIES");
+			criteria.setAuth(auth);
+			List<SpeciesDTO> values = valueAndCountDAO.speciesTax(criteria);
+			return Response.ok(JSONUtil.getJSONforSpecies(values)).type("application/json")
+					.build();
 	}
 }

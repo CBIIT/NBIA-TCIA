@@ -56,28 +56,17 @@ public class GetRoles extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse() {
-		try {			
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();		
-				List<String> roles=RoleCache.getRoles(user);
-                if (roles==null) {
-                	roles=new ArrayList<String>();
-                	System.out.println("geting roles for user");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-                }
+		String user = getUserName();
+		List<String> roles=RoleCache.getRoles(user);
+        if (roles==null) {
+        	roles=new ArrayList<String>();
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		    roles.addAll(sm.getRoles(user));
+		    RoleCache.setRoles(user, roles);
+        }
 
-        		return Response.ok(JSONUtil.getJSONforStringList(roles)).type("application/json")
-        				.build();
-        		} catch (Exception e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-        		return Response.status(500)
-        				.entity("Server was not able to process your request").build();
+		return Response.ok(JSONUtil.getJSONforStringList(roles)).type("application/json")
+				.build();
 
 	}
 

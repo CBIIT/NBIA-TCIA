@@ -25,10 +25,8 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(MultivaluedMap<String, String> inFormParams) {
-
-		try {	
-			PatientSearchSummary  returnValue= null;	
+	public Response constructResponse(MultivaluedMap<String, String> inFormParams) throws Exception {
+		PatientSearchSummary  returnValue= null;	
         SearchUtil util=new SearchUtil();
 		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
 			String user = getUserName();
@@ -38,14 +36,6 @@ public class GetSimpleSearchWithModalityAndBodyPartPaged extends getData{
 			returnValue=util.getPatients(inFormParams, null, false);
 		return Response.ok(JSONUtil.getJSONforPatientSearchSummary(returnValue)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
-
-}	
+}
 

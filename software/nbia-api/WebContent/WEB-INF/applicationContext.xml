@@ -38,7 +38,23 @@ L-->
   
   <beans:bean id="csmAuthenticationProvider" class="gov.nih.nci.nbia.restSecurity.CsmAuthenticationProvider">
   </beans:bean>
-  
+
+  <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <property name="exceptionMappings">
+        <props>
+            <prop key="gov.nih.nci.nbia.security.UnauthorizedException">unauthorized</prop>
+            <prop key="gov.nih.nci.nbia.restUtil.InvalidParametersException">invalid</prop>
+        </props>
+    </property>
+    <property name="statusCodes">
+        <props>
+            <prop key="unauthorized">401</prop>
+            <prop key="invalid">422</prop>
+        </props>
+    </property>
+  </bean>
+
+
   <authentication-manager>
     <authentication-provider ref="csmAuthenticationProvider">
     </authentication-provider>

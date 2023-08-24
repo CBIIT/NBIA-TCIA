@@ -39,33 +39,29 @@ public class KeycloakGetToken extends getData{
 
 	public Response constructResponse(@FormParam("username") String username, @FormParam("password") String password,
 			@FormParam("client_id") String client_id, @FormParam("client_secret") String client_secret,
-			@FormParam("grant_type") String grant_type, @FormParam("refresh_token") String refresh_token) {
+			@FormParam("grant_type") String grant_type, @FormParam("refresh_token") String refresh_token) throws Exception {
 
-		if (username.equals(NCIAConfig.getGuestUsername()))
+		if (username.equals(NCIAConfig.getGuestUsername())){
 			password = NCIAConfig.getGuestPassword();
-		try {
-			if (grant_type.equalsIgnoreCase("password")) {
-				client_id = NCIAConfig.getKeycloakClientId();
-				if (client_secret == null)
-					client_secret = "";
-
-				HttpResponse response = AuthenticationWithKeycloak.getInstance().getAccessTokenResp(username, password,
-						client_id, client_secret);
-				int code = response.getStatusLine().getStatusCode();
-				return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
-			} else if (grant_type.equalsIgnoreCase("refresh_token")) {
-				HttpResponse response = AuthenticationWithKeycloak.getInstance().getRefreshTokenResp(client_id,
-						client_secret, refresh_token);
-				int code = response.getStatusLine().getStatusCode();
-				return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
-			} else {
-				return Response.status(0, "Wrong grant_type entered. Valid grant_type is password or refresh_token.")
-						.build();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return null;
+		if (grant_type.equalsIgnoreCase("password")) {
+			client_id = NCIAConfig.getKeycloakClientId();
+			if (client_secret == null){
+				client_secret = "";
+			}
+
+			HttpResponse response = AuthenticationWithKeycloak.getInstance().getAccessTokenResp(username, password,
+					client_id, client_secret);
+			int code = response.getStatusLine().getStatusCode();
+			return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
+		} else if (grant_type.equalsIgnoreCase("refresh_token")) {
+			HttpResponse response = AuthenticationWithKeycloak.getInstance().getRefreshTokenResp(username, client_id,
+					client_secret, refresh_token);
+			int code = response.getStatusLine().getStatusCode();
+			return Response.status(code).entity(EntityUtils.toString(response.getEntity())).build();
+		} else {
+			return Response.status(0, "Wrong grant_type entered. Valid grant_type is password or refresh_token.")
+					.build();
+		}
 	}
 }
