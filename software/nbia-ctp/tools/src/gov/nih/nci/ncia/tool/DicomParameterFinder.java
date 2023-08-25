@@ -309,7 +309,7 @@ public class DicomParameterFinder {
 			finder.process(recursive, args[1],  null);
 
 		finder.closeFile();
-		logger.info("=== Process is completed, please read c:\result.xls ===");
+		logger.debug("=== Process is completed, please read c:\result.xls ===");
         */
 	}
 }

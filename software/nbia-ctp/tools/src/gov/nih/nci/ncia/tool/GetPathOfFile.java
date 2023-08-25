@@ -259,14 +259,14 @@ public class GetPathOfFile {
 		
 //		finder.process(qurantineDir, dateStart);
 				
-		logger.info("In process ...");
+		logger.debug("In process ...");
 		if (args.length > 1) {
 			finder.process(args[0], args[1]);
 		}
 		else {
 			finder.process(args[0], null);
 		}
-		logger.info("=== Process is completed ===");
+		logger.debug("=== Process is completed ===");
 	}		
 	
 }

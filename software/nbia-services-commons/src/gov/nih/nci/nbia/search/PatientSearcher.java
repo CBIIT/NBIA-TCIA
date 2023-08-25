@@ -137,7 +137,7 @@ public class PatientSearcher {
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         query.setElapsedTimeInMillis(elapsedTime);
-        logger.info("Results returned and built into DTOs in " + elapsedTime +" ms.");
+        logger.debug("Results returned and built into DTOs in " + elapsedTime +" ms.");
 
         return returnList;
     }
@@ -213,7 +213,7 @@ public class PatientSearcher {
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         query.setElapsedTimeInMillis(elapsedTime);
-        logger.info("Results returned and built into DTOs in " + elapsedTime +" ms.");
+        logger.debug("Results returned and built into DTOs in " + elapsedTime +" ms.");
 
         return returnList;
     }

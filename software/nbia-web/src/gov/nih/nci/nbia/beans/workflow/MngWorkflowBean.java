@@ -183,7 +183,7 @@ private boolean toggleSort = true;
 	
 	public String createWorkflow() {
 
-		logger.info("Creating workflow");
+		logger.debug("Creating workflow");
 		AddWorkFlowItemBean addWorkflowBean = (AddWorkFlowItemBean) FacesContext.getCurrentInstance().
 		getExternalContext().getSessionMap().get("addWorkFlowItemBean");
 		if (addWorkflowBean!=null) // check to see if already created

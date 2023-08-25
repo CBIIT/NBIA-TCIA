@@ -123,7 +123,7 @@ public class ZipManager extends Thread {
      */
     public List<String> zip() throws Exception {
 
-        logger.info("Starting to zip: " + destinationFile);
+        logger.debug("Starting to zip: " + destinationFile);
         long startTime = System.currentTimeMillis();
 
         AbstractFileZipper zipit = FileZipperFactory.getInstance();

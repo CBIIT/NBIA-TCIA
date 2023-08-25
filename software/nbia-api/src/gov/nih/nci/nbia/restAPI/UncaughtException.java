@@ -10,6 +10,7 @@ public class UncaughtException extends Throwable implements ExceptionMapper<Thro
 
     @Override
     public Response toResponse(Throwable exception) {
+        exception.printStackTrace();
         return Response.status(500).entity("Server was not able to process your request").type("text/plain").build();
     }
 }

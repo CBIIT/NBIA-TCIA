@@ -43,13 +43,13 @@ public class WADOServlet extends HttpServlet
 		try{
 			    
 				String key = request.getParameter("oviyamId");
-				logger.info("Geting user for "+key);
+				logger.debug("Geting user for "+key);
 				String oUser=APIURLHolder.getUser(key);
 				if (oUser==null)
 				{
 					oUser="NOT FOUND";
 				} 
-				logger.info("Found user "+oUser);
+				logger.debug("Found user "+oUser);
 			    response.setContentType("text/html");
 			    PrintWriter out = response.getWriter();  
 			    out.println(oUser);

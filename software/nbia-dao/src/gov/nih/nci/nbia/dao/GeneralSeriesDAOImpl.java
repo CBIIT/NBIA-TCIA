@@ -584,8 +584,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
 			List resultsData = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
 			long end = System.currentTimeMillis();
-			logger.info("Data basket query: " + selectStmt + fromStmt + whereStmt);
-			logger.info("total query time: " + (end - start) + " ms");
+			logger.debug("Data basket query: " + selectStmt + fromStmt + whereStmt);
+			logger.debug("total query time: " + (end - start) + " ms");
 
 			// Map the rows retrieved from hibernate to the DataBasketResultSet objects.
 			for (Object item : resultsData) {

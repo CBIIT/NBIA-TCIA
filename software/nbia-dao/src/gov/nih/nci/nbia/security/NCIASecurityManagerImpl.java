@@ -42,6 +42,7 @@ import gov.nih.nci.nbia.ldapService.UserLdapService;
 import gov.nih.nci.nbia.security.NCIASecurityManager.RoleType;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.nbia.util.SimpleCache;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -102,22 +103,24 @@ public class NCIASecurityManagerImpl extends AbstractDAO
     private UserProvisioningManager upm = null;
     private AuthenticationManager am = null;
 
+    private static SimpleCache<String, Set<TableProtectionElement>> userCache =
+		new SimpleCache<String, Set<TableProtectionElement>>();
+
     /*
      * Constructor
      */
     public NCIASecurityManagerImpl() {
-
     }
 
 	@Transactional(propagation=Propagation.REQUIRED)
     public void init() throws DataAccessException {
     	try {
 	        this.applicationName = NCIAConfig.getCsmApplicationName();
-	        logger.info("CSM application name is " + this.applicationName);
+	        logger.debug("CSM application name is " + this.applicationName);
 		    upm = (UserProvisioningManager)SecurityServiceProvider.getAuthorizationManager(this.applicationName);
 
 	        am = SecurityServiceProvider.getAuthenticationManager(this.applicationName);
-	        //logger.info("UserProvisioningManager: " + upm + " AuthenticationManager is " + am);
+	        //logger.debug("UserProvisioningManager: " + upm + " AuthenticationManager is " + am);
 
 	        try {
 	            // Get ID for public protection group
@@ -215,7 +218,19 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
     public Set<TableProtectionElement> getSecurityMap(String userId)
         throws CSObjectNotFoundException {
-        Set<TableProtectionElement> retSet = new HashSet<TableProtectionElement>();
+        System.out.println("getSecurityMap init: " + userId);
+    	Set<TableProtectionElement> retSet = null;
+    	try {
+	        retSet = userCache.get(userId);
+    	} catch(InterruptedException e) {
+    		e.printStackTrace();
+    	}
+        if(retSet != null){
+        	return retSet;
+        }
+        System.out.println("Starting getSecurityMap for user " + userId);
+        long startTime = System.currentTimeMillis();
+        retSet = new HashSet<TableProtectionElement>();
         Map<String, TableProtectionElement> tempHastable = new Hashtable<String, TableProtectionElement>();
 
         //userRoles = combination of user PG and users groups PGs
@@ -224,13 +239,23 @@ public class NCIASecurityManagerImpl extends AbstractDAO
         //step 1 get PG tied directly to user
         Set<ProtectionGroupRoleContext> userSpecificRoles = upm.getProtectionGroupRoleContextForUser(userId);
         userRoles.addAll(userSpecificRoles);
+        System.out.println("Time to get user specific roles: " + (System.currentTimeMillis() - startTime) + " ms");
+        startTime = System.currentTimeMillis();
 
         //step 2 get PG tied to all the groups the user is a member of
         Set<Group> groups = upm.getGroups(userId);
+        System.out.println("Time to get " + groups.size() + " user groups: " + (System.currentTimeMillis() - startTime) + " ms");
+        startTime = System.currentTimeMillis();
+        long startLoop = System.currentTimeMillis();
         for(Group group : groups) {
         	Set<ProtectionGroupRoleContext> groupRoles = upm.getProtectionGroupRoleContextForGroup(Long.toString(group.getGroupId()));
         	userRoles.addAll(groupRoles);
         }
+
+        System.out.println("Time to iterate user groups: " + (System.currentTimeMillis() - startLoop) + " ms");
+        startTime = System.currentTimeMillis();
+        startLoop = System.currentTimeMillis();
+        System.out.println("Starting iteration over " + userRoles.size() + " PGRCs");
 
         //  Iterate over the protection groups
         for (ProtectionGroupRoleContext roleContext : userRoles) {
@@ -256,9 +281,13 @@ public class NCIASecurityManagerImpl extends AbstractDAO
                 }
             }
         }
+        System.out.println("Time to iterate all protection groups: " + (System.currentTimeMillis() - startLoop) + " ms");
 
         retSet.addAll(tempHastable.values());
 
+        System.out.println("Total size of protection elements: " + retSet.size());
+
+        userCache.put(userId, retSet);
         return retSet;
     }
 

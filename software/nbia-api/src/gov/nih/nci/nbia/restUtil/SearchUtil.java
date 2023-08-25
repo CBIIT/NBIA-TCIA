@@ -70,7 +70,6 @@ public class SearchUtil {
 		auth.setSites(authorizedSiteData);
 		query.setCriteria(auth);
 		String queryKey=userName;
-        System.out.println(inFormParams.get("criteriaType"+i).get(0));
         ImageModalityCriteria modalityCriteria=null;
         String errorMessage=" ";
 		while (inFormParams.get("criteriaType"+i)!=null)
@@ -197,7 +196,6 @@ public class SearchUtil {
 			}		
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ThirdPartyAnalysis")){
 				if (query.getThirdPartyAnalysisCriteria() == null){
-					System.out.println("setting third party analysis");
 					ThirdPartyAnalysisCriteria criteria=new ThirdPartyAnalysisCriteria();
 					criteria.setThirdPartyValue(inFormParams.get("value"+i).get(0));
 					query.setCriteria(criteria);
@@ -209,7 +207,6 @@ public class SearchUtil {
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ExcludeCommercialCriteria")){
 				if (query.getDataLicenseCriteria() == null){
-					System.out.println("ExcludingCommercial");
 					DataLicenseCriteria criteria=new DataLicenseCriteria();
 					criteria.setExcludeCommercial(inFormParams.get("value"+i).get(0));
 					query.setCriteria(criteria);
@@ -274,20 +271,14 @@ public class SearchUtil {
                qManager.addQueryToHistory(query, inFormParams.get("tool").get(0));
             }
             if (patients==null) {
-            	System.out.println("no patients found");
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
             PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null, query);
-            //System.out.println("Size is "+SizeOf.getObjectSize(cacheValue));
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
 		}  else {
-			System.out.println("Found in cache");
-			System.out.println("Sort-"+sort);
-			System.out.println("GetSort-"+patientSearchSummary.getSort());
 			if (!patientSearchSummary.getSort().equalsIgnoreCase(sort)) {
-				System.out.println("Doing sort");
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
 				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
 						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies(), 
@@ -315,7 +306,6 @@ public class SearchUtil {
 		List <DynamicSearchCriteria> criteria=new ArrayList<DynamicSearchCriteria>();
 //		int i=0;
 		QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
-		System.out.println("Searching Solr for"+textValue);
 		List<SolrAllDocumentMetaData> results = qh.searchSolr(textValue);
 		StringBuffer patientIDs = new StringBuffer();
 		patientMap=new HashMap<String, SolrAllDocumentMetaData>();
@@ -362,7 +352,6 @@ public class SearchUtil {
 		List <DynamicSearchCriteria> criteria=new ArrayList<DynamicSearchCriteria>();
 //		int i=0;
 		QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
-		System.out.println("Searching Solr for"+textValue);
 		List<SolrAllDocumentMetaData> results = qh.searchSolr(textValue);
 		StringBuffer patientIDs = new StringBuffer();
 		patientMap=new HashMap<String, SolrAllDocumentMetaData>();
@@ -407,7 +396,6 @@ public class SearchUtil {
 		List <DynamicSearchCriteria> criteria=new ArrayList<DynamicSearchCriteria>();
 //		int i=0;
 		QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
-		System.out.println("Searching Solr for"+textValue);
 		List<SolrAllDocumentMetaData> results = qh.searchSolr(textValue);
 		StringBuffer patientIDs = new StringBuffer();
 		patientMap=new HashMap<String, SolrAllDocumentMetaData>();

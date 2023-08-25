@@ -97,7 +97,7 @@ public class CustomSeriesListBean {
                 noPermissionSeries  = processor.validate(seriesUidsList);
                 System.out.println("noPermissionSeries size: " + noPermissionSeries.size());
                 if(!noPermissionSeries.isEmpty()){
-                    logger.info("user doesn't have permission to see some series instance uid" + noPermissionSeries.size());
+                    logger.debug("user doesn't have permission to see some series instance uid" + noPermissionSeries.size());
                 }else{
                     privateSeries = processor.isAnyPrivate(seriesUidsList);
                 }

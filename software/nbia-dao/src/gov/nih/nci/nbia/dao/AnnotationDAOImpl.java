@@ -72,7 +72,7 @@ public class AnnotationDAOImpl extends AbstractDAO
 	        // Run the query
 	        long start = System.currentTimeMillis();
 	        List resultsData = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
-	        logger.info("Ran this query to retrieve annotations for series: " +
+	        logger.debug("Ran this query to retrieve annotations for series: " +
 	            selectStmt + fromStmt + whereStmt);
 	
 	        long end = System.currentTimeMillis();

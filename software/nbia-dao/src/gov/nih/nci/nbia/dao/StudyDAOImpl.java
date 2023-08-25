@@ -81,11 +81,11 @@ public class StudyDAOImpl extends AbstractDAO
         whereStmt += ")";
 
         long start = System.currentTimeMillis();
-        logger.info("Issuing the query: " + selectStmt + fromStmt + whereStmt);
+        logger.debug("Issuing the query: " + selectStmt + fromStmt + whereStmt);
 
         List<Object[]> seriesResults = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
         long end = System.currentTimeMillis();
-        logger.info("total query time: " + (end - start) + " ms");
+        logger.debug("total query time: " + (end - start) + " ms");
 
 
         // List of StudyDTOs to eventually be returned
@@ -182,11 +182,11 @@ public class StudyDAOImpl extends AbstractDAO
         whereStmt += ")";
 
         long start = System.currentTimeMillis();
-        logger.info("Issuing query: " + selectStmt + fromStmt + whereStmt);
+        logger.debug("Issuing query: " + selectStmt + fromStmt + whereStmt);
 
         List<Object[]> seriesResults = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
         long end = System.currentTimeMillis();
-        logger.info("total query time: " + (end - start) + " ms");
+        logger.debug("total query time: " + (end - start) + " ms");
 
 
         // List of StudyDTOs to eventually be returned
@@ -557,7 +557,7 @@ public class StudyDAOImpl extends AbstractDAO
 	System.out.println("===== In nbia-dao, StudyDAOImpl:findStudiesBySeriesIdDBSorted() - downloadable visibility - hql is: " + hql);
 		
 		long end = System.currentTimeMillis();
-		logger.info("total time to excute all queries: " + (end - start)
+		logger.debug("total time to excute all queries: " + (end - start)
 				+ " ms");	
 		
 		return returnList;
@@ -568,7 +568,7 @@ public class StudyDAOImpl extends AbstractDAO
 		long start = System.currentTimeMillis();
 		List<Object[]> seriesResults = getHibernateTemplate().find(hql);
 		long end = System.currentTimeMillis();
-		logger.info("total query time: " + (end - start) + " ms");
+		logger.debug("total query time: " + (end - start) + " ms");
 		Iterator<Object[]> iter = seriesResults.iterator();
 		// Loop through the results. There is one result for each series
 		while (iter.hasNext()) {
@@ -647,12 +647,12 @@ public class StudyDAOImpl extends AbstractDAO
         whereStmt += ")";
 
         long start = System.currentTimeMillis();
-        logger.info("Issuing the query: " + sQL + whereStmt);
+        logger.debug("Issuing the query: " + sQL + whereStmt);
         List<Object[]> seriesResults= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sQL + whereStmt).list();
   
       //  List<Object[]> seriesResults = getHibernateTemplate().find(sQL + whereStmt);
         long end = System.currentTimeMillis();
-        logger.info("total query time: " + (end - start) + " ms");
+        logger.debug("total query time: " + (end - start) + " ms");
 
 
         // List of StudyDTOs to eventually be returned
@@ -770,7 +770,7 @@ public class StudyDAOImpl extends AbstractDAO
             // User is not allowed to view any sites.
             // Since all data has a site, user is not allowed to see anything
             // Return empty list
-            //logger.info("No results returned because user does not have access to any sites");
+            //logger.debug("No results returned because user does not have access to any sites");
 
             return null;
         }

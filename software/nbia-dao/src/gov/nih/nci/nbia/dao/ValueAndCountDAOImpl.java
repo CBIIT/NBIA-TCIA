@@ -442,7 +442,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
             // User is not allowed to view any sites.
             // Since all data has a site, user is not allowed to see anything
             // Return empty list
-            //logger.info("No results returned because user does not have access to any sites");
+            //logger.debug("No results returned because user does not have access to any sites");
 
 
             // This returning null was breaking any potential queries for a fresh database.

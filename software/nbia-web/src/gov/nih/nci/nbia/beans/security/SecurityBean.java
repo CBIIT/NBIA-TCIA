@@ -202,12 +202,12 @@ public class SecurityBean {
 				anonymousLoginBean.setGuestLoggedIn(true);
 				token=RESTUtil.getToken(username, password);
 				isInLDAP = true;
-				logger.info("bypass authentication for guest user");
+				logger.debug("bypass authentication for guest user");
 			}else{
 				isInLDAP = sm.login(uname, pass);
 				token=RESTUtil.getToken(username, password);
 				System.out.println(token);
-				logger.info("authentication registered user");
+				logger.debug("authentication registered user");
 				// syncing moved to api
 			}
 			

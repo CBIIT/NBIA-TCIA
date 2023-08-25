@@ -242,7 +242,7 @@ public class MissingDicomFileFinder {
 		String projectPattern = args[3];
 		
 		MissingDicomFileFinder finder = new MissingDicomFileFinder(infile, outfile);
-		logger.info("In process ...");
+		logger.debug("In process ...");
 		if (args.length>4){
 			String dateStart = args[4];
 			finder.process(dirName, projectPattern, dateStart);
@@ -250,7 +250,7 @@ public class MissingDicomFileFinder {
 		else {
 			finder.process(dirName, projectPattern, null);
 		}
-		logger.info("=== Process is completed ===");
+		logger.debug("=== Process is completed ===");
 
 	}
 }
