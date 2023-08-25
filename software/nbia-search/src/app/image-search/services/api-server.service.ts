@@ -293,17 +293,12 @@ export class ApiServerService implements OnDestroy {
 
         // Until the user logs in, we do everything as the default/guest user.
         if (this.persistenceService.get(this.persistenceService.Field.IS_GUEST) ||
-            this.utilService.isNullOrUndefined(this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN))
+            this.utilService.isNullOrUndefined(this.persistenceService.getAccessToken())
         ) {
             this.setCurrentUser(Properties.DEFAULT_USER);
             this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
         } else {
-            this.setToken(
-                {
-                    'expires_in': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN),
-                    'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN),
-                    'refresh_token': this.persistenceService.get(this.persistenceService.Field.REFRESH_TOKEN)
-                });
+            this.setToken(this.persistenceService.getTokens());
             this.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
             this.setCurrentPassword('');
         }
@@ -548,9 +543,7 @@ export class ApiServerService implements OnDestroy {
             this.tokenLifeSpan = t['expires_in'];
             this.gotToken();
         }
-        this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN, this.accessToken);
-        this.persistenceService.put(this.persistenceService.Field.REFRESH_TOKEN, this.refreshToken);
-        this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN, this.tokenLifeSpan);
+        this.persistenceService.storeTokens(this.accessToken, this.refreshToken, this.tokenLifeSpan);
         this.rawAccessToken = t;
 
         if(t !== null){
@@ -1348,9 +1341,7 @@ export class ApiServerService implements OnDestroy {
 
 
     deleteToken() {
-        this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN);
-        this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN);
-        this.persistenceService.remove(this.persistenceService.Field.REFRESH_TOKEN);
+        this.persistenceService.deleteTokens();
     }
 
     /**

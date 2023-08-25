@@ -87,6 +87,12 @@ L-->
     		name="commons-configuration" 
     		rev="1.8" 
     		conf="compile->master;runtime->master"/>            
+
+    <dependency org="commons-collections"
+        name="commons-collections"
+        rev="3.2.2"
+        conf="compile->master;runtime->master"/>            
+
                 
     <dependency org="org.springframework"
                    name="spring-core"
