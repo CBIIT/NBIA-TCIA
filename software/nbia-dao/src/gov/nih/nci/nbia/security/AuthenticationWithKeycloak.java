@@ -25,6 +25,8 @@ import org.json.simple.parser.ParseException;
 
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.security.UnauthorizedException;
+import gov.nih.nci.nbia.security.NCIASecurityManager;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 /**
  * @author panq
@@ -191,6 +193,16 @@ public class AuthenticationWithKeycloak {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpResponse response = null;
 
+	    NCIASecurityManager mgr = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+	    if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+	    	try{
+	        	mgr.syncDBWithLDAP(uName);
+				System.out.println("Sync performed");
+	    	} catch(Exception e){
+	    		System.out.println("Sync failed");
+	    		e.printStackTrace();
+	    	}
+	    }
 		try {
 			post.addHeader("content-type", URL_ENCODED_CONTENT);
 			post.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));

@@ -116,7 +116,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
     public void init() throws DataAccessException {
     	try {
 	        this.applicationName = NCIAConfig.getCsmApplicationName();
-	        logger.debug("CSM application name is " + this.applicationName);
+	        logger.info("CSM application name is " + this.applicationName);
 		    upm = (UserProvisioningManager)SecurityServiceProvider.getAuthorizationManager(this.applicationName);
 
 	        am = SecurityServiceProvider.getAuthenticationManager(this.applicationName);
@@ -220,14 +220,14 @@ public class NCIASecurityManagerImpl extends AbstractDAO
         throws CSObjectNotFoundException {
         System.out.println("getSecurityMap init: " + userId);
     	Set<TableProtectionElement> retSet = null;
-    	try {
-	        retSet = userCache.get(userId);
-    	} catch(InterruptedException e) {
-    		e.printStackTrace();
-    	}
-        if(retSet != null){
-        	return retSet;
-        }
+    	// try {
+	    //     retSet = userCache.get(userId);
+    	// } catch(InterruptedException e) {
+    	// 	e.printStackTrace();
+    	// }
+        // if(retSet != null){
+        // 	return retSet;
+        // }
         System.out.println("Starting getSecurityMap for user " + userId);
         long startTime = System.currentTimeMillis();
         retSet = new HashSet<TableProtectionElement>();
@@ -287,7 +287,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
         System.out.println("Total size of protection elements: " + retSet.size());
 
-        userCache.put(userId, retSet);
+        // userCache.put(userId, retSet);
         return retSet;
     }
 
@@ -384,7 +384,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
     }
         
 	public void syncDBWithLDAP(String loginName) {
-		resultLog.debug("user " + loginName + " in LDAP/DB sync process:");
+		resultLog.info("user " + loginName + " in LDAP/DB sync process:");
 
 //		List<String> ignoreGroups = getIgnoreGroupList();
 		String publicGrpName = NCIAConfig.getPublicGroupName();
@@ -409,7 +409,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 				for (Group obj : grpsInDB) {
 //					ignoreGroups.add(obj.getGroupName());
 					grpInDBList.add(obj.getGroupName());
-					resultLog.debug(loginName + "'s DB group: " + obj.getGroupName());
+					resultLog.info(loginName + "'s DB group: " + obj.getGroupName());
 				}
 			} catch (CSObjectNotFoundException e) {
 				e.printStackTrace();
@@ -423,17 +423,13 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		}
 
 		if (grps != null) {
-			resultLog.debug("get number of LDAP group for the user " + grps.size());
-			
+			resultLog.info("get number of LDAP group for the user " + grps.size());
 			// get the LDAP groups that are defined in DB already
 			grps = getDefinedGroupsInDB(new ArrayList(grps));  // a list of groups in Both LDAP and Database
-	
-			
-			for (int i = 0; i < grps.size(); ++i) {
-				String ldapGrpName = grps.get(i);
-				resultLog.debug("LDAP group:" + ldapGrpName);
 
-				
+			for (String ldapGrpName: grps) {
+				resultLog.info("LDAP group:" + ldapGrpName);
+
 				if ((grpInDBList != null) && (grpInDBList.contains(ldapGrpName)))
 					grpInDBList.remove(ldapGrpName); // the group in both LDAP
 														// and DB then remove
@@ -481,7 +477,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		GroupSearchCriteria gsc = new GroupSearchCriteria(exampleGroup);
 		List<Group> groupResult = upm.getObjects(gsc);
 		if ((groupResult != null) && (groupResult.size() > 0)) {
-			resultLog.debug("group " + grpName + " is in database already");
+			resultLog.info("group " + grpName + " is in database already");
 			return ((Group) groupResult.get(0));
 		} else
 			return null;
@@ -494,7 +490,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		List<User> userList = upm.getObjects(usc);
 
 		if ((userList != null) && (userList.size() > 0)) {
-			resultLog.debug("user " + loginName + " is in database already");
+			resultLog.info("user " + loginName + " is in database already");
 			return userList.get(0).getUserId();
 		} else
 			return null;
