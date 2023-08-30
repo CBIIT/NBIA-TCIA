@@ -29,34 +29,24 @@ public class GetCollectionOrSeriesFromDOI extends getData{
 	public Response  constructResponse(@FormParam("DOI") String doi, @FormParam("CollectionOrSeries") String collectionOrSeries) {
 		String user = null;
 
-		try {	
-			List<String> authorizedCollections = null;
-			try {
-				authorizedCollections = getAuthorizedCollections();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-
-			GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-			List<DOIDTO> dois=tDao.getCollectionOrSeriesForDOI(doi, collectionOrSeries, authorizedCollections);
-		
-		return Response.ok(JSONUtil.getJSONforDOI(dois)).type("application/json")
-				.build();
+		List<String> authorizedCollections = null;
+		try {
+			authorizedCollections = getAuthorizedCollections();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
+
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		List<DOIDTO> dois=tDao.getCollectionOrSeriesForDOI(doi, collectionOrSeries, authorizedCollections);
+		return Response.ok(JSONUtil.getJSONforDOI(dois)).type("application/json")
+				.build();
 	}
-	
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
-		if (date==null)
-		{
+
+		if (date==null) {
 			return Calendar.getInstance().getTime();
 		}
 		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
@@ -70,5 +60,5 @@ public class GetCollectionOrSeriesFromDOI extends getData{
 		System.out.println("today-"+today);
 		return returnValue;
 	}
-	
+
 }

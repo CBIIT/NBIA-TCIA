@@ -27,43 +27,30 @@ public class GetSeriesForDeletion extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse() {
-		String user = null;
+		String user = getUserName(); 
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				user = (String) authentication.getPrincipal();
-			user = getUserName(); 
+		List<String> roles=RoleCache.getRoles(user);
+        if (roles==null) {
+         	roles=new ArrayList<String>();
+         	System.out.println("geting roles for user");
+			    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+			    roles.addAll(sm.getRoles(user));
+			    RoleCache.setRoles(user, roles);
+        }
+		if (!roles.contains("NCIA.DELETE_ADMIN")) {
+			return Response.status(401)
+				.entity("Insufficiant Privileges").build();
+		}
 
-				List<String> roles=RoleCache.getRoles(user);
-             if (roles==null) {
-             	roles=new ArrayList<String>();
-             	System.out.println("geting roles for user");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-             }
-			if (!roles.contains("NCIA.DELETE_ADMIN")) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-			   }
-
-			ImageDeletionService imageDeletionService = (ImageDeletionService)SpringApplicationContext.getBean("imageDeletionService");
-			List<DeletionDisplayObject> displayObject = imageDeletionService.getDeletionDisplayObject();
-		
+		ImageDeletionService imageDeletionService = (ImageDeletionService)SpringApplicationContext.getBean("imageDeletionService");
+		List<DeletionDisplayObject> displayObject = imageDeletionService.getDeletionDisplayObject();
 		return Response.ok(JSONUtil.getJSONforDeletionDisplayObject(displayObject)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
+
 		if (date==null)
 		{
 			return Calendar.getInstance().getTime();
@@ -79,5 +66,4 @@ public class GetSeriesForDeletion extends getData{
 		System.out.println("today-"+today);
 		return returnValue;
 	}
-	
 }

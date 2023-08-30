@@ -57,33 +57,22 @@ public class GetSitesForSeries extends getData{
 
 	public Response constructResponse(@FormParam("seriesId") List<String> list) {
 
-		
-		try {			
-//			Authentication authentication = SecurityContextHolder.getContext()
-//					.getAuthentication();
-//			String userName = (String) authentication.getPrincipal();
-			String userName = getUserName();
+		String userName = getUserName();
 
-			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
-			if (authorizedSiteData==null){
-			     AuthorizationManager am = new AuthorizationManager(userName);
-			     authorizedSiteData = am.getAuthorizedSites();
-			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
-			}
-			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-            List<String>sites=generalSeriesDAO.getSitesForSeries(list);
-            if (sites==null) {
-        		return Response.ok(JSONUtil.getJSONforStringList(new ArrayList<String>())).type("application/json")
-        				.build();
-            }
-        		return Response.ok(JSONUtil.getJSONforStringList(sites)).type("application/json")
-        				.build();
-        		} catch (Exception e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-        		return Response.status(500)
-        				.entity("The series do not belong to one collection").build();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(userName);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
+		}
+		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+        List<String>sites=generalSeriesDAO.getSitesForSeries(list);
+        if (sites==null) {
+    		return Response.ok(JSONUtil.getJSONforStringList(new ArrayList<String>())).type("application/json")
+    				.build();
+        }
+		return Response.ok(JSONUtil.getJSONforStringList(sites)).type("application/json")
+				.build();
 
 	}
 

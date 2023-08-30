@@ -55,72 +55,59 @@ public class SetQCVisibility extends getData{
 			@FormParam("seriesId") List<String> seriesIdList,
 			@FormParam("newQcStatus") String newQcStatus,
 			@FormParam("comment") String comment) {
-		
+
 		if (newQcStatus == null) {
 			return Response.status(400)
 					.entity("Please provide a new visibility status.").build();
-		}		
-		
+		}
+
 		if (seriesIdList.size() < 1) {
 			return Response.status(400)
 						.entity("The request should include at least one seriesId.").build();
 		}
-		
+
 		if (VisibilityStatus.statusFactory(Integer.valueOf(newQcStatus)) == null) {
 			return Response.status(400)
 					.entity("Invalid newQcStatus.The valid newQcStatus is number 0 to 12.").build();
 		}
-			
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
+		String user = getUserName();
+		NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		if (!sm.hasQaRoleForProjSite(user, project, siteName)) {
+			return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+		}
 
-			String user = getUserName();
-				NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				if (!sm.hasQaRoleForProjSite(user, project, siteName)) {
-					return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				} 
-				
-				String status = "Not submitted.";
-				
-				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
-				try {
-					List<Map<String,String>>results = qDao.findExistingStatus(project, siteName, seriesIdList);
-					if ((results != null) && (results.size() != seriesIdList.size())) {
-						status = "Some or all series need to be submitted into database first";
-						Response.status(412).entity(status).build();
-					}
-					else {
-						List<String> seriesList = new ArrayList<String>();
-						List<String> statusList = new ArrayList<String>();
-						for (Map<String,String> result:results) {
-							seriesList.add(result.get("id"));
-							statusList.add(result.get("oldStatus"));
-						}
-						qDao.updateQcStatus(seriesList, statusList, newQcStatus, null, null, user, comment);
-						status = "ok";
-					}
-				}
-				catch (DataAccessException ex) {
-					ex.printStackTrace();
-				}
-		
-                if (status.equals("ok")) {
-				   return Response.ok("ok").type("application/text")
-						.build();
-                } else {
- 				   return Response.status(400)
- 							.entity(status).build();
-                }
+		String status = "Not submitted.";
 
-		    } catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
+		try {
+			List<Map<String,String>>results = qDao.findExistingStatus(project, siteName, seriesIdList);
+			if ((results != null) && (results.size() != seriesIdList.size())) {
+				status = "Some or all series need to be submitted into database first";
+				Response.status(412).entity(status).build();
 			}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+			else {
+				List<String> seriesList = new ArrayList<String>();
+				List<String> statusList = new ArrayList<String>();
+				for (Map<String,String> result:results) {
+					seriesList.add(result.get("id"));
+					statusList.add(result.get("oldStatus"));
+				}
+				qDao.updateQcStatus(seriesList, statusList, newQcStatus, null, null, user, comment);
+				status = "ok";
+			}
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+
+        if (status.equals("ok")) {
+		   return Response.ok("ok").type("application/text")
+				.build();
+        } else {
+			   return Response.status(400)
+						.entity(status).build();
+        }
 	}
 }

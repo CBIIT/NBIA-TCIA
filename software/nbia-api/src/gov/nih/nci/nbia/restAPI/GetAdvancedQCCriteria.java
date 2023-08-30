@@ -37,75 +37,65 @@ public class GetAdvancedQCCriteria extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse() {
+ 		String user = getUserName();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(user);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+		}
+		AuthorizationCriteria auth = new AuthorizationCriteria();
+		auth.setSeriesSecurityGroups(new ArrayList<String>());
+		auth.setSites(authorizedSiteData);
 
-		try {			    	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-	 		String user = getUserName(); 
-	
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+	    List<PopupCriteriaSelectorDTO> dtos=JSONDeserializer.getPopUpCriteriaFromJson();
+
+	    for (PopupCriteriaSelectorDTO dto:dtos) {
+	    	if (dto.getParentMenuName().equalsIgnoreCase("Modality")) {
+				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
+				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
+				criteria.setObjectType("MODALITY");
+				criteria.setAuth(auth);
+				List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
+				List<String> modalities = new ArrayList<String>();
+				for (ValuesAndCountsDTO value:values) {
+					modalities.add(value.getCriteria());
 				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-		
-			    List<PopupCriteriaSelectorDTO> dtos=JSONDeserializer.getPopUpCriteriaFromJson();
-			
-			    for (PopupCriteriaSelectorDTO dto:dtos) {
-			    	if (dto.getParentMenuName().equalsIgnoreCase("Modality")) {
-						ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
-						ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-						criteria.setObjectType("MODALITY");
-						criteria.setAuth(auth);
-						List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
-						List<String> modalities = new ArrayList<String>();
-						for (ValuesAndCountsDTO value:values) {
-							modalities.add(value.getCriteria());
-						}
-						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
-							object.getConfiguration().setDynamicQueryCriteriaListData(modalities);
-						}
-			    	}
-			    	if (dto.getParentMenuName().equalsIgnoreCase("Manufacturer")) {
-						ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
-						ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-						criteria.setObjectType("MANUFACTURER");
-						criteria.setAuth(auth);
-						List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
-						List<String> manufactures = new ArrayList<String>();
-						for (ValuesAndCountsDTO value:values) {
-							manufactures.add(value.getCriteria());
-						}
-						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
-							object.getConfiguration().setDynamicQueryCriteriaListData(manufactures);
-						}
-			    	}			    	if (dto.getParentMenuName().equalsIgnoreCase("QC Status")) {
-						List<String> statuses = new ArrayList<String>();
-						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
-							object.getConfiguration().setDynamicQueryCriteriaListData(VisibilityStatus.getVisibilities());
-						}
-			    	}
-			    	if (dto.getParentMenuName().equalsIgnoreCase("Collection")) {
-						List <String>collectionSites=new ArrayList<String>();
-						if (authorizedSiteData!=null) {
-							collectionSites=CollectionSiteUtil.getUserSiteData(authorizedSiteData);
-						}
-						for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
-							object.getConfiguration().setDynamicQueryCriteriaListData(collectionSites);
-						}
-			    	}
-				}				return Response.ok(JSONUtil.getJSONforPopupCriteriaSelector(dtos)).type("application/json")
-						.build();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
+					object.getConfiguration().setDynamicQueryCriteriaListData(modalities);
 				}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+	    	}
+	    	if (dto.getParentMenuName().equalsIgnoreCase("Manufacturer")) {
+				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
+				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
+				criteria.setObjectType("MANUFACTURER");
+				criteria.setAuth(auth);
+				List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
+				List<String> manufactures = new ArrayList<String>();
+				for (ValuesAndCountsDTO value:values) {
+					manufactures.add(value.getCriteria());
+				}
+				for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
+					object.getConfiguration().setDynamicQueryCriteriaListData(manufactures);
+				}
+	    	}
+	    	if (dto.getParentMenuName().equalsIgnoreCase("QC Status")) {
+				List<String> statuses = new ArrayList<String>();
+				for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
+					object.getConfiguration().setDynamicQueryCriteriaListData(VisibilityStatus.getVisibilities());
+				}
+	    	}
+	    	if (dto.getParentMenuName().equalsIgnoreCase("Collection")) {
+				List <String>collectionSites=new ArrayList<String>();
+				if (authorizedSiteData!=null) {
+					collectionSites=CollectionSiteUtil.getUserSiteData(authorizedSiteData);
+				}
+				for (PopupCriteriaObjects object:dto.getCriteriaObjects()) {
+					object.getConfiguration().setDynamicQueryCriteriaListData(collectionSites);
+				}
+	    	}
+		}
+		return Response.ok(JSONUtil.getJSONforPopupCriteriaSelector(dtos)).type("application/json")
+				.build();
 	}
 }

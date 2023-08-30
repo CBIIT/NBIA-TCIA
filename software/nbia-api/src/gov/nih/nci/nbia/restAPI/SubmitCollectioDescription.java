@@ -44,46 +44,35 @@ public class SubmitCollectioDescription extends getData{
 			   value = "The license id for the collection", example = "2", required = false)
 	         @FormParam("license") Integer license) {
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();
-				List<String> roles=RoleCache.getRoles(user);
-                if (roles==null) {
-                	roles=new ArrayList<String>();
-   
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-                }
-                boolean hasRole=false;
-                for (String role:roles) {
-                	if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
-                		hasRole=true;
-                	}
-                }
-                if (!hasRole) {
-					return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-                }
-                CollectionDescDAO collectionDescDAO = (CollectionDescDAO)SpringApplicationContext.getBean("collectionDescDAO");
-                CollectionDescDTO collectionDescDTO=new CollectionDescDTO();
-                collectionDescDTO.setCollectionName(name);
-                collectionDescDTO.setDescription(description);
-                collectionDescDTO.setUserName(user);
-                collectionDescDTO.setLicenseId(license);
-                collectionDescDAO.save(collectionDescDTO);
-        
+		String user = getUserName();
+		List<String> roles=RoleCache.getRoles(user);
+		if (roles==null) {
+			roles=new ArrayList<String>();
+
+			NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+			roles.addAll(sm.getRoles(user));
+			RoleCache.setRoles(user, roles);
+		}
+		boolean hasRole=false;
+		for (String role:roles) {
+			if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
+				hasRole=true;
+			}
+		}
+		if (!hasRole) {
+			return Response.status(401)
+				.entity("Insufficiant Privileges").build();
+		}
+		CollectionDescDAO collectionDescDAO = (CollectionDescDAO)SpringApplicationContext.getBean("collectionDescDAO");
+		CollectionDescDTO collectionDescDTO=new CollectionDescDTO();
+		collectionDescDTO.setCollectionName(name);
+		collectionDescDTO.setDescription(description);
+		collectionDescDTO.setUserName(user);
+		collectionDescDTO.setLicenseId(license);
+		collectionDescDAO.save(collectionDescDTO);
+
 		return Response.ok().type("text/plain")
 				.entity("Description updated")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-
 }

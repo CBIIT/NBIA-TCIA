@@ -969,6 +969,14 @@ public class NCIAConfig {
         String propertyValue = properties.getProperty("keycloak.client.id");
         return propertyValue;   	
     } 
+
+    public static boolean includeExceptionsInErrors() {
+        String propertyValue = properties.getProperty("include.exceptions.in.errors");
+        if(propertyValue==null){
+            return false;
+        }
+        return propertyValue.equalsIgnoreCase("yes") ? true : false;
+    }
     
     /**
      * Utility method for retrieving a property

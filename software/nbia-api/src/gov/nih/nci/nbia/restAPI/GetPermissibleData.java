@@ -30,34 +30,22 @@ public class GetPermissibleData extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@QueryParam("PackageName") String packageName, 
-			@QueryParam("DataSource") String dataSource, @QueryParam("Field") String field) {
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
-	
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-				QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
-				List<String> values=qh.getPermissibleData(packageName, dataSource, field);
+	public Response constructResponse(@QueryParam("PackageName") String packageName,
+			@QueryParam("DataSource") String dataSource, @QueryParam("Field") String field) throws Exception {
+		String user = getUserName();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(user);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+		}
+		AuthorizationCriteria auth = new AuthorizationCriteria();
+		auth.setSeriesSecurityGroups(new ArrayList<String>());
+		auth.setSites(authorizedSiteData);
+		QueryHandler qh = (QueryHandler)SpringApplicationContext.getBean("queryHandler");
+		List<String> values=qh.getPermissibleData(packageName, dataSource, field);
 
-				
-				return Response.ok(JSONUtil.getJSONforStringList(values)).type("application/json")
-						.build();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+		return Response.ok(JSONUtil.getJSONforStringList(values)).type("application/json")
+				.build();
 	}
 }

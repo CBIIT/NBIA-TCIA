@@ -28,25 +28,21 @@ public class GetManifestForSimpleSearch extends getData{
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(MultivaluedMap<String, String> inFormParams) {
-
-		try {	
-
+	public Response constructResponse(MultivaluedMap<String, String> inFormParams) throws Exception {
 	    SearchUtil util=new SearchUtil();
 //		PatientSearchSummary  search=util.getPatients(inFormParams);
-		
+
 		PatientSearchSummary  search= null;
 		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
 			String user = getUserName();
 			search=util.getPatients(inFormParams, user, true);
+		} else {
+			search=util.getPatients(inFormParams, null, false);
 		}
-		else
-			search=util.getPatients(inFormParams, null, false);		
-				
 		long currentTimeMillis = System.currentTimeMillis();
 		String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 		List<String> list=new ArrayList<String>();
-		
+
 		List<PatientSearchResultWithModilityAndBodyPart> patients = search.getResultSet();
 		List<Integer> seriesList = new ArrayList<Integer>();
 		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
@@ -67,14 +63,5 @@ public class GetManifestForSimpleSearch extends getData{
 		System.out.println("searching for series done");
 		String manifest=ManifestMaker.getManifextFromSeriesIds(list, "false", manifestFileName);
 		return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
-
 }

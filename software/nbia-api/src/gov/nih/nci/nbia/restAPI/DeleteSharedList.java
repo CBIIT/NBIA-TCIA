@@ -29,10 +29,6 @@ public class DeleteSharedList extends getData{
 
 	public Response constructResponse(@FormParam("name") String name) {
 
-		try {	
-//	   Authentication authentication = SecurityContextHolder.getContext()
-//				.getAuthentication();
-//		String user = (String) authentication.getPrincipal();
  		String user = getUserName();
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 		if (authorizedSiteData==null){
@@ -57,12 +53,6 @@ public class DeleteSharedList extends getData{
 		return Response.ok().type("text/plain")
 				.entity("List deleted")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 
 }

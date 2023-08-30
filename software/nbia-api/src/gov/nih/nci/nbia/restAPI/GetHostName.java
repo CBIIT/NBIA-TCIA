@@ -26,25 +26,16 @@ public class GetHostName extends getData{
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse() {
-	       String hostname;
-	       InetAddress ip;
-		try {	
+	public Response constructResponse() throws Exception {
+		String hostname;
+		InetAddress ip;
+		ip = InetAddress.getLocalHost();
+		hostname = ip.getHostName();
+		if (hostname!=null&&hostname.indexOf(".")>1) {
+		    hostname=hostname.substring(0, hostname.indexOf("."));
+		}
 
-            ip = InetAddress.getLocalHost();
-            hostname = ip.getHostName();
-            if (hostname!=null&&hostname.indexOf(".")>1) {
-                hostname=hostname.substring(0, hostname.indexOf("."));
-            }
-        
 		return Response.ok(hostname).type("application/text")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 }
-	

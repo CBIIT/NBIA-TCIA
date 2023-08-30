@@ -31,34 +31,27 @@ public class GetManifestFromPatientStudySeries extends getData {
 			@FormParam("seriesUIDs") String series, 
 			@FormParam("anyOrAll") String anyOrAll, 
 			@FormParam("includeAnnotation") String includeAnnotation) {
-
-		try {
-            if (includeAnnotation==null||includeAnnotation.length()<1) {
-            	includeAnnotation="true";
-            }
-			long currentTimeMillis = System.currentTimeMillis();
-			String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
-			List<String> patientList=null;
-			List<String> studyList=null;
-			List<String> seriesList=null;
-			if (patients!=null&&patients.length()>1) {
-				patientList = (List<String>)Arrays.asList(patients.split("\\s*,\\s*"));
-			}
-			if (studies!=null&&studies.length()>1) {
-				studyList = (List<String>)Arrays.asList(studies.split("\\s*,\\s*"));
-			}
-			if (series!=null&&series.length()>1) {
-				seriesList = (List<String>)Arrays.asList(series.split("\\s*,\\s*"));
-			}
-			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
-			List<String> seriesListOut = generalSeriesDAO.getSeriesFromPatientStudySeriesUIDs(patientList, studyList, seriesList);
-			String manifest=ManifestMaker.getManifextFromSeriesIds(seriesListOut, includeAnnotation, manifestFileName);
-			return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        if (includeAnnotation==null||includeAnnotation.length()<1) {
+        	includeAnnotation="true";
+        }
+		long currentTimeMillis = System.currentTimeMillis();
+		String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
+		List<String> patientList=null;
+		List<String> studyList=null;
+		List<String> seriesList=null;
+		if (patients!=null&&patients.length()>1) {
+			patientList = (List<String>)Arrays.asList(patients.split("\\s*,\\s*"));
 		}
-		return Response.status(500).entity("Server was not able to process your request").build();
+		if (studies!=null&&studies.length()>1) {
+			studyList = (List<String>)Arrays.asList(studies.split("\\s*,\\s*"));
+		}
+		if (series!=null&&series.length()>1) {
+			seriesList = (List<String>)Arrays.asList(series.split("\\s*,\\s*"));
+		}
+		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		List<String> seriesListOut = generalSeriesDAO.getSeriesFromPatientStudySeriesUIDs(patientList, studyList, seriesList);
+		String manifest=ManifestMaker.getManifextFromSeriesIds(seriesListOut, includeAnnotation, manifestFileName);
+		return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
 	}
 
 }

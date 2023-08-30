@@ -25,10 +25,7 @@ public class GetManifestForTextSearch extends getData{
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@FormParam("textValue") String textValue) {
-
-		try {	
-
+	public Response constructResponse(@FormParam("textValue") String textValue) throws Exception {
 	    SearchUtil util=new SearchUtil();
 	    List<PatientSearchResult> patients=util.getPatients(textValue);
 		long currentTimeMillis = System.currentTimeMillis();
@@ -45,21 +42,9 @@ public class GetManifestForTextSearch extends getData{
 						list.add(seriesDTO.getSeriesUID());
 					}
 				}
-				
-				
 			}
-			
 		}
 		String manifest=ManifestMaker.getManifextFromSeriesIds(list, "false", manifestFileName);
 		return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
-
 }

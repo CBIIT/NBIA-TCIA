@@ -27,16 +27,9 @@ public class GetManifestTextV2 extends getData {
 	public Response constructResponse(@FormParam("list") List<String> list, 
 			@FormParam("includeAnnotation") String includeAnnotation) {
 
-		try {
-
 			long currentTimeMillis = System.currentTimeMillis();
 			String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 			String manifest=ManifestMaker.getManifextFromSeriesIds(list, includeAnnotation, manifestFileName);
 			return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500).entity("Server was not able to process your request").build();
 	}
 }

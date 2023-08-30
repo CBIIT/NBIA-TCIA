@@ -31,47 +31,43 @@ public class GetDicomTagByImageID extends getData{
 
 	public Response constructResponse(@QueryParam("imageID") Integer imageID) {
 		String message="";
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();
+		String user = getUserName();
+		try {
 
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-				List<String> seriesSecurityGroups = new ArrayList<String>();
-	        	ImageDAO imageDAO = (ImageDAO)SpringApplicationContext.getBean("imageDAO");
+			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+			if (authorizedSiteData==null){
+			     AuthorizationManager am = new AuthorizationManager(user);
+			     authorizedSiteData = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+			}
+			AuthorizationCriteria auth = new AuthorizationCriteria();
+			auth.setSeriesSecurityGroups(new ArrayList<String>());
+			auth.setSites(authorizedSiteData);
+			List<String> seriesSecurityGroups = new ArrayList<String>();
+        	ImageDAO imageDAO = (ImageDAO)SpringApplicationContext.getBean("imageDAO");
 
-	        	
-	        	ImageDTO image = imageDAO.getGeneralImageByImagePkId(imageID);
-	        	if (image!=null){
-	        		String dicomFilePath = image.getFileURI();
-	        		System.out.println(dicomFilePath);
-	            	NCIADicomTextObject dicomObject;
-					File dicomFile = new File(dicomFilePath);
-					if (dicomFile.exists())
-					{
-   				        List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
-				        return Response.ok(JSONUtil.getJSONforDicomTagDTOs(tags)).type("application/json")
-						.build();
-	        	    }  else  {
-	        	    	message=" file not found";
-	        	    }
-	        	}	else  {
-	        		message=" image not found";
-	        	}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return Response.status(500)
-						.entity("Server was not able to process your request"+message).build();
+        	ImageDTO image = imageDAO.getGeneralImageByImagePkId(imageID);
+        	if (image!=null){
+        		String dicomFilePath = image.getFileURI();
+        		System.out.println(dicomFilePath);
+            	NCIADicomTextObject dicomObject;
+				File dicomFile = new File(dicomFilePath);
+				if (dicomFile.exists())
+				{
+				        List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
+			        return Response.ok(JSONUtil.getJSONforDicomTagDTOs(tags)).type("application/json")
+					.build();
+        	    }  else  {
+        	    	message=" file not found";
+        	    }
+        	}	else  {
+        		message=" image not found";
+        	}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Response.status(500)
+				.entity("Server was not able to process your request"+message).build();
 	}
 }

@@ -29,35 +29,26 @@ public class GetTextSearch extends getData{
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@FormParam("textValue") String textValue) {
+	public Response constructResponse(@FormParam("textValue") String textValue) throws Exception {
 
-		try {
-			String userName = getUserName(); 
-	        SearchUtil util=new SearchUtil();
-	        List<PatientSearchResult> patients=util.getPatients(textValue,userName);
-			List<PatientSearchResult> textPatients = new ArrayList<PatientSearchResult>();
-			for (PatientSearchResult patient:patients)
+		String userName = getUserName(); 
+        SearchUtil util=new SearchUtil();
+        List<PatientSearchResult> patients=util.getPatients(textValue,userName);
+		List<PatientSearchResult> textPatients = new ArrayList<PatientSearchResult>();
+		for (PatientSearchResult patient:patients)
+		{
+			PatientTextSearchResult textResult=new PatientTextSearchResultImpl(patient);
+			SolrAllDocumentMetaData solrResult =  util.getPatientMap().get(textResult.getSubjectId());
+			if (solrResult==null)
 			{
-				PatientTextSearchResult textResult=new PatientTextSearchResultImpl(patient);
-				SolrAllDocumentMetaData solrResult =  util.getPatientMap().get(textResult.getSubjectId());
-				if (solrResult==null)
-				{
-					System.out.println("******* can't find id in patient map " + textResult.getSubjectId());
-				} else
-				{
-					textResult.setHit(solrResult.getFoundValue());
-				    textPatients.add(textResult);
-				}
+				System.out.println("******* can't find id in patient map " + textResult.getSubjectId());
+			} else
+			{
+				textResult.setHit(solrResult.getFoundValue());
+			    textPatients.add(textResult);
 			}
-     
-		
+		}
 		return Response.ok(JSONUtil.getJSONforPatients(textPatients)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 }

@@ -32,12 +32,7 @@ public class GetStudyDrillDownWithSeriesIds extends getData{
 
 	public Response constructResponse(@FormParam("list") List<String> list) {
 
-		try {	
-//	   Authentication authentication = SecurityContextHolder.getContext()
-//				.getAuthentication();
-//		String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
-					
+		String user = getUserName(); 
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 		if (authorizedSiteData==null){
 		     AuthorizationManager am = new AuthorizationManager(user);
@@ -51,11 +46,5 @@ public class GetStudyDrillDownWithSeriesIds extends getData{
 
 				return Response.ok(JSONUtil.getJSONforStudies(studies)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 }

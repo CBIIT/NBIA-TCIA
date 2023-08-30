@@ -129,22 +129,8 @@ public class GetWado extends getData {
 		}
         log.info("WADO called with " + params.toString());
         String errors=params.validate();
-//        Authentication authentication = SecurityContextHolder.getContext()
-//		.getAuthentication();
-//		String userName=null;
-//		if (authentication==null){
-//			userName =  NCIAConfig.getGuestUsername();
-//		} else {
-//           userName = (String) authentication.getPrincipal();
-//	    }
-//		if (userName==null){
-//			userName =  NCIAConfig.getGuestUsername();
-//		}
-        
 		String userName = getUserName();
-   
-        if (errors!=null)
-        {
+        if (errors!=null) {
         	log.error("WADO Error: " + errors);
     		return Response.status(400)
 			.entity(errors).type("text/plain")
@@ -157,7 +143,6 @@ public class GetWado extends getData {
 			.entity(wdto.getErrors())
 			.build();
 		}
-		
 		return Response.ok(wdto.getImage(), contentType).build();
 	}
 }

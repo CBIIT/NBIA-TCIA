@@ -37,20 +37,6 @@ public class GetThumbnail extends getData {
 	public Response  constructResponse(@FormParam("seriesUID") String seriesUID,
 			@FormParam("objectUID") String objectUID) {
 
-
-//        Authentication authentication = SecurityContextHolder.getContext()
-//		.getAuthentication();
-//		String userName=null;
-//		if (authentication==null){
-//			userName =  NCIAConfig.getGuestUsername();
-//		} else {
-//           userName = (String) authentication.getPrincipal();
-//	    }
-//		if (userName==null){
-//			userName =  NCIAConfig.getGuestUsername();
-//		}
-//        System.out.println("series"+seriesUID);
-        
 		String userName	= getUserName(); 
 
 		WADOSupportDTO wdto = getThumbnail(objectUID, seriesUID, userName);
@@ -60,7 +46,7 @@ public class GetThumbnail extends getData {
 			.entity(wdto.getErrors())
 			.build();
 		}
-		
+
 		return Response.ok(wdto.getImage(), "image/jpeg").build();
 	}
 }

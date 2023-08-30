@@ -31,11 +31,6 @@ public class GetImageDrillDown extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(@FormParam("list") List<String> list) {
-
-		try {	
-//		Authentication authentication = SecurityContextHolder.getContext()
-//					.getAuthentication();
-//		String user = (String) authentication.getPrincipal();
 		String user = getUserName(); 
 
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
@@ -52,14 +47,8 @@ public class GetImageDrillDown extends getData{
 		}
  		List<ImageDTO> images = imageDAO.findImagesbySeriesPkID(input);
 
-		
+
 		return Response.ok(JSONUtil.getJSONforImages(images)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 }

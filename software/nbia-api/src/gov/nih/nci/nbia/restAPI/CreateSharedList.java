@@ -36,50 +36,38 @@ public class CreateSharedList extends getData{
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@FormParam("list") List<String> list, @FormParam("name") String name, 
+	public Response constructResponse(@FormParam("list") List<String> list, @FormParam("name") String name,
 			@FormParam("description") String description, @FormParam("url") String url) {
-
-		try {
 			String user = getUserName();		
-			
-//	   Authentication authentication = SecurityContextHolder.getContext()
-//				.getAuthentication();
-//		String user = (String) authentication.getPrincipal();
-		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-		if (authorizedSiteData==null){
-		     AuthorizationManager am = new AuthorizationManager(user);
-		     authorizedSiteData = am.getAuthorizedSites();
-		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-		}
+			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+			if (authorizedSiteData==null){
+			     AuthorizationManager am = new AuthorizationManager(user);
+			     authorizedSiteData = am.getAuthorizedSites();
+			     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+			}
 
-		List<String> noPermissionList = validate(list, authorizedSiteData);
-		if (noPermissionList.size()>0){
-    		return Response.status(400).type("text/plain")
-			.entity("User does not have permission for all series in list")
-			.build();
-		}
-		CustomSeriesListDAO customSeriesListDAO = (CustomSeriesListDAO)SpringApplicationContext.getBean("customSeriesListDAO");
-		if (customSeriesListDAO.isDuplicateName(name)){
-    		return Response.status(400).type("text/plain")
-			.entity("Duplicate list name")
-			.build();
-		}
-		CustomSeriesListDTO  csDTO=new CustomSeriesListDTO();
-		csDTO.setSeriesInstanceUIDs(list);
-		csDTO.setName(name);
-		csDTO.setComment(description);
-		csDTO.setHyperlink(url);
-		customSeriesListDAO.insert(csDTO, user);
-		
-		return Response.ok().type("text/plain")
-				.entity("List created")
+			List<String> noPermissionList = validate(list, authorizedSiteData);
+			if (noPermissionList.size()>0){
+	    		return Response.status(400).type("text/plain")
+				.entity("User does not have permission for all series in list")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
+			}
+			CustomSeriesListDAO customSeriesListDAO = (CustomSeriesListDAO)SpringApplicationContext.getBean("customSeriesListDAO");
+			if (customSeriesListDAO.isDuplicateName(name)){
+	    		return Response.status(400).type("text/plain")
+				.entity("Duplicate list name")
+				.build();
+			}
+			CustomSeriesListDTO  csDTO=new CustomSeriesListDTO();
+			csDTO.setSeriesInstanceUIDs(list);
+			csDTO.setName(name);
+			csDTO.setComment(description);
+			csDTO.setHyperlink(url);
+			customSeriesListDAO.insert(csDTO, user);
+
+			return Response.ok().type("text/plain")
+					.entity("List created")
+					.build();
 	}
 	/**
 	 * Determine whether user has permission to see the seriesUids

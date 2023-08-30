@@ -40,25 +40,19 @@ public class GetAdvancedQCSearch extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(MultivaluedMap<String, String> inFormParams) {
-		//String user = null;
+ 		String user = getUserName();
 
-		try {	
-//			  Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				user = (String) authentication.getPrincipal();
-	 		String user = getUserName();
+            if (!QAUserUtil.isUserQA(user)) {
+            	System.out.println("Not QA User!!!!");
+			    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+			   if (!sm.hasQaRole(user)) {
+			  	  return Response.status(401)
+						.entity("Insufficiant Privileges").build();
+			   } else {
+				   QAUserUtil.setUserQA(user);
+			   }
+            }
 
-                if (!QAUserUtil.isUserQA(user)) {
-                	System.out.println("Not QA User!!!!");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				   if (!sm.hasQaRole(user)) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				   } else {
-					   QAUserUtil.setUserQA(user);
-				   }
-                }  
- 
         QcStatusDAO qcStatusDAO = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
 
         int i=0;
@@ -69,8 +63,7 @@ public class GetAdvancedQCSearch extends getData{
         	inFormParams.get("boolean0").set(0, "AND");
         }
         List<String>criteriaList=new ArrayList<String>();
-		while (inFormParams.get("criteriaType"+i)!=null)
-		{
+		while (inFormParams.get("criteriaType"+i)!=null) {
 			String criteriaType = inFormParams.get("criteriaType"+i).get(0);
 			if (inFormParams.get("inputType"+i).get(0).equalsIgnoreCase("list")){
 				if (advancedCriteria.get(criteriaType)==null){
@@ -181,19 +174,12 @@ public class GetAdvancedQCSearch extends getData{
 		}
 		return Response.ok(JSONUtil.getJSONforQCListLight(qsrDTOListLight)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
-		if (date==null)
-		{
+
+		if (date==null) {
 			return Calendar.getInstance().getTime();
 		}
 		DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
@@ -209,5 +195,4 @@ public class GetAdvancedQCSearch extends getData{
 		}
 		return returnValue;
 	}
-	
 }

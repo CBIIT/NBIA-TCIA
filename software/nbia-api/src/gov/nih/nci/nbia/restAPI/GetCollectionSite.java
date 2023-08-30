@@ -59,33 +59,21 @@ public class GetCollectionSite extends getData{
 
 	public Response constructResponse() {
 
-		
-		try {			
-//			Authentication authentication = SecurityContextHolder.getContext()
-//					.getAuthentication();
-//			String userName = (String) authentication.getPrincipal();
-	 		String userName = getUserName(); 
-			
-			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
-			if (authorizedSiteData==null){
-			     AuthorizationManager am = new AuthorizationManager(userName);
-			     authorizedSiteData = am.getAuthorizedSites();
-			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
-			}
-			List <String>collectionSites=null;
-			if (authorizedSiteData!=null) {
-				collectionSites=CollectionSiteUtil.getUserSiteData(authorizedSiteData);
-			}
+ 		String userName = getUserName();
 
-        		return Response.ok(JSONUtil.getJSONforStringList(collectionSites)).type("application/json")
-        				.build();
-        		} catch (Exception e) {
-        			// TODO Auto-generated catch block
-        			e.printStackTrace();
-        		}
-        		return Response.status(500)
-        				.entity("Server was not able to process your request").build();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(userName);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
+		}
+		List <String>collectionSites=null;
+		if (authorizedSiteData!=null) {
+			collectionSites=CollectionSiteUtil.getUserSiteData(authorizedSiteData);
+		}
 
+		return Response.ok(JSONUtil.getJSONforStringList(collectionSites)).type("application/json")
+				.build();
 	}
 
 }
