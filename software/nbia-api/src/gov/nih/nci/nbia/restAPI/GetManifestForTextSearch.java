@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.restUtil.*;
 import gov.nih.nci.nbia.restUtil.SearchUtil;
@@ -30,7 +31,16 @@ public class GetManifestForTextSearch extends getData{
 		try {	
 
 	    SearchUtil util=new SearchUtil();
-	    List<PatientSearchResult> patients=util.getPatients(textValue);
+//	    List<PatientSearchResult> patients=util.getPatients(textValue);
+	    List<PatientSearchResult> patients=null;
+	    
+		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
+			String user = getUserName();
+			patients=util.getPatients(textValue, user, true);
+		}
+		else
+			patients=util.getPatients(textValue, null, false);	
+		
 		long currentTimeMillis = System.currentTimeMillis();
 		String manifestFileName = "manifest-" + currentTimeMillis + ".tcia";
 		List<String> list=new ArrayList<String>();

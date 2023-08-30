@@ -41,7 +41,7 @@ public class KeycloakGetToken extends getData{
 			@FormParam("client_id") String client_id, @FormParam("client_secret") String client_secret,
 			@FormParam("grant_type") String grant_type, @FormParam("refresh_token") String refresh_token) {
 
-		if (username.equals(NCIAConfig.getGuestUsername()))
+		if (NCIAConfig.getGuestUsername().equals(username))
 			password = NCIAConfig.getGuestPassword();
 		try {
 			if (grant_type.equalsIgnoreCase("password")) {
