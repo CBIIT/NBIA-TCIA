@@ -5,15 +5,13 @@ The National Biomedical Imaging Archive (NBIA) is a free and open-source service
 
 The NBIA download package is a ZIP package that includes the NBIA application, supporting libraries, the RSNA MIRC application (with NBIA modifications), documentation, and a sample NBIA database. The system utilizes a Java server that provides REST services to independent applications such as the Angular-based graphical user interfaces. It also includes a Solr server that indexes all tags in the DICOM headers and allows rapid retrieval based on any of the information in the tags. The applications are loosely coupled, enabling independent upgrades, speeding the delivery of features to users.
 
-Along with the Clinical Trial Processor software from the Radiological Society of North America, NBIA supports customized de-identification of images. NBIA can integrate with other applications through a set of APIs that can facilitate data query and data transfer between multiple repositories, such as between the NCI image repositories, The Cancer Imaging Archive ([TCIA](https://www.cancerimagingarchive.net/)), and [Imaging Data Commons](https://portal.imaging.datacommons.cancer.gov/), a cloud-based resource. NBIA enables several medical imaging archives, including TCIA, which currently hosts over 27.5 million images and empowers downloads of over 100 TB per month. Anyone can deploy a local node of NBIA. 
+Along with the Clinical Trial Processor software from the Radiological Society of North America, NBIA supports customized de-identification of images. NBIA can integrate with other applications through a set of APIs that can facilitate data query and data transfer between multiple repositories, such as between the NCI image repositories, The Cancer Imaging Archive ([TCIA](https://www.cancerimagingarchive.net/), and [Imaging Data Commons](https://portal.imaging.datacommons.cancer.gov/), a cloud-based resource. NBIA enables several medical imaging archives, including TCIA, which currently hosts over 27.5 million images and empowers downloads of over 100 TB per month. Anyone can deploy a local node of NBIA. 
 
 NBIA is distributed under the BSD 3-clause license. Please see the NOTICE and LICENSE files for details.
 
 You will find more details about NBIA in the following links:
-  * [Community Wiki](https://wiki.nci.nih.gov/x/E4b3Ag)
-  * [Developer Guide](https://wiki.nci.nih.gov/x/kIHxC)
+  * [REST API Guides](https://wiki.cancerimagingarchive.net/display/Public/TCIA+Programmatic+Interface+REST+API+Guides)
   * [Installation Guide](https://wiki.nci.nih.gov/x/kgKYFg)
-  * [Release History](https://wiki.nci.nih.gov/x/QY1eFw)
     
 Please join us in further developing and improving NBIA. Submit any issues you may find to GitHub's issue tracker. Contact [Application Support](mailto:NCIAppSupport@mail.nih.gov) for information about open-source development and NBIA.
 

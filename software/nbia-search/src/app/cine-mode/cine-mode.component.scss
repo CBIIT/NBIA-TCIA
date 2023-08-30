@@ -168,3 +168,8 @@ $loading-message-top: 250px;
   border: solid 1px #bbb;
   width: 25%;
 }
+
+.long-break {
+  max-width: 350px;
+  word-wrap: break-word;
+}
