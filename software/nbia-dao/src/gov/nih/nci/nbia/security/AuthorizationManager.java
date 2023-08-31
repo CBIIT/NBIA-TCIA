@@ -63,8 +63,12 @@ public class AuthorizationManager {
     public AuthorizationManager(String userName) {
 		NCIASecurityManager mgr = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
         try {
-            String userId = mgr.getUserId(userName);
-            securityRights = mgr.getSecurityMap(userId);
+            if(userName == NCIAConfig.getGuestUsername()){
+                securityRights = mgr.getSecurityMapForPublicRole();
+            } else {
+                String userId = mgr.getUserId(userName);
+                securityRights = mgr.getSecurityMap(userId);
+            }
         } catch (Exception e) {
             throw new UnauthorizedException();
         }
