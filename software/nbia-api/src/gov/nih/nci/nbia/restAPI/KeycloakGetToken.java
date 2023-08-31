@@ -36,12 +36,11 @@ public class KeycloakGetToken extends getData{
 	 */
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
-
 	public Response constructResponse(@FormParam("username") String username, @FormParam("password") String password,
 			@FormParam("client_id") String client_id, @FormParam("client_secret") String client_secret,
 			@FormParam("grant_type") String grant_type, @FormParam("refresh_token") String refresh_token) throws Exception {
 
-		if (username.equals(NCIAConfig.getGuestUsername())){
+		if (NCIAConfig.getGuestUsername().equals(username)) {
 			password = NCIAConfig.getGuestPassword();
 		}
 		if (grant_type.equalsIgnoreCase("password")) {
