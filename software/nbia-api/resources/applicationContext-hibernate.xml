@@ -307,6 +307,8 @@ class="org.springframework.orm.hibernate3.HibernateTransactionManager">
   </bean>
     <bean id="imageDeletionService" class="gov.nih.nci.nbia.deletion.ImageDeletionServiceImpl">
   </bean>
+    <bean id="imageFileDeletionService" class="gov.nih.nci.nbia.deletion.ImageFileDeletionServiceImpl">
+  </bean>
     <bean id="seriesDao" class="gov.nih.nci.nbia.deletion.dao.SeriesDAOImpl">
     <property name="sessionFactory">
       <ref bean="sessionFactory"/>
