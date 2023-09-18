@@ -125,7 +125,7 @@ public class MailManager {
         techSupportEndTime = mailProps.getProperty("techSupportEndTime");
         //ftpHostnameAndPort = mailProps.getProperty("ftpHostnameAndPort");
         ftpHostnameAndPort = NCIAConfig.getFTPHostAndPort();
-        logger.info("FTP host and port is " + ftpHostnameAndPort);
+        logger.debug("FTP host and port is " + ftpHostnameAndPort);
         //ldapToAddress = mailProps.getProperty("LDAP.toAddresss");
         ldapToAddress = NCIAConfig.getAdminEmailAddress();
         ldapSubject = NCIAConfig.getRegistrationMailSubject();

@@ -119,11 +119,7 @@ export class NbiaClientComponent implements OnInit, OnDestroy {
             this.initToken();
         } else {
             // Get the user Access Token from the browser cookie
-            this.apiServerService.setToken({
-                'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN),
-                'refresh_token': this.persistenceService.get(this.persistenceService.Field.REFRESH_TOKEN),
-                'expires_in': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN)
-            });
+            this.apiServerService.setToken(this.persistenceService.getTokens());
 
             this.apiServerService.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
             this.apiServerService.setCurrentPassword('');

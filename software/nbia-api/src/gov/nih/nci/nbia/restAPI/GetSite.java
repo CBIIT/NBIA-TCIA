@@ -58,20 +58,9 @@ public class GetSite extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse( @FormParam("collectionName") String collectionName, @FormParam("siteName") String siteName) {
-
-		try {	
-
-				SiteDAO siteDAO = (SiteDAO)SpringApplicationContext.getBean("siteDAO");
-				SiteDTO value = siteDAO.findSiteByCollectionNameAndSiteName(collectionName, siteName);
-				return Response.ok(JSONUtil.getJSONforSite(value)).type("application/json")
-						.build();
-			
-
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return Response.status(500)
-			.entity("Server was not able to process your request").build();
+		SiteDAO siteDAO = (SiteDAO)SpringApplicationContext.getBean("siteDAO");
+		SiteDTO value = siteDAO.findSiteByCollectionNameAndSiteName(collectionName, siteName);
+		return Response.ok(JSONUtil.getJSONforSite(value)).type("application/json")
+				.build();
 	}
 }

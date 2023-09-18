@@ -66,7 +66,7 @@ public class CollectionDescBean {
 		message="";
 		infoMessage = false;
 		if(name.equals(defaultSelectValue)){
-			logger.info("no changes need");
+			logger.debug("no changes need");
 			selectedCollectionName="";
 			selectedCollection = collectionDescDTO;
 			this.inputRichText.resetValue();
@@ -82,7 +82,7 @@ public class CollectionDescBean {
 	}
 	public String submit() {
 		if(selectedCollectionName.equals(defaultSelectValue)){
-			logger.info("no changes need");
+			logger.debug("no changes need");
 			message = "Please choose a collection";
 			infoMessage = true;
 			return "";
@@ -94,7 +94,7 @@ public class CollectionDescBean {
 			infoMessage = true;
 			return "";
 		}
-		logger.info("updating collection description for " + selectedCollectionName);
+		logger.debug("updating collection description for " + selectedCollectionName);
 		CollectionDescDTO dto = new CollectionDescDTO();
 		dto.setCollectionName(selectedCollection.getCollectionName());
 		dto.setId(selectedCollection.getId());

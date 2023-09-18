@@ -69,11 +69,7 @@ public class GetMD5Heirarchy extends getData{
 			   value = "The series when selecting a study level hash from", example = "4D-Lung", required = false) 
 			@FormParam("Collection") String collection) {
 		String md5 = "";
-		try {
-//		Authentication authentication = SecurityContextHolder.getContext()
-//					.getAuthentication();
-//		String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
+		String user = getUserName();
 
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 		if (authorizedSiteData==null){
@@ -81,40 +77,31 @@ public class GetMD5Heirarchy extends getData{
 		     authorizedSiteData = am.getAuthorizedSites();
 		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
 		}
-	
-            synchronized (this) {
-				if (seriesInstanceUID != null && seriesInstanceUID.length() > 0) {
+
+        synchronized (this) {
+			if (seriesInstanceUID != null && seriesInstanceUID.length() > 0) {
+				GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+				md5 = tDao.getMD5ForSeries(seriesInstanceUID);
+			}
+			if (studyInstanceUID != null && studyInstanceUID.length() > 0) {
+				GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+				md5 = tDao.getMD5ForStudy(studyInstanceUID, authorizedSiteData);
+			}
+			if (patientID != null && patientID.length() > 0) {
+				GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+				md5 = tDao.getMD5ForPatientId(patientID, collection, authorizedSiteData);
+			}
+			if ((collection != null && collection.length() > 0) && !(patientID != null && patientID.length() > 0)) {
+				md5 = MD5Cache.getMD5ForCollection(collection);
+				if (md5 == null) {
 					GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-					md5 = tDao.getMD5ForSeries(seriesInstanceUID);
-				}
-				if (studyInstanceUID != null && studyInstanceUID.length() > 0) {
-					GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-					md5 = tDao.getMD5ForStudy(studyInstanceUID, authorizedSiteData);
-				}
-				if (patientID != null && patientID.length() > 0) {
-					GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-					md5 = tDao.getMD5ForPatientId(patientID, collection, authorizedSiteData);
-				}
-				if ((collection != null && collection.length() > 0) && !(patientID != null && patientID.length() > 0)) {
-					md5 = MD5Cache.getMD5ForCollection(collection);
-					if (md5 == null) {
-						GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-						md5 = tDao.getMD5ForCollection(collection, authorizedSiteData);
-						MD5Cache.setMD5(collection, md5);
-					}
+					md5 = tDao.getMD5ForCollection(collection, authorizedSiteData);
+					MD5Cache.setMD5(collection, md5);
 				}
 			}
-			return Response.ok().type("text/plain")
-    				.entity(md5)
-    				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
+		return Response.ok().type("text/plain")
+				.entity(md5)
+				.build();
 	}
-	
-
-	
 }

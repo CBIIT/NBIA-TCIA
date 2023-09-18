@@ -32,43 +32,30 @@ public class SetSiteForSeries extends getData{
 
 	public Response constructResponse(@FormParam("seriesId") List<String> seriesIdList,
 			@FormParam("site") String site) {
-		
-
-
-		try {	
-			
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();			
-                if (!QAUserUtil.isUserQA(user)) {
-                	System.out.println("Not QA User!!!!");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				   if (!sm.hasQaRole(user)) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				   } else {
-					   QAUserUtil.setUserQA(user);
-				   }
-                }
-    			System.out.println("++++++++++++++++++++++Site-"+site);
-    			for (String series:seriesIdList) {
-    				System.out.println("series-"+series);
-    			}
-				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
-				qDao.setSiteForSeries(seriesIdList, site);
-			    return Response.ok("ok").type("application/text")
-						.build();
-		    } catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-			}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+		String user = getUserName();
+        if (!QAUserUtil.isUserQA(user)) {
+        	System.out.println("Not QA User!!!!");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		   if (!sm.hasQaRole(user)) {
+		  	  return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+		   } else {
+			   QAUserUtil.setUserQA(user);
+		   }
+        }
+		System.out.println("++++++++++++++++++++++Site-"+site);
+		for (String series:seriesIdList) {
+			System.out.println("series-"+series);
+		}
+		QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
+		qDao.setSiteForSeries(seriesIdList, site);
+	    return Response.ok("ok").type("application/text")
+				.build();
 	}
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
+
 		if (date==null)
 		{
 			return null;

@@ -78,7 +78,7 @@ public final class DicomFileSizeCorrectorUtil {
             logProp.load(classLoader.getResourceAsStream(LOG_FILE));
             PropertyConfigurator.configure(logProp);
             System.out.println("Logging enabled");
-            logger.info("Logging enabled");
+            logger.debug("Logging enabled");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Logging not enabled");
@@ -90,11 +90,11 @@ public final class DicomFileSizeCorrectorUtil {
             // get the property value and print it out
             String mysqlDriverClass = prop
                     .getProperty("connection.driver_class");
-            logger.info("mysqlDriverClass:-" + mysqlDriverClass);
+            logger.debug("mysqlDriverClass:-" + mysqlDriverClass);
             String databaseConnectionUrl = prop.getProperty("connection.url");
-            logger.info("databaseConnectionUrl:-" + databaseConnectionUrl);
+            logger.debug("databaseConnectionUrl:-" + databaseConnectionUrl);
             String dbUserName = prop.getProperty("connection.username");
-            logger.info("dbUserName:-" + dbUserName);
+            logger.debug("dbUserName:-" + dbUserName);
             String dbPassword = prop.getProperty("connection.password");
             DicomFileSizeCorrectorUtil sizeCorrector = new DicomFileSizeCorrectorUtil();
             sizeCorrector.setConnectionUrl(databaseConnectionUrl);
@@ -124,7 +124,7 @@ public final class DicomFileSizeCorrectorUtil {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("Select image_pk_id,dicom_file_uri,dicom_size from general_image order by image_pk_id asc");
-            logger.info("looping through......");
+            logger.debug("looping through......");
             int batchSize = 0;
             // String sql =
             // "UPDATE general_image SET dicom_size =? , md5_digest=? where image_pk_id=?";
@@ -136,10 +136,10 @@ public final class DicomFileSizeCorrectorUtil {
                 long storedFileSize = rs.getLong(3);
                 File storedFile = new File(storedFileName);
                 if (!storedFile.exists()) {
-                    logger.info("Current file Name: " + storedFileName
+                    logger.debug("Current file Name: " + storedFileName
                             + " was not found...");
                 } else if (storedFileSize != storedFile.length()) {
-                    logger.info("File size mismatch####### " + imageId + "|| "
+                    logger.debug("File size mismatch####### " + imageId + "|| "
                             + storedFileName + " || " + storedFileSize);
                     setCorrectFileSize(prepStmt, storedFile, imageId, md);
                     batchSize++;
@@ -161,15 +161,15 @@ public final class DicomFileSizeCorrectorUtil {
             stmt.close();
             con.close();
         } catch (java.lang.Exception ex) {
-            logger.info("Error occured:-" + ex.getMessage());
+            logger.debug("Error occured:-" + ex.getMessage());
             return;
         }
-        logger.info("DICOM File size correction has been completed....");
+        logger.debug("DICOM File size correction has been completed....");
     }
 
     private void excuteBatchStmt(PreparedStatement prepStmt)
             throws SQLException {
-        logger.info("doing batch update...");
+        logger.debug("doing batch update...");
         prepStmt.executeBatch();
         prepStmt.clearBatch();
     }
@@ -180,9 +180,9 @@ public final class DicomFileSizeCorrectorUtil {
         FileInputStream fIs = new FileInputStream(file);
         try {
             // String md5 = getDigest(fIs, md);
-            // logger.info("updated filesize " + actualFileSize + "updated md5 "
+            // logger.debug("updated filesize " + actualFileSize + "updated md5 "
             // + md5);
-            logger.info("updated filesize " + actualFileSize);
+            logger.debug("updated filesize " + actualFileSize);
             stmt.setBigDecimal(1, BigDecimal.valueOf(actualFileSize));
             // stmt.setString(2, md5);
             stmt.setString(2, imageId);

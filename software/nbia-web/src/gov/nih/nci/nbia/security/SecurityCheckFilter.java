@@ -61,7 +61,7 @@ public class SecurityCheckFilter implements Filter {
         HttpServletRequest hreq = (HttpServletRequest) request;
         HttpSession session = hreq.getSession();
 
-        logger.info("!!! doing SecurityCheckFilter");
+        logger.debug("!!! doing SecurityCheckFilter");
         // added to know the current address
         // and current user for Oviyam
         	try {
@@ -75,9 +75,9 @@ public class SecurityCheckFilter implements Filter {
         String referer = (String)session.getAttribute("previous");
         session.setAttribute("previous", checkforloginpage);
 
-        logger.info("session:"+session.getId());
-    	logger.info("request:"+hreq.getRequestURL());
-    	logger.info("checkforloginpage:"+checkforloginpage);
+        logger.debug("session:"+session.getId());
+    	logger.debug("request:"+hreq.getRequestURL());
+    	logger.debug("checkforloginpage:"+checkforloginpage);
 
         // dont filter login.jsp because otherwise an endless loop.
 
@@ -94,7 +94,7 @@ public class SecurityCheckFilter implements Filter {
             if (((SecurityBean) session.getAttribute("securityBean")) != null) {
                 loggedIn = ((SecurityBean) session.getAttribute("securityBean")).getLoggedIn();
             }
-            logger.info("loggedIn:"+loggedIn);
+            logger.debug("loggedIn:"+loggedIn);
             if (!loggedIn) {
             	session.setAttribute("originalRequest", saveRequestInfo(hreq));
             	HttpServletResponse httpServletResponse = (HttpServletResponse)response;

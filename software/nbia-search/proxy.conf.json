@@ -1,8 +1,0 @@
-{
-    "/NBIA_search":
-    {
-        "target": "http://192.168.1.21:8080",
-        "secure": true,
-        "changeOrigin": true
-    }
-}

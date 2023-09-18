@@ -106,8 +106,8 @@ public class DownloadServletV3 extends HttpServlet {
 				userId = NCIAConfig.getGuestUsername();
 			}
 
-			logger.info("sopUids:" + sopUids);
-			logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
+			logger.debug("sopUids:" + sopUids);
+			logger.debug("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
 					+ " hasAnnotation: " + hasAnnotation);
 			boolean newFileNames=false;
             if (request.getParameter("newFileNames")!=null&&request.getParameter("newFileNames").length()>1) {
@@ -160,7 +160,7 @@ public class DownloadServletV3 extends HttpServlet {
 		List<ImageDTO2> imageResults = processor.process(seriesUid, sopUids);
 		if ((imageResults == null) || imageResults.isEmpty()) {
 			// no data for this series
-			logger.info("no data for series: " + seriesUid);
+			logger.debug("no data for series: " + seriesUid);
 		} else {
 			hasAccess = processor.hasAccess(userId, password, imageResults.get(0).getProject(),
 					imageResults.get(0).getSite(), imageResults.get(0).getSsg());
@@ -194,12 +194,12 @@ public class DownloadServletV3 extends HttpServlet {
 		try {
 			long start = System.currentTimeMillis();
 
-			logger.info("images size: " + imageResults.size() + " anno size: " + annoResults.size());
+			logger.debug("images size: " + imageResults.size() + " anno size: " + annoResults.size());
 
 			sendAnnotationData(annoResults, tos);
 			sendImagesData(imageResults, tos, newFileNames);
 
-			logger.info("total time to send  files are " + (System.currentTimeMillis() - start) / 1000 + " ms.");
+			logger.debug("total time to send  files are " + (System.currentTimeMillis() - start) / 1000 + " ms.");
 		} finally {
 			IOUtils.closeQuietly(tos);
 		}
@@ -212,7 +212,7 @@ public class DownloadServletV3 extends HttpServlet {
 				String filePath = imageDto.getFileName();
 				String sop = imageDto.getSOPInstanceUID();
 
-				logger.info("filepath: " + filePath + " filename: " + sop);
+				logger.debug("filepath: " + filePath + " filename: " + sop);
 				try {
 					File dicomFile = new File(filePath);
 	                  ArchiveEntry tarArchiveEntry = null;
@@ -231,7 +231,7 @@ public class DownloadServletV3 extends HttpServlet {
 					// images will get download.
 				} finally {
 					IOUtils.closeQuietly(dicomIn);
-					logger.info("DownloadServlet Image transferred at " + new Date().getTime());
+					logger.debug("DownloadServlet Image transferred at " + new Date().getTime());
 				}
 			}
 		} catch (Exception ex) {
@@ -258,7 +258,7 @@ public class DownloadServletV3 extends HttpServlet {
 				// images will get download.
 			} finally {
 				IOUtils.closeQuietly(annoIn);
-				logger.info("DownloadServlet Annotation transferred at " + new Date().getTime());
+				logger.debug("DownloadServlet Annotation transferred at " + new Date().getTime());
 			}
 		}
 	}
@@ -284,7 +284,7 @@ public class DownloadServletV3 extends HttpServlet {
 	}
 
 	private void downloadManifestFile(List<String> seriesList, HttpServletResponse response, String userId) {
-		logger.info("constructing manifest file from the serieList");
+		logger.debug("constructing manifest file from the serieList");
 
 		response.setContentType("text/plain");
 		response.setHeader("Content-Disposition", "attachment;filename=downloadname.txt");

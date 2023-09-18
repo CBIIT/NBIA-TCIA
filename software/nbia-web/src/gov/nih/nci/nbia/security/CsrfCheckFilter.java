@@ -66,13 +66,13 @@ public class CsrfCheckFilter implements Filter {
             	  chain.doFilter(request, response); 
               }
               else {        	
-            	  logger.info("CSRF attack! Found hidden site:" + referer);
+            	  logger.debug("CSRF attack! Found hidden site:" + referer);
             	  ((HttpServletResponse)response).sendRedirect(serverLoc+"/ncia/csrfErrorPage.jsp?hiddenSite="+referer);
               }
         }
         else {
-        	logger.info("?????????CsrfCheckFilter--how reached here url="+url);
-        	logger.info("??????????CsrfCheckFilter--how reached here referer="+referer);
+        	logger.debug("?????????CsrfCheckFilter--how reached here url="+url);
+        	logger.debug("??????????CsrfCheckFilter--how reached here referer="+referer);
         }
     }
     

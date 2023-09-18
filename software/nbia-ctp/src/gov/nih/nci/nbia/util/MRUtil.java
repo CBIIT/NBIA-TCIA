@@ -37,19 +37,19 @@ public class MRUtil {
             logProp.load(classLoader.getResourceAsStream(LOG_FILE));
             PropertyConfigurator.configure(logProp);
             System.out.println("Logging enabled");
-            logger.info("Logging enabled");
+            logger.debug("Logging enabled");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Logging not enabled");
         }
         new MRUtil().reProcessMR();
-        logger.info("completed the re processing of MR images");
+        logger.debug("completed the re processing of MR images");
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void reProcessMR() {
         ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        logger.info("loaded the application context");
+        logger.debug("loaded the application context");
         mrObj = (ProcessDicomObject) ctx.getBean("processDicomObject");
         SessionFactory sf1 = (SessionFactory) ctx.getBean("sessionFactory");
         Session s = sf1.openSession();
@@ -61,7 +61,7 @@ public class MRUtil {
             Query q = s.createQuery(hql);
             q.setFirstResult(0);
             List<Object[]> searchResults = q.list();
-            logger.info("got resultset of MR to reprocess");
+            logger.debug("got resultset of MR to reprocess");
             mrObj.process(searchResults);
         } catch (Exception e) {
             logger.error(e);

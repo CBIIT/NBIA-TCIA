@@ -72,14 +72,14 @@ public class ImageDAO2Impl extends AbstractDAO
                     seriesUid + "'";
     	// Submit the search
         long start = System.currentTimeMillis();
-    	logger.info("Issuing query: ");
+    	logger.debug("Issuing query: ");
         List results = getHibernateTemplate().find(query);
         long end = System.currentTimeMillis();
-        logger.info("total query time: " + (end - start) + " ms");
+        logger.debug("total query time: " + (end - start) + " ms");
         List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
 
         if(results == null || results.isEmpty()){
-        	logger.info("No image found for request seriesuid="+seriesUid);
+        	logger.debug("No image found for request seriesuid="+seriesUid);
         	return imageResults;
         }
 //        TrialDataProvenance tdp = results.get(0).getDataProvenance();
@@ -138,14 +138,14 @@ public class ImageDAO2Impl extends AbstractDAO
                     seriesUid + "'";    		
     	// Submit the search
         long start = System.currentTimeMillis();
-    	logger.info("Issuing query: ");
+    	logger.debug("Issuing query: ");
         List results = getHibernateTemplate().find(query);
         long end = System.currentTimeMillis();
-        logger.info("total query time: " + (end - start) + " ms");
+        logger.debug("total query time: " + (end - start) + " ms");
         List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
 
         if(results == null || results.isEmpty()){
-        	logger.info("No image found for request seriesuid="+seriesUid);
+        	logger.debug("No image found for request seriesuid="+seriesUid);
         	return imageResults;
         }
 
@@ -208,15 +208,15 @@ public class ImageDAO2Impl extends AbstractDAO
                     seriesUid + "'" + " and gs.visibility in ('1','12')";
     	// Submit the search
         long start = System.currentTimeMillis();
-    	logger.info("Issuing query: ");
+    	logger.debug("Issuing query: ");
         List results = getHibernateTemplate().find(query);
         long end = System.currentTimeMillis();
-        logger.info("total query time: " + (end - start) + " ms");
+        logger.debug("total query time: " + (end - start) + " ms");
         List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
         List<String []> fileNames = new ArrayList<String[]>();
 
         if(results == null || results.isEmpty()){
-        	logger.info("No image found for request seriesuid="+seriesUid);
+        	logger.debug("No image found for request seriesuid="+seriesUid);
         	return fileNames;
         }
 //        TrialDataProvenance tdp = results.get(0).getDataProvenance();

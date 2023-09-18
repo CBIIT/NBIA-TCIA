@@ -41,43 +41,27 @@ public class SubmitOnlineDeletion extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(@FormParam("deletion") String deletion) {
-		String user = null;
-        String email = null;
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				user = (String) authentication.getPrincipal();
-				user = getUserName();			
-				NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				email = sm.getUserEmail(user);
+		String user = getUserName();
+		NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+        String email = sm.getUserEmail(user);
 
-				List<String> roles=RoleCache.getRoles(user);
-             if (roles==null) {
-             	roles=new ArrayList<String>();
-             	System.out.println("geting roles for user");
-				    
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-             }
-			if (!roles.contains("NCIA.DELETE_ADMIN")) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-			   }
-
-			ImageDeletionMessage izm = new ImageDeletionMessage();
-			izm.setEmailAddress(email);
-			izm.setUserName(user);
-			AsynchonousServices.performImageDeletion(izm);
- 		    return Response.ok("ok").type("application/text")
-					.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<String> roles=RoleCache.getRoles(user);
+		if (roles==null) {
+			roles=new ArrayList<String>();
+			System.out.println("geting roles for user");
+		    roles.addAll(sm.getRoles(user));
+		    RoleCache.setRoles(user, roles);
 		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
-	}
-	
+		if (!roles.contains("NCIA.DELETE_ADMIN")) {
+		  	return Response.status(401)
+				.entity("Insufficiant Privileges").build();
+		}
 
-	
+		ImageDeletionMessage izm = new ImageDeletionMessage();
+		izm.setEmailAddress(email);
+		izm.setUserName(user);
+		AsynchonousServices.performImageDeletion(izm);
+		    return Response.ok("ok").type("application/text")
+				.build();
+	}
 }

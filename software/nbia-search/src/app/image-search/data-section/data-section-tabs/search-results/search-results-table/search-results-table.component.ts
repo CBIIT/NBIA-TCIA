@@ -366,6 +366,29 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 this.loadingDisplayService.setLoading( false );
             } );
 
+        this.apiServerService.textSearchClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.subjectDataShow = [];
+                if( (!this.utilService.isNullOrUndefined( data )) && ((<any>data).length > 0) ){
+                    this.textSearchResults = data;
+                    this.commonService.updateSearchResultsCount( this.textSearchResults.length );
+
+                    // Sort the new results
+                    this.sortService.doSort( this.textSearchResults );
+
+                    this.searchResults = this.textSearchResults;
+                    // TODO Explain
+                    this.commonService.setTextSearchResults( this.textSearchResults );
+                    this.upDataSearchResultsForDisplay();
+
+                }else{
+
+                    this.commonService.setTextSearchResults( {} );
+                    this.searchResults = [];
+                    this.searchResultsForDisplay = [];
+                }
+                this.updateThisPageRowCount();
+            } );
 
         // Called when there are new Text search results.
         this.apiServerService.textSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(

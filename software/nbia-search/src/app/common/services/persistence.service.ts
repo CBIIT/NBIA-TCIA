@@ -35,12 +35,15 @@ export class PersistenceService{
 
         LAST_ACCESS: 'lastAccess',
 
-        ACCESS_TOKEN: 'at',
-        ACCESS_TOKEN_LIFE_SPAN: 'atlp',
-        REFRESH_TOKEN: 'rt',
         IS_GUEST: 'guest'
 
     } );
+
+    public Storage = Object.freeze ({
+        ACCESS_TOKEN: 'at',
+        REFRESH_TOKEN: 'rt',
+        ACCESS_TOKEN_LIFE_SPAN: 'atlp'
+    });
 
     /**
      * The name to be used for the cookie.
@@ -121,6 +124,30 @@ export class PersistenceService{
                 console.error( 'Error parsing persisted data: ', e.message );
             }
         }
+    }
+
+    storeTokens(access_token, refresh_token, expires_in) {
+        localStorage.setItem(this.Storage.ACCESS_TOKEN, access_token);
+        localStorage.setItem(this.Storage.REFRESH_TOKEN, refresh_token);
+        localStorage.setItem(this.Storage.ACCESS_TOKEN_LIFE_SPAN, expires_in);
+    }
+
+    getTokens() {
+        return {
+            access_token: localStorage.getItem(this.Storage.ACCESS_TOKEN),
+            refresh_token: localStorage.getItem(this.Storage.REFRESH_TOKEN),
+            expires_in: localStorage.getItem(this.Storage.ACCESS_TOKEN_LIFE_SPAN)
+        };
+    }
+
+    getAccessToken() {
+        return localStorage.getItem(this.Storage.ACCESS_TOKEN);
+    }
+
+    deleteTokens() {
+        localStorage.removeItem(this.Storage.ACCESS_TOKEN);
+        localStorage.removeItem(this.Storage.REFRESH_TOKEN);
+        localStorage.removeItem(this.Storage.ACCESS_TOKEN_LIFE_SPAN);
     }
 
     /**

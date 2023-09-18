@@ -69,45 +69,37 @@ public class DICOMSubmission extends getData{
 					.entity("Need to create collection and site (protection element) first using UAT.").build();
 		}
 
-		
-		try {			
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
+		try {
 	 		String user = getUserName();
-	 		
-                if (!QAUserUtil.isUserQA(user)) {
-                	System.out.println("Not QA User!!!!");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				   if (!sm.hasQaRole(user)) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				   } else {
-					   QAUserUtil.setUserQA(user);
-				   }
-                }
-                
-                String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI, fileId, overwrite);
-                if (status.equals("ok")) {
-				   return Response.ok("ok").type("application/text")
-						.build();
-                } else {
- 				   return Response.status(400)
- 							.entity(status).build();
-                }
-	       } catch (NestedRuntimeException e) {
+            if (!QAUserUtil.isUserQA(user)) {
+            	System.out.println("Not QA User!!!!");
+			    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+			   if (!sm.hasQaRole(user)) {
+			  	  return Response.status(401)
+						.entity("Insufficiant Privileges").build();
+			   } else {
+				   QAUserUtil.setUserQA(user);
+			   }
+            }
+            String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI, fileId, overwrite);
+            if (status.equals("ok")) {
+			   return Response.ok("ok").type("application/text")
+					.build();
+            } else {
+				   return Response.status(400)
+							.entity(status).build();
+            }
+        } catch (NestedRuntimeException e) {
+			e.printStackTrace();
+			return Response.status(500)
+					.entity(e.getMostSpecificCause().getMessage()).build();
+        } catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return Response.status(500)
-						.entity(e.getMostSpecificCause().getMessage()).build();
-	        } catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return Response.status(500)
-							.entity(e.getMessage()).build();
-			}
-
+						.entity(e.getMessage()).build();
+		}
 	}
-	
 	private boolean allowToGoOn(String project, String site) {
 		if (NCIAConfig.getCtpBlockCreationNewProjectSite().trim().equals("true")) {
 			TrialDataProvenanceDAO tDao = (TrialDataProvenanceDAO) SpringApplicationContext

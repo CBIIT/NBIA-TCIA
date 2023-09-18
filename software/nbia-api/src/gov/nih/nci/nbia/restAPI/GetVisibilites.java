@@ -25,17 +25,8 @@ public class GetVisibilites extends getData{
 
 	public Response constructResponse() {
 	       List<String>visibilities=null;
-		try {	
-               visibilities=VisibilityStatus.getVisibilities();
-		        return Response.ok(JSONUtil.getJSONforStringList(visibilities)).type("application/json")
-				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
+		visibilities=VisibilityStatus.getVisibilities();
+		return Response.ok(JSONUtil.getJSONforStringList(visibilities)).type("application/json")
+		.build();
 	}
-	
 }
-	

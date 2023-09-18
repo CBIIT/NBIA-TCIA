@@ -64,7 +64,7 @@ public class ImageDeletionServiceImpl implements ImageDeletionService {
 		if (seriesList == null || seriesList.size() == 0)
 		{
 			//no need to do deletion
-			logger.info("There is no series need to be deleted!!!");
+			logger.debug("There is no series need to be deleted!!!");
 
 			return null;
 		}

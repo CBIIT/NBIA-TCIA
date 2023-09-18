@@ -31,13 +31,8 @@ public class GetStudyDrillDown extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(@FormParam("list") List<String> list) {
+		String user = getUserName();
 
-		try {	
-//	   Authentication authentication = SecurityContextHolder.getContext()
-//				.getAuthentication();
-//		String user = (String) authentication.getPrincipal();
-			String user = getUserName();
-		
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
 		if (authorizedSiteData==null){
 		     AuthorizationManager am = new AuthorizationManager(user);
@@ -52,14 +47,8 @@ public class GetStudyDrillDown extends getData{
 		}
  		List<StudyDTO> studies = studyDAO.findStudiesBySeriesId(input);
 
-		
+
 		return Response.ok(JSONUtil.getJSONforStudies(studies)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 }

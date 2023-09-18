@@ -51,7 +51,6 @@ public class TrialDataProvenanceOperation extends DomainOperation implements Tri
 		    List ret = getHibernateTemplate().find(hql);
 		    if(ret != null  && ret.size() > 0) {
 		    	if (ret.size() == 1) {
-		    		System.out.println("tdp found");
 		    		tdp = (TrialDataProvenance) ret.get(0);
 		    	}
 		    	else if (ret.size() > 1)

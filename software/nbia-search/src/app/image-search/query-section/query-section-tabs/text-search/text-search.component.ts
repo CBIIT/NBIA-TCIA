@@ -76,9 +76,8 @@ export class TextQueryComponent implements OnInit, OnDestroy{
         // when the user switches back to "Text Search" from "Simple Search" or "Query Builder".
         this.commonService.setTextSearchResults( '' );
 
-        //  FIXME  Don't emit this from here.
         // Clear the Search results table.
-        this.apiServerService.textSearchResultsEmitter.emit( [] );
+        this.apiServerService.textSearchClearEmitter.emit( [] );
 
         // 0 means no results from a search,  -1 means no search
         this.commonService.updateSearchResultsCount( -1 );

@@ -53,70 +53,54 @@ public class SetDeleteVisibility extends getData{
 
 	public Response constructResponse(@FormParam("seriesId") List<String> seriesIdList,
 			@FormParam("comment") String comment) {
-		
-		
 		if (seriesIdList.size() < 1) {
 			return Response.status(400)
 						.entity("The request should include at least one seriesId.").build();
 		}
-		
-			
+		String user = getUserName();
+		List<String> roles=RoleCache.getRoles(user);
+        if (roles==null) {
+        	roles=new ArrayList<String>();
+        	System.out.println("geting roles for user");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		    roles.addAll(sm.getRoles(user));
+		    RoleCache.setRoles(user, roles);
+        }
+    	if (!roles.contains("NCIA.DELETE_ADMIN")) {
+		  	  return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+	    }
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();
-				List<String> roles=RoleCache.getRoles(user);
-                if (roles==null) {
-                	roles=new ArrayList<String>();
-                	System.out.println("geting roles for user");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-                }
-		    	if (!roles.contains("NCIA.DELETE_ADMIN")) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-			    }
-				
-				String status = "Not submitted.";
-				
-				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
-				try {
-					List<Map<String,String>>results = qDao.findExistingStatus(null, null, seriesIdList);
-					if ((results != null) && (results.size() != seriesIdList.size())) {
-						status = "Some or all series need to be submitted into database first";
-						Response.status(412).entity(status).build();
-					}
-					else {
-						List<String> seriesList = new ArrayList<String>();
-						List<String> statusList = new ArrayList<String>();
-						for (Map<String,String> result:results) {
-							seriesList.add(result.get("id"));
-							statusList.add(result.get("oldStatus"));
-						}
-						qDao.updateQcStatus(seriesList, statusList, "4", null, null, user, comment);
-						status = "ok";
-					}
-				}
-				catch (DataAccessException ex) {
-					ex.printStackTrace();
-				}
-		
-                if (status.equals("ok")) {
-				   return Response.ok("ok").type("application/text")
-						.build();
-                } else {
- 				   return Response.status(400)
- 							.entity(status).build();
-                }
+		String status = "Not submitted.";
 
-		    } catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
+		try {
+			List<Map<String,String>>results = qDao.findExistingStatus(null, null, seriesIdList);
+			if ((results != null) && (results.size() != seriesIdList.size())) {
+				status = "Some or all series need to be submitted into database first";
+				Response.status(412).entity(status).build();
 			}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+			else {
+				List<String> seriesList = new ArrayList<String>();
+				List<String> statusList = new ArrayList<String>();
+				for (Map<String,String> result:results) {
+					seriesList.add(result.get("id"));
+					statusList.add(result.get("oldStatus"));
+				}
+				qDao.updateQcStatus(seriesList, statusList, "4", null, null, user, comment);
+				status = "ok";
+			}
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+
+        if (status.equals("ok")) {
+		   return Response.ok("ok").type("application/text")
+				.build();
+        } else {
+		   return Response.status(400)
+					.entity(status).build();
+        }
 	}
 }

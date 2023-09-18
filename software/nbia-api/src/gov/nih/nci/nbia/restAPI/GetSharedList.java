@@ -25,16 +25,9 @@ public class GetSharedList extends getData{
 
 	public Response constructResponse(@FormParam("nameValue") String nameValue) {
 
-		try {	
 		CustomSeriesListDAO customSeriesListDAO = (CustomSeriesListDAO)SpringApplicationContext.getBean("customSeriesListDAO");
-		CustomSeriesListDTO tdto = customSeriesListDAO.findCustomSeriesListByName(nameValue);	
+		CustomSeriesListDTO tdto = customSeriesListDAO.findCustomSeriesListByName(nameValue);
 		return Response.ok(JSONUtil.getJSONforShareList(tdto)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
 }

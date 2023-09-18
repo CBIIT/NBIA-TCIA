@@ -32,40 +32,28 @@ public class GetManufactureValuesAndCounts extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@QueryParam("Collection") String collection, 
+	public Response constructResponse(@QueryParam("Collection") String collection,
 			@QueryParam("Modality") String modality, @QueryParam("BodyPartExamined") String bodyPart) {
-
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
-	
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-				List<String> seriesSecurityGroups = new ArrayList<String>();
-				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
-				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-				criteria.setObjectType("MANUFACTURER");
-				criteria.setAuth(auth);
-				criteria.setBodyPart(bodyPart);
-				criteria.setModality(modality);
-				criteria.setCollection(collection);
-				List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
-				return Response.ok(JSONUtil.getJSONforCollectionCounts(values)).type("application/json")
-						.build();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+		String user = getUserName();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(user);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(user, authorizedSiteData);
+		}
+		AuthorizationCriteria auth = new AuthorizationCriteria();
+		auth.setSeriesSecurityGroups(new ArrayList<String>());
+		auth.setSites(authorizedSiteData);
+		List<String> seriesSecurityGroups = new ArrayList<String>();
+		ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
+		ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
+		criteria.setObjectType("MANUFACTURER");
+		criteria.setAuth(auth);
+		criteria.setBodyPart(bodyPart);
+		criteria.setModality(modality);
+		criteria.setCollection(collection);
+		List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
+		return Response.ok(JSONUtil.getJSONforCollectionCounts(values)).type("application/json")
+				.build();
 	}
 }

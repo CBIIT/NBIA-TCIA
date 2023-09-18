@@ -41,48 +41,35 @@ public class SubmitSite extends getData{
 	        @FormParam("collectionName") String collectionName,
 			@FormParam("siteName") String siteName,
 	        @FormParam("licenseName") String licenseName) {
+		String user = getUserName();				
+		List<String> roles=RoleCache.getRoles(user);
+		if (roles==null) {
+			roles=new ArrayList<String>();
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-				String user = getUserName();				
-				List<String> roles=RoleCache.getRoles(user);
-               if (roles==null) {
-                	roles=new ArrayList<String>();
-   
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-                }
-                boolean hasRole=false;
-                for (String role:roles) {               	
-                	if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
-                		hasRole=true;
-                	}
-                }
-                if (!hasRole) {
-					return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-                } 
-                SiteDAO siteDAO = (SiteDAO)SpringApplicationContext.getBean("siteDAO");
-                SiteDTO siteDTO=new SiteDTO();
-                siteDTO.setCollectionName(collectionName);
-                siteDTO.setSiteName(siteName);
-                LicenseDTO licenseDTO=new LicenseDTO();
-                licenseDTO.setLongName(licenseName);
-                siteDTO.setLicenseDTO(licenseDTO);
-                siteDAO.update(siteDTO);
-        
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		    roles.addAll(sm.getRoles(user));
+		    RoleCache.setRoles(user, roles);
+		}
+		boolean hasRole=false;
+		for (String role:roles) {               	
+			if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
+				hasRole=true;
+			}
+		}
+		if (!hasRole) {
+			return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+		}
+		SiteDAO siteDAO = (SiteDAO)SpringApplicationContext.getBean("siteDAO");
+		SiteDTO siteDTO=new SiteDTO();
+		siteDTO.setCollectionName(collectionName);
+		siteDTO.setSiteName(siteName);
+		LicenseDTO licenseDTO=new LicenseDTO();
+		licenseDTO.setLongName(licenseName);
+		siteDTO.setLicenseDTO(licenseDTO);
+		siteDAO.update(siteDTO);
 		return Response.ok().type("text/plain")
 				.entity("Site updated")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-
 }

@@ -56,7 +56,7 @@ public class AnonymousLoginBean {
 
     public String login() throws Exception {
     	SecurityBean securityBean = BeanManager.getSecurityBean();
-    	logger.info("anonymousloginbean............ guestusername: " + guestUserName );
+    	logger.debug("anonymousloginbean............ guestusername: " + guestUserName );
     	guestLoggedIn = true;
     	String loginStatus = securityBean.login(guestUserName, "");
     	if(loginStatus != null && loginStatus.equals("loginFail")){
@@ -69,7 +69,7 @@ public class AnonymousLoginBean {
     
 	public String externalBypassLogin(String collectionName, String patientID) throws Exception {
 		SecurityBean securityBean = BeanManager.getSecurityBean();
-		logger.info("anonymousloginbean/externalBypassLogin............ guestusername: " + guestUserName);
+		logger.debug("anonymousloginbean/externalBypassLogin............ guestusername: " + guestUserName);
 		guestLoggedIn = true;
 		String loginStatus = securityBean.login(guestUserName, "");
 		if (loginStatus != null && loginStatus.equals("loginFail")) {

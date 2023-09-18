@@ -38,26 +38,19 @@ public class GetQCSearchforDeletion extends getData{
 			                          @FormParam("subjectIds") List<String> subjectIds,
 			                          @FormParam("fromDate") String fromDate,
 			                          @FormParam("toDate") String toDate) {
-		String user = null;
-
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				user = (String) authentication.getPrincipal();
-			user = getUserName();
-			
-				List<String> roles=RoleCache.getRoles(user);
-             if (roles==null) {
-             	roles=new ArrayList<String>();
-             	System.out.println("geting roles for user");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-             }
-			if (!roles.contains("NCIA.DELETE_ADMIN")) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-			   }
+		String user = getUserName();
+		List<String> roles=RoleCache.getRoles(user);
+         if (roles==null) {
+         	roles=new ArrayList<String>();
+         	System.out.println("geting roles for user");
+			    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+			    roles.addAll(sm.getRoles(user));
+			    RoleCache.setRoles(user, roles);
+         }
+		if (!roles.contains("NCIA.DELETE_ADMIN")) {
+			  	  return Response.status(401)
+						.entity("Insufficiant Privileges").build();
+		   }
         String[] additionalQcFlagList = new String[3];
         additionalQcFlagList[0] = batch;
         if (confirmedComplete!=null&&confirmedComplete.equalsIgnoreCase("Complete")) {
@@ -98,27 +91,20 @@ public class GetQCSearchforDeletion extends getData{
         }
         String maxRows=NCIAConfig.getQctoolSearchResultsMaxNumberOfRows();
         List<QcSearchResultDTO> qsrDTOList = qcStatusDAO.findSeries(qcStatus, collectionSites, additionalQcFlagList, subjectIdArray, fromDateValue, toDateValue,  Integer.valueOf(maxRows));
-         
+
 		for (QcSearchResultDTO dto:qsrDTOList){
 				System.out.println("===== In QcToolSearchBean:submit() - adding user to QC DTO ---");
 				dto.setUser(user);
 			}
 
 
-		
 		return Response.ok(JSONUtil.getJSONforQCList(qsrDTOList)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
+
 		if (date==null)
 		{
 			return Calendar.getInstance().getTime();
@@ -134,5 +120,4 @@ public class GetQCSearchforDeletion extends getData{
 		System.out.println("today-"+today);
 		return returnValue;
 	}
-	
 }

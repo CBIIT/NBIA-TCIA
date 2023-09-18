@@ -25,20 +25,10 @@ public class GetLicense extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse() {
-
-         try {
-
-		        LicenseDAO licenseDAO = (LicenseDAO)SpringApplicationContext.getBean("licenseDAO");
-				List<LicenseDTO> values = licenseDAO.findLicenses();
-				return Response.ok(JSONUtil.getJSONforLicense(values)).type("application/json")
-						.build();
-
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return Response.status(500)
-			.entity("Server was not able to process your request").build();
+	public Response constructResponse() throws Exception {
+        LicenseDAO licenseDAO = (LicenseDAO)SpringApplicationContext.getBean("licenseDAO");
+		List<LicenseDTO> values = licenseDAO.findLicenses();
+		return Response.ok(JSONUtil.getJSONforLicense(values)).type("application/json")
+				.build();
 	}
 }

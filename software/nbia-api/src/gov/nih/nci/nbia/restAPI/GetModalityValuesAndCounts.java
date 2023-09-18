@@ -27,39 +27,28 @@ public class GetModalityValuesAndCounts extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@QueryParam("Collection") String collection, 
-			@QueryParam("BodyPartExamined") String bodyPart) {
+	public Response constructResponse(@QueryParam("Collection") String collection,
+			@QueryParam("BodyPartExamined") String bodyPart) throws Exception{
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
-		
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-				List<String> seriesSecurityGroups = new ArrayList<String>();
-				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
-				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-				criteria.setObjectType("MODALITY");
-				criteria.setAuth(auth);
-				criteria.setBodyPart(bodyPart);
-				criteria.setCollection(collection);
-				List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
-				return Response.ok(JSONUtil.getJSONforCollectionCounts(values)).type("application/json")
-						.build();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+		String user = getUserName(); 
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+		if (authorizedSiteData==null){
+		    AuthorizationManager am = new AuthorizationManager(user);
+		    authorizedSiteData = am.getAuthorizedSites();
+			AuthorizationUtil.setUserSites(user, authorizedSiteData);
+		}
+		AuthorizationCriteria auth = new AuthorizationCriteria();
+		auth.setSeriesSecurityGroups(new ArrayList<String>());
+		auth.setSites(authorizedSiteData);
+		List<String> seriesSecurityGroups = new ArrayList<String>();
+		ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
+		ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
+		criteria.setObjectType("MODALITY");
+		criteria.setAuth(auth);
+		criteria.setBodyPart(bodyPart);
+		criteria.setCollection(collection);
+		List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
+		return Response.ok(JSONUtil.getJSONforCollectionCounts(values)).type("application/json")
+				.build();
 	}
 }

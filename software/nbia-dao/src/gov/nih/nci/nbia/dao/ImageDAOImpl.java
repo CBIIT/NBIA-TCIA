@@ -199,7 +199,7 @@ public class ImageDAOImpl extends AbstractDAO
     public Date findLastCurationDate()throws DataAccessException {
         // Submit the search
         long start = System.currentTimeMillis();
-        logger.info("Issuing query: " + LAST_CURATION_DATE_HQL);
+        logger.debug("Issuing query: " + LAST_CURATION_DATE_HQL);
 
         List result = getHibernateTemplate().find(LAST_CURATION_DATE_HQL);
         long end = System.currentTimeMillis();
@@ -276,7 +276,7 @@ public class ImageDAOImpl extends AbstractDAO
 
         // Submit the search
         long start = System.currentTimeMillis();
-        logger.info("Issuing query: " + selectStmt + fromStmt + whereStmt);
+        logger.debug("Issuing query: " + selectStmt + fromStmt + whereStmt);
 
         List seriesQuery = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
         long end = System.currentTimeMillis();

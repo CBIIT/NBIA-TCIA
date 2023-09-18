@@ -102,7 +102,7 @@ public class QueryStorageManagerImpl extends AbstractDAO
         // Return the primary key of the query history record just created
         queryHistoryId = queryHistory.getId();
 
-        logger.info("Added query history record with ID = " +
+        logger.debug("Added query history record with ID = " +
             queryHistoryId);
 
         return queryHistoryId;
@@ -212,10 +212,10 @@ public class QueryStorageManagerImpl extends AbstractDAO
             SavedQuery savedQuery = (SavedQuery) getHibernateTemplate().load(SavedQuery.class,
                                                                              dto.getId());
             savedQuery.setActive(false);
-            logger.info("QueryStorageManager.deleteQueries..... calling store()");
+            logger.debug("QueryStorageManager.deleteQueries..... calling store()");
 
             getHibernateTemplate().saveOrUpdate(savedQuery);
-            logger.info("Deactivated saved query ID = " + dto.getId());
+            logger.debug("Deactivated saved query ID = " + dto.getId());
         }
     }
 
@@ -401,7 +401,7 @@ public class QueryStorageManagerImpl extends AbstractDAO
                                                                                          savedQueryToInactivateId);
             savedQueryToInactivate.setActive(false);
             getHibernateTemplate().saveOrUpdate(savedQueryToInactivate);
-            logger.info("Deactivated saved query ID = " +
+            logger.debug("Deactivated saved query ID = " +
                 savedQueryToInactivateId);
         }
 
@@ -449,7 +449,7 @@ public class QueryStorageManagerImpl extends AbstractDAO
 
         savedQueryId = savedQuery.getId();
 
-        logger.info("Saved query record with ID = " + savedQueryId);
+        logger.debug("Saved query record with ID = " + savedQueryId);
 
         return savedQueryId;
     }

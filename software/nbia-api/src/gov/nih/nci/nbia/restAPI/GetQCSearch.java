@@ -40,24 +40,18 @@ public class GetQCSearch extends getData{
 			                          @FormParam("visibilities") List<String> visibilities,
 			                          @FormParam("fromDate") String fromDate,
 			                          @FormParam("toDate") String toDate) {
-		String user = null;
+		String user = getUserName(); 
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				user = (String) authentication.getPrincipal();
-				user = getUserName(); 
-
-                if (!QAUserUtil.isUserQA(user)) {
-                	System.out.println("Not QA User!!!!");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				 //  if (!sm.hasQaRole(user)) {
-				 // 	  return Response.status(401)
-				//			.entity("Insufficiant Privileges").build();
-				 //  } else {
-				//	   QAUserUtil.setUserQA(user);
-				 //  }
-                } 
+        if (!QAUserUtil.isUserQA(user)) {
+        	System.out.println("Not QA User!!!!");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+			 //  if (!sm.hasQaRole(user)) {
+			 // 	  return Response.status(401)
+			//			.entity("Insufficiant Privileges").build();
+			 //  } else {
+			//	   QAUserUtil.setUserQA(user);
+			 //  }
+        }
         String[] additionalQcFlagList = new String[3];
         additionalQcFlagList[0] = batch;
         if (confirmedComplete!=null&&confirmedComplete.equalsIgnoreCase("Complete")) {
@@ -103,22 +97,16 @@ public class GetQCSearch extends getData{
         List<QcSearchResultDTOLight> qsrDTOListLight=new ArrayList<QcSearchResultDTOLight>();
 		for (QcSearchResultDTO dto:qsrDTOList){
 			QcSearchResultDTOLight dtol=new QcSearchResultDTOLight(dto);
-			qsrDTOListLight.add(dtol);			
+			qsrDTOListLight.add(dtol);
 		}
-		
+
 		return Response.ok(JSONUtil.getJSONforQCListLight(qsrDTOListLight)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
+
 		if (date==null)
 		{
 			return Calendar.getInstance().getTime();
@@ -136,5 +124,4 @@ public class GetQCSearch extends getData{
 		}
 		return returnValue;
 	}
-	
 }

@@ -55,8 +55,8 @@ import gov.nih.nci.nbia.executors.md5CacheUpdateJob;
 
 public class StartupServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(StartupServlet.class);
+    private static final long serialVersionUID = 1L;
+    private static Logger logger = Logger.getLogger(StartupServlet.class);
     /**
      * Run upon initialization of the servlet
      *
@@ -72,7 +72,7 @@ public class StartupServlet extends HttpServlet {
             latestCurationDate = new Date();
         }
         finally{
-           	ApplicationFactory.getInstance().setLatestCurationDate(latestCurationDate);
+            ApplicationFactory.getInstance().setLatestCurationDate(latestCurationDate);
         }
 
         /*
@@ -92,12 +92,12 @@ public class StartupServlet extends HttpServlet {
        Long interval = null;
 
        try {
-		interval = Long.valueOf(NCIAConfig.getSolrUpdateInterval());
-	   } catch (Exception e1) {
-		    interval = Long.valueOf("60");
-		    System.out.println("unable to read solr interval, defaulting to one hour");
-	     	e1.printStackTrace();
-	   }
+        interval = Long.valueOf(NCIAConfig.getSolrUpdateInterval());
+       } catch (Exception e1) {
+            interval = Long.valueOf("60");
+            System.out.println("unable to read solr interval, defaulting to one hour");
+            e1.printStackTrace();
+       }
 
        SimpleTrigger md5CacheTrigger = new SimpleTrigger("md5CacheTrigger",
                null,
@@ -152,9 +152,9 @@ public class StartupServlet extends HttpServlet {
             scheduler.startDelayed(10);
            // scheduler.start();
         } catch (SchedulerException se) {
-        	logger.error(se);
+            logger.error(se);
         }catch(Exception e){
-        	logger.error(e);
+            logger.error(e);
         }
 
     }

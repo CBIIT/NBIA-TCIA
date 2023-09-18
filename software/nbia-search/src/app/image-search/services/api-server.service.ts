@@ -85,6 +85,7 @@ export class ApiServerService implements OnDestroy {
      * @type {EventEmitter<any>}
      */
     textSearchResultsEmitter = new EventEmitter();
+    textSearchClearEmitter = new EventEmitter();
 
     /**
      * Used by emitPostError when doSearch is called.
@@ -292,17 +293,12 @@ export class ApiServerService implements OnDestroy {
 
         // Until the user logs in, we do everything as the default/guest user.
         if (this.persistenceService.get(this.persistenceService.Field.IS_GUEST) ||
-            this.utilService.isNullOrUndefined(this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN))
+            this.utilService.isNullOrUndefined(this.persistenceService.getAccessToken())
         ) {
             this.setCurrentUser(Properties.DEFAULT_USER);
             this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
         } else {
-            this.setToken(
-                {
-                    'expires_in': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN),
-                    'access_token': this.persistenceService.get(this.persistenceService.Field.ACCESS_TOKEN),
-                    'refresh_token': this.persistenceService.get(this.persistenceService.Field.REFRESH_TOKEN)
-                });
+            this.setToken(this.persistenceService.getTokens());
             this.setCurrentUser(this.persistenceService.get(this.persistenceService.Field.USER));
             this.setCurrentPassword('');
         }
@@ -547,23 +543,25 @@ export class ApiServerService implements OnDestroy {
             this.tokenLifeSpan = t['expires_in'];
             this.gotToken();
         }
-        this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN, this.accessToken);
-        this.persistenceService.put(this.persistenceService.Field.REFRESH_TOKEN, this.refreshToken);
-        this.persistenceService.put(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN, this.tokenLifeSpan);
+        this.persistenceService.storeTokens(this.accessToken, this.refreshToken, this.tokenLifeSpan);
         this.rawAccessToken = t;
 
-        // Get this user's role(s)
-        this.doGet(Consts.GET_USER_ROLES, this.accessToken).subscribe(
-            (resGetUserRoles) => {
-                this.currentUserRoles = resGetUserRoles;
-                this.currentUserRolesEmitter.emit(this.currentUserRoles);
-            },
-            (errGetUserRoles) => {
-                // If we can't get the users role(s), we will give them none.
-                this.currentUserRoles = [];
-                this.currentUserRolesEmitter.emit(this.currentUserRoles);
-            });
-
+        if(t !== null){
+            // Get this user's role(s)
+            this.doGet(Consts.GET_USER_ROLES, this.accessToken).subscribe(
+                (resGetUserRoles) => {
+                    this.currentUserRoles = resGetUserRoles;
+                    this.currentUserRolesEmitter.emit(this.currentUserRoles);
+                },
+                (errGetUserRoles) => {
+                    // If we can't get the users role(s), we will give them none.
+                    this.currentUserRoles = [];
+                    this.currentUserRolesEmitter.emit(this.currentUserRoles);
+                });
+        } else {
+            this.currentUserRoles = [];
+            this.currentUserRolesEmitter.emit(this.currentUserRoles);
+        }
     }
 
     /**
@@ -1170,7 +1168,7 @@ export class ApiServerService implements OnDestroy {
 
                             this.setCurrentUser(Properties.DEFAULT_USER);
                             this.setCurrentPassword(Properties.DEFAULT_PASSWORD);
-                            this.loadingDisplayService.setLoadingOff();
+                            // this.loadingDisplayService.setLoadingOff();
                         }
 
                         // There is no need to tell the users this.
@@ -1343,9 +1341,7 @@ export class ApiServerService implements OnDestroy {
 
 
     deleteToken() {
-        this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN);
-        this.persistenceService.remove(this.persistenceService.Field.ACCESS_TOKEN_LIFE_SPAN);
-        this.persistenceService.remove(this.persistenceService.Field.REFRESH_TOKEN);
+        this.persistenceService.deleteTokens();
     }
 
     /**
@@ -1398,24 +1394,27 @@ export class ApiServerService implements OnDestroy {
 
 
     logOut() {
-        let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
+        // let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
+        let postUrl = Properties.KEYCLOAK_LOGOUT_URL
         if (Properties.DEBUG_CURL) {
-            let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + getUrl + '\'';
-            console.log('doGet: ' + curl);
+            let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + postUrl + '\'';
+            console.log('doPost: ' + curl);
         }
         let headers = new HttpHeaders({
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + this.accessToken
         });
 
+        let data = `refresh_token=${this.refreshToken}&token=${this.accessToken}&client_id=${Properties.DEFAULT_CLIENT_ID}`;
+
         let options =
             {
                 headers: headers,
-                method: 'get',
+                method: 'post',
                 responseType: 'text' as 'text'
             };
 
-        return this.httpClient.get(getUrl, options).pipe(timeout(Properties.HTTP_TIMEOUT));
+        return this.httpClient.post(postUrl, data, options).pipe(timeout(Properties.HTTP_TIMEOUT));
     }
 
     /**

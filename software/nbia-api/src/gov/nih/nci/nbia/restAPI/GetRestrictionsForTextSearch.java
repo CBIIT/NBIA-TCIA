@@ -26,19 +26,16 @@ public class GetRestrictionsForTextSearch extends getData{
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@FormParam("textValue") String textValue) {
-
-		try {	
+	public Response constructResponse(@FormParam("textValue") String textValue) throws Exception {
 
 	    SearchUtil util=new SearchUtil();
 	    List<PatientSearchResult> patients= null;
 		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
 			String user = getUserName();
 			patients=util.getPatients(textValue, user, true);
+		} else {
+			patients=util.getPatients(textValue, null, false);
 		}
-		else
-			patients=util.getPatients(textValue, null, false);			   
-	    
 	    List<String> list=new ArrayList<String>();
 		for (PatientSearchResult patient:patients) {
 			StudyIdentifiers[] studies=patient.getStudyIdentifiers();
@@ -53,19 +50,10 @@ public class GetRestrictionsForTextSearch extends getData{
 						}
 					}
 				}
-				
-			}	
+			}
 		}
 
 		return Response.ok("no").type("application/x-nbia-manifest-file").build();
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-	
-
 }

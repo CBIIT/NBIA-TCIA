@@ -18,7 +18,7 @@ export let Properties = {
     BANNER_EXP: '',
 
     // This value can be changed in the config file.
-    HTTP_TIMEOUT: 120000,
+    HTTP_TIMEOUT: 200000,
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
@@ -59,6 +59,7 @@ export let Properties = {
 
     // API_SERVER_URL: 'http://192.168.1.21:8080',
     API_SERVER_URL: '',
+    KEYCLOAK_LOGOUT_URL: 'https://keycloak.dbmi.cloud/auth/realms/TCIA/protocol/openid-connect/logout',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over-ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////

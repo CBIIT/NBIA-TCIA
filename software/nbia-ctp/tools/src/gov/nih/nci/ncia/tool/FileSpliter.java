@@ -76,9 +76,9 @@ public class FileSpliter {
 		String outfileName = args[1];
 		int numOutputFiles = Integer.parseInt(args[2]);
 		FileSpliter finder = new FileSpliter();
-		logger.info("In process ...");
+		logger.debug("In process ...");
 		finder.split(infileName, outfileName, numOutputFiles);
-		logger.info("=== Process is completed ===");
+		logger.debug("=== Process is completed ===");
 
 	}
 }

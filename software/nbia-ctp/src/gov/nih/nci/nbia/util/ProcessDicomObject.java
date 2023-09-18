@@ -42,7 +42,7 @@ public class ProcessDicomObject extends HibernateDaoSupport {
     static final String DICOM_PROPERITIES = "dicom.properties";
 
     public void process(List<Object[]> searchResults) {
-        logger.info("start processing the result");
+        logger.debug("start processing the result");
         int commitSize = 0;
         DicomObject dicomObjectFile = null;
         Session s = getHibernateTemplate().getSessionFactory().openSession();
@@ -55,11 +55,11 @@ public class ProcessDicomObject extends HibernateDaoSupport {
                 Dataset set = dicomObjectFile.getDataset();
                 parseDICOMPropertiesFile(set);
                 updateStoredDicomObject(s, giId);
-                logger.info("MR Image: image pk Id:- " + giId + "  dicomUri:- "
+                logger.debug("MR Image: image pk Id:- " + giId + "  dicomUri:- "
                         + dicomUri);
                 commitSize++;
                 if (commitSize == rowsPerCommit) {
-                    logger.info("committing records..");
+                    logger.debug("committing records..");
                     commitSize = 0;
                     s.flush();
                     s.clear();
@@ -68,7 +68,7 @@ public class ProcessDicomObject extends HibernateDaoSupport {
             } catch (Exception e) {
                 s.clear();
                 logger.error(e);
-                logger.info("continue processing");
+                logger.debug("continue processing");
             } finally {
                 if (dicomObjectFile != null) {
                     dicomObjectFile.close();
@@ -87,7 +87,7 @@ public class ProcessDicomObject extends HibernateDaoSupport {
             MRImage mr = null;
             mr = (MRImage) mrio.validate(dicomTagMap);
             if (StringUtils.isEmpty(mr.getImageTypeValue3())) {
-                logger.info("Image type 3 is null; set it to UNKNOWN; image id:-"
+                logger.debug("Image type 3 is null; set it to UNKNOWN; image id:-"
                         + imagePkId);
                 mr.setImageTypeValue3("UNKNOWN");
             }

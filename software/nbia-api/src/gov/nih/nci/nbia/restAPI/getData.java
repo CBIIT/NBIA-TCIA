@@ -32,6 +32,7 @@ import gov.nih.nci.nbia.wadosupport.WADOSupportDTO;
 import gov.nih.nci.nbia.restUtil.FormatOutput;
 import gov.nih.nci.nbia.restUtil.RoleCache;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
+import gov.nih.nci.nbia.security.UnauthorizedException;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import javax.ws.rs.core.Response.*;
 public class getData {
 	String applicationName = NCIAConfig.getCsmApplicationName();
 	@Context private HttpServletRequest httpRequest;
-	
+
 	protected String getUserName() {
 		String userName; 
 
@@ -59,52 +60,53 @@ public class getData {
 			String token = httpRequest.getHeader("Authorization");
 
 			if (token.equalsIgnoreCase("Bearer undefined")) {
+				// System.out.println("Token is undefined using NBIA_GUEST");
 				userName = NCIAConfig.getGuestUsername();
-			}
-			else
+			} else {
 				userName = AuthenticationWithKeycloak.getInstance().getUserName(token.substring(7));
-		}
-		else {
+				// System.out.println("User name from token is " + userName);
+			}
+		} else {
 			Authentication authentication = SecurityContextHolder.getContext()
 					.getAuthentication();
 			userName = (String) authentication.getPrincipal();
-		}			
+		}
 		return userName;
 	}
-	
+
 	protected void recodeDownload (String seriesInstanceUid, long size, String type, String userName) {
 		try {
-			DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");					
+			DownloadDataDAO downloadDAO = (DownloadDataDAO) SpringApplicationContext.getBean("downloadDataDAO");
 			downloadDAO.record(seriesInstanceUid, userName, type, size);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}		
-	
+	}
+
 	protected boolean hasAdminRole() {
-		String user = getUserName();		
+		String user = getUserName();
 		List<String> roles=RoleCache.getRoles(user);
         if (roles==null) {
         	roles=new ArrayList<String>();
-        	System.out.println("geting roles for user");
+        	// System.out.println("geting roles for user");
 		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
 		    roles.addAll(sm.getRoles(user));
 		    RoleCache.setRoles(user, roles);
         }
         for (String role: roles) {
-        	System.out.println("role for user =" + user +":"+ role);
+        	// System.out.println("role for user =" + user +":"+ role);
         	if (role.equalsIgnoreCase(NCIAConfig.getProtectionElementPrefix() + "ADMIN"))
         		return true;
         }
         return false;
 	}
-	
+
 	public UserProvisioningManager getUpm() throws CSException, CSConfigurationException {
 		UserProvisioningManager upm = SecurityServiceProvider.getUserProvisioningManager(applicationName);
 		return upm;
 	}
-	
+
 	//Only used if the user is logged in.  Not for anonymousUser. There is a bug in SecurityContextHolder 
 	//which will return the last logged in user if the user is not logged out. For getting around the problem,
 	//the path interception will be used to get public collection for anonymousUser in getPublicCollections()
@@ -189,7 +191,7 @@ public class getData {
 		return Response.status(500)
 				.entity("Server was not able to process your request").build();
 	}
-	
+
 	protected Response formatResponse(String format, List<Object[]> data, String[] columns) {
 		String returnString = null;
 
@@ -198,12 +200,12 @@ public class getData {
 				returnString = FormatOutput.toJSONArray(columns, data).toString();
 				return Response.ok(returnString).type("application/json").build();
 			}
-			
+
 			if (format.equalsIgnoreCase("HTML")) {
 				returnString = FormatOutput.toHtml(columns, data);
 				return Response.ok(returnString).type("text/html").build();
 			}
-			
+
 			if (format.equalsIgnoreCase("XML")) {
 				returnString = FormatOutput.toXml(columns, data);
 				return Response.ok(returnString).type("application/xml").build();
@@ -211,7 +213,7 @@ public class getData {
 			if (format.equalsIgnoreCase("CSV")) {
 				returnString = FormatOutput.toCsv(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
-			}	
+			}
 			if (format.equalsIgnoreCase("CSVQUOTED")) {
 				returnString = FormatOutput.toCsvQuoted(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
@@ -226,22 +228,22 @@ public class getData {
 		}
 		return Response.status(500)
 				.entity("Server was not able to process your request")
-				.build();	
+				.build();
 	}
 	protected Response formatResponseInstance(String format, List<Object[]> data, String[] columns) {
 		String returnString = null;
-		
+
 		if ((data != null) && (data.size() > 0)) {
 			if ((format == null) || (format.equalsIgnoreCase("JSON"))) {
 				returnString = FormatOutput.toJSONArrayInstance(columns, data).toString();
 				return Response.ok(returnString).type("application/json").build();
 			}
-			
+
 			if (format.equalsIgnoreCase("HTML")) {
 				returnString = FormatOutput.toHtml(columns, data);
 				return Response.ok(returnString).type("text/html").build();
 			}
-			
+
 			if (format.equalsIgnoreCase("XML")) {
 				returnString = FormatOutput.toXml(columns, data);
 				return Response.ok(returnString).type("application/xml").build();
@@ -249,14 +251,14 @@ public class getData {
 			if (format.equalsIgnoreCase("CSV")) {
 				returnString = FormatOutput.toCsv(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
-			}		
+			}
 		}
 		else {
 			return Response.ok().build();
 		}
 		return Response.status(500)
 				.entity("Server was not able to process your request")
-				.build();	
+				.build();
 	}
 	protected boolean isUserHasAccess(String userName, Map<String, String> paramMap){
 		if (userName == null) {
@@ -276,31 +278,31 @@ public class getData {
 
 		user.setLoginName(loginName);
 		SearchCriteria searchCriteria = new UserSearchCriteria(user);
-		List<User> list = upm.getObjects(searchCriteria);		
+		List<User> list = upm.getObjects(searchCriteria);
 		return list.get(0);
 	}
-	
+
 	// For UPT replacement GUI
 	public ProtectionGroup getPGByPGName(String pgName) throws Exception {
 		UserProvisioningManager upm = getUpm();
 		ProtectionGroup pg = new ProtectionGroup();
 
-		pg.setProtectionGroupName(pgName);		
+		pg.setProtectionGroupName(pgName);
 		SearchCriteria searchCriteria = new ProtectionGroupSearchCriteria(pg);
-		List<ProtectionGroup> list = upm.getObjects(searchCriteria);	
+		List<ProtectionGroup> list = upm.getObjects(searchCriteria);
 		return list.get(0);
 	}
-	
+
 	// For UPT replacement GUI
 	public Group getGroupByGroupName(String groupName) throws Exception {
 		UserProvisioningManager upm = getUpm();
 		Group group = new Group();
 
-		group.setGroupName(groupName);		
+		group.setGroupName(groupName);
 		SearchCriteria searchCriteria = new GroupSearchCriteria(group);
 		List<Group> list = upm.getObjects(searchCriteria);	
 		return list.get(0);
-	}	
+	}
 
 	// For UPT replacement GUI
 	public Role getRoleByRoleName(String roleName) throws Exception {
@@ -309,10 +311,10 @@ public class getData {
 
 		role.setName(roleName);
 		SearchCriteria searchCriteria = new RoleSearchCriteria(role);
-		List<Role> list = upm.getObjects(searchCriteria);	
+		List<Role> list = upm.getObjects(searchCriteria);
 		return list.get(0);
-	}		
-	
+	}
+
 	protected List<String> getModalityValues(String collection, String bodyPart, List<String> authorizedCollections) {
 		List<String> results = null;
 
@@ -326,7 +328,7 @@ public class getData {
 		}
 		return (List<String>) results;
 	}
-	
+
 
 	protected List<String> getBodyPartValues(String collection, String modality, List<String> authorizedCollections) {
 		List<String> results = null;
@@ -340,7 +342,7 @@ public class getData {
 		}
 		return (List<String>) results;
 	}
-	
+
 	protected List<String> getCollectionValues(List<String> authorizedCollections) {
 		List<String> results = null;
 
@@ -353,10 +355,10 @@ public class getData {
 		}
 		return (List<String>) results;
 	}
-	
+
 	protected List<String> getManufacturerValues(String collection, String modality, String bodyPart, List<String> authorizedCollections) {
 		List<String> results = null;
-	
+
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
 			results = tDao.getManufacturerValues(collection, modality, bodyPart, authorizedCollections);
@@ -366,7 +368,7 @@ public class getData {
 		}
 		return results;
 	}
-	
+
 	protected List<Object[]> getPatientByCollection(String collection, List<String> authorizedCollections) {
 		List<Object []> results = null;
 
@@ -379,7 +381,7 @@ public class getData {
 		}
 		return (List<Object[]>) results;
 	}
-	
+
 	protected List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedCollections) {
 		List<Object []> results = null;
 
@@ -404,7 +406,7 @@ public class getData {
 		}
 		return (List<Object[]>) results;
 	}
-	
+
 	protected List<Object[]> getPatientStudy(String collection, String patientId, String studyInstanceUid, List<String> authorizedCollections) {
 		List<Object []> results = null;
 
@@ -429,7 +431,7 @@ public class getData {
 		}
 		return (List<Object[]>) results;
 	}
-	
+
 	protected List<Object[]> getSeriesQCInfo(List<String> seriesList, List<String> authorizedCollections) {
 		List<Object[]> results = null;
 
@@ -441,7 +443,7 @@ public class getData {
 			ex.printStackTrace();
 		}
 		return results;
-	}	
+	}
 
 	protected List<Object[]> getSeries(String collection, String patientId, String studyInstanceUid, List<String> authorizedCollections,
 			String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer, String seriesInstanceUID) {
@@ -492,10 +494,10 @@ public class getData {
 		}
 		return results;
 	}
-	
+
 	protected Object[] getSeriesMetaData(boolean allVisibilities, String seriesInstanceUID, List<String> authorizedCollections) {
 		Object[] results = null;
-		
+
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
 			results = tDao.findSeriesBySeriesInstanceUIDAllVisibilitiesLight(allVisibilities, seriesInstanceUID, authorizedCollections);
@@ -548,31 +550,31 @@ public class getData {
 		return (List<String>) results;
 	}
 	protected WADOSupportDTO getWadoImage(WADOParameters params, String user){
-		
+
 		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
 		WADOSupportDTO wdto = wadoDao.getWADOSupportDTO(params, user);
 		return wdto;
-		
+
 	}
 	protected WADOSupportDTO getWadoImage(String sOPInstanceUID, String seriesInstanceUid, String user){
-		
+
 		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
 		WADOSupportDTO wdto = wadoDao.getWADOSupportForSingleImageDTO(sOPInstanceUID, seriesInstanceUid, user);
 		return wdto;
-		
+
 	}
 	protected WADOSupportDTO getWadoImage(String image, String contentType, String user, WADOParameters params){
-		
+
 		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
 		WADOSupportDTO wdto = wadoDao.getOviyamWADOSupportDTO(image, contentType, user, params);
 		return wdto;
-		
+
 	}
 	protected WADOSupportDTO getThumbnail(String sOPInstanceUID, String seriesInstanceUid, String user){
-		
+
 		WADOSupportDAO wadoDao = (WADOSupportDAO)SpringApplicationContext.getBean("WADOSupportDAO");
 		WADOSupportDTO wdto = wadoDao.getThumbnailDTO(seriesInstanceUid, sOPInstanceUID, user);
 		return wdto;
-		
+
 	}
 }

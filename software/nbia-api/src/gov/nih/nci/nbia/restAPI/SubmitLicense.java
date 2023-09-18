@@ -33,50 +33,38 @@ public class SubmitLicense extends getData{
 			@FormParam("licenseText") String licenseText,
 			@FormParam("commercialUse") String commercialUse) {
 
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();
-				List<String> roles=RoleCache.getRoles(user);
-                if (roles==null) {
-                	roles=new ArrayList<String>();
-                	System.out.println("geting roles for user");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				    roles.addAll(sm.getRoles(user));
-				    RoleCache.setRoles(user, roles);
-                }
-                boolean hasRole=false;
-                for (String role:roles) {
-                	if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
-                		hasRole=true;
-                	}
-                }
-                if (!hasRole) {
-					return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-                }
-                LicenseDAO licenseDAO = (LicenseDAO)SpringApplicationContext.getBean("licenseDAO");
-                LicenseDTO licenseDTO=new LicenseDTO();
-                licenseDTO.setCommercialUse(commercialUse);
-                if (id!=null&&id.length()>0) {
-                    licenseDTO.setId(Integer.parseInt(id));
-                }
-                licenseDTO.setLicenseText(licenseText);
-                licenseDTO.setShortName(shortName);
-                licenseDTO.setLongName(longName);
-                licenseDTO.setLicenseURL(licenseURL);
-                licenseDAO.save(licenseDTO);
-        
+		String user = getUserName();
+		List<String> roles=RoleCache.getRoles(user);
+        if (roles==null) {
+        	roles=new ArrayList<String>();
+        	System.out.println("geting roles for user");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		    roles.addAll(sm.getRoles(user));
+		    RoleCache.setRoles(user, roles);
+        }
+        boolean hasRole=false;
+        for (String role:roles) {
+        	if(role.equalsIgnoreCase("NCIA.MANAGE_COLLECTION_DESCRIPTION")) {
+        		hasRole=true;
+        	}
+        }
+        if (!hasRole) {
+			return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+        }
+        LicenseDAO licenseDAO = (LicenseDAO)SpringApplicationContext.getBean("licenseDAO");
+        LicenseDTO licenseDTO=new LicenseDTO();
+        licenseDTO.setCommercialUse(commercialUse);
+        if (id!=null&&id.length()>0) {
+            licenseDTO.setId(Integer.parseInt(id));
+        }
+        licenseDTO.setLicenseText(licenseText);
+        licenseDTO.setShortName(shortName);
+        licenseDTO.setLongName(longName);
+        licenseDTO.setLicenseURL(licenseURL);
+        licenseDAO.save(licenseDTO);
 		return Response.ok().type("text/plain")
 				.entity("License updated")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-
 }

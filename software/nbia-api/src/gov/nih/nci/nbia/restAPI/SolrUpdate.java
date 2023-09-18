@@ -30,19 +30,11 @@ public class SolrUpdate extends getData{
 
 	public Response constructResponse(@FormParam("action") String action) {
 
-		try {	
-			    System.out.println("Running Solr Update from API");
-			    PatientUpdater updater=new PatientUpdater();
-	        	updater.runUpdates();
-	    		return Response.ok().type("text/plain")
-	    				.entity("Job Complete")
-	    				.build();
-	        }
-	        catch(Exception ex) {
-	        	ex.printStackTrace();
-	    		return Response.status(500)
-	    				.entity("Server was not able to process your request").build();
-	        }
+	    System.out.println("Running Solr Update from API");
+	    PatientUpdater updater=new PatientUpdater();
+    	updater.runUpdates();
+		return Response.ok().type("text/plain")
+				.entity("Job Complete")
+				.build();
 	}
-	
 }

@@ -61,7 +61,7 @@ public class FileAccessBean {
 
 			private static Resource loadResource(String name) {
 				File toLoad = getFile(name);
-				logger.info("got the file .."+ name);
+				logger.debug("got the file .."+ name);
 				if (toLoad != null) {
 					return new FileResource(toLoad);
 				}
@@ -71,7 +71,7 @@ public class FileAccessBean {
 
 			private static File getFile(String fileName) {
 				String location = MessageUtil.getString("gov.nih.nci.ncia.pdf.location");
-				logger.info("location:-" + location);
+				logger.debug("location:-" + location);
 				return new File(location + fileName);
 			}
 

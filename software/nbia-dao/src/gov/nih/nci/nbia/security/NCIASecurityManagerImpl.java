@@ -42,6 +42,7 @@ import gov.nih.nci.nbia.ldapService.UserLdapService;
 import gov.nih.nci.nbia.security.NCIASecurityManager.RoleType;
 import gov.nih.nci.nbia.util.NCIAConfig;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.nbia.util.SimpleCache;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -102,11 +103,13 @@ public class NCIASecurityManagerImpl extends AbstractDAO
     private UserProvisioningManager upm = null;
     private AuthenticationManager am = null;
 
+    private static SimpleCache<String, Set<TableProtectionElement>> userCache =
+		new SimpleCache<String, Set<TableProtectionElement>>();
+
     /*
      * Constructor
      */
     public NCIASecurityManagerImpl() {
-
     }
 
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -117,7 +120,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		    upm = (UserProvisioningManager)SecurityServiceProvider.getAuthorizationManager(this.applicationName);
 
 	        am = SecurityServiceProvider.getAuthenticationManager(this.applicationName);
-	        //logger.info("UserProvisioningManager: " + upm + " AuthenticationManager is " + am);
+	        //logger.debug("UserProvisioningManager: " + upm + " AuthenticationManager is " + am);
 
 	        try {
 	            // Get ID for public protection group
@@ -215,7 +218,18 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
     public Set<TableProtectionElement> getSecurityMap(String userId)
         throws CSObjectNotFoundException {
-        Set<TableProtectionElement> retSet = new HashSet<TableProtectionElement>();
+        // System.out.println("getSecurityMap init: " + userId);
+    	Set<TableProtectionElement> retSet = null;
+    	// try {
+	    //     retSet = userCache.get(userId);
+    	// } catch(InterruptedException e) {
+    	// 	e.printStackTrace();
+    	// }
+        // if(retSet != null){
+        // 	return retSet;
+        // }
+        // System.out.println("Starting getSecurityMap for user " + userId);
+        retSet = new HashSet<TableProtectionElement>();
         Map<String, TableProtectionElement> tempHastable = new Hashtable<String, TableProtectionElement>();
 
         //userRoles = combination of user PG and users groups PGs
@@ -227,10 +241,12 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
         //step 2 get PG tied to all the groups the user is a member of
         Set<Group> groups = upm.getGroups(userId);
+        long startLoop = System.currentTimeMillis();
         for(Group group : groups) {
         	Set<ProtectionGroupRoleContext> groupRoles = upm.getProtectionGroupRoleContextForGroup(Long.toString(group.getGroupId()));
         	userRoles.addAll(groupRoles);
         }
+
 
         //  Iterate over the protection groups
         for (ProtectionGroupRoleContext roleContext : userRoles) {
@@ -259,6 +275,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 
         retSet.addAll(tempHastable.values());
 
+        // userCache.put(userId, retSet);
         return retSet;
     }
 
@@ -355,7 +372,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
     }
         
 	public void syncDBWithLDAP(String loginName) {
-		resultLog.debug("user " + loginName + " in LDAP/DB sync process:");
+		resultLog.info("user " + loginName + " in LDAP/DB sync process:");
 
 //		List<String> ignoreGroups = getIgnoreGroupList();
 		String publicGrpName = NCIAConfig.getPublicGroupName();
@@ -380,7 +397,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 				for (Group obj : grpsInDB) {
 //					ignoreGroups.add(obj.getGroupName());
 					grpInDBList.add(obj.getGroupName());
-					resultLog.debug(loginName + "'s DB group: " + obj.getGroupName());
+					resultLog.info(loginName + "'s DB group: " + obj.getGroupName());
 				}
 			} catch (CSObjectNotFoundException e) {
 				e.printStackTrace();
@@ -394,17 +411,13 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		}
 
 		if (grps != null) {
-			resultLog.debug("get number of LDAP group for the user " + grps.size());
-			
+			resultLog.info("get number of LDAP group for the user " + grps.size());
 			// get the LDAP groups that are defined in DB already
 			grps = getDefinedGroupsInDB(new ArrayList(grps));  // a list of groups in Both LDAP and Database
-	
-			
-			for (int i = 0; i < grps.size(); ++i) {
-				String ldapGrpName = grps.get(i);
-				resultLog.debug("LDAP group:" + ldapGrpName);
 
-				
+			for (String ldapGrpName: grps) {
+				resultLog.info("LDAP group:" + ldapGrpName);
+
 				if ((grpInDBList != null) && (grpInDBList.contains(ldapGrpName)))
 					grpInDBList.remove(ldapGrpName); // the group in both LDAP
 														// and DB then remove
@@ -452,7 +465,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		GroupSearchCriteria gsc = new GroupSearchCriteria(exampleGroup);
 		List<Group> groupResult = upm.getObjects(gsc);
 		if ((groupResult != null) && (groupResult.size() > 0)) {
-			resultLog.debug("group " + grpName + " is in database already");
+			resultLog.info("group " + grpName + " is in database already");
 			return ((Group) groupResult.get(0));
 		} else
 			return null;
@@ -465,7 +478,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		List<User> userList = upm.getObjects(usc);
 
 		if ((userList != null) && (userList.size() > 0)) {
-			resultLog.debug("user " + loginName + " is in database already");
+			resultLog.info("user " + loginName + " is in database already");
 			return userList.get(0).getUserId();
 		} else
 			return null;

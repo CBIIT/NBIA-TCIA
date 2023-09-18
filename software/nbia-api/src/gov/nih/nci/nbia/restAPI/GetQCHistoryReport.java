@@ -29,39 +29,27 @@ public class GetQCHistoryReport extends getData{
 	@Produces(MediaType.APPLICATION_JSON)
 
 	public Response constructResponse(@FormParam("seriesId") List<String> seriesList) {
+		String user = getUserName(); 
 
-		try {	
-//			Authentication authentication = SecurityContextHolder.getContext()
-//					.getAuthentication();
-//			String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
+        if (!QAUserUtil.isUserQA(user)) {
+        	System.out.println("Not QA User!!!!");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		   if (!sm.hasQaRole(user)) {
+		  	  return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+		   } else {
+			   QAUserUtil.setUserQA(user);
+		   }
+        }
 
-            if (!QAUserUtil.isUserQA(user)) {
-            	System.out.println("Not QA User!!!!");
-			    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-			   if (!sm.hasQaRole(user)) {
-			  	  return Response.status(401)
-						.entity("Insufficiant Privileges").build();
-			   } else {
-				   QAUserUtil.setUserQA(user);
-			   }
-            }
-            
-        	QcStatusDAO qcStatusDAO = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
-        	List<QcStatusHistoryDTO> qshDTOList =qcStatusDAO.findQcStatusHistoryInfo(seriesList);
-        	for (QcStatusHistoryDTO dto:qshDTOList){
-        		if (dto.getNewStatus()==null) {
-        			dto.setNewStatus(dto.getOldStatus());
-        		}
-        	}
+    	QcStatusDAO qcStatusDAO = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
+    	List<QcStatusHistoryDTO> qshDTOList =qcStatusDAO.findQcStatusHistoryInfo(seriesList);
+    	for (QcStatusHistoryDTO dto:qshDTOList){
+    		if (dto.getNewStatus()==null) {
+    			dto.setNewStatus(dto.getOldStatus());
+    		}
+    	}
 		return Response.ok(JSONUtil.getJSONforQcStatusHistory(qshDTOList)).type("application/json")
 				.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return Response.status(500)
-				.entity("Server was not able to process your request").build();
 	}
-
 }

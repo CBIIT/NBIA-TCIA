@@ -220,11 +220,11 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
 
 	        /* Run the query */
-	        logger.info("Search Issuing query : " + hql);
+	        logger.debug("Search Issuing query : " + hql);
 	        long startTime = System.currentTimeMillis();
 	        List<String> results = getHibernateTemplate().find(hql);
 	        long elapsedTime = System.currentTimeMillis() - startTime;
-	        logger.info("Results returned from query in " + elapsedTime + " ms.");
+	        logger.debug("Results returned from query in " + elapsedTime + " ms.");
             int i=0;
             int x=0;
 	        /* Convert the results to PatientResultSet objects */
@@ -291,11 +291,11 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
 
 	        /* Run the query */
-	        logger.info("Search Issuing query : " + hql);
+	        logger.debug("Search Issuing query : " + hql);
 	        long startTime = System.currentTimeMillis();
 	        List<String> results = getHibernateTemplate().find(hql);
 	        long elapsedTime = System.currentTimeMillis() - startTime;
-	        logger.info("Results returned from query in " + elapsedTime + " ms.");
+	        logger.debug("Results returned from query in " + elapsedTime + " ms.");
             int i=0;
             int x=0;
 	        /* Convert the results to PatientResultSet objects */
@@ -730,7 +730,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             // Since all data belongs to a collection, user is not allowed to
             // see anything
             // Return empty list
-            logger.info("No results returned because user does not have access to any collections");
+            logger.debug("No results returned because user does not have access to any collections");
 
             return null;
         }
@@ -759,7 +759,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             // User is not allowed to view any sites.
             // Since all data has a site, user is not allowed to see anything
             // Return empty list
-            logger.info("No results returned because user does not have access to any sites");
+            logger.debug("No results returned because user does not have access to any sites");
 
             return null;
         }
@@ -889,8 +889,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         DxDataCollectionDiameterCriteria dxDcd = query.getDxDataCollectionDiameterCriteria();
         ConvolutionKernelCriteria ckc = query.getConvolutionKernelCriteria();
 
-        logger.info("am:"+am);
-        logger.info("dxDcd:"+dxDcd);
+        logger.debug("am:"+am);
+        logger.debug("dxDcd:"+dxDcd);
 
         return (kvp != null) ||
         	   (rcd !=null ) ||

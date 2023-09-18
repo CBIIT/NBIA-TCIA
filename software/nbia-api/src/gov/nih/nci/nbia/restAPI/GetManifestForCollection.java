@@ -29,34 +29,28 @@ public class GetManifestForCollection extends getData {
 	@Produces(MediaType.TEXT_PLAIN)
 
 	public Response constructResponse(@FormParam("collection") String collection, @FormParam("visibility") String visibility, @FormParam("includeAnnotation") String includeAnnotation) {
-		try {
-			if (includeAnnotation == null || includeAnnotation.length() < 1) {
-				includeAnnotation = "true";
-			}
-
-			if (visibility == null || visibility.length() < 1) {
-				visibility = "1";
-			} else if (visibility.equals("13")) {
-				// 13 is "select all" or regardless the visibility
-				visibility = "";
-			}
-
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
-			LocalDateTime now = LocalDateTime.now();
-			String manifestFileName = collection + "-" + dtf.format(now) + ".tcia";
-
-			List<String> seriesList = null;
-
-			GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-			List<String> seriesListOut = generalSeriesDAO.findSeriesByCollectionAndVisibility(collection, visibility);
-			String manifest = ManifestMaker.getManifextFromSeriesIds(seriesListOut, includeAnnotation,
-					manifestFileName);
-			return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (includeAnnotation == null || includeAnnotation.length() < 1) {
+			includeAnnotation = "true";
 		}
-		return Response.status(500).entity("Server was not able to process your request").build();
+
+		if (visibility == null || visibility.length() < 1) {
+			visibility = "1";
+		} else if (visibility.equals("13")) {
+			// 13 is "select all" or regardless the visibility
+			visibility = "";
+		}
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
+		LocalDateTime now = LocalDateTime.now();
+		String manifestFileName = collection + "-" + dtf.format(now) + ".tcia";
+
+		List<String> seriesList = null;
+
+		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+		List<String> seriesListOut = generalSeriesDAO.findSeriesByCollectionAndVisibility(collection, visibility);
+		String manifest = ManifestMaker.getManifextFromSeriesIds(seriesListOut, includeAnnotation,
+				manifestFileName);
+		return Response.ok(manifest).type("application/x-nbia-manifest-file").build();
 	}
 
 }

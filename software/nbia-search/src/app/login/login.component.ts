@@ -12,6 +12,7 @@ import { InitMonitorService } from '@app/common/services/init-monitor.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
+import {LoadingDisplayService} from '@app/common/components/loading-display/loading-display.service';
 
 /*
  * Login
@@ -73,7 +74,8 @@ export class LoginComponent implements OnInit, OnDestroy{
     constructor( private menuService: MenuService, private apiServerService: ApiServerService,
                  private commonService: CommonService, private cartService: CartService,
                  private persistenceService: PersistenceService, private parameterService: ParameterService,
-                 private initMonitorService: InitMonitorService , private utilService: UtilService) {
+                 private initMonitorService: InitMonitorService , private utilService: UtilService,
+                 private loadingDisplayService: LoadingDisplayService) {
         this.statusMessage0 = '';
 
     }
@@ -145,7 +147,9 @@ export class LoginComponent implements OnInit, OnDestroy{
 
         this.commonService.emitSimpleSearchQueryForDisplay( [] );
 
+        this.loadingDisplayService.setLoading( true, 'Logging in' );
         let logout = false;
+        // TODO: call keycloak logout directly
         // Log out any logged in user.
         this.apiServerService.logOut().subscribe(
             data => {
@@ -229,11 +233,18 @@ export class LoginComponent implements OnInit, OnDestroy{
 
                 // Clear the form
                 this.loginForm.reset();
+                setTimeout( async() => {
+                    while( this.initMonitorService.getAnyRunning() ){
+                        await this.commonService.sleep( 10 );
+                    }
+                    this.loadingDisplayService.setLoading( false );
+                }, 10 );
             },
 
             // An error
             ( err ) => {
                 this.apiServerService.gotToken();
+                this.loadingDisplayService.setLoading(false);
 
                 this.statusMessage0 = 'Login failed: ' + err.statusText;
                 this.apiServerService.deleteToken();
@@ -255,6 +266,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         this.apiServerService.setSimpleSearchQueryHold( '' );
 
         this.commonService.emitSimpleSearchQueryForDisplay( [] );
+        this.loadingDisplayService.setLoading( true, 'Logging in as guest' );
 
         let logout = false;
         // Log out any logged in user.
@@ -323,11 +335,19 @@ export class LoginComponent implements OnInit, OnDestroy{
                     }, 500 );
 
                 }
+                setTimeout( async() => {
+                    while( this.initMonitorService.getAnyRunning() ){
+                        await this.commonService.sleep( 10 );
+                    }
+                    this.loadingDisplayService.setLoading( false );
+                }, 10 );
+
             },
 
             // An error  // FIXME - What do we do if the default user can't login???
             ( err ) => {
                 this.statusMessage0 = 'Login failed: ' + err.statusText;
+                this.loadingDisplayService.setLoading(false);
                 this.apiServerService.gotToken();
             }
         );

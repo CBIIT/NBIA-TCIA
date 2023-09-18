@@ -29,6 +29,7 @@ public class KeycloakLogout extends getData{
 	@Produces({MediaType.APPLICATION_JSON})
 //    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response logout() throws URISyntaxException, UnsupportedEncodingException {
+    System.out.println("we got here......");
 
 	String token = httpRequest.getHeader("Authorization");
 
@@ -46,7 +47,7 @@ public class KeycloakLogout extends getData{
         }
 
         // Construct the Keycloak logout URL with the id_token_hint and post_logout_redirect_uri parameters
-        String logoutUrl = KEYCLOAK_LOGOUT_URL + "?id_token_hint=" + encodeParameter(token);
+        String logoutUrl = KEYCLOAK_LOGOUT_URL + "?token=" + encodeParameter(token);
 
         // Redirect the user to the Keycloak logout endpoint
         URI logoutUri = new URI(logoutUrl);

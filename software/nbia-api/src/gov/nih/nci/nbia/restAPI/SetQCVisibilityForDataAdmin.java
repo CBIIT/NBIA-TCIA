@@ -46,84 +46,68 @@ public class SetQCVisibilityForDataAdmin extends getData{
 			@FormParam("site") String site,
 			@FormParam("dateReleased") String dateReleased,
 			@FormParam("url") String url) {
-		
-		
 		if (seriesIdList.size() < 1) {
 			return Response.status(400)
 						.entity("The request should include at least one seriesId.").build();
 		}
-		
-	
+		String user = getUserName();
+        if (!QAUserUtil.isUserQA(user)) {
+        	System.out.println("Not QA User!!!!");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		   if (!sm.hasQaRole(user)) {
+		  	  return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+		   } else {
+			   QAUserUtil.setUserQA(user);
+		   }
+        }
+		    String status = "Not submitted.";
+		String releasedYesNo=null;
+		System.out.println("&&&&&&&&&&&&"+released);
+		if (released!=null&&released.equalsIgnoreCase("released")) {
+			releasedYesNo="Yes";
+		}  else if (released!=null&&released.equalsIgnoreCase("NotReleased")){
+			releasedYesNo="No";
+		} else {
+			releasedYesNo=null;
+		}
 
-		try {	
-			
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName();
-                if (!QAUserUtil.isUserQA(user)) {
-                	System.out.println("Not QA User!!!!");
-				    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-				   if (!sm.hasQaRole(user)) {
-				  	  return Response.status(401)
-							.entity("Insufficiant Privileges").build();
-				   } else {
-					   QAUserUtil.setUserQA(user);
-				   }
-                }
-  			    String status = "Not submitted.";
-				String releasedYesNo=null;
-				System.out.println("&&&&&&&&&&&&"+released);
-				if (released!=null&&released.equalsIgnoreCase("released")) {
-					releasedYesNo="Yes";
-				}  else if (released!=null&&released.equalsIgnoreCase("NotReleased")){
-					releasedYesNo="No";
-				} else {
-					releasedYesNo=null;
-				}
-
-				QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
-				Date releasedDateValue=getDate(dateReleased);
-				try {
-					List<Map<String,String>>results = qDao.findExistingStatus(null, null, seriesIdList);
-					if ((results != null) && (results.size() != seriesIdList.size())) {
-						status = "Some or all series need to be submitted into database first";
-						Response.status(412).entity(status).build();
-					}
-					else {
-						List<String> seriesList = new ArrayList<String>();
-						List<String> statusList = new ArrayList<String>();
-						for (Map<String,String> result:results) {
-							seriesList.add(result.get("id"));
-							statusList.add(result.get("oldStatus"));
-						}
-						System.out.println("newQcStatus-"+newQcStatus);
-						qDao.updateQcStatus(seriesList, newQcStatus, batch, complete, releasedYesNo, user, comment, site, url, releasedDateValue);
-						status = "ok";
-					}
-				}
-				catch (DataAccessException ex) {
-					ex.printStackTrace();
-				}
-		
-                if (status.equals("ok")) {
-				   return Response.ok("ok").type("application/text")
-						.build();
-                } else {
- 				   return Response.status(400)
- 							.entity(status).build();
-                }
-
-		    } catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		QcStatusDAO qDao = (QcStatusDAO)SpringApplicationContext.getBean("qcStatusDAO");
+		Date releasedDateValue=getDate(dateReleased);
+		try {
+			List<Map<String,String>>results = qDao.findExistingStatus(null, null, seriesIdList);
+			if ((results != null) && (results.size() != seriesIdList.size())) {
+				status = "Some or all series need to be submitted into database first";
+				Response.status(412).entity(status).build();
 			}
-				return Response.status(500)
-						.entity("Server was not able to process your request").build();
+			else {
+				List<String> seriesList = new ArrayList<String>();
+				List<String> statusList = new ArrayList<String>();
+				for (Map<String,String> result:results) {
+					seriesList.add(result.get("id"));
+					statusList.add(result.get("oldStatus"));
+				}
+				System.out.println("newQcStatus-"+newQcStatus);
+				qDao.updateQcStatus(seriesList, newQcStatus, batch, complete, releasedYesNo, user, comment, site, url, releasedDateValue);
+				status = "ok";
+			}
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+
+        if (status.equals("ok")) {
+		   return Response.ok("ok").type("application/text")
+				.build();
+        } else {
+			   return Response.status(400)
+						.entity(status).build();
+        }
 	}
+
 	private Date getDate(String date) {
 		Date returnValue=null;
-		
+
 		if (date==null)
 		{
 			return null;

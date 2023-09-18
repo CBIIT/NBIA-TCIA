@@ -29,35 +29,22 @@ public class GetSeriesMetadata2 extends getData{
 
 	public Response constructResponse(@FormParam("list") List<String> list) {
 
-		
 		System.out.println("List-"+list);
 		List<Object[]> results = null;
-		try {	
-//		   Authentication authentication = SecurityContextHolder.getContext()
-//					.getAuthentication();
-//			String userName = (String) authentication.getPrincipal();
-			List<String> authorizedCollections = new ArrayList<String>();
-			String userName = getUserName();  			
-			List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
-			if (authorizedSiteData==null){
-			     AuthorizationManager am = new AuthorizationManager(userName);
-			     authorizedSiteData = am.getAuthorizedSites();
-			     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
-			}
-			for (SiteData siteData:authorizedSiteData) {
-				String protectionElement="'"+siteData.getCollection()+"//"+siteData.getSiteName()+"'";
-				authorizedCollections.add(protectionElement);
-			}
-            
-        
+		List<String> authorizedCollections = new ArrayList<String>();
+		String userName = getUserName();
+		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(userName);
+		if (authorizedSiteData==null){
+		     AuthorizationManager am = new AuthorizationManager(userName);
+		     authorizedSiteData = am.getAuthorizedSites();
+		     AuthorizationUtil.setUserSites(userName, authorizedSiteData);
+		}
+		for (SiteData siteData:authorizedSiteData) {
+			String protectionElement="'"+siteData.getCollection()+"//"+siteData.getSiteName()+"'";
+			authorizedCollections.add(protectionElement);
+		}
 		StudyDAO studyDAO = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
 		results = studyDAO.getSeriesMetadata(list, authorizedCollections);
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			return Response.status(500)
-					.entity("Server was not able to process your request due to exception").build();
-		}
 		String[] columns={"Subject ID","Study UID","Study Description","Study Date","Series ID","Series Description",
 				"Number of images","File Size (Bytes)", "Collection Name", "Modality", "Manufacturer", "3rd Party Analysis",
 				"Data Description URI", "Series Number", "License Name", "License URL"};

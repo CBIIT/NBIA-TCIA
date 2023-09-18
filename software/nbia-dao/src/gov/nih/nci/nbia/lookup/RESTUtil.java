@@ -100,7 +100,7 @@ public class RESTUtil {
         try {
         //	Object json = mapper.readValue(output, Object.class);
          //   String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-         //   logger.info("Returned JSON\n"+indented);
+         //   logger.debug("Returned JSON\n"+indented);
             myObjects = mapper.readValue(output, new TypeReference<List<PatientSearchResultImpl>>(){});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -223,7 +223,7 @@ public class RESTUtil {
        try {
        //    Object json = mapper.readValue(output, Object.class);
         //   String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-        //   logger.info("Returned JSON\n"+indented);
+        //   logger.debug("Returned JSON\n"+indented);
            myObjects = mapper.readValue(output, new TypeReference<List<PatientSearchResultImpl>>(){});
            } catch (Exception e) {
                e.printStackTrace();
@@ -267,7 +267,7 @@ public class RESTUtil {
         try {
         //	Object json = mapper.readValue(output, Object.class);
         //    String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-        //    logger.info("Returned JSON\n"+indented);
+        //    logger.debug("Returned JSON\n"+indented);
 			myObjects = mapper.readValue(output, new TypeReference<List<StudyDTO>>(){});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -346,7 +346,7 @@ public class RESTUtil {
         try {
         //	Object json = mapper.readValue(output, Object.class);
         //    String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-        //    logger.info("Returned JSON\n"+indented);
+        //    logger.debug("Returned JSON\n"+indented);
 			myObjects = mapper.readValue(output, new TypeReference<List<ImageDTO>>(){});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -512,7 +512,7 @@ public class RESTUtil {
         try {
             //Object json = mapper.readValue(output, Object.class);
           //  String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-           // logger.info("Returned JSON\n"+indented);
+           // logger.debug("Returned JSON\n"+indented);
             myObjects = mapper.readValue(output, new TypeReference<List<PatientTextSearchResultImpl>>(){});
          } catch (Exception e) {
          e.printStackTrace();
