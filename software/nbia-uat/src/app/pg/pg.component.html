@@ -6,7 +6,7 @@
 
 
 <div>
-	<p-table #dt [columns]="cols" [value]="pgs" [globalFilterFields]="['dataGroup','description','dataSets']" [paginator]="true" [rows]="10" 
+	<p-table #dt [value]="pgs" [globalFilterFields]="['dataGroup','description','dataSets']" [paginator]="true" [rows]="10" 
 	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [responsive]="true" [styleClass]="'base-table'">
 		<ng-template pTemplate="caption">
 			<div style="text-align: right">        

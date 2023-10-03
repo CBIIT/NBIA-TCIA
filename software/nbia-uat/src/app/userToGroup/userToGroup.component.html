@@ -13,7 +13,7 @@
 <div *ngIf="showUserGroup">
 	<br/>
 	
-	<p-table #dt [columns]="cols" [value]="groups" [paginator]="true" [rows]="10" 
+	<p-table #dt [value]="groups" [paginator]="true" [rows]="10" 
 	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [responsive]="true" [styleClass]="'base-table'">
 		<ng-template pTemplate="header" let-columns>
 			<tr>

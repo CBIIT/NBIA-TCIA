@@ -5,8 +5,8 @@
 </div>
 		
 <div>
-	<!--p-table #dt [columns]="cols" [value]="users" dataKey="loginName" editMode="row" selectionMode="single" [(selection)]="selectedUser" (onRowSelect)="onRowSelect($event)"[paginator]="true" [rows]="10" -->
-	<p-table #dt [resizableColumns]="true" columnResizeMode="expand" [columns]="cols" [value]="users" dataKey="loginName" editMode="row" [paginator]="true" [rows]="10"  paginatorPosition="both"
+	<!--p-table #dt [value]="users" dataKey="loginName" editMode="row" selectionMode="single" [(selection)]="selectedUser" (onRowSelect)="onRowSelect($event)"[paginator]="true" [rows]="10" -->
+	<p-table #dt [resizableColumns]="true" columnResizeMode="expand" [value]="users" dataKey="loginName" editMode="row" [paginator]="true" [rows]="10"  paginatorPosition="both"
 	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [styleClass]="'base-table'">
 		<!--header>CRUD for Users</header-->
 		<!--ng-template pTemplate="caption">

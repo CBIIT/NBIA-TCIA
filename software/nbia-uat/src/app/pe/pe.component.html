@@ -11,7 +11,7 @@
 </div>	
 	
 <div>
-	<p-table #dt [columns]="cols" [value]="pes"  editMode="row" [paginator]="true" [rows]="10" [responsive]="true" 
+	<p-table #dt [value]="pes"  editMode="row" [paginator]="true" [rows]="10" [responsive]="true" 
 	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [styleClass]="'base-table'">
 		<ng-template pTemplate="header" let-columns>
 			<tr>
@@ -93,7 +93,7 @@
 		<div class="ui-g ui-fluid" *ngIf="pe">
 			<div class="ui-g-12">
 				<div class="ui-g-4"><label for="peName">Protection Elements</label></div>
-				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPg"/>
+				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPe"/>
 				</div>
 			</div>
 			<div class="ui-g-12">
@@ -114,7 +114,7 @@
 		<div class="ui-g ui-fluid" *ngIf="pe">
 			<div class="ui-g-12">
 				<div class="ui-g-4"><label for="dataGroup">Protection Elements</label></div>
-				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPg"/></div>
+				<div class="ui-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPe"/></div>
 			</div>
 			<div class="ui-g-12">
 				<div class="ui-g-4"><label for="description">Associated Protection Groups</label></div>

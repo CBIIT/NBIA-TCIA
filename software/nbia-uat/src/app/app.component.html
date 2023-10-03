@@ -14,7 +14,7 @@
 	</tr>
 </table>
 
-<p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+<p-tabView (onChange)="handleChange($event)">
 	<p-tabPanel header="User">
 		<user (addUser)="pushNewUser($event)"></user>
 	</p-tabPanel>

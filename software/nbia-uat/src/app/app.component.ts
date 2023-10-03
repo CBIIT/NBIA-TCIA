@@ -16,7 +16,7 @@ import { LoadingDisplayService } from './common/components/loading-display/loadi
 })
 export class AppComponent implements OnInit {
 	title = 'nbia-uat';
-	private addedUser: any;
+	addedUser: any;
 	config: Config[];
 	errorMessage: string;
 	show: boolean;
@@ -63,11 +63,11 @@ export class AppComponent implements OnInit {
 */
 	}
 
-	private pushNewUser(loginName) {
+	pushNewUser(loginName) {
 		this.addedUser = loginName;
 	}
-  
-	private handleError (error: any) {
+
+	handleError (error: any) {
 		let errMsg = error.message || 'Server error';
 		console.error(errMsg); // log to console instead
 		return Promise.reject(errMsg);
