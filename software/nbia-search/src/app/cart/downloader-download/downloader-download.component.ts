@@ -6,8 +6,8 @@ import { MenuService } from '@app/common/services/menu.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {DownloadTools} from "@app/consts";
-import {DownloadDownloaderService} from "@app/cart/downloader-download/download-downloader.service";
+import {DownloadTools} from '@app/consts';
+import {DownloadDownloaderService} from '@app/cart/downloader-download/download-downloader.service';
 
 @Component( {
     selector: 'nbia-downloader-download',

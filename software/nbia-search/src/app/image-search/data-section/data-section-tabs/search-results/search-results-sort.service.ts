@@ -4,7 +4,9 @@ import {CartService} from '@app/common/services/cart.service';
 import {UtilService} from '@app/common/services/util.service';
 import {Properties} from '@assets/properties';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SearchResultsSortService {
 
     // 0=none  1=up  2=down

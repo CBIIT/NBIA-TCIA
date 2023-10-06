@@ -35,7 +35,7 @@ import { PieChartAnatomicalSiteComponent } from './image-search/data-section/dat
 import { CartService } from './common/services/cart.service';
 import { MenuService } from './common/services/menu.service';
 import { ApiServerService } from './image-search/services/api-server.service';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 import { TestComponent } from './image-search/data-section/data-section-tabs/test/test/test.component';
 import { SearchResultsSortService } from './image-search/data-section/data-section-tabs/search-results/search-results-sort.service';
 import { PersistenceService } from './common/services/persistence.service';
@@ -91,7 +91,6 @@ import { FooterComponent } from './footer/footer.component';
 import { FeedbackAndLegacyButtonsComponent } from './feedback-and-legacy-buttons/feedback-and-legacy-buttons.component';
 import { ApplicationMenuComponent } from './application-menu/application-menu.component';
 import { CustomMenuComponent } from './custom-menu/custom-menu.component';
-import { CookieOptionsArgs } from 'angular2-cookie/core';
 import { TextSearchExplanationComponent } from './image-search/query-section/query-section-tabs/text-search/text-search-explanation/text-search-explanation.component';
 import { SpeciesQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/species-query/species-query.component';
 import { PhantomQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query.component';
@@ -217,12 +216,7 @@ const appRoutes: Routes = [
         ProgressBarModule
 
     ],
-    providers: [CommonService, CartService, MenuService, ApiServerService,
-        CookieService,  SearchResultsSortService, CartSortService, PersistenceService,
-        LoadingDisplayService, ParameterService, InitMonitorService, QueryUrlService,
-        AlertBoxService, HistoryLogService, CollectionDescriptionsService, UtilService,
-        WindowRefService, OhifViewerService, ConfigurationService
-    ],
+    providers: [CookieService],
     bootstrap: [AppComponent]
 } )
 export class AppModule{

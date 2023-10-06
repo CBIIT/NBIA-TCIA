@@ -7,7 +7,9 @@ import { UtilService } from '@app/common/services/util.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 
 /**
  * This component maintains the Cart.

@@ -758,7 +758,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      * @param e  Mouse over event.
      * @param modalityName Image Modality name used to retrieve the description.
      */
-    getPos( e, modalityName,n ) {
+    getPos( e, modalityName, n ) {
         this.inModality = true;
 
         // Set position

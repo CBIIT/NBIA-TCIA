@@ -4,7 +4,9 @@ import { UtilService } from '@app/common/services/util.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CommonService{
     /**
      * Used by SearchResultsPagerComponent to know how many pages to use for the Pager.<br>

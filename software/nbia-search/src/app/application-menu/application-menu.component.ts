@@ -12,7 +12,7 @@ import {HistoryLogService} from '@app/common/services/history-log.service';
 import {UtilService} from '@app/common/services/util.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {DownloadDownloaderService} from "@app/cart/downloader-download/download-downloader.service";
+import {DownloadDownloaderService} from '@app/cart/downloader-download/download-downloader.service';
 
 @Component({
     selector: 'nbia-application-menu',
@@ -565,7 +565,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                     this.downloadQueryAsManifest();
                 } else {
                     // Has restrictions, ask user to confirm or cancel
-                    if (confirm("Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.") == true) {
+                    if (confirm('Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.') === true) {
                         this.downloadQueryAsManifest();
                     } else {
                         console.log('User has canceled download');
@@ -585,7 +585,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 if (restrictionData.toUpperCase() === 'NO') {
                     this.downloadTextQueryAsManifest();
                 } else {
-                    if (confirm("Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.") == true) {
+                    if (confirm('Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.') === true) {
                         this.downloadTextQueryAsManifest();
                     } else {
                         console.log('User has canceled download');

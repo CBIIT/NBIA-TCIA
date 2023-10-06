@@ -1,7 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LoadingDisplayService{
 
     isLoadingEmitter = new EventEmitter();

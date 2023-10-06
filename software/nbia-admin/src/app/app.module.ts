@@ -19,7 +19,7 @@ import { ApproveDeletionsModule } from './tools/approve-deletions-module/approve
 import { PerformQcModule } from './tools/perform-qc-module/perform-qc.module';
 import { QuerySectionModule } from './tools/query-section-module/query-section.module';
 import { ManageWorkflowItemsModule } from './tools/manage-workflow-items-module/manage-workflow-items.module';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { LoadingDisplayComponent } from './admin-common/components/loading-display/loading-display.component';
 import { FooterComponent } from './footer/footer.component';
 import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';

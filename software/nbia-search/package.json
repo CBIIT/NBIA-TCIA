@@ -27,7 +27,7 @@
         "@ng-bootstrap/ng-bootstrap": "^5.1.0",
         "@types/d3": "^5.7.2",
         "angular-progress-bar": "^1.0.9",
-        "angular2-cookie": "^1.2.6",
+        "ngx-cookie-service": "^12.0.0",
         "angular2-draggable": "^2.3.2",
         "classlist.js": "^1.1.20150312",
         "core-js": "^2.4.1",

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CommonService} from "@app/image-search/services/common.service";
+import {CommonService} from '@app/image-search/services/common.service';
 
 @Component({
   selector: 'nbia-clinical-time-points-explanation',

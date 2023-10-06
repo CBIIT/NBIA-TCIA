@@ -89,7 +89,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
     constructor( private cartService: CartService, private menuService: MenuService,
                  private apiServerService: ApiServerService, private commonService: CommonService,
-                 private sortService: CartSortService, private loadingDisplayService: LoadingDisplayService,
+                 public sortService: CartSortService, private loadingDisplayService: LoadingDisplayService,
                  private alertBoxService: AlertBoxService, private parameterService: ParameterService,
                  private historyLogService: HistoryLogService, private utilService: UtilService,
                  private httpClient: HttpClient, private persistenceService: PersistenceService ) {
@@ -377,12 +377,12 @@ export class CartComponent implements OnInit, OnDestroy{
 
                 // Call Rest service to generate the '.tcia download manifest file.
                 this.apiServerService.downloadSeriesList( this.seriesListForDownloadQuery ).subscribe(
-                    data => {
-                        let databasketId = data.match(/databasketId=(.*)/);
+                    data_inner => {
+                        let databasketId = data_inner.match(/databasketId=(.*)/);
                         if( databasketId[1] === undefined ){
                             console.error('Error can not get databasketId from manifest data.');
                         }
-                        let tciaManifestFile = new Blob( [data], { type: 'application/x-nbia-manifest-file' } );
+                        let tciaManifestFile = new Blob( [data_inner], { type: 'application/x-nbia-manifest-file' } );
 
                         //  This worked, but I could not figure out how to set the file name.
                         // let url= (<any>window).URL.createObjectURL(tciaManifestFile);

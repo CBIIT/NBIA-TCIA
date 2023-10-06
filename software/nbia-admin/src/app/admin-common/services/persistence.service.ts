@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UtilService } from './util.service';
-import { CookieOptionsArgs, CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -99,11 +99,7 @@ export class PersistenceService {
     update() {
         let expiresTimestamp: Date = new Date();
         expiresTimestamp.setFullYear( expiresTimestamp.getFullYear() + 10 );
-
-        let options: CookieOptionsArgs = <CookieOptionsArgs> {
-            expires: expiresTimestamp
-        };
-        this.cookieService.put( this.DATA_NAME, JSON.stringify( this.data ), options );
+        this.cookieService.set( this.DATA_NAME, JSON.stringify( this.data ), expiresTimestamp );
     }
 
 

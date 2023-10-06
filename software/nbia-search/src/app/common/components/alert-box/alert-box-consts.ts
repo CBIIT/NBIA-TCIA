@@ -26,6 +26,6 @@ export const AlertBoxButtonText = [,
     'Delete', , , ,
     'Save', , , , , , , ,
     'Cancel', , , , , , , , , , , , , , , ,
-    'Disable Commercial Series',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    'Disable Commercial Series', , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , ,
     'Proceed' ];
 

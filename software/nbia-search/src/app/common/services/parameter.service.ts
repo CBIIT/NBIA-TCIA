@@ -14,7 +14,9 @@ import { QueryCriteriaInitService } from '@app/common/services/query-criteria-in
  * We will need to add some input validation
  */
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ParameterService{
     parameterSubjectIdEmitter = new EventEmitter();
     parameterCollectionEmitter = new EventEmitter();

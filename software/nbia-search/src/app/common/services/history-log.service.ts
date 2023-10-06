@@ -3,7 +3,9 @@ import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 import { Properties } from '@assets/properties';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HistoryLogService{
 
     constructor( private utilService: UtilService ) {

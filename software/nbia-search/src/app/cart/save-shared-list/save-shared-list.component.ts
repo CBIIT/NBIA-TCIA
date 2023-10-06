@@ -40,6 +40,9 @@ export class SaveSharedListComponent implements OnInit, OnDestroy{
     // For HTML access
     menuItems = MenuItems;
 
+    // This wants to exist but doesn't
+    sharedListName = '';
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,

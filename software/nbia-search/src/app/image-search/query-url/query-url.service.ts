@@ -3,7 +3,9 @@ import { UtilService } from '@app/common/services/util.service';
 import { Properties } from '@assets/properties';
 import { Consts } from '@app/consts';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class QueryUrlService{
 
     IMAGE_MODALITY = 1;

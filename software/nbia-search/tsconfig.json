@@ -36,6 +36,10 @@
         "theme/*"
       ]
     }
-  }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  },
 }
 

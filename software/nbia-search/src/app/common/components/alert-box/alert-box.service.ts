@@ -1,7 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { UtilService } from '@app/common/services/util.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AlertBoxService{
     alertBoxEmitter = new EventEmitter();
     alertBoxReturnEmitter = new EventEmitter();

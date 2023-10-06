@@ -1,7 +1,9 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import { MenuItems } from '@app/consts';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MenuService {
     currentMenuItemEmitter = new EventEmitter();
     menuLockEmitter = new EventEmitter();

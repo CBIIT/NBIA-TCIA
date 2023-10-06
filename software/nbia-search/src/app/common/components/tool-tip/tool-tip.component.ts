@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Properties} from "@assets/properties";
+import {Properties} from '@assets/properties';
 
 @Component({
     selector: 'nbia-tool-tip',

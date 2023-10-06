@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieService } from 'ngx-cookie-service';
 import { UtilService } from '@app/common/services/util.service';
-import { CookieOptionsArgs } from 'angular2-cookie/core';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PersistenceService{
 
     public Field = Object.freeze( {
@@ -103,12 +104,7 @@ export class PersistenceService{
     update() {
         let expiresTimestamp: Date = new Date();
         expiresTimestamp.setFullYear( 2035 );
-
-        let options: CookieOptionsArgs = <CookieOptionsArgs>{
-            expires: expiresTimestamp
-            // FIXME This prevents browser warning, but the cookie doesn't update  ,secure: true
-        };
-        this.cookieService.put( this.DATA_NAME, JSON.stringify( this.data ), options );
+        this.cookieService.set( this.DATA_NAME, JSON.stringify( this.data ), expiresTimestamp );
     }
 
 

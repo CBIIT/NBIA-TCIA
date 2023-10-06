@@ -13,7 +13,9 @@ import {HistoryLogService} from '@app/common/services/history-log.service';
 import {LoadingDisplayService} from '@app/common/components/loading-display/loading-display.service';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ApiServerService implements OnDestroy {
 
     /**

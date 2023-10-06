@@ -42,7 +42,7 @@ export class DisplayQuerySimpleSearchComponent implements OnInit, OnDestroy{
     // For access in the HTML. The AOT compiler setting can't have any private objects in the HTML
     comService;
 
-    constructor( private commonService: CommonService, private apiServerService: ApiServerService,
+    constructor( public commonService: CommonService, private apiServerService: ApiServerService,
                  private menuService: MenuService) {
         // For access to commonService in the HTML. The AOT compiler setting can't have any private objects in the HTML
         this.comService = commonService;

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Properties } from '@assets/properties';
 import { sha224 } from 'js-sha256';
-import { CookieOptionsArgs, CookieService } from 'angular2-cookie/core';
+// import { CookieOptionsArgs, CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { UtilService } from '@app/common/services/util.service';
 import { ConfigurationService } from '@app/common/services/configuration.service';
 import { Consts } from '@app/consts';
@@ -58,10 +59,10 @@ export class BannerComponent implements OnInit{
 
     // Tell a browser cookie we have seen this with an expiration date
     writeCookie() {
-        let options: CookieOptionsArgs = <CookieOptionsArgs>{
-            expires: this.expiresTimestamp
-        };
-        this.cookieService.put( this.cookieName, this.hash, options );
+        // let options: CookieOptionsArgs = <CookieOptionsArgs>{
+        //     expires: this.expiresTimestamp
+        // };
+        this.cookieService.set( this.cookieName, this.hash, this.expiresTimestamp );
     }
 
 }

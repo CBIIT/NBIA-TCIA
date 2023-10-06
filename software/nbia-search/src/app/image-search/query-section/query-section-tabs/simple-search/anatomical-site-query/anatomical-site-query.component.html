@@ -111,7 +111,7 @@
                 [(ngModel)]="searchInput"
                 (blur)="onSearchTextOutFocus(0)"
                 (focus)="onSearchTextFocus(0)"
-                (ngModelChange)="onSearchChange($event)"
+                (ngModelChange)="onSearchChange()"
             >
 
             <!-- This needs to be "for", "not ngFor", it needs to be hidden, not removed from the DOM -->

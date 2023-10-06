@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 
 /**
  * This service (at least for now) will only provide user notification and console output.

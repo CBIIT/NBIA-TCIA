@@ -151,7 +151,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private apiServerService: ApiServerService,
-                 private cartService: CartService, private sortService: SearchResultsSortService,
+                 private cartService: CartService, public sortService: SearchResultsSortService,
                  private persistenceService: PersistenceService, private loadingDisplayService: LoadingDisplayService,
                  private parameterService: ParameterService, private historyLogService: HistoryLogService,
                  private utilService: UtilService, private ohifViewerService: OhifViewerService ) {

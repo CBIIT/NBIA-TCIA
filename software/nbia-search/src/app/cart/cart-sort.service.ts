@@ -6,7 +6,9 @@ import {UtilService} from '@app/common/services/util.service';
  * This Service is used to do all of the sorting for the Cart page.
  */
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CartSortService {
 
     /**
