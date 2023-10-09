@@ -97,12 +97,21 @@ L-->
 		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master;runtime->master"/>
 	
 		<!-- begin of Sring security -->
-		<dependency org="org.springframework.security" name="spring-security-acl" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/>
+		<!--dependency org="org.springframework.security" name="spring-security-acl" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework.security" name="spring-security-config" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/>
 		<dependency org="org.springframework.security" name="spring-security-core" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/>
-		<!--dependency org="org.springframework.security.oauth" name="spring-security-oauth" rev="2.0.0.RELEASE" conf="compile->master;runtime->master"/-->
+
 		<dependency org="org.springframework.security" name="spring-security-taglibs" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/>
-		<dependency org="org.springframework.security" name="spring-security-web" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/>
+		<dependency org="org.springframework.security" name="spring-security-web" rev="3.2.2.RELEASE" conf="compile->master;runtime->master"/-->
+		
+		<dependency org="org.springframework.security" name="spring-security-acl" rev="5.8.7" conf="compile->master;runtime->master"/>
+		<dependency org="org.springframework.security" name="spring-security-config" rev="5.8.7" conf="compile->master;runtime->master"/>
+		<dependency org="org.springframework.security" name="spring-security-core" rev="5.8.7" conf="compile->master;runtime->master"/>
+		<dependency org="org.springframework.security" name="spring-security-taglibs" rev="5.8.7" conf="compile->master;runtime->master"/>
+		<dependency org="org.springframework.security" name="spring-security-web" rev="5.8.7" conf="compile->master;runtime->master"/>
+				
+		
+		
 		<dependency org="org.springframework.security.oauth" name="spring-security-oauth2" rev="1.0.5.RELEASE" conf="compile->master;runtime->master"/>
 		<!-- begin of Sring security -->
 		<dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="compile->master"/>
@@ -161,6 +170,7 @@ L-->
                 name="quartz"
                 rev="1.6.1"
                 conf="*->master"/>
+		<dependency org="org.apache.commons" name="commons-text" rev="1.10.0" conf="compile->master;runtime->master" />		
   
  <!--   <dependency
       org="io.swagger.core.v3"
