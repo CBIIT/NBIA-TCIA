@@ -76,7 +76,10 @@ export class AccessTokenService{
 
             let post_url = Properties.API_SERVER_URL + '/' + Consts.API_ACCESS_TOKEN_URL;
             let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-            let data = 'username=' + user + '&password=' + password + '&client_id=' + Properties.DEFAULT_CLIENT_ID + '&client_secret=' + Properties.DEFAULT_SECRET + '&grant_type=password';
+            let data = 'username=' + user + '&password=' + password + '&client_id=' + Properties.DEFAULT_CLIENT_ID + '&grant_type=password';
+            if(Properties.DEFAULT_SECRET && Properties.DEFAULT_SECRET.length > 0){
+                data += '&client_secret=' + Properties.DEFAULT_SECRET;
+            }
 
             if( Properties.DEBUG_CURL ){
                 let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
