@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { RouterModule, Routes } from '@angular/router';
 import { NbiaThumbnailViewerComponent } from './nbia-thumbnail-viewer/nbia-thumbnail-viewer.component';
 import { HttpClientModule } from '@angular/common/http';

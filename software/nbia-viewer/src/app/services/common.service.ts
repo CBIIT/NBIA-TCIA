@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Properties } from '../../assets/properties';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { UtilService } from './util.service';
 
 @Injectable( {
@@ -78,7 +78,7 @@ export class CommonService{
 
     setPersistedValue( key, value ) {
         this.cookieData[key] = value;
-        this.cookieService.put( Properties.COOKIE_NAME, JSON.stringify( this.cookieData ) );
+        this.cookieService.set( Properties.COOKIE_NAME, JSON.stringify( this.cookieData ) );
     }
 
 
