@@ -23,7 +23,11 @@ export class CommonService{
     haveAllData = false;
 
     constructor( private cookieService: CookieService, private utilService: UtilService ) {
-        this.cookieData = JSON.parse( this.cookieService.get( Properties.COOKIE_NAME ) );
+        if(this.cookieService.get( Properties.COOKIE_NAME ) == null || this.cookieService.get( Properties.COOKIE_NAME ) == ""){
+            this.cookieData = {};
+        } else {
+            this.cookieData = JSON.parse( this.cookieService.get( Properties.COOKIE_NAME ) );
+        }
     }
 
     setHaveAllData( haveIt ) {
@@ -65,6 +69,11 @@ export class CommonService{
     }
 
     getPersistedValue( key ) {
+        // todo: clean this up
+        // temporary fix for retreiving access token from local storage rather than cookie
+        if(key == 'at'){
+            return localStorage.getItem('at');
+        }
         if( !this.utilService.isNullOrUndefinedOrEmpty( this.cookieData ) ){
             try{
                 return this.cookieData[key];
