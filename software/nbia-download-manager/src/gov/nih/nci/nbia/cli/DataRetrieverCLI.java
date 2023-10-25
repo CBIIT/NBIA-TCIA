@@ -72,6 +72,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+
 import org.json.simple.parser.JSONParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -111,7 +112,7 @@ public class DataRetrieverCLI {
 	public boolean force = false;
 	public boolean md5Verify = false;
 		
-	public final Logger logger = Logger.getGlobal();
+	public final java.util.logging.Logger logger = Logger.getGlobal();
 	private String setProperty;
 	private String duaText = null;
 	/**
@@ -122,7 +123,7 @@ public class DataRetrieverCLI {
 		String userName = null;
 		String passWord = null;
 		String downloadDir = null; // The directory that the user want to put the downloaded data
-
+//		BasicConfigurator.configure();
 		DataRetrieverCLI dr = new DataRetrieverCLI();
 
 		if (args != null && (args.length > 0)) {
@@ -188,6 +189,7 @@ public class DataRetrieverCLI {
 	public DataRetrieverCLI() {
 //		os = System.getProperty("os.name").toLowerCase();
 		// appVersion = DownloaderProperties.getAppVersion();
+		org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
 	}
 
 	public void configLogger(String downloadHome) {
@@ -385,10 +387,15 @@ public class DataRetrieverCLI {
 			
 			
 			if (dataType.equals("DICOM")) {
+				if (userName == null || passWord == null) {
+					logger.info("As user name and/or password are not provided, only public data is downloaded.");
+				} else
+					accessToken = getAccessToken(userName, passWord);
+				
 				if (downloadDir == null)
 					downloadDir = System.getenv("PWD");
 
-				List <String> existSeriesList = scanDataDir(downloadDir);
+				List <String> existSeriesList = scanDataDir(downloadDir, fileName);
 				if (existSeriesList != null) {
 					seriesList.removeAll(existSeriesList);
 				}
@@ -410,11 +417,7 @@ public class DataRetrieverCLI {
 				rootDir = downloadDir + File.separator
 						+ fileName.substring(fileName.lastIndexOf(File.separator) + 1, fileName.indexOf("."));
 				logger.info("Downloaded files will be put to " + rootDir);
-				if (userName == null || passWord == null) {
-					logger.info("As user name and/or password are not provided, only public data is downloaded.");
-				} else
-					accessToken = getAccessToken(userName, passWord);
-					downloadData(directoryType, accessToken);
+				downloadData(directoryType, accessToken);
 			}
 
 //			//test
@@ -1210,7 +1213,7 @@ public class DataRetrieverCLI {
 		}
 	}
 	
-	public List<String> scanDataDir(String filePath) {
+	public List<String> scanDataDir(String filePath, String manifestFileName) {
 		String line = "";
 		String splitBy = ",";
 		int seriesUidColumnNum = 0;
@@ -1221,8 +1224,10 @@ public class DataRetrieverCLI {
 		"you want to keep. ";
 	//		String fileName = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
 		//				+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+//		String fileName = filePath + File.separator
+//						+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
 		String fileName = filePath + File.separator
-						+ System.getProperty("databasketId").replace(".tcia", "") + File.separator + "metadata.csv";
+				+ (new File(manifestFileName)).getName().replace(".tcia", "") + File.separator + "metadata.csv";
 
 		File f = new File(fileName);
 		if (f.exists() && !f.isDirectory()) {

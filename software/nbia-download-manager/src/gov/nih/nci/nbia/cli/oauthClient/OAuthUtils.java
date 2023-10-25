@@ -194,7 +194,7 @@ public class OAuthUtils {
 			return handleXMLResponse(response);
 		} else {
 			// Unsupported Content type
-			throw new RuntimeException("Cannot handle " + contentType
+			throw new RuntimeException(response.getStatusLine() +"\nCannot handle " + contentType
 					+ " content type. Supported content types include JSON, XML and URLEncoded");
 		}
 
