@@ -2,7 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="images"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nbia-services-commons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/httpclient-4.2.5.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/httpcore-4.2.4.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/commons-logging-1.1.1.jar"/>
@@ -10,12 +16,11 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/commons-lang-2.4.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/compile/commons-compress-1.4.1.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/compile/commons-io-1.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nbia-services-commons"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
 	<classpathentry kind="lib" path="resources"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/nbia-util.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/compile/rt.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-download-manager/runtime/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/workspace8_5/software/target/lib/nbia-download-manager/compile/log4j-1.2.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

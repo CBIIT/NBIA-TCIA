@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nbia-dao"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/csmapi-5.2.0.1.jar"/>
@@ -50,7 +54,7 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/jhbasic-29.50.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/jsf-api-1.2_12.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/jta-1.0.1B.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/junit-4.7.jar"/>
+	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/junit-4.10.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/log4j-1.2.15.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/mail-1.4.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/test/mircutil-T32.jar"/>
@@ -69,7 +73,5 @@
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/commons-lang-2.4.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/nbia-dao-working@nbia-dao-resolver.jar"/>
 	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-services-commons/compile/nbia-domain-working@nbia-domain-resolver.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/test/nbia-dao.jar"/>
-	<classpathentry kind="var" path="NBIA_BASE/target/lib/nbia-web/compile/nbia-dao-working@nbia-dao-resolver.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
