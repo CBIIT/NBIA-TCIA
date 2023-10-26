@@ -41,6 +41,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import gov.nih.nci.nbia.security.NCIASecurityManager;
 import org.springframework.core.NestedRuntimeException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 @Path("/submitDICOM")
 public class DICOMSubmission extends getData{
@@ -62,42 +64,39 @@ public class DICOMSubmission extends getData{
 			@FormParam("thirdPartyAnalysis") String thirdPartyAnalysis, 
 			@FormParam("descriptionURI") String descriptionURI,
 			@FormParam("posdaTransferId") String fileId, 
-			@FormParam("overwrite") String overwrite) {
+			@FormParam("overwrite") String overwrite) throws Exception {
 
 		if (!allowToGoOn(project, siteName)) {
 			return Response.status(403)
 					.entity("Need to create collection and site (protection element) first using UAT.").build();
 		}
 
-		try {
-	 		String user = getUserName();
-            if (!QAUserUtil.isUserQA(user)) {
-            	System.out.println("Not QA User!!!!");
-			    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
-			   if (!sm.hasQaRole(user)) {
-			  	  return Response.status(401)
-						.entity("Insufficiant Privileges").build();
-			   } else {
-				   QAUserUtil.setUserQA(user);
-			   }
-            }
-            String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI, fileId, overwrite);
-            if (status.equals("ok")) {
+ 		String user = getUserName();
+        if (!QAUserUtil.isUserQA(user)) {
+        	System.out.println("Not QA User!!!!");
+		    NCIASecurityManager sm = (NCIASecurityManager)SpringApplicationContext.getBean("nciaSecurityManager");
+		   if (!sm.hasQaRole(user)) {
+		  	  return Response.status(401)
+					.entity("Insufficiant Privileges").build();
+		   } else {
+			   QAUserUtil.setUserQA(user);
+		   }
+        }
+        try {
+	        String status = FileSubmitter.submit(file, project, siteName, siteID, batch, thirdPartyAnalysis, descriptionURI, fileId, overwrite);
+	        if (status.equals("ok")) {
 			   return Response.ok("ok").type("application/text")
 					.build();
-            } else {
+	        } else {
 				   return Response.status(400)
 							.entity(status).build();
-            }
-        } catch (NestedRuntimeException e) {
-			e.printStackTrace();
-			return Response.status(500)
-					.entity(e.getMostSpecificCause().getMessage()).build();
-        } catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return Response.status(500)
-						.entity(e.getMessage()).build();
+	        }
+        } catch (Exception ex) {
+            StringWriter sw = new StringWriter();
+            ex.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+            String originalMessage = ex.getMessage();
+        	throw new Exception("DICOMSubmission Exception Message: " + originalMessage + "\n== DICOMSubmission Stack Trace ==\n" + exceptionAsString);
 		}
 	}
 	private boolean allowToGoOn(String project, String site) {

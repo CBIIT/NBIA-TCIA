@@ -13,16 +13,13 @@ public class UncaughtException extends Throwable implements ExceptionMapper<Thro
 
     @Override
     public Response toResponse(Throwable exception) {
-        exception.printStackTrace();
-        System.out.println("In exception handler");
         System.out.println(NCIAConfig.includeExceptionsInErrors());
         if (NCIAConfig.includeExceptionsInErrors()) {
-            System.out.println("In exception handler 2");
             StringWriter sw = new StringWriter();
             exception.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
             return Response.status(500).entity(exception.getMessage() + "\n" + exceptionAsString).type("text/plain").build();
         }
-        return Response.status(500).entity("Server was not able to process your request").type("text/plain").build();
+        return Response.status(500).entity("Server was not able to process your request" + "\n" + exception.getMessage()).type("text/plain").build();
     }
 }
