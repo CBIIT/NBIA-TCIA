@@ -54,8 +54,7 @@ public class GetAdvancedQCCriteria extends getData{
 	    	if (dto.getParentMenuName().equalsIgnoreCase("Modality")) {
 				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
 				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-				criteria.setObjectType("MODALITY");
-				criteria.setAuth(auth);
+				criteria.setObjectType("MODALITY_FAST");
 				List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
 				List<String> modalities = new ArrayList<String>();
 				for (ValuesAndCountsDTO value:values) {
@@ -68,8 +67,7 @@ public class GetAdvancedQCCriteria extends getData{
 	    	if (dto.getParentMenuName().equalsIgnoreCase("Manufacturer")) {
 				ValueAndCountDAO valueAndCountDAO = (ValueAndCountDAO)SpringApplicationContext.getBean("ValueAndCountDAO");
 				ValuesAndCountsCriteria criteria=new ValuesAndCountsCriteria();
-				criteria.setObjectType("MANUFACTURER");
-				criteria.setAuth(auth);
+				criteria.setObjectType("MANUFACTURER_FAST");
 				List<ValuesAndCountsDTO> values = valueAndCountDAO.getValuesAndCounts(criteria);
 				List<String> manufactures = new ArrayList<String>();
 				for (ValuesAndCountsDTO value:values) {

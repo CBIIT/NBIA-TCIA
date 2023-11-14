@@ -68,10 +68,12 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id and p.species_code=sp.species_code ";
 	private final static String MODALITY_QUERY="select modality, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
+   private final static String MODALITY_FAST_QUERY="select distinct modality, 1 from general_series";
 	private final static String BODYPART_QUERY="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id ";
 	private final static String MANUFACTURER_QUERY="select manufacturer, count(distinct p.patient_pk_id) thecount from patient p, trial_data_provenance dp, general_series gs, general_equipment ge"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id ";
+   private final static String MANUFACTURER_FAST_QUERY="select distinct manufacturer, 1 from general_equipment";
 	private final static String EXTENDED_QUERY="select patient_pk_id, count(distinct image_pk_id) imageCount, sum(dicom_size) disksize from general_image gi ";
 	
 	static Logger log = Logger.getLogger(ValueAndCountDAOImpl.class);
@@ -96,6 +98,10 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         {
         	return modalityQuery(criteria);
         }
+        if (criteria.getObjectType().equalsIgnoreCase("MODALITY_FAST"))
+        {
+         return modalityFastQuery(criteria);
+        }
         if (criteria.getObjectType().equalsIgnoreCase("BODYPART"))
         {
         	return bodyPartQuery(criteria);
@@ -103,6 +109,10 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER"))
         {
         	return manufacturerQuery(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER_FAST"))
+        {
+         return manufacturerFastQuery(criteria);
         }
         if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER_TREE"))
         {
@@ -218,6 +228,23 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
+      @Transactional(propagation=Propagation.REQUIRED)
+    private List<ValuesAndCountsDTO> modalityFastQuery(ValuesAndCountsCriteria criteria){
+      List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
+      String SQLQuery = MODALITY_FAST_QUERY;
+      Query query = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery);
+      List<Object[]> data= query.list();
+        for(Object[] row : data)
+        {
+
+           ValuesAndCountsDTO item=new ValuesAndCountsDTO();
+           item.setCriteria(row[0].toString());
+           item.setCount(row[1].toString());
+           returnValue.add(item);
+        }
+      return returnValue;
+    }
+
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> bodyPartQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
@@ -293,6 +320,26 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }
 		return returnValue;
     }
+   @Transactional(propagation=Propagation.REQUIRED)
+    private List<ValuesAndCountsDTO> manufacturerFastQuery(ValuesAndCountsCriteria criteria){
+      List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
+      String SQLQuery = MANUFACTURER_FAST_QUERY;
+      Query query = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery);
+      List<Object[]> data= query.list();
+        for(Object[] row : data)
+        {
+           ValuesAndCountsDTO item=new ValuesAndCountsDTO();
+           if (row[0]!=null){
+              item.setCriteria(row[0].toString());
+           }   else {
+           item.setCriteria("");
+           }
+           item.setCount(row[1].toString());
+           returnValue.add(item);
+        }
+      return returnValue;
+   }
+
 	@Transactional(propagation=Propagation.REQUIRED)
    public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException{
     	List<CriteriaValuesForPatientDTO> returnValue=new ArrayList<CriteriaValuesForPatientDTO>();
