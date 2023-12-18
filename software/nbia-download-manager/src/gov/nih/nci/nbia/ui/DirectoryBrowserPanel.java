@@ -141,7 +141,7 @@ public class DirectoryBrowserPanel extends JPanel {
         else {
         	
         	DownloadManagerFrame.startButton.setEnabled(false);
-        	JOptionPane.showMessageDialog(this, "Please select a valid direcory to put the files...", "Destination-Directory", JOptionPane.WARNING_MESSAGE);
+        	JOptionPane.showMessageDialog(this, "Please select a valid directory to put the files...", "Destination-Directory", JOptionPane.WARNING_MESSAGE);
         }
         	
 	}
