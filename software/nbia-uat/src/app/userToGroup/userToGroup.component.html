@@ -14,7 +14,7 @@
 	<br/>
 	
 	<p-table #dt [value]="groups" [paginator]="true" [rows]="10" 
-	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [responsive]="true" [styleClass]="'base-table'">
+	[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [styleClass]="'base-table'">
 		<ng-template pTemplate="header" let-columns>
 			<tr>
 				<th [pSortableColumn]="'GroupName'" style="border-bottom: none">
@@ -25,9 +25,9 @@
 			</tr>
 			<tr>
 				<th style="border-top: none;">
-					<div class="ui-fluid">
+					<div class="p-fluid">
 						<input pInputText type="text" pTooltip="Enter a whole or partial word to filter on group name" (input)="dt.filter($event.target.value, 'GroupName', 'contains')"
-						[value]="dt.filters['GroupName'] ? dt.filters['GroupName'].value : ''">
+						[value]="dt.filters['GroupName'] ? $any(dt).filters['GroupName'].value : ''">
 					</div>
 				</th>				
 			</tr>
@@ -51,22 +51,22 @@
 
 <p-messages [value]="statusMessage" [closable]="true" ></p-messages>
 
-<p-dialog header="Assign Group(s) to Selected User" [(visible)]="displayDialogAdd" [modal]="true" [responsive]="true" [style]="{width: '600px', minWidth: '300px'}" [maximizable]="true">
-	<div class="ui-g ui-fluid" *ngIf="selectedUserName">
-		<div class="ui-g-12">
-			<div class="ui-g-4"><label for="loginName">Login Name</label></div>
-			<div class="ui-g-8"><input pInputText id="loginName" [(ngModel)]="selectedUserName" [disabled]="true"/></div>
+<p-dialog header="Assign Group(s) to Selected User" [(visible)]="displayDialogAdd" [modal]="true" [style]="{width: '600px', minWidth: '300px'}" [maximizable]="true">
+	<div class="p-g p-fluid" *ngIf="selectedUserName">
+		<div class="p-g-12">
+			<div class="p-g-4"><label for="loginName">Login Name</label></div>
+			<div class="p-g-8"><input pInputText id="loginName" [(ngModel)]="selectedUserName" [disabled]="true"/></div>
 		</div>
-		<div class="ui-g-12">
-			<div class="ui-g-4"><label>Groups</label></div>
-			<div class="ui-g-8">
+		<div class="p-g-12">
+			<div class="p-g-4"><label>Groups</label></div>
+			<div class="p-g-8">
 				<p-multiSelect [options]="availableGroups" [(ngModel)]="selectedGroupNames" [scrollHeight]="300" appendTo="body"></p-multiSelect>
 				<p>Selected group(s): {{selectedGroupNames}}</p>
 			</div>
 		</div>
 	</div>
 	<p-footer>
-		<div class="ui-dialog-buttonpane ui-helper-clearfix">
+		<div class="p-dialog-buttonpane p-helper-clearfix">
 			<button type="button" pButton icon="fa fa-check" (click)="saveGroup()" label="Save" [disabled]="selectedGroupNames == null || selectedGroupNames.length==0"></button>
 		</div>
 	</p-footer>

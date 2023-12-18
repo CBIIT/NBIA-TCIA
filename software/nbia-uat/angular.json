@@ -20,9 +20,9 @@
             "outputPath": "dist/nbia-uat",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -30,7 +30,7 @@
             "styles": [
 			  "./node_modules/font-awesome/css/font-awesome.min.css",	
 			  "./node_modules/primeicons/primeicons.css",
-			  "./node_modules/primeng/resources/themes/nova-light/theme.css",
+			  "./node_modules/primeng/resources/themes/nova/theme.css",
 			  "./node_modules/primeng/resources/primeng.min.css",			
               "src/styles.scss"
             ],
@@ -47,9 +47,33 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -71,25 +95,28 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "nbia-uat:build"
+            "buildTarget": "nbia-uat:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "nbia-uat:build:production"
+              "buildTarget": "nbia-uat:build:production"
+            },
+           "development": {
+              "buildTarget": "nbia-uat:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "nbia-uat:build"
+            "buildTarget": "nbia-uat:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
@@ -100,19 +127,6 @@
               "src/styles.scss"
             ],
             "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         },
         "e2e": {
@@ -128,6 +142,6 @@
           }
         }
       }
-    }},
-  "defaultProject": "nbia-uat"
+    }
+  }
 }

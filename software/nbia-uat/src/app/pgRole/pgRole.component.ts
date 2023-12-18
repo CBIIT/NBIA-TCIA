@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
-import { Message } from 'primeng/components/common/api';
+import { Message } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { SelectItem } from 'primeng/api';
 import { Config } from '../configs/config';
@@ -17,7 +17,7 @@ import { PgRoleService } from './pgRoleservice';
 })
 export class PgRoleComponent implements OnInit {
 	@Input() addedUser: any;
-	@ViewChild(Table, {static: false}) 
+	@ViewChild(Table) 
 	private dt:Table;
 	displayDialog: boolean;
 	userNames: SelectItem[];
@@ -75,7 +75,7 @@ export class PgRoleComponent implements OnInit {
 		this.pgRoleService.getPgRolesForUser(this.selectedUserName).
 		subscribe((pgRoles:PgRole[]) => {
 		this.pgRoles = pgRoles; 
-		this.pgSize = this.pgRoles.length; 
+		this.pgSize = this.pgRoles ? this.pgRoles.length : 0;
 		this.searchInProgress=false;
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});

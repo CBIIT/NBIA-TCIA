@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { Message } from 'primeng/components/common/api';
-import {DynamicDialogRef} from 'primeng/api';
-import {DynamicDialogConfig} from 'primeng/api';
+import { Message } from 'primeng/api';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 
 import {UgMemberService} from './ugmemberservice';
 
 @Component({
     template: `
-		<p-table  [value]="users" [paginator]="true" [rows]="10" [responsive]="true"
-		[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [responsive]="true" [styleClass]="'base-table'">
+		<p-table  [value]="users" [paginator]="true" [rows]="10"
+		[showCurrentPageReport] = "true" currentPageReportTemplate="{totalPages} pages&nbsp;&nbsp;"	[rowsPerPageOptions]="[10,20,50,100,{showAll:'All'}]" [styleClass]="'base-table'">
 	
-        <!--p-table [value]="users" [paginator]="true" [rows]="5" [responsive]="true"-->
+        <!--p-table [value]="users" [paginator]="true" [rows]="5"-->
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="UserName">Login Name<p-sortIcon field="UserName"></p-sortIcon></th>
@@ -18,7 +18,7 @@ import {UgMemberService} from './ugmemberservice';
             </ng-template>
             <ng-template pTemplate="body" let-user>
                 <tr>
-                    <td><span class="ui-column-title">UserName</span>{{user.UserName}}</td>
+                    <td><span class="p-column-title">UserName</span>{{user.UserName}}</td>
                 </tr>
             </ng-template>
         </p-table>
