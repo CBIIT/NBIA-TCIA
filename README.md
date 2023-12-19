@@ -11,7 +11,6 @@ NBIA is distributed under the BSD 3-clause license. Please see the NOTICE and LI
 
 You will find more details about NBIA in the following links:
   * [REST API Guides](https://wiki.cancerimagingarchive.net/display/Public/TCIA+Programmatic+Interface+REST+API+Guides)
-  * [Installation Guide](https://wiki.nci.nih.gov/x/kgKYFg)
     
 Please join us in further developing and improving NBIA. Submit any issues you may find to GitHub's issue tracker. Contact [Application Support](mailto:NCIAppSupport@mail.nih.gov) for information about open-source development and NBIA.
 
@@ -24,8 +23,7 @@ Build and Install
 3.	Navigate to /software/build.
 4.	Type ``ant dist``.
     *	This creates the install package in /target/dist.
-5.	Follow the [installation guide](https://wiki.nci.nih.gov/x/kgKYFg).
-
+  
 Integrate with Eclipse
 ================================================================
 1.	Select **File** > **Import**.
