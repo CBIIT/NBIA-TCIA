@@ -12,7 +12,7 @@ NBIA is distributed under the BSD 3-clause license. Please see the NOTICE and LI
 You will find more details about NBIA in the following links:
   * [REST API Guides](https://wiki.cancerimagingarchive.net/display/Public/TCIA+Programmatic+Interface+REST+API+Guides)
     
-Please join us in further developing and improving NBIA. Submit any issues you may find to GitHub's issue tracker. Contact [Application Support](mailto:NCIAppSupport@mail.nih.gov) for information about open-source development and NBIA.
+Please join us in further developing and improving NBIA. Submit any issues you may find to GitHub's issue tracker. 
 
 Build and Install
 ================================================================
