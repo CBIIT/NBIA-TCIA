@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SaveCartComponent } from './save-cart.component';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -9,7 +9,7 @@ describe( 'SaveCartComponent', () => {
     let component: SaveCartComponent;
     let fixture: ComponentFixture<SaveCartComponent>;
 
-    beforeEach( async( () => {
+    beforeEach( waitForAsync( () => {
         TestBed.configureTestingModule( {
                 declarations: [SaveCartComponent],
                 providers: [CommonService, Http, ConnectionBackend],

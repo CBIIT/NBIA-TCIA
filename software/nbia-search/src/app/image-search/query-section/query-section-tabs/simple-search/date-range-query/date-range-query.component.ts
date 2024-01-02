@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
 import { UtilService } from '@app/common/services/util.service';
-import { IMyDateModel, INgxMyDpOptions, NgxMyDatePickerDirective } from 'ngx-mydatepicker';
 import { Consts } from '@app/consts';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { InitMonitorService } from '@app/common/services/init-monitor.service';
@@ -30,62 +29,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
     disableUseDateRange = true;
     applyCheckboxCalender = false;
 
-    /*
-     dayLabels?: IMyDayLabels;
-     monthLabels?: IMyMonthLabels;
-     dateFormat?: string;
-     showTodayBtn?: boolean;
-     todayBtnTxt?: string;
-     firstDayOfWeek?: string;
-     satHighlight?: boolean;
-     sunHighlight?: boolean;
-     highlightDates?: Array<IMyDate>;
-     markCurrentDay?: boolean;
-     markCurrentMonth?: boolean;
-     markCurrentYear?: boolean;
-     monthSelector?: boolean;
-     yearSelector?: boolean;
-     disableHeaderButtons?: boolean;
-     showWeekNumbers?: boolean;
-     selectorHeight?: string;
-     selectorWidth?: string;
-     disableUntil?: IMyDate;
-     disableSince?: IMyDate;
-     disableDates?: Array<IMyDate>;
-     enableDates?: Array<IMyDate>;
-     markDates?: Array<IMyMarkedDates>;
-     markWeekends?: IMyMarkedDate;
-     disableDateRanges?: Array<IMyDateRange>;
-     disableWeekends?: boolean;
-     alignSelectorRight?: boolean;
-     openSelectorTopOfInput?: boolean;
-     closeSelectorOnDateSelect?: boolean;
-     minYear?: number;
-     maxYear?: number;
-     showSelectorArrow?: boolean;
-     ariaLabelPrevMonth?: string;
-     ariaLabelNextMonth?: string;
-     ariaLabelPrevYear?: string;
-     ariaLabelNextYear?: string;
-     */
-    dateOptions: INgxMyDpOptions = {
-        // other options...
-        dateFormat: 'mm/dd/yyyy',
-        sunHighlight: true,
-        satHighlight: true,
-        firstDayOfWeek: 'su',
-        markCurrentDay: true,
-        selectorHeight: '232px',
-        selectorWidth: '295px'
-    };
-
-    // We need this to access clearDate() within this.onDateRangeClearAllClick
-    @ViewChild( 'dpFrom', { static: true } ) ngxdpFrom: NgxMyDatePickerDirective;
-    @ViewChild( 'dpTo', { static: true } ) ngxdpTo: NgxMyDatePickerDirective;
-
-    toDateModel = {};
-    fromDateModel = {};
-
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService, private parameterService: ParameterService,
@@ -109,7 +52,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.totalQueryClear();
-this.onDateRangeClearAllClick( false ); // @CHECKME
+                this.onDateRangeClearAllClick( false ); // @CHECKME
             }
         );
 
@@ -123,22 +66,8 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
                 let twoDates = (<any>data).split( /-/ );
                 let dateParts = twoDates[0].split( /\// );
 
-                this.fromDateModel = {
-                    'date': {
-                        'month': +dateParts[0],
-                        'day': +dateParts[1],
-                        'year': +dateParts[2]
-                    }
-                };
                 dateParts = twoDates[1].split( /\// );
 
-                this.toDateModel = {
-                    'date': {
-                        'month': +dateParts[0],
-                        'day': +dateParts[1],
-                        'year': +dateParts[2]
-                    }
-                };
                 this.checked = true;
                 this.disableUseDateRange = false;
                 this.onDateChange();
@@ -156,14 +85,6 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
     }
 
     initializeDisableFutureDates() {
-        let today = new Date();
-        // Add one day
-        today = new Date( today.getTime() + (1000 * 60 * 60 * 24) );
-        this.dateOptions.disableSince = {
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            day: today.getDate()
-        };
     }
 
     /**
@@ -189,39 +110,13 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
         this.disableUseDateRange = true;
         this.applyCheckboxCalender = false;
 
-        // this.validateDateRange();
-
-        /*
-
-                if( this.fromDateModel !== undefined ){
-                    this.fromDateModel = {};
-                    this.ngxdpFrom.clearDate();
-                }
-
-                if( this.toDateModel !== undefined ){
-                    this.toDateModel = {};
-                    this.ngxdpTo.clearDate();
-                }
-
-                if( !totalClear ){
-                    let datRangeForQuery: string[] = [];
-                    datRangeForQuery[0] = 'DateRangeCriteria';
-                    this.commonService.updateQuery( datRangeForQuery );
-                }
-
-        */
         this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
 
     }
 
 
     setToDateToToday() {
-        let today = new Date();
-        this.toDateModel = {};
-        this.toDateModel['date'] = {};
-        this.toDateModel['date']['day'] = today.getDate();
-        this.toDateModel['date']['month'] = today.getMonth() + 1;
-        this.toDateModel['date']['year'] = today.getFullYear();
+        this.toDate = new Date();
     }
 
 
@@ -230,12 +125,7 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
      * @param theDate
      */
     setFromDate( theDate ) {
-        let newFromDate = theDate.date;
-        this.fromDateModel = {};
-        this.fromDateModel['date'] = {};
-        this.fromDateModel['date']['day'] = newFromDate['day'];
-        this.fromDateModel['date']['month'] = newFromDate['month'];
-        this.fromDateModel['date']['year'] = newFromDate['year'];
+        this.fromDate = theDate;
     }
 
     /**
@@ -249,10 +139,8 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
 
         // Check for a value in "from date" and "to date"
         if(
-            (this.utilService.isNullOrUndefined( this.fromDateModel )) ||
-            (this.utilService.isNullOrUndefined( this.fromDateModel['date'] )) ||
-            (this.utilService.isNullOrUndefined( this.toDateModel )) ||
-            (this.utilService.isNullOrUndefined( this.toDateModel['date'] ))
+            (this.utilService.isNullOrUndefined( this.fromDate )) ||
+            (this.utilService.isNullOrUndefined( this.toDate ))
         ){
             this.disableUseDateRange = true;
 
@@ -261,39 +149,10 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
             return;
         }
 
-
-        // Check for valid day and month
-        if(
-            (+this.fromDateModel['date']['day'] > this.daysInMonth( this.fromDateModel['date']['month'], this.fromDateModel['date']['year'] )) ||
-            (+this.toDateModel['date']['day'] > this.daysInMonth( this.toDateModel['date']['month'], this.toDateModel['date']['year'] )) ||
-            (+this.toDateModel['date']['month'] > 12) ||
-            (+this.fromDateModel['date']['month'] > 12)
-        ){
-            this.disableUseDateRange = true;
-            // Remove dateRange (if any) in the queryUrlService
-            this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-            return;
-        }
 
         // Check for from date after to date
-        if( this.fromDateModel['date']['year'] > this.toDateModel['date']['year'] ){
+        if( this.fromDate > this.toDate ){
             // Bad year
-            this.disableUseDateRange = true;
-            // Remove dateRange (if any) in the queryUrlService
-            this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-            return;
-        }
-
-        if( (this.fromDateModel['date']['year'] === this.toDateModel['date']['year']) && (this.fromDateModel['date']['month'] > this.toDateModel['date']['month']) ){
-            // Bad month
-            this.disableUseDateRange = true;
-            // Remove dateRange (if any) in the queryUrlService
-            this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-            return;
-        }
-
-        if( (this.fromDateModel['date']['year'] === this.toDateModel['date']['year']) && (this.fromDateModel['date']['month'] === this.toDateModel['date']['month']) && (this.fromDateModel['date']['day'] > this.toDateModel['date']['day']) ){
-            // Bad day
             this.disableUseDateRange = true;
             // Remove dateRange (if any) in the queryUrlService
             this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
@@ -321,23 +180,13 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
     }
 
 
-    onDateChangedTo( e: IMyDateModel ) {
-        // We need to do this because "dateChanged" event can happen before the bound variable toDateModel is updated.
-        if( !this.utilService.isNullOrUndefined( e.date ) && (e.date.year > 0) ){
-            this.toDateModel = { date: { year: 0, month: 0, day: 0 } };
-            this.toDateModel['date'] = e.date;
-        }
+    onDateChangedTo( e) {
         this.validateDateRange();
         this.onDateChange();
 
     }
 
-    onDateChangedFrom( e: IMyDateModel ) {
-        // We need to do this because "dateChanged" event can happen before the bound variable fromDateModel is updated.
-        if( !this.utilService.isNullOrUndefined( e.date ) && (e.date.year > 0) ){
-            this.fromDateModel = { date: { year: 0, month: 0, day: 0 } };
-            this.fromDateModel['date'] = e.date;
-        }
+    onDateChangedFrom( e) {
         this.validateDateRange();
         this.onDateChange();
     }
@@ -356,11 +205,11 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
 
     isAllEmpty() {
 
-        if( !this.utilService.isNullOrUndefined( this.fromDateModel ) && (!this.utilService.isNullOrUndefined( this.fromDateModel['date'] )) ){
+        if( !this.utilService.isNullOrUndefined( this.fromDate ) ){
             this.allEmpty = false;
             return false;
         }
-        if( !this.utilService.isNullOrUndefined( this.toDateModel ) && (!this.utilService.isNullOrUndefined( this.toDateModel['date'] )) ){
+        if( !this.utilService.isNullOrUndefined( this.toDate ) ){
             this.allEmpty = false;
             return false;
         }
@@ -384,13 +233,13 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
 
         if( checked ){
             // From
-            datRangeForQuery[1] = this.makeFormattedDate2( this.fromDateModel['date'] );
+            datRangeForQuery[1] = this.makeFormattedDate( this.fromDate );
             // To
-            datRangeForQuery[2] = this.makeFormattedDate2( this.toDateModel['date'] );
+            datRangeForQuery[2] = this.makeFormattedDate( this.toDate );
 
             // Update queryUrlService
             this.queryUrlService.update( this.queryUrlService.DATE_RANGE,
-                this.makeFormattedDate( this.fromDateModel['date'] ) + '-' + this.makeFormattedDate( this.toDateModel['date'] ) );
+                this.makeFormattedDate( this.fromDate ) + '-' + this.makeFormattedDate( this.toDate ) );
         }else{
             // Remove dateRange (if any) in the queryUrlService
             this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
@@ -398,21 +247,12 @@ this.onDateRangeClearAllClick( false ); // @CHECKME
         this.commonService.updateQuery( datRangeForQuery );
     }
 
-// Month/Day/Year
-    makeFormattedDate( d ) {
-        let date = '';
+    makeFormattedDate( dateStr ) {
+      // Split the input date string, which is in the format "YYYY-MM-DD"
+      const parts = dateStr.split('-'); // parts[0] is year, parts[1] is month, parts[2] is day
 
-        if( d.month < 10 ){
-            date += '0';
-        }
-        date += d.month + '/';
-
-        if( d.day < 10 ){
-            date += '0';
-        }
-        date += d.day + '/' + d.year;
-
-        return date;
+      // Reorder the parts and join them with slashes to get "MM/DD/YYYY"
+      return `${parts[1]}/${parts[2]}/${parts[0]}`;
     }
 
 // Day/Month/Year

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DownloaderDownloadComponent } from './downloader-download.component';
 import { CommonService } from '../../image-search/services/common.service';
@@ -12,7 +12,7 @@ describe( 'DownloaderDownloadComponent', () => {
     let component: DownloaderDownloadComponent;
     let fixture: ComponentFixture<DownloaderDownloadComponent>;
 
-    beforeEach( async( () => {
+    beforeEach( waitForAsync( () => {
         TestBed.configureTestingModule( {
             declarations: [DownloaderDownloadComponent],
             imports: [HttpModule],

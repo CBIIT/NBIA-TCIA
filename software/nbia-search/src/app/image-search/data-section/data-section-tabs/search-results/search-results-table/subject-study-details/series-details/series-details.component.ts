@@ -10,7 +10,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Properties } from '@assets/properties';
 import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 import { UtilService } from '@app/common/services/util.service';
-import { CineModeService } from '@app/cine-mode/cine-mode.service';
 
 @Component( {
     selector: 'nbia-series-details',
@@ -41,7 +40,7 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
 
     constructor( private apiServerService: ApiServerService, private loadingDisplayService: LoadingDisplayService,
                  private alertBoxService: AlertBoxService, private ohifViewerService: OhifViewerService,
-                 private cineModeService: CineModeService, private utilService: UtilService ) {
+                 private utilService: UtilService ) {
     }
 
     ngOnInit() {
@@ -169,11 +168,6 @@ export class SeriesDetailsComponent implements OnInit, OnDestroy{
 
         onSeriesOhifViewerClick( i ) {
         this.ohifViewerService.launchOhifViewerSeries( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId'] );
-    }
-
-    onCineModeViewerClick( i ) {
-        this.cineModeService.openCineMode( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['seriesPkId'],
-            this.seriesListForDisplay[i]['description'], this.study['date'] );
     }
 
     ngOnDestroy() {

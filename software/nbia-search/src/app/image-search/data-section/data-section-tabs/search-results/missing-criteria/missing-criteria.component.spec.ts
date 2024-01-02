@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MissingCriteriaComponent } from './missing-criteria.component';
 
@@ -6,7 +6,7 @@ describe('MissingCriteriaComponent', () => {
   let component: MissingCriteriaComponent;
   let fixture: ComponentFixture<MissingCriteriaComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MissingCriteriaComponent ]
     })
