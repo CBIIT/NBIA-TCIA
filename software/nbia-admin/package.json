@@ -1,6 +1,6 @@
 {
   "name": "nbia-admin",
-  "version": "0.0.0",
+  "version": "17.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4300",
@@ -14,7 +14,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.8",
-    "@angular/cdk": "^16.2.12",
+    "@angular/cdk": "^17.0.4",
     "@angular/common": "^17.0.8",
     "@angular/compiler": "^17.0.8",
     "@angular/core": "^17.0.8",
@@ -24,7 +24,7 @@
     "@angular/router": "^17.0.8",
     "@kolkov/angular-editor": "^2.1.0",
     "@types/geojson": "7946.0.8",
-    "ngx-cookie-service": "^16.1.0",
+    "ngx-cookie-service": "^17.0.1",
     "rxjs": "~6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.14.2"
