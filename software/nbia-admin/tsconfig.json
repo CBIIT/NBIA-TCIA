@@ -7,41 +7,40 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
-
+    "target": "ES2022",
     "skipLibCheck": true,
-
     "typeRoots": [
       "node_modules/@types",
       "../node_modules/@types/jquery",
       "node_modules/@types/jquery",
-        "./node_modules/@types",
-        "./@types"
+      "./node_modules/@types",
+      "./@types"
     ],
     "lib": [
       "es2018",
       "dom"
     ],
-      "paths": {
-          "@assets/*": [
-              "src/assets/*"
-          ],
-          "@app/*": [
-              "src/app/*"
-          ],
-          "@env": [
-              "environments/environment"
-          ],
-          "@pages/*": [
-              "pages/*"
-          ],
-          "@theme/*": [
-              "theme/*"
-          ]
-      }
+    "paths": {
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@env": [
+        "environments/environment"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@theme/*": [
+        "theme/*"
+      ]
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

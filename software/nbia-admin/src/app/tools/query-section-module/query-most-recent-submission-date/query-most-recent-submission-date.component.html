@@ -90,9 +90,6 @@
                     >From:</span
                 >
                 <input
-                    (click)="
-                        dpFrom.toggleCalendar(); initializeDisableFutureDates()
-                    "
                     class="date-box-text-box"
                     [ngClass]="{
                         'font-extra-small': currentFont === '0',
@@ -101,11 +98,9 @@
                         'font-large': currentFont === '3'
                     }"
                     placeholder='Select "From" date'
-                    ngx-mydatepicker
                     name="fromDatePicker"
                     [(ngModel)]="fromDateModel"
-                    [options]="dateOptions"
-                    #dpFrom="ngx-mydatepicker"
+                    type="date"
                     (dateChanged)="onDateChangedFrom($event)"
                 />
             </div>
@@ -132,9 +127,6 @@
                 >
 
                 <input
-                    (click)="
-                        dpTo.toggleCalendar(); initializeDisableFutureDates()
-                    "
                     [ngClass]="{
                         'font-extra-small': currentFont === '0',
                         'font-small': currentFont === '1',
@@ -147,11 +139,9 @@
                         'date-box-text-box-large': currentFont === '3'
                     }"
                     placeholder='Select "To" date'
-                    ngx-mydatepicker
+                    type="date"
                     name="toDatePicker"
                     [(ngModel)]="toDateModel"
-                    [options]="dateOptions"
-                    #dpTo="ngx-mydatepicker"
                     (dateChanged)="onDateChangedTo($event)"
                 />
             </div>

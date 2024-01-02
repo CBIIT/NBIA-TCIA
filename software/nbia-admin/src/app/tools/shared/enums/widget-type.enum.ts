@@ -1,0 +1,9 @@
+export enum WIDGET_TYPE{
+    UNKNOWN,
+    NUMBER,
+    TEXT,
+    ITEM_LIST,
+    ONE_LINE_RADIO_BUTTONS,
+    ONE_CHECKBOX,
+    CALENDAR
+}

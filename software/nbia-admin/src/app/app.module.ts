@@ -10,10 +10,7 @@ import { EditCollectionDescriptionsModule } from './tools/edit-collection-descri
 import { ViewSubmissionReportsModule } from './tools/view-submission-reports-module/view-submission-reports.module';
 import { PerformOnlineDeletionModule } from './tools/perform-online-deletion-module/perform-online-deletion.module';
 import { FormsModule } from '@angular/forms';
-import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
-import { MomentModule } from 'ngx-moment';
 import { LoginComponent } from './login/login.component';
-import { AngularDraggableModule } from 'angular2-draggable';
 import { AccessTokenService } from './admin-common/services/access-token.service';
 import { ApproveDeletionsModule } from './tools/approve-deletions-module/approve-deletions.module';
 import { PerformQcModule } from './tools/perform-qc-module/perform-qc.module';
@@ -24,7 +21,6 @@ import { LoadingDisplayComponent } from './admin-common/components/loading-displ
 import { FooterComponent } from './footer/footer.component';
 import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';
 import { CineModeModule } from '@app/tools/cine-mode-module/cine-mode.module';
-import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { DynamicQueryTestModule } from '@app/tools/dynamic-query-test-module/dynamic-query-test.module';
 import { CriteriaSelectionMenuComponent } from './criteria-selection-menu/criteria-selection-menu.component';
@@ -41,9 +37,7 @@ import { CineModeBravoComponent } from '@app/tools/cine-mode-module/cine-mode-br
         PreferencesComponent,
         CriteriaSelectionMenuComponent
     ],
-    exports: [
-
-    ],
+    exports: [],
     imports: [
         BrowserModule,
         FormsModule,
@@ -52,21 +46,16 @@ import { CineModeBravoComponent } from '@app/tools/cine-mode-module/cine-mode-br
         HttpClientModule,
         HeaderModule,
         ViewSubmissionReportsModule,
-        NgxMyDatePickerModule.forRoot(),
         PerformOnlineDeletionModule,
-        MomentModule,
-        AngularDraggableModule,
         CineModeModule,
         QuerySectionModule,
         ApproveDeletionsModule,
         PerformQcModule,
         ManageWorkflowItemsModule,
         EditLicenseModule,
-        NgxKeyboardShortcutModule.forRoot(),
         DynamicQueryTestModule,
-        SearchResultsSectionModule
+        SearchResultsSectionModule,
     ],
-    entryComponents: [ CineModeBravoComponent ],
     providers: [
         AccessTokenService,
         CookieService

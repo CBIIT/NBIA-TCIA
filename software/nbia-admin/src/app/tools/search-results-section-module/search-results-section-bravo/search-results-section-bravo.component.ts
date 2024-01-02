@@ -22,7 +22,6 @@ import { takeUntil } from 'rxjs/operators';
 import { CineModeBravoService } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.service';
 import { PopoutService } from '@app/tools/cine-mode-module/cine-mode-bravo/popout.service';
 import { POPOUT_MODAL_DATA, POPOUT_MODALS, PopoutData, PopoutModalName } from '@app/tools/cine-mode-module/cine-mode-bravo/popout.tokens';
-import { IKeyboardShortcutListenerOptions, KeyboardKeys, } from 'ngx-keyboard-shortcuts';
 import { PreferencesService } from '@app/preferences/preferences.service';
 import {
     SearchResultsPagerService
@@ -80,15 +79,6 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     collectionSite = '';
     currentFont;
     properties = Properties;
-
-    // The keyboard shortcut to show and hide the Cine mode viewer
-    // @TODO consult with users to determine the best key combination that isn't already doing something else.
-    keyboardShortcutDef: IKeyboardShortcutListenerOptions = {
-        description: 'save',
-        // keyBinding: [KeyboardKeys.Ctrl, KeyboardKeys.Shift, 'q']
-        // keyBinding: [KeyboardKeys.Ctrl, '1'],
-        keyBinding: [KeyboardKeys.Ctrl, Properties.CINE_MODE_TOGGLE_KEY],
-    };
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 

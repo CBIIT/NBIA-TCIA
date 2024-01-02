@@ -256,20 +256,14 @@
 <!-- The Confirm Delete Popup.  -->
 <div
     *ngIf="showConfirmDelete"
-    ngDraggable
-    [handle]="PanelHandle"
     class="card delete-box alert-box-div alert-box-shadow"
     [ngClass]="{
         'edit-license-panel-heading-moving': handleMoving
     }"
-    [ngDraggable]="true"
-    (started)="onDragBegin($event)"
-    (endOffset)="onMoveEnd($event)"
     [style.left.px]="confirmDeleteLeft"
 >
     <!-- -----  Delete Licence  ----- -->
     <div
-        #PanelHandle
         class="card-nbia-header-danger edit-license-panel-heading unselectable p-2"
     >
         <div>

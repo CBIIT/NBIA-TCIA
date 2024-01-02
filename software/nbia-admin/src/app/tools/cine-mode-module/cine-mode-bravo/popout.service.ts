@@ -33,7 +33,7 @@ export class PopoutService implements OnDestroy {
   openOnce(url, target) {
     // Open a blank "target" window
     // or get the reference to the existing "target" window
-    const winRef = window.open('', target, 'popup', true);
+    const winRef = window.open('', target, 'popup');
     // If the "target" window was just opened, change its url
     if (winRef.location.href === 'about:blank') {
       winRef.location.href = url;

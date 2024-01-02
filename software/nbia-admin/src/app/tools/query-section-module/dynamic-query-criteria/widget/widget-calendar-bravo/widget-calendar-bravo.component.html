@@ -32,18 +32,12 @@
 
  <!-- Add "'widget-calendar-heading-not-moving': ! handleMoving" to the ngClass below if you want the hand icon on hover -->
     <div
-        ngDraggable
-        [handle]="PanelHandle"
         class="card card-nbia-default alert-box-shadow unselectable"
         [ngClass]="{
             'widget-calendar-heading-moving': handleMoving
         }"
-        [ngDraggable]="true"
-        (started)="onDragBegin($event)"
-        (endOffset)="onMoveEnd($event)"
     >
         <div
-            #PanelHandle
             class="card-header card-nbia-header-default calendar-panel-heading"
         >
             <div class="card-title">

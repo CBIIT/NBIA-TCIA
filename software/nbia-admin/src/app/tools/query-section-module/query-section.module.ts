@@ -15,10 +15,7 @@ import { AppRoutingModule } from '@app/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderModule } from '@app/header-module/header.module';
 import { ViewSubmissionReportsModule } from '../view-submission-reports-module/view-submission-reports.module';
-import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { PerformOnlineDeletionModule } from '../perform-online-deletion-module/perform-online-deletion.module';
-import { MomentModule } from 'ngx-moment';
-import { AngularDraggableModule } from 'angular2-draggable';
 import { DynamicQueryCriteriaComponent } from './dynamic-query-criteria/dynamic-query-criteria.component';
 import { WidgetComponent } from './dynamic-query-criteria/widget/widget.component';
 import { WidgetTestSettingsComponent } from './dynamic-query-criteria/widget/widget-test-settings/widget-test-settings.component';
@@ -27,16 +24,6 @@ import { LeftSectionDynamicComponent } from './left-section-dynamic/left-section
 import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-module/admin-common-pipe.module';
 import { WidgetCalendarBravoComponent } from './dynamic-query-criteria/widget/widget-calendar-bravo/widget-calendar-bravo.component';
 
-
-export enum WIDGET_TYPE{
-    UNKNOWN,
-    NUMBER,
-    TEXT,
-    ITEM_LIST,
-    ONE_LINE_RADIO_BUTTONS,
-    ONE_CHECKBOX,
-    CALENDAR
-}
 
 
 @NgModule( {
@@ -80,10 +67,7 @@ export enum WIDGET_TYPE{
         HttpClientModule,
         HeaderModule,
         ViewSubmissionReportsModule,
-        NgxMyDatePickerModule.forRoot(),
         PerformOnlineDeletionModule,
-        MomentModule,
-        AngularDraggableModule,
         AdminCommonPipeModule
     ]
 } )

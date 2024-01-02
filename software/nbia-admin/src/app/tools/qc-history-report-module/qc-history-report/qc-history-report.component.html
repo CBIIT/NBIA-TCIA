@@ -6,15 +6,10 @@
 <!--The parent div/ bootstrap panel-->
 <div id="historyDragPanel"
     *ngIf="showReport"
-     ngDraggable [handle]="PanelHandle"
      class="card card-nbia-default  alert-box-div alert-box-shadow unselectable perform-qc-history-report-div"
      [ngClass]="{
         'alert-box-heading-moving': handleMoving
     }"
-     [ngDraggable]=" true"
-
-     (started)="onDragBegin($event)"
-     (endOffset)="onMoveEnd($event)"
 >
 
     <!-- The panel heading, this is the draggable part -->

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import Promise from 'ts-promise';
 
 @Injectable( {
     providedIn: 'root'

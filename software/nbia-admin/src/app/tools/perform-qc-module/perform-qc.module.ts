@@ -9,7 +9,6 @@ import { QueryPatientIdComponent } from '../query-section-module/query-patient-i
 import { QueryMostRecentSubmissionDateComponent } from '../query-section-module/query-most-recent-submission-date/query-most-recent-submission-date.component';
 import { FormsModule } from '@angular/forms';
 import { LeftSectionComponent } from '../query-section-module/left-section/left-section.component';
-import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { AdminCommonPipeModule } from '../../admin-common/admin-common-pipe-module/admin-common-pipe.module';
 import { QueryCollectionComponent } from '../query-section-module/query-collection/query-collection.component';
 import { AppModule } from '../../app.module';
@@ -19,7 +18,6 @@ import { PerformQcBulkOperationsComponent } from './perform-qc/perform-qc-bulk-o
 import { SearchResultsSectionModule } from '../search-results-section-module/search-results-section.module';
 import { QcHistoryReportModuleModule } from '../qc-history-report-module/qc-history-report-module.module';
 import { QcSeriesReportModuleModule } from '../qc-series-report-module/qc-series-report-module.module';
-import { AngularDraggableModule } from 'angular2-draggable';
 import { DisplayDynamicQueryModule } from '@app/tools/display-dynamic-query/display-dynamic-query.module';
 import { ReleaseDateCalendarComponent } from './perform-qc/release-date-calendar/release-date-calendar.component';
 
@@ -38,7 +36,6 @@ import { ReleaseDateCalendarComponent } from './perform-qc/release-date-calendar
     imports: [
         CommonModule,
         FormsModule,
-        NgxMyDatePickerModule,
         AdminCommonPipeModule,
         DisplayQueryModule,
         QuerySectionModule,
@@ -46,7 +43,6 @@ import { ReleaseDateCalendarComponent } from './perform-qc/release-date-calendar
         SearchResultsSectionModule,
         QcHistoryReportModuleModule,
         QcSeriesReportModuleModule,		
-        AngularDraggableModule,
         DisplayDynamicQueryModule
     ]
 } )

@@ -1,3 +1,4 @@
+@use "sass:math";
 @import '../app.component';
 @import '../popup.scss';
 
@@ -6,7 +7,7 @@ $preferences-width: 500px;
 .preferences-div{
     z-index: $popup-z-index;
     width: $preferences-width;
-    left: calc(50% - #{$preferences-width / 2 });
+    left: calc(50% - math.div($preferences-width, 2));
 
 }
 

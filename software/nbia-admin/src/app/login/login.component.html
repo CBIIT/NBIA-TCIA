@@ -7,14 +7,12 @@
     <h2>No Access token provided, please log in</h2>
 </div>
 <div
-    ngDraggable
-    [handle]="PanelHandle"
     class="card card-nbia-default login-box alert-box-shadow"
     [ngClass]="{
         'login-panel-heading-moving': handleMoving
     }"
 >
-    <div #PanelHandle class="card-header card-nbia-header-default pt-2">
+    <div class="card-header card-nbia-header-default pt-2">
         <div class="card-title"><h4>Login {{ username }}</h4></div>
     </div>
     <div style="padding-top: 30px;" class="card-body bg-white">
