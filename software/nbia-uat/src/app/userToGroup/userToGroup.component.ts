@@ -2,7 +2,7 @@ import { Component, Input, ViewChild, ChangeDetectionStrategy, OnInit } from '@a
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { Message } from 'primeng/components/common/api';
+import { Message } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { SelectItem } from 'primeng/api';
 import { Config } from '../configs/config';
@@ -18,7 +18,7 @@ import { UserToGroupService } from './userToGroupservice';
 })
 export class UserToGroupComponent implements OnInit {
 	@Input() addedUser: any;
-	@ViewChild(Table, {static: false}) 
+	@ViewChild(Table) 
 	private dt:Table;
 	displayDialogAdd: boolean;
 	userNames: SelectItem[];

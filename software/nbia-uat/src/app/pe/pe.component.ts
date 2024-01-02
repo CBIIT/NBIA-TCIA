@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Message } from 'primeng/components/common/api';
+import { Message } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table'; 
 import { Config } from '../configs/config';
@@ -17,7 +17,7 @@ import { LoadingDisplayService } from '../common/components/loading-display/load
   providers:  [Globals]  
 })
 export class PeComponent implements OnInit {
-	@ViewChild(Table, {static: false}) 
+	@ViewChild(Table) 
 	private dt:Table;	
 	displayDialog: boolean;
     pe: Pe = new PrimePe();

@@ -1,5 +1,5 @@
 import { Component,ViewChild, OnInit } from '@angular/core';
-import { Message } from 'primeng/components/common/api';
+import { Message } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table'; 
 import { Config } from '../configs/config';
@@ -10,8 +10,8 @@ import { PgService } from './pgservice';
 import { Pe } from '../pe/pe';
 import { LoadingDisplayService } from '../common/components/loading-display/loading-display.service';
 
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/api';
-import { DialogService } from 'primeng/components/dynamicdialog/dialogservice';
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { PgMemberList } from './pgmemberlist';
 
 @Component({
@@ -24,7 +24,7 @@ import { PgMemberList } from './pgmemberlist';
 
 	 
 export class PgComponent implements OnInit {
-	@ViewChild(Table, {static: false}) 
+	@ViewChild(Table) 
 	private dt:Table;
 	displayDialog: boolean;
 	displayAssignDialog: boolean;

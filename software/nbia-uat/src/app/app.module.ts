@@ -38,43 +38,39 @@ import { UgMemberService } from './group/ugmemberservice';
 import { UserToGroupComponent } from './userToGroup/userToGroup.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    GroupComponent,
-    PeComponent,
-    PgComponent,
-    PgRoleComponent,
-    UserComponent,
-	LoadingDisplayComponent,
-	AddNewLinePipe,
-	PgMemberList,
-	UgMemberList,
-	UserToGroupComponent	
-  ],
-  imports: [
-    BrowserModule,
-	HttpClientModule,
-	ButtonModule,
-	CheckboxModule,
-	ConfirmDialogModule,
-	DialogModule,
-	DropdownModule,
-	DynamicDialogModule,
-	InputTextModule,
-	MessagesModule,
-	MessageModule,
-	MultiSelectModule,
-	TableModule,
-	TabViewModule,
-	TooltipModule,
-    FormsModule,
-    BrowserAnimationsModule	
-  ],
-	entryComponents: [
-		PgMemberList,
-		UgMemberList
-	],  
-  providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService, ConfirmationService],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        GroupComponent,
+        PeComponent,
+        PgComponent,
+        PgRoleComponent,
+        UserComponent,
+        LoadingDisplayComponent,
+        AddNewLinePipe,
+        PgMemberList,
+        UgMemberList,
+        UserToGroupComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        ButtonModule,
+        CheckboxModule,
+        ConfirmDialogModule,
+        DialogModule,
+        DropdownModule,
+        DynamicDialogModule,
+        InputTextModule,
+        MessagesModule,
+        MessageModule,
+        MultiSelectModule,
+        TableModule,
+        TabViewModule,
+        TooltipModule,
+        FormsModule,
+        BrowserAnimationsModule
+    ],
+    providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService, ConfirmationService],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

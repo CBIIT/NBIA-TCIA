@@ -25,10 +25,10 @@ export class AppComponent implements OnInit {
 	selectedTabHeader = "User";
 	version = '2.4';
 	hostName:string;
-	@ViewChild(TabView,{static:false}) tabView: TabView;
-	@ViewChild(GroupComponent,{static:false}) groupComponent: GroupComponent;
-	@ViewChild(PeComponent,{static:false}) peComponent: PeComponent;	
-	@ViewChild(PgComponent,{static:false}) pgComponent: PgComponent;
+	@ViewChild(TabView) tabView: TabView;
+	@ViewChild(GroupComponent) groupComponent: GroupComponent;
+	@ViewChild(PeComponent) peComponent: PeComponent;	
+	@ViewChild(PgComponent) pgComponent: PgComponent;
 	
 	constructor(private appservice: ConfigService, private globals: Globals, private loadingDisplayService: LoadingDisplayService) { 	
 		//uncomment below when check-in!!!

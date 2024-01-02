@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, OnInit } from '@angular/core';
-import { Message } from 'primeng/components/common/api';
+import { Message } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { SelectItem } from 'primeng/api';
 import { Config } from '../configs/config';
@@ -10,8 +10,8 @@ import { PgRole } from '../pgRole/pgRole';
 import { GroupService } from './groupservice';
 import { LoadingDisplayService } from '../common/components/loading-display/loading-display.service';
 
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/api';
-import { DialogService } from 'primeng/components/dynamicdialog/dialogservice';
+import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { UgMemberList } from './ugmemberlist';
 
 @Component({
@@ -21,7 +21,7 @@ import { UgMemberList } from './ugmemberlist';
   providers:  [Globals, DialogService, DynamicDialogRef, DynamicDialogConfig]    
 })
 export class GroupComponent implements OnInit {
-	@ViewChild(Table, {static: false}) 
+	@ViewChild(Table) 
 //	@Input() selectedTabHeader: string;
 	private dt:Table;
 	displayDialog: boolean;

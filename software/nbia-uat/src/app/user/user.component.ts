@@ -5,7 +5,7 @@ import { UserService } from './userservice';
 import { Globals } from '../conf/globals'
 import { Config } from '../configs/config';
 import { ConfigService } from '../configs/configservice';
-import { Message } from 'primeng/components/common/api';
+import { Message } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table'; 
 import { MessageService } from 'primeng/api';
@@ -20,7 +20,7 @@ import { LoadingDisplayService } from '../common/components/loading-display/load
   providers:  [ MessageService]
 })
 export class UserComponent implements OnInit {
-	@ViewChild(Table, {static: false}) 
+	@ViewChild(Table) 
 	private dt:Table;
 	@Output() addUser: EventEmitter<any> = new EventEmitter();
 	displayDialog: boolean;

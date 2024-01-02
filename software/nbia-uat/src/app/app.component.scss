@@ -83,7 +83,7 @@
     outline: none;
 }
 
-.ui-tabview { /* tab view boder */
+.p-tabview { /* tab view boder */
     background: none;
     border: 0 none;
     color: #5C666A;
@@ -91,7 +91,7 @@
     -webkit-border-radius: 4px !important;
     border-radius: 4px !important;
 }
-.ui-tabview .ui-tabview-nav { /*tab tag bar area*/
+.p-tabview .p-tabview-nav { /*tab tag bar area*/
     background: #f4f4f4 !important;;
     margin-bottom: -1px;
     padding: 3px 3px 0px 3px !important;
@@ -100,8 +100,8 @@
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
 }
-.ui-tabview .ui-tabview-nav li,
-.ui-tabview .ui-tabview-nav li.ui-state-hover { /*unselected tab*/
+.p-tabview .p-tabview-nav li,
+.p-tabview .p-tabview-nav li.p-state-hover { /*unselected tab*/
     border: 0px none !important;
     background: #dddddd !important;
     border-color: #dddddd !important;;
@@ -109,34 +109,34 @@
     border-top-right-radius: 4px !important;
     border-top-left-radius: 4px !important;
 }
-.ui-tabview .ui-tabview-nav li a {
+.p-tabview .p-tabview-nav li a {
     padding: .5em 1em !important;
 }
-.ui-tabview .ui-tabview-nav li.tab-doc {
+.p-tabview .p-tabview-nav li.tab-doc {
     margin-right: 0;
 }
-.ui-tabview .ui-tabview-nav li.ui-state-default a {
+.p-tabview .p-tabview-nav li.p-state-default a {
     color: #337ab7 !important; 			/* unselected text */
     font-weight: normal !important;
     text-shadow: none ;
 }
-.ui-tabview .ui-tabview-nav li.ui-state-active a {
+.p-tabview .p-tabview-nav li.p-state-active a {
     color: #234567!important;
     font-weight: normal !important;
 }
-.ui-tabview .ui-tabview-nav li.ui-state-hover {	
+.p-tabview .p-tabview-nav li.p-state-hover {	
     box-shadow: none !important;
 }
 
-.ui-tabview .ui-tabview-nav li.ui-tabview-selected { /*selected tab*/
+.p-tabview .p-tabview-nav li.p-tabview-selected { /*selected tab*/
     @extend .no-outline;
     background: #fff !important;
 }
-.ui-tabview .ui-tabview-panels { /* tab view pannel body */
+.p-tabview .p-tabview-panels { /* tab view pannel body */
     border-top: 1px solid #F5F6F7 !important;;
     color: #5C666A !important;
     background: #fff;
 }
-.ui-tabview.ui-tabview-top > .ui-tabview-nav li {
+.p-tabview.p-tabview-top > .p-tabview-nav li {
     top: 0px !important;
 }

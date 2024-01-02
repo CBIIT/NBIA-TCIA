@@ -29,16 +29,12 @@
 	<p-tabPanel header="User Group">
 		<group></group>
 	</p-tabPanel>
-	<div *ngIf="showAuthorPG===true">
-		<p-tabPanel header="User Authorization w/ PG">
-			<pgRole [addedUser]="addedUser"></pgRole>
-		</p-tabPanel>
-	</div>	
-	<div *ngIf="showAuthorUG===true">
-		<p-tabPanel header="User Authorization w/ User Group">
-			<userToGroup [addedUser]="addedUser"></userToGroup>
-		</p-tabPanel>
-	</div>	
+	<p-tabPanel [disabled]="showAuthorPG !== true" header="User Authorization w/ PG">
+		<pgRole [addedUser]="addedUser"></pgRole>
+	</p-tabPanel>
+	<p-tabPanel [disabled]="showAuthorUG !== true" header="User Authorization w/ User Group">
+		<userToGroup [addedUser]="addedUser"></userToGroup>
+	</p-tabPanel>
 </p-tabView>
 
 
