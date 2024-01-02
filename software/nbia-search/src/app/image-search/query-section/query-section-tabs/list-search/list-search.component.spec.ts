@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ListSearchComponent } from './list-search.component';
 import {HttpModule} from '@angular/http';
@@ -8,7 +8,7 @@ describe('ListSearchComponent', () => {
   let component: ListSearchComponent;
   let fixture: ComponentFixture<ListSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ListSearchComponent ],
         imports: [FormsModule]

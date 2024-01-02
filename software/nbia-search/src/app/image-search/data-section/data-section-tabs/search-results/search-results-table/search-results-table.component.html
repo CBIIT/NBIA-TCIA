@@ -79,30 +79,6 @@
                 </span>
                 <!-- End of Sort buttons for each TD  -->
 
-
-                <!-- "Add All or These X" to select for cart -->
-                <!-- Couldn't do "All" now that we get search results one page at a time, so this is "Just these" now. -->
-<!--  commented out for bootstrap 4 testing
-                <span *ngIf="colName['name'] === 'Cart'" class="dropdown top-cart-select-dropdown">
-
-                    <span
-                            class=" clicker top-cart-select-dropdown"
-                            dropdown
-                            [dropdownToggle]="true"
-                    >
-                        <button
-                                class="btn btn-default top-cart-select-button"
-                                [disabled]="thisPageRowCount < 0"
-                                dropdown-open
-                                (click)="onCartCheckClick(  0 )"
-                        >
-                            <img src="assets/images/icons/cart.png"  >
-
-                        </button>
-                    </span>
-                </span>
--->
-
                 <span *ngIf="colName['name'] === 'Cart'" class="dropdown top-cart-select-dropdown">
 
                     <span

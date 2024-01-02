@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { QueryUrlComponent } from './query-url.component';
 import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
@@ -15,7 +15,7 @@ describe('QueryUrlComponent', () => {
   let component: QueryUrlComponent;
   let fixture: ComponentFixture<QueryUrlComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QueryUrlComponent ],
         imports: [ HttpModule, ClipboardModule],

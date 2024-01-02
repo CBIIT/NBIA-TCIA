@@ -24,26 +24,22 @@
         <div class="input-group">
             <div class="main-date-range-div">
                 <span class="date-box-label date-box-label-from">From:</span>
-                <input (click)="dpFrom.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box"
+                <input (click)="initializeDisableFutureDates()" class="date-box-text-box"
                        placeholder='Select "From" date'
-                       ngx-mydatepicker name="fromDatePicker"
-                       [(ngModel)]="fromDateModel"
-                       [options]="dateOptions"
-                       #dpFrom="ngx-mydatepicker"
-                       (dateChanged)="onDateChangedFrom($event)"/>
+                       [(ngModel)]="fromDate"
+                       type="date"
+                       (change)="onDateChangedFrom($event)"/>
             </div>
         </div>
 
         <div class="input-group">
             <div class="main-date-range-div">
                 <span class="date-box-label date-box-label-to">To:</span>
-                <input (click)="dpTo.toggleCalendar(); initializeDisableFutureDates()" class="date-box-text-box"
+                <input (click)="initializeDisableFutureDates()" class="date-box-text-box"
                        placeholder='Select "To" date'
-                       ngx-mydatepicker name="toDatePicker"
-                       [(ngModel)]="toDateModel"
-                       [options]="dateOptions"
-                       #dpTo="ngx-mydatepicker"
-                       (dateChanged)="onDateChangedTo($event)"/>
+                       [(ngModel)]="toDate"
+                       type="date"
+                       (change)="onDateChangedTo($event)"/>
             </div>
         </div>
 

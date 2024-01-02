@@ -43,9 +43,6 @@ import { SeriesCartSelectorComponent } from './image-search/data-section/data-se
 import { SubjectCartSelectorComponent } from './image-search/data-section/data-section-tabs/search-results/search-results-table/cart-selectors/subject-cart-selector/subject-cart-selector.component';
 import { StudiesCartSelectorComponent } from './image-search/data-section/data-section-tabs/search-results/search-results-table/cart-selectors/studies-cart-selector/studies-cart-selector.component';
 import { CartButtonGroupComponent } from './cart/cart-button-group/cart-button-group.component';
-import { DropdownModule } from 'ngx-dropdown';
-import { TabsModule } from 'ngx-tabs';
-import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { ShortenPipe } from './common/pipes/shorten.pipe';
 import { CartSortService } from './cart/cart-sort.service';
 import { NbiaClientComponent } from './nbia-client/nbia-client.component';
@@ -90,7 +87,6 @@ import { WindowRefService } from '@app/common/services/window-ref.service';
 import { FooterComponent } from './footer/footer.component';
 import { FeedbackAndLegacyButtonsComponent } from './feedback-and-legacy-buttons/feedback-and-legacy-buttons.component';
 import { ApplicationMenuComponent } from './application-menu/application-menu.component';
-import { CustomMenuComponent } from './custom-menu/custom-menu.component';
 import { TextSearchExplanationComponent } from './image-search/query-section/query-section-tabs/text-search/text-search-explanation/text-search-explanation.component';
 import { SpeciesQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/species-query/species-query.component';
 import { PhantomQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query.component';
@@ -100,9 +96,6 @@ import { OhifViewerService } from '@app/image-search/services/ohif-viewer.servic
 import { AppRoutingModule } from '@app/app-routing.module';
 import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from '@app/common/services/configuration.service';
-import { CineModeComponent } from './cine-mode/cine-mode.component';
-import { AngularDraggableModule } from 'angular2-draggable';
-import { ProgressBarModule } from 'angular-progress-bar';
 import { DaysFromBaselineComponent } from './image-search/query-section/query-section-tabs/simple-search/days-from-baseline/days-from-baseline.component';
 import { CommercialUseComponent } from './image-search/query-section/query-section-tabs/simple-search/commercial-use/commercial-use.component';
 import { UniversalMenuComponent } from './header/universal-menu/universal-menu.component';
@@ -190,14 +183,12 @@ const appRoutes: Routes = [
         FooterComponent,
         FeedbackAndLegacyButtonsComponent,
         ApplicationMenuComponent,
-        CustomMenuComponent,
         TextSearchExplanationComponent,
         SpeciesQueryComponent,
         PhantomQueryComponent,
         ThirdPartyQueryComponent,
         ThirdPartyExplanationComponent,
         BannerComponent,
-        CineModeComponent,
         DaysFromBaselineComponent,
         CommercialUseComponent,
         UniversalMenuComponent,
@@ -207,13 +198,8 @@ const appRoutes: Routes = [
         BrowserModule,
         FormsModule,
         HttpClientModule,
-        TabsModule,
-        DropdownModule,
-        NgxMyDatePickerModule.forRoot(),
         AppRoutingModule,
         ClipboardModule,
-        AngularDraggableModule,
-        ProgressBarModule
 
     ],
     providers: [CookieService],
