@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { UtilService } from './services/util.service';
 import { ServerAccessService } from './services/server-access.service';
 import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'ngx-dropdown';
 import { PagerComponent } from './pager/pager.component';
 import { CommonService } from './services/common.service';
 import { ImagesPerPageComponent } from './images-per-page/images-per-page.component';
@@ -34,7 +33,6 @@ const appRoutes: Routes = [
         HttpClientModule,
         FormsModule,
         RouterModule.forRoot( appRoutes ),
-        DropdownModule
     ],
     providers: [
         CookieService,

@@ -202,7 +202,7 @@ export class PagerComponent implements OnInit, OnDestroy{
     }
 
     ngOnDestroy() {
-        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.next(null);
         this.ngUnsubscribe.complete();
     }
 }
