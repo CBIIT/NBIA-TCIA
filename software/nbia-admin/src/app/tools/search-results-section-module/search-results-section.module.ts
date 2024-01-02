@@ -4,7 +4,6 @@ import { AdminCommonPipeModule } from '@app/admin-common/admin-common-pipe-modul
 import { FormsModule } from '@angular/forms';
 import { SearchResultsSectionBravoComponent } from './search-results-section-bravo/search-results-section-bravo.component';
 import { EditLicenseModule } from '@app/tools/edit-license-module/edit-license.module';
-import { NgxKeyboardShortcutModule } from 'ngx-keyboard-shortcuts';
 import { SearchResultsPagerComponent } from './search-results-pager/search-results-pager.component';
 import { RemoveSitePipe } from './search-results-section-bravo/remove-site.pipe';
 
@@ -24,7 +23,6 @@ import { RemoveSitePipe } from './search-results-section-bravo/remove-site.pipe'
         CommonModule,
         FormsModule,
         AdminCommonPipeModule,
-        NgxKeyboardShortcutModule.forRoot()
     ]
 } )
 export class SearchResultsSectionModule{

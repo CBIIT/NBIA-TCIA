@@ -29,16 +29,7 @@ import { Properties } from '@assets/properties';
 import {
     WidgetSiteLicenseService
 } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget-site-license.service';
-
-export enum WIDGET_TYPE{
-    UNKNOWN,
-    NUMBER,
-    TEXT,
-    ITEM_LIST,
-    ONE_LINE_RADIO_BUTTONS,
-    ONE_CHECKBOX,
-    CALENDAR
-}
+import { WIDGET_TYPE } from '@app/tools/shared/enums/widget-type.enum';
 
 @Component( {
     selector: 'nbia-widget',

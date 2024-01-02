@@ -3,19 +3,12 @@
 -->
 
 <div *ngIf="allDataInitialized"
-    ngDraggable
-    [handle]="PanelHandleCriteriaSelectionMenu"
     class="card card-nbia-default criteria-selection-menu-box alert-box-shadow rSize"
     [ngClass]="{
         'criteria-selection-menu-panel-heading': handleMoving
-    }"
+    }">
 
-    [ngDraggable]="true"
-    (started)="onDragBegin($event)"
-    (endOffset)="onMoveEnd($event)"
->
-
-    <div #PanelHandleCriteriaSelectionMenu class="card-header card-nbia-header-default pt-2">
+    <div class="card-header card-nbia-header-default pt-2">
         <div class="card-title unselectable">
             <h4>Select Search Criteria</h4>
         </div>

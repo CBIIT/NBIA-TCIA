@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DynamicCriteriaQueryPart } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-criteria-query-part';
-import { WIDGET_TYPE } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget.component';
+import { WIDGET_TYPE } from '@app/tools/shared/enums/widget-type.enum';
 import { ApiService } from '@app/admin-common/services/api.service';
 import { ParameterService } from '@app/admin-common/services/parameter.service';
 import { Consts } from '@app/constants';

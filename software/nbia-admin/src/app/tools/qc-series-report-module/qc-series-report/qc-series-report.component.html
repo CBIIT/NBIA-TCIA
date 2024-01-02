@@ -6,19 +6,14 @@
 <!--The parent div/ bootstrap panel-->
 <div id="seriesDragPanel"
     *ngIf="showReport"
-     ngDraggable [handle]="PanelHandle"
      class="card card-nbia-default  alert-box-div alert-box-shadow unselectable perform-qc-series-report-div"
      [ngClass]="{
         'alert-box-heading-moving': handleMoving
     }"
-     [ngDraggable]=" true"
-
-     (started)="onDragBegin($event)"
-     (endOffset)="onMoveEnd($event)"
 >
 
     <!-- The panel heading, this is the draggable part -->
-    <div #PanelHandle class="card-header card-nbia-header-default unselectable alert-box-heading" >
+    <div class="card-header card-nbia-header-default unselectable alert-box-heading" >
         <span class="card-title">Series Report</span>
         <span class="close-x clicker unselectable" (click)="closeQcSeriesReportClick()">
             X

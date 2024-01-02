@@ -13,6 +13,7 @@ import { LoadingDisplayService } from '@app/admin-common/components/loading-disp
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from '@app/admin-common/services/access-token.service';
 import { DynamicQueryBuilderService } from '@app/tools/query-section-module/dynamic-query-criteria/dynamic-query-builder.service';
+import { WIDGET_TYPE } from '@app/tools/shared/enums/widget-type.enum';
 
 
 @Component( {

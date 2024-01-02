@@ -2,7 +2,7 @@
 // -----   This class will be passed from the individual Widgets to the Dynamic query builder    -----
 // ---------------------------------------------------------------------------------------------------
 
-import { WIDGET_TYPE } from '@app/tools/query-section-module/dynamic-query-criteria/widget/widget.component';
+import { WIDGET_TYPE } from '@app/tools/shared/enums/widget-type.enum';
 
 /**
  * When a Dynamic criteria is added or modified, it will pass its data to the dynamic-query-builder.service as one of these.

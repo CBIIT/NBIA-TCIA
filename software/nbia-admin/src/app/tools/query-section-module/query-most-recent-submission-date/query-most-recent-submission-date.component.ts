@@ -5,8 +5,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { UtilService } from '@app/admin-common/services/util.service';
-import { IMyDateModel, INgxMyDpOptions, NgxMyDatePickerDirective, } from 'ngx-mydatepicker';
-import * as moment from 'moment';
 import { QuerySectionService } from '../services/query-section.service';
 import { Consts } from '@app/constants';
 import { takeUntil } from 'rxjs/operators';
@@ -29,23 +27,8 @@ export class QueryMostRecentSubmissionDateComponent
     @Input() currentTool;
     showCriteriaList = true;
 
-    dateOptions: INgxMyDpOptions = {
-        // other options...
-        dateFormat: 'mm/dd/yyyy',
-        sunHighlight: true,
-        satHighlight: true,
-        firstDayOfWeek: 'su',
-        markCurrentDay: true,
-        selectorHeight: '232px',
-        selectorWidth: '295px',
-    };
-
-    // We need this to give access to clearDate() within this.onDateRangeClearAllClick
-    @ViewChild( 'dpFrom', { static: true } ) ngxdpFrom: NgxMyDatePickerDirective;
-    @ViewChild( 'dpTo', { static: true } ) ngxdpTo: NgxMyDatePickerDirective;
-
-    toDateModel = {};
-    fromDateModel = {};
+    toDateModel = null;
+    fromDateModel = null;
     checked = false;
     disableUseDateRange = true;
     dateRangeTrailer = null;
@@ -111,12 +94,7 @@ export class QueryMostRecentSubmissionDateComponent
     }
 
     setToDateToToday() {
-        let today = new Date();
-        this.toDateModel = {};
-        this.toDateModel['date'] = {};
-        this.toDateModel['date']['day'] = today.getDate();
-        this.toDateModel['date']['month'] = today.getMonth() + 1;
-        this.toDateModel['date']['year'] = today.getFullYear();
+        this.toDateModel = new Date();
     }
 
     /**
@@ -153,81 +131,30 @@ export class QueryMostRecentSubmissionDateComponent
         this.dateRangeTrailer = dateRangeForQuery;
     }
 
-    onDateChangedTo( e: IMyDateModel ) {
-        // We need to do this because "dateChanged" event can happen before the bound variable toDateModel is updated.
-        if( !this.utilService.isNullOrUndefined( e.date ) && e.date.year > 0 ){
-            this.toDateModel = { date: { year: 0, month: 0, day: 0 } };
-            this.toDateModel['date'] = e.date;
-        }
+    onDateChangedTo( e ) {
         this.validateDateRange();
         this.onApplyCheckboxChange();
     }
 
-    onDateChangedFrom( e: IMyDateModel ) {
-        // We need to do this because "dateChanged" event can happen before the bound variable fromDateModel is updated.
-        if( !this.utilService.isNullOrUndefined( e.date ) && e.date.year > 0 ){
-            this.fromDateModel = { date: { year: 0, month: 0, day: 0 } };
-            this.fromDateModel['date'] = e.date;
-        }
+    onDateChangedFrom( e ) {
         this.validateDateRange();
         this.onApplyCheckboxChange();
     }
 
-    /**
-     * We need to do this because the bound dataModels are not keeping the ['formatted'] field.
-     *
-     * @param d
-     */
-    setFormattedDate( d ) {
-        if( this.utilService.isNullOrUndefinedOrEmpty( d ) ){
-            return '';
-        }
-
-        let date = '';
-        if( d.month < 10 ){
-            date += '0';
-        }
-        date += d.month + '/';
-
-        if( d.day < 10 ){
-            date += '0';
-        }
-        date += d.day + '/' + d.year;
-        return date;
-    }
 
     validateDateRange() {
         this.disableUseDateRange = false;
-        // We need to do this because the bound dataModels are not keeping the ['formatted'] field.
-        this.toDateModel['formatted'] = this.setFormattedDate(
-            this.toDateModel['date']
-        );
-        this.fromDateModel['formatted'] = this.setFormattedDate(
-            this.fromDateModel['date']
-        );
         // Check for a value in "from date" and "to date"
         if(
             this.utilService.isNullOrUndefined( this.fromDateModel ) ||
-            this.utilService.isNullOrUndefined( this.fromDateModel['date'] ) ||
-            this.utilService.isNullOrUndefined( this.toDateModel ) ||
-            this.utilService.isNullOrUndefined( this.toDateModel['date'] )
+            this.utilService.isNullOrUndefined( this.toDateModel )
         ){
             this.disableUseDateRange = true;
             return;
         }
 
-        // Check for valid day and months
-        let mTo = moment( this.toDateModel['formatted'], 'MM/DD/YYYY' );
-        if( !mTo.isValid() ){
-            this.disableUseDateRange = true;
-        }
-        let mFrom = moment( this.fromDateModel['formatted'], 'MM/DD/YYYY' );
-        if( !mFrom.isValid() ){
-            this.disableUseDateRange = true;
-        }
-
         // Check for From date before To date
-        if( mTo.isBefore( mFrom ) ){
+        if( this.toDateModel < this.fromDateModel ) {
             this.disableUseDateRange = true;
         }
 
@@ -243,11 +170,11 @@ export class QueryMostRecentSubmissionDateComponent
         let today = new Date();
         // Add one day
         today = new Date( today.getTime() + 1000 * 60 * 60 * 24 );
-        this.dateOptions.disableSince = {
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            day: today.getDate(),
-        };
+        // this.dateOptions.disableSince = {
+        //     year: today.getFullYear(),
+        //     month: today.getMonth() + 1,
+        //     day: today.getDate(),
+        // };
     }
 
     ngOnDestroy(): void {

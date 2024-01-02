@@ -1,3 +1,4 @@
+@use "sass:math";
 @import '../app.component';
 @import '../popup';
 @import '../card-nbia';
@@ -22,7 +23,7 @@ $criteria-selection-menu-box-width: 40%;
     z-index: 750;
     width: $criteria-selection-menu-box-width;
     max-width: 500px;
-    left: calc(50% - #{$criteria-selection-menu-box-width / 2 });
+    left: calc(50% - math.div($criteria-selection-menu-box-width, 2));
 
     padding: 0;
     position: absolute;
