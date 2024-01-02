@@ -917,7 +917,7 @@ L-->
 				</exec>
 				<exec executable="ng" dir="${nbia-uat.base.dir}">
 					<arg value="build" />
-					<arg value="--prod" />
+					<arg value="--output-hashing=all" />
 					<arg value="--base-href" />
 					<arg value="/nbia-uat/" />
 				</exec>
@@ -936,6 +936,7 @@ L-->
 						<arg value="/c"/>
 						<arg value="ng"/>
 						<arg value="build"/>  
+						<arg value="--output-hashing=all" />
 						<arg value="--base-href"/>
 						<arg value="/nbia-uat/"/>		
 					</exec>
@@ -962,7 +963,7 @@ L-->
 				</exec>
 				<exec executable="ng" dir="${nbia-search.base.dir}">
 					<arg value="build" />
-					<arg value="--prod" />
+					<arg value="--output-hashing=all" />
 					<arg value="--base-href" />
 					<arg value="." />
 				</exec>
@@ -983,6 +984,7 @@ L-->
 						<arg value="/c"/>
 						<arg value="ng"/>
 						<arg value="build"/>  
+						<arg value="--output-hashing=all" />
 						<arg value="--base-href"/>
 						<arg value="."/>					
 					</exec>
@@ -1008,7 +1010,7 @@ L-->
 				</exec>							
 				<exec executable="ng" dir="${nbia-viewer.base.dir}">
 					<arg value="build" />
-					<arg value="--prod" />
+					<arg value="--output-hashing=all" />
 					<arg value="--base-href" />
 					<arg value="." />					
 				</exec>
@@ -1028,6 +1030,7 @@ L-->
 						<arg value="/c"/>
 						<arg value="ng"/>
 						<arg value="build"/>  
+						<arg value="--output-hashing=all" />
 						<arg value="--base-href"/>
 						<arg value="."/>					
 					</exec>
@@ -1053,7 +1056,7 @@ L-->
 				</exec>
 				<exec executable="ng" dir="${nbia-admin.base.dir}">				
 					<arg value="build" />
-					<arg value="--prod" />
+					<arg value="--output-hashing=all" />
 					<arg value="--base-href" />
 					<arg value="." />
 				</exec>
@@ -1073,6 +1076,7 @@ L-->
 						<arg value="/c"/>
 						<arg value="ng"/>
 						<arg value="build"/>  
+						<arg value="--output-hashing=all" />
 						<arg value="--base-href"/>
 						<arg value="."/>					
 					</exec>
