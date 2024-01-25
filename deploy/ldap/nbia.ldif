@@ -1,0 +1,56 @@
+version: 1
+
+dn: dc=example,dc=org
+objectClass: dcObject
+objectClass: organization
+dc: example
+o: example
+
+dn: ou=users,dc=example,dc=org
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=user01,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: user01
+sn: Bar1
+userPassword:: cGFzc3dvcmQx
+
+dn: cn=user02,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: user02
+sn: Bar2
+userPassword:: cGFzc3dvcmQy
+
+dn: cn=nbia_guest,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: nbia_guest
+sn: Bar1
+userPassword: test
+
+dn: cn=nbiaAdmin,ou=users,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: nbiaAdmin
+sn: Bar3
+userPassword:: YWRtaW4=
+
+dn: cn=readers,ou=users,dc=example,dc=org
+objectClass: groupOfNames
+cn: readers
+member: cn=nbiaAdmin,ou=users,dc=example,dc=org
+member: cn=user01,ou=users,dc=example,dc=org
+member: cn=user02,ou=users,dc=example,dc=org
+
+dn: cn=tcia-team,ou=users,dc=example,dc=org
+objectClass: groupOfNames
+cn: tcia-team 
+member: cn=nbiaAdmin,ou=users,dc=example,dc=org
+member: cn=user02,ou=users,dc=example,dc=org
+
+dn: cn=General User,ou=users,dc=example,dc=org
+objectClass: groupOfNames
+cn: General User
+member: cn=nbiaAdmin,ou=users,dc=example,dc=org
+member: cn=nbia_guest,ou=users,dc=example,dc=org
+member: cn=user01,ou=users,dc=example,dc=org
+member: cn=user02,ou=users,dc=example,dc=org
