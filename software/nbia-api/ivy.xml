@@ -23,7 +23,10 @@ L-->
 	<dependencies>
 	    <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
         <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.17.1"  conf="compile->master;runtime->master"/>
-          <dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
+        <dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
+		<dependency org="org.apache.logging.log4j" name="log4j-slf4j2-impl" rev="2.19.0" conf="compile->master;runtime->master"/> 
+		<dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.18.3" conf="compile->master;runtime->master"/>
+		<dependency org="org.slf4j" name="slf4j-reload4j" rev="1.7.36" conf="compile->master;runtime->master"/>
 		<dependency org="org.owasp.esapi" name="esapi" rev="2.1.0" conf="compile->master;runtime->master"/>
 		<dependency org="asm" name="asm" rev="3.1" conf="compile->master;runtime->master"/>
 		<dependency org="cglib" name="cglib" rev="2.2" conf="compile->master;runtime->master"/>
@@ -37,8 +40,12 @@ L-->
 		-->
 		<dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
 		<dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.9.2" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.media" name="jersey-media-json-jackson" rev="2.9.1" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.media" name="jersey-media-multipart" rev="2.28" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.media" name="jersey-media-json-jackson" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.ext" name="jersey-entity-filtering" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.media" name="jersey-media-multipart" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.media" name="jersey-media-moxy" rev="2.8" conf="compile->master;runtime->master"/>
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.moxy" rev="2.7.14" conf="compile->master;runtime->master"/>
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="2.7.10" conf="compile->master;runtime->master"/>
 		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-json-provider" rev="2.13.4" conf="compile->master;runtime->master"/>
 		<dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-base" rev="2.13.4" conf="compile->master;runtime->master"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.13.4" conf="compile->master;runtime->master"/>
@@ -46,17 +53,17 @@ L-->
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.13.4" conf="compile->master;runtime->master"/>
 		<dependency org="com.fasterxml.jackson.module" name="jackson-module-jaxb-annotations" rev="2.14.0-rc2" conf="compile->master;runtime->master"/>
 		<dependency org="jdom" name="jdom" rev="1.0" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet" rev="2.27" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet-core" rev="2.27" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.core" name="jersey-client" rev="2.27" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.core" name="jersey-server" rev="2.27" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.core" name="jersey-common" rev="2.27" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.containers" name="jersey-container-servlet-core" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.core" name="jersey-client" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.core" name="jersey-server" rev="2.35" conf="compile->master;runtime->master"/>
+		<dependency org="org.glassfish.jersey.core" name="jersey-common" rev="2.35" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.jersey.bundles.repackaged" name="jersey-guava" rev="2.9" conf="compile->master;runtime->master"/>
 		<dependency org="org.javassist" name="javassist" rev="3.20.0-GA" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.hk2" name="hk2-locator" rev="2.5.0-b62" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.hk2" name="hk2-api" rev="2.5.0-b62" conf="compile->master;runtime->master"/>
 		<dependency org="org.glassfish.hk2" name="hk2-utils" rev="2.5.0-b62" conf="compile->master;runtime->master"/>
-		<dependency org="org.glassfish.jersey.inject" name="jersey-hk2" rev="2.27" conf="compile->master;runtime->master"/>	
+		<dependency org="org.glassfish.jersey.inject" name="jersey-hk2" rev="2.35" conf="compile->master;runtime->master"/>	
 		<dependency org="javax.inject" name="javax.inject" rev="1.0-PFD-1" conf="compile->master;runtime->master"/>	
 		<dependency org="javax.annotation" name="javax.annotation-api" rev="1.2-b02" conf="compile->master;runtime->master"/>	
 		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master;runtime->master"/>	
@@ -134,7 +141,7 @@ L-->
                 name="jai_imageio"
                 rev="1.2_pre-dr-b04"
                 conf="runtime->master"/>
-    <dependency org="org.slf4j"
+    <!--dependency org="org.slf4j"
                 name="slf4j-api"
                 rev="1.7.5"
                 conf="compile->master;runtime->master"/>
@@ -142,7 +149,7 @@ L-->
     <dependency org="org.slf4j"
                 name="slf4j-nop"
                 rev="1.7.5"
-                conf="compile->master;runtime->master"/>
+                conf="compile->master;runtime->master"/-->
         <dependency org="javax.xml.bind"
                 name="jaxb-api"
                 rev="2.2.11"

@@ -55,7 +55,7 @@ L-->
                 rev="1.1"
                 conf="test->master,runtime"/>
 
-    <dependency org="org.slf4j"
+    <!--dependency org="org.slf4j"
                 name="slf4j-api"
                 rev="1.6.1"
                 conf="test->master"/>
@@ -63,7 +63,7 @@ L-->
     <dependency org="org.slf4j"
                 name="slf4j-nop"
                 rev="1.6.1"
-                conf="test->master"/>
+                conf="test->master"/-->
 
     <dependency org="jboss.jbossas.core-libs"
                 name="jboss-j2ee"
@@ -112,7 +112,7 @@ L-->
                 rev="1.2.15"
                 conf="runtime->master"/>
     
-    <dependency org="org.slf4j"
+    <!--dependency org="org.slf4j"
                 name="slf4j-api"
                 rev="1.6.1"
                 conf="runtime->master"/>
@@ -120,7 +120,7 @@ L-->
     <dependency org="org.slf4j"
                 name="slf4j-log4j12"
                 rev="1.6.1"
-                conf="runtime->master"/>
+                conf="runtime->master"/-->
 
     <dependency org="java.net"
                 name="clibwrapper_jiio"
@@ -133,12 +133,12 @@ L-->
                 conf="runtime->master"/>
     <!-- one unit because of way defined in maven.  fix in maven -->
 
-    <dependency org="gov.nih.nci.csm"
+    <!--dependency org="gov.nih.nci.csm"
                 name="csmapi"
                 rev="5.2.0.1"
                 conf="compile->master;runtime->default">
       <exclude module="jdom"/>
-    </dependency>
+    </dependency-->
     <!-- csm ivy will hit blank conf in maven repo, while is compile, which apparentl pulls source -->
     <dependency org="jdom"
                 name="jdom"

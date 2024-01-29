@@ -107,6 +107,10 @@ L-->
   </target>
 
   <target name="compile" depends="ivy-compile">
+	<copy todir="${project.lib.dir}/compile">
+      <fileset dir="${common.dir}/common/resources/csmapi/">
+	  </fileset>
+    </copy>
     <mkdir dir="bin"/>
     <javac srcdir="${src.java.dir}"
            destdir="${build}"
@@ -141,8 +145,15 @@ L-->
       	<exclude name="cglib-2*.jar" />
 	    <exclude name="spring-jsm*.jar" />
 	    <exclude name="xml-apis*.jar" />
+		<exclude name="csmapi-5.2.0.1.jar" />
       </fileset>
     </copy>
+	<copy todir="tmp.webapp/WEB-INF/lib">
+			<fileset dir="${common.dir}/common/resources/csmapi/">
+			</fileset> 
+	</copy>
+	<delete file="tmp.webapp/WEB-INF/lib/csmapi-5.2.0.1.jar" />
+	<delete file="tmp.webapp/WEB-INF/libslf4j-log4j12-1.7.25.jar" />
 
     <war destfile="${target.dir}/${war.name}"
          webxml="config/web.xml"
@@ -154,9 +165,9 @@ L-->
     </jar>
      <delete file="${target.dir}/${war.name}" />
      <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />
-    <war destfile="${target.dir}/${war.name}" update="true">
+    <!--war destfile="${target.dir}/${war.name}" update="true">
         <zipfileset file="${common.dir}/common/resources/lib/csmapi-5.2.0.1.jar"  prefix="WEB-INF/lib"/>
-    </war>
+    </war-->
   	<echo>copying ${target.dir}/${war.name} to ${dist.dir}</echo>
     <copy todir="${dist.dir}"
           file="${target.dir}/${war.name}"/>

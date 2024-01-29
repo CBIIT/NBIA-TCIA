@@ -74,7 +74,10 @@ L-->
     <echo message="**********************************" />
     <echo message="***   Compiling Java Classes   ***" />
     <echo message="**********************************" />
-
+	<copy todir="${project.lib.dir}/compile">
+      <fileset dir="${common.dir}/common/resources/csmapi/">
+	  </fileset>
+    </copy>
     <javac destdir="${assembly.classes.dir}" debug="true">
       <src path="${src.java.dir}" />
       <classpath>

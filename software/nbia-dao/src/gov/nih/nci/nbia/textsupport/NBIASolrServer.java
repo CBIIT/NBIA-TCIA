@@ -2,7 +2,10 @@ package gov.nih.nci.nbia.textsupport;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
+//import org.apache.logging.log4j.Level;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -18,7 +21,8 @@ import gov.nih.nci.nbia.util.NCIAConfig;
 public class NBIASolrServer implements SolrServerInterface{
 	   private static SolrClient server;
 	   private static String solrHome=NCIAConfig.getSolrHome();
-	   static Logger log = Logger.getLogger(NBIASolrServer.class);
+//	   static Logger log = LogManager.getLogger(NBIASolrServer.class);
+	
 	   // Spring maintains this as a singleton so this only happens once
 	   public NBIASolrServer() {
 	         startServer();
@@ -32,7 +36,7 @@ public class NBIASolrServer implements SolrServerInterface{
 				System.out.println("SolrHome is " + solrHome);
 				Path serverPath = Paths.get(solrHome);
 				server = new EmbeddedSolrServer(serverPath, "nbia");
-				log.info("Embedded Solr Server started successfully");
+				System.out.println("Embedded Solr Server started successfully");
 			} else if (solrType!=null&&solrType.equalsIgnoreCase("external")) {
 				String solrUrls=NCIAConfig.getSolrUrls();
 				if (solrUrls==null||solrUrls.isEmpty()) {
@@ -54,7 +58,8 @@ public class NBIASolrServer implements SolrServerInterface{
 			}
 
 		} catch (Exception e) {
-			log.error("Unable to start Solr");
+			//log.error("Unable to start Solr");
+			System.out.println("Unable to start Solr");
 			e.printStackTrace();
 		}
 	   }

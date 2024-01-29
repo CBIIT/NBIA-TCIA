@@ -142,6 +142,10 @@ L-->
 				<exclude name="asm-8.0.1.jar" />
 		   </fileset> 
 		</copy>
+		<copy todir="${webapp.dir}/WEB-INF/lib">
+			<fileset dir="${common.dir}/common/resources/csmapi/">
+			</fileset> 
+		</copy>
 		<copy todir="${webapp.dir}/WEB-INF/classes">
 			<fileset dir="${resources.dir}">
 				<include name="applicationContext-hibernate.xml"/>
@@ -183,9 +187,15 @@ L-->
 		<copy file="${tomcat.dir}/relationship.xml" tofile="${webapp.dir}/WEB-INF/classes/relationship.xml"/>
 		<copy file="${tomcat.dir}/AdvancedQCCriteria.json" tofile="${webapp.dir}/WEB-INF/classes/AdvancedQCCriteria.json"/>
 		<copy file="${tomcat.dir}/AdvancedQCData.json" tofile="${webapp.dir}/WEB-INF/classes/AdvancedQCData.json"/>
+		<delete file="${webapp.dir}/WEB-INF/lib/csmapi-5.2.0.1.jar" verbose="true"/>
+		<delete file="${webapp.dir}/WEB-INF/lib/slf4j-log4j12-1.7.25.jar" verbose="true"/>		
 	</target>
 
 	<target name="compile" depends="ivy-compile">
+	<copy todir="${project.lib.dir}/compile">
+      <fileset dir="${common.dir}/common/resources/csmapi/">
+	  </fileset>
+    </copy>
 	    <copy todir="${project.lib.dir}/compile">
 	      <fileset dir="${dicomsupport.lib}">
 	      </fileset>
@@ -214,9 +224,9 @@ L-->
 	     <delete file="${target.dir}/${war.name}" />
 	     <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />
 	
-	    <war destfile="${target.dir}/${war.name}" update="true">
+	    <!--war destfile="${target.dir}/${war.name}" update="true">
 	        <zipfileset file="${common.dir}/common/resources/lib/csmapi-5.2.0.1.jar"  prefix="WEB-INF/lib"/>
-	    </war>
+	    </war-->
 	</target>
 
 	<target name="post-clean">

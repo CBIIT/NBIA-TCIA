@@ -34,7 +34,7 @@ L-->
       -->
     <dependency org="pmd" name="pmd" rev="4.2.1" conf="test-pmd->default"/>
     <dependency org="org.dbunit" name="dbunit" rev="2.4.8" conf="test->master"/>
-    <dependency org="org.slf4j"
+    <!--dependency org="org.slf4j"
                 name="slf4j-api"
                 rev="1.6.1"
                 conf="test->master"/>
@@ -42,7 +42,7 @@ L-->
     <dependency org="org.slf4j"
                 name="slf4j-nop"
                 rev="1.6.1"
-                conf="test->master"/>
+                conf="test->master"/-->
 	    <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
         <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.17.1"  conf="compile->master;runtime->master"/>
         <dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
@@ -123,12 +123,12 @@ L-->
     		rev="3.1" 
     		conf="compile->master;runtime->master"/>               
                     
-    <dependency org="gov.nih.nci.csm"
+    <!--dependency org="gov.nih.nci.csm"
                 name="csmapi"
                 rev="5.2.0.1"
                 conf="compile->master;runtime->default">
       <exclude module="jdom"/>
-    </dependency>            
+    </dependency-->            
 
     <dependency org="ncicb"
                 name="nbia-dao"

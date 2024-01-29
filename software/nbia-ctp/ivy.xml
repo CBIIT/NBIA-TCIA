@@ -34,14 +34,14 @@ L-->
     <dependency org="umd" name="findbugs-ant" rev="1.3.4" conf="test-findbugs->runtime"/>
       -->
     <dependency org="org.dbunit" name="dbunit" rev="2.4.8" conf="test->master"/>
-    <dependency org="org.slf4j"
+    <!--dependency org="org.slf4j"
                 name="slf4j-api"
                 rev="1.6.1"
                 conf="test->master"/>
     <dependency org="org.slf4j"
                 name="slf4j-nop"
                 rev="1.6.1"
-                conf="test->master"/>
+                conf="test->master"/-->
 
 
     <dependency org="org.hibernate"

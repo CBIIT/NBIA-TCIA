@@ -70,11 +70,23 @@ L-->
     <ivy:resolve file="ivy.xml" conf="compile" />
     <ivy:retrieve conf="compile" pattern="${project.lib.dir}/[conf]/[artifact]-[revision].[ext]" />
   </target>
+  
+  <!--target name="resolve" description="Resolve dependencies">
+    <ivy:resolve />
+  </target>
+
+	<target name="retrieve" depends="resolve" description="Retrieve dependencies">
+		<ivy:retrieve />
+	</target-->
 
   <target name="compile" depends="-init, ivy-compile" description="Compiles all java classes">
     <copy todir="${project.lib.dir}/compile">
       <fileset dir="${dicomsupport.lib}">
     </fileset>
+    </copy>
+	<copy todir="${project.lib.dir}/compile">
+      <fileset dir="${common.dir}/common/resources/csmapi/">
+	  </fileset>
     </copy>
     <echo message="**********************************" />
     <echo message="***   Compiling Java Classes   ***" />
