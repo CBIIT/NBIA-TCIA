@@ -32,3 +32,61 @@ Integrate with Eclipse
 2.	Select **Existing Projects into Workspace**.
 3.	Select the software directory within the working copy and click **Finish**.
 4.	Define a classpath variable, NBIA_BASE, to point to the /software directory.
+
+NBIA Docker Installation Notes
+================================================================
+Last updated: January 2024
+The following notes were tested on Mac OS and should work under Win OS.
+##	Prerequisites & Sources
+   * Git Repos
+     - NBIA-TCIA 
+     - https://github.com/CBIIT/NBIA-TCIA.git (commit 9b7b1f7)
+   *	NBIA-Docker
+      - https://github.com/UAMS-DBMI/nbia_docker.git (commit 5864b03 )
+   * Apache Ant Installed
+      - Tested version 1.10.14
+   *	Java 8 installed 
+   *	Angular-Cli installed
+     - Tested version 17
+   * npm installed 
+     - tested version 10
+   *	Node installed
+     - Tested version 18
+   *	Docker engine installed
+   *	Python3 installed with following packages
+ 	   - requests
+ 	   - tqdm
+   *	NBIA Data Retriever installed
+     - Download test data
+  ## 2.	NBIA-Docker Installation Steps
+Assume all the prerequisites in previous section are ready on the system.
+The NBIA-TCIA coding base (commit 9b7b1f7) is upgraded to Angular v17, and should be compiled with Java 8.
+## 2.1 Build NBIA-TCIA with ant
+### 2.1.1	Check out NBIA-TCIA from Git repo to local folder {LOCAL_NBIA_TCIA_FOLDER} 
+### 2.1.2	Go to the subfolder {LOCAL_NBIA_TCIA_FOLDER}/software/build, and run command: ant dist 
+- This creates the install package in ../target/dist. It doesn’t need change anything.
+### 2.1.3	If the command “ant dist” in previous step completed successfully, check the folder {LOCAL_NBIA_TCIA_FOLDER}/software/target/dist, expand the sub-folder exploded, verify the following subfolders existing as shown in Figure 1  
+ 	nbia-admin, 
+ 	nbia-search, 
+ 	nbia-uat, 
+ 	nbia-viewer, 
+ 	nbia-wars 
+## 2.2 Build with angular ng
+- Figure 1. Result folders from ant build for NBIA-TCIA
+## 2.3 	Create NBIA Docker
+- It was tested with the branch committed as 5864b03.
+###  2.2.1	Check out NBIA-Docker from Git repo to local folder {LOCAL_NBIA_DOCKER_FOLDER}.
+###  2.2.2	Copy NBIA war files (nbia-api.war, nbia-download.war) built in step 2.1 into {LOCAL_NBIA_DOCKER_FOLDER}/webapps
+###  2.2.3	Copy NBIA javascript apps folders (nbia-search, nbia-admin, nbia-uat, nbia-viewer) built in step 2.1 into {LOCAL_NBIA_DOCKER_FOLDER}/html
+###  2.2.4	Use NBIA Data Retriever to download the test data into {LOCAL_NBIA_DOCKER_FOLDER}/dicoms 
+- The git repo includes two manifest files in .tcia format could be used to download the test data.
+###  2.2.5	In the {LOCAL_NBIA_DOCKER_FOLDER}, run command docker compose up 
+- By default, use built-in account nbiaAdmin. More users information could be found in the ldap config file {LOCAL_NBIA_DOCKER_FOLDER}/ldap/nbia.ldif. 
+- More app configurations are defined in the properties file {LOCAL_NBIA_DOCKER_FOLDER}/lib/nbia.properties.
+###  2.2.6	Once the docker containers  are running successfully from step 2.2.5, in the  {LOCAL_NBIA_DOCKER_FOLDER}, import dicom files using run python script  insert_dicoms.py  dicoms/metadata.csv yourusername, eg ./insert_dicoms.py dicoms/manifest-1704471493217/metadata.csv nbiaAdmin 
+- Please note that insert_dicoms.py script will attempt to log into the nbia-API of your development environment, so the nbia containers need to be running first.
+- Figure 2 shows the folders snapshot from previous steps.
+- Figure 2. screenshot of NBIA docker folders
+- The following steps are common user activities. If the test data files were successfully loaded into the running containers,  nbiaAdmin user need to update  some permissions inside the application (nbia-uat) before anything shows up in nbia-search or nbia-admin.
+### 2.2.7 	Log into nbia-search, then go to 'User Admin' and assign collections to either protection group
+### 2.2.8	Log into nbia-admin, set all collections to public 
