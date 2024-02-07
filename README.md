@@ -72,6 +72,7 @@ The NBIA-TCIA coding base (commit 9b7b1f7) is upgraded to Angular v17, and shoul
  	nbia-viewer, 
  	nbia-wars 
 ## 2.2 Build with angular ng
+![Result folders from ant build for NBIA-TCIA](https://github.com/CBIIT/NBIA-TCIA/blob/master/images/Figure1ResultFoldersFromAntBuildForNBIA-TCIA.png)
 - Figure 1. Result folders from ant build for NBIA-TCIA
 ## 2.3 	Create NBIA Docker
 - It was tested with the branch committed as 5864b03.
