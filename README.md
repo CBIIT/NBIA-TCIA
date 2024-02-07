@@ -73,7 +73,7 @@ The NBIA-TCIA coding base (commit 9b7b1f7) is upgraded to Angular v17, and shoul
  	nbia-wars 
 ## 2.2 Build with angular ng
 ![Result folders from ant build for NBIA-TCIA](https://github.com/CBIIT/NBIA-TCIA/blob/master/images/Figure1ResultFoldersFromAntBuildForNBIA-TCIA.png)
-- Figure 1. Result folders from ant build for NBIA-TCIA
+Figure 1. Result folders from ant build for NBIA-TCIA
 ## 2.3 	Create NBIA Docker
 - It was tested with the branch committed as 5864b03.
 ###  2.2.1	Check out NBIA-Docker from Git repo to local folder {LOCAL_NBIA_DOCKER_FOLDER}.
@@ -87,7 +87,8 @@ The NBIA-TCIA coding base (commit 9b7b1f7) is upgraded to Angular v17, and shoul
 ###  2.2.6	Once the docker containers  are running successfully from step 2.2.5, in the  {LOCAL_NBIA_DOCKER_FOLDER}, import dicom files using run python script  insert_dicoms.py  dicoms/metadata.csv yourusername, eg ./insert_dicoms.py dicoms/manifest-1704471493217/metadata.csv nbiaAdmin 
 - Please note that insert_dicoms.py script will attempt to log into the nbia-API of your development environment, so the nbia containers need to be running first.
 - Figure 2 shows the folders snapshot from previous steps.
-- Figure 2. screenshot of NBIA docker folders
+![Screenshot of NBIA docker folders](https://github.com/CBIIT/NBIA-TCIA/blob/master/images/Figure2ScreenshotofNBIADockerFolders.png)
+Figure 2. Screenshot of NBIA docker folders
 - The following steps are common user activities. If the test data files were successfully loaded into the running containers,  nbiaAdmin user need to update  some permissions inside the application (nbia-uat) before anything shows up in nbia-search or nbia-admin.
 ### 2.2.7 	Log into nbia-search, then go to 'User Admin' and assign collections to either protection group
 ### 2.2.8	Log into nbia-admin, set all collections to public 
