@@ -133,7 +133,9 @@ L-->
 		<delete dir="${temp.dir}"/>
 		<delete dir="${lib.dir}"/>
 		<delete dir="${download.dir}"/>
-		<delete dir="${target.dir}"/>
+    <delete includeemptydirs="true">
+        <fileset dir="${target.dir}" includes="**/*"/>
+    </delete>
 	</target>
 	
 	<target name="ivy:clean">
