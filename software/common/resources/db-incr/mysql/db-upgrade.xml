@@ -333,5 +333,14 @@ L-->
 			REFERENCES general_image (image_pk_id)
 			ON DELETE CASCADE;
          </sql>
-       </changeSet>	   	   
+       </changeSet>
+       <changeSet id="9.0 modify.csm.user.table.for.long.email.address" author="panq" dbms="mysql">
+         <comment>
+           modify csm user table for long email address
+         </comment>
+         <sql>
+			ALTER TABLE csm_user
+			CHANGE COLUMN EMAIL_ID EMAIL_ID VARCHAR(255) NULL DEFAULT NULL;
+         </sql>
+       </changeSet>		   
 </databaseChangeLog>
