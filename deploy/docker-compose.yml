@@ -25,7 +25,7 @@ services:
       options:
         max-size: 5m
   tomcat:
-    image: tomcat:9-jdk8
+    image: tomcat:9.0.71-jdk17-corretto
     volumes:
       - ./webapps/nbia-api.war:/usr/local/tomcat/webapps/nbia-api.war
       - ./webapps/nbia-download.war:/usr/local/tomcat/webapps/nbia-download.war

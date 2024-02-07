@@ -1,5 +1,5 @@
-# Use an official Java 8 runtime as a base image
-FROM openjdk:8-jdk-alpine
+# Use an official Java 17 runtime as a base image
+FROM amazoncorretto:17-alpine-jdk 
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
