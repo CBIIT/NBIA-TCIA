@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 # Install Node.js and npm
 RUN apk add --no-cache nodejs npm
+RUN npm install -g @angular/cli@latest
+
 
 # Install Apache Ant
 RUN apk add --no-cache apache-ant
