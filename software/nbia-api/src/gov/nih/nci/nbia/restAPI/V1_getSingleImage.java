@@ -28,8 +28,11 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
-
 import javax.ws.rs.core.Response.Status;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.security.core.Authentication;
@@ -39,7 +42,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Path("/v1/getSingleImage")
 public class V1_getSingleImage extends getData {
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-
+	private static final Logger downloadLogger = LogManager.getLogger("logger2");
 	/**
 	 * This method get a set of images in a zip file
 	 *
@@ -62,7 +65,16 @@ public class V1_getSingleImage extends getData {
 
 		WADOSupportDTO wdto = getWadoImage(seriesInstanceUid, sOPInstanceUID, user);
 		int size = wdto.getImage().length;
-		recodeDownload(seriesInstanceUid, size, "v1API", user);
+		String collectionName = wdto.getCollection();
+
+		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+				"collection="+collectionName + "," +
+				"seriesUID="+ seriesInstanceUid + "," +
+				"numberOfFiles=1" +  "," +
+				"totalSize="+ size + "," +
+				"userId="+ user + "," +
+				"downloadType=v1API");			
+//		recodeDownload(seriesInstanceUid, size, "v1API", user);
 		return Response.ok(wdto.getImage(), "application/dicom").header("Content-Disposition", "attachment; filename=" + sOPInstanceUID + ".dcm").build();
 	}
 }

@@ -34,6 +34,10 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dto.MD5DTO;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
@@ -47,7 +51,7 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 @Path("/v1/getImageWithMD5Hash")
 public class V1_getImageWithMD5Hash extends getData {
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-
+	private static final Logger downloadLogger = LogManager.getLogger("logger2");
 	/**
 	 * This method get a set of images in a zip file
 	 *
@@ -96,19 +100,25 @@ public class V1_getImageWithMD5Hash extends getData {
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
 				int size = 0;
+				int numberOfFiles = 0;
+				String collectionName = null;
+				
 				try {
 					int counter = 0;
 					ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
 					List<MD5DTO> dtos = tDao.getImageAndMD5Hash(sid, authorizedSiteData);
+				
 					Map<String,String> fileMD5Map = new HashMap<String,String>();
 					
 					for (MD5DTO dto : dtos) {
+						collectionName = dto.getProject();
 						String filename=dto.getFileName();
 						//in = new FileInputStream(new File(filename));
 						
 						File afile = new File(filename);
 						in = new FileInputStream(afile);
 						size +=  afile.length();
+						++numberOfFiles;
 						if (in != null) {
 							// Add Zip Entry
 							String fileNameInZip = String.format("%08d", ++counter)
@@ -158,7 +168,14 @@ public class V1_getImageWithMD5Hash extends getData {
 					if (in != null)
 						in.close();
 				}
-				recodeDownload(seriesInstanceUid, size, "v1API", userName);
+//				recodeDownload(seriesInstanceUid, size, "v1API", userName);
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+						"collection="+collectionName + "," +
+						"seriesUID="+ seriesInstanceUid + "," +
+						"numberOfFiles=" + numberOfFiles + "," +
+						"totalSize="+ size + "," +
+						"userId="+ userName + "," +
+						"downloadType=v1API");					
 			}
 		};
 

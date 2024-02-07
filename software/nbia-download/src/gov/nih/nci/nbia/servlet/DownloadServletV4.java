@@ -22,7 +22,6 @@ import gov.nih.nci.nbia.util.StringEncrypter;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.internal.CSInternalLoginException;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,9 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.zip.ZipEntry;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -49,14 +46,24 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+//import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 /**
  * @author Q. Pan
  *
  */
 public class DownloadServletV4 extends HttpServlet {
-	private static Logger logger = Logger.getLogger(DownloadServlet.class);
+	//private static final Logger logger = LogManager.getLogger(DownloadServletV4.class);
+	private static final Logger logger = LogManager.getLogger(DownloadServletV4.class);
+    private static final Logger downloadLogger = LogManager.getLogger("logger2");
+//    private static final Logger downloadLogger = Logger.("downloadLogger");	
+
+    
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
 	private final static int CLIENT_NOT_AUTHORIZED = 462;
@@ -88,6 +95,10 @@ public class DownloadServletV4 extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// This servlet processes Manifest download related requests only. JNLP
 		// download related requests are processed at DownloadServlet
+//		logger.info("TEST!!!!!t doGet() method called.");
+//		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),"TEST!!!!!2 doGet() method called.");		
+//		System.out.println("!!!!!log test");
+//        response.getWriter().append("!!!test11 test for logging.");
 
 		String numOfS = request.getParameter("numberOfSeries");
 
@@ -135,8 +146,8 @@ public class DownloadServletV4 extends HttpServlet {
 				userId = NCIAConfig.getGuestUsername();
 			}
 
-			logger.debug("sopUids:" + sopUids);
-			logger.debug("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
+			logger.info("sopUids:" + sopUids);
+			logger.info("seriesUid: " + seriesUid + " userId: " + userId + " includeAnnotation: " + includeAnnotation
 					+ " hasAnnotation: " + hasAnnotation);
 			boolean newFileNames=false;
 			boolean getMD5Hash = false;
@@ -156,9 +167,11 @@ public class DownloadServletV4 extends HttpServlet {
 			NCIASecurityManager mgr = (NCIASecurityManager) SpringApplicationContext.getBean("nciaSecurityManager");
 
 			if (mgr.login(userId, password)) {
-	            if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
-	            	mgr.syncDBWithLDAP(userId);
-	            }
+System.out.println("!!! download servletv4 logged in");
+				mgr.syncDBWithLDAP(userId);
+//	            if (!("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) && NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+//	            	mgr.syncDBWithLDAP(userId);
+//	            }
 				return true;
 			} else {
 				return false;
@@ -192,7 +205,7 @@ public class DownloadServletV4 extends HttpServlet {
 		List<ImageDTO2> imageResults = processor.process(seriesUid, sopUids);
 		if ((imageResults == null) || imageResults.isEmpty()) {
 			// no data for this series
-			logger.debug("no data for series: " + seriesUid);
+			logger.info("no data for series: " + seriesUid);
 		} else {
 			hasAccess = processor.hasAccess(userId, password, imageResults.get(0).getProject(),
 					imageResults.get(0).getSite(), imageResults.get(0).getSsg());
@@ -206,7 +219,20 @@ public class DownloadServletV4 extends HttpServlet {
 			// compute the size for this series
 			long size = computeContentLength(imageResults, annoResults);
 			try {
-				processor.recordAppDownload(seriesUid, userId, size, "v4");
+//				processor.recordAppDownload(seriesUid, userId, size, "v4");
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+						"collection="+imageResults.get(0).getProject() + "," +
+								"seriesUID="+ seriesUid + "," +
+								"numberOfFiles=" + imageResults.size() + "," +
+								"totalSize="+ size + "," +
+								"userId="+ userId + "," +
+								"downloadType=V4");		
+//				logger.info("collection="+imageResults.get(0).getProject() + "," +
+//									"seriesUID="+ seriesUid + "," +
+//									"numberOfFiles=" + imageResults.size() + "," +
+//									"totalSize="+ size + "," +
+//									"userId="+ userId + "," +
+//									"downloadType=V4");
 			} catch (Exception e) {
 				logger.error("Exception recording download " + e.getMessage());
 			}
@@ -226,12 +252,12 @@ public class DownloadServletV4 extends HttpServlet {
 		try {
 			long start = System.currentTimeMillis();
 
-			logger.debug("images size: " + imageResults.size() + " anno size: " + annoResults.size());
+			logger.info("images size: " + imageResults.size() + " anno size: " + annoResults.size());
 
 			sendAnnotationData(annoResults, tos);
 			sendImagesData(imageResults, tos, newFileNames, getMD5Hash);
 
-			logger.debug("total time to send  files are " + (System.currentTimeMillis() - start) / 1000 + " ms.");
+			logger.info("total time to send  files are " + (System.currentTimeMillis() - start) / 1000 + " ms.");
 		} finally {
 			IOUtils.closeQuietly(tos);
 		}
@@ -252,7 +278,7 @@ public class DownloadServletV4 extends HttpServlet {
 				int pos = newFileName.indexOf("^");
 				sb.append(newFileName.substring(pos+1) + "," +imageDto.getMd5Digest() + "\n");
 
-				logger.debug("filepath: " + filePath + " filename: " + sop);
+				logger.info("filepath: " + filePath + " filename: " + sop);
 				try {
 					File dicomFile = new File(filePath);
 	                  ArchiveEntry tarArchiveEntry = null;
@@ -271,7 +297,7 @@ public class DownloadServletV4 extends HttpServlet {
 					// images will get download.
 				} finally {
 					IOUtils.closeQuietly(dicomIn);
-					logger.debug("DownloadServlet Image transferred at " + new Date().getTime());
+					logger.info("DownloadServlet Image transferred at " + new Date().getTime());
 				}
 			}
 			if (getMD5Hash) {
@@ -309,7 +335,7 @@ public class DownloadServletV4 extends HttpServlet {
 				// images will get download.
 			} finally {
 				IOUtils.closeQuietly(annoIn);
-				logger.debug("DownloadServlet Annotation transferred at " + new Date().getTime());
+				logger.info("DownloadServlet Annotation transferred at " + new Date().getTime());
 			}
 		}
 	}
@@ -335,7 +361,7 @@ public class DownloadServletV4 extends HttpServlet {
 	}
 
 	private void downloadManifestFile(List<String> seriesList, HttpServletResponse response, String userId) {
-		logger.debug("constructing manifest file from the serieList");
+		logger.info("constructing manifest file from the serieList");
 
 		response.setContentType("text/plain");
 		response.setHeader("Content-Disposition", "attachment;filename=downloadname.txt");
