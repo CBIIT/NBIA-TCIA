@@ -18,11 +18,9 @@
 	<p-tabPanel header="User">
 		<user (addUser)="pushNewUser($event)"></user>
 	</p-tabPanel>
-	<div *ngIf="show">
-		<p-tabPanel header="Protection Element">
-			<pe></pe>
-		</p-tabPanel>
-	</div>
+	<p-tabPanel *ngIf="show" header="Protection Element">
+		<pe></pe>
+	</p-tabPanel>
 	<p-tabPanel header="Protection Group">
 		<pg></pg>	
 	</p-tabPanel>
