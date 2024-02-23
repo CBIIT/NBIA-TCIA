@@ -201,7 +201,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
 
         // This call is to trigger populating this.completeCriteriaList (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
-        this.loadingDisplayService.setLoading( true, 'Loading query data' );
+        this.loadingDisplayService.setLoading( true, 'Loading query data. This could take up to a minute.' );
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
         this.apiServerService.dataGet( 'getModalityValuesAndCounts', '' );
