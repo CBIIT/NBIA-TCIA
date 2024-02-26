@@ -39,7 +39,7 @@ services:
       - ./lib:/usr/local/tomcat/lib/custom
       - ./dicoms:/opt/dicoms
     environment:
-      - CATALINA_OPTS=-Djava.security.auth.login.config=/usr/local/tomcat/conf/jaas.config -Dlog4j.configuration=/usr/local/tomcat/lib/log4j.properties
+      - CATALINA_OPTS=-Djava.security.auth.login.config=/usr/local/tomcat/conf/jaas.config -Dlog4j.configuration=/usr/local/tomcat/lib/log4j.properties --add-opens java.base/java.text=ALL-UNNAMED
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/nbia-api/up"]
       interval: 1m
