@@ -4,4 +4,4 @@
 
  [ -r "$CATALINA_CFG" ] && . "${CATALINA_CFG}"
 
-JAVA_OPTS="$JAVA_OPTS -Djava.security.auth.login.config=@tomcat.home@/conf/jaas.config"
+JAVA_OPTS="$JAVA_OPTS -Djava.security.auth.login.config=@tomcat.home@/conf/jaas.config --add-opens java.base/java.text=ALL-UNNAMED"
