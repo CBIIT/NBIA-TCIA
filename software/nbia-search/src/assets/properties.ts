@@ -59,7 +59,7 @@ export let Properties = {
 
     // API_SERVER_URL: 'http://192.168.1.21:8080',
     API_SERVER_URL: '',
-    KEYCLOAK_LOGOUT_URL: 'https://keycloak.dbmi.cloud/auth/realms/TCIA/protocol/openid-connect/logout',
+    KEYCLOAK_LOGOUT_URL: '',
     // //////////////////////////////////////////////////////////////////////////
     //  End of values that can be over-ridden in the assets/configuration file
     // //////////////////////////////////////////////////////////////////////////
