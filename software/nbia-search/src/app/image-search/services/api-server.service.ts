@@ -1399,8 +1399,8 @@ export class ApiServerService implements OnDestroy {
 
 
     logOut() {
-        // let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
-        let postUrl = Properties.KEYCLOAK_LOGOUT_URL
+        let getUrl = Properties.API_SERVER_URL + '/' + Consts.API_LOGOUT_URL;
+        //let postUrl = Properties.KEYCLOAK_LOGOUT_URL
         if (Properties.DEBUG_CURL) {
             let curl = 'curl -H \'Authorization:Bearer  ' + this.showToken() + '\' -k \'' + postUrl + '\'';
             console.log('doPost: ' + curl);
