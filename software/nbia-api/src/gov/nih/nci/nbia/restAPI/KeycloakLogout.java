@@ -65,7 +65,7 @@ public class KeycloakLogout extends getData{
         // Make a POST request to the Keycloak logout endpoint
         Response keycloakResponse = httpClient.target(logoutUrl)
                 .request()
-                .headers("Authorization", "Bearer " + this.accessToken)
+                .headers("Authorization", "Bearer " + token)
                 .headers("Content-Type", "application/x-www-form-urlencoded")
                 .post(Entity.form(formData));
 
