@@ -25,7 +25,7 @@ public class KeycloakLogout extends getData{
 	private static final String KEYCLOAK_TOKEN_URL = NCIAConfig.getKeycloakTokenUrl();
 	private static final String KEYCLOAK_LOGOUT_URL = KEYCLOAK_TOKEN_URL.substring(0, KEYCLOAK_TOKEN_URL.lastIndexOf("/")).concat("/logout");
     
-	@GET
+	@POST
 	@Produces({MediaType.APPLICATION_JSON})
 //    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response logout() throws URISyntaxException, UnsupportedEncodingException {
