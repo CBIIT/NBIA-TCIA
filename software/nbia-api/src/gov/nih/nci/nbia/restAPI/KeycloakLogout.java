@@ -58,23 +58,23 @@ public class KeycloakLogout extends getData{
         // Construct the Keycloak logout URL with the id_token_hint and post_logout_redirect_uri parameters
         String logoutUrl = KEYCLOAK_LOGOUT_URL + "?token=" + encodeParameter(token);
 
-
-        // Extract any additional data needed for the POST request to Keycloak (if any)
-        String additionalData = extractAdditionalData();
-
+        // Prepare form data
+        Form formData = new Form();
+        formData.param("token", encodeParameter(token));
 
         // Make a POST request to the Keycloak logout endpoint
         Response keycloakResponse = httpClient.target(logoutUrl)
                 .request()
-                .header("Authorization", authHeader)
-                .header("Connection", "close")
-                .post(Entity.entity(additionalData, MediaType.APPLICATION_JSON));
-
+                .headers("Authorization", "Bearer " + this.accessToken)
+                .headers("Content-Type", "application/x-www-form-urlencoded")
+                .post(Entity.form(formData));
 
         // Extract the response from the Keycloak endpoint and return it
         return Response.status(keycloakResponse.getStatus())
                 .entity(keycloakResponse.readEntity(String.class))
                 .build();
+
+
 
 
     }
