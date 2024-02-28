@@ -18,6 +18,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Form;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import gov.nih.nci.nbia.util.NCIAConfig;
 
