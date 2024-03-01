@@ -1310,7 +1310,7 @@
             "false"
           ],
           "usersDn": [
-            "cn=admin,dc=example,dc=org"
+            "ou=users,dc=example,dc=org"
           ],
           "cachePolicy": [
             "DEFAULT"
@@ -1328,7 +1328,7 @@
             "cn"
           ],
           "bindCredential": [
-            "**********"
+            "adminpassword"
           ],
           "bindDn": [
             "cn=admin,dc=example,dc=org"
@@ -1364,7 +1364,7 @@
             "false"
           ],
           "userObjectClasses": [
-            "readers"
+            "General User"
           ],
           "rdnLDAPAttribute": [
             "cn"
