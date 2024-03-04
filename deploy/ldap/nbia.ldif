@@ -22,9 +22,9 @@ cn: user02
 sn: Bar2
 userPassword:: cGFzc3dvcmQy
 
-dn: cn=nbia_guest2,ou=users,dc=example,dc=org
+dn: cn=nbia_guest,ou=users,dc=example,dc=org
 objectClass: inetOrgPerson
-cn: nbia_guest2
+cn: nbia_guest
 sn: Bar1
 userPassword: test
 
@@ -40,19 +40,19 @@ cn: readers
 member: cn=nbiaAdmin,ou=users,dc=example,dc=org
 member: cn=user01,ou=users,dc=example,dc=org
 member: cn=user02,ou=users,dc=example,dc=org
-member: cn=nbia_guest2,ou=users,dc=example,dc=org
+member: cn=nbia_guest,ou=users,dc=example,dc=org
 
 dn: cn=tcia-team,ou=users,dc=example,dc=org
 objectClass: groupOfNames
 cn: tcia-team 
 member: cn=nbiaAdmin,ou=users,dc=example,dc=org
 member: cn=user02,ou=users,dc=example,dc=org
-member: cn=nbia_guest2,ou=users,dc=example,dc=org
+member: cn=nbia_guest,ou=users,dc=example,dc=org
 
 dn: cn=General User,ou=users,dc=example,dc=org
 objectClass: groupOfNames
 cn: General User
 member: cn=nbiaAdmin,ou=users,dc=example,dc=org
-member: cn=nbia_guest2,ou=users,dc=example,dc=org
+member: cn=nbia_guest,ou=users,dc=example,dc=org
 member: cn=user01,ou=users,dc=example,dc=org
 member: cn=user02,ou=users,dc=example,dc=org
