@@ -27,6 +27,7 @@ import java.util.Collections;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * This object doesn't appear to have anything to do with operators per se
@@ -46,9 +47,14 @@ public class TableRelationships {
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("relation", Relation.class);
 		xstream.alias("element", Element.class);
+		// added for xstream 1.4.20
+		xstream.ignoreUnknownElements();
+		xstream.addPermission(AnyTypePermission.ANY);
 		xstream.addImplicitCollection(Relation.class,
 				                      "element",
 				                      Element.class);
+		// Class<?>[] classes = new Class[] {TableRelationships.class, DomDriver.class};
+		// xstream.allowTypes(classes);
 
 		//pass this in instead?
    	    try {
