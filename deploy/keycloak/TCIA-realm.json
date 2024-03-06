@@ -574,7 +574,6 @@
     "directAccessGrantsEnabled" : true,
     "serviceAccountsEnabled" : false,
     "publicClient" : true,
-    "post.logout.redirect.uris" : "www.cancerimagingarchive.net/",
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
