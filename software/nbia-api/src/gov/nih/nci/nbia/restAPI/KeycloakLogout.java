@@ -56,11 +56,12 @@ public class KeycloakLogout extends getData{
 
         // Construct the Keycloak logout URL with the id_token_hint and post_logout_redirect_uri parameters
         String logoutUrl = KEYCLOAK_LOGOUT_URL + "?token=" + encodeParameter(token);
+        String client_id = NCIAConfig.getKeycloakClientId();
 
         // Prepare form data
         Form formData = new Form();
         formData.param("token", encodeParameter(token));
-        formData.param("client_id", "nbia-stage");
+        formData.param("client_id", client_id);
         formData.param("post_logout_redirect_uri", "http://google.com");
 
         // Make a POST request to the Keycloak logout endpoint
