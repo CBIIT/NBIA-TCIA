@@ -61,7 +61,7 @@ public class KeycloakLogout extends getData{
         Form formData = new Form();
         formData.param("token", encodeParameter(token));
         formData.param("client_id", "nbia-stage");
-        formData.param("redirect_uri", "http://google.com");
+        formData.param("post_logout_redirect_uri", "http://google.com");
 
         // Make a POST request to the Keycloak logout endpoint
         Response keycloakResponse = httpClient.target(logoutUrl)
