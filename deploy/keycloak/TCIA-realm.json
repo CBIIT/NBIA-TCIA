@@ -454,7 +454,7 @@
     "frontchannelLogout" : false,
     "protocol" : "openid-connect",
     "attributes" : {
-      "post.logout.redirect.uris" : "+"
+      "post.logout.redirect.uris" : ["+", "www.cancerimagingarchive.net/"]
     },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : false,
