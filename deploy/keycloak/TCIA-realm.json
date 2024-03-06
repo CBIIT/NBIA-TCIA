@@ -574,10 +574,7 @@
     "directAccessGrantsEnabled" : true,
     "serviceAccountsEnabled" : false,
     "publicClient" : true,
-    "attributes" : {
-      "post.logout.redirect.uris" : "www.cancerimagingarchive.net/",
-      "pkce.code.challenge.method" : "S256"
-    },
+    "post.logout.redirect.uris" : "www.cancerimagingarchive.net/",
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
