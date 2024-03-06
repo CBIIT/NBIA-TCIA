@@ -35,8 +35,8 @@ Integrate with Eclipse
 
 NBIA Docker Installation Notes
 ================================================================
-Last updated: January 2024
-The following notes were tested on Mac OS and should work under Win OS.
+* Last updated: January 2024
+* The following notes were tested on Mac OS and should work under Win OS.
 ##	Prerequisites & Sources
    * Git Repos
      - NBIA-TCIA 
