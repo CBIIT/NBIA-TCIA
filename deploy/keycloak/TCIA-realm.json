@@ -578,7 +578,7 @@
     "protocol" : "openid-connect",
     "attributes" : {
       "oidc.ciba.grant.enabled" : "false",
-      "post.logout.redirect.uris": "+##https://www.cancerimagingarchive.net/",
+      "post.logout.redirect.uris": "+##www.cancerimagingarchive.net/*",
       "oauth2.device.authorization.grant.enabled" : "false",
       "backchannel.logout.session.required" : "true",
       "backchannel.logout.revoke.offline.tokens" : "false"
