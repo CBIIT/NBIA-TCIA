@@ -454,7 +454,7 @@
     "frontchannelLogout" : false,
     "protocol" : "openid-connect",
     "attributes" : {
-      "post.logout.redirect.uris" :  "www.cancerimagingarchive.net/" 
+      "post.logout.redirect.uris" :  "+" 
     },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : false,
@@ -574,6 +574,10 @@
     "directAccessGrantsEnabled" : true,
     "serviceAccountsEnabled" : false,
     "publicClient" : true,
+    "attributes" : {
+      "post.logout.redirect.uris" : "www.cancerimagingarchive.net/",
+      "pkce.code.challenge.method" : "S256"
+    },
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
