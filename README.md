@@ -82,8 +82,8 @@ Figure 1. Result folders from ant build for NBIA-TCIA
 5.	Create the NBIA Docker.
      * It was tested with the branch committed as 5864b03.
 6. Check out NBIA-Docker from Git repo to local folder {LOCAL_NBIA_DOCKER_FOLDER}.
-7.	Copy NBIA war files (nbia-api.war, nbia-download.war) built in step 2.1 into {LOCAL_NBIA_DOCKER_FOLDER}/webapps
-8. Copy NBIA javascript apps folders (nbia-search, nbia-admin, nbia-uat, nbia-viewer) built in step 2.1 into {LOCAL_NBIA_DOCKER_FOLDER}/html
+7.	Copy NBIA war files (nbia-api.war, nbia-download.war) built in Step 1 into {LOCAL_NBIA_DOCKER_FOLDER}/webapps
+8. Copy NBIA javascript apps folders (nbia-search, nbia-admin, nbia-uat, nbia-viewer) built in Step 1 into {LOCAL_NBIA_DOCKER_FOLDER}/html
 9.	Use NBIA Data Retriever to download the test data into {LOCAL_NBIA_DOCKER_FOLDER}/dicoms 
      * The git repo includes two manifest files in .tcia format could be used to download the test data.
 6. In the {LOCAL_NBIA_DOCKER_FOLDER}, run  
@@ -92,7 +92,7 @@ Figure 1. Result folders from ant build for NBIA-TCIA
       	
    * By default, use the built-in account nbiaAdmin. More users information could be found in the ldap config file {LOCAL_NBIA_DOCKER_FOLDER}/ldap/nbia.ldif. 
    * More app configurations are defined in the properties file {LOCAL_NBIA_DOCKER_FOLDER}/lib/nbia.properties.
-7.	Once the docker containers are running successfully from step 2.2.5, in the {LOCAL_NBIA_DOCKER_FOLDER}, import dicom files: 
+7.	Once the docker containers are running successfully from Step 10, in the {LOCAL_NBIA_DOCKER_FOLDER}, import dicom files: 
 
         run python script  insert_dicoms.py dicoms/metadata.csv yourusername, eg ./insert_dicoms.py dicoms/manifest-1704471493217/metadata.csv nbiaAdmin
      * The nbia containers must be running first, since the insert_dicoms.py script attempts to log into the nbia-API of your development environment.
