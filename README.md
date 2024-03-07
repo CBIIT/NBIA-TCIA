@@ -86,9 +86,9 @@ Figure 1. Result folders from ant build for NBIA-TCIA
 5.	Create the NBIA Docker.
      * It was tested with the branch committed as 5864b03.
 6. Check out NBIA-Docker from Git repo to local folder {LOCAL_NBIA_DOCKER_FOLDER}.
-7.	Copy NBIA war files (nbia-api.war, nbia-download.war) built in Step 1 into {LOCAL_NBIA_DOCKER_FOLDER}/webapps
-8. Copy NBIA javascript apps folders (nbia-search, nbia-admin, nbia-uat, nbia-viewer) built in Step 1 into {LOCAL_NBIA_DOCKER_FOLDER}/html
-9.	Use NBIA Data Retriever to download the test data into {LOCAL_NBIA_DOCKER_FOLDER}/dicoms 
+7.	Copy NBIA war files (nbia-api.war, nbia-download.war) built in Step 1 into {LOCAL_NBIA_DOCKER_FOLDER}/webapps.
+8. Copy NBIA javascript apps folders (nbia-search, nbia-admin, nbia-uat, nbia-viewer) built in Step 1 into {LOCAL_NBIA_DOCKER_FOLDER}/html.
+9.	Use NBIA Data Retriever to download the test data into {LOCAL_NBIA_DOCKER_FOLDER}/dicoms. 
      * The git repo includes two manifest files in .tcia format could be used to download the test data.
 6. In the {LOCAL_NBIA_DOCKER_FOLDER}, run  
 
