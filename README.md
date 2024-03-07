@@ -59,7 +59,7 @@ NBIA Docker Installation Notes
  	   - tqdm
    *	NBIA Data Retriever installed
      - Download test data
-## 2.0 Installing NBIA-Docker
+## 2.0 Install NBIA-Docker
 All of the prerequisites from the previous section must already be on the system.
 The NBIA-TCIA codebase (commit 9b7b1f7) has been upgraded to Angular v17. Compile it with Java 8.
 1. From the subfolder {LOCAL_NBIA_TCIA_FOLDER}/software/build, run
