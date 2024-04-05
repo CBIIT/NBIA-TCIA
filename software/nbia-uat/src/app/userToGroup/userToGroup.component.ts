@@ -48,7 +48,7 @@ export class UserToGroupComponent implements OnInit {
 		this.userNames = [];
 		this.userNames.push({label:'Select User', value:''});	
 		this.userToGroupService.getUserNames().
-		subscribe(userNames => {
+		subscribe((userNames: SelectItem[])  => {
       this.userNames = userNames.map(item => ({
       label: String(item.label),
       value: item.value
