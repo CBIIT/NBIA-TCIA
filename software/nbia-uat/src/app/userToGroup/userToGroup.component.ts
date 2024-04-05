@@ -60,6 +60,7 @@ export class UserToGroupComponent implements OnInit {
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 
+    console.log(this.userNames)
 		this.selectedUserName = null;
 		this.statusMessage = [];	
   }
