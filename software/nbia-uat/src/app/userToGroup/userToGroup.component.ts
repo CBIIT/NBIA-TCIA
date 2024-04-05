@@ -56,11 +56,11 @@ export class UserToGroupComponent implements OnInit {
       }));
 
     this.statusMessage = [];
+    console.log(this.userNames)
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
 
-    console.log(this.userNames)
 		this.selectedUserName = null;
 		this.statusMessage = [];	
   }
