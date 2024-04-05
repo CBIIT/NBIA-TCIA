@@ -45,6 +45,7 @@ export class UserToGroupComponent implements OnInit {
 
   ngOnInit() {
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading data...'});
+    console.log("place 2")
 		this.userNames = [];
 		this.userNames.push({label:'Select User', value:''});	
 		this.userToGroupService.getUserNames().
@@ -79,6 +80,7 @@ export class UserToGroupComponent implements OnInit {
 	ngOnChanges(changes: any[]) {
 		var newLogin = changes['addedUser'].currentValue; 
 		if (newLogin) {
+      console.log("place 1")
 			this.userNames.push({label: newLogin, value: newLogin});
 		}
 	}
