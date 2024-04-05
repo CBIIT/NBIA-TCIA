@@ -48,7 +48,13 @@ export class UserToGroupComponent implements OnInit {
 		this.userNames = [];
 		this.userNames.push({label:'Select User', value:''});	
 		this.userToGroupService.getUserNames().
-		subscribe(userNames => {this.userNames = <SelectItem[]>userNames; this.statusMessage = [];
+		subscribe(userNames => {
+      this.userNames = userNames.map(item => ({
+      label: String(item.label),
+      value: item.value
+      }));
+
+    this.statusMessage = [];
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
