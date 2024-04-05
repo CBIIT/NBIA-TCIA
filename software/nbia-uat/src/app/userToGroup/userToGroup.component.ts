@@ -47,12 +47,12 @@ export class UserToGroupComponent implements OnInit {
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Loading data...'});
     console.log("place 2")
 		this.userNames = [];
-		this.userNames.push({label:'Select User', value:''});	
+		this.userNames.push({name:'Select User', code:''});	
 		this.userToGroupService.getUserNames().
 		subscribe((userNames: SelectItem[])  => {
       this.userNames = userNames.map(item => ({
-      label: String(item.label),
-      value: item.value
+      name: String(item.name),
+      code: item.code
       }));
 
     this.statusMessage = [];
@@ -82,7 +82,7 @@ export class UserToGroupComponent implements OnInit {
 		var newLogin = changes['addedUser'].currentValue; 
 		if (newLogin) {
       console.log("place 1")
-			this.userNames.push({label: newLogin, value: newLogin});
+			this.userNames.push({name: newLogin, code: newLogin});
 		}
 	}
 	
