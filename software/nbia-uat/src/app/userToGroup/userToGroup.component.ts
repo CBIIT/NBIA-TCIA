@@ -49,14 +49,15 @@ export class UserToGroupComponent implements OnInit {
 		this.userNames = [];
 		this.userNames.push({label:'Select User', value:''});	
 		this.userToGroupService.getUserNames().
-		subscribe((userNames: SelectItem[])  => {
-      this.userNames = userNames.map(item => ({
-      label: String(item.label),
-      value: item.value
-      }));
+		//subscribe((userNames: SelectItem[])  => {
+    //  this.userNames = userNames.map(item => ({
+    //  label: String(item.label),
+    //  value: item.value
+    //  }));
 
-    this.statusMessage = [];
-    console.log(this.userNames)
+    //this.statusMessage = [];
+    //console.log(this.userNames)
+    subscribe(userNames => {this.userNames = <SelectItem[]>userNames; this.statusMessage = [];
 		this.statusMessage.push({severity:'info', summary:'Info: ', detail:'Please select a user from above drop down list and click on it.'});
 		}, 
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
@@ -71,7 +72,7 @@ export class UserToGroupComponent implements OnInit {
 			this.statusMessage = [];
 			this.groups = [];
       console.log(this.selectedUserName)
-			this.userToGroupService.getGroupsForUser(this.selectedUserName["label"]).
+			this.userToGroupService.getGroupsForUser(this.selectedUserName).
 			subscribe((groups:any) => {
 			this.groups = groups; 
 			}, 
