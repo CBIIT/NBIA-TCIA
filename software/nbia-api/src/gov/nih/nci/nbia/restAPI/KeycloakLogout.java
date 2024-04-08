@@ -62,7 +62,7 @@ public class KeycloakLogout extends getData{
         Form formData = new Form();
         formData.param("token", encodeParameter(token));
         formData.param("client_id", client_id);
-        formData.param("post_logout_redirect_uri", "https://www.cancerimagingarchive.net/");
+        formData.param("post_logout_redirect_uri", "http://google.com/");
 
         // Make a POST request to the Keycloak logout endpoint
         Response keycloakResponse = httpClient.target(logoutUrl)
