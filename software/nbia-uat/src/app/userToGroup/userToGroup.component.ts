@@ -72,7 +72,7 @@ export class UserToGroupComponent implements OnInit {
 			this.statusMessage = [];
 			this.groups = [];
       console.log(this.selectedUserName)
-			this.userToGroupService.getGroupsForUser(this.selectedUserName).
+			this.userToGroupService.getGroupsForUser(this.selectedUserName["label"]).
 			subscribe((groups:any) => {
 			this.groups = groups; 
 			}, 
