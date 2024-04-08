@@ -4,7 +4,7 @@
 	</div>
 </div>
 	
-<p-dropdown [options]="userNames" [(ngModel)]="selectedUserName" [showClear]="true" [filter]="true" placeholder="Select a user name" appendTo="body" [panelStyle]="{minWidth:'12em'}"
+<p-dropdown [options]="userNames" filterBy="label" optionLabel="label" [(ngModel)]="selectedUserName" [showClear]="true" [filter]="true" placeholder="Select a user name" appendTo="body" [panelStyle]="{minWidth:'12em'}"
 	[virtualScroll]="true" itemSize="30"(onChange)="getGroupsForUser()"
 	pTooltip="To find a user quickly, enter a whole or partial login name to filter then click on the login name to select the user" 
 	></p-dropdown>
