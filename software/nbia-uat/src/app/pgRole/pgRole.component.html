@@ -4,7 +4,7 @@
 	</div>
 </div>
 	
-<p-dropdown [options]="userNames" [(ngModel)]="selectedUserName" [showClear]="true" [filter]="true" placeholder="Select a user name" appendTo="body" [panelStyle]="{minWidth:'12em'}"
+<p-dropdown [options]="userNames" optionLabel="label" filterBy="label" [(ngModel)]="selectedUserName" [showClear]="true" [filter]="true" placeholder="Select a user name" appendTo="body" [panelStyle]="{minWidth:'12em'}"
 	[virtualScroll]="true" itemSize="30"(onChange)="getPgRolesForUser()"
 	pTooltip="To find a user quickly, enter a whole or partial login name to filter then click on the login name to select the user" 
 	></p-dropdown>
@@ -73,7 +73,7 @@
 		<div class="p-g-12">
 			<div class="p-g-4"><label >Protection Group</label></div>
 			<div class="p-g-8" *ngIf="newPgRole">
-				<p-dropdown [options]="availablePGs" optionLabel="label" filterBy="label" [(ngModel)]="selectedPGName" [scrollHeight]="300" [filter]="true" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-dropdown>
+				<p-dropdown [options]="availablePGs" [(ngModel)]="selectedPGName" [scrollHeight]="300" [filter]="true" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-dropdown>
 				<p>Selected Protection Group: {{selectedPGName||'none'}}</p></div>
 			<div class="p-g-8" *ngIf="!newPgRole"><input pInputText id="selectedPGName" [(ngModel)]="selectedPGName" [disabled]="true"/></div>	
 		</div>
