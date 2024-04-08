@@ -72,7 +72,7 @@ export class PgRoleComponent implements OnInit {
 		this.statusMessage = [];
 		this.pgRoles = [];
 		this.pgSize = 0;
-		this.pgRoleService.getPgRolesForUser(this.selectedUserName).
+		this.pgRoleService.getPgRolesForUser(this.selectedUserName["label"]).
 		subscribe((pgRoles:PgRole[]) => {
 		this.pgRoles = pgRoles; 
 		this.pgSize = this.pgRoles ? this.pgRoles.length : 0;

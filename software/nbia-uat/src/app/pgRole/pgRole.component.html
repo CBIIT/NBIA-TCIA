@@ -73,7 +73,7 @@
 		<div class="p-g-12">
 			<div class="p-g-4"><label >Protection Group</label></div>
 			<div class="p-g-8" *ngIf="newPgRole">
-				<p-dropdown [options]="availablePGs" [(ngModel)]="selectedPGName" [scrollHeight]="300" [filter]="true" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-dropdown>
+				<p-dropdown [options]="availablePGs" optionLabel="label" filterBy="label" [(ngModel)]="selectedPGName" [scrollHeight]="300" [filter]="true" appendTo="body" [panelStyle]="{minWidth:'12em'}"></p-dropdown>
 				<p>Selected Protection Group: {{selectedPGName||'none'}}</p></div>
 			<div class="p-g-8" *ngIf="!newPgRole"><input pInputText id="selectedPGName" [(ngModel)]="selectedPGName" [disabled]="true"/></div>	
 		</div>
