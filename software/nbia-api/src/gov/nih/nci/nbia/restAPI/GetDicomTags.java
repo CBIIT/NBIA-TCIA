@@ -37,6 +37,16 @@ public class GetDicomTags extends getData{
       //				String user = (String) authentication.getPrincipal();
       String user = getUserName(); 
 
+      final String sid = seriesUID
+      Map<String, String> paramMap = new HashMap<String, String>();
+      paramMap.put("seriesInstanceUID", sid);
+      //SecurityContextHolder will be used to get the user name later.
+      if (!isUserHasAccess(userName, paramMap)) {
+        return Response.status(Status.BAD_REQUEST)
+          .entity("The user has not been granted the access to image with given SeriesInstanceUID," + sid + ". Please contact System Admin to resolve this issue.")
+          .type(MediaType.APPLICATION_JSON).build();
+      }
+
       List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
       if (authorizedSiteData==null){
         AuthorizationManager am = new AuthorizationManager(user);
