@@ -37,7 +37,7 @@ public class GetDicomTags extends getData{
       //				String user = (String) authentication.getPrincipal();
       String user = getUserName(); 
 
-      final String sid = seriesUID
+      final String sid = seriesUID;
       Map<String, String> paramMap = new HashMap<String, String>();
       paramMap.put("seriesInstanceUID", sid);
       //SecurityContextHolder will be used to get the user name later.
