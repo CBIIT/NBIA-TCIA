@@ -26,53 +26,53 @@ import gov.nih.nci.nbia.dto.*;
 @Path("/getDicomTags")
 public class GetDicomTags extends getData{
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@QueryParam("SeriesUID") String seriesUID) {
-		String message="";
-		try {	
-//			   Authentication authentication = SecurityContextHolder.getContext()
-//						.getAuthentication();
-//				String user = (String) authentication.getPrincipal();
-			String user = getUserName(); 
+  public Response constructResponse(@QueryParam("SeriesUID") String seriesUID) {
+    String message="";
+    try {	
+      //			   Authentication authentication = SecurityContextHolder.getContext()
+      //						.getAuthentication();
+      //				String user = (String) authentication.getPrincipal();
+      String user = getUserName(); 
 
-				List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
-				if (authorizedSiteData==null){
-				     AuthorizationManager am = new AuthorizationManager(user);
-				     authorizedSiteData = am.getAuthorizedSites();
-				     AuthorizationUtil.setUserSites(user, authorizedSiteData);
-				}
-				AuthorizationCriteria auth = new AuthorizationCriteria();
-				auth.setSeriesSecurityGroups(new ArrayList<String>());
-				auth.setSites(authorizedSiteData);
-				List<String> seriesSecurityGroups = new ArrayList<String>();
-	        	ImageDAO imageDAO = (ImageDAO)SpringApplicationContext.getBean("imageDAO");
-	        	List<String>seriesList=new ArrayList<String>();
-	        	seriesList.add(seriesUID);
-	        	
-	        	List<ImageDTO> images = imageDAO.findImagesbySeriesInstandUid(seriesList);
-	        	if (images!=null&&images.size()>0){
-	        		ImageDTO idto=images.get(0);
-	        		String dicomFilePath = idto.getFileURI();
-	            	NCIADicomTextObject dicomObject;
-					File dicomFile = new File(dicomFilePath);
-					if (dicomFile.exists())
-					{
-   				        List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
-				        return Response.ok(JSONUtil.getJSONforDicomTagDTOs(tags)).type("application/json")
-						.build();
-	        	    }  else  {
-	        	    	message=" file not found";
-	        	    }
-	        	}	else  {
-	        		message=" image not found";
-	        	}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return Response.status(500)
-						.entity("Server was not able to process your request"+message).build();
-	}
+      List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);
+      if (authorizedSiteData==null){
+        AuthorizationManager am = new AuthorizationManager(user);
+        authorizedSiteData = am.getAuthorizedSites();
+        AuthorizationUtil.setUserSites(user, authorizedSiteData);
+      }
+      AuthorizationCriteria auth = new AuthorizationCriteria();
+      auth.setSeriesSecurityGroups(new ArrayList<String>());
+      auth.setSites(authorizedSiteData);
+      List<String> seriesSecurityGroups = new ArrayList<String>();
+      ImageDAO imageDAO = (ImageDAO)SpringApplicationContext.getBean("imageDAO");
+      List<String>seriesList=new ArrayList<String>();
+      seriesList.add(seriesUID);
+
+      List<ImageDTO> images = imageDAO.findImagesbySeriesInstandUid(seriesList);
+      if (images!=null&&images.size()>0){
+        ImageDTO idto=images.get(0);
+        String dicomFilePath = idto.getFileURI();
+        NCIADicomTextObject dicomObject;
+        File dicomFile = new File(dicomFilePath);
+        if (dicomFile.exists())
+        {
+          List<DicomTagDTO> tags=NCIADicomTextObject.getTagElements(dicomFile);
+          return Response.ok(JSONUtil.getJSONforDicomTagDTOs(tags)).type("application/json")
+            .build();
+        }  else  {
+          message=" file not found";
+        }
+      }	else  {
+        message=" image not found";
+      }
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return Response.status(500)
+      .entity("Server was not able to process your request"+message).build();
+  }
 }
