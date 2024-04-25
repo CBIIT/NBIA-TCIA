@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import gov.nih.nci.ncia.criteria.*;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
@@ -43,7 +44,7 @@ public class GetDicomTags extends getData{
       Map<String, String> paramMap = new HashMap<String, String>();
       paramMap.put("seriesInstanceUID", sid);
       //SecurityContextHolder will be used to get the user name later.
-      if (!isUserHasAccess(userName, paramMap)) {
+      if (!isUserHasAccess(user, paramMap)) {
         return Response.status(Status.BAD_REQUEST)
           .entity("The user has not been granted the access to image with given SeriesInstanceUID," + sid + ". Please contact System Admin to resolve this issue.")
           .type(MediaType.APPLICATION_JSON).build();
