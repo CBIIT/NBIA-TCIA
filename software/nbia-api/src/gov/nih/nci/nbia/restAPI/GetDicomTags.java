@@ -77,9 +77,11 @@ public class GetDicomTags extends getData{
             .build();
         }  else  {
           message=" file not found";
+          return Response.ok().build();
         }
       }	else  {
         message=" image not found";
+        return Response.ok().build();
       }
     } catch (Exception e) {
       // TODO Auto-generated catch block
