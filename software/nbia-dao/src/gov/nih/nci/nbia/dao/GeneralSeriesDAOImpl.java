@@ -1344,8 +1344,11 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
       seriesDTO.setLicenseName(parts[0]);
       seriesDTO.setLicenseUrl(parts[1]);	        
     }
-    if (row[22]!=null) {
-      seriesDTO.setReleaseDate((Date)(row[22]));
+
+    if (row[22] != null) {
+      java.sql.Timestamp timestamp = (java.sql.Timestamp) row[22];
+      java.util.Date date = new java.util.Date(timestamp.getTime());
+      seriesDTO.setReleaseDate(date);
     }
 
     returnValue.add(seriesDTO);
