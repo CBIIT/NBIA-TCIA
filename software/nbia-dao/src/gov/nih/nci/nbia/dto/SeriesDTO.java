@@ -45,6 +45,7 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String softwareVersion;
     private String maxFrameCount;
     private Date studyDate;    
+    private Date releaseDate;    
     private String studyDesc;
     private String bodyPartExamined;
     private String study_id; //study_id
@@ -54,7 +55,8 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String licenseName;
     private String licenseUrl;    
     private boolean commercialRestrictions;
-    public Date getStudyDate() {
+
+  public Date getStudyDate() {
 		return studyDate;
 	}
     
@@ -68,6 +70,21 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
 
     public void setStudyDate(Date studyDate) {
 		this.studyDate = studyDate;
+	}
+    
+  public Date getReleaseDate() {
+		return releaseDate;
+	}
+	public String getReleaseDateString() {
+	    if (releaseDate == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(releaseDate);
+	}    
+
+    public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
 	}
 
 	public String getStudyDesc() {
