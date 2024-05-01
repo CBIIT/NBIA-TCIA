@@ -1270,7 +1270,7 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
     "G.MODALITY, " +
     "( SELECT gi.SOP_CLASS_UID FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID LIMIT 1) as SOPCLASSUID, "+
     "( select CONCAT_WS('||', l.long_name,  l.license_url) from license l where G.LICENSE_NAME = l.long_name) as license "+
-    "G.DATE_RELEASED" +
+    "G.DATE_RELEASED " +
     "from GENERAL_SERIES G, STUDY S, general_equipment ge where S.STUDY_PK_ID=G.STUDY_PK_ID " +
     "and ge.GENERAL_EQUIPMENT_PK_ID = G.GENERAL_EQUIPMENT_PK_ID";		
 
