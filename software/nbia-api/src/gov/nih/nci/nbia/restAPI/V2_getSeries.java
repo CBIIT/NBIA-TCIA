@@ -50,7 +50,8 @@ public class V2_getSeries extends getData {
 			, "LicenseName"
 			, "LicenseURI"
 			, "CollectionURI"
-			, "FileSize"};
+			, "FileSize"
+      , "DateReleased"};
 	public final static String TEXT_CSV = "text/csv";
 
 	/**

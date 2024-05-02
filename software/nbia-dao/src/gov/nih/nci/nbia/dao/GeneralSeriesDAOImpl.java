@@ -346,7 +346,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
       + "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
       + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp, "
-      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize"
+      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.dateReleased"
       + " from GeneralSeries s where s.visibility in ('1') ";
 
     List<String> paramList = new ArrayList<String>();
