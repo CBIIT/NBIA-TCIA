@@ -1360,7 +1360,7 @@ private List<Object []> getSeriesQCInfoDTOs(List<String> seriesIds, List <String
   String sQL = "select s.SERIES_INSTANCE_UID, s.VISIBILITY, s.RELEASED_STATUS, s.DATE_RELEASED, " +
     "( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, "+
     " s.DESCRIPTION_URI, "+
-    " s.license_name "+
+    " s.license_name, s.date_released "+
     "from GENERAL_SERIES s";	
 
   StringBuffer where = new StringBuffer();
