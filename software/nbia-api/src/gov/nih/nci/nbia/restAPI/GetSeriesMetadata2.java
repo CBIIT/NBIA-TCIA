@@ -47,7 +47,7 @@ public class GetSeriesMetadata2 extends getData{
 		results = studyDAO.getSeriesMetadata(list, authorizedCollections);
 		String[] columns={"Subject ID","Study UID","Study Description","Study Date","Series ID","Series Description",
 				"Number of images","File Size (Bytes)", "Collection Name", "Modality", "Manufacturer", "3rd Party Analysis",
-				"Data Description URI", "Series Number", "License Name", "License URL"};
+				"Data Description URI", "Series Number", "License Name", "License URL", "Date Released"};
 
 		return formatResponse("CSV-DOWNLOAD", results, columns);
 	}
