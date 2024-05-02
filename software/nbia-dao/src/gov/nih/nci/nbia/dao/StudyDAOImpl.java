@@ -270,7 +270,7 @@ public class StudyDAOImpl extends AbstractDAO
 	{
 		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, DATE_FORMAT(s.studyDate,'%Y-%m-%d'), gs.seriesInstanceUID, " +
 				"gs.seriesDesc, gs.imageCount, gs.totalSize, gs.project, gs.modality, ge.manufacturer, gs.thirdPartyAnalysis, " +
-				"gs.descriptionURI, gs.seriesNumber, gs.licenseName, gs.licenseURL, CAST(gs.dateReleased AS CHAR) AS date_released " +
+				"gs.descriptionURI, gs.seriesNumber, gs.licenseName, gs.licenseURL, DATE_FORMAT(gs.dateReleased, '%Y-%m-%d') " +
 				"FROM Study s join s.generalSeriesCollection gs join gs.generalEquipment ge where gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = new ArrayList<Object[]>();
