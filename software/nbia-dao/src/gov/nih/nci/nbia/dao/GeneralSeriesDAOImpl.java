@@ -1249,7 +1249,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
         Util.nullSafeString(sdto.getLicenseName()),
         Util.nullSafeString(sdto.getLicenseUrl()),
         Util.nullSafeString(sdto.getAnnotationsSize()),
-        Util.nullSafeString(sdto.getReleaseDate())};
+        Util.nullSafeString(sdto.getDateReleased())};
 
     return result;
   } else return null;
@@ -1348,7 +1348,7 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
     if (row[22] != null) {
       java.sql.Timestamp timestamp = (java.sql.Timestamp) row[22];
       java.util.Date date = new java.util.Date(timestamp.getTime());
-      seriesDTO.setReleaseDate(date);
+      seriesDTO.setDateReleased(date);
     }
 
     returnValue.add(seriesDTO);
