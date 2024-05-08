@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
 	showAuthorPG: boolean;
 	selectedTabHeader = "User";
 	version = '2.4';
+	currentYear = '2024';
+	commit = '5fa63f0';
 	hostName:string;
 	@ViewChild(TabView) tabView: TabView;
 	@ViewChild(GroupComponent) groupComponent: GroupComponent;
@@ -48,7 +50,9 @@ export class AppComponent implements OnInit {
 		console.log("show ug = " + this.config[2].paramValue.toLowerCase() + "  show pg=" + this.config[3].paramValue.toLowerCase());
 		},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
-		this.version = this.globals.uatVersionNumber;		
+		this.version = this.globals.uatVersionNumber;	
+		this.currentYear = this.globals.uatVersionYear;	
+		this.commit = this.globals.uatVersionCommit;	;
 	}
 
 	ngOnInit() {
