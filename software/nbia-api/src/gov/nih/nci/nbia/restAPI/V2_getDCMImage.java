@@ -27,6 +27,10 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import gov.nih.nci.nbia.dao.AnnotationDAO;
 import gov.nih.nci.nbia.dao.DownloadDataDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
@@ -37,7 +41,8 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 @Path("/v2/getDCMImage")
 public class V2_getDCMImage extends getData {
-
+	private static final Logger downloadLogger = LogManager.getLogger("logger2");
+	
 	/**
 	 * This method get a set of images in a zip file
 	 *
@@ -81,6 +86,8 @@ public class V2_getDCMImage extends getData {
 				InputStream in = null;
 				boolean addChecksum = false;
 				long size = 0;
+				int numberOfFiles = 0;				
+				String collectionName = null;
 				
 				if (md5Verify != null && md5Verify.equalsIgnoreCase("true")) {
 					addChecksum = true;
@@ -100,6 +107,8 @@ public class V2_getDCMImage extends getData {
 					}
 
 					for (String [] filename : fileNames) {
+						collectionName = filename[4];
+						
 						if (addChecksum) {
 							int pos = filename[1].indexOf("^");
 							sb.append(filename[1].substring(pos+1) + "," +filename[2] + "\n");
@@ -119,6 +128,7 @@ public class V2_getDCMImage extends getData {
 							zip.closeEntry();
 							in.close();
 							size += Long.parseLong(filename[3]);
+							++numberOfFiles;
 						}
 					}
 					
@@ -144,6 +154,7 @@ public class V2_getDCMImage extends getData {
 								zip.closeEntry();
 								in.close();
 								size += Long.parseLong(aName[1]);
+								++numberOfFiles;
 							}
 						}
 					}
@@ -167,8 +178,15 @@ public class V2_getDCMImage extends getData {
 						in.close();
 				}
 				
-				recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
-			}
+//				recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+								"collection="+collectionName + "," +
+								"seriesUID="+ seriesInstanceUid + "," +
+								"numberOfFiles=" + numberOfFiles + "," +
+								"totalSize="+ size + "," +
+								"userId="+ userName + "," +
+								"downloadType=CLI/v2API");		
+				}
 		};
 
 		return Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM)

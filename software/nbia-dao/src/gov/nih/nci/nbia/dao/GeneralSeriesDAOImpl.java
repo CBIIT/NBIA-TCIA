@@ -584,8 +584,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
       List resultsData = getHibernateTemplate().find(selectStmt + fromStmt + whereStmt);
       long end = System.currentTimeMillis();
-      logger.debug("Data basket query: " + selectStmt + fromStmt + whereStmt);
-      logger.debug("total query time: " + (end - start) + " ms");
+      logger.info("Data basket query: " + selectStmt + fromStmt + whereStmt);
+      logger.info("total query time: " + (end - start) + " ms");
 
       // Map the rows retrieved from hibernate to the DataBasketResultSet objects.
       for (Object item : resultsData) {
@@ -1689,5 +1689,20 @@ public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessE
     returnValue.add(result);
   }
   return returnValue;
+}
+@Transactional(propagation=Propagation.REQUIRED)
+public String getCollectionNameForSeriesInstanceUid(String seriesId) throws DataAccessException{
+  if (seriesId==null ) {
+    return null;
+  }
+  String hql = "select project from GeneralSeries where seriesInstanceUID= :id";
+  Query query=getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(hql);
+  query.setString("id", seriesId);
+  List<String> collections = query.list();
+  if (collections == null)
+    return null;
+  else
+    return collections.get(0);
+
 }
 }

@@ -10,13 +10,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import javax.ws.rs.core.Response.Status;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Path("/v2/getSingleImage")
 public class V2_getSingleImage extends getData {
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-
+	private static final Logger downloadLogger = LogManager.getLogger("logger2");
 	/**
 	 * This method get a set of images in a zip file
 	 *
@@ -37,9 +40,18 @@ public class V2_getSingleImage extends getData {
 //					.getAuthentication();
 //		String user =  (String)authentication.getPrincipal();
 		String user = getUserName(); 
-		WADOSupportDTO wdto = getWadoImage(seriesInstanceUid, sOPInstanceUID, user);
+				WADOSupportDTO wdto = getWadoImage(seriesInstanceUid, sOPInstanceUID, user);
+		String collectionName = wdto.getCollection();
+
 		int size = wdto.getImage().length;
-		recodeDownload(seriesInstanceUid, size, "v2API", user);
+//		recodeDownload(seriesInstanceUid, size, "v2API", user);
+		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+				"collection="+collectionName + "," +
+				"seriesUID="+ seriesInstanceUid + "," +
+				"numberOfFiles=1" +  "," +
+				"totalSize="+ size + "," +
+				"userId="+ user + "," +
+				"downloadType=v2API");		
 		return Response.ok(wdto.getImage(), "application/dicom").header("Content-Disposition", "attachment; filename=" + sOPInstanceUID + ".dcm").build();
 	}
 }
