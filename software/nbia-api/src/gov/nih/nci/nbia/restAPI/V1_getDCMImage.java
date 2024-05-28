@@ -194,7 +194,7 @@ System.out.println("get collection name="+ collectionName);
 								"totalSize="+ size + "," +
 								"userId="+ userName + "," +
 								"downloadType=CLI/v1API");		
-//				recodeDownload(seriesInstanceUid, size, "CLI/v1API", userName);
+				recodeDownload(seriesInstanceUid, size, "CLI/v1API", userName);
 			}
 		};
 

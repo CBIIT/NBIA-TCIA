@@ -74,7 +74,7 @@ public class V1_getSingleImage extends getData {
 				"totalSize="+ size + "," +
 				"userId="+ user + "," +
 				"downloadType=v1API");			
-//		recodeDownload(seriesInstanceUid, size, "v1API", user);
+		recodeDownload(seriesInstanceUid, size, "v1API", user);
 		return Response.ok(wdto.getImage(), "application/dicom").header("Content-Disposition", "attachment; filename=" + sOPInstanceUID + ".dcm").build();
 	}
 }

@@ -133,7 +133,7 @@ public class V2_getImage extends getData {
 					if (in != null)
 						in.close();
 					if (size > 0) {
-//						recodeDownload(seriesInstanceUid, size, "v2API", userName);
+						recodeDownload(seriesInstanceUid, size, "v2API", userName);
 						downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 								"collection="+collectionName + "," +
 								"seriesUID="+ seriesInstanceUid + "," +
@@ -147,7 +147,7 @@ public class V2_getImage extends getData {
 						System.out.println("size <= 0; not recording");
 					}	
 				}
-//				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
+				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
 			}
 		}; } else {
 		    stream = new StreamingOutput() {
@@ -203,7 +203,7 @@ public class V2_getImage extends getData {
 						in.close();
 
 					if (size > 0) {
-//						recodeDownload(seriesInstanceUid, size, "v2API", userName);
+						recodeDownload(seriesInstanceUid, size, "v2API", userName);
 						System.out.println("size=" + size +"; recording");
 						downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 								"collection="+collectionName + "," +
@@ -217,7 +217,7 @@ public class V2_getImage extends getData {
 						System.out.println("size <= 0; not recording");
 					}	
 				}
-//				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
+				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
 			}
 		};
 		}

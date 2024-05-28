@@ -166,7 +166,7 @@ public class V2_getImageWithMD5Hash extends getData {
 					if (in != null)
 						in.close();
 				}
-//				recodeDownload(seriesInstanceUid, size, "v2API", userName);
+				recodeDownload(seriesInstanceUid, size, "v2API", userName);
 				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 						"collection="+collectionName + "," +
 						"seriesUID="+ seriesInstanceUid + "," +
