@@ -37,6 +37,7 @@ services:
       - ./lib/UIDNames.properties:/usr/local/tomcat/lib/UIDNames.properties
       - ./lib/userAgreement.txt:/usr/local/tomcat/lib/userAgreement.txt
       - ./lib:/usr/local/tomcat/lib/custom
+      - /var/log/nbia-container-logs:/usr/local/tomcat/logs
       - ./dicoms:/opt/dicoms
     environment:
       - CATALINA_OPTS=-Djava.security.auth.login.config=/usr/local/tomcat/conf/jaas.config -Dlog4j.configuration=file:///usr/local/tomcat/lib/custom/log4j.properties -Dlog4j.configurationFile=file:///usr/local/tomcat/lib/custom/log4j2.properties
