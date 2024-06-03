@@ -295,9 +295,6 @@ export class CartComponent implements OnInit, OnDestroy{
                 for( let item of <any>data ){
                     for( let series of item.seriesList ){
                         // This date is for display
-                        console.dir(item);
-                        console.log(" line 247 item  date ");
-                        console.dir(item.date);
                         series['formattedStudyDate'] = new Date( item.date );
 
                         // This date is for sorting
