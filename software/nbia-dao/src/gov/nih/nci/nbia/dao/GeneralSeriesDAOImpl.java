@@ -346,7 +346,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
       + "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
       + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp, "
-      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.dateReleased"
+      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.dateReleased, "
+      + "s.studyDesc, s.studyDate, s.thirdPartyAnalysis "
       + " from GeneralSeries s where s.visibility in ('1') ";
 
     List<String> paramList = new ArrayList<String>();
@@ -1249,7 +1250,14 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
         Util.nullSafeString(sdto.getLicenseName()),
         Util.nullSafeString(sdto.getLicenseUrl()),
         Util.nullSafeString(sdto.getAnnotationsSize()),
-        Util.nullSafeString(sdto.getDateReleased())};
+        Util.nullSafeString(sdto.getDateReleased()),
+        Util.nullSafeString(sdto.getSeriesDate()),
+        Util.nullSafeString(sdto.getProtocolName()),
+        Util.nullSafeString(sdto.getBodyPartExamined()),
+        Util.nullSafeString(sdto.isAnnotationsFlag()),
+        Util.nullSafeString(sdto.getManufacturerModelName()),
+        Util.nullSafeString(sdto.getSoftwareVersions()),
+        Util.nullSafeString(sdto.getMaxSubmissionTimestamp())};
 
     return result;
   } else return null;
@@ -1270,7 +1278,8 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
     "G.MODALITY, " +
     "( SELECT gi.SOP_CLASS_UID FROM general_image gi WHERE gi.general_series_pk_id = G.GENERAL_SERIES_PK_ID LIMIT 1) as SOPCLASSUID, "+
     "( select CONCAT_WS('||', l.long_name,  l.license_url) from license l where G.LICENSE_NAME = l.long_name) as license, "+
-    "G.DATE_RELEASED " +
+    "G.DATE_RELEASED, G.SERIES_DATE, G.PROTOCOL_NAME, G.BODY_PART_EXAMINED, G.ANNOTATIONS_FLAG, " +
+    "GE.MANUFACTURER_MODEL_NAME, GE.SOFTWARE_VERSIONS, G.MAX_SUBMISSION_TIMESTAMP " + 
     "from GENERAL_SERIES G, STUDY S, general_equipment ge where S.STUDY_PK_ID=G.STUDY_PK_ID " +
     "and ge.GENERAL_EQUIPMENT_PK_ID = G.GENERAL_EQUIPMENT_PK_ID";		
 
@@ -1350,6 +1359,30 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
       java.util.Date date = new java.util.Date(timestamp.getTime());
       seriesDTO.setDateReleased(date);
     }
+
+    if (row[23] != null) {
+      java.sql.Date sqlDate = (java.sql.Date) row[23];
+      java.util.Date date = new java.util.Date(sqlDate.getTime());
+      seriesDTO.setSeriesDate(date);
+    }
+
+    seriesDTO.setProtocolName(Util.nullSafeString(row[24]));
+    seriesDTO.setBodyPartExamined(Util.nullSafeString(row[25]));
+    
+    String annotationsFlagString = Util.nullSafeString(row[26]);
+    // Default to false if the string is null or empty
+    boolean annotationsFlag = annotationsFlagString != null && !annotationsFlagString.isEmpty() && Boolean.parseBoolean(annotationsFlagString);
+    seriesDTO.setAnnotationsFlag(annotationsFlag);
+
+    seriesDTO.setManufacturerModelName(Util.nullSafeString(row[27]));
+    seriesDTO.setSoftwareVersions(Util.nullSafeString(row[28]));
+
+    if (row[29] != null) {
+      java.sql.Timestamp timestamp = (java.sql.Timestamp) row[29];
+      java.util.Date date = new java.util.Date(timestamp.getTime());
+      seriesDTO.setMaxSubmissionTimestamp(date);
+    }
+
 
     returnValue.add(seriesDTO);
   }

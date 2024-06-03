@@ -51,7 +51,10 @@ public class V2_getSeries extends getData {
 			, "LicenseURI"
 			, "CollectionURI"
 			, "FileSize"
-      , "DateReleased"};
+      , "DateReleased"
+      , "StudyDesc"
+      , "StudyDate"
+      , "ThirdPartyAnalysis"};
 	public final static String TEXT_CSV = "text/csv";
 
 	/**

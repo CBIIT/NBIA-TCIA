@@ -46,6 +46,10 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String maxFrameCount;
     private Date studyDate;    
     private Date dateReleased;    
+    private Date seriesDate;    
+    private String protocolName;
+    private String softwareVersions;
+    private Date maxSubmissionTimestamp;    
     private String studyDesc;
     private String bodyPartExamined;
     private String study_id; //study_id
@@ -85,6 +89,52 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
 
     public void setDateReleased(Date dateReleased) {
 		this.dateReleased= dateReleased;
+	}
+
+  public Date getSeriesDate() {
+		return seriesDate;
+	}
+	public String getSeriesDateString() {
+	    if (seriesDate == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(seriesDate);
+	}    
+
+    public void setSeriesDate(Date seriesDate) {
+		this.seriesDate = seriesDate;
+	}
+
+	public String getProtocolName() {
+		return protocolName;
+	}
+
+	public void setProtocolName(String protocolName) {
+		this.protocolName= protocolName;
+	}
+
+	public String getSoftwareVersions() {
+		return softwareVersions;
+	}
+
+	public void setSoftwareVersions(String softwareVersions) {
+		this.softwareVersions= softwareVersions;
+	}
+
+  public Date getMaxSubmissionTimestamp() {
+		return maxSubmissionTimestamp;
+	}
+	public String getMaxSubmissionTimestampString() {
+	    if (maxSubmissionTimestamp == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(maxSubmissionTimestamp);
+	}    
+
+    public void setMaxSubmissionTimestamp(Date maxSubmissionTimestamp) {
+		this.maxSubmissionTimestamp = maxSubmissionTimestamp;
 	}
 
 	public String getStudyDesc() {
