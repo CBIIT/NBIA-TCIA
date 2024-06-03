@@ -6,8 +6,8 @@ export let Properties = {
 
     // APr 2024
     CURRENT_YEAR:'2024',
-    VERSION: '9.0',
-    TEST_VERSION: '9.0',
+    VERSION: '9.1',
+    TEST_VERSION: '9.1',
     RELEASE_COMMIT: '5fa63f0',
 
     // This is the text that appears in the clients browser tab or window

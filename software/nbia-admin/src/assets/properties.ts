@@ -5,8 +5,8 @@ export let Properties = {
     //TEST_VERSION: '1.0.12c',
     // Apr 2024
     CURRENT_YEAR:'2024',
-    VERSION: '9.0',
-    TEST_VERSION: '9.0',
+    VERSION: '9.1',
+    TEST_VERSION: '9.1',
     RELEASE_COMMIT: '5fa63f0',
 
     MAX_CRITERIA_LEN: 32,
