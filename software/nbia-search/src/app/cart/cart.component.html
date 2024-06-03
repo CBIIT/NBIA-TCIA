@@ -119,7 +119,7 @@
 
                 -->
             <td *ngIf="even" class="cart-date">
-                {{ item['studyDate'] | date}}
+                {{ item['studyDate'] | date: 'MMM dd, yyyy' : '-0000'}}
             </td>
             <td *ngIf="even" >{{item['studyDescription']}}</td>
             <!--
