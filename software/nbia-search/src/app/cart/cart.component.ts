@@ -89,7 +89,10 @@ export class CartComponent implements OnInit, OnDestroy{
      * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
      * @type {[string , string , string , string , string , string , string , string , string , string]}
      */
-    columnHeadings = ['X', 'Collection', 'Subject ID', 'Study UID', 'Study Date', 'Study Description', 'Series ID', 'Series Description', 'Images', 'Viewers','DICOM','File Size', 'Annotation File Size'];
+    columnHeadings = ['X', 'Collection', 'Subject ID', 
+        'Study UID', 'Study Date', 'Study Description', 
+        'Series ID', 'Series Description', 'Images', 
+        'Viewers','DICOM','File Size', 'Annotation File Size'];
 
 
     columns = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -135,6 +138,8 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.cartService.cartClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
+               // this.cartList = [];
+                this.seriesListForDisplay = [];
                 this.cartList = [];
             }
         );
@@ -268,6 +273,7 @@ export class CartComponent implements OnInit, OnDestroy{
                 }
                 this.commonService.updateCartCount( this.cartList.length );
                 this.sortService.doSort( this.cartList );
+                this.refreshListAfterSorting();
                 this.busy = false;
 
                 this.loadingDisplayService.setLoading( false );
@@ -514,6 +520,8 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.sortService.updateCartSortState( i );
         this.sortService.doSort( this.cartList );
+        this.refreshListAfterSorting();
+        this.refreshListAfterSorting();
         this.loadingDisplayService.setLoading( false );
 
     }
@@ -551,6 +559,7 @@ export class CartComponent implements OnInit, OnDestroy{
         let len = this.cartList.length;
         for( let f = 0; f < len; f++ ){
             this.cartList[f].disabled = false;
+            this.seriesListForDisplay[2*f].disabled = false;
         }
         this.updateCartList();
     }
@@ -592,12 +601,13 @@ export class CartComponent implements OnInit, OnDestroy{
      * @param i The index number for this Cart item.
      */
     onCartCheckClick( i ) {
-
-        this.cartList[i].disabled = !this.cartList[i].disabled;
-        this.cart[i].disabled = this.cartList[i].disabled;
+        //this.seriesListForDisplay[i].disabled = !this.seriesListForDisplay[i].disabled;
+        // consider even rows 
+        this.cartList[i/2].disabled = !this.cartList[i/2].disabled;
+        this.cart[i/2].disabled = this.cartList[i/2].disabled;
 
         this.updateCartList();
-        this.cartService.setCartEnableCartById( this.cart[i].id, !this.cart[i].disabled );
+        this.cartService.setCartEnableCartById( this.cart[i/2].id, !this.cart[i/2].disabled );
     }
 
 
@@ -666,6 +676,15 @@ export class CartComponent implements OnInit, OnDestroy{
 
     onStudyOhifViewerClick( studyId ){
         this.ohifViewerService.launchOhifViewerStudy( studyId );
+    }
+
+    refreshListAfterSorting(){
+        this.seriesListForDisplay = [];
+        for( let f = 0; f < this.cartList.length; f++ ){
+            this.seriesListForDisplay.push(this.cartList[f]);
+            this.seriesListForDisplay.push({});
+        }
+
     }
 
 
