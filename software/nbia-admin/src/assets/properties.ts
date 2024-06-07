@@ -9,7 +9,7 @@ export let Properties = {
     TEST_VERSION: '9.1',
     RELEASE_COMMIT: '5fa63f0',
 
-    MAX_CRITERIA_LEN: 32,
+    MAX_CRITERIA_LEN: 30,
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
