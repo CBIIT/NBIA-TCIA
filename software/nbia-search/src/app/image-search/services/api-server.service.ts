@@ -1379,9 +1379,9 @@ export class ApiServerService implements OnDestroy {
         let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
 
         console.log('TESTING user: ', user );
-        let data = 'username=' + user + '&password=' + password + '&client_id=' + Properties.DEFAULT_CLIENT_ID + '&grant_type=password';
-        if(secret && secret.length > 0){
-            data += '&client_secret=' + secret;
+        let data = 'username=' + encodeURIComponent(user) + '&password=' + encodeURIComponent(password) + '&client_id=' + Properties.DEFAULT_CLIENT_ID + '&grant_type=password';
+        if (secret && secret.length > 0) {
+            data += '&client_secret=' + encodeURIComponent(secret);
         }
 
         if (Properties.DEBUG_CURL) {
