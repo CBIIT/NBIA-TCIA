@@ -78,9 +78,9 @@ public class V1_getImage extends getData {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
-		//GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("seriesDao");
-		//String collectionName =  gsDao.getCollectionNameForSeriesInstanceUid(sid);
-		//System.out.println("get collection name="+ collectionName);	
+		GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDao");
+		String collectionName =  gsDao.getCollectionNameForSeriesInstanceUid(sid);
+		System.out.println("get collection name="+ collectionName);	
 		
 		String fileContents=tDao.getLicenseContent(sid);
 		String zipName = sid + ".zip";
@@ -145,7 +145,7 @@ public class V1_getImage extends getData {
 				}
 				recodeDownload(seriesInstanceUid, size, "v1API", userName);	
 				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
-						//"collection="+collectionName + "," +
+						"collection="+collectionName + "," +
 						"seriesUID="+ seriesInstanceUid + "," +
 						"numberOfFiles=" + numberOfFiles + "," +
 						"totalSize="+ size + "," +
@@ -208,7 +208,7 @@ public class V1_getImage extends getData {
 				}
 				recodeDownload(seriesInstanceUid, size, "v1API", userName);
 				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
-						//"collection="+collectionName + "," +
+						"collection="+collectionName + "," +
 						"seriesUID="+ seriesInstanceUid + "," +
 						"numberOfFiles=" + numberOfFiles + "," +
 						"totalSize="+ size + "," +
