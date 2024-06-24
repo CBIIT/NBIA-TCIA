@@ -78,7 +78,7 @@ public class V1_getImage extends getData {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
-		GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDao");
+		GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		String collectionName =  gsDao.getCollectionNameForSeriesInstanceUid(sid);
 		System.out.println("get collection name="+ collectionName);	
 		
