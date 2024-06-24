@@ -73,7 +73,7 @@ public class V2_getImage extends getData {
 		StreamingOutput stream = null;
 		ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
 		String fileContents=tDao.getLicenseContent(sid);
-		GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("seriesDao");
+		GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		String collectionName =  gsDao.getCollectionNameForSeriesInstanceUid(sid);
 		System.out.println("get collection name="+ collectionName);	
 		
