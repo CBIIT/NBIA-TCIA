@@ -96,7 +96,7 @@ export let Properties = {
 
     MAX_PAGER_BUTTONS: 6,
     DEFAULT_PAGE_LENGTH: 20,
-    MAX_PAGE_LENGTH: 200,
+    MAX_PAGE_LENGTH: 500, // For V9.2 test with more allowed length
 
     // How many seconds before token end of life to refresh the token
     TOKEN_REFRESH_TIME_MARGIN: 60,
