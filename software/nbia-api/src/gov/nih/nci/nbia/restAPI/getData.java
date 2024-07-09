@@ -211,7 +211,7 @@ public class getData {
 				return Response.ok(returnString).type("application/xml").build();
 			}
 			if (format.equalsIgnoreCase("CSV")) {
-				returnString = FormatOutput.toCsv(columns, data);
+				returnString = FormatOutput.toCsvQuoted(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
 			}
 			if (format.equalsIgnoreCase("CSVQUOTED")) {
