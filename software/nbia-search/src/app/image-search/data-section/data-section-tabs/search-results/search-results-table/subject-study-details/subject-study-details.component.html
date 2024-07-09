@@ -42,7 +42,7 @@
                         <span class="clicker">
                             <a class="study-date-clicker" (click)="onShowSeriesClick(i, !toggleSeriesVisibleArray[i])">
                             <!-- Format the date from Epoch -->
-                                {{study.date | date: 'MMM dd, yyyy'}}
+                                {{study.date | date: 'MMM dd, yyyy' : '-0000'}}
                             </a>
                             <span
                                     class="red-asterisk"

@@ -23,12 +23,12 @@ L-->
   <property name="property.dir" value="${basedir}/../build" />
   <property name="target.dir" value="${common.dir}/target/dist/exploded/nbia-download" />
   <property name="dist.dir" value="${common.dir}/target/dist/exploded/nbia-wars" />
-  <!--property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/-->
+  <property name="global.ivy.settings.file" location="${common.dir}/common/ivysettings.xml"/>
 
   <!-- define this for unittesting.xml import -->
   <property name="classes.to.test.dir" value="${build}"/>
   <property name="project.lib.dir" value="${common.dir}/target/lib/nbia-download"/>
-  <!--property name="bda-utils.lib.dir" value="${common.dir}/target/bda-utils"/-->
+  <property name="bda-utils.lib.dir" value="${common.dir}/target/bda-utils"/>
 
    <!-- Paths --> 
   <path id="classpath">
@@ -161,7 +161,7 @@ L-->
          compress="false"/>
 
     <jar destfile="${target.dir}/${war.name}.tmp">
-        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar, **/log4j-1.2.*"/>
+        <zipfileset src="${target.dir}/${war.name}" excludes="**/csmapi-5.2.0.1.jar, **/log4j-1.2.8"/>
     </jar>
      <delete file="${target.dir}/${war.name}" />
      <move file="${target.dir}/${war.name}.tmp" tofile="${target.dir}/${war.name}" />

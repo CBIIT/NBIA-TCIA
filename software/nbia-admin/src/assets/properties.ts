@@ -1,10 +1,15 @@
 export let Properties = {
     // 08_FEB_23
-    VERSION: '1.0.12',
+    //VERSION: '1.0.12',
     // 15_MAY_23
-    TEST_VERSION: '1.0.12c',
+    //TEST_VERSION: '1.0.12c',
+    // Apr 2024
+    CURRENT_YEAR:'2024',
+    VERSION: '9.1',
+    TEST_VERSION: '9.1',
+    RELEASE_COMMIT: '5fa63f0',
 
-    MAX_CRITERIA_LEN: 32,
+    MAX_CRITERIA_LEN: 30,
 
     // If this is left an empty string, the server used by the browser to reach the site will be used.
     // This value can be changed in the config file.
