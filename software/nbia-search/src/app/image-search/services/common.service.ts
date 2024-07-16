@@ -752,7 +752,7 @@ export class CommonService{
         // DATE_RANGE_CRITERIA
         if( !this.utilService.isNullOrUndefined( allData[Consts.DATE_RANGE_CRITERIA] ) ){
             for( let item of allData[Consts.DATE_RANGE_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name': this.swapMonthDay( item ) } );
+                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name':  item  } );
             }
         }
 
