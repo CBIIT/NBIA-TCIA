@@ -316,75 +316,158 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
             // ------------ User Admin ------------
             case this.menuItem.USER_ADMIN_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-uat/index.html?accessToken=' + this.apiServerService.showToken(),
-                    '_blank');
+                const url = Properties.API_SERVER_URL + '/nbia-uat/index.html';
+                var accessToken = this.apiServerService.showToken();
+            
+                try {
+                    // Store the token in localStorage
+                    localStorage.setItem('accessToken', accessToken);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
+
 
                 break;
 
             // Perform QC
             case this.menuItem.DATA_ADMIN_PERFORM_QC_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_QC + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_perform_qc = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_QC;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_perform_qc);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
+
 
                 break;
 
             // Approve Deletions
             case this.menuItem.DATA_ADMIN_APPROVE_DELETIONS_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_APPROVE_DELETIONS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_approve_deletion = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_APPROVE_DELETIONS;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_approve_deletion);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
 
             // View Submission reports
             case this.menuItem.DATA_ADMIN_VIEW_SUBMISSION_REPORTS_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_VIEW_SUBMISSION_REPORTS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_view_submission = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_VIEW_SUBMISSION_REPORTS;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_view_submission);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
 
 
             // Perform online deletion
             case this.menuItem.DATA_ADMIN_PERFORM_ONLINE_DELETION_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_ONLINE_DELETION + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_perform_delete = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_PERFORM_ONLINE_DELETION;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_perform_delete);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
 
 
             // Edit collection descriptions
             case this.menuItem.DATA_ADMIN_EDIT_COLLECTION_DESCRIPTIONS_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_edit_collections_description= Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_EDIT_COLLECTION_DESCRIPTIONS;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_edit_collections_description);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
 
-            // Edit collection descriptions
+            // Edit licence
             case this.menuItem.DATA_ADMIN_EDIT_LICENSE_ITEMS_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_LICENSE + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_edit_license = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_EDIT_LICENSE;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_edit_license);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
 
             // Edit Site License descriptions
             case this.menuItem.DATA_ADMIN_EDIT_SITE_LICENSE_ITEMS_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_EDIT_SITE_LICENSE + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_edit_site_license = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_EDIT_SITE_LICENSE;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_edit_site_license);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
 
             // Manage Workflow Items
             case this.menuItem.DATA_ADMIN_MANAGE_WORKFLOW_ITEMS_MENU_ITEM:
-                window.open(Properties.API_SERVER_URL +
-                    '/nbia-admin/?tool=' + Consts.TOOL_MANAGE_WORKFLOW_ITEMS + '&accessToken=' + this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan(),
-                    '_blank');
+                const url_workflow = Properties.API_SERVER_URL + '/nbia-admin/?tool=' + Consts.TOOL_MANAGE_WORKFLOW_ITEMS;
+            
+                try {
+                    // Store the token in localStorage
+                    var tokenStorage = this.apiServerService.showToken() + ':' + this.apiServerService.showRefreshToken() + ':' + this.apiServerService.showTokenLifeSpan()
+                    localStorage.setItem('accessToken', tokenStorage);
+                    
+                    // Open the new window
+                    const newWindow = window.open(url_workflow);
+                } catch (error) {
+                    console.error('There has been a problem with your fetch operation:', error);
+                }
 
                 break;
             // ------------- Search -------------
@@ -432,6 +515,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                         this.menuService.setCurrentItem(menuChoice);
                     } else {
                         this.apiServerService.logOutCurrentUser();
+                        localStorage.removeItem('accessToken')
                     }
                 }
                 break;
