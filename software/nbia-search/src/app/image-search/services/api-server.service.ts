@@ -471,11 +471,19 @@ export class ApiServerService implements OnDestroy {
 
         // Available  -  Date Range
         if ((allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0)) {
-            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DATE_RANGE_CRITERIA + '&' +
-                'fromDate' + this.queryBuilderIndex + '=' + allData[Consts.DATE_RANGE_CRITERIA][0] + '&' +
-                'toDate' + this.queryBuilderIndex + '=' + allData[Consts.DATE_RANGE_CRITERIA][1];
-            this.queryBuilderIndex++;
+              // Convert from MM/dd/yyyy to dd/MM/yyyy to match API expectation
+              let fromDateParts = allData[Consts.DATE_RANGE_CRITERIA][0].split('/');
+              let toDateParts = allData[Consts.DATE_RANGE_CRITERIA][1].split('/');
+
+              let fromDateFormatted = fromDateParts[1] + '/' + fromDateParts[0] + '/' + fromDateParts[2];
+              let toDateFormatted = toDateParts[1] + '/' + toDateParts[0] + '/' + toDateParts[2];
+
+              searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DATE_RANGE_CRITERIA + '&' +
+                             'fromDate' + this.queryBuilderIndex + '=' + fromDateFormatted + '&' +
+                             'toDate' + this.queryBuilderIndex + '=' + toDateFormatted;
+              this.queryBuilderIndex++;
         }
+
 
         // Subject ID  -  Patient Criteria
         if ((allData[Consts.PATIENT_CRITERIA] !== undefined) && (allData[Consts.PATIENT_CRITERIA].length > 0)) {
