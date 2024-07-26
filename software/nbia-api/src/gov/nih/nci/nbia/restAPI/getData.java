@@ -210,8 +210,8 @@ public class getData {
 				returnString = FormatOutput.toXml(columns, data);
 				return Response.ok(returnString).type("application/xml").build();
 			}
-			if (format.equalsIgnoreCase("CSVQUOTED")) {
-				returnString = FormatOutput.toCsv(columns, data);
+			if (format.equalsIgnoreCase("CSV")) {
+				returnString = FormatOutput.toCsvQuoted(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
 			}
 			if (format.equalsIgnoreCase("CSVQUOTED")) {
@@ -249,7 +249,7 @@ public class getData {
 				return Response.ok(returnString).type("application/xml").build();
 			}
 			if (format.equalsIgnoreCase("CSV")) {
-				returnString = FormatOutput.toCsv(columns, data);
+				returnString = FormatOutput.toCsvQuoted(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
 			}
 		}
