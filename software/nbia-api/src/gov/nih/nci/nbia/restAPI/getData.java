@@ -210,7 +210,7 @@ public class getData {
 				returnString = FormatOutput.toXml(columns, data);
 				return Response.ok(returnString).type("application/xml").build();
 			}
-			if (format.equalsIgnoreCase("CSV")) {
+			if (format.equalsIgnoreCase("CSVQUOTED")) {
 				returnString = FormatOutput.toCsv(columns, data);
 				return Response.ok(returnString).type("text/csv").build();
 			}
