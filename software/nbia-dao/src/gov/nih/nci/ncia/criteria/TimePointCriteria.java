@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class TimePointCriteria extends PersistentCriteria {
@@ -36,7 +38,7 @@ public class TimePointCriteria extends PersistentCriteria {
     private Integer fromDay;
     private Integer toDay;
     private String eventType;
-    private static Logger logger = Logger.getLogger(TimePointCriteria.class);
+    private static Logger logger = LogManager.getLogger(TimePointCriteria.class);
 
   
     public String getEventType() {

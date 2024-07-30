@@ -15,7 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ import gov.nih.nci.nbia.util.DicomConstants;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 public class SeriesOperation extends DomainOperation implements SeriesOperationInterface{
-	Logger log = Logger.getLogger(SeriesOperation.class);
+	Logger log = LogManager.getLogger(SeriesOperation.class);
 	
 	private Patient patient ;
 	private Study study;

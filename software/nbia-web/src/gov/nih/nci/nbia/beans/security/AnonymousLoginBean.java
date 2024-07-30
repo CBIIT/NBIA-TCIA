@@ -12,7 +12,9 @@ import gov.nih.nci.nbia.beans.BeanManager;
 import gov.nih.nci.nbia.beans.searchform.SearchWorkflowBean;
 import gov.nih.nci.nbia.util.MessageUtil;
 import gov.nih.nci.nbia.util.NCIAConfig;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * This is the Session scope bean that provides about anonymous loign information
  *
@@ -22,7 +24,7 @@ public class AnonymousLoginBean {
 	/**
      * Logger for class.
      */
-    private static Logger logger = Logger.getLogger(AnonymousLoginBean.class);
+    private static Logger logger = LogManager.getLogger(AnonymousLoginBean.class);
 
     private boolean isGuestEnabled = false;
     private boolean isExternalSearchLogin = false;

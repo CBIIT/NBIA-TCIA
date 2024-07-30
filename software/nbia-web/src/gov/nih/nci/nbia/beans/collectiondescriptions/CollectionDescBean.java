@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.icesoft.faces.component.inputrichtext.InputRichText;
 
 public class CollectionDescBean {
-	private static Logger logger = Logger.getLogger(CollectionDescBean.class);
+	private static Logger logger = LogManager.getLogger(CollectionDescBean.class);
 	private List<String> collectionNames = new ArrayList<String>();
 	private CollectionDescDAO dao = (CollectionDescDAO)SpringApplicationContext.getBean("collectionDescDAO");
 	private List<SelectItem> collectionItems;

@@ -44,7 +44,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,7 +54,7 @@ import org.w3c.dom.Node;
 
 
 public class LIDCPreProcessUtil implements IPreProcessor {
-    final static Logger logger = Logger.getLogger(LIDCPreProcessUtil.class);
+    final static Logger logger = LogManager.getLogger(LIDCPreProcessUtil.class);
     Hashtable<String, String> seriesStudyMap = new Hashtable<String, String>();
     ArrayList<File> unProcessedFilesQueue = new ArrayList<File>();
     private static final String SERIES_INSTANCE_UID_ELEMENT = "SeriesInstanceUID";

@@ -15,7 +15,9 @@ import gov.nih.nci.nbia.workflowsupport.RESTCaller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -29,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 	private final static String SITES_QUERY="select distinct dp_site_name from site";
 	private final static String COLLECTION_QUERY="select distinct project from trial_data_provenance";
 	private final static String SITE_COLLECTION_QUERY="select distinct site.dp_site_name from trial_data_provenance, site where site.trial_dp_pk_id=trial_data_provenance.trial_dp_pk_id and project=:project";
-	static Logger log = Logger.getLogger(WorkflowDAOImpl.class);
+	static Logger log = LogManager.getLogger(WorkflowDAOImpl.class);
 	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public long delete(Integer toRemove) throws DataAccessException {

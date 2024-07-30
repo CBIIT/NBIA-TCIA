@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -53,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomSeriesListDAOImpl extends AbstractDAO
                                      implements CustomSeriesListDAO {
 
-	private static Logger logger = Logger.getLogger(CustomSeriesListDAO.class);
+	private static Logger logger = LogManager.getLogger(CustomSeriesListDAO.class);
 
 	/**
 	 * query database table to check for existence of name

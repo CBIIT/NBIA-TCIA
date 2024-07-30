@@ -6,7 +6,9 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -22,7 +24,7 @@ import org.apache.solr.client.solrj.request.CoreAdminRequest;
 public class PatientUpdater {
 	@Autowired
 	
-    static Logger log = Logger.getLogger(PatientUpdater.class);
+    static Logger log = LogManager.getLogger(PatientUpdater.class);
     private SessionFactory sessionFactory;
     private static Date lastRan;
     private static boolean stillRunning=false;

@@ -19,7 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -31,7 +33,7 @@ import org.hibernate.criterion.DetachedCriteria;
  *
  */
 public class AdapterUtil extends HibernateDaoSupport {
-	private static Logger log = Logger.getLogger(AdapterUtil.class);
+	private static Logger log = LogManager.getLogger(AdapterUtil.class);
 	
 	public static Date stringToDate(String numbers) throws Exception {
         Date retval = null;

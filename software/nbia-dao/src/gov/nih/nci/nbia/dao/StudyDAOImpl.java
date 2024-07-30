@@ -29,7 +29,9 @@ import java.util.Map;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -459,7 +461,7 @@ public class StudyDAOImpl extends AbstractDAO
     private static final String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join series.generalEquipment ge ";
     private static final String SQL_QUERY_WHERE = "WHERE series.visibility in ('1') ";
 
-	private static Logger logger = Logger.getLogger(ImageDAO.class);
+	private static Logger logger = LogManager.getLogger(ImageDAO.class);
 
 
     /**

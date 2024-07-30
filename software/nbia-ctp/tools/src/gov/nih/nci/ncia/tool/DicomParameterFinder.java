@@ -23,7 +23,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.rsna.mircsite.util.DicomObject;
 
@@ -32,7 +34,7 @@ import org.rsna.mircsite.util.DicomObject;
  */
 public class DicomParameterFinder {
 
-	final static Logger logger = Logger.getLogger(DicomParameterFinder.class);
+	final static Logger logger = LogManager.getLogger(DicomParameterFinder.class);
 
 	final static private String outputFileName = "c:\\result.xls";
 

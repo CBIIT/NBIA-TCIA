@@ -23,7 +23,9 @@ import java.io.File;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javax.xml.transform.TransformerConfigurationException;
 import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.DicomObject;
@@ -50,7 +52,7 @@ import org.dcm4che2.net.service.DicomService;
  */
 public class CMoveServiceSCP extends CMoveService {
 
-	static Logger log = Logger.getLogger(DicomService.class);
+	static Logger log = LogManager.getLogger(DicomService.class);
     private DicomNetwork service = null;
 
     public CMoveServiceSCP(String[] sopClasses, Executor executor) {

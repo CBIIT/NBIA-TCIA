@@ -12,7 +12,9 @@ import gov.nih.nci.nbia.util.UidDisplayUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
@@ -22,7 +24,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SeriesDTO implements Comparable<SeriesDTO>  {
-    private static Logger logger = Logger.getLogger(SeriesDTO.class);
+    private static Logger logger = LogManager.getLogger(SeriesDTO.class);
 
 
     private String seriesNumber;

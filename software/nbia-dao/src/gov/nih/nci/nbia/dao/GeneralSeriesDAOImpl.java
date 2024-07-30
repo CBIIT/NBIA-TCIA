@@ -45,7 +45,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Collections;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Conjunction;
@@ -953,7 +955,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
   private static String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join study.patient patient join patient.dataProvenance dp ";
   private static String SQL_QUERY_WHERE = "WHERE ";
 
-  private static Logger logger = Logger.getLogger(GeneralSeriesDAO.class);
+  private static Logger logger = LogManager.getLogger(GeneralSeriesDAO.class);
 
   private List<GeneralSeries> getSeriesFromStudys(List<String> studyIDs, List<SiteData> authorizedSites,
       List<String> authorizedSeriesSecurityGroups) {

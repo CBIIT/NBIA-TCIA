@@ -15,7 +15,9 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Display the collection description on the search page
@@ -23,7 +25,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class DisplayCollectionDescBean {
-	private static Logger logger = Logger.getLogger(DisplayCollectionDescBean.class);
+	private static Logger logger = LogManager.getLogger(DisplayCollectionDescBean.class);
 	
 	private String collectionDescription;
 	private String selectedCollectionLabel;

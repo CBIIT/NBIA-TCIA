@@ -6,7 +6,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 
 
@@ -58,7 +60,7 @@ public class RESTUtil {
 	
     private static Map<String, String> userMap = new HashMap<String, String>();
     private static ObjectMapper mapper = new ObjectMapper();
-    private static Logger logger = Logger.getLogger(RESTUtil.class);
+    private static Logger logger = LogManager.getLogger(RESTUtil.class);
 	public static List<PatientSearchResult> getDynamicSearch(List<DynamicSearchCriteria> criteria,
                                                              String stateRelation, 
                                                              String userToken)

@@ -67,7 +67,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.ByteArrayResource;
@@ -814,7 +816,7 @@ public class BasketBean implements Serializable, IcefacesRowColumnDataModelInter
     /**
      * Logger for the class.
      */
-    private static Logger logger = Logger.getLogger(BasketBean.class);
+    private static Logger logger = LogManager.getLogger(BasketBean.class);
 
     /**
      * Stores whether or not a change has occurred since the last time a user

@@ -36,7 +36,9 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -45,7 +47,7 @@ import org.apache.log4j.Logger;
  * @author NCIA Team
  */
 public class RangeData {
-    private static Logger logger = Logger.getLogger(RangeData.class);
+    private static Logger logger = LogManager.getLogger(RangeData.class);
 
     // Constants for operators
     public final static String GREATER_THAN = ">";

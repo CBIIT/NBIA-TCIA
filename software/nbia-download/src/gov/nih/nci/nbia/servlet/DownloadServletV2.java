@@ -39,14 +39,16 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Q. Pan
  *
  */
 public class DownloadServletV2 extends HttpServlet {
-	private static Logger logger = Logger.getLogger(DownloadServlet.class);
+	private static Logger logger = LogManager.getLogger(DownloadServlet.class);
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

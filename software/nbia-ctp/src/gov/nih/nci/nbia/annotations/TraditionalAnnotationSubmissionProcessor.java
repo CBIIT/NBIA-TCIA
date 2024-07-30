@@ -18,7 +18,9 @@ import gov.nih.nci.nbia.internaldomain.SubmissionHistory;
 import gov.nih.nci.nbia.util.AnnotationUtil;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.rsna.ctp.objects.XmlObject;
 import org.rsna.ctp.objects.ZipObject;
 import org.rsna.ctp.pipeline.Status;
@@ -119,7 +121,7 @@ public class TraditionalAnnotationSubmissionProcessor extends HibernateDaoSuppor
 	@Autowired
 	private AnnotationSubmissionHistoryOperationInterface annotationSubmissionHistoryOperation;
 
-	private static Logger log = Logger.getLogger(TraditionalAnnotationSubmissionProcessor.class);
+	private static Logger log = LogManager.getLogger(TraditionalAnnotationSubmissionProcessor.class);
 
 
 

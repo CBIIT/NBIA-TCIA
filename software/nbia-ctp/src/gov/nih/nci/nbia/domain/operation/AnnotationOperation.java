@@ -20,7 +20,9 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class AnnotationOperation extends DomainOperation implements AnnotationOperationInterface{
 	
-	private static Logger log = Logger.getLogger(AnnotationOperation.class);
+	private static Logger log = LogManager.getLogger(AnnotationOperation.class);
 	
 	public AnnotationOperation() {
 	}

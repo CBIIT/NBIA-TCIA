@@ -17,7 +17,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -27,7 +29,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class ImageDAOImpl extends HibernateDaoSupport implements ImageDAO {
-	private static Logger logger = Logger.getLogger(ImageDAOImpl.class);
+	private static Logger logger = LogManager.getLogger(ImageDAOImpl.class);
 	private Session session = null;
 
 	public List<String> removeImages(List<Integer> seriesIds) throws DataAccessException{

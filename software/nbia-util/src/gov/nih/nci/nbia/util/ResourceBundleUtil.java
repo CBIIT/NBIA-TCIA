@@ -13,7 +13,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class ResourceBundleUtil {
@@ -83,7 +85,7 @@ public class ResourceBundleUtil {
     /**
      * Logger for the class.
      */
-    private static Logger logger = Logger.getLogger(ResourceBundleUtil.class);
+    private static Logger logger = LogManager.getLogger(ResourceBundleUtil.class);
 
     private static final String nciMessageBundle = "ncia_commons_messages";
 

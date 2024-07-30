@@ -31,12 +31,14 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SearchCustomSeriesListBean {
 
     private final String defaultSelectedValue = "--Please Select--";
-	private static Logger logger = Logger.getLogger(SearchCustomSeriesListBean.class);
+	private static Logger logger = LogManager.getLogger(SearchCustomSeriesListBean.class);
     private List<String> noPermissionSeries;
     private CustomSeriesListProcessor processor;
     private SecurityBean sb;

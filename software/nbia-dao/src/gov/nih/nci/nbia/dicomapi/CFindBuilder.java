@@ -25,7 +25,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
@@ -54,7 +56,7 @@ public class CFindBuilder
 
     private DICOMParameters query = null;
     
-    static Logger log = Logger.getLogger(CFindBuilder.class);
+    static Logger log = LogManager.getLogger(CFindBuilder.class);
     public CFindBuilder(DicomObject key, DicomObject rsp) throws Exception
     {
 
