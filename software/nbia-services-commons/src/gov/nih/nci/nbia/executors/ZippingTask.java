@@ -16,11 +16,13 @@ import java.util.Map;
 
 import javax.jms.ObjectMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ZippingTask {
-	private Logger log = Logger.getLogger(ZippingTask.class);
+	private Logger log = LogManager.getLogger(ZippingTask.class);
 
     // List of paths to zip files generated
     // There can be more than one for very large data sets

@@ -19,7 +19,9 @@ package gov.nih.nci.nbia.beans.searchform;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.nbia.query.DICOMQuery;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the Session scope bean that provides the search functionality on the
@@ -32,7 +34,7 @@ import org.apache.log4j.Logger;
 public class ReconstructionDiameterSearchBean extends RangeCriteriaSearchBean {
 
 	public ReconstructionDiameterSearchBean() {
-    	logger = Logger.getLogger(ReconstructionDiameterSearchBean.class);
+    	logger = LogManager.getLogger(ReconstructionDiameterSearchBean.class);
         logger.debug("constructing AcquisitionMatrixSearchBean");
     }
     /**

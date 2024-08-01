@@ -4,12 +4,14 @@ import org.apache.http.client.methods.*;
 import org.apache.http.client.params.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.net.URLEncoder;
 public class RESTCaller {
-	static Logger log = Logger.getLogger(RESTCaller.class);
+	static Logger log = LogManager.getLogger(RESTCaller.class);
     public static void requestNewSeriesWorkflow(WorkflowNewSeriesDTO workflowDTO) throws Exception
     {
     	StringBuilder sb = new StringBuilder();

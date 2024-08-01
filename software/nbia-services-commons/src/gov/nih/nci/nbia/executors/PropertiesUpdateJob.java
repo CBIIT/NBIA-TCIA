@@ -9,14 +9,16 @@
 
 package gov.nih.nci.nbia.executors;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import gov.nih.nci.nbia.util.NCIAConfig;
 
 
 public class PropertiesUpdateJob implements Job {
-	static Logger log = Logger.getLogger(PropertiesUpdateJob.class);
+	static Logger log = LogManager.getLogger(PropertiesUpdateJob.class);
     /**
      * This method allows this class to be called as a Job using Quartz
      */

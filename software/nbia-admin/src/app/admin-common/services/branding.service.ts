@@ -131,10 +131,12 @@ export class BrandingService{
                 Properties.VERSION_SUFFIX = value;
                 break;
             case this.FOOTER_HTML:
-                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX +
-                    ((Properties.DEMO_MODE) ? ' Read Only mode.' : '') )
-                    .replace( /%TEST_VERSION%/g, Properties.TEST_VERSION )
-                    .replace( /%HOST_NAME%/g, Properties.HOST_NAME );
+                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION )
+                .replace( /%TEST_VERSION%/g, Properties.TEST_VERSION )
+                .replace( /%HOST_NAME%/g, Properties.HOST_NAME )
+                .replace( /%CURRENT_YEAR%/g, Properties.CURRENT_YEAR )
+                .replace(/%RELEASE_COMMIT%/g, Properties.RELEASE_COMMIT);
+               
                 break;
         }
     }

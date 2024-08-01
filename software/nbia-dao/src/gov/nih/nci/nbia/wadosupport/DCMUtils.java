@@ -18,7 +18,9 @@ import javax.imageio.*;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam;
 import org.dcm4che2.imageioimpl.plugins.dcm.DicomImageReader;
 
@@ -27,7 +29,7 @@ public class DCMUtils {
 private static boolean scanned =false;
 private static ImageReader reader;
 private static DicomImageReadParam param;
-static Logger log = Logger.getLogger(DCMUtils.class);
+static Logger log = LogManager.getLogger(DCMUtils.class);
 public synchronized static  JPEGResult getJPGFromFile(File file, WADOParameters params)
 {
 	JPEGResult returnValue=new JPEGResult();

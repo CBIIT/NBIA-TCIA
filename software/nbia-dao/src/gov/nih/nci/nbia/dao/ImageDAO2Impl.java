@@ -32,7 +32,9 @@ import java.util.List;
 import java.util.Iterator;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class ImageDAO2Impl extends AbstractDAO
                           implements ImageDAO2 {
-	private static Logger logger = Logger.getLogger(ImageDAO2.class);
+	private static Logger logger = LogManager.getLogger(ImageDAO2.class);
 
     /**
      * Return all the images for a given series.  Optionally exclude
@@ -72,14 +74,14 @@ public class ImageDAO2Impl extends AbstractDAO
                     seriesUid + "'";
     	// Submit the search
         long start = System.currentTimeMillis();
-    	logger.debug("Issuing query: ");
+    	logger.info("Issuing query: ");
         List results = getHibernateTemplate().find(query);
         long end = System.currentTimeMillis();
-        logger.debug("total query time: " + (end - start) + " ms");
+        logger.info("total query time: " + (end - start) + " ms");
         List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
 
         if(results == null || results.isEmpty()){
-        	logger.debug("No image found for request seriesuid="+seriesUid);
+        	logger.info("No image found for request seriesuid="+seriesUid);
         	return imageResults;
         }
 //        TrialDataProvenance tdp = results.get(0).getDataProvenance();
@@ -138,14 +140,14 @@ public class ImageDAO2Impl extends AbstractDAO
                     seriesUid + "'";    		
     	// Submit the search
         long start = System.currentTimeMillis();
-    	logger.debug("Issuing query: ");
+    	logger.info("Issuing query: ");
         List results = getHibernateTemplate().find(query);
         long end = System.currentTimeMillis();
-        logger.debug("total query time: " + (end - start) + " ms");
+        logger.info("total query time: " + (end - start) + " ms");
         List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
 
         if(results == null || results.isEmpty()){
-        	logger.debug("No image found for request seriesuid="+seriesUid);
+        	logger.info("No image found for request seriesuid="+seriesUid);
         	return imageResults;
         }
 
@@ -208,15 +210,15 @@ public class ImageDAO2Impl extends AbstractDAO
                     seriesUid + "'" + " and gs.visibility in ('1','12')";
     	// Submit the search
         long start = System.currentTimeMillis();
-    	logger.debug("Issuing query: ");
+    	logger.info("Issuing query: ");
         List results = getHibernateTemplate().find(query);
         long end = System.currentTimeMillis();
-        logger.debug("total query time: " + (end - start) + " ms");
+        logger.info("total query time: " + (end - start) + " ms");
         List<ImageDTO2> imageResults = new ArrayList<ImageDTO2>();
         List<String []> fileNames = new ArrayList<String[]>();
 
         if(results == null || results.isEmpty()){
-        	logger.debug("No image found for request seriesuid="+seriesUid);
+        	logger.info("No image found for request seriesuid="+seriesUid);
         	return fileNames;
         }
 //        TrialDataProvenance tdp = results.get(0).getDataProvenance();
@@ -248,7 +250,7 @@ public class ImageDAO2Impl extends AbstractDAO
         for (ImageDTO2 obj: imageResults) {
         	String newName = obj.getNewFilename();
         	String newFileName = newName.substring(newName.indexOf("^")+1);
-        	String [] twoNames = {obj.getFileName(),  newFileName, obj.getMd5Digest(), obj.getDicomSize().toString()}; 
+        	String [] twoNames = {obj.getFileName(),  newFileName, obj.getMd5Digest(), obj.getDicomSize().toString(), obj.getProject()}; 
         	fileNames.add(twoNames);
         }
 
@@ -322,6 +324,7 @@ public class ImageDAO2Impl extends AbstractDAO
 					MD5DTO dto = new MD5DTO();
 					dto.setFileName(filename);
 					dto.setMD5Hash(md5Digest);
+					dto.setProject(project);
 					returnValue.add(dto);
 				}
 			}

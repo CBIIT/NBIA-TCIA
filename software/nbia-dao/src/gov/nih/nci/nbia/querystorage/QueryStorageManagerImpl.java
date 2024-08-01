@@ -47,7 +47,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
@@ -64,7 +66,7 @@ public class QueryStorageManagerImpl extends AbstractDAO
 
 
     // Logger for this class
-    private static Logger logger = Logger.getLogger(QueryStorageManager.class);
+    private static Logger logger = LogManager.getLogger(QueryStorageManager.class);
 
     /**
      * Records a query in the query history

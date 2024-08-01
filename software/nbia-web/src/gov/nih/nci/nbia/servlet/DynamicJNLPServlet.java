@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DynamicJNLPServlet extends HttpServlet
 {
-	//private static Logger logger = Logger.getLogger(DynamicJNLPServlet.class);
+	//private static Logger logger = LogManager.getLogger(DynamicJNLPServlet.class);
     
 	private String jnlpTemplate="jnlpTemplate.jnlp";
 

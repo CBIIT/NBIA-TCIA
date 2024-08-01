@@ -33,7 +33,9 @@ import javax.faces.component.UIData;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -47,7 +49,7 @@ public class SavedQueryBean {
     /**
      * Logger for the class.
      */
-    private static Logger logger = Logger.getLogger(SavedQueryBean.class);
+    private static Logger logger = LogManager.getLogger(SavedQueryBean.class);
 
     /**
      * All of the saved queries for the particular user.

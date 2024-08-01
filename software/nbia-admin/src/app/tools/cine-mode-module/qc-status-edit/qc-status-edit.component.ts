@@ -220,7 +220,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
             query += '&complete=Complete';
         }
         if( this.isComplete === this.NO ){
-            query += '&complete=NotComplete';
+            query += '&complete=Not Complete';
         }
         if( this.isReleased === this.YES ){
             query += '&released=released';

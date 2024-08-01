@@ -37,7 +37,9 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -47,7 +49,7 @@ import org.apache.log4j.Logger;
  * Preferences - Java - Code Style - Code Templates
  */
 public class GeneralImageBuilder extends DataBuilder  {
-    Logger log = Logger.getLogger(GeneralImageBuilder.class);
+    Logger log = LogManager.getLogger(GeneralImageBuilder.class);
 //    String filename;
 //    String url;
 //    long filesize;

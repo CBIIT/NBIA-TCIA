@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -34,7 +36,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  *
  */
 public class DataFieldParser {
-	private static Logger logger = Logger.getLogger(DataFieldParser.class);
+	private static Logger logger = LogManager.getLogger(DataFieldParser.class);
 	private static DataGroup dg;
 	/**
 	 * This method provides a dataGroup list for user to select data source on the GUI

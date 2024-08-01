@@ -14,7 +14,9 @@ import javax.faces.event.ValueChangeEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.icesoft.faces.component.tree.IceUserObject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EquipmentTreeUserObject extends IceUserObject {
 	public EquipmentTreeUserObject(DefaultMutableTreeNode wrapper) {
@@ -50,7 +52,7 @@ public class EquipmentTreeUserObject extends IceUserObject {
 
 
 	private boolean selected = false;
-	private static Logger logger = Logger.getLogger(EquipmentTreeUserObject.class);
+	private static Logger logger = LogManager.getLogger(EquipmentTreeUserObject.class);
 
 	private static void recurseSelect(DefaultMutableTreeNode node, boolean selected) {
 		EquipmentTreeUserObject userObj = (EquipmentTreeUserObject)node.getUserObject();

@@ -38,7 +38,9 @@ import gov.nih.nci.nbia.util.NCIAConfig;
 
 import java.util.Date;
 import javax.servlet.http.HttpServlet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -54,7 +56,7 @@ import gov.nih.nci.nbia.executors.PropertiesUpdateJob;
 public class StartupServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(StartupServlet.class);
+	private static Logger logger = LogManager.getLogger(StartupServlet.class);
     /**
      * Run upon initialization of the servlet
      *

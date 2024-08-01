@@ -55,7 +55,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -66,7 +68,7 @@ import org.json.JSONObject;
 public class SeriesServlet extends HttpServlet {
    
     //Initialize the Logger.
-    private static Logger log = Logger.getLogger(SeriesServlet.class);
+    private static Logger log = LogManager.getLogger(SeriesServlet.class);
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

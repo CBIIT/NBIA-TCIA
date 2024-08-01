@@ -41,14 +41,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Q. Pan
  *
  */
 public class DownloadServletV3 extends HttpServlet {
-	private static Logger logger = Logger.getLogger(DownloadServlet.class);
+	private static Logger logger = LogManager.getLogger(DownloadServlet.class);
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
 	private final static int CLIENT_NOT_AUTHORIZED = 462;

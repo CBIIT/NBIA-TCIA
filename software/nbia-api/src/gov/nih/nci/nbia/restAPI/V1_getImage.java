@@ -28,6 +28,12 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import gov.nih.nci.nbia.dao.DownloadDataDAO;
+import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dto.ImageDTO2;
 import gov.nih.nci.nbia.util.NCIAConfig;
@@ -38,6 +44,7 @@ import org.springframework.dao.DataAccessException;
 @Path("/v1/getImage")
 public class V1_getImage extends getData {
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	private static final Logger downloadLogger = LogManager.getLogger("logger2");
 
 	/**
 	 * This method get a set of images in a zip file
@@ -71,6 +78,10 @@ public class V1_getImage extends getData {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
+		GeneralSeriesDAO gsDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		String collectionName =  gsDao.getCollectionNameForSeriesInstanceUid(sid);
+		System.out.println("get collection name="+ collectionName);	
+		
 		String fileContents=tDao.getLicenseContent(sid);
 		String zipName = sid + ".zip";
 		StreamingOutput stream = null;
@@ -82,6 +93,7 @@ public class V1_getImage extends getData {
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
 				long size = 0;
+				int numberOfFiles = 0;				
 				try {
 //					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
@@ -109,7 +121,8 @@ public class V1_getImage extends getData {
 							IOUtils.copy(in, zip);
 							zip.closeEntry();
 							in.close();
-						} 
+						}
+						numberOfFiles = counter;
 					}
 
 					zip.close();
@@ -131,6 +144,13 @@ public class V1_getImage extends getData {
 						in.close();
 				}
 				recodeDownload(seriesInstanceUid, size, "v1API", userName);	
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+						"collection="+collectionName + "," +
+						"seriesUID="+ seriesInstanceUid + "," +
+						"numberOfFiles=" + numberOfFiles + "," +
+						"totalSize="+ size + "," +
+						"userId="+ userName + "," +
+						"downloadType=v1API");						
 			}
 			
 		}; } else {
@@ -140,6 +160,7 @@ public class V1_getImage extends getData {
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
 				long size = 0;
+				int numberOfFiles = 0;
 				try {
 					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
 					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
@@ -162,7 +183,8 @@ public class V1_getImage extends getData {
 							IOUtils.copy(in, zip);
 							zip.closeEntry();
 							in.close();
-						}
+							++numberOfFiles;
+						}						
 					}
 
 					zip.close();
@@ -185,6 +207,13 @@ public class V1_getImage extends getData {
 						in.close();
 				}
 				recodeDownload(seriesInstanceUid, size, "v1API", userName);
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+						"collection="+collectionName + "," +
+						"seriesUID="+ seriesInstanceUid + "," +
+						"numberOfFiles=" + numberOfFiles + "," +
+						"totalSize="+ size + "," +
+						"userId="+ userName + "," +
+						"downloadType=v1API");						
 			}
 		};
 		}

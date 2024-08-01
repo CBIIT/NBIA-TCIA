@@ -29,7 +29,9 @@ import java.util.Map;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -270,7 +272,9 @@ public class StudyDAOImpl extends AbstractDAO
 	{
 		String hql = "select distinct gs.patientId, gs.studyInstanceUID, s.studyDesc, DATE_FORMAT(s.studyDate,'%Y-%m-%d'), gs.seriesInstanceUID, " +
 				"gs.seriesDesc, gs.imageCount, gs.totalSize, gs.project, gs.modality, ge.manufacturer, gs.thirdPartyAnalysis, " +
-				"gs.descriptionURI, gs.seriesNumber, gs.licenseName, gs.licenseURL " +
+				"gs.descriptionURI, gs.seriesNumber, gs.licenseName, gs.licenseURL, DATE_FORMAT(gs.dateReleased, '%Y-%m-%d'), " +
+        "DATE_FORMAT(gs.seriesDate, '%Y-%m-%d'), gs.protocolName, gs.bodyPartExamined, gs.annotationsFlag, " +
+        "ge.manufacturerModelName, ge.softwareVersions, gs.maxSubmissionTimestamp " +
 				"FROM Study s join s.generalSeriesCollection gs join gs.generalEquipment ge where gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = new ArrayList<Object[]>();
@@ -457,7 +461,7 @@ public class StudyDAOImpl extends AbstractDAO
     private static final String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join series.generalEquipment ge ";
     private static final String SQL_QUERY_WHERE = "WHERE series.visibility in ('1') ";
 
-	private static Logger logger = Logger.getLogger(ImageDAO.class);
+	private static Logger logger = LogManager.getLogger(ImageDAO.class);
 
 
     /**

@@ -15,7 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ import gov.nih.nci.nbia.util.DicomConstants;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 public class SeriesOperation extends DomainOperation implements SeriesOperationInterface{
-	Logger log = Logger.getLogger(SeriesOperation.class);
+	Logger log = LogManager.getLogger(SeriesOperation.class);
 	
 	private Patient patient ;
 	private Study study;
@@ -239,7 +241,7 @@ public class SeriesOperation extends DomainOperation implements SeriesOperationI
 	private void setExcludeCommercial(GeneralSeries series, String project, String site) throws Exception {
 	    
         String SQLQuery="select long_name, commercial_use, license_url from license where license_id in \n" + 
-        		"(select license_id from site where dp_site_name='"+project+"' and trial_dp_pk_id in\n" + 
+        		"(select license_id from site where dp_site_name='"+site+"' and trial_dp_pk_id in\n" + 
         		"(select trial_dp_pk_id from trial_data_provenance where project='"+project+"'))";
 
 		List<Object[]> data= getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)

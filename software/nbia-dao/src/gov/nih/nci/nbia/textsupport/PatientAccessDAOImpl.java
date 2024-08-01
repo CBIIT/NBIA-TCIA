@@ -20,12 +20,14 @@ import org.apache.commons.io.*;
 
 import gov.nih.nci.nbia.internaldomain.Study;
 import gov.nih.nci.nbia.qctool.VisibilityStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PatientAccessDAOImpl extends AbstractDAO
     implements PatientAccessDAO{
     private SessionFactory sessionFactory;
-    static Logger log = Logger.getLogger(PatientAccessDAOImpl.class);
+    static Logger log = LogManager.getLogger(PatientAccessDAOImpl.class);
 	TextSupportDAO support = (TextSupportDAO)SpringApplicationContext.getBean("textSupportDAO");
 
     // Seriously unfortunate that for some reason hibernate would not keep a single transaction across methods even

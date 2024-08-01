@@ -31,7 +31,9 @@ import org.dcm4che2.net.CommandUtils;
 import org.dcm4che2.net.DimseRSP;
 import org.dcm4che2.net.SingleDimseRSP;
 import org.dcm4che2.net.Status;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import pt.ua.dicoogle.DebugManager;
 /**
  *
@@ -39,7 +41,7 @@ import org.apache.log4j.Logger;
  */
 public class CMoveService extends DicomService implements CMoveSCP
 {
-	static Logger log = Logger.getLogger(DicomService.class);
+	static Logger log = LogManager.getLogger(DicomService.class);
 
     private final Executor executor;
 

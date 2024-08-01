@@ -21,7 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -31,7 +33,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
 public class SeriesDAOImpl extends HibernateDaoSupport implements SeriesDAO{
-	private static Logger logger = Logger.getLogger(SeriesDAOImpl.class);
+	private static Logger logger = LogManager.getLogger(SeriesDAOImpl.class);
 
 	public List<Integer> listAllDeletedSeries()
 	throws DataAccessException

@@ -5,7 +5,9 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.io.IOException;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.params.GroupParams;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrClient;
@@ -19,7 +21,7 @@ import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import java.util.concurrent.TimeUnit;
 public class SolrFieldBuilder {
-	private static Logger log = Logger.getLogger(SolrFieldBuilder.class);
+	private static Logger log = LogManager.getLogger(SolrFieldBuilder.class);
 	private static HashMap<String,String> dicomFieldMap=null; 
 	private static long now=1L;
 	public static Map<String,String> getTerms()

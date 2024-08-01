@@ -30,7 +30,12 @@ L-->
 
   <dependencies>
 
-    <dependency org="log4j" name="log4j" rev="1.2.15" conf="*->master" />  
+    <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.22.1"  conf="compile->master;runtime->master"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.22.1"  conf="compile->master;runtime->master"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.22.1"  conf="compile->master;runtime->master"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-slf4j2-impl" rev="2.19.0"  conf="compile->master;runtime->master"/>
+    <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.18.3" conf="compile->master;runtime->master"/>
+    <dependency org="org.slf4j" name="slf4j-reload4j" rev="1.7.36" conf="compile->master;runtime->master"/>
 
     <dependency org="javancss" name="javancss" rev="29.50" conf="test->default"/>
     <dependency org="junit" name="junit" rev="4.5" conf="test->master"/>

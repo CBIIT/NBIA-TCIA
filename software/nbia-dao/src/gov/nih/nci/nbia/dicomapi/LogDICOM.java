@@ -7,8 +7,9 @@ package gov.nih.nci.nbia.dicomapi;
 
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javax.xml.transform.TransformerConfigurationException;
 
 
@@ -48,7 +49,7 @@ public class LogDICOM
         }
         catch (InterruptedException ex)
         {
-            Logger.getLogger(LogDICOM.class.getName()).log(Level.SEVERE, null, ex);
+            LogManager.getLogger(LogDICOM.class).error("An error has occurred", ex);
         }
         return instance;
     }
@@ -66,7 +67,7 @@ public class LogDICOM
             LogXML log = new LogXML();
             log.printXML();
         } catch (TransformerConfigurationException ex) {
-            Logger.getLogger(LogDICOM.class.getName()).log(Level.SEVERE, null, ex);
+            LogManager.getLogger(LogDICOM.class).error("An error has occurred", ex);
         }
     }
 

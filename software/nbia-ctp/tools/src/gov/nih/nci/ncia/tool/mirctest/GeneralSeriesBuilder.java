@@ -34,7 +34,9 @@ import gov.nih.nci.ncia.util.DicomConstants;
 
 import java.util.Hashtable;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -44,7 +46,7 @@ import org.apache.log4j.Logger;
  * Preferences - Java - Code Style - Code Templates
  */
 public class GeneralSeriesBuilder extends DataBuilder  {
-    Logger log = Logger.getLogger(GeneralSeriesBuilder.class);
+    Logger log = LogManager.getLogger(GeneralSeriesBuilder.class);
 
     public GeneralSeriesBuilder(IDataAccess ida) throws Exception{
     	super(ida);

@@ -1,7 +1,9 @@
 package gov.nih.nci.nbia.textsupport;
 import java.io.*;
 import java.util.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.*;
 import org.apache.solr.client.solrj.embedded.*;
 import org.apache.solr.common.SolrInputDocument;
@@ -11,7 +13,7 @@ import gov.nih.nci.nbia.dto.*;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 public class SolrStorage {
-  static Logger log = Logger.getLogger(SolrStorage.class);
+  static Logger log = LogManager.getLogger(SolrStorage.class);
   private SolrServerInterface serverAccess;
   private SolrClient server;
   public void  addPatientDocument(PatientDocument patientDocument)

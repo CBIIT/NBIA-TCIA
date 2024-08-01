@@ -29,7 +29,9 @@ import java.util.Map;
 
 import javax.faces.component.UIData;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 //all the studies for a given patient
 public class StudiesSearchResultBean {
@@ -260,7 +262,7 @@ public class StudiesSearchResultBean {
 	/**
 	 * Logger for the class.
 	 */
-	private static Logger logger = Logger.getLogger(StudiesSearchResultBean.class);
+	private static Logger logger = LogManager.getLogger(StudiesSearchResultBean.class);
 	
 	/**
 	 * calculate the selected series size
