@@ -62,7 +62,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.image.OverlayUtils;
@@ -80,7 +82,7 @@ public class WadoServlet extends HttpServlet {
     /*
      * Initialize the Logger.
      */
-    private static Logger log = Logger.getLogger(WadoServlet.class);
+    private static Logger log = LogManager.getLogger(WadoServlet.class);
    
     /** 
      * Handles the HTTP <code>GET</code> method.

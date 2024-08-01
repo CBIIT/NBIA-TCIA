@@ -13,7 +13,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /*
@@ -21,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class FileSpliter {
 
-	final static Logger logger = Logger.getLogger(DicomParameterFinder.class);
+	final static Logger logger = LogManager.getLogger(DicomParameterFinder.class);
 
 	/*final static private String outputFileName = "c:\\result.xls";
 	final static private String BASE_DATE = "1999-01-01";

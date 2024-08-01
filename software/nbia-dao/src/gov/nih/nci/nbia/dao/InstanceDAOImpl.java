@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class InstanceDAOImpl extends AbstractDAO
                           implements InstanceDAO {
-	private static Logger logger = Logger.getLogger(ImageDAO2.class);
+	private static Logger logger = LogManager.getLogger(ImageDAO2.class);
 
 	/**
 	 * Fetch set of  image objects filtered by project, ie. collection, patientId and studyInstanceUid

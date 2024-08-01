@@ -26,7 +26,9 @@ import com.icesoft.faces.context.Resource;
 
 import gov.nih.nci.nbia.util.MessageUtil;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Session scope bean that allows for access files in host machine.
@@ -35,7 +37,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class FileAccessBean {
-	private static Logger logger = Logger.getLogger(FileAccessBean.class);
+	private static Logger logger = LogManager.getLogger(FileAccessBean.class);
 
 
 	public Resource getReleaseNote() {

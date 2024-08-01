@@ -18,7 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ThumbnailServer extends HttpServlet {
 
@@ -61,7 +63,7 @@ public class ThumbnailServer extends HttpServlet {
     
     ///////////////////////////////////////PRIVATE////////////////////////////////////
     
-    private static Logger logger = Logger.getLogger(ThumbnailServer.class);
+    private static Logger logger = LogManager.getLogger(ThumbnailServer.class);
 
     private static String lookupFilePath(String location, HttpSession session) {
         String filePath = null;

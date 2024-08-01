@@ -21,13 +21,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public final class DicomFileSizeCorrectorUtil {
     private static final int elementsPerExecute = 1000;
-    private static Logger logger = Logger
-            .getLogger(DicomFileSizeCorrectorUtil.class);
+    private static Logger logger = LogManager.getLogger(DicomFileSizeCorrectorUtil.class);
     private String connectionUrl;
     private String driverClass;
     private String userName;

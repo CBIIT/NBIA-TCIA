@@ -22,7 +22,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.transform.TransformerConfigurationException;
 import org.dcm4che2.data.DicomElement;
@@ -52,7 +54,7 @@ import org.dcm4che2.net.service.CFindService;
  * @author Luís A. Bastião Silva <bastiao@ua.pt>
  */
 public class CFindServiceSCP extends CFindService {
-	static Logger log = Logger.getLogger(CFindServiceSCP.class);
+	static Logger log = LogManager.getLogger(CFindServiceSCP.class);
     private ServerSettings s = ServerSettings.getInstance();
     private int rspdelay = ServerSettings.getInstance().getRspDelay();
  //   private IndexEngine core = IndexEngine.getInstance();

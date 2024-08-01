@@ -60,7 +60,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -80,7 +82,7 @@ import org.dcm4che2.data.Tag;
 public class InstanceServlet extends HttpServlet {
 
     //Initialize the logger
-    private static Logger log = Logger.getLogger(InstanceServlet.class);
+    private static Logger log = LogManager.getLogger(InstanceServlet.class);
 
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -27,13 +27,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.rsna.mircsite.util.DicomObject;
 
 public class GetPathOfFile {
 
-	final static Logger logger = Logger.getLogger(GetPathOfFile.class);
+	final static Logger logger = LogManager.getLogger(GetPathOfFile.class);
 	//private ArrayList<File> quarantinedFileQueue = new ArrayList<File>();
     //private File outputFile = null;
     FileOutputStream fos = null;

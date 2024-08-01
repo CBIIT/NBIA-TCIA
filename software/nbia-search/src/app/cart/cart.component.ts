@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '@app/common/services/cart.service';
 import { MenuService } from '@app/common/services/menu.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
@@ -11,12 +11,13 @@ import { AlertBoxService } from '@app/common/components/alert-box/alert-box.serv
 import { AlertBoxButtonType, AlertBoxType } from '@app/common/components/alert-box/alert-box-consts';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
-
+import { OhifViewerService } from '@app/image-search/services/ohif-viewer.service';
 import { Subject } from 'rxjs';
 import { takeUntil, timeout } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Properties } from '@assets/properties';
 import { PersistenceService } from '@app/common/services/persistence.service';
+
 
 @Component( {
     selector: 'nbia-cart',
@@ -28,11 +29,26 @@ import { PersistenceService } from '@app/common/services/persistence.service';
  * The cart list screen, launched when the top main menu "Cart" button is clicked. The "Cart" menu button is only enabled if there is anything in the cart.
  */
 export class CartComponent implements OnInit, OnDestroy{
+
+    @Input() id;
+
     /**
      * The list used to do the download, not the display. It can have disabled entries, which will not be used in the download.
      * @type {Array}
      */
     cart = [];
+
+    // Make sure we update this if we add/remove columns from a Cart display row.  Used for column span of DICOM td
+    columnCount = 9;
+    
+    dicomDataShowQ = [];
+    dicomData = [];
+    parentDicomData = [];
+    currentDicom = -1;
+    haveDicomData = [];
+    seriesId;
+    imageUidArray = [];
+    properties = Properties;
 
     /**
      * The list (with the disabled ones), this is used to make the Rest call for all the series data for the Cart screen.
@@ -46,6 +62,13 @@ export class CartComponent implements OnInit, OnDestroy{
      */
     seriesListForDownloadQuery = '';
 
+     /**
+     * The list without the disabled ones, this is used to make the dicom display.
+     * * there is an empty row after each records, space for dicom (odd/even row)
+     * @type {string}
+     */
+    seriesListForDisplay = []; 
+
     /**
      * Used to collect list of series for the display.
      * @type {Array}
@@ -54,7 +77,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
     // If all cart entries are disabled, disable the download button
     allDisabled = true;
-
+  
     excludeCommercialFlag = false;
     excludeCommercialCount = 0;
     showExcludeCommercialWarning = false;
@@ -66,10 +89,13 @@ export class CartComponent implements OnInit, OnDestroy{
      * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
      * @type {[string , string , string , string , string , string , string , string , string , string]}
      */
-    columnHeadings = ['X', 'Collection', 'Subject ID', 'Study UID', 'Study Date', 'Study Description', 'Series ID', 'Series Description', 'Images', 'File Size', 'Annotation File Size'];
+    columnHeadings = ['X', 'Collection', 'Subject ID', 
+        'Study UID', 'Study Date', 'Study Description', 
+        'Series ID', 'Series Description', 'Images', 
+        'Viewers','DICOM','File Size', 'Annotation File Size'];
 
 
-    columns = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    columns = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     // Rows to display, combine pager and perPage
     firstRow: number;
@@ -83,14 +109,13 @@ export class CartComponent implements OnInit, OnDestroy{
      */
     busy = false;
 
-    properties = Properties;
-
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private cartService: CartService, private menuService: MenuService,
                  private apiServerService: ApiServerService, private commonService: CommonService,
                  public sortService: CartSortService, private loadingDisplayService: LoadingDisplayService,
                  private alertBoxService: AlertBoxService, private parameterService: ParameterService,
+                 private ohifViewerService: OhifViewerService,
                  private historyLogService: HistoryLogService, private utilService: UtilService,
                  private httpClient: HttpClient, private persistenceService: PersistenceService ) {
     }
@@ -113,6 +138,8 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.cartService.cartClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
+               // this.cartList = [];
+                this.seriesListForDisplay = [];
                 this.cartList = [];
             }
         );
@@ -170,6 +197,46 @@ export class CartComponent implements OnInit, OnDestroy{
             }
         );
 
+        for( let f = 0; f < this.seriesListForDisplay.length; f++ ){
+            this.dicomDataShowQ[f] = false;
+            this.haveDicomData[f] = false;
+        }
+
+        this.apiServerService.getDicomTagsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                if( data['id'] === this.seriesId ){
+                    this.parentDicomData[this.currentDicom] = data['res'];
+                    this.imageUidArray[this.currentDicom] = this.getImageId();
+                    this.loadingDisplayService.setLoading( false );
+                }
+            }
+        );
+
+        this.apiServerService.getDicomTagsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            err => {
+                if( err['id'] === this.seriesId ){
+                    this.loadingDisplayService.setLoading( false );
+
+                    let len = this.dicomDataShowQ.length;
+                    for( let f = 0; f < len; f++ ){
+                        this.dicomDataShowQ[f] = false;
+                    }
+
+                    let text = [];
+                    text.push( err['err']['statusText'] + ' - ' + err['err']['status'] );
+                    // text.push( err.err['_body'] );
+                    this.alertBoxService.alertBoxDisplay( 'nbia-series-details-00',
+                        AlertBoxType.ERROR,
+                        'Error retrieving DICOM data!',
+                        text,
+                        AlertBoxButtonType.OKAY
+                    );
+                }
+            }
+        );
+
+
+
 
         // Gets subjects, adds their series to cartList.
         //
@@ -206,6 +273,7 @@ export class CartComponent implements OnInit, OnDestroy{
                 }
                 this.commonService.updateCartCount( this.cartList.length );
                 this.sortService.doSort( this.cartList );
+                this.refreshListAfterSorting();
                 this.busy = false;
 
                 this.loadingDisplayService.setLoading( false );
@@ -417,7 +485,9 @@ export class CartComponent implements OnInit, OnDestroy{
                 );
             }
         );
+        
         this.sortService.initSortState( this.columns );
+
     }
 
 
@@ -450,6 +520,8 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.sortService.updateCartSortState( i );
         this.sortService.doSort( this.cartList );
+        this.refreshListAfterSorting();
+        this.refreshListAfterSorting();
         this.loadingDisplayService.setLoading( false );
 
     }
@@ -463,12 +535,22 @@ export class CartComponent implements OnInit, OnDestroy{
             }
         }
         this.cartList.push( series );
+
+        this.seriesListForDisplay.push( series );
+        this.seriesListForDisplay.push( {} );
+
     }
 
     disableCommercialSeries() {
         let len = this.cartList.length;
         for( let f = 0; f < len; f++ ){
             this.cartList[f].disabled = this.cartList[f].exCom;
+        }
+        //this.updateCartList();
+
+        let lenForDisplay = this.seriesListForDisplay.length;
+        for( let f = 0; f < lenForDisplay; f++ ){
+            this.seriesListForDisplay[f].disabled = this.seriesListForDisplay[f].exCom;
         }
         this.updateCartList();
     }
@@ -477,6 +559,7 @@ export class CartComponent implements OnInit, OnDestroy{
         let len = this.cartList.length;
         for( let f = 0; f < len; f++ ){
             this.cartList[f].disabled = false;
+            this.seriesListForDisplay[2*f].disabled = false;
         }
         this.updateCartList();
     }
@@ -489,6 +572,7 @@ export class CartComponent implements OnInit, OnDestroy{
         // Query used for download
         this.seriesListForQuery = '';
         this.seriesListForDownloadQuery = '';
+        //this.seriesListForDisplay = [];
         let len = this.cart.length;
         this.allDisabled = true;
         for( let f = 0; f < len; f++ ){
@@ -517,12 +601,13 @@ export class CartComponent implements OnInit, OnDestroy{
      * @param i The index number for this Cart item.
      */
     onCartCheckClick( i ) {
-
-        this.cartList[i].disabled = !this.cartList[i].disabled;
-        this.cart[i].disabled = this.cartList[i].disabled;
+        //this.seriesListForDisplay[i].disabled = !this.seriesListForDisplay[i].disabled;
+        // consider even rows 
+        this.cartList[i/2].disabled = !this.cartList[i/2].disabled;
+        this.cart[i/2].disabled = this.cartList[i/2].disabled;
 
         this.updateCartList();
-        this.cartService.setCartEnableCartById( this.cart[i].id, !this.cart[i].disabled );
+        this.cartService.setCartEnableCartById( this.cart[i/2].id, !this.cart[i/2].disabled );
     }
 
 
@@ -540,6 +625,69 @@ export class CartComponent implements OnInit, OnDestroy{
         this.persistenceService.put( this.persistenceService.Field.NO_COMMERCIAL_RESTRICTION_WARNING, state );
         this.showExcludeCommercialWarningPref = (!state);
     }
+
+    getImageId() {
+        let len = this.parentDicomData[this.currentDicom].length;
+        for( let f = 0; f < len; f++ ){
+            if( this.parentDicomData[this.currentDicom][f]['name'].toUpperCase() === 'MEDIA STORAGE SOP INSTANCE UID' ){
+                return this.parentDicomData[this.currentDicom][f]['data'];
+            }
+        }
+
+    }
+
+    
+
+    onDicomClick( i ) {
+        this.dicomDataShowQ[i] = !this.dicomDataShowQ[i];
+        if( this.dicomDataShowQ[i] && (!this.haveDicomData[i]) ){
+            this.loadingDisplayService.setLoading( true, 'Loading DICOM data' );
+
+            this.seriesId = (this.seriesListForDisplay[i - 1])['seriesUID'];
+            let query = 'SeriesUID=' + this.seriesId;
+            this.apiServerService.dataGet( Consts.DICOM_TAGS, query );
+
+            this.currentDicom = i;
+
+            // So we do no  query for DICOM data if we already have it for this series
+            this.haveDicomData[i] = true;
+        }
+    }
+
+    onThumbnailClick( seriesId ) {
+        window.open(Properties.API_SERVER_URL +
+            '/' + Properties.THUMBNAIL_URL + '?' +
+            Properties.URL_KEY_THUMBNAIL_SERIES + '=' +
+            encodeURI(seriesId.seriesPkId) + '&' +
+            Properties.URL_KEY_THUMBNAIL_DESCRIPTION + '=' +
+            encodeURI(seriesId.description) + '&' +
+
+            Properties.URL_KEY_THUMBNAIL_TOKEN + '=' +
+            this.apiServerService.showToken()  + ':' +
+            this.apiServerService.getRefreshToken()  + ':' +
+            this.apiServerService.getTokenLifeSpan()
+            ,
+            '_blank');
+    }
+
+    onSeriesOhifViewerClick( i ) {
+        this.ohifViewerService.launchOhifViewerSeries( this.seriesListForDisplay[i]['seriesUID'], this.seriesListForDisplay[i]['studyId'] );
+    }
+
+    onStudyOhifViewerClick( studyId ){
+        this.ohifViewerService.launchOhifViewerStudy( studyId );
+    }
+
+    refreshListAfterSorting(){
+        this.seriesListForDisplay = [];
+        for( let f = 0; f < this.cartList.length; f++ ){
+            this.seriesListForDisplay.push(this.cartList[f]);
+            this.seriesListForDisplay.push({});
+        }
+
+    }
+
+
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

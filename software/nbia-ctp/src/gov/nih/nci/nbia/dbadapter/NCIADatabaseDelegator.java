@@ -21,7 +21,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.dcm4che.data.DcmElement;
 import org.dcm4che.dict.DictionaryFactory;
@@ -161,7 +163,7 @@ public class NCIADatabaseDelegator {
     }
 
     /////////////////////////////////////////PRIVATE///////////////////////////////////////////
-    Logger log = Logger.getLogger(NCIADatabaseDelegator.class);
+    Logger log = LogManager.getLogger(NCIADatabaseDelegator.class);
 
     @Autowired
     private AdapterUtil adapterUtil;

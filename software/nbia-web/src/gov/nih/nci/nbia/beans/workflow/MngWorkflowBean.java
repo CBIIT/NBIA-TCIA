@@ -31,11 +31,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.UIComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MngWorkflowBean  implements Serializable{
 
- private static Logger logger = Logger.getLogger(MngWorkflowBean.class);
+ private static Logger logger = LogManager.getLogger(MngWorkflowBean.class);
  // private List<ManageWorkFlowDTO> interfaceDTOs=new ArrayList<ManageWorkFlowDTO>();
  private String name="";
  private boolean errorMessage=false;

@@ -51,7 +51,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Vector;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.util.DcmURL;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -64,7 +66,7 @@ import org.dcm4che.data.Dataset;
 public class SeriesInfo {
 
     // Initialize Looger
-    private static Logger log = Logger.getLogger(SeriesInfo.class);
+    private static Logger log = LogManager.getLogger(SeriesInfo.class);
 
     //private ArrayList<SeriesModel> seriesList;
     private HashMap<Integer, SeriesModel> series;

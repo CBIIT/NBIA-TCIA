@@ -28,14 +28,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class DateRangeCriteria extends PersistentCriteria {
     private static final long serialVersionUID = 1L;
     private Date fromDate;
     private Date toDate;
-    private static Logger logger = Logger.getLogger(DateRangeCriteria.class);
+    private static Logger logger = LogManager.getLogger(DateRangeCriteria.class);
 
     /**
      * @return Returns the fromDate.

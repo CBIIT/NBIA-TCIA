@@ -52,7 +52,7 @@ import javax.faces.model.SelectItem;
 
 public class DynamicSearchBean {
 
-	//private static Logger logger = Logger.getLogger(DynamicSearchBean.class);
+	//private static Logger logger = LogManager.getLogger(DynamicSearchBean.class);
 	protected DataGroup dataGroup;
 	protected Map<String, String> itemLabelTable;
 	protected Map<String, String> itemActualSource;

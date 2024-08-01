@@ -24,10 +24,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class WADOServlet extends HttpServlet
 {
-	private static Logger logger = Logger.getLogger(WADOServlet.class);
+	private static Logger logger = LogManager.getLogger(WADOServlet.class);
     
 
 /**

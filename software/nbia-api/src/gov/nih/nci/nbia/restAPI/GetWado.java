@@ -14,7 +14,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.sun.research.ws.wadl.Application;
 
@@ -24,7 +26,7 @@ import gov.nih.nci.nbia.wadosupport.*;
 
 @Path("/getWado")
 public class GetWado extends getData {
-	private static final Logger log = Logger.getLogger(GetWado.class);
+	private static final Logger log = LogManager.getLogger(GetWado.class);
 	public final static String TEXT_CSV = "text/csv";
 	/**
 	 * This method get a set of instances filtered by query keys

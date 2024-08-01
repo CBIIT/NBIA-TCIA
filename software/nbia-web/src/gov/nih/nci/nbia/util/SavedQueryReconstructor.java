@@ -39,7 +39,9 @@ import gov.nih.nci.nbia.query.DICOMQuery;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Refactoring class put in place to remove the responsibility of repopulating
@@ -52,7 +54,7 @@ import org.apache.log4j.Logger;
  * @author BauerD
  */
 public class SavedQueryReconstructor {
-    private static Logger LOGGER = Logger.getLogger(SavedQueryReconstructor.class);
+    private static Logger LOGGER = LogManager.getLogger(SavedQueryReconstructor.class);
 
     public static void repopulatePersistantCriteria(NumFrameOptionCriteria krit,
             SearchWorkflowBean swb, 

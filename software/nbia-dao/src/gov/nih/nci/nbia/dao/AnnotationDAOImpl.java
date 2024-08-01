@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -139,5 +141,5 @@ public class AnnotationDAOImpl extends AbstractDAO
     private String SQL_QUERY_FROM = "FROM Annotation annot ";
     private String SQL_QUERY_WHERE = "WHERE ";
 
-	private static Logger logger = Logger.getLogger(AnnotationDAO.class);
+	private static Logger logger = LogManager.getLogger(AnnotationDAO.class);
 }

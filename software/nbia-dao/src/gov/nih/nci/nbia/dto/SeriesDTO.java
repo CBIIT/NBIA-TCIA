@@ -12,7 +12,9 @@ import gov.nih.nci.nbia.util.UidDisplayUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
@@ -22,7 +24,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SeriesDTO implements Comparable<SeriesDTO>  {
-    private static Logger logger = Logger.getLogger(SeriesDTO.class);
+    private static Logger logger = LogManager.getLogger(SeriesDTO.class);
 
 
     private String seriesNumber;
@@ -45,6 +47,11 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String softwareVersion;
     private String maxFrameCount;
     private Date studyDate;    
+    private Date dateReleased;    
+    private Date seriesDate;    
+    private String protocolName;
+    private String softwareVersions;
+    private Date maxSubmissionTimestamp;    
     private String studyDesc;
     private String bodyPartExamined;
     private String study_id; //study_id
@@ -54,7 +61,8 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
     private String licenseName;
     private String licenseUrl;    
     private boolean commercialRestrictions;
-    public Date getStudyDate() {
+
+  public Date getStudyDate() {
 		return studyDate;
 	}
     
@@ -68,6 +76,67 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
 
     public void setStudyDate(Date studyDate) {
 		this.studyDate = studyDate;
+	}
+    
+  public Date getDateReleased() {
+		return dateReleased;
+	}
+	public String getDateReleasedString() {
+	    if (dateReleased == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(dateReleased);
+	}    
+
+    public void setDateReleased(Date dateReleased) {
+		this.dateReleased= dateReleased;
+	}
+
+  public Date getSeriesDate() {
+		return seriesDate;
+	}
+	public String getSeriesDateString() {
+	    if (seriesDate == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(seriesDate);
+	}    
+
+    public void setSeriesDate(Date seriesDate) {
+		this.seriesDate = seriesDate;
+	}
+
+	public String getProtocolName() {
+		return protocolName;
+	}
+
+	public void setProtocolName(String protocolName) {
+		this.protocolName= protocolName;
+	}
+
+	public String getSoftwareVersions() {
+		return softwareVersions;
+	}
+
+	public void setSoftwareVersions(String softwareVersions) {
+		this.softwareVersions= softwareVersions;
+	}
+
+  public Date getMaxSubmissionTimestamp() {
+		return maxSubmissionTimestamp;
+	}
+	public String getMaxSubmissionTimestampString() {
+	    if (maxSubmissionTimestamp == null) {
+	        return "";
+	    }
+	    SimpleDateFormat sdf =  new SimpleDateFormat("MM-dd-yyyy");
+	    return sdf.format(maxSubmissionTimestamp);
+	}    
+
+    public void setMaxSubmissionTimestamp(Date maxSubmissionTimestamp) {
+		this.maxSubmissionTimestamp = maxSubmissionTimestamp;
 	}
 
 	public String getStudyDesc() {

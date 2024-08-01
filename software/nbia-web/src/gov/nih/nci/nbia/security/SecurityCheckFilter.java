@@ -31,7 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import gov.nih.nci.nbia.searchresult.APIURLHolder;
 
@@ -42,7 +44,7 @@ import gov.nih.nci.nbia.searchresult.APIURLHolder;
 public class SecurityCheckFilter implements Filter {
     private final static String FILTER_APPLIED = "_security_filter_applied";
 
-    final static Logger logger = Logger.getLogger(SecurityCheckFilter.class);
+    final static Logger logger = LogManager.getLogger(SecurityCheckFilter.class);
 
     public SecurityCheckFilter() { // called once. no method arguments allowed
         // here!

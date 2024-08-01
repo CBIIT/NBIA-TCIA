@@ -40,7 +40,9 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
@@ -76,7 +78,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
    private final static String MANUFACTURER_FAST_QUERY="select distinct manufacturer, 1 from general_equipment";
 	private final static String EXTENDED_QUERY="select patient_pk_id, count(distinct image_pk_id) imageCount, sum(dicom_size) disksize from general_image gi ";
 	
-	static Logger log = Logger.getLogger(ValueAndCountDAOImpl.class);
+	static Logger log = LogManager.getLogger(ValueAndCountDAOImpl.class);
 	 private GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 	 private Map<String, Map<String, Set<String>>> manufacturerModelSoftwareItems;
 	 public ValueAndCountDAOImpl(){

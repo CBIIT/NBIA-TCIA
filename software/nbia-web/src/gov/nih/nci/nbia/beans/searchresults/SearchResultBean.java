@@ -29,7 +29,9 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a session scope bean that holds all of the patient search results and allows
@@ -267,7 +269,7 @@ public class SearchResultBean {
 	/**
 	 * Logger for the class.
 	 */
-	private static Logger logger = Logger.getLogger(SearchResultBean.class);
+	private static Logger logger = LogManager.getLogger(SearchResultBean.class);
 
 	/**
 	 * Holds the name of the query to be saved

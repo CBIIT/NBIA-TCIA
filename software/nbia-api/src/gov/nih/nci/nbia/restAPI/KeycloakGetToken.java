@@ -48,6 +48,7 @@ public class KeycloakGetToken extends getData{
 			if (client_secret == null){
 				client_secret = "";
 			}
+      
 
 			HttpResponse response = AuthenticationWithKeycloak.getInstance().getAccessTokenResp(username, password,
 					client_id, client_secret);

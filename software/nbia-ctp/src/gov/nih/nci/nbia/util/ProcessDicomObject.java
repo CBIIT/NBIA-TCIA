@@ -22,7 +22,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.dcm4che.data.DcmElement;
 import org.dcm4che.dict.DictionaryFactory;
@@ -35,7 +37,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public class ProcessDicomObject extends HibernateDaoSupport {
     @Autowired
     private MRImageOperationInterface mrio;
-    private static Logger logger = Logger.getLogger(ProcessDicomObject.class);
+    private static Logger logger = LogManager.getLogger(ProcessDicomObject.class);
     private static final int rowsPerCommit = 1000;
     Map dicomTagMap = new HashMap();
     Properties dicomProp = new Properties();

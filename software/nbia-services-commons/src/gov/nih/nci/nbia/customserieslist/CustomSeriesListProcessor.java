@@ -21,10 +21,12 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CustomSeriesListProcessor {
-	private static Logger logger = Logger.getLogger(CustomSeriesListProcessor.class);
+	private static Logger logger = LogManager.getLogger(CustomSeriesListProcessor.class);
 	private AuthorizationManager am;
 	private AuthorizationManager amForPublicRole;
 	private GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");

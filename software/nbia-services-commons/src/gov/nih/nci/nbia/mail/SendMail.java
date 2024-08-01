@@ -36,11 +36,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class SendMail {
-    private static Logger logger = Logger.getLogger(SendMail.class);
+    private static Logger logger = LogManager.getLogger(SendMail.class);
     public static final String MAIL_PROPERTIES = "mail.properties";
 
     public SendMail() {

@@ -80,7 +80,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -176,7 +178,7 @@ public class LookupManagerImpl implements LookupManager {
     
     ///////////////////////////////////////PRIVATE///////////////////////////////////////////
 
-    private static Logger logger = Logger.getLogger(LookupManagerImpl.class);
+    private static Logger logger = LogManager.getLogger(LookupManagerImpl.class);
 
     private List<String> modalityList;
     private List<String> anatomicList = null;

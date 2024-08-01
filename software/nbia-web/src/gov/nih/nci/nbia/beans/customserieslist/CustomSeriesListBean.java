@@ -30,7 +30,9 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
@@ -44,7 +46,7 @@ public class CustomSeriesListBean {
     /**
      * Logger for the class.
      */
-    private static Logger logger = Logger.getLogger(CustomSeriesListBean.class);
+    private static Logger logger = LogManager.getLogger(CustomSeriesListBean.class);
     private SecurityBean sb;
     private String name="";
     private String comment="";

@@ -14,7 +14,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractPopulatorMgBean {
 
@@ -77,7 +79,7 @@ public abstract class AbstractPopulatorMgBean {
 
 	/////////////////////////////////////PRIVATE////////////////////////////////
 
-	private static Logger logger = Logger.getLogger(AbstractPopulatorMgBean.class);
+	private static Logger logger = LogManager.getLogger(AbstractPopulatorMgBean.class);
 
 	/**
 	 * Any properties in the bean are set to null.  there

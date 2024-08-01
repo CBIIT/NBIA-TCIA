@@ -11,7 +11,9 @@ package gov.nih.nci.nbia.beans.searchform;
 import gov.nih.nci.ncia.criteria.DataCollectionDiameterCriteria;
 import gov.nih.nci.nbia.query.DICOMQuery;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the Session scope bean that provides the search functionality on the
@@ -24,7 +26,7 @@ import org.apache.log4j.Logger;
 public class DataCollectionDiameterSearchBean extends RangeCriteriaSearchBean {
 
 	public DataCollectionDiameterSearchBean() {
-    	logger = Logger.getLogger(DataCollectionDiameterSearchBean.class);
+    	logger = LogManager.getLogger(DataCollectionDiameterSearchBean.class);
         logger.debug("constructing DataCollectionDiameterSearchBean");
     }
     /**

@@ -16,7 +16,7 @@ import { MenuItems } from '@app/consts';
 } )
 export class IntroductionComponent implements OnInit, OnDestroy{
 
-    showIntro = true;
+    showIntro = false;
     doNotShowIntroChecked = true;
 
     mainTitle = 'INTRO';
@@ -38,12 +38,12 @@ export class IntroductionComponent implements OnInit, OnDestroy{
                  private utilService: UtilService, private menuService: MenuService ) {
 
 
-        this.showIntro = this.persistenceService.get( this.persistenceService.Field.SHOW_INTRO );
+        this.showIntro = false;//this.persistenceService.get( this.persistenceService.Field.SHOW_INTRO );
         if( this.utilService.isNullOrUndefined( this.showIntro ) ){
-            this.showIntro = Properties.SHOW_INTRO_DEFAULT;
+            this.showIntro = false; // Properties.SHOW_INTRO_DEFAULT;
             this.persistenceService.put( this.persistenceService.Field.SHOW_INTRO, this.showIntro );
         }
-        this.doNotShowIntroChecked = !this.showIntro;
+        this.doNotShowIntroChecked = true; //!this.showIntro;
 
         if( this.showIntro ){
             this.displayIntroduction();

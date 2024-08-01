@@ -25,8 +25,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che2.data.UID;
 
 /**
@@ -840,7 +841,7 @@ public class ServerSettings
                 }
             } catch (SocketException ex)
             {
-                Logger.getLogger(ServerSettings.class.getName()).log(Level.SEVERE, null, ex);
+                LogManager.getLogger(ServerSettings.class).error("An error has occurred", ex);
             }
         }
         return interfaces;

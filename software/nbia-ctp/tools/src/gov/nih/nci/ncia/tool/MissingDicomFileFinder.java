@@ -18,14 +18,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /*
  * Go to given directory recursively to parse the parameters out of dicom files 
  */
 public class MissingDicomFileFinder {
 
-	final static Logger logger = Logger.getLogger(DicomParameterFinder.class);
+	final static Logger logger = LogManager.getLogger(DicomParameterFinder.class);
 
 	final static private String BASE_DATE = "1999-01-01";
 	private PrintWriter pw = null;
