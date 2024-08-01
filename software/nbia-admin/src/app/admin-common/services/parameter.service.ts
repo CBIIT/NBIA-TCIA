@@ -63,14 +63,16 @@ export class ParameterService{
 
         // Get access token
         if( !Properties.DEV_MODE ){
-            let tokens = this.route.snapshot.queryParams[Consts.URL_KEY_TOKEN];
+            //let tokens = this.route.snapshot.queryParams[Consts.URL_KEY_TOKEN];
+            // Attempt to retrieve the tokens from local storage
+            let tokens = localStorage.getItem(Consts.URL_KEY_TOKEN);
             if( tokens !== undefined){
                 Properties.HAVE_URL_TOKEN = true;
 
-                tokens = tokens.split( ':' );
-                this.token = tokens[0];
-                this.refreshToken = tokens[1];
-                this.expiresIn = tokens[2];
+                var tokenParts = tokens.split( ':' );
+                this.token = tokenParts[0];
+                this.refreshToken = tokenParts[1];
+                this.expiresIn = tokenParts[2];
 
                 this.accessTokenService.setAccessToken( this.token );
                 this.accessTokenService.setRefreshToken( this.refreshToken );

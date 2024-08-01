@@ -14,11 +14,13 @@ import java.util.Map;
 
 import javax.jms.ObjectMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BulkUpdateTask {
-	private Logger log = Logger.getLogger(BulkUpdateTask.class);
+	private Logger log = LogManager.getLogger(BulkUpdateTask.class);
 
 	public void bulkUpdate(BulkUpdateMessage message){
 		

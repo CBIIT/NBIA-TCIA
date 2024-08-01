@@ -51,7 +51,11 @@ public class V1_getSeries extends getData {
 			, "LicenseName"
 			, "LicenseURI"
 			, "CollectionURI"
-			, "FileSize"};
+			, "FileSize"
+      , "DateReleased"
+      , "StudyDesc"
+      , "StudyDate"
+      , "ThirdPartyAnalysis"};
 	public final static String TEXT_CSV = "text/csv";
 
 	@Context private HttpServletRequest httpRequest;

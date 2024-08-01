@@ -3,15 +3,15 @@
 <div *ngIf="busy" class="label label-primary nbia-loading-label">Loading data...</div>
 <div *ngIf="! busy" class="cart-list-div">
     <!-- Top heading:  "Showing X - Y of Z"   -->
-    <span *ngIf="cartList.length > 0" class="cart-page-rows">
+    <span *ngIf="seriesListForDisplay.length > 0" class="cart-page-rows">
     Showing <b>{{firstRow + 1}}
-        - {{  (cartList.length > lastRow ? lastRow + 1 : cartList.length)}}</b> of <b>{{cartList.length}}</b>
+        - {{  (cartList.length > lastRow ? lastRow + 1 : cartList.length )}}</b> of <b>{{cartList.length}}</b>
     Series
     </span>
 
     <!-- Currently this is Export spreadsheet & Download button -->
     <nbia-cart-button-group
-            *ngIf="cartList.length > 0"
+            *ngIf="seriesListForDisplay.length > 0"
             class="cart-button-group"
             [allDisabled]=allDisabled
             [cartList]=cartList
@@ -26,7 +26,7 @@
                     *ngFor="let colName of columnHeadings; let i = index"
                     class="thead-td"
                     [ngClass]="{
-                        'hide-item': i===3 || i === 6 || i === 9 || i === 10
+                        'hide-item': i===3 || i === 6 || i === 11 || i === 12
                     }"
             >
                 <!-- If it is not the first column, add the header for this column -->
@@ -64,15 +64,29 @@
         </tr>
         <!--  End of Heading  -->
         <tr
-                *ngFor=" let item of cartList; let i=index; let last=last"
+                *ngFor=" let item of seriesListForDisplay; let i=index; let last=last;let even = even; let odd = odd"
                 [ngClass]="{
-        'hide-item': i>lastRow || i<firstRow,
-        'dark': i%2 == 0,
-        'line-through': cartList[i].disabled
+        'hide-item': i/2 >lastRow || i/2 <firstRow,
+        'dark': i%4 == 0,
+        'line-through': seriesListForDisplay[i].disabled
         }"
         >
+ <!-- ----- DICOM Tag data (odd rows )  ----- -->
+ <td
+ *ngIf="odd && dicomDataShowQ[i]"
+ [colSpan]=columnCount+1
+ class="child-data-display-parent-background"
+>
+<nbia-dicom-data
+     [(dicomDataShow)]="dicomDataShowQ[i]"
+     [dicomData]="parentDicomData[i]"
+     [seriesId]="imageUidArray[i]"
+></nbia-dicom-data>
+</td>
+
+
             <!-- Cart button to remove or un-remove -->
-            <td
+            <td *ngIf="even"
                     class="cart-button"
                     align="center"
                     width="28">
@@ -81,8 +95,8 @@
                 class="btn btn-nbia-i-cart cart-button d-inline-flex align-items-center"
 
                 [ngClass]="{
-                   'redCart': cartList[i].disabled,
-                   'greenCart': ! cartList[i].disabled
+                   'redCart': seriesListForDisplay[i].disabled,
+                   'greenCart': ! seriesListForDisplay[i].disabled
                 }"
                     (click)="onCartCheckClick(i)"
             >
@@ -90,33 +104,34 @@
             </label>
             </span>
             </td>
-            <td class="cart-collection">
+            <td *ngIf="even" class="cart-collection">
             <img *ngIf="(! properties.NO_LICENSE) && item['exCom']"
                   class="cart-no-commercial-use" title="Commercial use restrictions"
                 src="assets/images/nc.svg"
             >
                 {{item['project']}}
             </td>
-            <td> {{item['patientId']}}</td>
+            <td *ngIf="even" > {{item['patientId']}}</td>
             <!--
                 <td [title]="item['studyId']">
                     ....{{item['studyId'] | shortenRight }}
                 </td>
 
                 -->
-            <td class="cart-date">
-                {{ item['studyDate'] | date}}
+            <td *ngIf="even" class="cart-date">
+                {{ item['studyDate'] | date: 'MMM dd, yyyy' : '-0000'}}
             </td>
-            <td>{{item['studyDescription']}}</td>
+            <td *ngIf="even" >{{item['studyDescription']}}</td>
             <!--
                 <td [title]="item['seriesId']">
                     ....{{item['seriesId'] | shortenRight }}
                 </td>
                 -->
-            <td>{{item['description']}}</td>
-            <td class="cart-number-of-images">
+            <td *ngIf="even" >{{item['description']}}</td>
+            <td *ngIf="even" class="cart-number-of-images">
                 {{item['numberImages']}}
             </td>
+            
             <!--
                 <td class="cart-series-file-size">
                     {{item['seriesFileSize']}}
@@ -127,6 +142,38 @@
                     {{item['seriesAnnotationsSize']}}
                 </td>
                 -->
+             <!-- -----  The Thumbnail viewer button  ----- -->
+        <td *ngIf="even" class="cart-viewers">
+            <label
+                    *ngIf="! properties.NO_THUMBNAIL"
+                    class="btn btn-nbia-i-default cart-data-button d-inline-flex align-items-center"
+
+                    title="Thumbnail Viewer"
+                    (click)="onThumbnailClick(item)"
+            >
+                <img src="assets/images/icons/search0_14px.png" alt="Thumbnail Viewer" title="Thumbnail Viewer">
+            </label>
+
+            <!-- -----  The OHIF viewer button  ----- -->
+            <label *ngIf="properties.SHOW_OHIF_SERIES_VIEWER " style="margin-left: 5px"
+                   class="btn btn-nbia-i-default cart-data-button d-inline-flex align-items-center"
+                   title="OHIF Viewer"
+                   (click)="onSeriesOhifViewerClick(i)">
+                <img src="assets/images/facetime-video.png">
+            </label>
+
+        </td>
+
+        <!-- -----  Show DICOM button  ----- -->
+        <td *ngIf="even" class="cart-viewers  cine-mode-td cart-table-dicom-button-column">
+            <label class="btn btn-nbia-i-default cart-data-button d-inline-flex align-items-center"
+                   (click)="onDicomClick(i + 1)"
+                   title="DICOM Field data"
+            >
+                <img src="assets/images/th-list.png">
+            </label>
+        </td>
+
         </tr>
     </table>
     <!--  Rows Per Page & Pager -->

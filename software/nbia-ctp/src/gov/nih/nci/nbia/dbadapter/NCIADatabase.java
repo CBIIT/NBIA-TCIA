@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.rsna.ctp.objects.DicomObject;
 import org.rsna.ctp.objects.FileObject;
 import org.rsna.ctp.objects.XmlObject;
@@ -31,7 +33,7 @@ import org.rsna.ctp.Configuration;
 import org.rsna.ctp.stdstages.DicomAnonymizer;
 
 public class NCIADatabase extends DatabaseAdapter{
-    private Logger log = Logger.getLogger(NCIADatabase.class);
+    private Logger log = LogManager.getLogger(NCIADatabase.class);
 	public static ClassPathXmlApplicationContext ctx = null;
    	public static NCIADatabaseDelegator delegator = null;
    	static {

@@ -9,11 +9,13 @@
 package gov.nih.nci.nbia.domain.operation;
 
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public abstract class DomainOperation extends HibernateDaoSupport{
-	Logger log = Logger.getLogger(DomainOperation.class);
+	Logger log = LogManager.getLogger(DomainOperation.class);
 	
 	/**
 	 * The name of this method is a little bit mystifying.... it does far more than

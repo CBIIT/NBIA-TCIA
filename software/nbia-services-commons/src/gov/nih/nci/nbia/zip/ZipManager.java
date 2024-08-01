@@ -20,7 +20,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.io.FileUtils;
 
 
@@ -284,7 +286,7 @@ public class ZipManager extends Thread {
      */
     private static final long MAX_ZIP_FILE_SIZE = 4000000000L;
     private static final int NUMBER_OF_SERIES_TO_RETRIEVE_AT_ONE_TIME = 400;
-    private static Logger logger = Logger.getLogger(ZipManager.class);
+    private static Logger logger = LogManager.getLogger(ZipManager.class);
 
     /**
      * Total number of bytes to zip for all series

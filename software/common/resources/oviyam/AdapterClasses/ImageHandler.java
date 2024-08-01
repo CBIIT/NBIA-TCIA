@@ -50,7 +50,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javax.servlet.jsp.PageContext;
 
 /**
@@ -60,7 +62,7 @@ import javax.servlet.jsp.PageContext;
 public class ImageHandler extends SimpleTagSupport {
 
 	// Initialize logger
-	private static Logger log = Logger.getLogger(ImageHandler.class);
+	private static Logger log = LogManager.getLogger(ImageHandler.class);
 
 	// Attribute variables for the tag
 	private String patientId;

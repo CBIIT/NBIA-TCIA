@@ -35,7 +35,9 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -252,5 +254,5 @@ public class NonCTPImageStorage extends HibernateDaoSupport{
 	}
     private Map<String,String> errors = new HashMap<String,String>();
 
-    private Logger log = Logger.getLogger(NonCTPImageStorage.class);
+    private Logger log = LogManager.getLogger(NonCTPImageStorage.class);
 }

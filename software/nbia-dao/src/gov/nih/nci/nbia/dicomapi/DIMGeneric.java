@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -52,7 +54,7 @@ public class DIMGeneric
      */
     private ArrayList<Patient> patients = new ArrayList<Patient>();
     private Hashtable<String, Patient> patientsHash  = new Hashtable<String, Patient>();
-    static Logger log = Logger.getLogger(SearchDicomResult.class);
+    static Logger log = LogManager.getLogger(SearchDicomResult.class);
     /**
      * it is allow to handle a ArrayList of Strings or SearchResults
      * @param arr

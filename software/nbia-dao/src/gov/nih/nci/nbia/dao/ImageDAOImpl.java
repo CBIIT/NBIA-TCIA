@@ -23,7 +23,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -258,7 +260,7 @@ public class ImageDAOImpl extends AbstractDAO
 
 	//////////////////////////////////////PRIVATE///////////////////////////////////////////
 
-    private static Logger logger = Logger.getLogger(ImageDAO.class);
+    private static Logger logger = LogManager.getLogger(ImageDAO.class);
 
     private static final String LAST_CURATION_DATE_HQL = "select max(gi.curationTimestamp) from GeneralImage gi";
 

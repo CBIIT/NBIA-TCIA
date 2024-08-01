@@ -46,7 +46,9 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -55,7 +57,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class MailManager {
-    private static Logger logger = Logger.getLogger(MailManager.class);
+    private static Logger logger = LogManager.getLogger(MailManager.class);
 
     // Name of the properties file for mail
     public static final String MAIL_PROPERTIES = "mail.properties";

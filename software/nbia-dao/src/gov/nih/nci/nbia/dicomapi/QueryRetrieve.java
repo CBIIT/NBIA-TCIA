@@ -22,7 +22,9 @@ package gov.nih.nci.nbia.dicomapi;
 
 import java.util.concurrent.Executor;
 //import pt.ua.dicoogle.core.ServerSettings;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che2.data.UID;
 import org.dcm4che2.net.CommandUtils;
 import org.dcm4che2.net.Device;
@@ -44,7 +46,7 @@ public class QueryRetrieve extends DicomNetwork
 {
 
     /**** Class Atributes ****/
-    private static Logger log = Logger.getLogger(QueryRetrieve.class);
+    private static Logger log = LogManager.getLogger(QueryRetrieve.class);
 
     ServerSettings s  = ServerSettings.getInstance();
 

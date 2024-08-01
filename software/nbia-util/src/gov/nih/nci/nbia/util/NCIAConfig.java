@@ -93,7 +93,9 @@ package gov.nih.nci.nbia.util;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
@@ -108,7 +110,7 @@ public class NCIAConfig {
      *  STATIC INSTANCE VARIABLES
      *
      */
-     private static Logger logger = Logger.getLogger(NCIAConfig.class);
+     private static Logger logger = LogManager.getLogger(NCIAConfig.class);
      private static Properties properties;
      static {
     	 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

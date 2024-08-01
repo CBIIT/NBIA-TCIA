@@ -59,7 +59,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the Session scope bean that provides the search functionality on the
@@ -963,7 +965,7 @@ public class SearchWorkflowBean {
     /**
      * Logger for class.
      */
-    private static Logger logger = Logger.getLogger(SearchWorkflowBean.class);
+    private static Logger logger = LogManager.getLogger(SearchWorkflowBean.class);
 
     /**
      * Parameters for the different search criteria.

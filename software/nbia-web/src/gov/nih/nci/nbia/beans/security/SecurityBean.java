@@ -30,7 +30,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Session scope bean that allows for security to be implemented.
@@ -39,7 +41,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class SecurityBean {
-	private static Logger logger = Logger.getLogger(SecurityBean.class);
+	private static Logger logger = LogManager.getLogger(SecurityBean.class);
 	/**
 	 * Current users username and password.
 	 */

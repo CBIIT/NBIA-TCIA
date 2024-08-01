@@ -93,8 +93,15 @@ public class SiteDAOImpl extends AbstractDAO
             	License license = (License) rs.get(0);
             	site.setLicense(license);
         		getHibernateTemplate().update(site);
+            String commercialUse = license.getCommercialUse();
+            String excludeCommercial = "";
+            if (commercialUse.equalsIgnoreCase("no")) {
+              excludeCommercial = "YES";
+            } else if (commercialUse.equalsIgnoreCase("yes")) {
+              excludeCommercial = "NO";
+            }
         		setExcludeCommercialForSeries(siteDTO.getCollectionName(), siteDTO.getSiteName(), 
-        				license.getCommercialUse(), license.getLongName(), license.getUrl());
+        				excludeCommercial, license.getLongName(), license.getUrl());
 
             }
         }

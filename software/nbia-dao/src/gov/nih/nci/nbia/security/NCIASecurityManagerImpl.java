@@ -75,7 +75,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
+//import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,8 +89,8 @@ import gov.nih.nci.nbia.util.NCIAConfig;
 public class NCIASecurityManagerImpl extends AbstractDAO
                                      implements NCIASecurityManager {
 
-    private static Logger logger = Logger.getLogger(NCIASecurityManager.class);
-    static final Logger resultLog = Logger.getLogger("LDAPSyncRPT");
+    private static Logger logger = LogManager.getLogger(NCIASecurityManager.class);
+    static final Logger resultLog = LogManager.getLogger("LDAPSyncRPT");
     // Constants used in CSM API but is not provided in CSM API. So define here.
     private static final byte ZERO = 0;
     private static final int PASSWORD_EXPIRY_DAYS = 60;
@@ -373,6 +378,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
         
 	public void syncDBWithLDAP(String loginName) {
 		resultLog.info("user " + loginName + " in LDAP/DB sync process:");
+    
 
 //		List<String> ignoreGroups = getIgnoreGroupList();
 		String publicGrpName = NCIAConfig.getPublicGroupName();

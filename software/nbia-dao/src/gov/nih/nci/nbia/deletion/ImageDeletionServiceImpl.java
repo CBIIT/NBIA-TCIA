@@ -8,7 +8,9 @@
 
 package gov.nih.nci.nbia.deletion;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,7 +36,7 @@ import java.util.HashMap;
  */
 @Service
 public class ImageDeletionServiceImpl implements ImageDeletionService {
-	private static Logger logger = Logger.getLogger(ImageDeletionServiceImpl.class);
+	private static Logger logger = LogManager.getLogger(ImageDeletionServiceImpl.class);
 
 	@Autowired
 	private SeriesDAO seriesDao;

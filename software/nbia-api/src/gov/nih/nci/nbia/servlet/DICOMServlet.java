@@ -35,13 +35,15 @@ package gov.nih.nci.nbia.servlet;
 
 import java.util.Date;
 import javax.servlet.http.HttpServlet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import gov.nih.nci.nbia.dicomapi.QueryRetrieve;
 
 public class DICOMServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(DICOMServlet.class);
+	private static Logger logger = LogManager.getLogger(DICOMServlet.class);
     /**
      * Run upon initialization of the servlet
      *

@@ -25,7 +25,9 @@ import java.util.Set;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.math.BigInteger;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.dcm4che.data.DcmElement;
 import org.dcm4che.dict.DictionaryFactory;
@@ -136,7 +138,7 @@ public class NonCTPDatabaseDelegator {
     }
 
     /////////////////////////////////////////PRIVATE///////////////////////////////////////////
-    Logger log = Logger.getLogger(NonCTPDatabaseDelegator.class);
+    Logger log = LogManager.getLogger(NonCTPDatabaseDelegator.class);
 
     @Autowired
     private AdapterUtil adapterUtil;

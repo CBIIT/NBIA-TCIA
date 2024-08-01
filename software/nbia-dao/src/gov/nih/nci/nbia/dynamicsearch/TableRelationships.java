@@ -34,7 +34,7 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
  * it has the order list of table relationships....
  */
 public class TableRelationships {
-	//private static Logger logger = Logger.getLogger(RelationalOperator.class);
+	//private static Logger logger = LogManager.getLogger(RelationalOperator.class);
 	private static List<Element> relationTree;
 	//consider to move this array into XML file.
 

@@ -8,7 +8,9 @@
 
 package gov.nih.nci.nbia.searchresult;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.Serializable;
 
 /**
@@ -254,7 +256,7 @@ public class SeriesSearchResult implements Comparable<SeriesSearchResult>,
     private Long totalSizeForAllImagesInSeries = 0L;
     private String project;
     private String description;
-    private static Logger logger = Logger.getLogger(SeriesSearchResult.class);
+    private static Logger logger = LogManager.getLogger(SeriesSearchResult.class);
     private String studyDescription;
     private String studyDate;
     private String maxFrameCount;

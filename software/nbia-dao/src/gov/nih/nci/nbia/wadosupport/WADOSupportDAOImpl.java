@@ -15,7 +15,9 @@ import gov.nih.nci.nbia.dicomapi.DICOMSupportDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
@@ -32,7 +34,7 @@ import gov.nih.nci.nbia.util.*;
 public class WADOSupportDAOImpl extends AbstractDAO
                                implements WADOSupportDAO
 {
-	static Logger log = Logger.getLogger(WADOSupportDAOImpl.class);
+	static Logger log = LogManager.getLogger(WADOSupportDAOImpl.class);
     private static HashMap <String, UserObject>userTable;
     private final static String WADO_QUERY="select distinct gs.project, gs.site, dicom_file_uri from general_image gi, general_series gs" +
     		" where gs.study_instance_uid = :study and gs.series_instance_uid = :series and gi.sop_instance_uid = :image " +

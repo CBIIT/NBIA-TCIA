@@ -22,7 +22,9 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.io.File;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TextSupportDAOImpl extends AbstractDAO
                                implements TextSupportDAO 
 {
-	static Logger log = Logger.getLogger(TextSupportDAOImpl.class);
+	static Logger log = LogManager.getLogger(TextSupportDAOImpl.class);
     private final static String PATIENT_QUERY="select distinct patient_id from submission_history where submission_timestamp between :low and :high";
     
     private final static String PATIENT_VISIBILITY_QUERY="select distinct patient_id from general_series where series_instance_uid in (select series_instance_uid from qc_status_history where history_timestamp between :low and :high)";

@@ -13,11 +13,13 @@ import java.util.Map;
 
 import javax.jms.ObjectMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DeletionTask {
-	private Logger log = Logger.getLogger(DeletionTask.class);
+	private Logger log = LogManager.getLogger(DeletionTask.class);
 	private ImageDeletionService imageDeletionService;
 	private ImageFileDeletionService imageFileDeletionService;
 	public void deleteImages(ImageDeletionMessage message){

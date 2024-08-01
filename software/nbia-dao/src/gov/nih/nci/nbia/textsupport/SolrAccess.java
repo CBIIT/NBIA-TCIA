@@ -5,7 +5,9 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 import java.io.IOException;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.params.GroupParams;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrClient;
@@ -15,7 +17,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.client.solrj.util.ClientUtils;
 public class SolrAccess {
-	static Logger log = Logger.getLogger(SolrAccess.class);
+	static Logger log = LogManager.getLogger(SolrAccess.class);
 	private static String getHitText(String hitContext, int index){
 		int hitLength=60;
 		int offsetFromStart = 20;

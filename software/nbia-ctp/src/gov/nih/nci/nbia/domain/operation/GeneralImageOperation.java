@@ -24,7 +24,9 @@ import gov.nih.nci.nbia.util.UltrasoundUtil;
 import java.util.Date;
 import java.util.Map;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 public class GeneralImageOperation extends DomainOperation implements GeneralImageOperationInterface {
-    private static Logger log = Logger.getLogger(GeneralImageOperation.class);
+    private static Logger log = LogManager.getLogger(GeneralImageOperation.class);
 
     private TrialDataProvenance dataProvenance;
     private Patient patient;

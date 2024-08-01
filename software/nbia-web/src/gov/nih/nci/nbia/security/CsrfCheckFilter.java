@@ -18,7 +18,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import gov.nih.nci.nbia.util.NCIAConfig;
 
 /**
@@ -26,7 +28,7 @@ import gov.nih.nci.nbia.util.NCIAConfig;
  *
  */
 public class CsrfCheckFilter implements Filter {
-    final static Logger logger = Logger.getLogger(CsrfCheckFilter.class);
+    final static Logger logger = LogManager.getLogger(CsrfCheckFilter.class);
 
     public CsrfCheckFilter() { // called once. no method arguments allowed
         // here!

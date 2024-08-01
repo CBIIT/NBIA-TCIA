@@ -171,7 +171,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 					newReleased.add("Complete");
 				}
 				if (currentValue!=null&&currentValue.equalsIgnoreCase("No")) {
-					newReleased.add("NotComplete");
+					newReleased.add("Not Complete");
 				}
 			}
 			((ListCriteria)qcStatusCriteria).setlistObjects(newReleased);

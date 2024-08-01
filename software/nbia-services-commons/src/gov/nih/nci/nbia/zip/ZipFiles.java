@@ -43,7 +43,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -58,7 +60,7 @@ public class ZipFiles extends AbstractFileZipper {
     private static final int DEFAULT_COMPRESSION = 1;
 
     private static final String FILE = "File ";
-    private static Logger logger = Logger.getLogger(ZipFiles.class);
+    private static Logger logger = LogManager.getLogger(ZipFiles.class);
 
     // Stream to read data being zipped
     private BufferedInputStream origin;
