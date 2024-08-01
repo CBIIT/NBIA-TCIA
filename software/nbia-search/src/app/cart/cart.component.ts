@@ -150,6 +150,7 @@ export class CartComponent implements OnInit, OnDestroy{
         this.menuService.currentMenuItemEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 if( data === MenuItems.CART_MENU_ITEM ){
+                    this.loadingDisplayService.setLoading(true, 'Processing cart data...');
                     //  @CHECKME this.cartList = [];
 
                     // If this was run due to a Shared list in the URL, we need to get the list of services from the API service.
