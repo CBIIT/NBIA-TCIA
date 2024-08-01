@@ -43,7 +43,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dcm4che.data.Dataset;
 import org.dcm4che.data.DcmObjectFactory;
 import org.dcm4che.data.DcmParser;
@@ -58,7 +60,7 @@ import org.dcm4che.data.FileFormat;
  */
 public class MIRCVerificationProcessor implements IDataProcessor {
 
-	Logger log = Logger.getLogger(MIRCVerificationProcessor.class);
+	Logger log = LogManager.getLogger(MIRCVerificationProcessor.class);
 	final static String MIRCTEST_PROPERTIES = "mirctest.properties";
 	final static String REFERENCE_DICOM_FILE = "reference_dicom_file";
 	final static String TEST_DICOM_FILE_DESTINATION = "test_dicom_file_destination";

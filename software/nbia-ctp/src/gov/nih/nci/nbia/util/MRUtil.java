@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class MRUtil {
-    private static Logger logger = Logger.getLogger(MRUtil.class);
+    private static Logger logger = LogManager.getLogger(MRUtil.class);
     private ClassPathXmlApplicationContext ctx = null;
     MRUtil mrUtil = null;
     @Autowired

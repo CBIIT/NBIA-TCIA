@@ -53,7 +53,9 @@ import java.util.Collections;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -62,7 +64,7 @@ import org.apache.log4j.Logger;
 public class SeriesDetailsHandler extends SimpleTagSupport {
 
     //Initialize logger
-    private static Logger log = Logger.getLogger(SeriesDetailsHandler.class);
+    private static Logger log = LogManager.getLogger(SeriesDetailsHandler.class);
 
     //Attribute variables for this tag
     private String patientId;

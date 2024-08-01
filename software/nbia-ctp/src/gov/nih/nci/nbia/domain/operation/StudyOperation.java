@@ -19,7 +19,9 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 public class StudyOperation extends DomainOperation implements StudyOperationInterface{
-	private static final Logger log = Logger.getLogger(StudyOperation.class);
+	private static final Logger log = LogManager.getLogger(StudyOperation.class);
 	
 	private Patient patient;
 	

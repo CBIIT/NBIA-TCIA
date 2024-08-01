@@ -5,12 +5,14 @@
     </div>
 
     <div class="text-search-explanation-text">
-        Text search enables users to query all available DICOM metadata,
-        or you can use the field:searchTerm technique to focus on a specific DICOM element. <br><br>
+        The following restrictions apply to text search.
 
-        Example: <br>
-        Body Part Examined:pancreas or 0018,0015:pancreas, which is the DICOM code for Body Part Examined, will only look in that element for the term pancreas.
-        <br>
+        <ul>
+          <li>The text string you use must have more than one character. The search won't return any values if the text string has only one character.</li>
+          <li>Text search expects full word exact matches unless you use * as a wildcard to indicate that partial matches are okay.</li>
+          <li>Do not use a forward slash (/) in your text string.</li>
+          <li>Do not use complex searches with AND or OR statements (text search supports Lucene syntax but only a single field can be searched at a time).</li>
+        </ul>
         <br>
         See our <a [attr.href]="properties.TEXT_SEARCH_DOCUMENTATION" target="_BLANK">documentation</a> for further explanation.
     </div>

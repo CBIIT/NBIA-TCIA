@@ -38,7 +38,9 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -51,7 +53,7 @@ public class RegisterBean {
     /**
      * Logger for the class.
      */
-    private static Logger logger = Logger.getLogger(RegisterBean.class);
+    private static Logger logger = LogManager.getLogger(RegisterBean.class);
     private static final String REGISTER_REQUIRED_RESOURCE_ID = "registerRequired";
 
     /**

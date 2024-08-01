@@ -53,7 +53,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -64,7 +66,7 @@ public class DcmImage extends HttpServlet {
     /*
      * Initialize the Logger.
      */
-    private static Logger log = Logger.getLogger(DcmImage.class);
+    private static Logger log = LogManager.getLogger(DcmImage.class);
 
     /**
      * Handles the HTTP <code>GET</code> method.

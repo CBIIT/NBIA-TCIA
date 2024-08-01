@@ -192,7 +192,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             query += '&complete=Complete';
         }
         if( this.isComplete === this.NO ){
-            query += '&complete=NotComplete';
+            query += '&complete=Not Complete';
         }
 
         if( this.showUpdateDescriptionUri ){

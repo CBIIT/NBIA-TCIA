@@ -46,7 +46,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.sun.research.ws.wadl.Application;
 
@@ -55,7 +57,7 @@ import gov.nih.nci.nbia.wadosupport.*;
 
 @Path("/v1/wado")
 public class V1_wado extends getData {
-	private static final Logger log = Logger.getLogger(V1_wado.class);
+	private static final Logger log = LogManager.getLogger(V1_wado.class);
 	private static final String[] columns={"SopIUID", "InstanceNumber", "SopClassUID", "NumberOfFrames", "Rows"};
 	public final static String TEXT_CSV = "text/csv";
 

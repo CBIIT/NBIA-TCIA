@@ -15,14 +15,16 @@ import gov.nih.nci.nbia.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class AnnotationDAOImpl extends HibernateDaoSupport implements AnnotationDAO{
-	private static Logger logger = Logger.getLogger(AnnotationDAOImpl.class);
+	private static Logger logger = LogManager.getLogger(AnnotationDAOImpl.class);
 	private List<String> annotationFilePath = new ArrayList<String>();
 
 	public List<String> deleteAnnotation(List<Integer> seriesIDs)

@@ -37,9 +37,10 @@ services:
       - ./lib/UIDNames.properties:/usr/local/tomcat/lib/UIDNames.properties
       - ./lib/userAgreement.txt:/usr/local/tomcat/lib/userAgreement.txt
       - ./lib:/usr/local/tomcat/lib/custom
+      - /var/log/nbia-container-logs:/usr/local/tomcat/logs
       - ./dicoms:/opt/dicoms
     environment:
-      - CATALINA_OPTS=-Djava.security.auth.login.config=/usr/local/tomcat/conf/jaas.config -Dlog4j.configuration=/usr/local/tomcat/lib/log4j.properties
+      - CATALINA_OPTS=-Djava.security.auth.login.config=/usr/local/tomcat/conf/jaas.config -Dlog4j.configurationFile=/usr/local/tomcat/lib/custom/log4j2.properties -Xmx12G -Xms1G -Xss10M
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/nbia-api/up"]
       interval: 1m
@@ -56,6 +57,8 @@ services:
       - SOLR_ENABLE_AUTHENTICATION=no
       - SOLR_CORE_CONF_DIR=/opt/solr_conf
       - SOLR_CORES=nbia
+    ports: 
+      - 8983:8983
     volumes:
       - ./solr:/opt/solr_conf
     logging:

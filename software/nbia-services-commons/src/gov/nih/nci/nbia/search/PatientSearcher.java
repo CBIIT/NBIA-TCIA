@@ -75,7 +75,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -229,5 +231,5 @@ public class PatientSearcher {
     
     /////////////////////////////////////PRIVATE//////////////////////////////////////////
 
-    private static Logger logger = Logger.getLogger(PatientSearcher.class);
+    private static Logger logger = LogManager.getLogger(PatientSearcher.class);
 }

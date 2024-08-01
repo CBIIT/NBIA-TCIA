@@ -27,8 +27,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -76,7 +77,7 @@ public class TagsStruct
         }
         catch (InterruptedException ex)
         {
-            Logger.getLogger(TagsStruct.class.getName()).log(Level.SEVERE, null, ex);
+            LogManager.getLogger(TagsStruct.class).error("An error has occurred", ex);
         }
         return instance;
     }

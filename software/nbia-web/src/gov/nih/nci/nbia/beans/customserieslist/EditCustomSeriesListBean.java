@@ -31,7 +31,7 @@ import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 
 public class EditCustomSeriesListBean {
-	//private static Logger logger = Logger.getLogger(EditCustomSeriesListBean.class);
+	//private static Logger logger = LogManager.getLogger(EditCustomSeriesListBean.class);
 	private String name = "";
 	private String comment = "";
 	private String hyperlink = "";

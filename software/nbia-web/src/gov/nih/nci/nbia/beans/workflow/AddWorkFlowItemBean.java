@@ -19,7 +19,9 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 
@@ -42,7 +44,7 @@ public class AddWorkFlowItemBean implements Serializable{
     private List<SelectItem> types;
     private static final long serialVersionUID = 1234567890L;
 
-    private static Logger logger = Logger.getLogger(AddWorkFlowItemBean.class);
+    private static Logger logger = LogManager.getLogger(AddWorkFlowItemBean.class);
 
     public AddWorkFlowItemBean()
     {

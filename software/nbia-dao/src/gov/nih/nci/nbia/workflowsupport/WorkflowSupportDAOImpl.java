@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkflowSupportDAOImpl extends AbstractDAO
                                implements WorkflowSupportDAO 
 {
-	static Logger log = Logger.getLogger(WorkflowSupportDAOImpl.class);
+	static Logger log = LogManager.getLogger(WorkflowSupportDAOImpl.class);
     
     private final static String UPDATED_VISIBILITY_QUERY="select distinct series_instance_uid, new_value from qc_status_history where history_timestamp between :low and :high";
     private final static String SERIES_ADDED_QUERY="select distinct series_instance_uid from submission_history where submission_timestamp between :low and :high";

@@ -29,6 +29,10 @@ import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import gov.nih.nci.nbia.dao.AnnotationDAO;
 import gov.nih.nci.nbia.dao.DownloadDataDAO;
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
@@ -41,6 +45,7 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 @Path("/v1/getDCMImage")
 public class V1_getDCMImage extends getData {
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	private static final Logger downloadLogger = LogManager.getLogger("logger2");
 
 	/**
 	 * This method get a set of images in a zip file
@@ -53,6 +58,8 @@ public class V1_getDCMImage extends getData {
 			@QueryParam("MD5Verification") String md5Verify) throws IOException {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
+		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),"TEST API log called.");		
+		System.out.println("!!!!!log test");		
 		final String sid = seriesInstanceUid;
 		String userName = NCIAConfig.getGuestUsername();
 
@@ -86,6 +93,8 @@ public class V1_getDCMImage extends getData {
 				InputStream in = null;				
 				boolean addChecksum = false;
 				long size = 0;
+				int numberOfFiles = 0;
+				String collectionName = null;
 
 				if (md5Verify != null && md5Verify.equalsIgnoreCase("true")) {
 					addChecksum = true;
@@ -107,6 +116,8 @@ public class V1_getDCMImage extends getData {
 					}
 
 					for (String [] filename : fileNames) {
+						collectionName = filename[4];
+System.out.println("get collection name="+ collectionName);						
 						if (addChecksum) {
 							int pos = filename[1].indexOf("^");
 							sb.append(filename[1].substring(pos+1) + "," +filename[2] + "\n");
@@ -126,8 +137,10 @@ public class V1_getDCMImage extends getData {
 							zip.closeEntry();
 							in.close();
 							size += Long.parseLong(filename[3]);
+							++numberOfFiles;
 						}
 					}
+					
 					
 					if (addChecksum) {
 						InputStream inputStream = new ByteArrayInputStream(sb.toString().getBytes(Charset.forName("UTF-8")));
@@ -151,6 +164,7 @@ public class V1_getDCMImage extends getData {
 								zip.closeEntry();
 								in.close();
 								size += Long.parseLong(aName[1]);
+								++numberOfFiles;
 							}
 						}
 					}
@@ -173,7 +187,13 @@ public class V1_getDCMImage extends getData {
 					if (in != null)
 						in.close();
 				}
-				
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+								"collection="+collectionName + "," +
+								"seriesUID="+ seriesInstanceUid + "," +
+								"numberOfFiles=" + numberOfFiles + "," +
+								"totalSize="+ size + "," +
+								"userId="+ userName + "," +
+								"downloadType=CLI/v1API");		
 				recodeDownload(seriesInstanceUid, size, "CLI/v1API", userName);
 			}
 		};

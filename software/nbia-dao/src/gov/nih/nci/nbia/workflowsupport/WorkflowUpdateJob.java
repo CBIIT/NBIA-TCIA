@@ -9,13 +9,15 @@
 
 package gov.nih.nci.nbia.workflowsupport;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 
 public class WorkflowUpdateJob implements Job {
-	static Logger log = Logger.getLogger(WorkflowUpdateJob.class);
+	static Logger log = LogManager.getLogger(WorkflowUpdateJob.class);
     /**
      * This method allows this class to be called as a Job using Quartz
      */

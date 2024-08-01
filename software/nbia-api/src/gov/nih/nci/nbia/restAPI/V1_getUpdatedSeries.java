@@ -47,7 +47,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/v1/getUpdatedSeries")
 public class V1_getUpdatedSeries extends getData {
-	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount"};
+	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount", "DateReleased"};
 	public final static String TEXT_CSV = "text/csv";
 
 	@Context private HttpServletRequest httpRequest;

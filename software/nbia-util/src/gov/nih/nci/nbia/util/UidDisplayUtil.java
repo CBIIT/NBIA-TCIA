@@ -8,10 +8,12 @@
 
 package gov.nih.nci.nbia.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UidDisplayUtil {	
-	private static transient Logger logger = Logger.getLogger(UidDisplayUtil.class);
+	private static transient Logger logger = LogManager.getLogger(UidDisplayUtil.class);
     private static final String UID_DELIMETER = "...";    
     
     public static String getDisplayUid(String original) {

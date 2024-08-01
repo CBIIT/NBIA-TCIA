@@ -53,7 +53,10 @@ import javax.ws.rs.core.Response.Status;
 public class V1_getSeriesMetaData extends getData {
 	private static final String[] columns={"Series UID","Collection","3rd Party Analysis","Data Description URI","Subject ID",
 			"Study UID","Study Description","Study Date", "Series Description","Manufacturer","Modality","SOP Class UID",
-			"Number of Images","File Size", "File Location", "Series Number", "License Name", "License URL", "Annotation Size" };
+			"Number of Images","File Size", "File Location", "Series Number", "License Name", "License URL", "Annotation Size",
+      "Date Released", "Series Date", "Protocol Name", "Body Part Examined", 
+      "Annotations Flag", "Manufacturer Model Name",
+        "Software Versions", "TimeStamp"};
 
 	public final static String TEXT_CSV = "text/csv";
 

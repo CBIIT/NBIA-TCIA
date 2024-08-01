@@ -43,7 +43,9 @@ import java.awt.image.BufferedImage;
 
 import org.dcm4che.data.DcmObject;
 //import org.dcm4che.data.;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A wado image is a buffered image return object that includes methods to
@@ -55,7 +57,7 @@ import org.apache.log4j.Logger;
 public class WadoImage   {
    private static final String ERROR_KEY = "_ERROR";
 
-private static final Logger log = Logger.getLogger(WadoImage.class);
+private static final Logger log = LogManager.getLogger(WadoImage.class);
    
 	public static String WINDOW_CENTER = "windowCenter";
 	public static String WINDOW_WIDTH = "windowWidth";

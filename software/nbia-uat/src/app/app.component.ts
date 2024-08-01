@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
 	showAuthorPG: boolean;
 	selectedTabHeader = "User";
 	version = '2.4';
+	currentYear = '2024';
+	commit = '5fa63f0';
 	hostName:string;
 	@ViewChild(TabView) tabView: TabView;
 	@ViewChild(GroupComponent) groupComponent: GroupComponent;
@@ -33,7 +35,15 @@ export class AppComponent implements OnInit {
 	constructor(private appservice: ConfigService, private globals: Globals, private loadingDisplayService: LoadingDisplayService) { 	
 		//uncomment below when check-in!!!
 		this.globals.serviceUrl = window.location.protocol +"//"+ window.location.host+"/nbia-api/services/v3/";
-		this.globals.accessToken = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')[0].split('=')[1]; 
+		// Retrieve the access token from localStorage
+    const storedToken = localStorage.getItem('accessToken');
+    
+    if (storedToken) {
+        this.globals.accessToken = storedToken;
+    } else {
+        console.error('Access token not found in localStorage.');
+    }
+    //this.globals.accessToken = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')[0].split('=')[1]; 
 		console.log("url="+ this.globals.serviceUrl + " access token=" + this.globals.accessToken);
 //		this.loadingDisplayService.setLoading( true, 'Standby...' );
 		this.appservice.getWikiUrlParam().then(data => {this.globals.wikiBaseUrl = data},
@@ -48,7 +58,9 @@ export class AppComponent implements OnInit {
 		console.log("show ug = " + this.config[2].paramValue.toLowerCase() + "  show pg=" + this.config[3].paramValue.toLowerCase());
 		},
 		error =>  {this.handleError(error);this.errorMessage = <any>error});
-		this.version = this.globals.uatVersionNumber;		
+		this.version = this.globals.uatVersionNumber;	
+		this.currentYear = this.globals.uatVersionYear;	
+		this.commit = this.globals.uatVersionCommit;	;
 	}
 
 	ngOnInit() {
