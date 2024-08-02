@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SaveCartComponent } from './save-cart.component';
-import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonService } from '@app/image-search/services/common.service';
-import { ConnectionBackend, Http } from '@angular/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 
 describe( 'SaveCartComponent', () => {
     let component: SaveCartComponent;
@@ -12,7 +12,7 @@ describe( 'SaveCartComponent', () => {
     beforeEach( waitForAsync( () => {
         TestBed.configureTestingModule( {
                 declarations: [SaveCartComponent],
-                providers: [CommonService, Http, ConnectionBackend],
+                providers: [CommonService, HttpClient, HttpBackend],
                 imports: [ClipboardModule]
             } )
             .compileComponents();

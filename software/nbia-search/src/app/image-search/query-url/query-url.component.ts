@@ -7,7 +7,7 @@ import { Consts } from '@app/consts';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { MenuService } from '@app/common/services/menu.service';
 import { Properties } from '@assets/properties';
-
+import { ClipboardModule} from '@angular/cdk/clipboard';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -15,7 +15,8 @@ import { takeUntil } from 'rxjs/operators';
 @Component( {
     selector: 'nbia-query-url',
     templateUrl: './query-url.component.html',
-    styleUrls: ['./query-url.component.scss']
+    styleUrls: ['./query-url.component.scss'],
+    imports:[ClipboardModule]
 } )
 
 /**

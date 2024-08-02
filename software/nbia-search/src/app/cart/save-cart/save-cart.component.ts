@@ -6,14 +6,15 @@ import { ApiServerService } from '@app/image-search/services/api-server.service'
 import { Consts } from '@app/consts';
 import { Properties } from '@assets/properties';
 import { HistoryLogService } from '@app/common/services/history-log.service';
-
+import { ClipboardModule} from '@angular/cdk/clipboard';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component( {
     selector: 'nbia-save-cart',
     templateUrl: './save-cart.component.html',
-    styleUrls: ['./save-cart.component.scss']
+    styleUrls: ['./save-cart.component.scss'],
+    imports: [ClipboardModule]
 } )
 export class SaveCartComponent implements OnInit, OnDestroy{
 

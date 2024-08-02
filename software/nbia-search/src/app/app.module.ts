@@ -70,7 +70,7 @@ import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { SeriesSearchComponent } from './image-search/query-section/query-section-tabs/series-search/series-search.component';
 import { SubjectSearchComponent } from './image-search/query-section/query-section-tabs/subject-search/subject-search.component';
 import { StudySearchComponent } from './image-search/query-section/query-section-tabs/study-search/study-search.component';
-import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MissingCriteriaComponent } from './image-search/data-section/data-section-tabs/search-results/missing-criteria/missing-criteria.component';
 import { DicomDataComponent } from './image-search/data-section/data-section-tabs/search-results/search-results-table/subject-study-details/series-details/dicom-data/dicom-data.component';
 import { AlertBoxComponent } from './common/components/alert-box/alert-box.component';

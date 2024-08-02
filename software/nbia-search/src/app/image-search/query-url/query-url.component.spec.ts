@@ -4,12 +4,12 @@ import { QueryUrlComponent } from './query-url.component';
 import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Location } from '@angular/common';
 import { CommonService } from '@app/image-search/services/common.service';
-import { ConnectionBackend, Http, HttpModule } from '@angular/http';
+import { HttpBackend, HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { PersistenceService } from '@app/common/services/persistence.service';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
-import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 describe('QueryUrlComponent', () => {
   let component: QueryUrlComponent;
@@ -18,9 +18,9 @@ describe('QueryUrlComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ QueryUrlComponent ],
-        imports: [ HttpModule, ClipboardModule],
+        imports: [ HttpClientModule, ClipboardModule],
         providers: [  {provide: APP_BASE_HREF, useValue : '.' },
-        CommonService, Http, ConnectionBackend, PersistenceService, CookieService, QueryUrlService,
+        CommonService, HttpClient, HttpBackend, PersistenceService, CookieService, QueryUrlService,
         Location, { provide: LocationStrategy, useClass: PathLocationStrategy }]
     })
     .compileComponents();
