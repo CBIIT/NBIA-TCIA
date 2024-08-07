@@ -56,7 +56,6 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     badReleasedDate;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-    loadingDisplayService: any;
 
     constructor( private utilService: UtilService, private apiService: ApiService,
                  private preferencesService: PreferencesService, private searchResultsSectionBravoService: SearchResultsSectionBravoService,
@@ -181,7 +180,6 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     onQcBulkUpdateClick(){
-        this.loadingDisplayService.setLoading(true, 'Updating series, please wait...');
         // @CHECKME let query = 'projectSite=' + this.collectionSite;
         let query = '';
         for( let row of this.searchResults ){
@@ -246,8 +244,6 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
                 // this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite );
             }
         }
-
-        this.loadingDisplayService.setLoading(false);
     }
 
     onSiteOptionClick( i ){
