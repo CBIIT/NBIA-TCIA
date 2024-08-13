@@ -173,7 +173,7 @@ public class V2_getImageWithMD5Hash extends getData {
 						"numberOfFiles=" + numberOfFiles + "," +
 						"totalSize="+ size + "," +
 						"userId="+ userName + "," +
-						"downloadType=v1API");							
+						"downloadType=v2API");							
 			}
 		};
 
