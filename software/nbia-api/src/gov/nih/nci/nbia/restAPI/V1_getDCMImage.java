@@ -58,7 +58,7 @@ public class V1_getDCMImage extends getData {
 			@QueryParam("MD5Verification") String md5Verify) throws IOException {
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
-		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),"TEST API log called.");		
+		downloadLogger.info("TEST API log called.");		
 		System.out.println("!!!!!log test");		
 		final String sid = seriesInstanceUid;
 		String userName = NCIAConfig.getGuestUsername();
@@ -187,7 +187,7 @@ System.out.println("get collection name="+ collectionName);
 					if (in != null)
 						in.close();
 				}
-				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+				downloadLogger.info(
 								"collection="+collectionName + "," +
 								"seriesUID="+ seriesInstanceUid + "," +
 								"numberOfFiles=" + numberOfFiles + "," +
