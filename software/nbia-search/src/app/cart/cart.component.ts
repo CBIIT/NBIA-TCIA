@@ -164,6 +164,8 @@ export class CartComponent implements OnInit, OnDestroy{
                         this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
                     }
                 }
+
+                
             }
         );
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,8 +184,6 @@ export class CartComponent implements OnInit, OnDestroy{
                 }else{
                     console.error( 'getSharedListResultsEmitter.subscribe data: ', data );
                 }
-
-                this.loadingDisplayService.setLoading( false );
 
             }
         );
