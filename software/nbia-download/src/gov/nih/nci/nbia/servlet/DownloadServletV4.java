@@ -173,7 +173,10 @@ public class DownloadServletV4 extends HttpServlet {
 
 			if (mgr.login(userId, password)) {
 System.out.println("!!! download servletv4 logged in");
-				mgr.syncDBWithLDAP(userId);
+        if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+				  mgr.syncDBWithLDAP(userId);
+					System.out.println("Sync performed");
+        }
 //	            if (!("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) && NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
 //	            	mgr.syncDBWithLDAP(userId);
 //	            }
