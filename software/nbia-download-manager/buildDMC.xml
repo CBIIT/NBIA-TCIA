@@ -6,7 +6,6 @@ ant -f buildDMC.xml
 	<description>
 		Create a executable jar for Standalond Download Manager with Ant build script
 	</description>
-	<property name="JAVA_HOME" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home"/>
 	<property file="../build/defaultAHP3.properties"/>
 	<property name="projectName" value="StandaloneDM" />
 	<property name="common.dir" value="${basedir}/../" />
@@ -23,11 +22,11 @@ ant -f buildDMC.xml
 	<property name="javafx.run.width" value="800"/>
 	<property name="javafx.run.height" value="600"/>
 	<property name="package.dir" location="packages"/>
-	<!--property name="application.title" value="nbia-data-retriever" /-->
-	<property name="application.title" value="NBIA Data Retriever" />
+	<property name="application.title" value="nbia-data-retriever" />
+	<!--property name="application.title" value="NBIA Data Retriever" /-->
 	<property name="application.vendor" value="NCI, Leidos, Ellumen" />
 	<property name="package.resource.dir" location="packageSrc" />
-	<property name="package.version" value="4.4" />
+	<property name="package.version" value="4.4.3" />
 	<property name="copyright" value="(c) 2022 NCI, Leidos, Ellumen" />
 	<property name="icon.file.name" value="nbia-data-retriever.png" />
 
@@ -218,8 +217,81 @@ ant -f buildDMC.xml
 	<!-- Default, run this -->
 	<target name="run" depends="clean, compile, jar" />
 
-	<target xmlns:fx="javafx:com.sun.javafx.tools.ant" name="package" depends="clean, cleanPackage, jar">
+
+    <property name="jlink.output.dir" location="${basedir}/jlink-output" />
+
+    <target name="create-runtime-image" depends="clean, cleanPackage, jar">
+        <exec executable="jlink">
+            <arg value="--module-path" />
+            <arg value="${java.home}/jmods:/usr/lib/javafx-sdk-21.0.4/lib:${common.dir}/target/dist/exploded/nbia-download-manager/lib" />
+            <arg value="--add-modules" />
+            <arg value="java.base,java.logging,java.naming,java.management,javafx.controls,javafx.fxml,java.security.jgss,jdk.crypto.ec" />
+            <arg value="--output" />
+            <arg value="${jlink.output.dir}" />
+            <arg value="--strip-debug" />
+            <arg value="--compress" />
+            <arg value="2" />
+            <arg value="--no-header-files" />
+            <arg value="--no-man-pages" />
+        </exec>
+    </target>
+
+    <!-- Set the icon based on the OS -->
+    <condition property="icon.path" value="${package.resource.dir}/package/macosx/${icon.file.name}">
+        <os family="mac" />
+    </condition>
+    <condition property="icon.path" value="${package.resource.dir}/package/linux/${icon.file.name}">
+        <os family="unix" />
+    </condition>
+
+    <target name="package" depends="create-runtime-image">
+        <!-- Package using jpackage -->
+        <exec executable="jpackage">
+            <arg value="--input" />
+	    <arg value="${dist.dir}" />
+            <arg value="--main-jar" />
+            <arg value="${projectName}.jar" />
+            <arg value="--name" />
+            <arg value="${application.title}" />
+            <arg value="--main-class" />
+            <arg value="${javafx.main.class}" />
+
+	    <arg value="--runtime-image" />
+	    <arg value="${jlink.output.dir}" />
+
+            <arg value="--icon" />
+	    <arg value="${icon.path}" />
+            <arg value="--app-version" />
+            <arg value="${package.version}" />
+            <arg value="--type" />
+            <arg value="${native.bundles}" />
+            <arg value="--dest" />
+            <arg value="${package.dir}" />
+	    <arg value="--verbose" />
+
+            <arg value="--vendor" />
+            <arg value="${application.vendor}" />
+	    <arg value="--file-associations" />
+	    <arg value="./file-associations.properties" />
+	    <arg value="--license-file" />
+	    <arg value="${package.resource.dir}/${license.file.name}" />
+	    <arg value="--copyright" />
+	    <arg value="${copyright}" />
+
+	      
+
+        
+
+        </exec>
+
+    </target>
+
+    <!--	<target xmlns:fx="javafx:com.sun.javafx.tools.ant" name="package" depends="clean, cleanPackage, jar">
 		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${java.home}/../lib/ant-javafx.jar;packageSrc;" />
+		<taskdef name="fx"
+		         classname="com.sun.javafx.tools.ant.DeployTask"
+		         classpath="${PATH_TO_FX}/javafx-controls.jar:${PATH_TO_FX}/javafx-base.jar:${PATH_TO_FX}/javafx-graphics.jar" />
+
 		<fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" nativeBundles="${native.bundles}" outdir="${package.dir}" outfile="${application.title}" verbose="true">
 			<fx:platform>
               <fx:jvmuserarg name="-Djava.net.preferIPv4Stack" value="true" />
@@ -229,7 +301,6 @@ ant -f buildDMC.xml
             </fx:platform>
 
 			<fx:application id="standaloneDMApp" name="${application.title}" mainClass="${javafx.main.class}" version="${package.version}">
-				<!--fx:argument>sample.tcia</fx:argument-->
 			</fx:application>
 
 			<fx:resources>
@@ -242,7 +313,6 @@ ant -f buildDMC.xml
 			<fx:info title="${application.title}" vendor="${application.vendor}" category="public.app-category.medical" copyright="${copyright}" license="3 Clause BSD">
 				<fx:association extension="tcia" mimetype="application/x-nbia-manifest-file" description="Manifest file for NBIA Data Retriever" icon="${icon.file.name}">
 				</fx:association>
-				<!--fx:icon href="${package.resource.dir}/package/linux/${icon.file.name}"  kind="default" width="32" height="32" depth="8"/-->
 			</fx:info>
 
 			<fx:bundleArgument arg="win.exe.systemWide" value="true"/>
@@ -252,6 +322,6 @@ ant -f buildDMC.xml
 			<fx:bundleArgument arg="email" value="panq@mail.nih.gov"/>
 
 		</fx:deploy>
-	</target>
+    </target>-->
 
 </project>
