@@ -378,6 +378,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.commonService.downloadCartAsCsvEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                this.loadingDisplayService.setLoading( true, 'Processing cart data...' );
                 let query = 'list=';
 
                 let first = true;
@@ -418,6 +419,7 @@ export class CartComponent implements OnInit, OnDestroy{
                         (<any>window).document.body.appendChild( a );
                         a.click();
                         (<any>window).document.body.removeChild( a );
+                        this.loadingDisplayService.setLoading( false );
                     }, error => {
                         console.error( 'Download csv file error:', error );
                     }
