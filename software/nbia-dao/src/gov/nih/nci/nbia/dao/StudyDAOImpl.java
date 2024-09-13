@@ -272,7 +272,7 @@ public class StudyDAOImpl extends AbstractDAO
 				"gs.seriesDesc, gs.imageCount, gs.totalSize, gs.project, gs.modality, ge.manufacturer, gs.thirdPartyAnalysis, " +
 				"gs.descriptionURI, gs.seriesNumber, gs.licenseName, gs.licenseURL, DATE_FORMAT(gs.dateReleased, '%Y-%m-%d'), " +
         "DATE_FORMAT(gs.seriesDate, '%Y-%m-%d'), gs.protocolName, gs.bodyPartExamined, gs.annotationsFlag, " +
-        "ge.manufacturerModelName, ge.softwareVersions, gs.maxSubmissionTimestamp " +
+        "ge.manufacturerModelName, ge.softwareVersions, gs.dateReleased " +
 				"FROM Study s join s.generalSeriesCollection gs join gs.generalEquipment ge where gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		List<Object[]> rs = new ArrayList<Object[]>();
@@ -412,7 +412,7 @@ public class StudyDAOImpl extends AbstractDAO
 			++i;
 		}
 		if (date1 != null) {
-			where = where.append("  and gs.maxSubmissionTimestamp>?");
+			where = where.append("  and gs.dateReleased>?");
 			paramList.add(date1);
 			++i;
 		}
