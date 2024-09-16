@@ -234,6 +234,13 @@ ant -f buildDMC.xml
             <arg value="--no-header-files" />
             <arg value="--no-man-pages" />
         </exec>
+
+	<copy todir="${jlink.output.dir}/lib">
+		<fileset dir="resources/">
+    		    <include name="lib*" />
+    		</fileset>
+	</copy>
+
     </target>
 
     <!-- Set the icon based on the OS -->
