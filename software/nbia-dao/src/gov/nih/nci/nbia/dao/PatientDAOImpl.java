@@ -134,7 +134,7 @@ public class PatientDAOImpl extends AbstractDAO
 			return null;
 		}  
 		whereCondition.append(collection == null ? "":" and UPPER(gs.project)=?");
-		whereCondition.append(date1 == null ? "":" and gs.maxSubmissionTimestamp>?");
+		whereCondition.append(date1 == null ? "":" and gs.dateReleased>?");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
 		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
