@@ -144,12 +144,14 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
         this.downloadDownloaderService.doDownloadEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
+                this.loadingDisplayService.setLoading( true, 'Processing Cart Data...' );
                 if (data === DownloadTools.SEARCH_QUERY) {
                     this.downloadQueryAsManifestRestrictionCheck();
                 }
                 if (data === DownloadTools.TEXT_QUERY) {
                     this.downloadTextQueryAsManifestRestrictionCheck();
                 }
+                this.loadingDisplayService.setLoading( false );
             });
 
         this.apiServerService.simpleSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
