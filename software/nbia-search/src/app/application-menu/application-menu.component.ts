@@ -571,7 +571,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                     }
                 } else {
 
-                    this.loadingDisplayService.setLoading(true, 'Downloading manifest...');
+                    this.Service.setLoading(true, 'Downloading manifest...');
 
                     if (this.haveTextSearchQuery) {
                         // For text search
