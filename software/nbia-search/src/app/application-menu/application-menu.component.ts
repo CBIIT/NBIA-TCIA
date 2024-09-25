@@ -4,6 +4,7 @@ import {Consts, DownloadTools, MenuItems} from '@app/consts';
 import {Properties} from '@assets/properties';
 import {MenuService} from '@app/common/services/menu.service';
 import {CartService} from '@app/common/services/cart.service';
+import {LoadingDisplayService} from '@app/common/components/loading-display/loading-display.service';
 import {ApiServerService} from '@app/image-search/services/api-server.service';
 import {CommonService} from '@app/image-search/services/common.service';
 import {PersistenceService} from '@app/common/services/persistence.service';
@@ -120,7 +121,8 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 private apiServerService: ApiServerService,
                 private commonService: CommonService, private persistenceService: PersistenceService,
                 private alertBoxService: AlertBoxService, private historyLogService: HistoryLogService,
-                private utilService: UtilService, private downloadDownloaderService: DownloadDownloaderService) {
+                private utilService: UtilService, private downloadDownloaderService: DownloadDownloaderService,
+                public sortService: CartService, private loadingDisplayService: LoadingDisplayService) {
     }
 
     ngOnInit() {
@@ -569,15 +571,17 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                     }
                 } else {
 
-                    this.loadingDisplayService.setLoading(true, 'Downloading manifest...');
+                    this.Service.setLoading(true, 'Downloading manifest...');
 
                     if (this.haveTextSearchQuery) {
                         // For text search
-                        this.downloadTextQueryAsManifestRestrictionCheck()
+                        this.downloadTextQueryAsManifestRestrictionCheck();
                     } else {
                         // For simple search
                         this.downloadQueryAsManifestRestrictionCheck();
                     }
+
+                    this.loadingDisplayService.setLoading(false);
                 }
 
                 /*

@@ -1,0 +1,12 @@
+#####################################################################################################
+##  Any line starting with "#" optionally preceded by one or more spaces will be considered a comment
+#####################################################################################################
+
+################################################################################################################################
+## These will only be used if the we have been called from nbia-search, the user is the guest, and the access token has expired.
+################################################################################################################################
+# DEFAULT_USER = XXX
+# DEFAULT_PASSWORD = XXX
+# DEFAULT_SECRET = 'ItsBetweenUAndMe'
+# DEFAULT_CLIENT_ID = 'nbiaRestAPIClient'
+
