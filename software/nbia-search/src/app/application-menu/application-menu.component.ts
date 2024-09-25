@@ -568,6 +568,9 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                         this.commonService.downloaderDownLoadButton(DownloadTools.SEARCH_QUERY);
                     }
                 } else {
+
+                    this.loadingDisplayService.setLoading(true, 'Downloading manifest...');
+
                     if (this.haveTextSearchQuery) {
                         // For text search
                         this.downloadTextQueryAsManifestRestrictionCheck()
