@@ -179,7 +179,7 @@ public class V2_getDCMImage extends getData {
 				}
 				
 				recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
-				downloadLogger.info(
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 								"collection="+collectionName + "," +
 								"seriesUID="+ seriesInstanceUid + "," +
 								"numberOfFiles=" + numberOfFiles + "," +

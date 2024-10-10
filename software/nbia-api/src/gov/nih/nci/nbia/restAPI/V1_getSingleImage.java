@@ -67,7 +67,7 @@ public class V1_getSingleImage extends getData {
 		int size = wdto.getImage().length;
 		String collectionName = wdto.getCollection();
 
-		downloadLogger.info(
+		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 				"collection="+collectionName + "," +
 				"seriesUID="+ seriesInstanceUid + "," +
 				"numberOfFiles=1" +  "," +

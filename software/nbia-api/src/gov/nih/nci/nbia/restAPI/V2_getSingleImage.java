@@ -45,7 +45,7 @@ public class V2_getSingleImage extends getData {
 
 		int size = wdto.getImage().length;
 		recodeDownload(seriesInstanceUid, size, "v2API", user);
-		downloadLogger.info(
+		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 				"collection="+collectionName + "," +
 				"seriesUID="+ seriesInstanceUid + "," +
 				"numberOfFiles=1" +  "," +
