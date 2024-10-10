@@ -54,6 +54,9 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -115,6 +118,7 @@ public class DataRetrieverCLI {
 	public final java.util.logging.Logger logger = Logger.getGlobal();
 	private String setProperty;
 	private String duaText = null;
+	public boolean skipLicense = false;
 	/**
 	 * @param args
 	 */
@@ -125,11 +129,14 @@ public class DataRetrieverCLI {
 		String downloadDir = null; // The directory that the user want to put the downloaded data
 //		BasicConfigurator.configure();
 		DataRetrieverCLI dr = new DataRetrieverCLI();
+		dr.skipLicense = false;
 
 		if (args != null && (args.length > 0)) {
 			for (int i = 0; i < args.length; ++i) {
 				if (args[i].equals("-c") || args[i].equals("-C") || args[i].equals("--cli") || args[i].equals("--CLI"))
 					fileName = args[i + 1];
+				if (args[i].toLowerCase().equals("--agree-to-license")) 
+					dr.skipLicense = true;
 				if (args[i].equals("-u") || args[i].equals("-U"))
 					userName = args[i + 1];
 				if (args[i].equals("-p") || args[i].equals("-P"))
@@ -380,9 +387,11 @@ public class DataRetrieverCLI {
 //			DataRetriever cmdDR = new DataRetriever();
 			loadManifestFile(fileName);
 
-			String text = getUserAgreementTxt();			
-			if (text != null && !text.isEmpty()) {
-				retrieveUsersAns(text);
+			if (!skipLicense) {
+				String text = getUserAgreementTxt();			
+				if (text != null && !text.isEmpty()) {
+					retrieveUsersAns(text);
+				}
 			}
 			
 			
@@ -522,13 +531,18 @@ public class DataRetrieverCLI {
 		oauthDetails.setPassword(passWord);
 		oauthDetails.setAuthenticationServerUrl(
 				serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet", "nbia-api/oauth/token"));
+
 		String accessToken = null;
 
 		if (oauthDetails.isAccessTokenRequest()) {
 			// Generate new Access token
 //			accessToken = OAuthUtils.getAccessToken(oauthDetails);
+//
+
+
 			Map<String, String> map = oauthUtil.getAccessToken(oauthDetails);
 			refreshToken = map.get(OAuthConstants.REFRESH_TOKEN);
+
 
 			accessToken = map.get(OAuthConstants.ACCESS_TOKEN);
 //			System.out.println("accessToken=" + accessToken);
@@ -553,7 +567,7 @@ public class DataRetrieverCLI {
 		// Generate the OAuthDetails bean from the config properties file
 		OAuth2Details oauthDetails = oauthUtil.createOAuthDetails(config);
 		oauthDetails.setAuthenticationServerUrl(
-				serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet", "nbia-api/oauth/token"));
+				serverUrl.replaceFirst("nbia-download/servlet/DownloadServlet", "nbia-api/oauth/token/"));
 		newToken = oauthUtil.refreshAccessToken(oauthDetails, refreshToken);
 		logger.fine("get renewed access token =" + newToken);
 		return newToken;
@@ -668,7 +682,22 @@ public class DataRetrieverCLI {
 			output = br.readLine(); // data
 
 			if (output != null) {
-				metaData = output.split(",");
+    				List<String> metaDataList = new ArrayList<>();
+    				Pattern pattern = Pattern.compile("\"([^\"]*)\"|(?<=,|^)([^,]*)(?=,|$)");
+    				Matcher matcher = pattern.matcher(output);
+    				
+    				while (matcher.find()) {
+    				    if (matcher.group(1) != null) {
+    				        metaDataList.add(matcher.group(1));
+    				    } else {
+    				        metaDataList.add(matcher.group(2));
+    				    }
+    				}
+    				
+    				// Convert the List to a String array
+    				metaData = metaDataList.toArray(new String[0]);
+
+				//metaData = output.split(",");
 			} else
 				logger.severe(
 						"Error in getting map for SOPClassName. Ask Admin to check if the server has the property file in place.");
