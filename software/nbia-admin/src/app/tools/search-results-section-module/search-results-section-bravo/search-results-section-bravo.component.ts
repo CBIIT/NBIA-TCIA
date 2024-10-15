@@ -42,6 +42,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     searchResultsSelectedCount = 0;
     searchResults = [];
     currentCineModeSeriesIndex = -1;
+    currentCineModeSeriesId = -1;
 
     searchResultsPageToDisplay = [];
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
@@ -133,6 +134,9 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                     this.searchResultsPagerService.goToNextPage();
                 }
             }
+            this.currentCineModeSeriesId = this.searchResults[this.currentCineModeSeriesIndex]['series'];
+            console.log('current Series Id')
+            console.log(this.currentCineModeSeriesId)
         } );
 
         // closeCineModeEmitter
@@ -179,11 +183,22 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                         );
                 }
 
+
+
+
                 // (re)initialize top checkbox in table heading.
                 this.masterSearchResultsCheckbox = false;
                 this.checkboxCount = 0;
                 this.doInitSort();
                 this.resultsUpdateBravoEmitter.emit( this.searchResults );
+                if (this.currentCineModeSeriesIndex !== -1) {
+
+                  this.currentCineModeSeriesIndex = this.searchResults.findIndex(result => result.series === this.currentCineModeSeriesId);
+                  console.log('loading')
+                  console.log(this.searchResults[this.currentCineModeSeriesIndex])
+                  console.log(this.currentCineModeSeriesId);
+                  console.log(this.currentCineModeSeriesIndex);
+                }
                 this.setupPage();
 
                 this.loadingDisplayService.setLoading( false );
