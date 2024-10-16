@@ -198,7 +198,11 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                   console.log(this.searchResults[this.currentCineModeSeriesIndex])
                   console.log(this.currentCineModeSeriesId);
                   console.log(this.currentCineModeSeriesIndex);
-                  this.currentPage = Math.ceil( (this.currentCineModeSeriesIndex + 1)/ this.pageLength ) - 1;
+                  var newPage = Math.ceil( (this.currentCineModeSeriesIndex + 1)/ this.pageLength ) - 1;
+                  if (newPage === this.currentPage - 1) {
+                    this.searchResultsPagerService.goToPreviousPage();
+                  }
+
                 }
                 this.setupPage();
 
