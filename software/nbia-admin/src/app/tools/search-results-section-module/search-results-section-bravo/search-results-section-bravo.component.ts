@@ -198,6 +198,7 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
                   console.log(this.searchResults[this.currentCineModeSeriesIndex])
                   console.log(this.currentCineModeSeriesId);
                   console.log(this.currentCineModeSeriesIndex);
+                  this.currentPage = Math.ceil( (this.currentCineModeSeriesIndex + 1)/ this.pageLength );
                 }
                 this.setupPage();
 
