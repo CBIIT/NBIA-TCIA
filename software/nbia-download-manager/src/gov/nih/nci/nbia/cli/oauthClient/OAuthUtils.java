@@ -92,35 +92,23 @@ public class OAuthUtils {
 
 		parametersBody.add(new BasicNameValuePair(OAuthConstants.CLIENT_SECRET, clientSecret));
 
-
 		if (isValid(scope)) {
 			parametersBody.add(new BasicNameValuePair(OAuthConstants.SCOPE, scope));
 		}
-
-	        ArrayList<NameValuePair> parameters;
-
-    		parameters = new ArrayList<NameValuePair>();
-    		parameters.add(new BasicNameValuePair("grant_type", "password"));
-    		parameters.add(new BasicNameValuePair("client_id", "clientId"));
-    		parameters.add(new BasicNameValuePair("username", oauthDetails.getUsername()));
-    		parameters.add(new BasicNameValuePair("password", oauthDetails.getPassword()));
-    		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
-    		parameters.add(new BasicNameValuePair("scope", "openid"));
-
 
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpResponse response = null;
 
 		try {
 			post.addHeader("content-type", "application/x-www-form-urlencoded");
-			//StringEntity params = new StringEntity(
-			//		"username=" + oauthDetails.getUsername() + "&password=" + oauthDetails.getPassword()
-			//				+ "&client_id=nbiaRestAPIClient&client_secret=ItsBetweenUAndMe&grant_type=password");
-			//post.setEntity(params);
-			post.setEntity(new UrlEncodedFormEntity(parameters, "UTF-8"));
+			StringEntity params = new StringEntity(
+					"username=" + oauthDetails.getUsername() + "&password=" + oauthDetails.getPassword()
+							+ "&client_id=nbiaRestAPIClient&client_secret=ItsBetweenUAndMe&grant_type=password");
+			post.setEntity(params);
 
 			response = client.execute(post);
 			int code = response.getStatusLine().getStatusCode();
+//			logger.fine("HTTP response code is " + code);			
 			if (code == OAuthConstants.HTTP_UNAUTHORIZED) {
 				logger.fine("Authorization server expects Basic authentication. ");
 				// Add Basic Authorization header

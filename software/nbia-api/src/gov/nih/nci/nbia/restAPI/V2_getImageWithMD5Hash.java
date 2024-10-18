@@ -167,13 +167,13 @@ public class V2_getImageWithMD5Hash extends getData {
 						in.close();
 				}
 				recodeDownload(seriesInstanceUid, size, "v2API", userName);
-				downloadLogger.info(
+				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 						"collection="+collectionName + "," +
 						"seriesUID="+ seriesInstanceUid + "," +
 						"numberOfFiles=" + numberOfFiles + "," +
 						"totalSize="+ size + "," +
 						"userId="+ userName + "," +
-						"downloadType=v2API");							
+						"downloadType=v1API");							
 			}
 		};
 

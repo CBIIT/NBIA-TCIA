@@ -134,7 +134,7 @@ public class V2_getImage extends getData {
 						in.close();
 					if (size > 0) {
 						recodeDownload(seriesInstanceUid, size, "v2API", userName);
-						downloadLogger.info(
+						downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 								"collection="+collectionName + "," +
 								"seriesUID="+ seriesInstanceUid + "," +
 								"numberOfFiles=" + numberOfFiles + "," +
@@ -205,7 +205,7 @@ public class V2_getImage extends getData {
 					if (size > 0) {
 						recodeDownload(seriesInstanceUid, size, "v2API", userName);
 						System.out.println("size=" + size +"; recording");
-						downloadLogger.info(
+						downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
 								"collection="+collectionName + "," +
 								"seriesUID="+ seriesInstanceUid + "," +
 								"numberOfFiles=" + numberOfFiles + "," +
