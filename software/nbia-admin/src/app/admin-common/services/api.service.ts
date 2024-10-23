@@ -86,6 +86,7 @@ export class ApiService{
 
 
     trailerQuery = '';
+    latestQueryId = 0;
 
     constructor( private utilService: UtilService, private parameterService: ParameterService,
                  private httpClient: HttpClient, private accessTokenService: AccessTokenService,
@@ -539,9 +540,15 @@ export class ApiService{
             this.collectionSiteEmitter.emit( '' );
         }
 
+        // Increment the query ID each time a new query is made
+        const queryId = ++this.latestQueryId;
+
         this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
             ( performAdvancedQcSearchData ) => {
-                this.searchResultsEmitter.emit( performAdvancedQcSearchData );
+                // Only process the result if this is the most recent query
+                if (queryId === this.latestQueryId) {
+                  this.searchResultsEmitter.emit( performAdvancedQcSearchData );
+                }
             },
             async( performAdvancedQcSearchDataError ) => {
 
@@ -556,21 +563,30 @@ export class ApiService{
 
                     this.doPost( Consts.GET_ADVANCED_QC_SEARCH, query ).subscribe(
                         performAdvancedQcSearchData0 => {
+                          // Only process the result if this is the most recent query
+                          if (queryId === this.latestQueryId) {
                             this.searchResultsEmitter.emit( performAdvancedQcSearchData0 );
+                          }
                         },
                         performAdvancedQcSearchDataError0 => {
+                          // Only process the result if this is the most recent query
+                          if (queryId === this.latestQueryId) {
                             this.resultsErrorEmitter.emit( performAdvancedQcSearchDataError0 );
                             this.loadingDisplayService.setLoading( false );
                             console.error( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
                             alert( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
+                          }
                         } );
                 }
                 // END if 401
                 else{
+                  // Only process the result if this is the most recent query
+                  if (queryId === this.latestQueryId) {
                     this.resultsErrorEmitter.emit( performAdvancedQcSearchDataError );
                     this.loadingDisplayService.setLoading( false );
                     console.error( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
                     alert( 'Server error: ' + performAdvancedQcSearchDataError.statusText + ' (' + performAdvancedQcSearchDataError['status'] + ') - ' + performAdvancedQcSearchDataError.error );
+                  }
                 }
             } );
     }
