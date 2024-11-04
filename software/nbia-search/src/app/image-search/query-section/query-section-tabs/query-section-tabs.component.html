@@ -16,6 +16,14 @@
                   (click)="onTabClick(1 )"
             >Text Search</span>
         </li>
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 2
+               }"
+                  (click)="onTabClick(2 )"
+            >Advanced Search</span>
+        </li>
 
     </ul>
 </span>
@@ -41,3 +49,10 @@
         'hide': activeTab !== 1
     }"
 ></nbia-text-search>
+
+<nbia-query-builder
+        [ngClass]="{
+        'active': activeTab === 2,
+        'hide': activeTab !== 2
+    }"
+></nbia-query-builder>

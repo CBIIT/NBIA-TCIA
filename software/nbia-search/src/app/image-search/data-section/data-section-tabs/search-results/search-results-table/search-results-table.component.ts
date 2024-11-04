@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 import { CartService } from '@app/common/services/cart.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { Consts } from '@app/consts';
@@ -9,6 +10,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
 import { Properties } from '@assets/properties';
 import { ParameterService } from '@app/common/services/parameter.service';
+import { ParameterQBSearchService } from '@app/common/services/parameter-query-builder-search.service';
 import { HistoryLogService } from '@app/common/services/history-log.service';
 
 import { Subject } from 'rxjs';
@@ -65,9 +67,20 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     textSearchResults;
 
     /**
+     * The saved result search results from a Query Builder search.<br>
+     * Used to restore the search results after switching search types.
+     */
+    queryBuilderSearchResults;
+
+    /**
      * If there was an error doing the search, it will be stored here via apiServerService.simpleSearchErrorEmitter.subscribe.
      */
     error;
+
+    /**
+     * If there was an error doing the search, it will be stored here via apiServerService.queryBuilderSearchErrorEmitter.subscribe.
+     */
+    queryBuilderSearchError;
 
     // CHECKME this (default) needs to match SearchResultsService.scrollFlag
     scroll = false;
@@ -117,13 +130,19 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      */
     TEXT_SEARCH = Consts.TEXT_SEARCH;
 
+     /**
+     * For HTML visibility.
+     * @type {string}
+     */
+     QUERY_BUILDER_SEARCH = Consts.QUERY_BUILDER_SEARCH;
+
     /**
      * For HTML visibility.
      */
     DISABLE_COUNTS_AND_SIZE = Properties.DISABLE_COUNTS_AND_SIZE;
 
     /**
-     * This is used to tell the HTML when to display columns that are for "Simple search", or "Free text".
+     * This is used to tell the HTML when to display columns that are for "Simple search", "Query Builder", or "Free text".
      */
     currentSearchMode;
 
@@ -150,10 +169,12 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private commonService: CommonService, private apiServerService: ApiServerService,
+    constructor( private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService,
+                 private apiServerService: ApiServerService,
                  private cartService: CartService, public sortService: SearchResultsSortService,
                  private persistenceService: PersistenceService, private loadingDisplayService: LoadingDisplayService,
-                 private parameterService: ParameterService, private historyLogService: HistoryLogService,
+                 private parameterService: ParameterService, private parameterQBSearchService: ParameterQBSearchService,
+                 private historyLogService: HistoryLogService,
                  private utilService: UtilService, private ohifViewerService: OhifViewerService ) {
 
         // currentSearchMode tells us if the "Simple search" or the "Free text" column names are shown.
@@ -239,6 +260,12 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             }
         );
 
+        this.commonQueryBuilderService.resetAllQueryBuilderSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.allData = [];
+            }
+        );
+
 
         // List of column names/headers
         this.commonService.searchResultsColumnListEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -314,6 +341,12 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 this.clearQuery();
             } );
 
+         // Called by the 'Clear' button on the left side of the Display query at the top.
+         this.commonQueryBuilderService.resetAllQueryBuilderSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.clearQuery();
+            } );
+
         // Called when there are new Simple search results.
         this.apiServerService.simpleSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -365,6 +398,59 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
                 console.error( 'error: ', data );
                 this.loadingDisplayService.setLoading( false );
             } );
+
+         // Called when there are new Simple search results.
+        this.apiServerService.queryBuilderSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.subjectDataShow = [];
+
+                if( (!this.utilService.isNullOrUndefined( data )) && ((<any>data).length > 0) ){
+                    this.queryBuilderSearchResults = data;
+
+                    // Sort the new results
+                    if( !this.properties.PAGED_SEARCH ){
+                        this.commonService.updateSearchResultsCount( this.queryBuilderSearchResults.length );
+                        this.sortService.doSort( this.queryBuilderSearchResults );
+                    }
+
+                    this.searchResults = this.queryBuilderSearchResults;
+                    // this.commonService.updateSearchResultsCount( this.simpleSearchResults.length );
+                    this.commonQueryBuilderService.setQueryBuilderSearchResults( this.queryBuilderSearchResults );
+                    this.upDataSearchResultsForDisplay();
+
+
+                    // This is a work around.  Things are becoming too complicated using the same results screen for Simple search & Text Search.  These should be split up when time permits.
+                    if( this.currentSearchMode === Consts.QUERY_BUILDER_SEARCH ){
+
+                        // this.totalCount = this.commonService.getSimpleSearchResultsCount();
+                        this.commonService.updateSearchResultsCount( this.commonQueryBuilderService.getQueryBuilderSearchResultsCount() );
+                    }
+
+                }else{
+                    this.commonQueryBuilderService.setQueryBuilderSearchResults( {} );
+                    this.searchResults = [];
+                    this.searchResultsForDisplay = [];
+
+                    if( !this.utilService.isNullOrUndefined( this.apiServerService.getQueryBuilderSearchQueryHold() ) ){
+                        this.commonService.updateSearchResultsCount( 0 );
+                    }
+
+                }
+
+                this.updateThisPageRowCount();
+
+                this.loadingDisplayService.setLoading( false );
+            }
+        );
+
+        // If there was an error rather than results from the search, the error message will arrive here.
+        this.apiServerService.queryBuilderSearchErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.error = data;
+                console.error( 'error: ', data );
+                this.loadingDisplayService.setLoading( false );
+            } );
+
 
         this.apiServerService.textSearchClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -492,6 +578,13 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
             }
         );
 
+        // Get the total number of rows for Query Builder
+        this.commonQueryBuilderService.queryBuilderSearchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.totalCount = data;
+            }
+        );
+
         this.commonService.closeSubjectDetailsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.subjectDataShow[<number>data] = false;
@@ -510,6 +603,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
     updateThisPageRowCount() {
         let simpleSearchType = 0; // TODO this needs to be reworked with constants and a better way of doing "Consts.SEARCH_TYPES"
         let textSearchType = 1; // TODO this needs to be reworked with constants and a better way of doing "Consts.SEARCH_TYPES"
+        let queryBuilderSearchType = 2; 
         if(
             (this.currentSearchMode === Consts.SEARCH_TYPES[simpleSearchType]) &&
             (this.utilService.isNullOrUndefined( this.simpleSearchResults ) || (this.simpleSearchResults.length < 1))
@@ -521,6 +615,14 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         if(
             (this.currentSearchMode === Consts.SEARCH_TYPES[textSearchType]) &&
             (this.utilService.isNullOrUndefined( this.textSearchResults ) || (this.textSearchResults.length < 1))
+        ){
+            this.thisPageRowCount = -1; // -1 = no results, the HTML uses this to disable the top cart button.
+            return;
+        }
+
+        if(
+            (this.currentSearchMode === Consts.SEARCH_TYPES[queryBuilderSearchType]) &&
+            (this.utilService.isNullOrUndefined( this.queryBuilderSearchResults ) || (this.queryBuilderSearchResults.length < 1))
         ){
             this.thisPageRowCount = -1; // -1 = no results, the HTML uses this to disable the top cart button.
             return;
@@ -651,9 +753,18 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
      *
      * @todo we don't react enough to errors.
      */
-    runSearch() {
+    runSearch(){
+        if(this.currentSearchMode === Consts.SIMPLE_SEARCH){
+            this.runSimpleSearch()
+        } else {
+            this.runQueryBuilderSearch();
+        }
+
+    }
+    runSimpleSearch() {
         let query = this.apiServerService.buildSimpleSearchQuery( this.allData );
         let downloadManifestQuery = this.apiServerService.buildSimpleSearchQuery( this.allData );
+
         // If the query is empty
         if( query.length < 1 ){
             this.clearSearch();
@@ -679,7 +790,39 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
         this.commonService.setDownloadManifestQuery( downloadManifestQuery );
         this.commonService.emitSimpleSearchQueryForDisplay( this.allData );
+
     }
+
+    runQueryBuilderSearch() {
+        let query = this.apiServerService.buildQueryBuilderSearchQuery( this.allData );
+        let downloadManifestQuery = this.apiServerService.buildQueryBuilderSearchQuery( this.allData );
+        // If the query is empty
+        if( query.length < 1 ){
+            this.clearSearch();
+        }
+        // Run the search
+        else{
+
+            if( this.properties.PAGED_SEARCH ){
+                this.rowsPerPage = this.commonService.getResultsPerPage();
+                query += '&sortField=' + this.sortColumns[this.sortService.getCurrentSortField()];
+                downloadManifestQuery += '&sortField=' + this.sortColumns[this.sortService.getCurrentSortField()];
+                let order = this.sortService.getSortState( this.sortService.getCurrentSortField() ) === 2 ? 'descending' : 'ascending'
+                query += '&sortDirection=' + order;
+                query += '&start=' + this.currentPage * this.rowsPerPage;
+                query += '&size=' + this.rowsPerPage;
+            }
+            this.apiServerService.doSearch( Consts.QUERY_BUILDER_SEARCH, query );
+            this.loadingDisplayService.setLoading( true, 'Searching...' );
+        }
+
+        // Tells the Query display at the top of the Search results section, that this is the current/changed query.
+        downloadManifestQuery += '&sortDirection=descending&start=0&size=1000000';
+
+        this.commonService.setDownloadManifestQuery( downloadManifestQuery );
+        this.commonQueryBuilderService.emitQueryBuilderSearchQueryForDisplay( this.allData );
+    }
+
 
     clearSearch() {
         this.searchResults = [];
@@ -688,7 +831,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
         // Clear the query display
         this.commonService.emitSimpleSearchQueryForDisplay( [] );
-
+        this.commonQueryBuilderService.emitQueryBuilderSearchQueryForDisplay ( [] );
         // Disables the top cart button.
         this.thisPageRowCount = -1;
 
@@ -850,7 +993,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
         for( let col of this.columns ){
             if(
                 ((col.textSearch && (this.currentSearchMode === this.TEXT_SEARCH)) ||
-                    (col.criteriaSearch && (this.currentSearchMode === this.SIMPLE_SEARCH))) &&
+                    (col.criteriaSearch && (this.currentSearchMode === this.SIMPLE_SEARCH || this.currentSearchMode === this.QUERY_BUILDER_SEARCH ))) &&
                 (col.selected)
             ){
                 this.columnCount++;

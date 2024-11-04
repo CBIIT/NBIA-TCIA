@@ -6,6 +6,7 @@ import {MenuService} from '@app/common/services/menu.service';
 import {CartService} from '@app/common/services/cart.service';
 import {ApiServerService} from '@app/image-search/services/api-server.service';
 import {CommonService} from '@app/image-search/services/common.service';
+import {CommonQueryBuilderService} from '@app/image-search/services/common-query-builder.service';
 import {PersistenceService} from '@app/common/services/persistence.service';
 import {AlertBoxService} from '@app/common/components/alert-box/alert-box.service';
 import {HistoryLogService} from '@app/common/services/history-log.service';
@@ -108,6 +109,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
     haveSimpleSearchQuery = false;
     haveTextSearchQuery = false;
+    haveQueryBuilderSearchQuery = false;
 
     currentUserRoles;
 
@@ -118,7 +120,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
     constructor(private menuService: MenuService, private cartService: CartService,
                 private apiServerService: ApiServerService,
-                private commonService: CommonService, private persistenceService: PersistenceService,
+                private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService, private persistenceService: PersistenceService,
                 private alertBoxService: AlertBoxService, private historyLogService: HistoryLogService,
                 private utilService: UtilService, private downloadDownloaderService: DownloadDownloaderService) {
     }
@@ -168,6 +170,16 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                     this.haveTextSearchQuery = true;
                 } else {
                     this.haveTextSearchQuery = false;
+                }
+                this.checkShareEnabled();
+            });
+
+        this.apiServerService.queryBuilderSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            data => {
+                if ((!this.utilService.isNullOrUndefined(data)) && (!this.utilService.isEmpty(data))) {
+                    this.haveQueryBuilderSearchQuery = true;
+                } else {
+                    this.haveQueryBuilderSearchQuery = false;
                 }
                 this.checkShareEnabled();
             });
@@ -296,7 +308,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
     }
 
     checkShareEnabled() {
-        if (this.haveSimpleSearchQuery || this.haveTextSearchQuery || this.cartCount > 0) {
+        if (this.haveSimpleSearchQuery || this.haveQueryBuilderSearchQuery || this.haveTextSearchQuery || this.cartCount > 0) {
             this.shareDisabled = false;
         } else {
             this.shareDisabled = true;
@@ -510,6 +522,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
                     // Clear the search criteria on the left when users login or out
                     this.commonService.resetAllSimpleSearch();
+                    this.commonQueryBuilderService.resetAllQueryBuilderSearch();
 
                     if (this.currentUser === Properties.DEFAULT_USER) {
                         this.menuService.setCurrentItem(menuChoice);

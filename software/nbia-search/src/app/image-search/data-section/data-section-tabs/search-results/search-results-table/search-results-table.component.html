@@ -34,7 +34,7 @@
                     [ngClass]="{
                     'hide-item': !colName.selected ||
                         (! ((colName.textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                            (colName.criteriaSearch && (currentSearchMode === SIMPLE_SEARCH)))
+                            (colName.criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH)))
                         ) ||
                         (
                             (  DISABLE_COUNTS_AND_SIZE) &&
@@ -190,7 +190,7 @@
                     *ngIf="even && getSelectedByIndex(3) &&
                     (
                         (columns[3].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[3].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[3].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH))
                     )"
                     class="hit search-results-td"
             >
@@ -204,7 +204,7 @@
                     *ngIf="even && getSelectedByIndex(4) &&
                     (
                         (columns[4].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[4].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[4].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH))
                     )"
                     class="matchedStudies search-results-td"
             >
@@ -217,7 +217,7 @@
                     *ngIf="even && getSelectedByIndex(5) &&
                     (
                         (columns[5].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[5].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[5].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH ))
                     )"
                     class="totalStudies search-results-td"
             >
@@ -230,7 +230,7 @@
                     *ngIf="even && getSelectedByIndex(6) &&
                     (
                         (columns[6].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[6].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[6].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH ))
                     )"
                     class="matchedSeries search-results-td"
             >
@@ -243,7 +243,7 @@
                     *ngIf="even && getSelectedByIndex(7) &&
                     (
                         (columns[7].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[7].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[7].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH ))
                     )"
                     class="totalSeries search-results-td"
             >
@@ -256,7 +256,7 @@
                     *ngIf="even && getSelectedByIndex(8) && !DISABLE_COUNTS_AND_SIZE  &&
                     (
                         (columns[8].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[8].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[8].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH ))
                     ) "
                     class="diskSpace search-results-td"
             >
@@ -269,7 +269,7 @@
                     *ngIf="even && getSelectedByIndex(9) && !DISABLE_COUNTS_AND_SIZE &&
                     (
                         (columns[9].textSearch && (currentSearchMode === TEXT_SEARCH)) ||
-                        (columns[9].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH))
+                        (columns[9].criteriaSearch && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH ))
                     )"
                     class="imageCount search-results-td"
             >

@@ -5,6 +5,7 @@ import {Consts, NumberHash} from '@app/consts';
 import {PersistenceService} from '@app/common/services/persistence.service';
 import {Properties} from '@assets/properties';
 import {CommonService} from './common.service';
+import {CommonQueryBuilderService} from './common-query-builder.service';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil, timeout} from 'rxjs/operators';
 import {UtilService} from '@app/common/services/util.service';
@@ -112,8 +113,8 @@ export class ApiServerService implements OnDestroy {
     collectionDescriptionsErrorEmitter = new EventEmitter();
 
     // We will use these two when Query Builder is hooked up.
-    criteriaSearchResultsEmitter = new EventEmitter();
-    criteriaSearchErrorEmitter = new EventEmitter();
+    queryBuilderSearchResultsEmitter = new EventEmitter();
+    queryBuilderSearchErrorEmitter = new EventEmitter();
 
 
     /**
@@ -254,6 +255,9 @@ export class ApiServerService implements OnDestroy {
     textSearchQueryHold;
     textSearchQueryHoldEmitter = new EventEmitter();
 
+    queryBuilderSearchQueryHold;
+    queryBuilderSearchQueryHoldEmitter = new EventEmitter();
+
     // Used to determine if we are in the process of logging out the current user.
     loggingOut = false;
 
@@ -265,6 +269,7 @@ export class ApiServerService implements OnDestroy {
     criteriaCountsSpecies: NumberHash = {};
 
     simpleSearchQueryTrailer = '';
+    queryBuilderSearchQueryTrailer = '';
 
     public gettingAccessToken = 0;
 
@@ -272,6 +277,7 @@ export class ApiServerService implements OnDestroy {
 
     constructor(private httpClient: HttpClient, private persistenceService: PersistenceService,
                 private commonService: CommonService, private parameterService: ParameterService,
+                private commonQueryBuilderService: CommonQueryBuilderService,
                 private historyLogService: HistoryLogService, private utilService: UtilService,
                 private loadingDisplayService: LoadingDisplayService) {
 
@@ -282,6 +288,12 @@ export class ApiServerService implements OnDestroy {
         this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async () => {
                 this.setSimpleSearchQueryHold(null);
+                this.getCriteriaCounts();
+            });
+
+        this.commonQueryBuilderService.resetAllQueryBuilderSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+            async () => {
+                this.setQueryBuilderSearchQueryHold(null);
                 this.getCriteriaCounts();
             });
     }
@@ -344,6 +356,17 @@ export class ApiServerService implements OnDestroy {
 
     }
 
+    getQueryBuilderSearchQueryHold() {
+        return this.queryBuilderSearchQueryHold;
+    }
+
+    setQueryBuilderSearchQueryHold(s) {
+        this.queryBuilderSearchQueryHold = s;
+        // So far this is only used to tell the HeaderComponent Share -> Share my query if it should be enabled.
+        this.queryBuilderSearchQueryHoldEmitter.emit(this.queryBuilderSearchQueryHold);
+
+    }
+
     // Just for testing
     showAllQueryData(allData) {
         let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'SpeciesCriteria'];
@@ -363,6 +386,183 @@ export class ApiServerService implements OnDestroy {
      * @returns {string}
      */
     buildSimpleSearchQuery(allData) {
+        let searchQuery = '';
+        this.queryBuilderIndex = 0;
+
+        let isSearchable = false; // CHECKME I don't think we need/use this
+
+        // Days from baseline
+        if ((allData[Consts.DAYS_FROM_BASELINE_CRITERIA] !== undefined) &&
+            (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] !== undefined) &&
+            (allData[Consts.DAYS_FROM_BASELINE_CRITERIA].length > 0)) {
+            isSearchable = true;
+
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DAYS_FROM_BASELINE_CRITERIA + '&eventType' + this.queryBuilderIndex + '=' +
+                allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0];
+            if (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1].length > 0) {
+                searchQuery += '&fromDay' + (this.queryBuilderIndex) + '=' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1];
+            }
+            if (allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2].length > 0) {
+                searchQuery += '&toDay' + (this.queryBuilderIndex) + '=' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2];
+            }
+            this.queryBuilderIndex++;
+        }
+
+        // Exclude Commercial
+        if ((allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA] !== undefined) &&
+            (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0] !== undefined) &&
+            (allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA].length > 0)) {
+            isSearchable = true;
+
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.EXCLUDE_COMMERCIAL_CRITERIA + '&value' + this.queryBuilderIndex + '=' +
+                allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0];
+            this.queryBuilderIndex++;
+        }
+
+        // Collections
+        if ((allData[Consts.COLLECTION_CRITERIA] !== undefined) && (allData[Consts.COLLECTION_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.COLLECTION_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.COLLECTION_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Minimum Studies
+        if ((allData[Consts.MINIMUM_STUDIES] !== undefined) && (allData[Consts.MINIMUM_STUDIES].length > 0)) {
+            isSearchable = true;
+
+            for (let item of allData[Consts.MINIMUM_STUDIES]) {
+
+                let msCount = +item - 1;
+                if (msCount > 0) {
+                    searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' + msCount;
+                    this.queryBuilderIndex++;
+                }
+            }
+        }
+
+
+        // Image Modality
+        if ((allData[Consts.IMAGE_MODALITY_CRITERIA] !== undefined) && (allData[Consts.IMAGE_MODALITY_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.IMAGE_MODALITY_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.IMAGE_MODALITY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+            if (this.getImageModalityAllOrAny() === 'All')  // FIXME make a constant
+            {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=ModalityAndedSearchCriteria&value' + this.queryBuilderIndex + '=all';
+            }
+        }
+
+        // Anatomical Site
+        if ((allData[Consts.ANATOMICAL_SITE_CRITERIA] !== undefined) && (allData[Consts.ANATOMICAL_SITE_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.ANATOMICAL_SITE_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.ANATOMICAL_SITE_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Species
+        if ((allData[Consts.SPECIES_CRITERIA] !== undefined) && (allData[Consts.SPECIES_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.SPECIES_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.SPECIES_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Phantoms
+        if ((allData[Consts.PHANTOMS_CRITERIA] !== undefined) && (allData[Consts.PHANTOMS_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.PHANTOMS_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PHANTOMS_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Third Party Analyses
+        if ((allData[Consts.THIRD_PARTY_CRITERIA] !== undefined) && (allData[Consts.THIRD_PARTY_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.THIRD_PARTY_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.THIRD_PARTY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Available  -  Date Range
+        if ((allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0)) {
+              // Convert from MM/dd/yyyy to dd/MM/yyyy to match API expectation
+              let fromDateParts = allData[Consts.DATE_RANGE_CRITERIA][0].split('/');
+              let toDateParts = allData[Consts.DATE_RANGE_CRITERIA][1].split('/');
+
+              let fromDateFormatted = fromDateParts[1] + '/' + fromDateParts[0] + '/' + fromDateParts[2];
+              let toDateFormatted = toDateParts[1] + '/' + toDateParts[0] + '/' + toDateParts[2];
+
+              searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DATE_RANGE_CRITERIA + '&' +
+                             'fromDate' + this.queryBuilderIndex + '=' + fromDateFormatted + '&' +
+                             'toDate' + this.queryBuilderIndex + '=' + toDateFormatted;
+              this.queryBuilderIndex++;
+        }
+
+
+        // Subject ID  -  Patient Criteria
+        if ((allData[Consts.PATIENT_CRITERIA] !== undefined) && (allData[Consts.PATIENT_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.PATIENT_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+
+        // Manufacturer
+        if ((allData[Consts.MANUFACTURER_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.MANUFACTURER_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MANUFACTURER_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Manufacturer Model
+        if ((allData[Consts.MANUFACTURER_MODEL_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_MODEL_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.MANUFACTURER_MODEL_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MANUFACTURER_MODEL_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        // Manufacturer Software version
+        if ((allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+        // Add tool name to query so server can track usage.
+
+        if (searchQuery.length > 0) {
+            searchQuery += '&tool=nbiaclient';
+        }
+
+        // Remove leading &
+        searchQuery = searchQuery.substr(1);
+        this.commonService.setIsSearchable(isSearchable);  // CHECKME I don't think we need/use this
+
+        return searchQuery;
+    }
+
+     /**
+     * Builds the query string in the format needed by the Rest call.
+     *
+     * @returns {string}
+     */
+     buildQueryBuilderSearchQuery(allData) {
         let searchQuery = '';
         this.queryBuilderIndex = 0;
 
@@ -672,6 +872,7 @@ export class ApiServerService implements OnDestroy {
 
         // CommonServices has a copy which is used restore results when Search type tabs change and minimum studies changes.
         this.commonService.clearSimpleSearchResults();
+        this.commonQueryBuilderService.clearQueryBuilderSearchResults();
     }
 
     /**  TODO Add comments about calling components
@@ -680,7 +881,8 @@ export class ApiServerService implements OnDestroy {
      *
      * @param searchType  SIMPLE_SEARCH for initial search results,  DRILL_DOWN for search of 'Subject ID',
      *                    DRILL_DOWN_CART to get all the series for the selected Studies or Subjects,
-     *                    SERIES_FOR_SUBJECT to get all the series of a Subject, or TEXT_SEARCH.
+     *                    SERIES_FOR_SUBJECT to get all the series of a Subject, or TEXT_SEARCH. QUERY_BUILDER_SEARCH
+     *    
      * @param res
      * @param selected Optional If this is for SERIES_FOR_SUBJECT, which was called when a Subject ID (parent) was clicked, we need to pass along the state.
      */
@@ -718,6 +920,38 @@ export class ApiServerService implements OnDestroy {
 
             this.getCriteriaCounts();
             this.simpleSearchResultsEmitter.emit(this.currentSearchResults);
+        }
+
+        // For QUERY_BUILDER
+
+        if (searchType === Consts.QUERY_BUILDER_SEARCH && Properties.PAGED_SEARCH) {
+            this.currentSearchResultsData = res;
+            this.currentSearchResults = res['resultSet'].slice();
+            // Tell everyone the the search results count.
+            this.commonService.updateSearchResultsCount(this.currentSearchResultsData['totalPatients']);
+
+            // TODO Explain why we need this ( for now )
+            this.commonQueryBuilderService.updateQueryBuilderSearchResultsCount(this.currentSearchResultsData['totalPatients']);
+
+            this.simpleSearchTimePointsMinMaxEmitter.emit({
+                'minTimepoints': this.currentSearchResultsData['minTimepoints'],
+                'maxTimepoints': this.currentSearchResultsData['maxTimepoints']
+            });
+            // We need to add matchedStudies to the data.
+            for (let row of this.currentSearchResults) {
+                let matchedSeriesCount = 0;
+                for (let sId of row['studyIdentifiers']) {
+                    matchedSeriesCount += sId['seriesIdentifiers'].length;
+                }
+
+                row['matchedSeries'] = matchedSeriesCount;
+                row['matchedStudies'] = row['studyIdentifiers'].length;
+
+            }
+
+
+            this.getCriteriaCounts();
+            this.queryBuilderSearchResultsEmitter.emit(this.currentSearchResults);
         }
 
         // TODO we will probably never go back to non-paged results. Should start cleaning this stuff out.
@@ -828,6 +1062,8 @@ export class ApiServerService implements OnDestroy {
             this.getSharedListErrorEmitter.emit(err);
         } else if (searchType === Consts.LOG_ENTRY) {
             this.logEntryErrorEmitter.emit(err);
+        } else if (searchType === Consts.QUERY_BUILDER_SEARCH) {
+            this.queryBuilderSearchErrorEmitter.emit(err);
         }
 
     }
@@ -866,6 +1102,19 @@ export class ApiServerService implements OnDestroy {
                 this.setSimpleSearchQueryHold(query);
                 searchService = Consts.SIMPLE_SEARCH;
                 break;
+            
+            case Consts.QUERY_BUILDER_SEARCH:
+                // Only log for the initial search, not each change of the page.
+                // Do not log if the query has not changed other than "start=".
+                if (query.includes('&start=0') && (query.replace(re, '') !== this.queryBuilderSearchQueryTrailer.replace(re, ''))) {
+                        this.log(this.historyLogService.doLog(Consts.QUERY_BUILDER_SEARCH_LOG_TEXT, this.currentUser, query));
+                    }
+                    this.queryBuilderSearchQueryTrailer = query;
+    
+                    // We are doing a simple search, so we need to update the criteria counts.
+                    this.setQueryBuilderSearchQueryHold(query);
+                    searchService = Consts.QUERY_BUILDER_SEARCH;
+                    break;
 
             case Consts.SHARED_LIST_SUBJECT_ID_SEARCH:
                 searchService = Consts.SIMPLE_SEARCH;

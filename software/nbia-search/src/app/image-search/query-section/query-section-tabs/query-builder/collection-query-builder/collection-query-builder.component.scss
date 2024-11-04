@@ -1,0 +1,28 @@
+@import '../../../../../app.component.scss';
+
+.show-collection-description-clicker {
+  @extend .clicker;
+  height: 11px;
+  margin: 0;
+
+
+}
+.filter-green{
+  @extend .show-collection-description-clicker;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(286deg) brightness(118%) contrast(119%);
+}
+
+.filter-red_ORIG{
+  @extend .show-collection-description-clicker;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(350deg) brightness(70%) contrast(119%);
+}
+
+.filter-red{
+  @extend .show-collection-description-clicker;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(350deg) brightness(40%) contrast(119%);
+}
+
+.filter-blue{
+  @extend .show-collection-description-clicker;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(110deg) brightness(118%) contrast(119%);
+}

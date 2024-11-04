@@ -28,6 +28,7 @@ export class DataSectionComponent implements OnInit, OnDestroy{
     SIMPLE_SEARCH = Consts.SIMPLE_SEARCH;
     CRITERIA_SEARCH = Consts.CRITERIA_SEARCH;
     TEXT_SEARCH = Consts.TEXT_SEARCH;
+    QUERY_BUILDER_SEARCH = Consts.QUERY_BUILDER_SEARCH;
 
     showDataSection = true;
 

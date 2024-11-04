@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { CommonService } from '@app/image-search/services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 import { Consts } from '@app/consts';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { UtilService } from '@app/common/services/util.service';
 import { Properties } from '@assets/properties';
 import { ParameterService } from '@app/common/services/parameter.service';
+import { ParameterQBSearchService } from '@app/common/services/parameter-query-builder-search.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -53,8 +55,10 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private commonService: CommonService, private apiServerService: ApiServerService,
+    constructor( private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService,
+                 private apiServerService: ApiServerService,
                  private persistenceService: PersistenceService, private parameterService: ParameterService,
+                 private parameterQBSearchService: ParameterQBSearchService,
                  private utilService: UtilService ) {
         // Create and initialize
         this.tabIsActive[this.SIMPLE_SEARCH] = true;
@@ -86,6 +90,14 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                     this.tabIsActive[this.SHARED_LISTS] = false;
                     this.tabIsActive[this.STUDY] = false;
                     Properties.PAGED_SEARCH = false;
+                }
+                else if( this.displayMode === Consts.QUERY_BUILDER_SEARCH ){
+                    this.tabIsActive[this.SIMPLE_SEARCH] = false;
+                    this.tabIsActive[this.TEXT_SEARCH] = false;
+                    this.tabIsActive[this.QUERY_BUILDER] = true;
+                    this.tabIsActive[this.SHARED_LISTS] = false;
+                    this.tabIsActive[this.STUDY] = false;
+                    Properties.PAGED_SEARCH = this.pagedSearchHold;
                 }
             }
         );
@@ -164,16 +176,23 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                     this.commonService.updateSearchResultsCount( -1 );
                 }
                 break;
-/*
 
-            case 2: // 'Criteria Search'
+
+            case 2: // 'Criteria Search  query builder'
                 // Change the table display.
                 Properties.PAGED_SEARCH = this.pagedSearchHold;
-                this.commonService.setResultsDisplayMode( Consts.CRITERIA_SEARCH );
-                // Change/Update the results to display
-                this.apiServerService.criteriaSearchResultsEmitter.emit( this.commonService.getCriteriaSearchResults() );
-                break;
+                this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+                this.commonService.selectDataTab( 1 ); // FIXME this should be a const
 
+                // Change/Update the results to display
+                this.apiServerService.queryBuilderSearchResultsEmitter.emit( this.commonQueryBuilderService.getQueryBuilderSearchResults() );
+
+                 // There is no query we need to set the results count to -1 which will cause thing to be displayed for results count rather than count of 0
+                 if( (this.utilService.isNullOrUndefined( this.commonQueryBuilderService.getCurrentQueryBuilderSearchQuery() )) || (this.commonQueryBuilderService.getCurrentQueryBuilderSearchQuery().length < 1) ){
+                    this.commonService.updateSearchResultsCount( -1 );
+                }
+                break;
+/*
             case 3: // 'Shared List Search'
                 // Change the table display.
                 Properties.PAGED_SEARCH = this.pagedSearchHold;

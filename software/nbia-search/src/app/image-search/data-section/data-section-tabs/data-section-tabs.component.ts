@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '../../services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 import { ApiServerService } from '../../services/api-server.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { Properties } from '@assets/properties';
@@ -31,7 +32,8 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
     activeTab = 1;
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private commonService: CommonService, private apiServerService: ApiServerService,
+    constructor( private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService,
+                 private apiServerService: ApiServerService,
                  private persistenceService: PersistenceService, private utilService: UtilService ) {
     }
 
@@ -76,6 +78,13 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
             }
         );
 
+        // If Query Builder Search Results are emitted, we know the search type is QueryBuilder Search.
+        this.apiServerService.queryBuilderSearchResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.updateSearchType();
+            }
+        );
+
         this.updateSearchType();
         this.initTabSelection();
 
@@ -90,6 +99,9 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
                 break;
             case Consts.TEXT_SEARCH:
                 this.searchType = 1;
+                break;
+            case Consts.QUERY_BUILDER_SEARCH:
+                this.searchType = 2;
                 break;
         }
     }

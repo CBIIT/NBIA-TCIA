@@ -4,10 +4,12 @@ import { Properties } from '@assets/properties';
 import { MenuService } from '../common/services/menu.service';
 import { Consts, MenuItems } from '../consts';
 import { CommonService } from '../image-search/services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 import { CartService } from '../common/services/cart.service';
 import { NgForm } from '@angular/forms';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { ParameterService } from '@app/common/services/parameter.service';
+import { ParameterQBSearchService } from '@app/common/services/parameter-query-builder-search.service';
 import { InitMonitorService } from '@app/common/services/init-monitor.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -72,8 +74,10 @@ export class LoginComponent implements OnInit, OnDestroy{
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private menuService: MenuService, private apiServerService: ApiServerService,
-                 private commonService: CommonService, private cartService: CartService,
-                 private persistenceService: PersistenceService, private parameterService: ParameterService,
+                 private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService, 
+                 private cartService: CartService,
+                 private persistenceService: PersistenceService, 
+                 private parameterService: ParameterService, private parameterQBSearchService: ParameterQBSearchService ,
                  private initMonitorService: InitMonitorService , private utilService: UtilService,
                  private loadingDisplayService: LoadingDisplayService) {
         this.statusMessage0 = '';
@@ -144,6 +148,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         // Log out current user.
         this.apiServerService.setLoggingOut( true );
         this.apiServerService.setSimpleSearchQueryHold( '' );
+        this.apiServerService.setQueryBuilderSearchQueryHold( '' );
 
         this.commonService.emitSimpleSearchQueryForDisplay( [] );
 
@@ -186,6 +191,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                 // Reload available search criteria, it can be different for each user.
                 this.commonService.resetAllSimpleSearchForLogin();
                 this.commonService.clearSimpleSearchResults();
+                this.commonQueryBuilderService.clearQueryBuilderSearchResults();
 
                 // For clearing all queries, search results, and resetting available Collections, Image Modality, etc, for a newly logged in user,
                 // this.commonService.resetAllSimpleSearch();  // CHECKME Make sure we don't need this
@@ -264,6 +270,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         // Log out current user.
         this.apiServerService.setLoggingOut( true );
         this.apiServerService.setSimpleSearchQueryHold( '' );
+        this.apiServerService.setQueryBuilderSearchQueryHold( '' );
 
         this.commonService.emitSimpleSearchQueryForDisplay( [] );
         this.loadingDisplayService.setLoading( true, 'Logging in as guest' );
@@ -307,6 +314,10 @@ export class LoginComponent implements OnInit, OnDestroy{
                 // Clear the Text Search
                 this.commonService.clearTextSearchUserInput();
                 this.commonService.clearTextSearchResults();
+
+                // Clear Query Builder Search
+                this.commonQueryBuilderService.clearQueryBuilderSearchUserInput();
+                this.commonQueryBuilderService.clearQueryBuilderSearchResults();
 
                 this.cartService.clearCart();
 

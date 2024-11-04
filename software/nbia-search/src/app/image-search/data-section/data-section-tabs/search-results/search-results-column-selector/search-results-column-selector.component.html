@@ -15,7 +15,7 @@
                 *ngIf="(
                              (
                                  (colName['textSearch'] && (currentSearchMode === TEXT_SEARCH)) ||
-                                 (colName['criteriaSearch'] && (currentSearchMode === SIMPLE_SEARCH))
+                                 (colName['criteriaSearch'] && (currentSearchMode === SIMPLE_SEARCH || currentSearchMode === QUERY_BUILDER_SEARCH ))
                              )
                          &&
                              (

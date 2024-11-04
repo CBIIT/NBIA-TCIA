@@ -1,0 +1,232 @@
+<!-- ----------  This is the left side Collections list of check boxes.  ---------- -->
+
+<!-- -----  Tool top that shows the Collection description  ----- -->
+<nbia-tool-tip
+        (mouseover)="mouseOverToolTip()"
+        (mouseleave)="mouseleaveToolTip()"
+        (mouseout)="mouseleaveToolTip()"
+
+        [(showToolTip)]=showToolTip
+        [toolTipY]=toolTipY
+        [toolTipText]=toolTipText
+        [toolTipHeading]=toolTipHeading
+></nbia-tool-tip>
+
+<div class="query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+
+        <!-- Hide the Collections list.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(false)"
+        >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Collections
+        </span>
+
+        <span
+                *ngIf="!showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Collections
+        </span>
+
+
+        <!-- Sort order buttons (alpha or num) -->
+        <span
+                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
+                class="sort-text"
+        >
+             &nbsp;&nbsp;Sort:
+             <label for="sortAlphaChecked">alpha
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSort"
+                         [checked]="sortAlphaChecked"
+                         id="sortAlphaChecked"
+                         (change)="onSetSort(1)"
+                 >
+             </label>
+             &nbsp;
+             <label for="sortNumChecked">num
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSort"
+                         [(checked)]="sortNumChecked"
+                         id="sortNumChecked"
+                         (change)="onSetSort(0)"
+                 >
+                </label>
+            </span>
+
+
+        <!--  Search the list of Collections (The red magnifying glass) -->
+        <label
+                [ngClass]="{
+               'search-glass': checkedCount == 0,
+               'search-glass-with-clear': checkedCount > 0
+            }"
+                for="collectionsSearchText"
+                title="{{searchToolTip}}"
+        >
+
+            <img
+                    class="clicker application-menu-icon"
+                    src="assets/images/TOOLS/search_red_43px.png"
+                    alt="Search"
+                    (click)="onSearchGlassClick()"
+            >
+        </label>
+
+        <!-- Uncheck all the Collection criteria and restore their counts back to the full count in the database. -->
+        <label *ngIf="checkedCount > 0" class="red-clear">
+            <img
+                    class="clicker cart-button-icon"
+                    src="assets/images/TOOLS/clear_red.png"
+                    alt="Search"
+                    (click)="onCollectionsClearAllClick(false)"
+            >
+        </label>
+
+    </div>
+
+    <div [ngClass]="{
+             'hide-div': !showCriteriaList
+         }"
+    >
+
+        <!-- -----  Criteria list search input (Red magnifying glass)  ----- -->
+        <div *ngIf="showSearch" class="search-box">
+
+            <input type="text" class="search-text-area" id="collectionsSearchText" placeholder="search"
+                   [ngClass]="{
+                       'box-with-focus':searchHasFocus
+                   }"
+                   [(ngModel)]="searchInput"
+                   (blur)="onSearchTextOutFocus(0)"
+                   (focus)="onSearchTextFocus(0)"
+                   (ngModelChange)="onSearchChange()">
+
+            <!-- The "X" to clear the search text -->
+            <span *ngIf="searchInput.length > 0"
+                  class="search-text-area-x close-x"
+                  (blur)="onSearchTextOutFocus(1)"
+                  (focus)="onSearchTextFocus(1)"
+                  (click)="onClearSearchInputClick()">X
+            </span>
+        </div>
+        <!-- -----  End Search input  ----- -->
+
+        <!-- ----------  The Less/More... clickers at the top  ---------- -->
+        <div *ngIf="
+            unCheckedCount > properties.CRITERIA_SHOW_COUNT &&
+            (! showAllForSearch) &&
+            properties.USE_COLLECTIONS_LESS_MORE
+        ">
+
+            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll"> {{unCheckedCount -
+            properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
+        <div
+                [ngClass]="{
+                'collection-scroller-div': (! properties.USE_COLLECTIONS_LESS_MORE)
+            }"
+        >
+
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------- -->
+
+
+            <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
+            <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
+
+            <span
+                    *ngIf="
+                        ( criteria['seq']  < ( properties.CRITERIA_SHOW_COUNT + checkedCount) ) ||
+                        showAll ||
+                        showAllForSearch ||
+                        (! properties.USE_COLLECTIONS_LESS_MORE)
+                    "
+                    (mouseout)="hideToolTip()"
+                    (mouseleave)="hideToolTip()"
+            >
+
+                <span>
+                    <input type="checkbox"
+                           class="check-box"
+                           id="checkbox-collection{{i}}"
+                           [(ngModel)]="cBox[i]"
+                           (click)="onCheckboxClick(i, $event.target['checked'])"
+                    >
+                </span>
+
+
+
+                <!-- -----  The old way  ----- -->
+                <label
+                        *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 0"
+                        class="criteria-entry-text"
+                        [attr.for]="'checkbox-collection'+i"
+                        (mouseover)="getPos($event, criteria['criteria'], 1)"
+                >
+                    {{criteria['criteria']}}
+                </label>
+
+                <!-- -----  The new way  ----- -->
+                <label
+                    *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1"
+                    class="criteria-entry-text"
+                    [attr.for]="'checkbox-collection'+i"
+                >
+                      {{criteria['criteria']}}
+                </label>
+
+                <label
+                    *ngIf="properties.COLLECTION_DESCRIPTION_TOOLTIP_TYPE === 1"
+                    (click)="onCollectionDescriptionClick($event, criteria['criteria'])"
+                    title="Collection description"
+                    class="p-0 m-0"
+                >
+                    &nbsp;<img
+                            src="assets/images/icons/info_blue_32px.png"
+                            class="filter-red"
+                    >
+                </label>
+
+
+                 <span
+                         [ngClass]="{
+                         'count-box': criteria['count'] > 0,
+                         'count-box_zero': criteria['count'] <= 0
+                     }"
+                 >
+                     {{criteria['count']}}</span>
+                </span>
+            </div>
+
+        </div>
+        <!-- ----------  The Less/More... clickers at the bottom  ---------- -->
+
+
+        <div *ngIf="
+            unCheckedCount > properties.CRITERIA_SHOW_COUNT &&
+            (! showAllForSearch) &&
+            ( properties.USE_COLLECTIONS_LESS_MORE)
+        ">
+
+            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll"> {{unCheckedCount -
+            properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
+    </div>
+</div>

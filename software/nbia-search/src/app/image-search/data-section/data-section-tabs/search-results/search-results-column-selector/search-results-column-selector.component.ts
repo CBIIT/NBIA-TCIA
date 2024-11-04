@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 import { Consts } from '@app/consts';
 import { PersistenceService } from '@app/common/services/persistence.service';
 import { UtilService } from '@app/common/services/util.service';
@@ -54,6 +55,12 @@ export class SearchResultsColumnSelectorComponent implements OnInit, OnDestroy{
      * @type {string}
      */
     TEXT_SEARCH = Consts.TEXT_SEARCH;
+
+    /**
+     * For HTML visibility.
+     * @type {string}
+     */
+    QUERY_BUILDER_SEARCH = Consts.QUERY_BUILDER_SEARCH;
 
     /**
      * For HTML visibility.

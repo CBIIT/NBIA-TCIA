@@ -1,0 +1,429 @@
+import { EventEmitter, Injectable } from '@angular/core';
+import { CommonService } from '@app/image-search/services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
+import { InitMonitorService } from '@app/common/services/init-monitor.service';
+import { Properties } from '@assets/properties';
+import { Consts, MenuItems } from '@app/consts';
+import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
+import { MenuService } from '@app/common/services/menu.service';
+import { LoadingDisplayService } from '@app/common/components/loading-display/loading-display.service';
+import { Subject } from 'rxjs';
+import { QueryCriteriaInitService } from '@app/common/services/query-criteria-init.service';
+
+
+/**
+ * We will need to add some input validation
+ * for QueryBuilder Search module 
+ */
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ParameterQBSearchService{
+    parameterQBSubjectIdEmitter = new EventEmitter();
+    parameterQBCollectionEmitter = new EventEmitter();
+    parameterQBModalityEmitter = new EventEmitter();
+    parameterQBAnatomicalSiteEmitter = new EventEmitter();
+    parameterQBMinimumStudiesEmitter = new EventEmitter();
+    parameterQBDateRangeEmitter = new EventEmitter();
+    parameterQBSpeciesEmitter = new EventEmitter();
+    parameterQBPhantomsEmitter = new EventEmitter();
+    parameterQBThirdPartyEmitter = new EventEmitter();
+    parameterQBExcludeCommercialEmitter = new EventEmitter();
+    parameterQBDaysFromBaselineEmitter = new EventEmitter();
+  
+
+    // Used for determining if cart from URL should be (re)loaded
+    no = 0;
+    yes = 1;
+    seen = 2;
+
+    patientID = '';  // Subject
+    collections = '';
+    modality = '';
+    modalityAll = '';
+    anatomicalSite = '';
+    minimumStudies = 1;
+    dateRange = '';
+    species = '';
+    phantoms = '';
+    thirdParty = '';
+    excludeCommercial = '';
+    daysFromBaseline = '';
+    
+    apiUrl = '';
+
+    waitTime = 11;
+
+    // TODO give this a better name.
+    stillWaitingOnAtLeastOneComponent = 0;
+    // TODO give this a better name.
+    haveParametersToService = false;
+    wereAnyQueryBuilderParametersSent = false;
+    //wereTextSearchParametersSent = false;
+   // wereAnyQueryBuilderSearchParametersSent = false;
+    wasSharedListParameterSent = this.no;
+    sharedListName = '';
+
+
+    constructor( private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService,
+                private initMonitorService: InitMonitorService,
+                 private queryUrlService: QueryUrlService, private menuService: MenuService,
+                 private loadingDisplayService: LoadingDisplayService, private queryCriteriaInitService: QueryCriteriaInitService ) {
+
+    }
+
+    reset() {
+        this.haveParametersToService = false;
+    }
+
+    // TODO give this a better name.
+    getParameterStatus() {
+        return this.haveParametersToService;
+    }
+
+    haveUrlQueryBuilderParameters() {
+        return this.wereAnyQueryBuilderParametersSent;
+    }
+
+
+    haveUrlSharedList() {
+        return this.wasSharedListParameterSent;
+    }
+
+    setHaveUrlSharedList( state ) {
+        this.wasSharedListParameterSent = state;
+    }
+
+    seenUrlSharedList() {
+        this.wasSharedListParameterSent = this.seen;
+    }
+
+
+    async setMinimumStudies( minimumStudies ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.minimumStudies = minimumStudies;
+
+        this.commonService.setMinimumMatchedStudiesValue( +minimumStudies );
+        // Wait for the Minimum Studies query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getMinimumStudiesInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBMinimumStudiesEmitter.emit( +minimumStudies );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getMinimumStudies() {
+        return this.minimumStudies;
+    }
+
+    // Subject ID
+    async setPatientID( subjectId ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.patientID = subjectId;
+
+
+        await this.commonService.sleep( 750 );
+        //  await this.commonService.sleep( this.waitTime );
+
+
+        this.parameterQBSubjectIdEmitter.emit( subjectId );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getPatientID() {
+        return this.patientID;
+    }
+
+    async setCollection( collection ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.collections = collection;
+
+        // Wait for the Collections query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getCollectionsInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBCollectionEmitter.emit( collection );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    async resetUrlQuery() {
+        this.parameterQBMinimumStudiesEmitter.emit( +this.minimumStudies );
+
+        if( this.collections.length > 0 ){
+            this.parameterQBCollectionEmitter.emit( this.collections );
+        }
+
+        if( this.patientID.length > 0 ){
+            this.parameterQBSubjectIdEmitter.emit( this.patientID );
+        }
+
+        if( this.anatomicalSite.length > 0 ){
+            this.parameterQBAnatomicalSiteEmitter.emit( this.anatomicalSite );
+        }
+
+        if( this.species.length > 0 ){
+            this.parameterQBSpeciesEmitter.emit( this.species );
+        }
+
+        if( this.phantoms.length > 0 ){
+            this.parameterQBPhantomsEmitter.emit( this.phantoms );
+        }
+
+        if( this.thirdParty.length > 0 ){
+            this.parameterQBThirdPartyEmitter.emit( this.thirdParty );
+        }
+
+        if( this.excludeCommercial.length > 0 ){
+            this.parameterQBExcludeCommercialEmitter.emit( this.excludeCommercial );
+        }
+
+        if( this.daysFromBaseline.length > 0 ){
+            this.parameterQBDaysFromBaselineEmitter.emit( this.daysFromBaseline );
+        }
+
+        if( this.dateRange.length > 0 ){
+            let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
+            if( regexp.test( this.dateRange ) ){
+                this.parameterQBDateRangeEmitter.emit( this.dateRange );
+            }else{
+                console.error( 'Bad date range in URL parameterQB: ', this.dateRange );
+            }
+        }
+
+        if( this.modality.length > 0 ){
+            this.parameterQBModalityEmitter.emit( { modality: this.modality, modalityAll: this.modalityAll } );
+        }
+
+        // We may need to wait here to give the criteria components time to populate.
+        await this.commonService.sleep( 200 ); // FIXME Testing...
+        this.commonService.runSearchForUrlParameters();
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+
+    }
+
+    getCollection() {
+        return this.collections;
+    }
+
+    async setModality( modality, modalityAll = null ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.modality = modality;
+        this.modalityAll = modalityAll;
+
+        // Wait for the Image Modality query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getModalityInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBModalityEmitter.emit( { modality, modalityAll } );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getModality() {
+        return this.modality;
+    }
+
+    getModalityAll() {
+        return this.modalityAll;
+    }
+
+    async setPhantoms( phantoms ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.phantoms = phantoms;
+
+        // Wait for the phantom query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPhantomsInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBPhantomsEmitter.emit( phantoms );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+
+    async setThirdParty( thirdParty ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.thirdParty = thirdParty;
+
+        // Wait for the thirdParty query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getThirdPartyInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBThirdPartyEmitter.emit( thirdParty );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+
+    async setExcludeCommercial( excludeCommercial ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.excludeCommercial = excludeCommercial;
+        // Wait for the thirdParty query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getExcludeCommercialInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBExcludeCommercialEmitter.emit( excludeCommercial );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+
+    }
+
+    async setDaysFromBaseline( daysFromBaseline ) {
+
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.daysFromBaseline = daysFromBaseline;
+        // Wait for the thirdParty query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getDaysFromBaselineInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBDaysFromBaselineEmitter.emit( daysFromBaseline );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+
+    }
+
+
+    getPhantoms() {
+        return this.phantoms;
+    }
+
+    getThirdParty() {
+        return this.thirdParty;
+    }
+
+    async setSpecies( species ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.species = species;
+
+        // Wait for the species query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getSpeciesInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBSpeciesEmitter.emit( species );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getSpecies() {
+        return this.species;
+    }
+
+    async setAnatomicalSite( anatomicalSite ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.anatomicalSite = anatomicalSite;
+
+        // Wait for the Anatomical query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getAnatomicalSiteInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterQBAnatomicalSiteEmitter.emit( anatomicalSite );
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getAnatomicalSite() {
+        return this.anatomicalSite;
+    }
+
+    async setDateRange( dateRange ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnyQueryBuilderParametersSent = true;
+        this.dateRange = dateRange;
+
+        // Wait for the DateRange query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getDateRangeInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+
+
+        let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
+        if( regexp.test( dateRange ) ){
+            this.parameterQBDateRangeEmitter.emit( dateRange );
+        }else{
+            alert( 'Bad date range:\n' + dateRange );
+        }
+        this.commonService.setResultsDisplayMode( Consts.QUERY_BUILDER_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getDateRange() {
+        return this.dateRange;
+    }
+
+    setApiUrl( apiUrl ) {
+        this.apiUrl = apiUrl;
+        Properties.API_SERVER_URL = apiUrl;
+        // Update the query URL
+        this.queryUrlService.update( this.queryUrlService.API_URL, apiUrl );
+    }
+
+    getSharedListName() {
+        return this.sharedListName;
+    }
+
+    setSharedListName( sharedList ) {
+        this.wasSharedListParameterSent = this.yes;
+        this.sharedListName = sharedList;
+        // We need a small delay here.  TODO explain
+        setTimeout( () => {
+            this.menuService.setCurrentItem( MenuItems.CART_MENU_ITEM );
+        }, 500 );
+    }
+
+    //
+    /**
+     * @TODO give this a better name
+     * @CHECKME - We may need to add safeguard - Is it possible, one component can start and complete before one or more others have started,
+     *  CHECKME - resulting in this.stillWaitingOnAtLeastOneComponent being zero before we are really done?
+     */
+    decStillWaitingOnAtLeastOneComponent() {
+        this.stillWaitingOnAtLeastOneComponent--;
+
+        if( this.stillWaitingOnAtLeastOneComponent < 1 ){
+            this.doUrlSearch();
+        }
+    }
+
+    async doUrlSearch() {
+        this.loadingDisplayService.setLoading( true, 'Updating Counts' );
+        while( ! this.queryCriteriaInitService.isQueryCriteriaInitComplete() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+
+        this.reset();
+        this.commonService.runSearchForUrlParameters();
+        this.loadingDisplayService.setLoading( false );
+    }
+
+    incStillWaitingOnAtLeastOneComponent() {
+        this.stillWaitingOnAtLeastOneComponent++;
+    }
+
+}

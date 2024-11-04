@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { UtilService } from '@app/common/services/util.service';
 import { CommonService } from '@app/image-search/services/common.service';
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -264,12 +265,13 @@ export class QueryBuilderComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private commonService: CommonService, private renderer: Renderer2,
+    constructor( private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService,
+                private renderer: Renderer2,
                  private utilService: UtilService ) {
     }
 
     ngOnInit() {
-        this.commonService.clearAllQueryBuilderEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonQueryBuilderService.clearAllQueryBuilderEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.deleteAll();
             }
@@ -287,7 +289,7 @@ export class QueryBuilderComponent implements OnInit, OnDestroy{
 
     onAnyOrAllChange( value ) {
         this.allOrAnyDefault = value;
-        this.commonService.setQueryBuilderAnyOrAll( value );
+        this.commonQueryBuilderService.setQueryBuilderAnyOrAll( value );
     }
 
 
@@ -384,7 +386,7 @@ export class QueryBuilderComponent implements OnInit, OnDestroy{
             this.onPlusClick()
         }
         else{
-            this.commonService.emitQueryBuilderQueryForDisplay( this.queryArray );
+            this.commonQueryBuilderService.emitQueryBuilderSearchQueryForDisplay( this.queryArray );
         }
 
     }
@@ -406,7 +408,7 @@ export class QueryBuilderComponent implements OnInit, OnDestroy{
 
             this.clearUserInput();
 
-            this.commonService.emitQueryBuilderQueryForDisplay( this.queryArray );
+            this.commonQueryBuilderService.emitQueryBuilderSearchQueryForDisplay( this.queryArray );
 
         }
     }

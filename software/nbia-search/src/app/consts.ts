@@ -32,7 +32,8 @@ export enum MenuItems{
 export enum DownloadTools{
     CART,
     SEARCH_QUERY,
-    TEXT_QUERY
+    TEXT_QUERY,
+    QUERY_BUILDER
 }
 
 export const Consts = {
@@ -43,6 +44,8 @@ export const Consts = {
         API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS: 'getRestrictionsForSimpleSearch',
         API_MANIFEST_FROM_TEXT_SEARCH_RESULTS: 'getManifestForTextSearch',
         API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS: 'getRestrictionsForTextSearch',
+        API_MANIFEST_FROM_QUERY_BUILDER_SEARCH_RESULTS: 'getManifestForQueryBuilderSearch',
+        API_MANIFEST_RESTRICTIONS_FROM_QUERY_BUILDER_SEARCH_RESULTS: 'getRestrictionsForQueryBuilderSearch',
 
         // API_SAVE_SHARED_LIST_URL: 'nbia-api/services/createSharedList',
 
@@ -91,6 +94,7 @@ export const Consts = {
         SAVE_CART_LOG_TEXT: 'SAVE_CART',
         HELP_SITE_LOG_TEXT: 'HELP_SITE',
         LOAD_SAVED_QUERY_LOG_TEXT: 'LOAD_SAVED_QUERY',
+        QUERY_BUILDER_SEARCH_LOG_TEXT: 'QUERY_BUILDER_SEARCH',
 
         TOOL_PERFORM_QC: 'perform-qc',
         TOOL_APPROVE_DELETIONS: 'approve-deletions',
@@ -143,7 +147,7 @@ export const Consts = {
         // SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPart',
 
         // If you change SIMPLE_SEARCH or TEXT_SEARCH change here too.
-        SEARCH_TYPES: ['getSimpleSearchWithModalityAndBodyPartPaged', 'getTextSearch'], // Used when getting the string when we have an index  FIXME  This is a little messy.
+        SEARCH_TYPES: ['getSimpleSearchWithModalityAndBodyPartPaged', 'getTextSearch', 'getQueryBuilderSearch'], // Used when getting the string when we have an index  FIXME  This is a little messy.
         // SEARCH_TYPES: ['getExtendedSimpleSearch', 'getTextSearch'], // Used when getting the string when we have an index  FIXME  This is a little messy.
 
 
@@ -151,6 +155,8 @@ export const Consts = {
         TEXT_SEARCH: 'getTextSearch',
         STUDY_SEARCH: 'STUDY_SEARCH_PLACE_HOLDER',
         SHARED_LIST_SEARCH: 'SHARED_LIST_SEARCH_PLACE_HOLDER',
+
+        QUERY_BUILDER_SEARCH: 'getQueryBuilderSearch',
 
         CREATE_SHARED_LIST: 'createSharedList',
         DELETE_SHARED_LIST: 'deleteSharedList',
@@ -186,7 +192,6 @@ export const Consts = {
         SHOW_CRITERIA_QUERY_ANATOMICAL_SITE_DEFAULT: true,
         SHOW_CRITERIA_QUERY_IMAGE_MODALITY_DEFAULT: true,
         SHOW_CRITERIA_QUERY_MANUFACTURER_MODEL_DEFAULT: false,
-
         SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT: false,
         SHOW_CRITERIA_QUERY_SUBJECT_ID_DEFAULT: false,
 

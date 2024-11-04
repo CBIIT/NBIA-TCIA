@@ -32,6 +32,9 @@ import { DateRangeQueryComponent } from './image-search/query-section/query-sect
 import { PieChartCollectionsComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-collections/pie-chart-collections.component';
 import { PieChartImageModalityComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-image-modality/pie-chart-image-modality.component';
 import { PieChartAnatomicalSiteComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/pie-chart-anatomical-site/pie-chart-anatomical-site.component';
+import { CollectionQueryBuilderComponent } from './image-search/query-section/query-section-tabs/query-builder/collection-query-builder/collection-query-builder.component';
+import { ImageModalityQueryBuilderComponent } from './image-search/query-section/query-section-tabs/query-builder/image-modality-query-builder/image-modality-query-builder.component';
+import { SpeciesQueryBuilderComponent } from './image-search/query-section/query-section-tabs/query-builder/species-query-builder/species-query-builder.component';
 import { CartService } from './common/services/cart.service';
 import { MenuService } from './common/services/menu.service';
 import { ApiServerService } from './image-search/services/api-server.service';
@@ -48,7 +51,7 @@ import { CartSortService } from './cart/cart-sort.service';
 import { NbiaClientComponent } from './nbia-client/nbia-client.component';
 import { DisplayFormatPipe } from './common/pipes/display-format.pipe';
 import { ToMbGbPipe } from './common/pipes/to-mb-gb.pipe';
-import { DisplayQueryQueryBuilderComponent } from './image-search/data-section/display-query/display-query-query-builder/display-query-query-builder.component';
+import { DisplayQueryQueryBuilderComponent } from './image-search/data-section/display-query/display-query-query-builder-search/display-query-query-builder-search.component';
 import { DisplayQueryTextSearchComponent } from './image-search/data-section/display-query/display-query-text-search/display-query-text-search.component';
 import { ShortenRightPipe } from './common/pipes/shorten-right.pipe';
 import { DownloaderDownloadComponent } from './cart/downloader-download/downloader-download.component';
@@ -139,6 +142,9 @@ const appRoutes: Routes = [
         TopRightButtonGroupComponent,
         CollectionQueryComponent,
         ImageModalityQueryComponent,
+        CollectionQueryBuilderComponent,
+        SpeciesQueryBuilderComponent,
+        ImageModalityQueryBuilderComponent,
         SubjectIdQueryComponent,
         ResultsPerPageComponent,
         SearchResultsPagerComponent,

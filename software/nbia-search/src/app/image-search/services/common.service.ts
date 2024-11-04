@@ -76,7 +76,7 @@ export class CommonService{
      * This will be used by Query Builder, when I get it working.
      * @type {EventEmitter<any>}
      */
-    clearAllQueryBuilderEmitter = new EventEmitter();
+    //clearAllQueryBuilderEmitter = new EventEmitter();
 
     /**
      * Called by emitSimpleSearchQueryForDisplay when the query changes.<br>
@@ -93,7 +93,7 @@ export class CommonService{
      * Used by DisplayQueryQueryBuilderComponent to update the "Display query" at the top of the data section.
      * @type {EventEmitter}
      */
-    updateQueryBuilderForDisplayEmitter = new EventEmitter();
+    // updateQueryBuilderForDisplayEmitter = new EventEmitter();
 
     /**
      * Called by emitTextSearchQueryForDisplay when the query changes.<br>
@@ -209,8 +209,8 @@ export class CommonService{
     textSearchQueryEmitter = new EventEmitter();
 
     // TODO explain
-    queryBuilderAnyOrAllEmitter = new EventEmitter();
-    queryBuilderAnyOrAll = 1;  // Any
+   // queryBuilderAnyOrAllEmitter = new EventEmitter();
+   // queryBuilderAnyOrAll = 1;  // Any
 
     textSearchResults = '';
     simpleSearchResults = '';
@@ -346,14 +346,14 @@ export class CommonService{
     }
 
 
-    setQueryBuilderAnyOrAll( value ) {
-        this.queryBuilderAnyOrAll = value;
-        this.queryBuilderAnyOrAllEmitter.emit( value );
-    }
+    // setQueryBuilderAnyOrAll( value ) {
+    //     this.queryBuilderAnyOrAll = value;
+    //     this.queryBuilderAnyOrAllEmitter.emit( value );
+    // }
 
-    getQueryBuilderAnyOrAll() {
-        return this.queryBuilderAnyOrAll;
-    }
+    // getQueryBuilderAnyOrAll() {
+    //     return this.queryBuilderAnyOrAll;
+    // }
 
     /**
      * For reloading the search criteria after a different user has logged in, every user can have different criteria available/accessible.
@@ -764,14 +764,7 @@ export class CommonService{
         return this.currentSimpleSearchQuery
     }
 
-    emitQueryBuilderQueryForDisplay( queryData ) {
-        this.updateQueryBuilderForDisplayEmitter.emit( queryData );
-    }
-
-
-    clearAllQueryBuilder() {
-        this.clearAllQueryBuilderEmitter.emit();
-    }
+   
 
     /**
      * Called by SearchResultsTableComponent<br><br>

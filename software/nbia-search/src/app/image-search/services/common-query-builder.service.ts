@@ -1,0 +1,623 @@
+import { EventEmitter, Injectable } from '@angular/core';
+import { Consts } from '@app/consts';
+import { UtilService } from '@app/common/services/util.service';
+import { PersistenceService } from '@app/common/services/persistence.service';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CommonQueryBuilderService{
+    /**
+     * For Advanced Search /query builder (QB)
+     * Used by SearchResultsPagerComponent to know how many pages to use for the Pager.<br>
+     * Used by SearchResultsComponent to update the top "Search results Showing X - X+ResultsPerPage"<br>
+     * Used by  SummaryComponent to display search results count above charts.
+     * @type {EventEmitter}
+     */
+    // queryBuilderSearchResultsCountEmitter = new EventEmitter();
+    // queryBuilderSearchResultsCount = -1;
+
+    queryBuilderSearchResultsCountEmitter = new EventEmitter();
+    queryBuilderSearchResultsCount = -1;
+
+
+    /**
+     * Used by CartComponent to know how many pages to use for the Pager.<br>
+     * Used by SearchResultsPagerComponent to know how big, and how many pages
+     * @type {EventEmitter}
+     */
+    // cartCountEmitter = new EventEmitter();
+
+    /**
+     * Used by SearchResultsComponent to update the top "Search results Showing X - X+ResultsPerPage"<br>
+     * Used by SearchResultsTableComponent to know how many rows to display.<br>
+     * Used by SearchResultsPagerComponent to know how many pages to use for the Pager.
+     * @type {EventEmitter}
+     */
+   // searchResultsPerPageEmitter = new EventEmitter();
+   // resultsPerPage = 0;
+
+    /**
+     *  Used by updateCartsPerPage to emit the number of rows to display when it is changed.
+     *  Used by CartComponent to know how many rows to display.<br>
+     *  Used by SearchResultsPagerComponent to kno w how many pages to break the cart list into.
+     * @type {EventEmitter}
+     */
+   // cartsPerPageEmitter = new EventEmitter();
+
+    /**
+     * Subscribed to by CartComponent to get the current page of the cart list display.
+     * @type {EventEmitter}
+     */
+  //  cartPageEmitter = new EventEmitter();
+
+    /**
+     * Used by SearchResultsComponent to update the top "Search results Showing X - X+ResultsPerPage"<br>
+     * Used by SearchResultsTableComponent to know which rows to display.
+     * @type {EventEmitter}
+     */
+   // searchResultsPageEmitter = new EventEmitter();
+
+    /**
+     * Used by SearchResultsComponent, to change the Search results footer css.<br>
+     * Used by SearchResultsTableComponent, to change the Search results table css.
+     * @type {EventEmitter}
+     */
+   // searchResultsToggleScrollEmitter = new EventEmitter();
+
+    /**
+     * Used by SearchResultsCartSelectorComponent to know when the the select all check  to the right of the word "Cart" in the table header is clicked.
+     * @type {EventEmitter}
+     */
+   // searchResultsCartCheckEmitter = new EventEmitter();
+   // searchResultsCartCheckSubsetEmitter = new EventEmitter();
+
+    /**
+     * This will be used by Query Builder, when I get it working.
+     * @type {EventEmitter<any>}
+     */
+    clearAllQueryBuilderEmitter = new EventEmitter();
+
+    /**
+     * Called by emitSimpleSearchQueryForDisplay when the query changes.<br>
+     *
+     * Used by DisplayQuerySimpleSearchComponent to update the "Display query" at the top of the data section.
+     * @type {EventEmitter}
+     */
+    updateQueryBuilderSearchQueryForDisplayEmitter = new EventEmitter();
+    currentQueryBuilderSearchQuery = [];
+
+    /**
+     * Called by emitQueryBuilderQueryForDisplay when the query changes.<br>
+     *
+     * Used by DisplayQueryQueryBuilderComponent to update the "Display query" at the top of the data section.
+     * @type {EventEmitter}
+     */
+    updateQueryBuilderForDisplayEmitter = new EventEmitter();
+
+    /**
+     * Called by emitTextSearchQueryForDisplay when the query changes.<br>
+     *
+     * Used by DisplayQueryTextSearchComponent to update the "Display query" at the top of the data section.
+     * @type {EventEmitter}
+     */
+   // updateTextSearchQueryForDisplayEmitter = new EventEmitter();
+   // currentTextSearchQuery = '';
+   // showTextExplanationEmitter = new EventEmitter();
+  //  showTextExplanation = false;
+
+  //  showThirdPartyExplanationEmitter = new EventEmitter();
+  //  showThirdPartyExplanation = false;
+
+  //  showClinicalTimePointsExplanationEmitter = new EventEmitter();
+  //  showClinicalTimePointsExplanation = false;
+
+    /**
+     * Called when something in the query section changes<br>
+     *
+     * Used by SearchResultsTableComponent when a new query is emitted, to do a new search.
+     * @type {EventEmitter}
+     */
+    updateQueryBuilderSearchQueryEmitter = new EventEmitter();
+
+    // TODO explain this, and give it a better name
+   // runSearchForUrlParametersEmitter = new EventEmitter();
+    // TODO explain this
+    rerunQueryBuilderSearchQueryEmitter = new EventEmitter();
+
+    /**
+     * Called by selectDataTab to change the search results tab without the user clicking it.<br>
+     *
+     * Used by DataSectionTabsComponent.
+     * @type {EventEmitter}
+     */
+   // selectDataTabEmitter = new EventEmitter();
+
+    /**
+     * Called by sendSubjectDetailsRows, when a "Subject ID" in the search results is clicked.<br>
+     *
+     * Subscribed to by SubjectDetailsComponent, which will do a "DrillDown" query
+     * @type {EventEmitter}
+     */
+   // displaySubjectDetailsEmitter = new EventEmitter();
+
+    /**
+     * Called when the "Search results columns Checkbox popup" button is clicked.<br>
+     *
+     * Subscribed to by SearchResultsColumnSelector
+     * @type {EventEmitter}
+     */
+   // showSearchResultsColumnEmitter = new EventEmitter();
+
+    /**
+     * Emitted by SearchResultsColumnSelectorComponent when a change is made in the Search results columns Checkbox popup.<br>
+     *
+     * Subscribed to by SearchResultsTableComponent, so it knows which columns to hide or show.
+     * @type {EventEmitter}
+     */
+   // searchResultsColumnListEmitter = new EventEmitter();
+
+   // seriesCartChangeEmitter = new EventEmitter();
+
+    // CHECKME  TODO explain
+   // subjectCartChangeEmitter = new EventEmitter();
+
+   // checkSeriesByStudyEmitter = new EventEmitter();
+
+
+    // TODO explain
+   // showSeriesEmitter = new EventEmitter();
+
+    /**
+     * Is the popup with the checkboxes for the usr to search results columns visible.
+     * @type {boolean}
+     */
+   // showSearchResultsColumnState = false;
+
+    /**
+     * Used to keep track of whether clicking the check next to "Cart" in the table heading should turn them all on or all off.
+     * @type {boolean}
+     */
+   // cartCheckToggle = false;
+
+    /**
+     * Keeps track of the current scrolling style.
+     * @type {boolean}
+     */
+   // scrollFlag = false;
+
+    // TODO explain
+   // reInitChartEmitter = new EventEmitter();
+   // updateChartEmitter = new EventEmitter();
+   // cartListDownLoadEmitter = new EventEmitter();
+  //  downloaderDownLoadEmitter = new EventEmitter();
+   // downloadCartAsCsvEmitter = new EventEmitter();
+  //  sharedListSavePopupEmitter = new EventEmitter();
+  //  saveMyCartPopupEmitter = new EventEmitter();
+  //  sharedListSaveFromCartEmitter = new EventEmitter();
+  //  sharedListSaveFromSubjectIdEmitter = new EventEmitter();
+
+
+    resetAllQueryBuilderSearchEmitter = new EventEmitter();
+    resetAllQueryBuilderSearchForLoginEmitter = new EventEmitter();
+
+    // TODO explain
+    criteriaQueryShow = {};
+
+    /**
+     * Used to persist users choices of which search criteria are collapsed, and which are shown
+     * @param name
+     * @param value
+     */
+    setCriteriaQueryShow( name, value ) {
+        this.criteriaQueryShow[name] = value;
+        this.persistenceService.put( this.persistenceService.Field.CRITERIA_QUERY_SHOW, JSON.stringify( this.criteriaQueryShow ) );
+    }
+
+    getCriteriaQueryShow( name ) {
+        return this.criteriaQueryShow[name];
+    }
+
+    // TODO explain
+    queryBuilderSearchQueryEmitter = new EventEmitter();
+
+    // TODO explain
+    queryBuilderAnyOrAllEmitter = new EventEmitter();
+    queryBuilderAnyOrAll = 1;  // Any
+
+    queryBuilderSearchResults = '';
+   
+
+
+    // minimumMatchedStudiesValue;
+
+    /**
+     * Tells search results - Text search, or Criteria search.
+     * Some display columns are on for one, or the other type of search.
+     * Which column belongs to which search type is defined in searchResultsColumnNames.json
+     */
+   // resultsDisplayMode;
+   // resultsDisplayModeEmitter = new EventEmitter();
+
+
+   // showDataSectionEmitter = new EventEmitter();
+
+   // showQuerySectionEmitter = new EventEmitter();
+
+   missingQueryBuilderCriteriaArray = [];
+   missingQueryBuilderCriteriaEmitter = new EventEmitter();
+
+    // TODO explain
+   // closeSubjectDetailsEmitter = new EventEmitter();
+
+    // TODO explain
+  //  showQueryUrlEmitter = new EventEmitter();
+
+
+    // TODO explain
+   // isSearchable = false;
+
+   // updateCollectionDescriptionsEmitter = new EventEmitter();
+  //  showIntroEmitter = new EventEmitter();
+
+    // Used when there is a query from URL parameters, so we didn't want to run the search until all query criteria where set,
+    // but then a user has added query criteria after the URL parameter search. this flag tells us (if true) don't wait, run the search.
+    haveUserInput = false;
+
+    // FIXME this is a quick fix that needs to be revisited. this will hold the "Summary" or "Search Results" tab, so it can be restored when coming back from Text Search;
+   // simpleSearchDataTab = 1;
+
+   downloadQueryBuilderSearchManifestQuery = '';
+//downloadManifestQuery = '';
+   // downloadTextSearchManifestQuery = '';
+   // offsetHeight;
+  //  offsetHeightEmitter = new EventEmitter();
+
+    constructor( private persistenceService: PersistenceService, private utilService: UtilService ) {
+       
+    }
+/*
+    setOffsetHeight( h ) {
+        this.offsetHeight = h;
+        this.offsetHeightEmitter.emit( h );
+    }
+
+    getOffsetHeight() {
+        return this.offsetHeight;
+    }
+
+    showIntro() {
+        this.showIntroEmitter.emit();
+    }
+
+    getIsSearchable() {
+        return this.isSearchable;
+    }
+
+    setIsSearchable( is ) {
+        this.isSearchable = is;  // CHECKME Do we even need/use this?
+    }
+        */
+
+    clearMissingQueryBuilderCriteriaArray() {
+        this.missingQueryBuilderCriteriaArray = [];
+        this.missingQueryBuilderCriteriaEmitter.emit( this.missingQueryBuilderCriteriaArray );
+    }
+
+    updateMissingQueryBuilderCriteriaArray( missingQueryBuilderCriteria ) {
+        for( let missingPart of missingQueryBuilderCriteria ){
+            this.missingQueryBuilderCriteriaArray.push( missingPart );
+        }
+        this.missingQueryBuilderCriteriaEmitter.emit( this.missingQueryBuilderCriteriaArray );
+    }
+
+    /*
+
+    showDataSection() {
+        this.showDataSectionEmitter.emit( true );
+    }
+
+    hideDataSection() {
+        this.showDataSectionEmitter.emit( false );
+    }
+*/
+    // Used when there is a query from URL parameters, so we didn't want to run the search until all query criteria where set,
+    // but then a user has added query criteria after the URL parameter search. this flag tells us (if true) don't wait, run the search.
+  
+    setHaveUserInput( i ) {
+        this.haveUserInput = i;
+    }
+
+    getHaveUserInput() {
+        return this.haveUserInput;
+    }
+
+
+    setQueryBuilderAnyOrAll( value ) {
+        this.queryBuilderAnyOrAll = value;
+        this.queryBuilderAnyOrAllEmitter.emit( value );
+    }
+
+    getQueryBuilderAnyOrAll() {
+        return this.queryBuilderAnyOrAll;
+    }
+
+    /**
+     * For reloading the search criteria after a different user has logged in, every user can have different criteria available/accessible.
+     */
+    resetAllQueryBuilderSearchForLogin() {
+        this.resetAllQueryBuilderSearchForLoginEmitter.emit();
+    }
+
+    /**
+     * For clearing all queries, search results, and resetting available Collections, Image Modality, etc, for initialization, and clear ,
+     */
+    resetAllQueryBuilderSearch() {
+        this.resetAllQueryBuilderSearchEmitter.emit();
+    }
+    
+
+    sleep( ms ) {
+        return new Promise( resolve => setTimeout( resolve, ms ) );
+    }
+
+    clearQueryBuilderSearchResults() {
+        this.queryBuilderSearchResults = '';
+        this.updateQueryBuilderSearchResultsCount( -1 );
+    }
+
+    setQueryBuilderSearchResults( searchResults ) {
+        this.queryBuilderSearchResults = searchResults;
+    }
+
+    getQueryBuilderSearchResults() {
+        return this.queryBuilderSearchResults;
+    }
+
+    /**
+     * This is called when something in the query section changes<br>
+     *
+     * Subscribed to by SearchResultsTableComponent, which will rerun the search.
+     * @param parameters
+     */
+    /*
+    updateQuery( parameters: string[] ) {
+        // Reset page to beginning on a new search.
+        // -1 tells pagers to go to page zero and tells search by page not to call search service for this page change.
+        this.updateCurrentSearchResultsPage( -1 );
+        this.updateQueryEmitter.emit( parameters ); // For SearchResultsTableComponent
+    }
+
+    // @CHECKME - this is not ready yet
+    reRunSearch() {
+        this.rerunQueryEmitter.emit();
+    }
+
+    runSearchForUrlParameters() {
+        this.runSearchForUrlParametersEmitter.emit();
+    }
+*/
+    /**
+     * Used by Query Display at top.
+     *
+     * @param queryText
+     */
+
+     /**
+     * Sends to the query display at the top of the Search results section, an array of the query elements in a format that displayQuery expects.
+     * @param allData  an array of selected criteria
+     */
+
+    getCurrentQueryBuilderSearchQuery() {
+        return this.currentQueryBuilderSearchQuery;
+    }
+
+    clearQueryBuilderSearchUserInput() {
+        this.resetAllQueryBuilderSearchEmitter.emit();
+    }
+
+    setQueryBuilderSearchDownloadManifestQuery(dltmq){
+        this.downloadQueryBuilderSearchManifestQuery = dltmq;
+    }
+
+    getQueryBuilderSearchDownloadManifestQuery(){
+        return this.downloadQueryBuilderSearchManifestQuery;
+    }
+
+   
+    emitQueryBuilderSearchQueryForDisplay( allData ) {
+        let maxCriteriaLen = 15; // @FIXME make this a constant
+        let displayQuery = [];
+
+
+        // Collections
+        if( !this.utilService.isNullOrUndefined( allData[Consts.COLLECTION_CRITERIA] ) ){
+            for( let item of allData[Consts.COLLECTION_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'collections', 'name': item } );
+            }
+        }
+
+        // Exclude Commercial
+        if( (!this.utilService.isNullOrUndefined( allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA] )) &&
+            (!this.utilService.isNullOrUndefined( allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0] ))
+        ){
+            displayQuery.push( {
+                [Consts.CRITERIA]: 'excludeCommercial', 'name': allData[Consts.EXCLUDE_COMMERCIAL_CRITERIA][0]
+            } );
+        }
+
+        // Days from Baseline // TODO deal with missing values (to or from)
+        if( (!this.utilService.isNullOrUndefined( allData[Consts.DAYS_FROM_BASELINE_CRITERIA] )) &&
+            (!this.utilService.isNullOrUndefined( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] ))
+        ){
+            // No From
+            if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1].length < 1){
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'daysFrom', 'name': allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] + ' to ' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2]
+                } );
+            }
+
+            // No To
+            else if( allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2].length < 1){
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'daysFrom', 'name': allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] + ' from ' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1]
+                } );
+            }
+            else{
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'daysFrom', 'name': allData[Consts.DAYS_FROM_BASELINE_CRITERIA][0] + ' ' +
+                        allData[Consts.DAYS_FROM_BASELINE_CRITERIA][1] + ' to ' + allData[Consts.DAYS_FROM_BASELINE_CRITERIA][2]
+                } );
+            }
+        }
+        // Species
+        if( !this.utilService.isNullOrUndefined( allData[Consts.SPECIES_CRITERIA] ) ){
+            for( let item of allData[Consts.SPECIES_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'species', 'name': item } );
+            }
+        }
+
+        // Phantoms
+        if( !this.utilService.isNullOrUndefined( allData[Consts.PHANTOMS_CRITERIA] ) ){
+            for( let item of allData[Consts.PHANTOMS_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'phantom', 'name': (item === '0') ? 'Only' : 'Exclude' } );
+            }
+        }
+
+        // Third Party
+        if( !this.utilService.isNullOrUndefined( allData[Consts.THIRD_PARTY_CRITERIA] ) ){
+            for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
+                displayQuery.push( {
+                    [Consts.CRITERIA]: 'thirdParty',
+                    'name': (item.toUpperCase() === 'YES') ? 'Only' : 'Exclude'
+                } );
+            }
+        }
+
+        // Image Modality
+        if( !this.utilService.isNullOrUndefined( allData['ImageModalityCriteria'] ) ){
+            for( let item of allData['ImageModalityCriteria'] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'imageModality', 'name': item } );
+            }
+        }
+
+        // Anatomical Site
+        if( !this.utilService.isNullOrUndefined( allData[Consts.ANATOMICAL_SITE_CRITERIA] ) ){
+            for( let item of allData[Consts.ANATOMICAL_SITE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'anatomical', 'name': item } );
+            }
+        }
+
+        // Subject ID  (Patient)
+        if( !this.utilService.isNullOrUndefined( allData[Consts.PATIENT_CRITERIA] ) ){
+            for( let item of allData[Consts.PATIENT_CRITERIA] ){
+                if( item.length > maxCriteriaLen ){
+                    item = item.substring( 0, maxCriteriaLen ) + '...';
+                }
+                displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+            }
+        }
+
+        // Manufacturer
+        if( !this.utilService.isNullOrUndefined( allData[Consts.MANUFACTURER_CRITERIA] ) ){
+            for( let item of allData[Consts.MANUFACTURER_CRITERIA] ){
+                // displayQuery.push( { [Consts.CRITERIA]: 'manufacturer', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'manufacturerModel', 'name': item } );
+            }
+        }
+
+        // Manufacturer Model
+        if( !this.utilService.isNullOrUndefined( allData[Consts.MANUFACTURER_MODEL_CRITERIA] ) ){
+            for( let item of allData[Consts.MANUFACTURER_MODEL_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'manufacturerModel', 'name': item } );
+            }
+        }
+
+        // Manufacturer Software version
+        if( !this.utilService.isNullOrUndefined( allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA] ) ){
+            for( let item of allData[Consts.MANUFACTURER_SOFTWARE_VERSION_CRITERIA] ){
+                // displayQuery.push( { [Consts.CRITERIA]: 'Software ver.', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'manufacturerModel', 'name': item } );
+            }
+        }
+
+
+        // DATE_RANGE_CRITERIA
+        if( !this.utilService.isNullOrUndefined( allData[Consts.DATE_RANGE_CRITERIA] ) ){
+            for( let item of allData[Consts.DATE_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'dateRange', 'name':  item  } );
+            }
+        }
+
+        this.currentQueryBuilderSearchQuery = displayQuery;
+        this.updateQueryBuilderSearchQueryForDisplayEmitter.emit( displayQuery );
+    }
+
+
+    clearAllQueryBuilder() {
+        this.clearAllQueryBuilderEmitter.emit();
+    }
+
+    /**
+     * @TODO Explain why we needed this
+     * @param count
+     */
+    updateQueryBuilderSearchResultsCount( count: number ) {
+        if( this.queryBuilderSearchResultsCount !== count ){
+            this.queryBuilderSearchResultsCount = count;
+            this.queryBuilderSearchResultsCountEmitter.emit( count );
+        }
+    }
+
+    getQueryBuilderSearchResultsCount() {
+        return this.queryBuilderSearchResultsCount;
+    }
+
+
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
+    buildPath( part0, part1, part2?, part3?, part4?, part5? ) {
+        let separator = '/';
+        let path = '';
+
+        part0.replace( separator + '$', '' );
+        path = part0;
+
+        path += this.addSeparator( part1, separator );
+
+        if( !this.utilService.isNullOrUndefined( part2 ) ){
+            path += this.addSeparator( part2, separator );
+        }
+        if( !this.utilService.isNullOrUndefined( part3 ) ){
+            path += this.addSeparator( part3, separator );
+        }
+        if( !this.utilService.isNullOrUndefined( part4 ) ){
+            path += this.addSeparator( part4, separator );
+        }
+        if( !this.utilService.isNullOrUndefined( part5 ) ){
+            path += this.addSeparator( part5, separator );
+        }
+
+        return path;
+    }
+
+    addSeparator( str, separator ) {
+        str.replace( '^' + separator, '' );
+        return separator + str;
+    }
+
+    /**
+     * For the Display query we need to swap month and day in the string.
+     * @param dateString
+     */
+    swapMonthDay( dateString ) {
+        let m = dateString.substr( 3, 2 );
+        let d = dateString.substr( 0, 2 );
+        return (m + '/' + d + dateString.substr( 5, 5 ));
+    }
+
+}

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/image-search/services/common.service';
-
+import { CommonQueryBuilderService } from '@app/image-search/services/common-query-builder.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Consts } from '@app/consts';
@@ -33,7 +33,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private commonService: CommonService ) {
+    constructor( private commonService: CommonService, private commonQueryBuilderService: CommonQueryBuilderService ) {
     }
 
     ngOnInit() {
@@ -86,6 +86,16 @@ export class SearchResultsComponent implements OnInit, OnDestroy{
                 this.totalCount = <number>data;
             }
         );
+
+        // for Query Builder Search
+
+         // Get the total number of rows
+         this.commonQueryBuilderService.queryBuilderSearchResultsCountEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.totalCount = <number>data;
+            }
+        );
+
     }
 
     ngOnDestroy() {
