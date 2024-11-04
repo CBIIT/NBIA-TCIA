@@ -391,7 +391,7 @@ public class NCIASecurityManagerImpl extends AbstractDAO
 		NCIAUser nciaUser = getUserInfoFromLDAP(loginName);
 		Long userId = isUserExist(loginName);
 
-		if (null == userId) {
+		if (null == userId && !login_name.equalsIgnoreCase("nbia_guest") {
 			addNewUserToDB(nciaUser);
 		} else { // the user in DB already. Get Associated groups
 			try {
