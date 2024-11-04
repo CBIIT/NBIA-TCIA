@@ -60,9 +60,9 @@ export class DisplayQueryQueryBuilderComponent implements OnInit, OnDestroy{
     /**
     * All the Advanced Search categories Ex.: Anatomical Site, Image Modality, etc.
     */
-
+    
     ngOnInit() {
-        this.commonQueryBuilderService.updateQueryBuilderForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.commonQueryBuilderService.updateQueryBuilderSearchQueryForDisplayEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.data = <any>data;
                 this.criteriaList = <any>data;
