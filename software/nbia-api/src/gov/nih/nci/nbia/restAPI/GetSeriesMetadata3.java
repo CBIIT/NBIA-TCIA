@@ -15,14 +15,12 @@ import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.dao.StudyDAO;
 import gov.nih.nci.nbia.dao.PatientDAO;
-import gov.nih.nci.nbia.dao.SeriesDAO;
+import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 
 @Path("/getSeriesMetadata3")
 public class GetSeriesMetadata3 extends getData {
 
     public final static String TEXT_CSV = "text/csv";
-
-    private static final Map<String, String> sopClassMap = createSopClassMap();
 
     @POST
     @Produces(TEXT_CSV)
@@ -48,17 +46,17 @@ public class GetSeriesMetadata3 extends getData {
         // Fetch data using DAOs for Patient, Study, and Series
         PatientDAO patientDAO = (PatientDAO) SpringApplicationContext.getBean("patientDAO");
         StudyDAO studyDAO = (StudyDAO) SpringApplicationContext.getBean("studyDAO");
-        SeriesDAO seriesDAO = (SeriesDAO) SpringApplicationContext.getBean("seriesDAO");
+        GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("GeneralSeriesDAO");
 
         for (String seriesInstanceUID : seriesInstanceUIDs) {
             // Fetch individual components
-            Object[] patientData = patientDAO.getPatientBySeriesInstanceUID(seriesInstanceUID);
-            Object[] studyData = studyDAO.getStudyBySeriesInstanceUID(seriesInstanceUID);
-            Object[] seriesData = seriesDAO.getSeriesByUID(seriesInstanceUID);
+            Object[] patientData = patientDAO.getPatientByCollection(collection, authorizedCollections);
+            Object[] studyData = studyDAO.getPatientStudy(collection, patientId, studyInstanceUid, authorizedCollections);
+            Object[] seriesData = generalSeriesDAO.getSeries( , authorizedCollections);
 
             // Combine data into a single row
             Object[] combinedData = combineData(patientData, studyData, seriesData);
-            results.add(combinedData);  // Ensure each combined record is added to the results list
+            results.add(combinedData);
         }
 
         // Final column names and response formatting
@@ -69,7 +67,7 @@ public class GetSeriesMetadata3 extends getData {
             "Series Instance UID", "Modality", "Protocol Name", "Series Date", "Series Description",
             "Body Part Examined", "Series Number", "Collection", "Manufacturer", "Manufacturer Model Name",
             "Software Versions", "Image Count", "Date Released", "License Name", "License URI", "Collection URI",
-            "File Size", "Third Party Analysis", "SOP Class Description"  // Human-readable SOP Class mapping
+            "File Size", "Third Party Analysis", "SOP Class Description" 
         };
 
     // Format and return the results list as CSV
@@ -80,7 +78,7 @@ public class GetSeriesMetadata3 extends getData {
     // Helper method to combine patient, study, and series data
     private Object[] combineData(Object[] patientData, Object[] studyData, Object[] seriesData) {
         // Example of combining data into a unified structure (add null checks and proper indexing based on actual DAO responses)
-        Object[] combined = new Object[32]; // Define size based on total columns
+        Object[] combined = new Object[31]; // Define size based on total columns
 
         // Add patient data
         combined[0] = patientData[0];  // Patient ID
@@ -118,7 +116,6 @@ public class GetSeriesMetadata3 extends getData {
         combined[28] = seriesData[15]; // Collection URI
         combined[29] = seriesData[16]; // File Size
         combined[30] = seriesData[17]; // Third Party Analysis
-        combined[31] = sopClassMap.getOrDefault(seriesData[18].toString(), "Unknown SOP Class");
 
         return combined;
     }
