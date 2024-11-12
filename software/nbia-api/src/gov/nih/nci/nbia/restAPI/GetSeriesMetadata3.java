@@ -50,9 +50,9 @@ public class GetSeriesMetadata3 extends getData {
 
         for (String seriesInstanceUID : seriesInstanceUIDs) {
             // Fetch individual components
-            Object[] patientData = patientDAO.getPatientByCollection(collection, authorizedCollections);
-            Object[] studyData = studyDAO.getPatientStudy(collection, patientId, studyInstanceUid, authorizedCollections);
-            Object[] seriesData = generalSeriesDAO.getSeries( , authorizedCollections);
+            Object[] patientData = patientDAO.getPatientBySeries(seriesInstanceUID, authorizedCollections).get(0);
+            Object[] studyData = studyDAO.getPatientStudyBySeries(seriesInstanceUID, authorizedCollections).get(0);
+            Object[] seriesData = generalSeriesDAO.getSeriesById(seriesInstanceUID , authorizedCollections).get(0);
 
             // Combine data into a single row
             Object[] combinedData = combineData(patientData, studyData, seriesData);

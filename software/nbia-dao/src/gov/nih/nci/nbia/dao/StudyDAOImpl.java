@@ -364,6 +364,54 @@ public class StudyDAOImpl extends AbstractDAO
         System.out.println("Results returned from query in " + elapsedTime + " ms.");
         return rs;
 	}
+
+
+	/**
+	 * Fetch a set of patient/study info filtered by query keys
+	 * This method is used for NBIA Rest API.
+	 * @param patientId Patient ID
+	 * @param studyInstanceUid Study Instance UID
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientStudyBySeries(String series, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		String hql = "select s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
+				"s.patientAge, s.patient.patientId, s.patient.patientName, s.patient.patientBirthDate, s.patient.patientSex, " +
+				"s.patient.ethnicGroup, gs.project, " +
+				"count(gs.id), s.longitudinalTemporalEventType, s.longitudinalTemporalOffsetFromEvent "  +
+				"from Study as s, GeneralSeries gs where s.studyInstanceUID=gs.studyInstanceUID and gs.visibility in ('1') ";
+		StringBuffer where = new StringBuffer();
+		List<Object[]> rs = null;
+		List<String> paramList = new ArrayList<String>();
+		int i = 0;
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+
+		if (series != null) {
+			where = where.append(" and gs.seriesInstanceUID=?");
+			paramList.add(series.toUpperCase());
+		++i;
+		}
+
+		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+		where.append(" group by s.id ");
+		
+	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudyBySeries() - downloadable visibility - hql is: " + hql + where.toString());
+	System.out.println("=====New");
+	long startTime = System.currentTimeMillis();
+		if (i > 0) {
+			Object[] values = paramList.toArray(new Object[paramList.size()]);
+			rs = getHibernateTemplate().find(hql + where.toString(), values);
+		} else
+			rs = getHibernateTemplate().find(hql + where.toString());
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Results returned from query in " + elapsedTime + " ms.");
+        return rs;
+	}
+
+
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<String> getEventTypes() throws DataAccessException{
 		List<String> returnValue=new ArrayList<String>();
