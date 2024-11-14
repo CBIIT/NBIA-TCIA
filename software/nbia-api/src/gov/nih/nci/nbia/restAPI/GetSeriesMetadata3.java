@@ -46,7 +46,12 @@ public class GetSeriesMetadata3 extends getData {
         // Fetch data using DAOs for Patient, Study, and Series
         PatientDAO patientDAO = (PatientDAO) SpringApplicationContext.getBean("patientDAO");
         StudyDAO studyDAO = (StudyDAO) SpringApplicationContext.getBean("studyDAO");
-        GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("GeneralSeriesDAO");
+        GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
+
+        if (seriesInstanceUIDs != null && !seriesInstanceUIDs.isEmpty()) {
+            String[] uidArray = seriesInstanceUIDs.get(0).split(",");
+            seriesInstanceUIDs = new ArrayList<>(List.of(uidArray));
+        }
 
         for (String seriesInstanceUID : seriesInstanceUIDs) {
             // Fetch individual components
@@ -67,7 +72,7 @@ public class GetSeriesMetadata3 extends getData {
             "Series Instance UID", "Modality", "Protocol Name", "Series Date", "Series Description",
             "Body Part Examined", "Series Number", "Collection", "Manufacturer", "Manufacturer Model Name",
             "Software Versions", "Image Count", "Date Released", "License Name", "License URI", "Collection URI",
-            "File Size", "Third Party Analysis", "SOP Class Description" 
+            "File Size", "Third Party Analysis" 
         };
 
     // Format and return the results list as CSV
