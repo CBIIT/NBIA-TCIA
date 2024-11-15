@@ -38,4 +38,6 @@ public interface PatientDAO {
 	public List<Object[]> getPatientByCollection(String collection, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getPatientByCollectionAndModality(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException;
+
+	public List<Object[]> getPatientBySeries(String series, List<String> authorizedProjAndSites) throws DataAccessException;
 }
