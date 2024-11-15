@@ -1371,10 +1371,8 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
     seriesDTO.setProtocolName(Util.nullSafeString(row[24]));
     seriesDTO.setBodyPartExamined(Util.nullSafeString(row[25]));
     
-    String annotationsFlagString = Util.nullSafeString(row[26]);
-    // Default to false if the string is null or empty
-    boolean annotationsFlag = annotationsFlagString != null && !annotationsFlagString.isEmpty() && Boolean.parseBoolean(annotationsFlagString);
-    seriesDTO.setAnnotationsFlag(annotationsFlag);
+
+    //row[26] is the duplicate annotations flag, set above
 
     seriesDTO.setManufacturerModelName(Util.nullSafeString(row[27]));
     seriesDTO.setSoftwareVersions(Util.nullSafeString(row[28]));

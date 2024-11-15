@@ -20,7 +20,8 @@ export class DisplayDynamicQueryService{
     }
 
     async removeFromDisplayQuery( sequenceNumber ){
-        await this.utilService.sleep( 375 );// TESTING  THIS is a workaround (please) refactor me. Don't forget to describe this in JIRA
+        await this.utilService.sleep( 75 );// TESTING  THIS is a workaround (please) refactor me. Don't forget to describe this in JIRA
+        //JMW-I do not know if the sleep has a purpose, so I've changed it from 375 to 75.
         this.displayQueryElements[sequenceNumber] = undefined;
         this.displayNiceDynamicQueryEmitter.emit( this.displayQueryElements );
     }
