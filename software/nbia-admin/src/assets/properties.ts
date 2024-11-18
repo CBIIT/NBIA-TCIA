@@ -5,9 +5,9 @@ export let Properties = {
     //TEST_VERSION: '1.0.12c',
     // Apr 2024
     CURRENT_YEAR:'2024',
-    VERSION: '9.1',
-    TEST_VERSION: '9.1',
-    RELEASE_COMMIT: '5fa63f0',
+    VERSION: '9.3',
+    TEST_VERSION: '9.3',
+    RELEASE_COMMIT: '7157ca33',
 
     MAX_CRITERIA_LEN: 30,
 
@@ -74,9 +74,14 @@ export let Properties = {
 
     // This value can be changed in the config file.
     // If this is left an empty string, the API server url will be used .
-    OHIF_SERVER_URL: '',
+    OHIF_SERVER_URL: 'https://dicom.cancerimagingarchive.net',
     MAX_VIDEO_FPS: 30,
 
+    // The path and parameters must be filled out, even if server url is left empty
+    OHIF_SERVER_PATH: 'ohif-viewer',
+
+    OHIF_STUDY_PARAMETER: 'StudyInstanceUID=',
+    OHIF_SERIES_PARAMETER: 'SeriesInstanceUID=',
 
 
     HAVE_URL_TOKEN: false,
