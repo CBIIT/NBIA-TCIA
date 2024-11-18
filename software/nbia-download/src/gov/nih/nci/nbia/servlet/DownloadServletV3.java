@@ -51,7 +51,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class DownloadServletV3 extends HttpServlet {
 	private static final Logger logger = LogManager.getLogger(DownloadServlet.class);
-  private static final downloadLogger = LogManager.getLogger("logger2DR");
+  private static final Logger downloadLogger = LogManager.getLogger("logger2DR");
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
 	private final static int CLIENT_NOT_AUTHORIZED = 462;
