@@ -167,6 +167,9 @@ public class StandaloneDMDispatcher {
 							fileName = args[i + 1];
 							++i;
 						}
+						if (args[i].toLowerCase().equals("--agree-to-license")) {
+							dr.skipLicense = true;
+						}
 						if (args[i].equals("-u") || args[i].equals("-U")) {
 							userName = args[i + 1];
 							++i;
