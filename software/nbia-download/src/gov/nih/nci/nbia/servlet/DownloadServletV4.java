@@ -62,7 +62,7 @@ import org.apache.logging.log4j.Logger;
 public class DownloadServletV4 extends HttpServlet {
 	//private static final Logger logger = LogManager.getLogger(DownloadServletV4.class);
 	private static final Logger logger = LogManager.getLogger(DownloadServletV4.class);
-  private static final Logger downloadLogger = LogManager.getLogger("logger2");
+  private static final Logger downloadLogger = LogManager.getLogger("logger2DR");
   private static final Level DOWNLOADLOG = Level.forName("DOWNLOADLOG", 350);
 
 
@@ -101,7 +101,7 @@ public class DownloadServletV4 extends HttpServlet {
 		// This servlet processes Manifest download related requests only. JNLP
 		// download related requests are processed at DownloadServlet
 //		logger.info("TEST!!!!!t doGet() method called.");
-//		downloadLogger.log(Level.forName("DOWNLOADLOG", 350),"TEST!!!!!2 doGet() method called.");		
+//		downloadLogger.info("TEST!!!!!2 doGet() method called.");		
 //		System.out.println("!!!!!log test");
 //        response.getWriter().append("!!!test11 test for logging.");
 
@@ -173,7 +173,10 @@ public class DownloadServletV4 extends HttpServlet {
 
 			if (mgr.login(userId, password)) {
 System.out.println("!!! download servletv4 logged in");
-				mgr.syncDBWithLDAP(userId);
+        if (NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
+				  mgr.syncDBWithLDAP(userId);
+					System.out.println("Sync performed");
+        }
 //	            if (!("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) && NCIAConfig.getProductVariation().toUpperCase().equals("TCIA")) {
 //	            	mgr.syncDBWithLDAP(userId);
 //	            }
@@ -225,7 +228,7 @@ System.out.println("!!! download servletv4 logged in");
 			long size = computeContentLength(imageResults, annoResults);
 			try {
 				processor.recordAppDownload(seriesUid, userId, size, "v4");
-				downloadLogger.log(DOWNLOADLOG,
+				downloadLogger.info(
 						"collection="+imageResults.get(0).getProject() + "," +
 								"seriesUID="+ seriesUid + "," +
 								"numberOfFiles=" + imageResults.size() + "," +

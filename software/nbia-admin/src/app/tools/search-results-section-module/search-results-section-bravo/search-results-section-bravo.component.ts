@@ -418,13 +418,12 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
     onOhifViewerClick( i ){
         i += (this.currentPage * this.pageLength);
         let ohifUrl =
-            Properties.OHIF_SERVER_URL +
-            '/viewer?study=' +
-            this.searchResults[i]['study'] +
-            '&series=' +
-            this.searchResults[i]['series'] +
-            '&token=' +
-            this.accessTokenService.getAccessToken();
+            Properties.OHIF_SERVER_URL + '/' +
+            Properties.OHIF_SERVER_PATH + '?' +
+            Properties.OHIF_STUDY_PARAMETER +  
+            this.searchResults[i]['study'] + '&' +
+            Properties.OHIF_SERIES_PARAMETER + 
+            this.searchResults[i]['series'];
         window.open( ohifUrl, '_blank' );
     }
 

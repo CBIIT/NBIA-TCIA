@@ -41,7 +41,7 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 @Path("/v2/getDCMImage")
 public class V2_getDCMImage extends getData {
-	private static final Logger downloadLogger = LogManager.getLogger("logger2");
+	private static final Logger downloadLogger = LogManager.getLogger("logger2API");
 	
 	/**
 	 * This method get a set of images in a zip file
@@ -179,7 +179,7 @@ public class V2_getDCMImage extends getData {
 				}
 				
 				recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
-				downloadLogger.log(Level.forName("DOWNLOADLOG", 350),
+				downloadLogger.info(
 								"collection="+collectionName + "," +
 								"seriesUID="+ seriesInstanceUid + "," +
 								"numberOfFiles=" + numberOfFiles + "," +

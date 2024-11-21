@@ -23,6 +23,13 @@ L-->
   </publications>
 
   <dependencies>
+    <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.17.1"  conf="compile->master;runtime->master"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-1.2-api" rev="2.17.1"  conf="compile->master;runtime->master"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-slf4j2-impl" rev="2.19.0" conf="compile->master;runtime->master"/> 
+    <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.18.3" conf="compile->master;runtime->master"/>
+    <dependency org="org.slf4j" name="slf4j-reload4j" rev="1.7.36" conf="compile->master;runtime->master"/>
+
     <dependency org="junit" name="junit" rev="4.5" conf="test->master"/>
     <dependency org="cobertura" name="cobertura" rev="1.9.3-asmhack" conf="test->default"/>
     <dependency org="javancss" name="javancss" rev="29.50" conf="test->default"/>

@@ -118,6 +118,34 @@ public class PatientDAOImpl extends AbstractDAO
 	    fillInHuman(rs);
         return rs;
 	}
+
+	/**
+	 * Fetch Patient Object through series,
+	 * This method is used for NBIA Rest API.
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientBySeries(String series, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer whereCondition = new StringBuffer();
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+
+		whereCondition.append(series == null ? "":" and UPPER(gs.seriesInstanceUID)=?");
+		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
+				" where gs.visibility in ('1') and p.id = gs.patientPkId "+ whereCondition;
+		List<Object[]> rs = series == null ?
+				getHibernateTemplate().find(hql):
+				getHibernateTemplate().find(hql, series.toUpperCase()); // protect against sql injection
+				
+	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientBySeries() - downloadable visibility - hql is: " + hql);				
+	    fillInHuman(rs);
+        return rs;
+	}
+
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException
 	{
