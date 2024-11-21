@@ -153,7 +153,6 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 if (data === DownloadTools.TEXT_QUERY) {
                     this.downloadTextQueryAsManifestRestrictionCheck();
                 }
-                this.loadingDisplayService.setLoading( false );
             });
 
         this.apiServerService.simpleSearchQueryHoldEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
@@ -709,9 +708,11 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 (<any>window).document.body.appendChild(a);
                 a.click();
                 (<any>window).document.body.removeChild(a);
+                this.loadingDisplayService.setLoading( false );
             },
             (err) => {
                 console.error('ERROR downloadQueryAsManifest: ', err);
+                this.loadingDisplayService.setLoading( false );
             });
     }
 
@@ -735,9 +736,11 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 (<any>window).document.body.appendChild(a);
                 a.click();
                 (<any>window).document.body.removeChild(a);
+                this.loadingDisplayService.setLoading( false );
             },
             (err) => {
                 console.error('ERROR manifest from text search download: ', err);
+                this.loadingDisplayService.setLoading( false );
             });
     }
 
