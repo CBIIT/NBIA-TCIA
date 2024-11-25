@@ -87,40 +87,40 @@ public class GetSeriesMetadata3 extends getData {
 
         // Add patient data
         combined[0] = patientData[0];  // Patient ID
-        combined[1] = patientData[1];  // Patient Sex
-        combined[2] = patientData[2];  // Phantom
-        combined[3] = patientData[3];  // Species Code
-        combined[4] = patientData[4];  // Species Description
-        combined[5] = patientData[5];  // Ethnic Group
+        combined[1] = patientData[3];  // Patient Sex
+        combined[2] = patientData[6];  // Phantom
+        combined[3] = patientData[7];  // Species Code
+        combined[4] = patientData[8];  // Species Description
+        combined[5] = patientData[4];  // Ethnic Group
 
         // Add study data
-        combined[6] = studyData[0];  // Study Instance UID
-        combined[7] = studyData[1];  // Study Date
+        combined[6] = studyData[1];  // Study Instance UID
+        combined[7] = studyData[3];  // Study Date
         combined[8] = studyData[2];  // Study Description
-        combined[9] = studyData[3];  // Series Count
-        combined[10] = studyData[4];  // Longitudinal Temporal Event Type
-        combined[11] = studyData[5];  // Longitudinal Temporal Offset From Event
-        combined[12] = studyData[6];  // Patient Age
+        combined[9] = studyData[12];  // Series Count
+        combined[10] = studyData[13];  // Longitudinal Temporal Event Type
+        combined[11] = studyData[14];  // Longitudinal Temporal Offset From Event
+        combined[12] = studyData[5];  // Patient Age
 
         // Add series data
         combined[13] = seriesData[0];  // Series Instance UID
-        combined[14] = seriesData[1];  // Modality
-        combined[15] = seriesData[2];  // Protocol Name
-        combined[16] = seriesData[3];  // Series Date
-        combined[17] = seriesData[4];  // Series Description
-        combined[18] = seriesData[5];  // Body Part Examined
-        combined[19] = seriesData[6];  // Series Number
-        combined[20] = seriesData[7];  // Collection
-        combined[21] = seriesData[8];  // Manufacturer
-        combined[22] = seriesData[9];  // Manufacturer Model Name
-        combined[23] = seriesData[10]; // Software Versions
-        combined[24] = seriesData[11]; // Image Count
-        combined[25] = seriesData[12]; // Date Released
-        combined[26] = seriesData[13]; // License Name
-        combined[27] = seriesData[14]; // License URI
-        combined[28] = seriesData[15]; // Collection URI
-        combined[29] = seriesData[16]; // File Size
-        combined[30] = seriesData[17]; // Third Party Analysis
+        combined[14] = seriesData[2];  // Modality
+        combined[15] = seriesData[3];  // Protocol Name
+        combined[16] = seriesData[4];  // Series Date
+        combined[17] = seriesData[5];  // Series Description
+        combined[18] = seriesData[6];  // Body Part Examined
+        combined[19] = seriesData[7];  // Series Number
+        combined[20] = seriesData[9];  // Collection
+        combined[21] = seriesData[11];  // Manufacturer
+        combined[22] = seriesData[12];  // Manufacturer Model Name
+        combined[23] = seriesData[13]; // Software Versions
+        combined[24] = seriesData[14]; // Image Count
+        combined[25] = seriesData[15]; // Date Released
+        combined[26] = seriesData[16]; // License Name
+        combined[27] = seriesData[17]; // License URI
+        combined[28] = seriesData[18]; // Collection URI
+        combined[29] = seriesData[19]; // File Size
+        combined[30] = seriesData[23]; // Third Party Analysis
 
         return combined;
     }
