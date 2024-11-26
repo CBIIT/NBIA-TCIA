@@ -12,13 +12,13 @@ export class OhifViewerService{
 
     // TODO add header with access token
     launchOhifViewerSeries( seriesId, studyId ) {
-        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH  + '?' + Properties.OHIF_STUDY_PARAMETER + studyId + '&'+ Properties.OHIF_SERIES_PARAMETER + seriesId; 
+        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH  + '?' + Properties.OHIF_STUDY_PARAMETER + studyId + '&'+ Properties.OHIF_SERIES_PARAMETER + seriesId + '&token=' + this.apiServerService.showToken();
         console.log( 'ohifUrl: ', ohifUrl );
         window.open( ohifUrl, '_blank' );
     }
 
     launchOhifViewerStudy( studyId ) {
-        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH  + '?' + Properties.OHIF_STUDY_PARAMETER + studyId;
+        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH  + '?' + Properties.OHIF_STUDY_PARAMETER + studyId + '&token=' + this.apiServerService.showToken();
         console.log( 'ohifUrl: ', ohifUrl );
         window.open( ohifUrl, '_blank' );
     }

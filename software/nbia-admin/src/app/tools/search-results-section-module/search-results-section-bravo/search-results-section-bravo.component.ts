@@ -423,7 +423,9 @@ export class SearchResultsSectionBravoComponent implements OnInit, OnDestroy{
             Properties.OHIF_STUDY_PARAMETER +  
             this.searchResults[i]['study'] + '&' +
             Properties.OHIF_SERIES_PARAMETER + 
-            this.searchResults[i]['series'];
+            this.searchResults[i]['series'] +
+            '&token=' +
+            this.accessTokenService.getAccessToken();
         window.open( ohifUrl, '_blank' );
     }
 
