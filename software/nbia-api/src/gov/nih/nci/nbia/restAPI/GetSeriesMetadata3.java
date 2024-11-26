@@ -94,8 +94,8 @@ public class GetSeriesMetadata3 extends getData {
         combined[5] = patientData[4];  // Ethnic Group
 
         // Add study data
-        combined[6] = studyData[1];  // Study Instance UID
-        combined[7] = studyData[3];  // Study Date
+        combined[6] = studyData[0];  // Study Instance UID
+        combined[7] = studyData[1];  // Study Date
         combined[8] = studyData[2];  // Study Description
         combined[9] = studyData[12];  // Series Count
         combined[10] = studyData[13];  // Longitudinal Temporal Event Type
