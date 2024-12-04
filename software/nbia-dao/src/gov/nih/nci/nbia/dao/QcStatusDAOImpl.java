@@ -254,11 +254,17 @@ public class QcStatusDAOImpl extends AbstractDAO
 		
 		String whereStmt = " where 1=1 ";
 
+		List<String> processedItem = new ArrayList<>();
+
         for (String item:crtieriaList) {
 		     if (hqlMap.get(item)!=null) {
-		    	 whereStmt=whereStmt+hqlMap.get(item);
+		    	 if(!processedItem.contains(item)) {
+		    		 processedItem.add(item);
+		    		 whereStmt=whereStmt+hqlMap.get(item);
+		    	 }
 		     }
         }
+        processedItem.clear();
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
 
 		String hql = selectStmt + fromStmt + whereStmt;

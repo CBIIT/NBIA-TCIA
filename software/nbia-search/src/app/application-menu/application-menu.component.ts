@@ -4,6 +4,7 @@ import {Consts, DownloadTools, MenuItems} from '@app/consts';
 import {Properties} from '@assets/properties';
 import {MenuService} from '@app/common/services/menu.service';
 import {CartService} from '@app/common/services/cart.service';
+import {LoadingDisplayService} from '@app/common/components/loading-display/loading-display.service';
 import {ApiServerService} from '@app/image-search/services/api-server.service';
 import {CommonService} from '@app/image-search/services/common.service';
 import {PersistenceService} from '@app/common/services/persistence.service';
@@ -120,7 +121,8 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 private apiServerService: ApiServerService,
                 private commonService: CommonService, private persistenceService: PersistenceService,
                 private alertBoxService: AlertBoxService, private historyLogService: HistoryLogService,
-                private utilService: UtilService, private downloadDownloaderService: DownloadDownloaderService) {
+                private utilService: UtilService, private downloadDownloaderService: DownloadDownloaderService,
+                public sortService: CartService, private loadingDisplayService: LoadingDisplayService) {
     }
 
     ngOnInit() {
@@ -144,6 +146,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
 
         this.downloadDownloaderService.doDownloadEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
+                this.loadingDisplayService.setLoading( true, 'Processing Cart Data...' );
                 if (data === DownloadTools.SEARCH_QUERY) {
                     this.downloadQueryAsManifestRestrictionCheck();
                 }
@@ -566,13 +569,18 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                         this.commonService.downloaderDownLoadButton(DownloadTools.SEARCH_QUERY);
                     }
                 } else {
+
+                    this.loadingDisplayService.setLoading(true, 'Downloading manifest...');
+
                     if (this.haveTextSearchQuery) {
                         // For text search
-                        this.downloadTextQueryAsManifestRestrictionCheck()
+                        this.downloadTextQueryAsManifestRestrictionCheck();
                     } else {
                         // For simple search
                         this.downloadQueryAsManifestRestrictionCheck();
                     }
+
+                    this.loadingDisplayService.setLoading(false);
                 }
 
                 /*
@@ -700,9 +708,11 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 (<any>window).document.body.appendChild(a);
                 a.click();
                 (<any>window).document.body.removeChild(a);
+                this.loadingDisplayService.setLoading( false );
             },
             (err) => {
                 console.error('ERROR downloadQueryAsManifest: ', err);
+                this.loadingDisplayService.setLoading( false );
             });
     }
 
@@ -726,9 +736,11 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 (<any>window).document.body.appendChild(a);
                 a.click();
                 (<any>window).document.body.removeChild(a);
+                this.loadingDisplayService.setLoading( false );
             },
             (err) => {
                 console.error('ERROR manifest from text search download: ', err);
+                this.loadingDisplayService.setLoading( false );
             });
     }
 

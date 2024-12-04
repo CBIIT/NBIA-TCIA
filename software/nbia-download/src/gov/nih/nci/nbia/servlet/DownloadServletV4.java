@@ -62,7 +62,7 @@ import org.apache.logging.log4j.Logger;
 public class DownloadServletV4 extends HttpServlet {
 	//private static final Logger logger = LogManager.getLogger(DownloadServletV4.class);
 	private static final Logger logger = LogManager.getLogger(DownloadServletV4.class);
-  private static final Logger downloadLogger = LogManager.getLogger("logger2");
+  private static final Logger downloadLogger = LogManager.getLogger("logger2DR");
   private static final Level DOWNLOADLOG = Level.forName("DOWNLOADLOG", 350);
 
 

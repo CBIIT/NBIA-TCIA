@@ -50,7 +50,8 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class DownloadServletV3 extends HttpServlet {
-	private static Logger logger = LogManager.getLogger(DownloadServlet.class);
+	private static final Logger logger = LogManager.getLogger(DownloadServlet.class);
+  private static final Logger downloadLogger = LogManager.getLogger("logger2DR");
 	private final static int CLIENT_LOGIN_NEEDED = 460;
 	private final static int CLIENT_LOGIN_FAILED = 461;
 	private final static int CLIENT_NOT_AUTHORIZED = 462;
@@ -177,6 +178,13 @@ public class DownloadServletV3 extends HttpServlet {
 			long size = computeContentLength(imageResults, annoResults);
 			try {
 				processor.recordAppDownload(seriesUid, userId, size, "v3");
+				downloadLogger.info(
+						"collection="+imageResults.get(0).getProject() + "," +
+								"seriesUID="+ seriesUid + "," +
+								"numberOfFiles=" + imageResults.size() + "," +
+								"totalSize="+ size + "," +
+								"userId="+ userId + "," +
+								"downloadType=V3");		
 			} catch (Exception e) {
 				logger.error("Exception recording download " + e.getMessage());
 			}

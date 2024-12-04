@@ -12,19 +12,19 @@ export class OhifViewerService{
 
     // TODO add header with access token
     launchOhifViewerSeries( seriesId, studyId ) {
-        let ohifUrl = Properties.OHIF_SERVER_URL + '/viewer?study=' + studyId + '&series=' + seriesId + '&token=' + this.apiServerService.showToken();
+        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH  + '?' + Properties.OHIF_STUDY_PARAMETER + studyId + '&'+ Properties.OHIF_SERIES_PARAMETER + seriesId + '&token=' + this.apiServerService.showToken();
         console.log( 'ohifUrl: ', ohifUrl );
         window.open( ohifUrl, '_blank' );
     }
 
     launchOhifViewerStudy( studyId ) {
-        let ohifUrl = Properties.OHIF_SERVER_URL + '/viewer?study=' + studyId + '&token=' + this.apiServerService.showToken();
+        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH  + '?' + Properties.OHIF_STUDY_PARAMETER + studyId + '&token=' + this.apiServerService.showToken();
         console.log( 'ohifUrl: ', ohifUrl );
         window.open( ohifUrl, '_blank' );
     }
 
     launchOhifViewerSubject( subject ) {
-        let ohifUrl = Properties.OHIF_SERVER_URL + '/viewer?patientID=' + subject + '&token=' + this.apiServerService.showToken();
+        let ohifUrl = Properties.OHIF_SERVER_URL + '/' + Properties.OHIF_SERVER_PATH + '?patientID=' + subject + '&token=' + this.apiServerService.showToken();
         console.log( 'ohifUrl: ', ohifUrl );
         window.open( ohifUrl, '_blank' );
     }

@@ -163,6 +163,8 @@ export class CartComponent implements OnInit, OnDestroy{
                         this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
                     }
                 }
+
+                
             }
         );
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,8 +183,6 @@ export class CartComponent implements OnInit, OnDestroy{
                 }else{
                     console.error( 'getSharedListResultsEmitter.subscribe data: ', data );
                 }
-
-                this.loadingDisplayService.setLoading( false );
 
             }
         );
@@ -377,6 +377,7 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.commonService.downloadCartAsCsvEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                this.loadingDisplayService.setLoading( true, 'Processing cart data...' );
                 let query = 'list=';
 
                 let first = true;
@@ -417,6 +418,7 @@ export class CartComponent implements OnInit, OnDestroy{
                         (<any>window).document.body.appendChild( a );
                         a.click();
                         (<any>window).document.body.removeChild( a );
+                        this.loadingDisplayService.setLoading( false );
                     }, error => {
                         console.error( 'Download csv file error:', error );
                     }

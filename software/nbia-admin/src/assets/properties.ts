@@ -5,9 +5,9 @@ export let Properties = {
     //TEST_VERSION: '1.0.12c',
     // Apr 2024
     CURRENT_YEAR:'2024',
-    VERSION: '9.1',
-    TEST_VERSION: '9.1',
-    RELEASE_COMMIT: '5fa63f0',
+    VERSION: '9.3',
+    TEST_VERSION: '9.3',
+    RELEASE_COMMIT: '21387774',
 
     MAX_CRITERIA_LEN: 30,
 
@@ -77,6 +77,11 @@ export let Properties = {
     OHIF_SERVER_URL: '',
     MAX_VIDEO_FPS: 30,
 
+    // The path and parameters must be filled out, even if server url is left empty
+    OHIF_SERVER_PATH: 'viewer',
+
+    OHIF_STUDY_PARAMETER: 'study=',
+    OHIF_SERIES_PARAMETER: 'series=',
 
 
     HAVE_URL_TOKEN: false,

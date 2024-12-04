@@ -82,7 +82,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.onClinicalTimepointsClearAllClick();
-                this.onApplyFromBaselineCheckboxClick( false );
+                // this.onApplyFromBaselineCheckboxClick( false );
             }
         );
 
@@ -182,6 +182,8 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
         this.currentEventTypeIndex = 0;
         this.currentEventTypeTrailer = 0;
+
+        this.onApplyFromBaselineCheckboxClick( false );
     }
 
     /**

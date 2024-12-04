@@ -347,8 +347,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     List<Object[]> rs = null;
     String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
       + "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
-      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp, "
-      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.dateReleased, "
+      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.dateReleased, "
+      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.maxSubmissionTimestamp, "
       + "s.studyDesc, s.studyDate, s.thirdPartyAnalysis "
       + " from GeneralSeries s where s.visibility in ('1') ";
 
@@ -408,6 +408,52 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     return rs;
   }
+
+
+  /**
+   * Fetch set of series objects filtered by series id
+   * @param seriesInstanceUid
+   *            Series Instance UID
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<Object[]> getSeriesById(String seriesInstanceUID, 
+      List<String> authorizedProjAndSites) throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }
+
+    StringBuffer where = new StringBuffer();
+    List<Object[]> rs = null;
+    String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
+      + "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
+      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp, "
+      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.dateReleased, "
+      + "s.studyDesc, s.studyDate, s.thirdPartyAnalysis "
+      + " from GeneralSeries s where s.visibility in ('1') ";
+
+    List<String> paramList = new ArrayList<String>();
+    int i = 0;
+
+    if (seriesInstanceUID != null) {
+      where = where.append(" and s.seriesInstanceUID=?");
+      paramList.add(seriesInstanceUID);
+      ++i;
+    }
+    where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+    //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+    //				+ hql + where.toString());
+
+    if (i > 0) {
+      Object[] values = paramList.toArray(new Object[paramList.size()]);
+      rs = getHibernateTemplate().find(hql + where.toString(), values);
+    } else
+      rs = getHibernateTemplate().find(hql + where.toString());
+
+    return rs;
+  }
+
   @Transactional(propagation = Propagation.REQUIRED)
   public List<Object[]> getSeries(String fromDate, List<String> authorizedProjAndSites) throws DataAccessException {
 
@@ -418,7 +464,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     List<Object[]> rs = null;
     String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
       + "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
-      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp"
+      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.dateReleased"
       + " from GeneralSeries s where s.visibility in ('1') ";
 
     List<Date> paramList = new ArrayList<Date>();
@@ -435,7 +481,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       e.printStackTrace();
     }
     if (fromDate != null) {
-      where = where.append(" and s.maxSubmissionTimestamp>?");
+      where = where.append(" and s.dateReleased>?");
       paramList.add(fromDayDate);
       ++i;
     }
@@ -1371,10 +1417,8 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
     seriesDTO.setProtocolName(Util.nullSafeString(row[24]));
     seriesDTO.setBodyPartExamined(Util.nullSafeString(row[25]));
     
-    String annotationsFlagString = Util.nullSafeString(row[26]);
-    // Default to false if the string is null or empty
-    boolean annotationsFlag = annotationsFlagString != null && !annotationsFlagString.isEmpty() && Boolean.parseBoolean(annotationsFlagString);
-    seriesDTO.setAnnotationsFlag(annotationsFlag);
+
+    //row[26] is the duplicate annotations flag, set above
 
     seriesDTO.setManufacturerModelName(Util.nullSafeString(row[27]));
     seriesDTO.setSoftwareVersions(Util.nullSafeString(row[28]));

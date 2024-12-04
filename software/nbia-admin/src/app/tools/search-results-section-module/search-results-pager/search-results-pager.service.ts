@@ -8,6 +8,7 @@ export class SearchResultsPagerService {
     pageCountEmitter  = new EventEmitter();
     pageLengthEmitter  = new EventEmitter();
     nextPageEmitter  = new EventEmitter();
+    previousPageEmitter  = new EventEmitter();
 
     pageCount = 0;
 
@@ -24,5 +25,9 @@ export class SearchResultsPagerService {
 
     goToNextPage(){
         this.nextPageEmitter.emit();
+    }
+
+    goToPreviousPage(){
+        this.previousPageEmitter.emit();
     }
 }

@@ -44,7 +44,7 @@ import org.springframework.dao.DataAccessException;
 @Path("/v1/getImage")
 public class V1_getImage extends getData {
 	//private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-	private static final Logger downloadLogger = LogManager.getLogger("logger2");
+	private static final Logger downloadLogger = LogManager.getLogger("logger2API");
 
 	/**
 	 * This method get a set of images in a zip file

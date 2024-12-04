@@ -55,7 +55,8 @@ export class DynamicQueryBuilderService{
      * @param rerunQuery  This will be set to false when the "Master Clear" button at the top is clicked.  We need to wait until all widgets are cleared before we do anything with the query.
      */
     async deleteCriteriaQueryPart( criteriaType, inputType, rerunQuery = true ){
-        await this.utilService.sleep( 300 );// TESTING  THIS is a workaround (please) refactor me. Don't forget to describe this in JIRA
+        await this.utilService.sleep( 25 );// TESTING  THIS is a workaround (please) refactor me. Don't forget to describe this in JIRA
+        //JMW-I do not know if the sleep has a purpose.  So I've reduced it to 25 from 300
         for( let f = 0; f < this.dynamicCriteriaPartList.length; f++ ){
             if( this.dynamicCriteriaPartList[f].criteriaType === criteriaType && this.dynamicCriteriaPartList[f].inputType === inputType ){
                 this.dynamicCriteriaPartList.splice( f, 1 );

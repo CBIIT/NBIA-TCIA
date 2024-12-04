@@ -6,9 +6,9 @@ export let Properties = {
 
     // APr 2024
     CURRENT_YEAR:'2024',
-    VERSION: '9.1',
-    TEST_VERSION: '9.1',
-    RELEASE_COMMIT: '5fa63f0',
+    VERSION: '9.3',
+    TEST_VERSION: '9.3',
+    RELEASE_COMMIT: '21387774',
 
     // This is the text that appears in the clients browser tab or window
     TITLE: 'Search',
@@ -33,6 +33,12 @@ export let Properties = {
     // This value can be changed in the config file.
     // If this is left an empty string, the API server url will be used .
     OHIF_SERVER_URL: '',
+
+    // The path and parameters must be filled out, even if server url is left empty
+    OHIF_SERVER_PATH: 'viewer',
+
+    OHIF_STUDY_PARAMETER: 'study=',
+    OHIF_SERIES_PARAMETER: 'series=',
 
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...

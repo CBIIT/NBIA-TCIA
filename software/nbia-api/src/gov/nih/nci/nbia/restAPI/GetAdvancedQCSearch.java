@@ -59,9 +59,11 @@ public class GetAdvancedQCSearch extends getData{
         Map<String, QCSearchCriteria> advancedCriteria = new HashMap<String, QCSearchCriteria>();
         System.out.println(inFormParams.get("criteriaType"+i));
         System.out.println(inFormParams.get("inputType"+i));
-        if (inFormParams.get("boolean0")!=null) {
-        	inFormParams.get("boolean0").set(0, "AND");
-        }
+
+		// NBIA-1718 ticket July-2024
+        // if (inFormParams.get("boolean0")!=null) {
+        // 	inFormParams.get("boolean0").set(0, "AND");
+        // }
         List<String>criteriaList=new ArrayList<String>();
 		while (inFormParams.get("criteriaType"+i)!=null) {
 			String criteriaType = inFormParams.get("criteriaType"+i).get(0);

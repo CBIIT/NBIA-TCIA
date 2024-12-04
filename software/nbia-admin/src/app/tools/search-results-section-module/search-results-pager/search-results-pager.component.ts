@@ -67,6 +67,10 @@ export class SearchResultsPagerComponent implements OnInit, OnDestroy{
             this.onGoNextClick();
         } );
 
+        this.searchResultsPagerService.previousPageEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe( () => {
+            this.onGoPreviousClick();
+        } );
+
 
     }
 
