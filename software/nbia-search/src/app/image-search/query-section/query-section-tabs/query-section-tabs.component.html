@@ -8,14 +8,6 @@
                   (click)="onTabClick(0 )"
             >Simple Search</span>
         </li>
-        <li class="nav-item">
-            <span class="nav-link unselectable"
-                  [ngClass]="{
-                   'active': activeTab === 1
-               }"
-                  (click)="onTabClick(1 )"
-            >Text Search</span>
-        </li>
 
     </ul>
 </span>
@@ -35,9 +27,3 @@
     }"
 ></nbia-simple-search>
 
-<nbia-text-search
-        [ngClass]="{
-        'active': activeTab === 1,
-        'hide': activeTab !== 1
-    }"
-></nbia-text-search>
