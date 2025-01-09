@@ -31,6 +31,7 @@ import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.StudyCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.UsMultiModalityCriteria;
 
@@ -78,7 +79,7 @@ public class CriteriaCollectionHandler implements CriteriaHandler {
 
             if (tempQueryString.equals("")) {
                 if (tempString != null) {
-                	if(tempString.contains(wildChar) && inputCrit instanceof PatientCriteria) {
+                	if(tempString.contains(wildChar) && (inputCrit instanceof PatientCriteria || inputCrit instanceof StudyCriteria)) {
                 		tempQueryString += (" " + field + " like ('" + tempString.replace(wildChar, queryWildChar) +
                 				"')");
                 	} else {
@@ -91,7 +92,7 @@ public class CriteriaCollectionHandler implements CriteriaHandler {
                 }
             } else {
                 if (tempString != null) {
-                	if(tempString.contains(wildChar) && inputCrit instanceof PatientCriteria) {
+                	if(tempString.contains(wildChar) && (inputCrit instanceof PatientCriteria || inputCrit instanceof StudyCriteria)) {
                 		tempQueryString += (" or (" + field + " like ('" + tempString.replace(wildChar, queryWildChar) +
                 				"'))");
                 	} else {
@@ -126,9 +127,11 @@ public class CriteriaCollectionHandler implements CriteriaHandler {
         }
         else if (criteria instanceof CollectionCriteria) {
             tempCollection = ((CollectionCriteria) criteria).getCollectionObjects();
-        }
-        else if (criteria instanceof PatientCriteria) {
+        
+        } else if (criteria instanceof PatientCriteria) {
                 tempCollection = ((PatientCriteria) criteria).getPatientIdObjects();
+        } else if (criteria instanceof StudyCriteria) {
+                tempCollection = ((StudyCriteria) criteria).getStudyIdObjects();
         } else if (criteria instanceof ManufacturerCriteria) {
             tempCollection = ((ManufacturerCriteria) criteria).getManufacturerObjects();
         } else if (criteria instanceof ModelCriteria) {

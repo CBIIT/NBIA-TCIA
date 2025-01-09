@@ -77,6 +77,7 @@ import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.StudyCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
@@ -385,6 +386,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         
         whereStmt += processPatientCriteria(query, handlerFac);
 
+        whereStmt += processStudyCriteria(query, handlerFac);
+
         whereStmt += processMinimumStudiesCriteria(query);
 
         whereStmt += processNumberOfMonthsCriteria(query, handlerFac);
@@ -557,6 +560,21 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		}
 		return patientWhereStmt;
 }
+
+    private static String processStudyCriteria(DICOMQuery theQuery,
+            									 CriteriaHandlerFactory theHandlerFac) throws Exception {
+		StudyCriteria pc = theQuery.getStudyCriteria();
+		CriteriaHandler handler = null;
+
+		String studyWhereStmt = "";
+		if (pc != null) {
+
+		handler = theHandlerFac.createCriteriaCollection();
+		studyWhereStmt += (AND + handler.handle(STUDY_INSTANCE_UID, pc));
+		}
+		return studyWhereStmt;
+}
+
     private static String processTimePointCriteria(DICOMQuery theQuery) throws Exception {
     	TimePointCriteria tc = theQuery.getTimePointCriteria();
 

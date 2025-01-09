@@ -72,6 +72,7 @@ import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.StudyCriteria;
 import gov.nih.nci.ncia.criteria.PersistentCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
@@ -121,6 +122,7 @@ public class DICOMQuery extends Query {
     private SeriesDescriptionCriteria seriesDescriptionCriteria;
     private ImageSliceThickness imageSliceThickness;
     private PatientCriteria patientCriteria;
+    private StudyCriteria studyCriteria;
     private ManufacturerCriteria manufacturerCriteria;
     private ModelCriteria modelCriteria;
     private CurationStatusDateCriteria curationStatusDateCriteria;
@@ -294,6 +296,13 @@ public class DICOMQuery extends Query {
         return patientCriteria;
     }
 
+    /**
+     * @return Returns the studyCriteria.
+     */
+    public StudyCriteria getStudyCriteria() {
+        return studyCriteria;
+    }
+
 
     /**
      * @param collectionCriteria The collectionCriteria to set.
@@ -324,6 +333,16 @@ public class DICOMQuery extends Query {
         if (patientCriteria != null) {
             criteriaList.add(patientCriteria);
             this.patientCriteria = patientCriteria;
+        }
+    }
+    
+    /**
+     * @param studyCriteria The studyCriteria to set.
+     */
+    public void setCriteria(StudyCriteria studyCriteria) {
+        if (studyCriteria != null) {
+            criteriaList.add(studyCriteria);
+            this.studyCriteria = studyCriteria;
         }
     }
 
