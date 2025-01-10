@@ -72,7 +72,9 @@ import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.PatientSexCriteria;
 import gov.nih.nci.ncia.criteria.StudyCriteria;
+import gov.nih.nci.ncia.criteria.SeriesCriteria;
 import gov.nih.nci.ncia.criteria.PersistentCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
@@ -122,7 +124,9 @@ public class DICOMQuery extends Query {
     private SeriesDescriptionCriteria seriesDescriptionCriteria;
     private ImageSliceThickness imageSliceThickness;
     private PatientCriteria patientCriteria;
+    private PatientSexCriteria patientSexCriteria;
     private StudyCriteria studyCriteria;
+    private SeriesCriteria seriesCriteria;
     private ManufacturerCriteria manufacturerCriteria;
     private ModelCriteria modelCriteria;
     private CurationStatusDateCriteria curationStatusDateCriteria;
@@ -303,6 +307,13 @@ public class DICOMQuery extends Query {
         return studyCriteria;
     }
 
+    /**
+     * @return Returns the seriesCriteria.
+     */
+    public SeriesCriteria getSeriesCriteria() {
+        return seriesCriteria;
+    }
+
 
     /**
      * @param collectionCriteria The collectionCriteria to set.
@@ -343,6 +354,16 @@ public class DICOMQuery extends Query {
         if (studyCriteria != null) {
             criteriaList.add(studyCriteria);
             this.studyCriteria = studyCriteria;
+        }
+    }
+    
+    /**
+     * @param seriesCriteria The seriesCriteria to set.
+     */
+    public void setCriteria(SeriesCriteria seriesCriteria) {
+        if (seriesCriteria != null) {
+            criteriaList.add(seriesCriteria);
+            this.seriesCriteria = seriesCriteria;
         }
     }
 
@@ -449,6 +470,13 @@ public class DICOMQuery extends Query {
         return imageModalityCriteria;
     }
 
+	/**
+     * @return Returns the patientSexCriteria.
+     */
+    public PatientSexCriteria getPatientSexCriteria() {
+        return patientSexCriteria;
+    }
+
     /**
      * @param imageModalityCriteria The imageModalityCriteria to set.
      */
@@ -456,6 +484,16 @@ public class DICOMQuery extends Query {
         if (imageModalityCriteria != null) {
             criteriaList.add(imageModalityCriteria);
             this.imageModalityCriteria = imageModalityCriteria;
+        }
+    }
+    
+    /**
+     * @param patientSexCriteria The patientSexCriteria to set.
+     */
+    public void setCriteria(PatientSexCriteria patientSexCriteria) {
+        if (patientSexCriteria != null) {
+            criteriaList.add(patientSexCriteria);
+            this.patientSexCriteria = patientSexCriteria;
         }
     }
     

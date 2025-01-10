@@ -77,7 +77,9 @@ import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.PatientSexCriteria;
 import gov.nih.nci.ncia.criteria.StudyCriteria;
+import gov.nih.nci.ncia.criteria.SeriesCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
@@ -153,6 +155,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     /* Constants for fields */
     private static final String COLLECTION_FIELD = "dp.project ";
     private static final String SPECIES_FIELD = "p.speciesCode ";
+    private static final String PATIENT_SEX_FIELD = "p.patientSex";
     private static final String THIRD_PARTY_FIELD = "series.thirdPartyAnalysis ";
     private static final String SITE_FIELD = "series.site ";
     private static final String IMAGE_MODALITY_FIELD = "series.modality ";
@@ -386,7 +389,11 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         
         whereStmt += processPatientCriteria(query, handlerFac);
 
+        whereStmt += processPatientSexCriteria(query, handlerFac);
+
         whereStmt += processStudyCriteria(query, handlerFac);
+
+        whereStmt += processSeriesCriteria(query, handlerFac);
 
         whereStmt += processMinimumStudiesCriteria(query);
 
@@ -504,6 +511,20 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         return speciesWhereStmt;
     }
     
+    private static String processPatientSexCriteria(DICOMQuery theQuery,
+            CriteriaHandlerFactory theHandlerFac) throws Exception {
+        PatientSexCriteria sc = theQuery.getPatientSexCriteria();
+        CriteriaHandler handler = null;
+
+        String patientSexWhereStmt = "";
+        if (sc != null) {
+		       handler = theHandlerFac.createCriteriaCollection();
+           patientSexWhereStmt += (AND + handler.handle(PATIENT_SEX_FIELD, sc));
+           System.out.println("patientSexWhereStmt===="+patientSexWhereStmt);
+        }
+        return patientSexWhereStmt;
+    }
+    
     private static String processThirdPartyAnalysisCriteria(DICOMQuery theQuery,
             CriteriaHandlerFactory theHandlerFac) throws Exception {
     	ThirdPartyAnalysisCriteria tc = theQuery.getThirdPartyAnalysisCriteria();
@@ -513,7 +534,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         if (tc != null) {
            handler = theHandlerFac.createThirdPartyAnalyisCriteria();
            thirdWhereStmt += (AND + handler.handle(THIRD_PARTY_FIELD, tc));
-           System.out.println("speciesWhereStmt===="+thirdWhereStmt);
+           System.out.println("thirdWhereStmt===="+thirdWhereStmt);
         }
         return thirdWhereStmt;
     }
@@ -573,6 +594,20 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		studyWhereStmt += (AND + handler.handle(STUDY_INSTANCE_UID, pc));
 		}
 		return studyWhereStmt;
+}
+
+    private static String processSeriesCriteria(DICOMQuery theQuery,
+            									 CriteriaHandlerFactory theHandlerFac) throws Exception {
+		SeriesCriteria pc = theQuery.getSeriesCriteria();
+		CriteriaHandler handler = null;
+
+		String seriesWhereStmt = "";
+		if (pc != null) {
+
+		handler = theHandlerFac.createCriteriaCollection();
+		seriesWhereStmt += (AND + handler.handle(SERIES_INSTANCE_UID, pc));
+		}
+		return seriesWhereStmt;
 }
 
     private static String processTimePointCriteria(DICOMQuery theQuery) throws Exception {
