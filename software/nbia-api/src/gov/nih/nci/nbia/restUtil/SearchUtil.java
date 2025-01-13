@@ -30,7 +30,7 @@ import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
-//import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
@@ -176,13 +176,13 @@ public class SearchUtil {
 				query.setCriteria(criteria);
 				queryKey+="DateRangeCriteria"+inFormParams.get("fromDate"+i).get(0)+inFormParams.get("toDate"+i).get(0);
 			}
-//			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientAgeRangeCriteria")){
-//				PatientAgeRangeCriteria criteria=new PatientAgeRangeCriteria();
-//			    criteria.setFrom(inFormParams.get("from"+i).get(0));
-//			    criteria.setTo(inFormParams.get("to"+i).get(0));
-//				query.setCriteria(criteria);
-//				queryKey+="PatientAgeRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
-//			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientAgeRangeCriteria")){
+				PatientAgeRangeCriteria criteria=new PatientAgeRangeCriteria();
+			    criteria.setFrom(inFormParams.get("from"+i).get(0));
+			    criteria.setTo(inFormParams.get("to"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="PatientAgeRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientCriteria")){
 				if (query.getPatientCriteria()==null){
 					PatientCriteria criteria=new PatientCriteria();

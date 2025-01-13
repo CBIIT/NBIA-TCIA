@@ -64,6 +64,7 @@ import gov.nih.nci.ncia.criteria.ConvolutionKernelCriteria;
 import gov.nih.nci.ncia.criteria.CurationStatusDateCriteria;
 import gov.nih.nci.ncia.criteria.DataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
+import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
 import gov.nih.nci.ncia.criteria.DxDataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ImageSliceThickness;
@@ -390,6 +391,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         whereStmt += processPatientCriteria(query, handlerFac);
 
         whereStmt += processPatientSexCriteria(query, handlerFac);
+        
+        whereStmt += processPatientAgeRange(query);
 
         whereStmt += processStudyCriteria(query, handlerFac);
 
@@ -1184,6 +1187,37 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     			}
         }
 
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the patient age range
+     * portion of the query.  Returns 0 length string if no patient age range
+     */
+    private static String processPatientAgeRange(DICOMQuery theQuery) {
+        PatientAgeRangeCriteria pc = theQuery.getPatientAgeRangeCriteria();
+        String fromString = null;
+        String toString = null;
+        
+
+        if ((pc != null) && !(pc.isEmpty())) {
+          fromString = pc.getFrom();
+          toString = pc.getTo();
+          if (((fromString != null) && (fromString.length() > 0)) &&
+              ((toString != null) && (toString.length() > 0))) {
+
+            return " and (CASE " +
+               "WHEN LOWER(series.patientAge) LIKE '%y' THEN REPLACE(LOWER(series.patientAge), 'y', '') " +
+               "WHEN LOWER(series.patientAge) LIKE '%w' THEN floor(REPLACE(LOWER(series.patientAge), 'w', '') / 52) " +
+               "WHEN LOWER(series.patientAge) LIKE '%m' THEN floor(REPLACE(LOWER(series.patientAge), 'm', '') / 12) " +
+               "ELSE NULL " +
+               "END " +
+               "between " + fromString + " and " + toString + " )";
+          }
+          else {
+            return "";
+          }
+        }
+        
         return "";
     }
 }
