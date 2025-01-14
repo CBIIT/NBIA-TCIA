@@ -31,6 +31,8 @@ import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
 import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
@@ -182,6 +184,20 @@ public class SearchUtil {
 			    criteria.setTo(inFormParams.get("to"+i).get(0));
 				query.setCriteria(criteria);
 				queryKey+="PatientAgeRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PixelSpacingRangeCriteria")){
+				PixelSpacingRangeCriteria criteria=new PixelSpacingRangeCriteria();
+			    criteria.setFrom(inFormParams.get("from"+i).get(0));
+			    criteria.setTo(inFormParams.get("to"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="PixelSpacingRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("SliceThicknessRangeCriteria")){
+				SliceThicknessRangeCriteria criteria=new SliceThicknessRangeCriteria();
+			    criteria.setFrom(inFormParams.get("from"+i).get(0));
+			    criteria.setTo(inFormParams.get("to"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="SliceThicknessRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientCriteria")){
 				if (query.getPatientCriteria()==null){

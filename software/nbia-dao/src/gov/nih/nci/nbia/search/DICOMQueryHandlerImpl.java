@@ -64,7 +64,11 @@ import gov.nih.nci.ncia.criteria.ConvolutionKernelCriteria;
 import gov.nih.nci.ncia.criteria.CurationStatusDateCriteria;
 import gov.nih.nci.ncia.criteria.DataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.DxDataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ImageSliceThickness;
@@ -997,6 +1001,18 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             imgWhere += dateRangeClause;
         }
 
+        String pixelSpacingRangeClause = processPixelSpacingRange(theQuery);
+        if(!pixelSpacingRangeClause.equals("")) {
+            imageCriteriaIncluded = true;
+            imgWhere += pixelSpacingRangeClause;
+        }
+
+        String sliceThicknessRangeClause = processSliceThicknessRange(theQuery);
+        if(!sliceThicknessRangeClause.equals("")) {
+            imageCriteriaIncluded = true;
+            imgWhere += sliceThicknessRangeClause;
+        }
+
         // Build the HQL
         // Always include non-image criteria query
         String hql = "";//selectStmt + fromStmt + whereStmt;
@@ -1211,6 +1227,60 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
                "WHEN LOWER(series.patientAge) LIKE '%m' THEN floor(REPLACE(LOWER(series.patientAge), 'm', '') / 12) " +
                "ELSE NULL " +
                "END " +
+               "between " + fromString + " and " + toString + " )";
+          }
+          else {
+            return "";
+          }
+        }
+        
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the pixel spacing range
+     * portion of the query.  Returns 0 length string if no pixel spacing range
+     */
+    private static String processPixelSpacingRange(DICOMQuery theQuery) {
+        PixelSpacingRangeCriteria pc = theQuery.getPixelSpacingRangeCriteria();
+        String fromString = null;
+        String toString = null;
+        
+
+        if ((pc != null) && !(pc.isEmpty())) {
+          fromString = String.valueOf(Double.parseDouble(pc.getFrom()));
+          toString = String.valueOf(Double.parseDouble(pc.getTo()));
+
+          if (((fromString != null) && (fromString.length() > 0)) &&
+              ((toString != null) && (toString.length() > 0))) {
+
+            return " and (gi.pixelSpacing " +
+               "between " + fromString + " and " + toString + " )";
+          }
+          else {
+            return "";
+          }
+        }
+        
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the slice thickness range
+     * portion of the query.  Returns 0 length string if no slice thickness range
+     */
+    private static String processSliceThicknessRange(DICOMQuery theQuery) {
+        SliceThicknessRangeCriteria pc = theQuery.getSliceThicknessRangeCriteria();
+        String fromString = null;
+        String toString = null;
+        
+
+        if ((pc != null) && !(pc.isEmpty())) {
+          fromString = String.valueOf(Double.parseDouble(pc.getFrom()));
+          toString = String.valueOf(Double.parseDouble(pc.getTo()));
+
+          if (((fromString != null) && (fromString.length() > 0)) &&
+              ((toString != null) && (toString.length() > 0))) {
+
+            return " and (gi.sliceThickness " +
                "between " + fromString + " and " + toString + " )";
           }
           else {

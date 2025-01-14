@@ -59,6 +59,8 @@ import gov.nih.nci.ncia.criteria.CurationStatusDateCriteria;
 import gov.nih.nci.ncia.criteria.DataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
 import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.DxDataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ImageSliceThickness;
@@ -136,6 +138,8 @@ public class DICOMQuery extends Query {
     private ModalityAndedSearchCriteria modalityAndedSearchCriteria;
     private DateRangeCriteria dateRangeCriteria;
     private PatientAgeRangeCriteria patientAgeRangeCriteria;
+    private PixelSpacingRangeCriteria pixelSpacingRangeCriteria;
+    private SliceThicknessRangeCriteria sliceThicknessRangeCriteria;
     private SpeciesCriteria speciesCriteria;
     private PhantomCriteria phantomCriteria;   
     private ThirdPartyAnalysisCriteria thirdPartyAnalysisCriteria;
@@ -810,11 +814,33 @@ public class DICOMQuery extends Query {
 		return patientAgeRangeCriteria;
 	}
 
+	public PixelSpacingRangeCriteria getPixelSpacingRangeCriteria() {
+		return pixelSpacingRangeCriteria;
+	}
+
+	public SliceThicknessRangeCriteria getSliceThicknessRangeCriteria() {
+		return sliceThicknessRangeCriteria;
+	}
+
 	public void setCriteria(DateRangeCriteria dateRangeCriteria) {
 		if ((dateRangeCriteria != null) && !dateRangeCriteria.isEmpty()) {
 			criteriaList.add(dateRangeCriteria);
 		}
 		this.dateRangeCriteria = dateRangeCriteria;
+	}
+
+	public void setCriteria(PixelSpacingRangeCriteria pixelSpacingRangeCriteria) {
+		if ((pixelSpacingRangeCriteria != null) && !pixelSpacingRangeCriteria.isEmpty()) {
+			criteriaList.add(pixelSpacingRangeCriteria);
+		}
+		this.pixelSpacingRangeCriteria = pixelSpacingRangeCriteria;
+	}
+
+	public void setCriteria(SliceThicknessRangeCriteria sliceThicknessRangeCriteria) {
+		if ((sliceThicknessRangeCriteria != null) && !sliceThicknessRangeCriteria.isEmpty()) {
+			criteriaList.add(sliceThicknessRangeCriteria);
+		}
+		this.sliceThicknessRangeCriteria = sliceThicknessRangeCriteria;
 	}
 
 	public void setCriteria(PatientAgeRangeCriteria patientAgeRangeCriteria) {
