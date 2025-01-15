@@ -16,10 +16,12 @@ import gov.nih.nci.nbia.util.SiteData;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;  
-import java.util.Date; 
+import java.util.Date;
+import java.util.HashMap;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -197,6 +199,41 @@ public class PatientDAOImpl extends AbstractDAO
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
 	    fillInHuman(rs);
         return rs;
+	}
+
+	public List<Object[]> getCombinedDataBySeries(String seriesInstanceUIDs, List<String> authorizedProjAndSites) throws DataAccessException {
+    
+		// Rather than pull all series if list is null, exits instead
+		if (authorizedProjAndSites == null || authorizedProjAndSites.isEmpty() || seriesInstanceUIDs == null || seriesInstanceUIDs.isEmpty()) {
+			return null;
+		}
+
+		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
+		whereCondition.append(" and UPPER(gs.seriesInstanceUID) in (:seriesInstanceUIDs)");
+		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));   
+
+		String hql = "select distinct " +
+			"p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, p.qcSubject, p.speciesCode, p.species, " +
+			"s.studyInstanceUID, s.studyDate, s.studyDesc, s.admittingDiagnosesDesc, s.studyId, " +
+			"s.patientAge, s.longitudinalTemporalEventType, s.longitudinalTemporalOffsetFromEvent, " +
+			"gs.seriesInstanceUID, gs.project, gs.modality, gs.protocolName, gs.seriesDate, gs.seriesDesc, " +
+			"gs.bodyPartExamined, gs.seriesNumber, gs.annotationsFlag, gs.generalEquipment.manufacturer, " +
+			"gs.generalEquipment.manufacturerModelName, gs.generalEquipment.softwareVersions, gs.imageCount, " +
+			"gs.maxSubmissionTimestamp, gs.licenseName, gs.licenseURL, gs.descriptionURI, gs.totalSize, " +
+			"gs.dateReleased, gs.studyDesc, gs.studyDate, gs.thirdPartyAnalysis " +
+			"from GeneralSeries gs " +
+			"join Patient p on p.id = gs.patientPkId " +
+			"join Study s on s.studyInstanceUID = gs.studyInstanceUID " +
+			whereCondition.toString();
+
+		System.out.println("Executing combined query: " + hql);
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("seriesInstanceUIDs", seriesInstanceUIDs.stream().map(String::toUpperCase).toList());    
+
+		List<Object[]> results = getHibernateTemplate().find(hql, params);
+		fillInHuman(results);
+		return results;
 	}
 	/**
 	 * Construct the partial where clause which contains checking with authorized project and site combinations.
