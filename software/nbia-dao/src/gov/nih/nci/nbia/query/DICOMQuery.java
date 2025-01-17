@@ -58,6 +58,9 @@ import gov.nih.nci.ncia.criteria.Criteria;
 import gov.nih.nci.ncia.criteria.CurationStatusDateCriteria;
 import gov.nih.nci.ncia.criteria.DataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
+import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.DxDataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ImageSliceThickness;
@@ -72,7 +75,9 @@ import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.PatientSexCriteria;
 import gov.nih.nci.ncia.criteria.StudyCriteria;
+import gov.nih.nci.ncia.criteria.SeriesCriteria;
 import gov.nih.nci.ncia.criteria.PersistentCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
@@ -122,7 +127,9 @@ public class DICOMQuery extends Query {
     private SeriesDescriptionCriteria seriesDescriptionCriteria;
     private ImageSliceThickness imageSliceThickness;
     private PatientCriteria patientCriteria;
+    private PatientSexCriteria patientSexCriteria;
     private StudyCriteria studyCriteria;
+    private SeriesCriteria seriesCriteria;
     private ManufacturerCriteria manufacturerCriteria;
     private ModelCriteria modelCriteria;
     private CurationStatusDateCriteria curationStatusDateCriteria;
@@ -130,6 +137,9 @@ public class DICOMQuery extends Query {
     private List<UrlParamCriteria> urlParamCriteria;
     private ModalityAndedSearchCriteria modalityAndedSearchCriteria;
     private DateRangeCriteria dateRangeCriteria;
+    private PatientAgeRangeCriteria patientAgeRangeCriteria;
+    private PixelSpacingRangeCriteria pixelSpacingRangeCriteria;
+    private SliceThicknessRangeCriteria sliceThicknessRangeCriteria;
     private SpeciesCriteria speciesCriteria;
     private PhantomCriteria phantomCriteria;   
     private ThirdPartyAnalysisCriteria thirdPartyAnalysisCriteria;
@@ -303,6 +313,13 @@ public class DICOMQuery extends Query {
         return studyCriteria;
     }
 
+    /**
+     * @return Returns the seriesCriteria.
+     */
+    public SeriesCriteria getSeriesCriteria() {
+        return seriesCriteria;
+    }
+
 
     /**
      * @param collectionCriteria The collectionCriteria to set.
@@ -343,6 +360,16 @@ public class DICOMQuery extends Query {
         if (studyCriteria != null) {
             criteriaList.add(studyCriteria);
             this.studyCriteria = studyCriteria;
+        }
+    }
+    
+    /**
+     * @param seriesCriteria The seriesCriteria to set.
+     */
+    public void setCriteria(SeriesCriteria seriesCriteria) {
+        if (seriesCriteria != null) {
+            criteriaList.add(seriesCriteria);
+            this.seriesCriteria = seriesCriteria;
         }
     }
 
@@ -449,6 +476,13 @@ public class DICOMQuery extends Query {
         return imageModalityCriteria;
     }
 
+	/**
+     * @return Returns the patientSexCriteria.
+     */
+    public PatientSexCriteria getPatientSexCriteria() {
+        return patientSexCriteria;
+    }
+
     /**
      * @param imageModalityCriteria The imageModalityCriteria to set.
      */
@@ -456,6 +490,16 @@ public class DICOMQuery extends Query {
         if (imageModalityCriteria != null) {
             criteriaList.add(imageModalityCriteria);
             this.imageModalityCriteria = imageModalityCriteria;
+        }
+    }
+    
+    /**
+     * @param patientSexCriteria The patientSexCriteria to set.
+     */
+    public void setCriteria(PatientSexCriteria patientSexCriteria) {
+        if (patientSexCriteria != null) {
+            criteriaList.add(patientSexCriteria);
+            this.patientSexCriteria = patientSexCriteria;
         }
     }
     
@@ -766,11 +810,44 @@ public class DICOMQuery extends Query {
 		return dateRangeCriteria;
 	}
 
+	public PatientAgeRangeCriteria getPatientAgeRangeCriteria() {
+		return patientAgeRangeCriteria;
+	}
+
+	public PixelSpacingRangeCriteria getPixelSpacingRangeCriteria() {
+		return pixelSpacingRangeCriteria;
+	}
+
+	public SliceThicknessRangeCriteria getSliceThicknessRangeCriteria() {
+		return sliceThicknessRangeCriteria;
+	}
+
 	public void setCriteria(DateRangeCriteria dateRangeCriteria) {
 		if ((dateRangeCriteria != null) && !dateRangeCriteria.isEmpty()) {
 			criteriaList.add(dateRangeCriteria);
 		}
 		this.dateRangeCriteria = dateRangeCriteria;
+	}
+
+	public void setCriteria(PixelSpacingRangeCriteria pixelSpacingRangeCriteria) {
+		if ((pixelSpacingRangeCriteria != null) && !pixelSpacingRangeCriteria.isEmpty()) {
+			criteriaList.add(pixelSpacingRangeCriteria);
+		}
+		this.pixelSpacingRangeCriteria = pixelSpacingRangeCriteria;
+	}
+
+	public void setCriteria(SliceThicknessRangeCriteria sliceThicknessRangeCriteria) {
+		if ((sliceThicknessRangeCriteria != null) && !sliceThicknessRangeCriteria.isEmpty()) {
+			criteriaList.add(sliceThicknessRangeCriteria);
+		}
+		this.sliceThicknessRangeCriteria = sliceThicknessRangeCriteria;
+	}
+
+	public void setCriteria(PatientAgeRangeCriteria patientAgeRangeCriteria) {
+		if ((patientAgeRangeCriteria != null) && !patientAgeRangeCriteria.isEmpty()) {
+			criteriaList.add(patientAgeRangeCriteria);
+		}
+		this.patientAgeRangeCriteria = patientAgeRangeCriteria;
 	}
 
 	public PhantomCriteria getPhantomCriteria() {
