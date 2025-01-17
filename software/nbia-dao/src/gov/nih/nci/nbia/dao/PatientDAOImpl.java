@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;  
 import java.util.Date;
@@ -229,8 +230,7 @@ public class PatientDAOImpl extends AbstractDAO
 		System.out.println("Executing combined query: " + hql);
 
 		Map<String, Object> params = new HashMap<>();
-		params.put("seriesInstanceUIDs", seriesInstanceUIDs.stream().map(String::toUpperCase).toList());    
-
+		params.put("seriesInstanceUIDs", Arrays.stream(seriesInstanceUIDs.split(",")).map(String::toUpperCase).toList());
 		List<Object[]> results = getHibernateTemplate().find(hql, params);
 		fillInHuman(results);
 		return results;
