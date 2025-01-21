@@ -31,6 +31,7 @@ import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
 import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.DescriptionCriteria;
 import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
 import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
@@ -184,6 +185,12 @@ public class SearchUtil {
 			    criteria.setTo(inFormParams.get("to"+i).get(0));
 				query.setCriteria(criteria);
 				queryKey+="PatientAgeRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("DescriptionCriteria")){
+				DescriptionCriteria criteria=new DescriptionCriteria();
+			    criteria.setSearchString(inFormParams.get("value"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="DescriptionCriteria"+inFormParams.get("value"+i).get(0);
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PixelSpacingRangeCriteria")){
 				PixelSpacingRangeCriteria criteria=new PixelSpacingRangeCriteria();
