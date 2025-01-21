@@ -25,33 +25,6 @@
         </span>
 
 
-        <!-- Sort order buttons (alpha or num) -->
-        <span
-                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
-                class="sort-text"
-        >
-             &nbsp;&nbsp;Sort:
-             <label for="sortAlphaCheckedAnatomical">alpha
-                 <input
-                         type="radio"
-                         name="radioGroupCollectionSortAnatomical"
-                         [checked]="sortAlphaChecked"
-                         id="sortAlphaCheckedAnatomical"
-                         (change)="onSetSort(1)"
-                 >
-             </label>
-             &nbsp;
-             <label for="sortNumCheckedAnatomical">num
-                 <input
-                         type="radio"
-                         name="radioGroupCollectionSortAnatomical"
-                         [(checked)]="sortNumChecked"
-                         id="sortNumCheckedAnatomical"
-                         (change)="onSetSort(0)"
-                 >
-                </label>
-            </span>
-
 
 
 
@@ -84,6 +57,37 @@
                 (click)="onAnatomicalSiteClearAllClick(false)"
             >
         </label>
+    </div>
+
+    <div  *ngIf="showCriteriaList">
+
+        <!-- Sort order buttons (alpha or num) -->
+        <span
+                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
+                class="sort-text"
+        >
+             &nbsp;&nbsp;Sort:
+             <label for="sortAlphaCheckedAnatomical">alpha
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSortAnatomical"
+                         [checked]="sortAlphaChecked"
+                         id="sortAlphaCheckedAnatomical"
+                         (change)="onSetSort(1)"
+                 >
+             </label>
+             &nbsp;
+             <label for="sortNumCheckedAnatomical">num
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSortAnatomical"
+                         [(checked)]="sortNumChecked"
+                         id="sortNumCheckedAnatomical"
+                         (change)="onSetSort(0)"
+                 >
+                </label>
+            </span>
+
     </div>
 
     <!-- ----------  Search input  ---------- -->
