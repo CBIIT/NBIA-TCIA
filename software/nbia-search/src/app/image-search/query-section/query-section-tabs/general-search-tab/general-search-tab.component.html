@@ -1,0 +1,13 @@
+<div>
+    <nbia-collection-query></nbia-collection-query>
+    <!-- <nbia-image-modality-query></nbia-image-modality-query> -->
+    <nbia-third-party-query *ngIf="properties.SHOW_THIRD_PARTY"></nbia-third-party-query>
+    <nbia-commercial-use *ngIf="! properties.NO_LICENSE"></nbia-commercial-use>
+<!--
+    <nbia-days-from-baseline></nbia-days-from-baseline>
+-->
+    <nbia-date-range-query></nbia-date-range-query>
+    <nbia-subject-id-query></nbia-subject-id-query>
+
+</div>
+
