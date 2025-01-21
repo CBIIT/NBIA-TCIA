@@ -5,6 +5,7 @@
 .summary-main-panel {
     background-color: #f4f4f4;
     height: 100%;
+    padding: 0, 0, 0, 0;
     /* Put summary-main-panel just under top tab  */
     top: 42px;
     right: 0px;
@@ -13,10 +14,6 @@
 }
 
 .main-panel-heading {
-    background-color: #fff;
-    border-bottom: solid 1px #c4c4c4;
-    border-left: solid 1px #c4c4c4;
-    border-right: solid 1px #c4c4c4;
     padding-left: 8px;
     padding-top: 8px;
 
@@ -140,3 +137,19 @@
     overflow-y: hidden;
     overflow-x: scroll;
 }
+
+.summary-chart-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 16px;
+    color: #2A537A; 
+}
+.summary-chart-title > a,
+.summary-chart-title > small,
+.summary-chart-title > .small,
+.summary-chart-title > small > a,
+.summary-chart-title > .small > a {
+    color: inherit; 
+}
+
