@@ -1,0 +1,43 @@
+<div class="query-panel">
+
+    <div class="query-panel-heading">
+        <label *ngIf="searchText.length > 0" class="red-clear">
+            <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="Search" (click)="onClearClick()">
+        </label>
+
+        <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Images Description 
+        </span>
+
+        <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Images Description
+        </span>
+
+          <!-- Reset the input-->
+          <label *ngIf="checkedCount > 0" class="red-clear" >
+          <img
+              class="clicker cart-button-icon"
+              src="assets/images/TOOLS/clear_red.png"
+              alt="Clear"
+              (click)="onInputClearClick(false)"
+          >
+        </label>
+
+    </div>
+
+    <div [ngClass]="{
+                    'hide-div': !showSubjectIds
+                }"
+         class="description-input-div">
+        <span class="images-descp-prompt">Contains</span>
+        <textarea ref-textarea [(ngModel)]="searchText" class="images-descp-text"></textarea>
+
+        <button class="btn nbia-button images-descp-query-button"
+                type="button"
+              (click)="onSearchClick()">
+            Apply Search
+        </button>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+@import '../../../../../app.component.scss';
+
+.query-panel-long{
+    background-color: #fff;
+    /* Space for buttons at the bottom */
+    padding-bottom:34px;
+}
+
+.description-input-div
+{
+    padding-bottom: 50px;
+}
+
+.images-descp-text{
+    border: solid 1px #cfcfcf;
+    border-radius: 4px;
+    margin-left:15pt;
+    margin-right:15pt;
+    margin-bottom: 5px; // A little space between the text area and the apply button if there is one
+    width: calc(100% - 40px);
+    height: 30px;
+    overflow-y: scroll;
+    resize: none;
+}
+
+.images-descp-query-button{
+    position:relative;
+    right: ($left-section-width * -1) + 222px;
+    top: 4px;
+}
+
+.images-descp-prompt{
+    margin-left:15pt;
+}
