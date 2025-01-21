@@ -1,0 +1,66 @@
+// need to use ::ng-deep to overcome view encapsulation
+::ng-deep {
+
+    .nbia-age-range-slider .ngx-slider {
+        // padding-left: 16px;
+        // padding-right: 16px;
+        margin-left: 16px;
+        margin-right: 16px;
+        width: 90%;
+      }
+
+    .nbia-age-range-slider .ngx-slider .ngx-slider-bar {
+      background: #ffe4d1;
+      height: 2px;
+    }
+    .nbia-age-range-slider .ngx-slider .ngx-slider-selection {
+      background: rgb(43, 0, 255);
+    }
+  
+    .nbia-age-range-slider .ngx-slider .ngx-slider-pointer {
+      width: 8px;
+      height: 16px;
+      top: auto; /* to remove the default positioning */
+      bottom: 0;
+      background-color: #333;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+    }
+  
+    .nbia-age-range-slider .ngx-slider .ngx-slider-pointer:after {
+      display: none;
+    }
+  
+    .nbia-age-range-slider .ngx-slider .ngx-slider-bubble {
+      bottom: 14px;
+    }
+  
+    .nbia-age-range-slider .ngx-slider .ngx-slider-bubble.ngx-slider-limit {
+    //   font-weight: bold;
+      color: orange;
+    }
+  
+    .nbia-age-range-slider .ngx-slider .ngx-slider-tick {
+      width: 1px;
+      height: 10px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: black;
+      top: -1px;
+    }
+  
+    .nbia-age-range-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+      background: orange;
+    }
+  }
+
+  .age-input-box {
+    width: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .available-checkbox {
+    margin-top: 15px;
+    margin-bottom: 12px;
+}

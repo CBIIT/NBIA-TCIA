@@ -1,0 +1,62 @@
+<!-- ----------  This is the left side Phantom Radio buttons  ---------- -->
+<div class="query-panel subjects-sex-query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+        <!-- Hide the sex Radio buttons.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(false)"
+        >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Patient Age
+            <span
+                    *ngIf="sexApply"
+                    class="sex-status"
+            > ({{sexRadioLabels[sexApplySelection]}})</span>
+        </span>
+
+        <!-- Show the Age range slider -->
+        <span
+                *ngIf="!showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Patient Age
+            <span
+                    *ngIf="sexApply"
+                    class="sex-status"
+            > ({{sexRadioLabels[sexApplySelection]}})</span>
+         </span>
+
+    </div>
+
+    <div
+            [ngClass]="{
+            'hide-div': !showCriteriaList
+        }"  class="nbia-age-range-slider" >
+   
+      <p> <input type="number" [(ngModel)]="minValue"  class="age-input-box">  to 
+      <input type="number" [(ngModel)]="maxValue" class="age-input-box"> years old   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="minValue > 0 || maxValue < 99 " > 
+        <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
+             (click)="patientAgeClearAllClick(false)">
+        </label>
+        </p>
+        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+    </div>
+
+     <!--Apply Available range  checkbox-->
+     <div  [ngClass]="{'hide-div': !showCriteriaList}">
+        <input
+                type="checkbox"
+                class="query-panel-checkboxes available-checkbox"
+                [(ngModel)]="nonAgeChecked"
+                (click)="onApplyCheckboxClick( $event.target.checked)">
+        <label class="query-panel-checkbox-label available-checkbox-label">
+            &nbsp;include non-provided patient age
+        </label>
+    </div>
+</div>

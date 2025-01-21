@@ -1,0 +1,65 @@
+<!-- ----------  This is the left side Phantom Radio buttons  ---------- -->
+<div class="query-panel subjects-sex-search-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+        <!-- Hide the sex Radio buttons.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(false)"
+        >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Patient Sex
+        </span>
+
+        <!-- Show the sex Radio buttons -->
+        <span
+                *ngIf="!showCriteriaList"
+                class="clicker"
+                (click)="onShowCriteriaListClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Patient Sex
+         </span>
+
+    </div>
+
+    <div
+            [ngClass]="{
+            'hide-div': !showCriteriaList
+        }"
+    >
+
+        <!-- Any or All radio buttons  -->
+        <div *ngFor="let sexRadioLabel of sexRadioLabels; let i = index">
+            <input type="radio" name="radioGroupsex"
+                   class="sex-radio"
+                   [value]="sexRadioLabel"
+                   [checked]="i === sexApplySelection"
+                   (change)="onSexRadioChange(i)">
+
+            <span
+                    class="sex-radio-label"
+                    (click)="onSexRadioChange(i)"
+            >
+            {{sexRadioLabel}}
+            </span>
+<!--
+
+            <span *ngIf="i===0"
+                  class="phantoms-apply-checkbox"
+                  (click)="onApplyPhantomsApplyChecked(!phantomApply)"
+            >
+
+                <input
+                    type="checkbox"
+                    [(ngModel)]="phantomApply"
+                /> Apply Phantoms filter
+
+            </span>
+            -->
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,280 @@
+@import '../../../../app.component.scss';
+
+$query-collection-start-height: 120px;
+
+label {
+    font: 15px arial, sans-serif;
+}
+
+.query-input-main-panel-div {
+    background-color: #fff;
+    width: 100%;
+}
+
+/*For the individual query entry panels */
+.query-panel-heading {
+    @extend %panel-heading;
+    padding: 7px 0 0 0;
+    margin-left: 15pt;
+    margin-bottom: 7pt;
+    font-size: 12pt;
+}
+
+.query-panel-checkboxes {
+    color: #3a3a3a;
+    margin-left: 15pt;
+}
+
+.third-party-query-panel {
+    padding-bottom: 8px;
+}
+
+.clinical-time-points-query-panel {
+    padding-bottom: 8px;
+}
+
+.subjects-sex-search-panel {
+    padding-bottom: 8px;
+}
+
+.phantom-query-panel {
+    padding-bottom: 8px;
+}
+
+.query-panel {
+    background-color: #fff;
+    border-bottom: solid 1px #cfcfcf;
+    border-left: solid 1px #cfcfcf;
+    border-right: solid 1px #cfcfcf;
+}
+
+.moreOrLess {
+    margin-left: 266px;
+    /*  It's a link, but we want no underline */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.hide-div {
+    display: none;
+}
+
+.count-box {
+    color: #fff;
+    background-color: #5b5151;
+    border-radius: 3px;
+    padding: 1px 5px 1px 5px;
+    margin-right: 15px;
+    float: right;
+    font-size: 8pt;
+}
+
+.check-box {
+    margin-right: 4px;
+}
+
+.criteria-entry-text {
+    margin-top: 4px;
+    margin-bottom: 3px;
+}
+
+.count-box_zero {
+    color: #fff;
+    background-color: #a39999;
+    border-radius: 3px;
+    padding: 1px 5px 1px 5px;
+    margin-right: 15px;
+    float: right;
+    font-size: 8pt;
+
+}
+
+.search-glass {
+    position: absolute;
+    left: $left-section-width - 50px;
+}
+
+.red-clear {
+    position: absolute;
+    left: $left-section-width - 47px;
+}
+
+.search-glass-with-clear {
+    position: absolute;
+    left: $left-section-width - 69px;
+}
+
+.search-box {
+    border: solid 1px #cfcfcf;
+    border-radius: 4px;
+    padding: 0 0 0 12px;
+    margin-left: 15pt;
+    margin-bottom: 10pt;
+    height: 34px;
+    width: calc(100% - 35px);
+}
+
+/* Trying to clean this up for Chrome */
+.box-with-focus {
+    outline: none;
+}
+
+.search-text-area {
+    border-style: none;
+    height: 30px;
+    width: calc(100% - 25px);
+}
+
+.search-text-area-x {
+    margin: 6px 6px 0px 0px;
+    cursor: pointer;
+}
+
+.any-or-all {
+    color: #3a3a3a;
+    margin-left: 5pt;
+}
+
+.phantom-radio {
+    color: #3a3a3a;
+    margin-left: 15pt;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.phantom-radio-label {
+    cursor: pointer;
+}
+
+.sex-radio {
+    color: #3a3a3a;
+    margin-left: 15pt;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.sex-radio-label {
+    cursor: pointer;
+}
+
+.thirdParty-radio {
+    color: #3a3a3a;
+    margin-left: 15pt;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.thirdParty-radio-label {
+    cursor: pointer;
+}
+
+.sort-text {
+    color: #3a3a3a;
+    font-size: 9pt;
+}
+
+.phantoms-apply-checkbox {
+    margin-left: 25px;
+    cursor: default;
+
+    padding: 6px;
+    /*           h-offset   v-offset   blur    spread   color          */
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.075);
+
+
+    border-radius: 5px;
+    border: solid #cfcfcf 1px;
+}
+
+.sex-apply-checkbox {
+    margin-left: 25px;
+    cursor: default;
+
+    padding: 6px;
+    /*           h-offset   v-offset   blur    spread   color          */
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.075);
+
+
+    border-radius: 5px;
+    border: solid #cfcfcf 1px;
+}
+
+.thirdParty-apply-checkbox {
+    margin-left: 25px;
+    cursor: default;
+
+    padding: 6px;
+    /*           h-offset   v-offset   blur    spread   color          */
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.075);
+
+
+    border-radius: 5px;
+    border: solid #cfcfcf 1px;
+}
+
+.phantoms-apply-glyph {
+    //margin-left: 5pt;
+    cursor: default;
+    color: #00aa00;
+    margin-right: 4px;
+}
+
+.sex-apply-glyph {
+    //margin-left: 5pt;
+    cursor: default;
+    color: #00aa00;
+    margin-right: 4px;
+}
+
+/*
+
+.phantoms-apply-glyph{
+  //margin-left: 5pt;
+  cursor: default;
+  color: $close-x-red;
+  margin-right: 4px;
+}
+*/
+
+.phantoms-status {
+    font-size: 10pt;
+}
+
+.sex-status {
+    font-size: 10pt;
+}
+
+.thirdParty-status {
+    font-size: 10pt;
+}
+
+
+.close-third-party-explanation-x {
+    float: right;
+    margin-right: 10px;
+    height: 16px;
+}
+
+
+.third-party-explanation-text {
+    font-size: 12pt;
+    margin: 8px;
+}
+
+
+.collection-scroller-div {
+    padding-bottom: 12px;
+    resize: vertical;
+    overflow: auto;
+}
+
+.collection-scroller {
+    height: 100%;
+}
+
+.collection-scroller-content {
+    height: $query-collection-start-height;
+}
