@@ -11,8 +11,8 @@ import { PieChartService } from '@app/image-search/data-section/data-section-tab
         trigger( 'showModalityDescription', [
             state( 'true', style( { opacity: 1 } ) ),
             state( 'false', style( { opacity: 0 } ) ),
-            transition( '0 => 1', animate( '0' ) ),
-            transition( '1 => 0', animate( '0' ) )
+            transition( '0 => 1', animate( '0.01s' ) ),
+            transition( '1 => 0', animate( '0.01s' ) )
         ] )
     ]
 } )
