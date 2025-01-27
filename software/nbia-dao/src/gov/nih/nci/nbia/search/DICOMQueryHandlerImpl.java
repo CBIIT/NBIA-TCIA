@@ -67,6 +67,7 @@ import gov.nih.nci.ncia.criteria.DateRangeCriteria;
 import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
 import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.DescriptionCriteria;
 import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
 import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.DxDataCollectionDiameterCriteria;
@@ -397,6 +398,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         whereStmt += processPatientSexCriteria(query, handlerFac);
         
         whereStmt += processPatientAgeRange(query);
+
+        whereStmt += processDescription(query);
 
         whereStmt += processStudyCriteria(query, handlerFac);
 
@@ -1288,6 +1291,34 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
           }
         }
         
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the Description Criteria
+     * portion of the query.  Returns 0 length string if no results
+     */
+    private static String processDescription(DICOMQuery theQuery) {
+        DescriptionCriteria dc = theQuery.getDescriptionCriteria();
+        if (dc != null) {
+          String searchString = dc.getSearchString().toUpperCase();
+          if ((searchString != null) && (searchString.length() > 0)) {
+              String[] words = searchString.split("\\s+"); // Split by whitespace
+              StringBuilder conditionBuilder = new StringBuilder(" and (");
+              
+              for (int i = 0; i < words.length; i++) {
+                  String word = words[i];
+                  if (i > 0) {
+                      conditionBuilder.append(" or ");
+                  }
+                  conditionBuilder.append("(series.studyDesc like '%").append(word).append("%' or ")
+                                  .append("series.seriesDesc like '%").append(word).append("%' or ")
+                                  .append("series.protocolName like '%").append(word).append("%')");
+              }
+              
+              conditionBuilder.append(")");
+              return conditionBuilder.toString();
+          }
+        }
         return "";
     }
 }

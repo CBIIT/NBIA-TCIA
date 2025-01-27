@@ -210,7 +210,7 @@ public class PatientDAOImpl extends AbstractDAO
 		}
 
 		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
-		whereCondition.append(" and UPPER(gs.seriesInstanceUID) in (:seriesInstanceUIDs)");
+		whereCondition.append(" and UPPER(gs.seriesInstanceUID) in (?)");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));   
 
 		String hql = "select distinct " +
@@ -223,15 +223,13 @@ public class PatientDAOImpl extends AbstractDAO
 			"gs.maxSubmissionTimestamp, gs.licenseName, gs.licenseURL, gs.descriptionURI, gs.totalSize, " +
 			"gs.dateReleased, gs.studyDesc, gs.studyDate, gs.thirdPartyAnalysis " +
 			"from GeneralSeries gs " +
-			"join Patient p on p.id = gs.patientPkId " +
-			"join Study s on s.studyInstanceUID = gs.studyInstanceUID " +
+			"join gs.study s " +
+			"join s.patient  p " +
 			whereCondition.toString();
 
 		System.out.println("Executing combined query: " + hql);
 
-		Map<String, Object> params = new HashMap<>();
-		params.put("seriesInstanceUIDs", Arrays.stream(seriesInstanceUIDs.split(",")).map(String::toUpperCase).toList());
-		List<Object[]> results = getHibernateTemplate().find(hql, params);
+		List<Object[]> results = getHibernateTemplate().find(hql, seriesInstanceUIDs);
 		fillInHuman(results);
 		return results;
 	}
