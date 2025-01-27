@@ -15,10 +15,18 @@ import { ParameterService } from '@app/common/services/parameter.service';
   styleUrls: ['../../../../../app.component.scss', '../subjects-search-tab.component.scss']
 })
 export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
+    sexApplySelection = 0;
+    sexApply = false;
 
-  sexRadioLabels = ['All', 'Female', 'Male', 'None'];
-  sexApply = false;
-  sexApplySelection = 0;
+    // Object to track selected states
+    selectedSex = {
+      male: false,
+      female: false,
+      null: false
+    };
+  
+    // Array to store selected options
+    selectedOptions: string[] = [];
 
   /**
    * The list used by the HTML.
@@ -28,7 +36,7 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
   /**
    * For hide or show this group of criteria when the arrows next to the heading are clicked.
    */
-  showCriteriaList;
+  showPatientSex =false;
 
   /**
    * Used to clean up subscribes on the way out to prevent memory leak.
@@ -47,29 +55,43 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
     // Called when the "Clear" button on the left side of the Display query at the top.
     this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       () => {
-        this.sexApply = false;
-        this.sexApplySelection = 0;
-        this.initMonitorService.setSexInit(true);
+        this.selectedSex = { male: false, female: false, null: false };
+        this.initMonitorService.setPatientSexInit(true);
       }
     );
 
+     // Called when a query included in the URL contained patient sex.
     this.parameterService.parameterPatientSexEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       data => {
-        this.sexApplySelection = Number(data);
-        this.onApplySexApplyChecked(true)
-        this.commonService.setHaveUserInput(false);
+        // Deal with trailing (wrong) comma
+        data = (<any>data).replace( /,$/, '' );
 
+        // Data can be multiple values, comma separated
+        let criteriaListforSex = (<any>data).split( /\s*,\s*/ );
+
+        if(criteriaListforSex.length > 0){
+          this.commonService.setHaveUserInput( false );
+          for (let i = 0; i < criteriaListforSex.length; i++) {
+            if (criteriaListforSex[i] === 'M') { 
+              this.selectedSex.male = true;   
+            } else if (criteriaListforSex[i] === 'F') {
+              this.selectedSex.female = true;
+            } else if (criteriaListforSex[i] === 'null') {
+              this.selectedSex.null = true;
+            }
+          }
+        }   
       }
     );
 
-    // Get persisted showCriteriaList value.  Used to show, or collapse this category of criteria in the UI.
-    this.showCriteriaList = this.commonService.getCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX);
-    if (this.utilService.isNullOrUndefined(this.showCriteriaList)) {
-      this.showCriteriaList = Consts.SHOW_CRITERIA_QUERY_PATIENTSEX_DEFAULT;
-      this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showCriteriaList);
+    // Get persisted ShowPatientSex value.  Used to show, or collapse this category of criteria in the UI.
+    this.showPatientSex = this.commonService.getCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX);
+    if (this.utilService.isNullOrUndefined(this.showPatientSex)) {
+      this.showPatientSex = Consts.SHOW_CRITERIA_QUERY_PATIENTSEX_DEFAULT;
+      this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showPatientSex);
     }
 
-    this.initMonitorService.setSexInit(true);
+    //this.initMonitorService.setPatientSexInit(true);
   }
 
 
@@ -78,19 +100,9 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
    *
    * @param show
    */
-  onShowCriteriaListClick(show: boolean) {
-    this.showCriteriaList = show;
-    this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showCriteriaList);
-  }
-
-  onSexRadioChange(value) {
-    this.sexApplySelection = value;
-    if (value === 0) {
-      this.sexApply = false;
-    } else {
-      this.sexApply = true;
-    }
-    this.onApplySexApplyChecked(this.sexApply);
+  onShowPatientSexClick(show: boolean) {
+    this.showPatientSex = show;
+    this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showPatientSex);
   }
 
   onApplySexApplyChecked(status) {
@@ -99,14 +111,49 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
     this.sexApply = status;
 
     // This category's data for the query, the 0th element is always the category name.
-    criteriaForQuery.push(Consts.PATIENTSEX_CRITERIA);
+    criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
     if (status) {
-      criteriaForQuery.push(this.sexRadioLabels[this.sexApplySelection]);
-      this.queryUrlService.update(this.queryUrlService.PATIENT_SEX, this.sexRadioLabels[this.sexApplySelection]);
+      //criteriaForQuery.push(this.sexRadioLabels[this.sexApplySelection]);
+     // this.queryUrlService.update(this.queryUrlService.PATIENT_SEX, this.sexRadioLabels[this.sexApplySelection]);
     } else {
       this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
     }
     this.commonService.updateQuery(criteriaForQuery);
+  }
+
+  // Method to update selected options dynamically
+  onSelectionChange(selected, checked): void {
+    this.commonService.setHaveUserInput( true );
+    // object.entries in the future
+    // Update selected options
+    if(checked){
+      this.selectedSex[selected] = true;
+      this.selectedOptions.push(selected.charAt(0).toUpperCase() + selected.slice(1));
+    }else{
+      this.selectedSex[selected] = false;
+      this.selectedOptions.splice(this.selectedOptions.indexOf(selected.charAt(0).toUpperCase() + selected.slice(1)), 1);
+    }
+   // this.selectedOptions = Object.entries(this.selectedSex)
+   //   .filter((key) => selected) // Include only checked options
+   //   .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1)); // Capitalize options
+    
+    let criteriaForQuery: string[] = [];
+    criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
+    criteriaForQuery = criteriaForQuery.concat(this.selectedOptions);
+    this.commonService.updateQuery(criteriaForQuery);
+
+    this.queryUrlService.update( this.queryUrlService.PATIENT_SEX, this.selectedOptions.join( ',' ) );  
+  }
+
+  // Method to reset selections
+  resetSelections(): void {
+    this.selectedSex = { male: false, female: false, null: false };
+    this.selectedOptions = [];
+    this.commonService.setHaveUserInput( true );
+    let criteriaForQuery: string[] = [];
+    criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
+    this.commonService.updateQuery(criteriaForQuery);
+    this.queryUrlService.clear( this.queryUrlService.PATIENT_SEX );
   }
 
   ngOnDestroy() {

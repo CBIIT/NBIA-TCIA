@@ -54,13 +54,31 @@
     }
   }
 
-  .age-input-box {
+.age-input-box {
     width: 60px;
     margin-left: 10px;
     margin-right: 10px;
-  }
+}
 
-  .available-checkbox {
+.available-checkbox {
     margin-top: 15px;
     margin-bottom: 12px;
+}
+
+.nbia-patientAge-range-note{
+  //  float: right;
+  padding-top: 0;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  margin-left: 36px;
+  height: 20px;
+}
+
+.nbia-patientAge-range-update-button{
+  float: right;
+  margin-right: 10px;
+//  margin-top: -3px;
+  margin-bottom: 10px;
+  height: 30px;
+  padding-top: 3px;
 }

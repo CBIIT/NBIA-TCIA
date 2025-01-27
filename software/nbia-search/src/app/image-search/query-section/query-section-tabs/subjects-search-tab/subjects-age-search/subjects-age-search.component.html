@@ -5,51 +5,47 @@
     <div class="query-panel-heading">
         <!-- Hide the sex Radio buttons.  Still show the heading (with this img to its left) -->
         <span
-                *ngIf="showCriteriaList"
+                *ngIf="showPatientAgeRange"
                 class="clicker"
-                (click)="onShowCriteriaListClick(false)"
-        >
+                (click)="onShowPatientAgeRangeClick(false)"
+>
             <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Patient Age
-            <span
-                    *ngIf="sexApply"
-                    class="sex-status"
-            > ({{sexRadioLabels[sexApplySelection]}})</span>
         </span>
 
         <!-- Show the Age range slider -->
         <span
-                *ngIf="!showCriteriaList"
+                *ngIf="!showPatientAgeRange"
                 class="clicker"
-                (click)="onShowCriteriaListClick(true)"
+                (click)="onShowPatientAgeRangeClick(true)"
         >
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Patient Age
-            <span
-                    *ngIf="sexApply"
-                    class="sex-status"
-            > ({{sexRadioLabels[sexApplySelection]}})</span>
          </span>
+
+         <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  
+         class="clicker  close-third-party-explanation-x" 
+         (click)="onPatientAgeRangeExplanationClick($event)">
 
     </div>
 
     <div
             [ngClass]="{
-            'hide-div': !showCriteriaList
+            'hide-div': !showPatientAgeRange
         }"  class="nbia-age-range-slider" >
    
-      <p> <input type="number" [(ngModel)]="minValue"  class="age-input-box">  to 
-      <input type="number" [(ngModel)]="maxValue" class="age-input-box"> years old   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <label *ngIf="minValue > 0 || maxValue < 99 " > 
+      <p> <input type="number" maxlength="2" min="0" max="99" [(ngModel)]="fromPatientAge"  class="age-input-box">  to 
+      <input type="number" maxlength="3" min="1" max="100" [(ngModel)]="toPatientAge" class="age-input-box"> years old   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="fromPatientAge > 0 || toPatientAge < 99 " > 
         <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
-             (click)="patientAgeClearAllClick(false)">
+             (click)="onPatientAgeClearAllClick(false)">
         </label>
         </p>
-        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="fromPatientAge" [(highValue)]="toPatientAge" [options]="options"></ngx-slider>
     </div>
 
      <!--Apply Available range  checkbox-->
-     <div  [ngClass]="{'hide-div': !showCriteriaList}">
+     <div  [ngClass]="{'hide-div': !showPatientAgeRange}">
         <input
                 type="checkbox"
                 class="query-panel-checkboxes available-checkbox"
@@ -59,4 +55,33 @@
             &nbsp;include non-provided patient age
         </label>
     </div>
+
+    <div *ngIf="(fromPatientAge > 0 || toPatientAge < 100)  && showPatientAgeRange" class="nbia-patientAge-range-note">
+
+        <!-- Display To and/or From Range -->
+        <!--   It was decided this was not needed now that the same data is provided in the dropdown  (13_AUG_2020)
+               <span *ngIf="displayFromBaseLineFrom !== '' || displayFromBaseLineTo !== ''">
+                   From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
+               </span>
+               <span *ngIf="displayFromBaseLineFrom === '' && displayFromBaseLineTo === ''">
+                   None
+               </span>
+       -->
+        <input [ngClass]="{
+                   disabled: (fromPatientAgeTrailer === fromPatientAge &&
+                   toPatientAgeTrailer === toPatientAge && nonSpecifiedCheckedTrailer === nonSpecifiedChecked ) ,
+
+                   'nbia-button-disabled': (fromPatientAgeTrailer === fromPatientAge &&
+                   toPatientAgeTrailer === toPatientAge && nonSpecifiedCheckedTrailer === nonSpecifiedChecked) 
+               }"
+               type="button"
+               class="btn btn-default nbia-button nbia-patientAge-range-update-button "
+               value="Apply Patient Age"
+               (click)="onPatientAgeRangeApply()"
+        >
+    </div>
+
 </div>
+<nbia-subjects-age-explanation
+*ngIf="showPatientAgeRangeExplanation" [posY]="posY"
+></nbia-subjects-age-explanation>
