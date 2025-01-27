@@ -112,6 +112,18 @@ export class CommonService{
     showClinicalTimePointsExplanationEmitter = new EventEmitter();
     showClinicalTimePointsExplanation = false;
 
+    showPatientAgeRangeExplanationEmitter = new EventEmitter();
+    showPatientAgeRangeExplanation = false;
+
+    showSliceThicknessRangeExplanationEmitter = new EventEmitter();
+    showSliceThicknessRangeExplanation = false;
+
+    showPixelSpacingRangeExplanationEmitter = new EventEmitter();
+    showPixelSpacingRangeExplanation = false;
+
+    showImageDescriptionExplanationEmitter = new EventEmitter();
+    showImageDescriptionExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -227,7 +239,6 @@ export class CommonService{
     resultsDisplayMode;
     resultsDisplayModeEmitter = new EventEmitter();
 
-
     showDataSectionEmitter = new EventEmitter();
 
     showQuerySectionEmitter = new EventEmitter();
@@ -240,7 +251,6 @@ export class CommonService{
 
     // TODO explain
     showQueryUrlEmitter = new EventEmitter();
-
 
     // TODO explain
     isSearchable = false;
@@ -344,7 +354,6 @@ export class CommonService{
     getMinimumMatchedStudiesValue() {
         return this.minimumMatchedStudiesValue;
     }
-
 
     setQueryBuilderAnyOrAll( value ) {
         this.queryBuilderAnyOrAll = value;
@@ -462,6 +471,26 @@ export class CommonService{
     setShowThirdPartyExplanation( e ) {
         this.showThirdPartyExplanation = e;
         this.showThirdPartyExplanationEmitter.emit( this.showThirdPartyExplanation );
+    }
+
+    setShowPatientAgeRangeExplanation( e ) {
+        this.showPatientAgeRangeExplanation = e;
+        this.showPatientAgeRangeExplanationEmitter.emit( this.showPatientAgeRangeExplanation );
+    }
+
+    setShowSliceThicknessRangeExplanation( e ) {
+        this.showSliceThicknessRangeExplanation = e;
+        this.showSliceThicknessRangeExplanationEmitter.emit( this.showSliceThicknessRangeExplanation );
+    }
+
+    setShowPixelSpacingRangeExplanation( e ) { 
+        this.showPixelSpacingRangeExplanation = e;
+        this.showPixelSpacingRangeExplanationEmitter.emit( this.showPixelSpacingRangeExplanation );
+    }
+
+    setShowImageDescriptionExplanation( e ) {
+        this.showImageDescriptionExplanation = e;
+        this.showImageDescriptionExplanationEmitter.emit( this.showImageDescriptionExplanation );
     }
 
     clearSimpleSearchResults() {
@@ -633,7 +662,7 @@ export class CommonService{
      * @param allData  an array of selected criteria
      */
     emitSimpleSearchQueryForDisplay( allData ) {
-        let maxCriteriaLen = 15; // @FIXME make this a constant
+        let maxCriteriaLen = 25; // @FIXME make this a constant
         let displayQuery = [];
 
 
@@ -711,7 +740,7 @@ export class CommonService{
         // Anatomical Site
         if( !this.utilService.isNullOrUndefined( allData[Consts.ANATOMICAL_SITE_CRITERIA] ) ){
             for( let item of allData[Consts.ANATOMICAL_SITE_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'anatomical', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'BodyPartExamined', 'name': item } );
             }
         }
 
@@ -729,7 +758,7 @@ export class CommonService{
         if( !this.utilService.isNullOrUndefined( allData[Consts.MANUFACTURER_CRITERIA] ) ){
             for( let item of allData[Consts.MANUFACTURER_CRITERIA] ){
                 // displayQuery.push( { [Consts.CRITERIA]: 'manufacturer', 'name': item } );
-                displayQuery.push( { [Consts.CRITERIA]: 'manufacturerModel', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'manufacturer', 'name': item } );
             }
         }
 
@@ -756,6 +785,44 @@ export class CommonService{
             }
         }
 
+         // Patient Age Range
+         if( !this.utilService.isNullOrUndefined( allData[Consts.PATIENT_AGE_RANGE_CRITERIA] ) ){
+            for( let item of allData[Consts.PATIENT_AGE_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'patientAgeRange', 'name': item } );          
+            }
+            // displayQuery.push( { [Consts.CRITERIA]: 'patientAgeRange', 'name': allData[Consts.PATIENT_AGE_RANGE_CRITERIA][0] + ' ' +
+            //     allData[Consts.PATIENT_AGE_RANGE_CRITERIA][1] + ' to ' + allData[Consts.PATIENT_AGE_RANGE_CRITERIA][2] + ' (years old)' } );
+            
+        }
+
+         // Patient sex
+         if( !this.utilService.isNullOrUndefined( allData[Consts.PATIENT_SEX_CRITERIA] ) ){
+            for( let item of allData[Consts.PATIENT_SEX_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'patientSex', 'name': item } );
+            }
+        }
+
+         // Slice Thickness Range
+        if( !this.utilService.isNullOrUndefined( allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA] ) ){
+            for( let item of allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'sliceThicknessRange', 'name': item } );          
+            }
+        }
+
+        // Pixel Spacing Range
+        if( !this.utilService.isNullOrUndefined( allData[Consts.PIXEL_SPACING_RANGE_CRITERIA] ) ){ 
+            for( let item of allData[Consts.PIXEL_SPACING_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'pixelSpacingRange', 'name': item } );          
+            } 
+        }
+
+        // Image Description
+        if( !this.utilService.isNullOrUndefined( allData[Consts.IMAGE_DESCRIPTION_CRITERIA] ) ){
+            for( let item of allData[Consts.IMAGE_DESCRIPTION_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'imageDescription', 'name': item } );
+            }
+        }
+
         this.currentSimpleSearchQuery = displayQuery;
         this.updateSimpleSearchQueryForDisplayEmitter.emit( displayQuery );
     }
@@ -767,7 +834,6 @@ export class CommonService{
     emitQueryBuilderQueryForDisplay( queryData ) {
         this.updateQueryBuilderForDisplayEmitter.emit( queryData );
     }
-
 
     clearAllQueryBuilder() {
         this.clearAllQueryBuilderEmitter.emit();

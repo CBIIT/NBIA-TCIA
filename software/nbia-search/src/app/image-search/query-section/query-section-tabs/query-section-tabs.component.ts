@@ -30,15 +30,19 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
      */
     tabIsActive: boolean[] = [];
 
-    showQueryBuilder = Properties.SHOW_QUERY_BUILDER;
+    //showQueryBuilder = Properties.SHOW_QUERY_BUILDER;
+    showSubjectsTab = Properties.SHOW_SUBJECTS_TAB;
+    showImagesTab = Properties.SHOW_IMAGES_TAB;
     showSearchSharedListSearch = Properties.SHOW_SEARCH_SHARED_LIST_TAB;
     showSearchStudySearch = Properties.SHOW_SEARCH_STUDY_TAB;
 
     displayMode;
 
     SIMPLE_SEARCH = 0;
-    TEXT_SEARCH = 1;
-    QUERY_BUILDER = 2;
+    // TEXT_SEARCH = 1;
+    // QUERY_BUILDER = 2;
+    SUBJECTS_TAB = 1;
+    IMAGES_TAB = 2;
     SHARED_LISTS = 3;
     STUDY = 4;
 
@@ -58,8 +62,8 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                  private utilService: UtilService ) {
         // Create and initialize
         this.tabIsActive[this.SIMPLE_SEARCH] = true;
-        this.tabIsActive[this.TEXT_SEARCH] = true;
-        this.tabIsActive[this.QUERY_BUILDER] = true;
+        this.tabIsActive[this.SUBJECTS_TAB] = true;
+        this.tabIsActive[this.IMAGES_TAB] = true;
         this.tabIsActive[this.SHARED_LISTS] = true;
         this.tabIsActive[this.STUDY] = true;
     }
@@ -73,20 +77,20 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                 this.displayMode = data;
                 if( this.displayMode === Consts.SIMPLE_SEARCH ){
                     this.tabIsActive[this.SIMPLE_SEARCH] = true;
-                    this.tabIsActive[this.TEXT_SEARCH] = false;
-                    this.tabIsActive[this.QUERY_BUILDER] = false;
+                    this.tabIsActive[this.SUBJECTS_TAB] = false;
+                    this.tabIsActive[this.IMAGES_TAB] = false;
                     this.tabIsActive[this.SHARED_LISTS] = false;
                     this.tabIsActive[this.STUDY] = false;
                     Properties.PAGED_SEARCH = this.pagedSearchHold;
                 }
-                else if( this.displayMode === Consts.TEXT_SEARCH ){
-                    this.tabIsActive[this.SIMPLE_SEARCH] = false;
-                    this.tabIsActive[this.TEXT_SEARCH] = true;
-                    this.tabIsActive[this.QUERY_BUILDER] = false;
-                    this.tabIsActive[this.SHARED_LISTS] = false;
-                    this.tabIsActive[this.STUDY] = false;
-                    Properties.PAGED_SEARCH = false;
-                }
+        //         else if( this.displayMode === Consts.SUBJECTS_TAB ){
+        //             this.tabIsActive[this.SIMPLE_SEARCH] = false;
+        //             this.tabIsActive[this.SUBJECTS_TAB] = true;
+        //             this.tabIsActive[this.IMAGES_TAB] = false;
+        //             this.tabIsActive[this.SHARED_LISTS] = false;
+        //             this.tabIsActive[this.STUDY] = false;
+        //             Properties.PAGED_SEARCH = false;
+        //         }
             }
         );
 
@@ -99,16 +103,16 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
         }
 
         if( this.utilService.isNullOrUndefined( this.currentQueryTypeTab ) || (this.currentQueryTypeTab.length < 1) ){
-            this.currentQueryTypeTab = Consts.SEARCH_TYPE_DEFAULT;
+            this.currentQueryTypeTab = 0; // Consts.SEARCH_TYPE_DEFAULT;
         }
 
         // If a disabled tab was saved and is now trying to restore from the persistenceService we need to set the tab to something else.
         if(
-            (!Properties.SHOW_QUERY_BUILDER && this.currentQueryTypeTab === this.QUERY_BUILDER) ||
-            (!Properties.SHOW_SEARCH_STUDY_TAB && this.STUDY === this.QUERY_BUILDER) ||
+            (!Properties.SHOW_IMAGES_TAB && this.currentQueryTypeTab === this.IMAGES_TAB) ||
+            (!Properties.SHOW_SEARCH_STUDY_TAB && this.STUDY === this.IMAGES_TAB) ||
             (!Properties.SHOW_SEARCH_SHARED_LIST_TAB && this.currentQueryTypeTab === this.SHARED_LISTS)
         ){
-            this.currentQueryTypeTab = Consts.SEARCH_TYPE_DEFAULT;
+            this.currentQueryTypeTab = 0; // Consts.SEARCH_TYPE_DEFAULT;
         }
 
 
@@ -118,9 +122,9 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
             this.currentQueryTypeTab = this.SIMPLE_SEARCH;
         }
 
-        if( this.displayMode === Consts.TEXT_SEARCH ){
-            Properties.PAGED_SEARCH = false;
-        }
+        // if( this.displayMode === Consts.TEXT_SEARCH ){
+        //     Properties.PAGED_SEARCH = false;
+        // }
 
         this.onTabClick( this.currentQueryTypeTab );
     }
@@ -133,6 +137,19 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
     onTabClick( i ) {
         this.activeTab = i;
         this.setTab( i );
+        Properties.PAGED_SEARCH = this.pagedSearchHold;
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.commonService.selectDataTab( this.commonService.getSimpleSearchDataTab() ); // FIXME this should be a const
+
+        // Change/Update the results to display
+        this.apiServerService.simpleSearchResultsEmitter.emit( this.commonService.getSimpleSearchResults() );
+
+        // There is no query we need to set the results count to -1 which will cause thing to be displayed for results count rather than count of 0
+        if( (this.utilService.isNullOrUndefined( this.commonService.getCurrentSimpleSearchQuery() )) || (this.commonService.getCurrentSimpleSearchQuery().length < 1) ){
+            this.commonService.updateSearchResultsCount( -1 );
+        }
+    /*
+      
         switch( i ){
             case 0: // 'Simple Search'
                 // Change the table display.
@@ -149,22 +166,22 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                 }
                 break;
 
-            case 1: // 'Text'
+            case 1: // 'SUBJECTS-TAB',  not 'Text'
                 // Change the table display.
-                Properties.PAGED_SEARCH = false;
-                this.commonService.setResultsDisplayMode( Consts.TEXT_SEARCH );
-                this.commonService.selectDataTab( 1 ); // FIXME this should be a const
+               // Properties.PAGED_SEARCH = false;
+                this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+                //this.commonService.selectDataTab( this.commonService.getSimpleSearchDataTab() ); // FIXME this should be a const
 
 
                 // Change/Update the results to display
-                this.apiServerService.textSearchResultsEmitter.emit( this.commonService.getTextSearchResults() );
+               // this.apiServerService.textSearchResultsEmitter.emit( this.commonService.getSimpleSearchResults() );
 
                 // There is no query we need to set the results count to -1 which will cause thing to be disolayed for results count rather than count of 0
-                if( (this.utilService.isNullOrUndefined( this.commonService.getCurrentTextSearchQuery() )) || (this.commonService.getCurrentTextSearchQuery().length < 1) ){
+                if( (this.utilService.isNullOrUndefined( this.commonService.getCurrentSimpleSearchQuery() )) || (this.commonService.getCurrentSimpleSearchQuery().length < 1) ){
                     this.commonService.updateSearchResultsCount( -1 );
                 }
                 break;
-/*
+
 
             case 2: // 'Criteria Search'
                 // Change the table display.
@@ -189,8 +206,9 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
                 // Change/Update the results to display
                 // this.apiServerService.criteriaSearchResultsEmitter.emit( this.commonService.getCriteriaSearchResults() );
                 break;
-*/
-        }
+
+        } 
+                */
     }
 
     /**

@@ -53,6 +53,8 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
             () => {
                 this.totalQueryClear();
                 this.onDateRangeClearAllClick( false ); // @CHECKME
+                this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
+                 
             }
         );
 

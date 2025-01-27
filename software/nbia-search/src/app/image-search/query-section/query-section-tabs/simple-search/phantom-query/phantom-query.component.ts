@@ -49,6 +49,8 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
                 this.phantomApply = false;
                 this.phantomApplySelection = 2;
                 this.initMonitorService.setPhantomsInit( true );
+                this.queryUrlService.clear( this.queryUrlService.PHANTOMS );
+            
             }
         );
 

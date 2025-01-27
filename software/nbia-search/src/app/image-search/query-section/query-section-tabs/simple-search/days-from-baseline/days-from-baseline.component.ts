@@ -83,6 +83,8 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             () => {
                 this.onClinicalTimepointsClearAllClick();
                 // this.onApplyFromBaselineCheckboxClick( false );
+                this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
+                   
             }
         );
 

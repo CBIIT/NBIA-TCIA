@@ -135,6 +135,8 @@ export let Properties = {
     SHOW_THIRD_PARTY: true,
 
     SHOW_QUERY_BUILDER: false,
+    SHOW_SUBJECTS_TAB: false,
+    SHOW_IMAGES_TAB: false,
     SHOW_SEARCH_SHARED_LIST_TAB: false,
     SHOW_SEARCH_STUDY_TAB: false,
 
@@ -151,6 +153,12 @@ export let Properties = {
 
     SHOW_HEADER: true,
     SHOW_UNIVERSAL_MENU: true,
+
+    SHOW_PATIENT_SEX: false,
+    SHOW_PATIENT_AGE: false,
+    SHOW_SLICE_THICKNESS: false,
+    SHOW_PIXEL_SPACING: false,
+    SHOW_IMAGE_DESCRIPTION: false,
 
     USE_COLLECTIONS_LESS_MORE: true,
 
@@ -178,6 +186,9 @@ export let Properties = {
     // For backwards compatibility
     URL_KEY_PATIENT_ID2: 'patientID',
 
+    URL_KEY_PATIENT_AGE_RANGE: 'PatientAgeRangeCriteria',
+    URL_KEY_PATIENT_SEX: 'PatientSexCriteria',
+
     URL_KEY_COLLECTIONS: 'CollectionCriteria',
     // For backwards compatibility
     URL_KEY_COLLECTIONS2: 'collectionName',
@@ -190,6 +201,12 @@ export let Properties = {
     URL_KEY_ANATOMICAL_SITE: 'AnatomicalSiteCriteria',
     URL_KEY_MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
     URL_KEY_DATE_RANGE: 'DateRange',
+    URL_KEY_SLICE_THICKNESS: 'SliceThicknessCriteria',
+    URL_KEY_PIXEL_SPACING: 'PixelSpacingCriteria',
+    URL_KEY_IMAGE_DESCRIPTION: 'ImageDescriptionCriteria',
+    URL_KEY_MANUFACTURER: 'ManufacturerCriteria',
+
+
     URL_KEY_TEXT_SEARCH: 'text-search',
     URL_KEY_SHARED_LIST: 'saved-cart',
 

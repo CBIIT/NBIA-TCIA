@@ -20,6 +20,12 @@ export class QueryUrlService{
     THIRD_PARTY = 10;
     DAYS_FROM_BASELINE = 11;
     EXCLUDE_COMMERCIAL = 12;
+    PATIENT_AGE_RANGE= 13;
+    PATIENT_SEX= 14;
+    SLICE_THICKNESS = 15;
+    PIXEL_SPACING = 16;
+    IMAGE_DESCRIPTION = 17;
+    MANUFACTURER = 18;
     API_URL = 0;
 
     queryUrlString = '';
@@ -127,7 +133,45 @@ export class QueryUrlService{
                         queryForLoggingObject[Properties.URL_KEY_PATIENT_ID].push(this.queryData[f]);
 
                         break;
-                }
+                    case this.PATIENT_AGE_RANGE:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_PATIENT_AGE_RANGE])){
+                            queryForLoggingObject[Properties.URL_KEY_PATIENT_AGE_RANGE] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_PATIENT_ID].push(this.queryData[f]);
+    
+                        break;
+                    case this.PATIENT_SEX:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_PATIENT_SEX])){
+                            queryForLoggingObject[Properties.URL_KEY_PATIENT_SEX] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_PATIENT_SEX].push(this.queryData[f]);
+                        break;
+                    
+                    case this.SLICE_THICKNESS:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_SLICE_THICKNESS])){
+                            queryForLoggingObject[Properties.URL_KEY_SLICE_THICKNESS] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_SLICE_THICKNESS].push(this.queryData[f]);
+                        break;
+                    case this.PIXEL_SPACING:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_PIXEL_SPACING])){
+                            queryForLoggingObject[Properties.URL_KEY_PIXEL_SPACING] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_PIXEL_SPACING].push(this.queryData[f]);
+                        break;
+                    case this.IMAGE_DESCRIPTION:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_IMAGE_DESCRIPTION])){
+                            queryForLoggingObject[Properties.URL_KEY_IMAGE_DESCRIPTION] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_IMAGE_DESCRIPTION].push(this.queryData[f]);
+                        break;
+                    case this.MANUFACTURER:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_MANUFACTURER])){
+                            queryForLoggingObject[Properties.URL_KEY_MANUFACTURER] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_MANUFACTURER].push(this.queryData[f]); 
+                        break;
+            }
             }
         }
         return queryForLoggingObject;
@@ -207,6 +251,31 @@ export class QueryUrlService{
                         this.queryUrlString += '&' + Properties.URL_KEY_PATIENT_ID + '=' + this.queryData[f];
                         queryUrlString += '&' + Properties.URL_KEY_PATIENT_ID + '=' + this.queryData[f];
                         break;
+                    
+                    case this.PATIENT_AGE_RANGE:
+                        this.queryUrlString += '&' + Properties.URL_KEY_PATIENT_AGE_RANGE + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_PATIENT_AGE_RANGE + '=' + this.queryData[f];
+                        break;
+                    case this.PATIENT_SEX:
+                        this.queryUrlString += '&' + Properties.URL_KEY_PATIENT_SEX + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_PATIENT_SEX + '=' + this.queryData[f];
+                        break;
+                    case this.SLICE_THICKNESS:
+                        this.queryUrlString += '&' + Properties.URL_KEY_SLICE_THICKNESS + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_SLICE_THICKNESS + '=' + this.queryData[f];
+                        break;
+                    case this.PIXEL_SPACING:
+                        this.queryUrlString += '&' + Properties.URL_KEY_PIXEL_SPACING + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_PIXEL_SPACING + '=' + this.queryData[f];
+                        break;
+                    case this.IMAGE_DESCRIPTION:
+                        this.queryUrlString += '&' + Properties.URL_KEY_IMAGE_DESCRIPTION + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_IMAGE_DESCRIPTION + '=' + this.queryData[f];
+                        break;
+                    case this.MANUFACTURER:
+                        this.queryUrlString += '&' + Properties.URL_KEY_MANUFACTURER + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_MANUFACTURER + '=' + this.queryData[f];
+                        break;  
                 }
             }
         }
