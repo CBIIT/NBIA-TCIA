@@ -1,6 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { NgxSliderModule } from "@angular-slider/ngx-slider";
 
 import { AppComponent } from './app.component';
 import { ImageSearchComponent } from './image-search/image-search.component';
@@ -80,7 +89,7 @@ import { SaveCartComponent } from './cart/save-cart/save-cart.component';
 import { CollectionDescriptionsService } from '@app/common/services/collection-descriptions.service';
 import { ToolTipComponent } from './common/components/tool-tip/tool-tip.component';
 import { IntroductionComponent } from './introduction/introduction.component';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { UtilService } from '@app/common/services/util.service';
 import { DescriptionPopupComponent } from './image-search/data-section/data-section-tabs/summary/pie-charts/description-popup/description-popup.component';
 import { WindowRefService } from '@app/common/services/window-ref.service';
@@ -100,7 +109,20 @@ import { DaysFromBaselineComponent } from './image-search/query-section/query-se
 import { CommercialUseComponent } from './image-search/query-section/query-section-tabs/simple-search/commercial-use/commercial-use.component';
 import { UniversalMenuComponent } from './header/universal-menu/universal-menu.component';
 import { ClinicalTimePointsExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/days-from-baseline/clinical-time-points-explination/clinical-time-points-explanation.component';
-
+import { GeneralSearchTabComponent } from './image-search/query-section/query-section-tabs/general-search-tab/general-search-tab.component';
+import { ImagesSearchTabComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-search-tab.component';
+import { SubjectsSearchTabComponent } from './image-search/query-section/query-section-tabs/subjects-search-tab/subjects-search-tab.component';
+import { SubjectsSexSearchComponent } from './image-search/query-section/query-section-tabs/subjects-search-tab/subjects-sex-search/subjects-sex-search.component';
+import { SubjectsAgeSearchComponent } from './image-search/query-section/query-section-tabs/subjects-search-tab/subjects-age-search/subjects-age-search.component';
+import { SubjectsAgeExplanationComponent } from './image-search/query-section/query-section-tabs/subjects-search-tab/subjects-age-search/subjects-age-explanation/subjects-age-explanation.component';
+import { SubjectsHeightSearchComponent } from './image-search/query-section/query-section-tabs/subjects-search-tab/subjects-height-search/subjects-height-search.component';    
+import { SubjectsWeightSearchComponent } from './image-search/query-section/query-section-tabs/subjects-search-tab/subjects-weight-search/subjects-weight-search.component';
+import { ImagesDesciptionSearchComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-desciption-search/images-desciption-search.component';
+import { ImagesManufacturerSearchComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-manufacturer-search/images-manufacturer-search.component';
+import { ImagesPixelSpacingSearchComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-pixel-spacing-search/images-pixel-spacing-search.component';
+import { ImagesSliceThicknessSearchComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-slice-thickness-search/images-slice-thickness-search.component';
+import { ImagesSliceThicknessExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-slice-thickness-search/images-slice-thickness-explanation/images-slice-thickness-explanation.component'; 
+import { ImagesPixelSpacingExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-pixel-spacing-search/images-pixel-spacing-explanation/images-pixel-spacing-explanation.component';
 
 /*
 const appRoutes: Routes = [
@@ -130,6 +152,18 @@ const appRoutes: Routes = [
         QueryBuilderComponent,
         TextQueryComponent,
         SimpleSearchComponent,
+        GeneralSearchTabComponent,
+        ImagesSearchTabComponent,
+        SubjectsSearchTabComponent,
+        SubjectsSexSearchComponent,
+        SubjectsAgeSearchComponent,
+        SubjectsAgeExplanationComponent,
+        // SubjectsHeightSearchComponent,
+        // SubjectsWeightSearchComponent,
+        ImagesDesciptionSearchComponent,
+        ImagesManufacturerSearchComponent,
+        ImagesPixelSpacingSearchComponent,
+        ImagesSliceThicknessSearchComponent,
         DisplayQuerySimpleSearchComponent,
         DataSectionTabsComponent,
         SearchResultsComponent,
@@ -192,13 +226,18 @@ const appRoutes: Routes = [
         DaysFromBaselineComponent,
         CommercialUseComponent,
         UniversalMenuComponent,
-        ClinicalTimePointsExplanationComponent
+        ClinicalTimePointsExplanationComponent,
+        ImagesSliceThicknessExplanationComponent,
+        ImagesPixelSpacingExplanationComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpClientModule,
         AppRoutingModule,
+        BrowserAnimationsModule,
+        MatExpansionModule,
+        NgxSliderModule,
         ClipboardModule,
 
     ],

@@ -31,6 +31,14 @@ export class ParameterService{
     parameterDaysFromBaselineEmitter = new EventEmitter();
     parameterTextSearchEmitter = new EventEmitter();
 
+    parameterPatientAgeRangeEmitter = new EventEmitter();
+    parameterPatientSexEmitter = new EventEmitter();
+    parameterSliceThicknessRangeEmitter = new EventEmitter();
+    parameterImageDescriptionEmitter = new EventEmitter();
+    parameterPixelSpacingRangeEmitter = new EventEmitter();
+
+    parameterManufacturerEmitter = new EventEmitter();
+
     // Used for determining if cart from URL should be (re)loaded
     no = 0;
     yes = 1;
@@ -50,6 +58,14 @@ export class ParameterService{
     daysFromBaseline = '';
     showTest = false;
     apiUrl = '';
+
+    patientAgeRange = '';
+    patientSex = '';
+    sliceThicknessRange = '';
+    pixelSpacingRange = '';
+    imageDescription = '';
+
+    manufacturer = '';
 
     textSearch = '';
 
@@ -172,61 +188,6 @@ export class ParameterService{
         this.decStillWaitingOnAtLeastOneComponent();
     }
 
-    async resetUrlQuery() {
-        this.parameterMinimumStudiesEmitter.emit( +this.minimumStudies );
-
-        if( this.collections.length > 0 ){
-            this.parameterCollectionEmitter.emit( this.collections );
-        }
-
-        if( this.patientID.length > 0 ){
-            this.parameterSubjectIdEmitter.emit( this.patientID );
-        }
-
-        if( this.anatomicalSite.length > 0 ){
-            this.parameterAnatomicalSiteEmitter.emit( this.anatomicalSite );
-        }
-
-        if( this.species.length > 0 ){
-            this.parameterSpeciesEmitter.emit( this.species );
-        }
-
-        if( this.phantoms.length > 0 ){
-            this.parameterPhantomsEmitter.emit( this.phantoms );
-        }
-
-        if( this.thirdParty.length > 0 ){
-            this.parameterThirdPartyEmitter.emit( this.thirdParty );
-        }
-
-        if( this.excludeCommercial.length > 0 ){
-            this.parameterExcludeCommercialEmitter.emit( this.excludeCommercial );
-        }
-
-        if( this.daysFromBaseline.length > 0 ){
-            this.parameterDaysFromBaselineEmitter.emit( this.daysFromBaseline );
-        }
-
-        if( this.dateRange.length > 0 ){
-            let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
-            if( regexp.test( this.dateRange ) ){
-                this.parameterDateRangeEmitter.emit( this.dateRange );
-            }else{
-                console.error( 'Bad date range in URL parameter: ', this.dateRange );
-            }
-        }
-
-        if( this.modality.length > 0 ){
-            this.parameterModalityEmitter.emit( { modality: this.modality, modalityAll: this.modalityAll } );
-        }
-
-        // We may need to wait here to give the criteria components time to populate.
-        await this.commonService.sleep( 200 ); // FIXME Testing...
-        this.commonService.runSearchForUrlParameters();
-        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
-
-    }
-
     getCollection() {
         return this.collections;
     }
@@ -270,6 +231,9 @@ export class ParameterService{
         this.decStillWaitingOnAtLeastOneComponent();
     }
 
+    getPhantoms() {
+        return this.phantoms;
+    }
 
     async setThirdParty( thirdParty ) {
         this.incStillWaitingOnAtLeastOneComponent();
@@ -286,6 +250,9 @@ export class ParameterService{
         this.decStillWaitingOnAtLeastOneComponent();
     }
 
+    getThirdParty() {
+        return this.thirdParty;
+    }
 
     async setExcludeCommercial( excludeCommercial ) {
         this.incStillWaitingOnAtLeastOneComponent();
@@ -300,6 +267,10 @@ export class ParameterService{
         this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
         this.decStillWaitingOnAtLeastOneComponent();
 
+    }
+
+    getExcludeCommercial() {
+        return this.excludeCommercial;
     }
 
     async setDaysFromBaseline( daysFromBaseline ) {
@@ -318,13 +289,8 @@ export class ParameterService{
 
     }
 
-
-    getPhantoms() {
-        return this.phantoms;
-    }
-
-    getThirdParty() {
-        return this.thirdParty;
+    getDaysFromBaseline() {
+        return this.daysFromBaseline;
     }
 
     async setSpecies( species ) {
@@ -391,6 +357,103 @@ export class ParameterService{
         return this.dateRange;
     }
 
+    async setPatientSex( patientSex ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.patientSex = patientSex;
+
+        // Wait for the Patient sex query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPatientSexInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterPatientSexEmitter.emit( patientSex );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+    getPatientSex(){
+        return this.patientSex;
+    }
+
+    async setPatientAgeRange( patientAgeRange ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.patientAgeRange = patientAgeRange;
+
+        // Wait for the Patient Age query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPatientAgeRangeInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterPatientAgeRangeEmitter.emit( patientAgeRange );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getPatientAgeRange() {
+        return this.patientAgeRange;
+    }
+
+    async setSliceThicknessRange( sliceThicknessRange ) { 
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.sliceThicknessRange = sliceThicknessRange;
+
+        // Wait for the Slice Thickness query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getSliceThicknessRangeInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterSliceThicknessRangeEmitter.emit( sliceThicknessRange );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();  
+    }
+
+    getSliceThicknessRange() {
+        return this.sliceThicknessRange;
+    }
+
+    async setPixelSpacingRange( pixelSpacingRange ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.pixelSpacingRange = pixelSpacingRange;
+
+        // Wait for the Pixel Spacing query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPixelSpacingRangeInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterPixelSpacingRangeEmitter.emit( pixelSpacingRange );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();  
+    }
+
+    getPixelSpacingRange() {
+        return this.pixelSpacingRange;
+    }
+
+    async setManufacturer( manufacturer ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.manufacturer = manufacturer;
+
+        // Wait for the Manufacturer query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getManufacturerInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterManufacturerEmitter.emit( manufacturer );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();  
+    }
+
+    getManufacturer() {
+        return this.manufacturer;
+    }
 
     setShowTest( showTest ) {
         this.showTest = showTest;
@@ -416,6 +479,88 @@ export class ParameterService{
             this.menuService.setCurrentItem( MenuItems.CART_MENU_ITEM );
         }, 500 );
     }
+
+
+    async resetUrlQuery() {
+        this.parameterMinimumStudiesEmitter.emit( +this.minimumStudies );
+
+        if( this.collections.length > 0 ){
+            this.parameterCollectionEmitter.emit( this.collections );
+        }
+
+        if( this.patientID.length > 0 ){
+            this.parameterSubjectIdEmitter.emit( this.patientID );
+        }
+
+        if( this.anatomicalSite.length > 0 ){
+            this.parameterAnatomicalSiteEmitter.emit( this.anatomicalSite );
+        }
+
+        if( this.species.length > 0 ){
+            this.parameterSpeciesEmitter.emit( this.species );
+        }
+
+        if( this.phantoms.length > 0 ){
+            this.parameterPhantomsEmitter.emit( this.phantoms );
+        }
+
+        if( this.thirdParty.length > 0 ){
+            this.parameterThirdPartyEmitter.emit( this.thirdParty );
+        }
+
+        if( this.excludeCommercial.length > 0 ){
+            this.parameterExcludeCommercialEmitter.emit( this.excludeCommercial );
+        }
+
+        if( this.daysFromBaseline.length > 0 ){
+            this.parameterDaysFromBaselineEmitter.emit( this.daysFromBaseline );
+        }
+
+        if( this.dateRange.length > 0 ){
+            let regexp = new RegExp( '^((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]-((0[1-9])|(1[0-2]))/([0-3][0-9])/(19|20)[0-9][0-9]$' );
+            if( regexp.test( this.dateRange ) ){
+                this.parameterDateRangeEmitter.emit( this.dateRange );
+            }else{
+                console.error( 'Bad date range in URL parameter: ', this.dateRange );
+            }
+        }
+
+        if( this.modality.length > 0 ){
+            this.parameterModalityEmitter.emit( { modality: this.modality, modalityAll: this.modalityAll } );
+        }
+
+        if( this.patientAgeRange.length > 0 ){
+            this.parameterPatientAgeRangeEmitter.emit( this.patientAgeRange );
+        }
+
+        if( this.patientSex.length > 0 ){
+            this.parameterPatientSexEmitter.emit( this.patientSex );
+        }
+
+        if( this.sliceThicknessRange.length > 0 ){
+            this.parameterSliceThicknessRangeEmitter.emit( this.sliceThicknessRange );
+        }
+
+        if( this.pixelSpacingRange.length > 0 ){
+            this.parameterPixelSpacingRangeEmitter.emit( this.pixelSpacingRange );
+        }
+
+        if( this.imageDescription.length > 0 ){
+            this.parameterImageDescriptionEmitter.emit( this.imageDescription );
+        }   
+
+        if( this.manufacturer.length > 0 ){
+            this.parameterManufacturerEmitter.emit( this.manufacturer );        
+        }
+
+        // We may need to wait here to give the criteria components time to populate.
+        await this.commonService.sleep( 200 ); // FIXME Testing...
+        this.commonService.runSearchForUrlParameters();
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+    }
+
+
 
     //
     /**

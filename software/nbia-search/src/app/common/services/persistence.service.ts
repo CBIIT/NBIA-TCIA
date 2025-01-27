@@ -33,6 +33,7 @@ export class PersistenceService{
         SHOW_DOWNLOADER_DOWNLOAD: 'showDownloaderDownload',
         SHOW_INTRO: 'showIntro',
         NO_COMMERCIAL_RESTRICTION_WARNING: 'noCommercialRestrictionWarning',
+        MANUFACTURER_VALUES_SORT_BY_COUNT: 'manufacturerValuesSortByCount',
 
         LAST_ACCESS: 'lastAccess',
 

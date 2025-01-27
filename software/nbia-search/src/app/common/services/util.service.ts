@@ -86,6 +86,28 @@ export class UtilService{
         return copyCrit;
     }
 
+    // Manufacturer values copy
+    copyManufacturerObjectArray( origObject ) {
+        if( origObject === null ){
+            return origObject;
+        }
+        let copyObj = [];
+        for( let criteria of origObject ){
+            copyObj.push( this.copyManufacturerObject( criteria ) );
+        }
+        return copyObj;
+    }
+
+    copyManufacturerObject( origCrit ) {
+        let copyCrit = {};
+        copyCrit['Manufacturer'] = origCrit['Manufacturer'];
+        //copyCrit['ManufacturerModelName'] = origCrit['ManufacturerModelName'];
+        if( !this.isNullOrUndefined( origCrit['seq'] ) ){
+            copyCrit['seq'] = origCrit['seq'];
+        }
+        return copyCrit;
+    }
+
     /**
      * Build a csv formatted string from a cart list, with a header row
      *

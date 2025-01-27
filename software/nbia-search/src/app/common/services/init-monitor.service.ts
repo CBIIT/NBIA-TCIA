@@ -27,6 +27,21 @@ export class InitMonitorService{
     minimumStudiesRunning = false;
     dateRangeRunning = false;
 
+    patientSexInit = false;
+    patientAgeRangeInit = false;
+    sliceThicknessRangeInit = false;
+    imageDescriptionInit = false;
+    pixelSpacingRangeInit = false;
+
+    patientSexRunning = false;
+    patientAgeRangeRunning = false;
+    sliceThicknessRangeRunning = false;
+    imageDescriptionRunning = false;
+    pixelSpacingRangeRunning = false;
+
+    manufacturerInit = false;
+    manufacturerRunning = false;    
+
     constructor() {
     }
 
@@ -112,6 +127,53 @@ export class InitMonitorService{
         return this.minimumStudiesInit;
     }
 
+    setPatientAgeRangeInit( status ) {
+        this.patientAgeRangeInit = status;
+    }
+
+    getPatientAgeRangeInit() {
+        return this.patientAgeRangeInit;
+    }
+
+    setPatientSexInit( status ) {
+        this.patientSexInit = status;
+    }
+
+    getPatientSexInit() {
+        return this.patientSexInit;
+    }
+
+    setSliceThicknessRangeInit( status ) {
+        this.sliceThicknessRangeInit = status;
+    }
+
+    getSliceThicknessRangeInit() {
+        return this.sliceThicknessRangeInit;
+    }
+    setImageDescriptionInit( status ) {
+        this.imageDescriptionInit = status;
+    }
+
+    getImageDescriptionInit() {
+        return this.imageDescriptionInit;
+    }
+
+    setPixelSpacingRangeInit( status ) {
+        this.pixelSpacingRangeInit = status;
+    }
+
+    getPixelSpacingRangeInit() {
+        return this.pixelSpacingRangeInit;
+    }   
+
+    setManufacturerInit( status ) {
+        this.manufacturerInit = status;
+    }
+
+    getManufacturerInit() {
+        return this.manufacturerInit;
+    }   
+
     getAnyInit() {
         let res = false;
         if( this.collectionsInit ){
@@ -144,6 +206,28 @@ export class InitMonitorService{
         if( this.dateRangeInit ){
             res = true;
         }
+        if( this.patientAgeRangeInit ){
+            res = true;
+        }
+        if( this.patientSexInit ){
+            res = true;
+        }
+
+        if( this.sliceThicknessRangeInit ){
+            res = true;
+        }
+
+        if( this.imageDescriptionInit ){
+            res = true;
+        }
+
+        if( this.pixelSpacingRangeInit ){
+            res = true;
+        }
+
+        if( this.manufacturerInit ){
+            res = true;
+        }   
         return res;
     }
 
@@ -185,7 +269,7 @@ export class InitMonitorService{
         this.speciesRunning = status;
     }
 
-    get getSpeciesRunning() {
+    getSpeciesRunning() {
         return this.speciesRunning;
     }
 
@@ -193,7 +277,7 @@ export class InitMonitorService{
         this.phantomsRunning = status;
     }
 
-    get getPhantomsRunning() {
+    getPhantomsRunning() {
         return this.phantomsRunning;
     }
 
@@ -201,7 +285,7 @@ export class InitMonitorService{
         this.thirdPartyRunning = status;
     }
 
-    get getThirdPartyRunning() {
+    getThirdPartyRunning() {
         return this.thirdPartyRunning;
     }
 
@@ -212,6 +296,53 @@ export class InitMonitorService{
     getMinimumStudiesRunning() {
         return this.minimumStudiesRunning;
     }
+
+    setPatientAgeRangeRunning( status ) {
+        this.patientAgeRangeRunning = status;
+    }
+    
+    getPatientAgeRangeRunning() {
+        return this.patientAgeRangeRunning;
+    }
+    
+    setPatientSexRunning( status ) {
+        this.patientSexRunning = status;
+    }
+    
+    getPatientSexRunning() {
+        return this.patientSexRunning;
+    }
+    
+    setSliceThicknessRangeRunning( status ) {
+        this.sliceThicknessRangeRunning = status;
+    }
+    
+    getSliceThicknessRangeRunning() {
+        return this.sliceThicknessRangeRunning;
+    }
+    setImageDescriptionRunning( status ) {
+        this.imageDescriptionRunning = status;
+    }
+    
+    getImageDescriptionRunning() {
+        return this.imageDescriptionRunning;
+    }
+
+    setPixelSpacingRangeRunning( status ) {
+        this.pixelSpacingRangeRunning = status;
+    }
+
+    getPixelSpacingRangeRunning() {
+        return this.pixelSpacingRangeRunning;
+    }   
+
+    setManufacturerRunning( status ) {
+        this.manufacturerRunning = status;
+    }   
+
+    getManufacturerRunning() {
+        return this.manufacturerRunning;
+    }   
 
     getAnyRunning() {
         let res = false;
@@ -245,6 +376,32 @@ export class InitMonitorService{
         if( this.dateRangeRunning ){
             res = true;
         }
+        if( this.dateRangeInit ){
+            res = true;
+        }
+        if( this.patientAgeRangeRunning ){
+            res = true;
+        }
+        if( this.patientSexRunning ){
+            res = true;
+        }
+        
+        if( this.sliceThicknessRangeRunning ){
+            res = true;
+        }
+        
+        if( this.imageDescriptionRunning ){
+            res = true;
+        }
+
+        if( this.pixelSpacingRangeRunning ){
+            res = true;
+        }
+
+        if( this.manufacturerRunning ){
+            res = true;
+        }   
+        
         return res;
     }
 }
