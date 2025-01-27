@@ -1,0 +1,19 @@
+<span
+        class="card-nbia-default text-search-explanation alert-box-div alert-box-shadow"
+        [ngStyle]="{'top':(posY - 230) + 'px'}"
+>
+    <div class="card-nbia-header-default p-2">
+        <div >Slice Thickness
+            <span class=" close-x clicker unselectable" (click)="onImagesSliceThicknessExplanationCloseClick()">
+                X
+            </span>
+        </div>
+    </div>
+
+    <div class="third-party-explanation-text bg-white p-2">
+        Some datasets encode Slice Thickness information in the image metadata.
+        This filter allows you to refine search results based on the range of slected slice thickness when these metadata are included by the data submitter (e.g. "slice thickness").
+        See <a href="https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+User%27s+Guide#CancerImagingArchiveUser'sGuide-PerformingaSimpleSearch"  target="_BLANK">Performing a Simple Search</a> for more information.
+    </div>
+</span>
+

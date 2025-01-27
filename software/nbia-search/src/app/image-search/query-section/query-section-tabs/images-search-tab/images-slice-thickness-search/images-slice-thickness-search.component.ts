@@ -4,10 +4,11 @@ import { Consts } from '@app/consts';
 import { CommonService } from '@app/image-search/services/common.service';
 import { UtilService } from '@app/common/services/util.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { from, Subject } from 'rxjs';
 import { InitMonitorService } from '@app/common/services/init-monitor.service';
 import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { ParameterService } from '@app/common/services/parameter.service';
+import { ApiServerService } from '@app/image-search/services/api-server.service';
 
 @Component( {
     selector: 'nbia-images-slice-thickness-search',
@@ -17,9 +18,14 @@ import { ParameterService } from '@app/common/services/parameter.service';
 } )
 export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
 
-    sexRadioLabels = ['All', 'Female', 'Male', 'None'];
-    sexApply = false;
-    sexApplySelection = 0;
+    showSliceThicknessRangeExplanation = false;
+    posY = 0;
+
+    sliceThicknessSelection = 0;
+    fromSliceThickness: number = 0;
+    toSliceThicknessTrailer: number = 1800.0;
+    fromSliceThicknessTrailer: number = 0;
+    toSliceThickness: number = 1800.0;
     disabled = false;
     minValue: number = 0.0;
     maxValue: number = 1800.0;
@@ -31,7 +37,10 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         enforceRange: false,
     };
 
+    resultsCount = -1;
+
     nonSpecifiedChecked = false;
+    nonSpecifiedCheckedTrailer = false;
 
     /**
      * The list used by the HTML.
@@ -41,7 +50,7 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
     /**
      * For hide or show this group of criteria when the arrows next to the heading are clicked.
      */
-    showCriteriaList;
+    showSliceThicknessRange = false;
 
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
@@ -51,38 +60,67 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
 
     constructor( private commonService: CommonService, private utilService: UtilService,
                  private initMonitorService: InitMonitorService, private queryUrlService: QueryUrlService,
-                 private parameterService: ParameterService ) {
+                 private apiServerService: ApiServerService, private parameterService: ParameterService ) {
     }
 
     ngOnInit() {
+
+        //Start with default values
+        this.onShowSlickThicknessRangeClick(false);
+
+        this.commonService.showSliceThicknessRangeExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showSliceThicknessRangeExplanation = <boolean>data;
+            }
+        );
+
+
+        // Get persisted showSliceThicknessRange 
+        this.showSliceThicknessRange  = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE );
+        if( this.utilService.isNullOrUndefined( this.showSliceThicknessRange  ) ){
+            this.showSliceThicknessRange  = Consts.SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE, this.showSliceThicknessRange  );
+        }
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.sexApply = false;
-                this.sexApplySelection = 2;
-                this.initMonitorService.setSexInit( true );
+              
+                this.totalQueryClear();
+                this.onSliceThicknessClearAllClick( );
+                this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             }
         );
 
-        this.parameterService.parameterPatientSexEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
-                this.sexApplySelection = Number( data );
-                this.onApplySexApplyChecked( true )
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            () => {
+                this.onSliceThicknessClearAllClick();
+                this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
+            } );
+
+
+         // Just set the values, not the 'Apply "Available" slice thickness range'
+        this.parameterService.parameterSliceThicknessRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            async data => {
+                this.fromSliceThickness = Number( data[1] );
+                this.toSliceThickness = Number( data[2] );
+                this.nonSpecifiedChecked = false;
+                this.onApplySliceThicknessRangeClick( true );
                 this.commonService.setHaveUserInput( false );
 
             }
         );
 
-        // Get persisted showCriteriaList value.  Used to show, or collapse this category of criteria in the UI.
-        this.showCriteriaList = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTSEX_DEFAULT );
-        if( this.utilService.isNullOrUndefined( this.showCriteriaList ) ){
-            this.showCriteriaList = Consts.SHOW_CRITERIA_QUERY_PATIENTSEX_DEFAULT;
-            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showCriteriaList );
+
+        // Get persisted showSliceThicknessRange  value.  Used to show, or collapse this category of criteria in the UI.
+        this.showSliceThicknessRange  = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS_DEFAULT );
+        if( this.utilService.isNullOrUndefined( this.showSliceThicknessRange  ) ){
+            this.showSliceThicknessRange  = Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS_DEFAULT;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS, this.showSliceThicknessRange  );
         }
 
-        this.initMonitorService.setSexInit( true );
+        this.initMonitorService.setSliceThicknessRangeInit( true );
     }
 
 
@@ -91,63 +129,37 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
      *
      * @param show
      */
-    onShowCriteriaListClick( show: boolean ) {
-        this.showCriteriaList = show;
-        this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showCriteriaList );
+    onShowSlickThicknessRangeClick( show: boolean ) {
+        this.showSliceThicknessRange  = show;
     }
 
-    onSexRadioChange( value ) {
-        this.sexApplySelection = value;
-        if( value === 2 ){
-            this.sexApply = false;
-        }else{
-            this.sexApply = true;
-        }
-        this.onApplySexApplyChecked( this.sexApply );
+     /**
+     * Called when the user is totally clearing the complete current query
+     */
+     totalQueryClear() {
+        this.onSliceThicknessClearAllClick();
     }
 
-    onApplySexApplyChecked( status ) {
-        let criteriaForQuery: string[] = [];
+    /**
+     *
+     * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
+     */
+
+    onSliceThicknessClearAllClick() { 
         this.commonService.setHaveUserInput( true );
-        this.sexApply = status;
-
-        // This category's data for the query, the 0th element is always the category name.
-        criteriaForQuery.push( Consts.PATIENTSEX_CRITERIA );
-        if( status ){
-            criteriaForQuery.push( this.sexApplySelection.toString() );
-            this.queryUrlService.update( this.queryUrlService.PATIENT_SEX, this.sexApplySelection );
-        }else{
-            this.queryUrlService.clear( this.queryUrlService.PATIENT_SEX );
-        }
-        this.commonService.updateQuery( criteriaForQuery );
-    }
-
-    sliceThicknessClearAllClick(totalClear: boolean) { 
-        this.commonService.setHaveUserInput( true );
-        this.minValue = 0;
-        this.maxValue = 1800.0;
+        this.fromSliceThickness = 0;
+        this.toSliceThickness = 1800.0;
+        this.fromSliceThicknessTrailer = 0;
+        this.toSliceThicknessTrailer = 1800.0;
+        this.nonSpecifiedCheckedTrailer = false;
 
         this.nonSpecifiedChecked = false;
-       
-       // this.checkedCount = 0;
-       // this.apiServerService.refreshCriteriaCounts();
+        this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
+        let sliceThicknessRangeForQuery: string[] = [];
+        sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
 
-        if( !totalClear ){
-            let criteriaForQuery: string[] = [];
-            criteriaForQuery.push( Consts.IMAGE_MODALITY_CRITERIA );
-
-            // Tells SearchResultsTableComponent that the query has changed,
-            // SearchResultsTableComponent will (re)run the query &
-            // send updated query to the Query display at the top of the Search results section.
-            this.commonService.updateQuery( criteriaForQuery );
-           // this.criteriaForQueryHold = [];
-        }
-
-        this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );
-
-        // Restore original criteria list and counts.
-       // this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
-        //this.updateCriteriaList( true );
+        this.commonService.updateQuery( sliceThicknessRangeForQuery );
+        
     }
 
       /**
@@ -160,14 +172,17 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         this.commonService.setHaveUserInput( true );
 
         this.nonSpecifiedChecked = checked;
-        let datRangeForQuery: string[] = [];
-        datRangeForQuery[0] = 'DateRangeCriteria';
+        let sliceThicknessRangeForQuery: string[] = [];
+        sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
+        sliceThicknessRangeForQuery[1] = this.fromSliceThickness.toString();
+        sliceThicknessRangeForQuery[2] = this.toSliceThickness.toString();
+
 
         if( checked ){
             // From
-          //  datRangeForQuery[1] = this.makeFormattedDate( this.fromDate );
+          //  sliceThicknessRangeForQuery[1] = this.makeFormattedDate( this.fromDate );
             // To
-         //   datRangeForQuery[2] = this.makeFormattedDate( this.toDate );
+         //   sliceThicknessRangeForQuery[2] = this.makeFormattedDate( this.toDate );
 
             // Update queryUrlService
           //  this.queryUrlService.update( this.queryUrlService.DATE_RANGE,
@@ -176,7 +191,63 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
             // Remove dateRange (if any) in the queryUrlService
           //  this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
         }
-        this.commonService.updateQuery( datRangeForQuery );
+        this.commonService.updateQuery( sliceThicknessRangeForQuery );
+    }
+
+     /**
+     * Updates the query.
+     * TODO Rename this, there is no longer a checkbox
+     *
+     * @param checked
+     */
+     onApplySliceThicknessRangeClick( checked ) {
+        // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
+        this.commonService.setHaveUserInput( true );
+
+        // Build the query.
+        let sliceThicknessRangeForQuery: string[] = [];
+        sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
+        // Checked, and the user has selected a range.
+        if(checked && (+this.fromSliceThickness > 0) || (+this.toSliceThickness < 1800)){
+            let numFromSliceThickness = Number( this.fromSliceThickness );
+            sliceThicknessRangeForQuery[1] = numFromSliceThickness.toString();
+            let numToSliceThickness = Number( this.toSliceThickness );
+            sliceThicknessRangeForQuery[2] = numToSliceThickness.toString();
+
+            // Update queryUrlService  for share my query
+            this.queryUrlService.update( this.queryUrlService.SLICE_THICKNESS, this.fromSliceThickness + '-' + this.toSliceThickness + 'mm' );
+        }
+        if( ! checked )
+        {
+            // Remove sliceThicknessRange (if any) in the queryUrlService
+            this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
+            // If user has unchecked or have changed the event to none ("Select") or has no To AND From values, remove Days from baseline from the query
+            sliceThicknessRangeForQuery.slice( 0, 1 );
+        }
+
+        this.toSliceThicknessTrailer = this.toSliceThickness;
+        this.fromSliceThicknessTrailer = this.fromSliceThickness;
+        this.nonSpecifiedCheckedTrailer = this.nonSpecifiedChecked;
+        
+        this.commonService.updateQuery( sliceThicknessRangeForQuery );
+
+    }
+
+     /**
+     * If the user input values have changed, update the query.
+     */
+     onSliceThicknessRangeApply() {
+        if( this.toSliceThicknessTrailer !== this.toSliceThickness ||
+            this.fromSliceThicknessTrailer !== this.fromSliceThickness ||
+            this.nonSpecifiedCheckedTrailer !== this.nonSpecifiedChecked ){
+
+            this.onApplySliceThicknessRangeClick( true );
+        }
+    }
+
+    onSliceThicknessRangeExplanationClick(e) {
+        this.showSliceThicknessRangeExplanation = true;
+        this.posY = e.view.pageYOffset + e.clientY;
     }
 
 

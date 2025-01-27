@@ -1,55 +1,49 @@
-<!-- ----------  This is the left side Phantom Radio buttons  ---------- -->
-<div class="query-panel subjects-sex-query-panel">
+<!-- ----------  This is the left side Slice Thickness  ---------- -->
+<div class="query-panel slice-thickness-query-panel">
 
-    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <!-- ----------  Heading & hide/show slice thickness  ---------- -->
     <div class="query-panel-heading">
-        <!-- Hide the sex Radio buttons.  Still show the heading (with this img to its left) -->
+        <!--   Still show the heading (with this img to its left) -->
         <span
-                *ngIf="showCriteriaList"
-                class="clicker"
-                (click)="onShowCriteriaListClick(false)"
+                *ngIf="showSliceThicknessRange "
+                class="clicker unselectable"
+                (click)="onShowSlickThicknessRangeClick(false)"
         >
-            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
-            Slice Thickness (millimeter)
-            <span
-                    *ngIf="sexApply"
-                    class="sex-status"
-            > ({{sexRadioLabels[sexApplySelection]}})</span>
-        </span>
+        <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+        Slice Thickness (millimeter)
+    </span>
 
         <!-- Show the sliceThickness range slider -->
         <span
-                *ngIf="!showCriteriaList"
+                *ngIf="!showSliceThicknessRange "
                 class="clicker"
-                (click)="onShowCriteriaListClick(true)"
+                (click)="onShowSlickThicknessRangeClick(true)"
         >
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Slice Thickness (millimeter)
-            <span
-                    *ngIf="sexApply"
-                    class="sex-status"
-            > ({{sexRadioLabels[sexApplySelection]}})</span>
-         </span>
+        </span>
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onSliceThicknessRangeExplanationClick($event)">
+        
 
     </div>
 
     <div
             [ngClass]="{
-            'hide-div': !showCriteriaList
-        }"  class="nbia-age-range-slider" >
+            'hide-div': !showSliceThicknessRange 
+        }"  class="nbia-sliceThickness-range-slider" >
    
-      <p> <input type="number" [(ngModel)]="minValue"  class="sliceThickness-input-box">  to 
-      <input type="number" [(ngModel)]="maxValue" class="sliceThickness-input-box"> mm   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <label *ngIf="minValue > 0 || maxValue < 1800 " > 
+      <p> <input type="number" maxlength="5" min="0" max="1800" [(ngModel)]="fromSliceThickness"  class="sliceThickness-input-box">  to 
+      <input type="number" maxlength="5" min="0" max="1800" [(ngModel)]="toSliceThickness" class="sliceThickness-input-box"> mm   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="fromSliceThickness > 0 || toSliceThickness < 1800 " > 
         <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
-             (click)="sliceThicknessClearAllClick(false)">
+             (click)="onSliceThicknessClearAllClick()">
         </label>
         </p>
-        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="fromSliceThickness" [(highValue)]="toSliceThickness" [options]="options"></ngx-slider>
     </div>
 
       <!--Apply Available range  checkbox-->
-      <div  [ngClass]="{'hide-div': !showCriteriaList}">
+      <div  [ngClass]="{'hide-div': !showSliceThicknessRange }">
         <input
                 type="checkbox"
                 class="query-panel-checkboxes available-checkbox"
@@ -60,4 +54,32 @@
         </label>
     </div>
 
+    <div *ngIf="(fromSliceThickness > 0 || toSliceThickness < 1800)  && showSliceThicknessRange " class="nbia-sliceThickness-range-note">
+
+        <!-- Display To and/or From Range -->
+        <!--   It was decided this was not needed now that the same data is provided in the dropdown  (13_AUG_2020)
+               <span *ngIf="displayFromBaseLineFrom !== '' || displayFromBaseLineTo !== ''">
+                   From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
+               </span>
+               <span *ngIf="displayFromBaseLineFrom === '' && displayFromBaseLineTo === ''">
+                   None
+               </span>
+       -->
+        <input [ngClass]="{
+                   disabled: (fromSliceThicknessTrailer === fromSliceThickness &&
+                   toSliceThicknessTrailer === toSliceThickness && nonSpecifiedCheckedTrailer === nonSpecifiedChecked ) ,
+
+                   'nbia-button-disabled': (fromSliceThicknessTrailer === fromSliceThickness &&
+                   toSliceThicknessTrailer === toSliceThickness && nonSpecifiedCheckedTrailer === nonSpecifiedChecked) 
+               }"
+               type="button"
+               class="btn btn-default nbia-button nbia-sliceThickness-range-update-button "
+               value="Apply Slice Thickness"
+               (click)="onSliceThicknessRangeApply()"f
+        >
+    </div>
+
 </div>
+<nbia-images-slice-thickness-explanation 
+*ngIf="showSliceThicknessRangeExplanation" [posY]="posY"
+></nbia-images-slice-thickness-explanation>

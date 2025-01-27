@@ -5,12 +5,12 @@
             <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="Search" (click)="onClearClick()">
         </label>
 
-        <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
+        <span *ngIf="showImageDescriptions" class="clicker" (click)="onShowImageDescriptionsClick(false)">
             <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Images Description 
         </span>
 
-        <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
+        <span *ngIf="!showImageDescriptions" class="clicker" (click)="onShowImageDescriptionsClick(true)">
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Images Description
         </span>
@@ -28,7 +28,7 @@
     </div>
 
     <div [ngClass]="{
-                    'hide-div': !showSubjectIds
+                    'hide-div': !showImageDescriptions
                 }"
          class="description-input-div">
         <span class="images-descp-prompt">Contains</span>

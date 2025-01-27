@@ -20,10 +20,10 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
     /**
      * For hide or show this group of criteria when the arrows next to the heading are clicked.
      */
-    showSubjectIds;
+    showImageDescriptions;
 
     /**
-     * The comma separated list of Subject IDs to search for.  This is bound to the UI input.
+     * The comma separated list of Description keywords to search for.  This is bound to the UI input.
      * @type {string}
      */
     searchText = '';
@@ -35,7 +35,7 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
                  private queryUrlService: QueryUrlService, private apiServerService: ApiServerService,
                  private utilService: UtilService ) {
 
-        this.parameterService.parameterSubjectIdEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        this.parameterService.parameterImageDescriptionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.searchText = <string>data;
                 this.onSearchClick();
@@ -48,10 +48,10 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
     ngOnInit() {
 
         // Get persisted showCriteriaList value.  Used to show, or collapse this category of criteria in the UI.
-        this.showSubjectIds = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID );
-        if( this.utilService.isNullOrUndefined( this.showSubjectIds ) ){
-            this.showSubjectIds = Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID_DEFAULT;
-            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID, this.showSubjectIds );
+        this.showImageDescriptions = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION );
+        if( this.utilService.isNullOrUndefined( this.showImageDescriptions ) ){
+            this.showImageDescriptions = Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION_DEFAULT;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION, this.showImageDescriptions );
         }
 
 
@@ -59,8 +59,7 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.searchText = '';
-                this.queryUrlService.clear( this.queryUrlService.SUBJECT_ID );
-
+                this.queryUrlService.clear( this.queryUrlService.IMAGE_DESCRIPTION );
             }
         );
 
@@ -71,9 +70,9 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
      *
      * @param {boolean} show
      */
-    onShowSubjectIdsClick( show: boolean ) {
-        this.showSubjectIds = show;
-        this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID, this.showSubjectIds );
+    onShowImageDescriptionsClick( show: boolean ) {
+        this.showImageDescriptions = show;
+        this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION, this.showImageDescriptions );
     }
 
     /**
@@ -92,36 +91,36 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
         this.commonService.setHaveUserInput( true );
 
         // Comma delimited
-        let subjectIdForQuery = this.searchText.replace( /^,?\s*,?/g, '' ).replace( /\s*,\s*/g, ',' ).replace( /\s*$/, '' ).split( ',' );
+        let imageDescriptionForQuery = this.searchText.replace( /^,?\s*,?/g, '' ).replace( /\s*,\s*/g, ',' ).replace( /\s*$/, '' ).split( ',' );
         let queryUrlString = '';
-        for( let id of subjectIdForQuery ){
+        for( let id of imageDescriptionForQuery ){
             queryUrlString += ',' + id;
         }
 
         if( this.searchText.length > 0 ){
-            this.queryUrlService.update( this.queryUrlService.SUBJECT_ID, queryUrlString.substr( 1 ) );
+            this.queryUrlService.update( this.queryUrlService.IMAGE_DESCRIPTION, queryUrlString.substr( 1 ) );
         }
         else{
-            this.queryUrlService.clear( this.queryUrlService.SUBJECT_ID );
+            this.queryUrlService.clear( this.queryUrlService.IMAGE_DESCRIPTION );
         }
 
-        // If subjectIdForQuery is empty we need to send send empty query
-        if( (subjectIdForQuery.length === 1) && (subjectIdForQuery[0].length === 0) ){
-            subjectIdForQuery = [];
-            subjectIdForQuery[0] = Consts.PATIENT_CRITERIA;
+        // If imageDescriptionForQuery is empty we need to send send empty query
+        if( (imageDescriptionForQuery.length === 1) && (imageDescriptionForQuery[0].length === 0) ){
+            imageDescriptionForQuery = [];
+            imageDescriptionForQuery[0] = Consts.IMAGE_DESCRIPTION_CRITERIA;
         }
         else{
-            subjectIdForQuery.unshift( Consts.PATIENT_CRITERIA );
+            imageDescriptionForQuery.unshift( Consts.IMAGE_DESCRIPTION_CRITERIA );
         }
 
         // Add it to the query
-        this.commonService.updateQuery( subjectIdForQuery );
+        this.commonService.updateQuery( imageDescriptionForQuery );
     }
 
     onInputClearClick( totalClear: boolean ) {
         this.commonService.setHaveUserInput( true );
         this.searchText = '';
-        this.queryUrlService.clear( this.queryUrlService.SUBJECT_ID );
+        this.queryUrlService.clear( this.queryUrlService.IMAGE_DESCRIPTION );
     }
 
     ngOnDestroy() {

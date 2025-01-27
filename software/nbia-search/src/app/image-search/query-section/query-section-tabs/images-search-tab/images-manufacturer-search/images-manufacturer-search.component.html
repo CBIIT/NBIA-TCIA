@@ -1,68 +1,36 @@
-<!-- ----------  This is the left side Anatomical Site list of check boxes.  ---------- -->
+<!-- ----------  This is the left side Manufacturer Site list of check boxes.  ---------- -->
 <div class="query-panel">
 
     <!-- ----------  Heading & hide/show buttons  ---------- -->
     <div class="query-panel-heading">
 
-        <!-- Hide the Anatomical Site list.  Still show the heading (with this img to its left) -->
+        <!-- Hide the Manufacturer Site list.  Still show the heading (with this img to its left) -->
         <span
-            *ngIf="showCriteriaList"
+            *ngIf="showManufacturerValues"
             class="clicker"
-            (click)="onShowCriteriaListClick(false)"
+            (click)="onShowManufacturerValuesClick(false)"
         >
             <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
             Manufacturer
         </span>
 
-        <!-- Show the Anatomical Site list -->
+        <!-- Show the Manufacturer Site list -->
         <span
-            *ngIf="!showCriteriaList"
+            *ngIf="!showManufacturerValues"
             class="clicker"
-            (click)="onShowCriteriaListClick(true)"
+            (click)="onShowManufacturerValuesClick(true)"
         >
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Manufacturer
         </span>
 
-
-        <!-- Sort order buttons (alpha or num) -->
-        <span
-                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
-                class="sort-text"
-        >
-             &nbsp;&nbsp;Sort:
-             <label for="sortAlphaCheckedAnatomical">alpha
-                 <input
-                         type="radio"
-                         name="radioGroupCollectionSortAnatomical"
-                         [checked]="sortAlphaChecked"
-                         id="sortAlphaCheckedAnatomical"
-                         (change)="onSetSort(1)"
-                 >
-             </label>
-             &nbsp;
-             <label for="sortNumCheckedAnatomical">num
-                 <input
-                         type="radio"
-                         name="radioGroupCollectionSortAnatomical"
-                         [(checked)]="sortNumChecked"
-                         id="sortNumCheckedAnatomical"
-                         (change)="onSetSort(0)"
-                 >
-                </label>
-            </span>
-
-
-
-
-
-        <!-- Search in the list of Anatomical Site criteria  (The red magnifying glass)  -->
+        <!-- Search in the list of Manufacturer Site criteria  (The red magnifying glass)  -->
         <!--
         <label [ngClass]="{
            'search-glass': checkedCount == 0,
            'search-glass-with-clear': checkedCount > 0
            }"
-               for="anatomicalSiteSearchText"
+               for="manufacturerSearchText"
                title="{{searchToolTip}}">
 
             <img class="clicker"
@@ -72,7 +40,7 @@
         </label>
         -->
 
-        <!-- Uncheck all the Anatomical Site criteria and restore their counts back to the full count in the database. -->
+        <!-- Uncheck all the Manufacturer Site criteria and restore their counts back to the full count in the database. -->
         <label
             *ngIf="checkedCount > 0"
             class="red-clear"
@@ -81,7 +49,7 @@
                 class="clicker cart-button-icon"
                 src="assets/images/TOOLS/clear_red.png"
                 alt="Search"
-                (click)="onAnatomicalSiteClearAllClick(false)"
+                (click)="onManufacturerClearAllClick(false)"
             >
         </label>
     </div>
@@ -89,7 +57,7 @@
     <!-- ----------  Search input  ---------- -->
     <div
         [ngClass]="{
-            'hide-div': !showCriteriaList
+            'hide-div': !showManufacturerValues
         }"
     >
 
@@ -106,7 +74,7 @@
             <input
                 type="text"
                 class="search-text-area"
-                id="anatomicalSiteSearchText"
+                id="ManufacturerSearchText"
                 placeholder="search"
                 [(ngModel)]="searchInput"
                 (blur)="onSearchTextOutFocus(0)"
@@ -115,14 +83,14 @@
             >
 
             <!-- This needs to be "for", "not ngFor", it needs to be hidden, not removed from the DOM -->
-            <label for="anatomicalSiteSearchText">
+            <label for="ManufacturerSearchText">
                 <!-- The "X" to clear the search text -->
                 <span
                     *ngIf="searchInput.length > 0"
                     class="glyphicon glyphicon-remove search-text-area-x close-x"
                     (blur)="onSearchTextOutFocus(1)"
                     (focus)="onSearchTextFocus(1)"
-                    (click)="onClearAnatomicalSearchInputClick()"
+                    (click)="onClearManufacturerSearchInputClick()"
                 ></span>
             </label>
         </div>
@@ -144,28 +112,20 @@
         </div>
 
         <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
-        <div *ngFor="let criteria of criteriaList ; let i = index" class="query-panel-checkboxes">
+        <div *ngFor="let criteria of manufacturerList ; let i = index" class="query-panel-checkboxes">
             <span *ngIf="( criteria['seq']  < (  properties.CRITERIA_SHOW_COUNT + checkedCount) ) || showAll">
                 <input type="checkbox"
                        class="check-box"
-                       id="checkbox-anatomical-site{{i}}"
+                       id="checkbox-manufacturer-site{{i}}"
                        [(ngModel)]="cBox[i]"
                        (click)="onCheckboxClick(i, $event.target['checked'])">
 
                 <label
                         class="criteria-entry-text"
-                        [attr.for]="'checkbox-anatomical-site'+i">
-                    {{criteria['criteria']}}
+                        [attr.for]="'checkbox-manufacturer-site'+i">
+                    {{criteria['Manufacturer']}}
                 </label>
 
-                <span
-                    [ngClass]="{
-                          'count-box': criteria['count'] > 0,
-                          'count-box_zero': criteria['count'] <= 0
-                      }"
-                >
-                    {{criteria['count']}}
-                </span>
             </span>
         </div>
 
