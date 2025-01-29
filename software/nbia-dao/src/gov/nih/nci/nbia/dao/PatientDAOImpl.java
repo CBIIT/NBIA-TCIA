@@ -208,9 +208,14 @@ public class PatientDAOImpl extends AbstractDAO
 		if (authorizedProjAndSites == null || authorizedProjAndSites.isEmpty() || seriesInstanceUIDs == null || seriesInstanceUIDs.isEmpty()) {
 			return null;
 		}
+    String seriesString=seriesInstanceUIDs.replaceAll("[^0-9,\\.]","");
+
+    String[] seriesStrings=seriesString.split(",");
+    List<String> seriesList=Arrays.asList(seriesStrings);
+    String queryString=constructSeriesUIDList(seriesList);
 
 		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
-		whereCondition.append(" and UPPER(gs.seriesInstanceUID) in (?)");
+		whereCondition.append(" and UPPER(gs.seriesInstanceUID) in (" + queryString + ")");
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));   
 
 		String hql = "select distinct " +
@@ -221,16 +226,21 @@ public class PatientDAOImpl extends AbstractDAO
 			"gs.bodyPartExamined, gs.seriesNumber, gs.annotationsFlag, gs.generalEquipment.manufacturer, " +
 			"gs.generalEquipment.manufacturerModelName, gs.generalEquipment.softwareVersions, gs.imageCount, " +
 			"gs.maxSubmissionTimestamp, gs.licenseName, gs.licenseURL, gs.descriptionURI, gs.totalSize, " +
-			"gs.dateReleased, gs.studyDesc, gs.studyDate, gs.thirdPartyAnalysis " +
+			"gs.dateReleased,  gs.thirdPartyAnalysis " +
 			"from GeneralSeries gs " +
 			"join gs.study s " +
 			"join s.patient  p " +
 			whereCondition.toString();
 
 		System.out.println("Executing combined query: " + hql);
+    System.out.println(whereCondition.toString());
 
-		List<Object[]> results = getHibernateTemplate().find(hql, seriesInstanceUIDs);
-		fillInHuman(results);
+		List<Object[]> results = getHibernateTemplate().find(hql);
+		for (Object[] patient:results) {
+			if (patient[5]==null) patient[5]="NO";
+			if (patient[6]==null) patient[6]="337915000";
+			if (patient[7]==null) patient[7]="Homo sapiens";
+		}
 		return results;
 	}
 	/**
@@ -266,4 +276,22 @@ public class PatientDAOImpl extends AbstractDAO
 		}
 		
 	}
+
+    /**
+    * Given a collection of strings, return a Stirng that is a comma
+    * separate list of the single-quoted integers, without a trailing comma
+    */
+   private static String constructSeriesUIDList(Collection<String> theSeriesPkIds) {
+   	String theWhereStmt = "";
+   	for (Iterator<String> i = theSeriesPkIds.iterator(); i.hasNext();) {
+           String seriesPkId = i.next();
+           theWhereStmt += ("'" + seriesPkId + "'");
+
+           if (i.hasNext()) {
+           	theWhereStmt += ",";
+           }
+       }
+   	return theWhereStmt;
+   }
+
 }
