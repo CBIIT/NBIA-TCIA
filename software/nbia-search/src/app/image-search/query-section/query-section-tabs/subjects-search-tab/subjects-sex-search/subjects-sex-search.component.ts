@@ -113,9 +113,7 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
     // This category's data for the query, the 0th element is always the category name.
     criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
     if (status) {
-      //criteriaForQuery.push(this.sexRadioLabels[this.sexApplySelection]);
-     // this.queryUrlService.update(this.queryUrlService.PATIENT_SEX, this.sexRadioLabels[this.sexApplySelection]);
-    } else {
+     } else {
       this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
     }
     this.commonService.updateQuery(criteriaForQuery);

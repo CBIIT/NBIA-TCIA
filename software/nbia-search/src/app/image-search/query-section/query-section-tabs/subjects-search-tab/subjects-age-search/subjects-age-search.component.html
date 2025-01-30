@@ -44,35 +44,13 @@
         <ngx-slider [(value)]="fromPatientAge" [(highValue)]="toPatientAge" [options]="options"></ngx-slider>
     </div>
 
-     <!--Apply Available range  checkbox-->
-     <div  [ngClass]="{'hide-div': !showPatientAgeRange}">
-        <input
-                type="checkbox"
-                class="query-panel-checkboxes available-checkbox"
-                [(ngModel)]="nonAgeChecked"
-                (click)="onApplyCheckboxClick( $event.target.checked)">
-        <label class="query-panel-checkbox-label available-checkbox-label">
-            &nbsp;include non-provided patient age
-        </label>
-    </div>
-
-    <div *ngIf="(fromPatientAge > 0 || toPatientAge < 100)  && showPatientAgeRange" class="nbia-patientAge-range-note">
-
-        <!-- Display To and/or From Range -->
-        <!--   It was decided this was not needed now that the same data is provided in the dropdown  (13_AUG_2020)
-               <span *ngIf="displayFromBaseLineFrom !== '' || displayFromBaseLineTo !== ''">
-                   From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
-               </span>
-               <span *ngIf="displayFromBaseLineFrom === '' && displayFromBaseLineTo === ''">
-                   None
-               </span>
-       -->
+    <div *ngIf=" showPatientAgeRange" class="nbia-patientAge-range-note">
         <input [ngClass]="{
                    disabled: (fromPatientAgeTrailer === fromPatientAge &&
-                   toPatientAgeTrailer === toPatientAge && nonSpecifiedCheckedTrailer === nonSpecifiedChecked ) ,
+                   toPatientAgeTrailer === toPatientAge ) ,
 
                    'nbia-button-disabled': (fromPatientAgeTrailer === fromPatientAge &&
-                   toPatientAgeTrailer === toPatientAge && nonSpecifiedCheckedTrailer === nonSpecifiedChecked) 
+                   toPatientAgeTrailer === toPatientAge) 
                }"
                type="button"
                class="btn btn-default nbia-button nbia-patientAge-range-update-button "

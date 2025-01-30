@@ -17,20 +17,13 @@ import { ParameterService } from '@app/common/services/parameter.service';
 } )
 export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
 
-    sexRadioLabels = ['All', 'Female', 'Male', 'None'];
-    sexApply = false;
-    sexApplySelection = 0;
-    disabled = false;
     showPatientAgeRangeExplanation = false;
     posY = 0;
 
     fromPatientAge: number = 0;
     toPatientAgeTrailer: number = 100;
-    fromPatientAgeTrailer: number = 0;
+    fromPatientAgeTrailer: number = 1; // the init value is different to keep the apply button active
     toPatientAge: number = 100;
-
-    nonSpecifiedChecked = false;
-    nonSpecifiedCheckedTrailer = false;
 
     nonAgeChecked = false;
     options: Options = {
@@ -105,7 +98,6 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
                 async data => {
                     this.fromPatientAge = Number( data[1] );
                     this.toPatientAge = Number( data[2] );
-                    this.nonSpecifiedChecked = false;
                     this.onApplyPatientAgeRangeClick( true );
                     this.commonService.setHaveUserInput( false );
     
@@ -147,49 +139,14 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
             this.commonService.setHaveUserInput( true );
             this.fromPatientAge = 0;
             this.toPatientAge = 100;
-            this.fromPatientAgeTrailer = 0;
+            this.fromPatientAgeTrailer = 1;
             this.toPatientAgeTrailer = 100;
-            this.nonSpecifiedCheckedTrailer = false;
-    
-            this.nonSpecifiedChecked = false;
             this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
             let patientAgeRangeForQuery: string[] = [];
             patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
     
             this.commonService.updateQuery( patientAgeRangeForQuery );
             
-        }
-    
-          /**
-         * When the user clicks the "Apply" checkbox, add the date criteria to the query.
-         *
-         * @param checked
-         */
-          onApplyCheckboxClick( checked ) {
-            // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
-            this.commonService.setHaveUserInput( true );
-    
-            this.nonSpecifiedChecked = checked;
-            let patientAgeRangeForQuery: string[] = [];
-            patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
-            patientAgeRangeForQuery[1] = this.fromPatientAge.toString();
-            patientAgeRangeForQuery[2] = this.toPatientAge.toString();
-    
-    
-            if( checked ){
-                // From
-              //  PatientAgeRangeForQuery[1] = this.makeFormattedDate( this.fromDate );
-                // To
-             //   PatientAgeRangeForQuery[2] = this.makeFormattedDate( this.toDate );
-    
-                // Update queryUrlService
-              //  this.queryUrlService.update( this.queryUrlService.DATE_RANGE,
-              //      this.makeFormattedDate( this.fromDate ) + '-' + this.makeFormattedDate( this.toDate ) );
-            }else{
-                // Remove dateRange (if any) in the queryUrlService
-              //  this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-            }
-            this.commonService.updateQuery( patientAgeRangeForQuery );
         }
     
          /**
@@ -225,8 +182,6 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
     
             this.toPatientAgeTrailer = this.toPatientAge;
             this.fromPatientAgeTrailer = this.fromPatientAge;
-            this.nonSpecifiedCheckedTrailer = this.nonSpecifiedChecked;
-            
             this.commonService.updateQuery( PatientAgeRangeForQuery );
     
         }
@@ -236,8 +191,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
          */
          onPatientAgeRangeApply() {
             if( this.toPatientAgeTrailer !== this.toPatientAge ||
-                this.fromPatientAgeTrailer !== this.fromPatientAge ||
-                this.nonSpecifiedCheckedTrailer !== this.nonSpecifiedChecked ){
+                this.fromPatientAgeTrailer !== this.fromPatientAge){
     
                 this.onApplyPatientAgeRangeClick( true );
             }
