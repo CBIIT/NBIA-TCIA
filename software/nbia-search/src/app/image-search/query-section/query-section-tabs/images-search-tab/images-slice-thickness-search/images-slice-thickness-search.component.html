@@ -42,35 +42,13 @@
         <ngx-slider [(value)]="fromSliceThickness" [(highValue)]="toSliceThickness" [options]="options"></ngx-slider>
     </div>
 
-      <!--Apply Available range  checkbox-->
-      <div  [ngClass]="{'hide-div': !showSliceThicknessRange }">
-        <input
-                type="checkbox"
-                class="query-panel-checkboxes available-checkbox"
-                [(ngModel)]="nonSpecifiedChecked"
-                (click)="onApplyCheckboxClick( $event.target.checked)">
-        <label class="query-panel-checkbox-label available-checkbox-label">
-            &nbsp;include non-specified slice thickness
-        </label>
-    </div>
-
-    <div *ngIf="(fromSliceThickness > 0 || toSliceThickness < 1800)  && showSliceThicknessRange " class="nbia-sliceThickness-range-note">
-
-        <!-- Display To and/or From Range -->
-        <!--   It was decided this was not needed now that the same data is provided in the dropdown  (13_AUG_2020)
-               <span *ngIf="displayFromBaseLineFrom !== '' || displayFromBaseLineTo !== ''">
-                   From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
-               </span>
-               <span *ngIf="displayFromBaseLineFrom === '' && displayFromBaseLineTo === ''">
-                   None
-               </span>
-       -->
+    <div *ngIf="showSliceThicknessRange " class="nbia-sliceThickness-range-note">
         <input [ngClass]="{
                    disabled: (fromSliceThicknessTrailer === fromSliceThickness &&
-                   toSliceThicknessTrailer === toSliceThickness && nonSpecifiedCheckedTrailer === nonSpecifiedChecked ) ,
+                   toSliceThicknessTrailer === toSliceThickness ) ,
 
                    'nbia-button-disabled': (fromSliceThicknessTrailer === fromSliceThickness &&
-                   toSliceThicknessTrailer === toSliceThickness && nonSpecifiedCheckedTrailer === nonSpecifiedChecked) 
+                   toSliceThicknessTrailer === toSliceThickness) 
                }"
                type="button"
                class="btn btn-default nbia-button nbia-sliceThickness-range-update-button "

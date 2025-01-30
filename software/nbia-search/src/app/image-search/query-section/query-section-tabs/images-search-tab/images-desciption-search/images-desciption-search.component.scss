@@ -8,7 +8,7 @@
 
 .description-input-div
 {
-    padding-bottom: 50px;
+    padding-bottom: 25px;
 }
 
 .images-descp-text{
@@ -18,7 +18,7 @@
     margin-right:15pt;
     margin-bottom: 5px; // A little space between the text area and the apply button if there is one
     width: calc(100% - 40px);
-    height: 30px;
+    height: 80px;
     overflow-y: scroll;
     resize: none;
 }
@@ -32,3 +32,9 @@
 .images-descp-prompt{
     margin-left:15pt;
 }
+
+.red-clear-images-descp {
+    position: absolute;
+    left: $left-section-width - 60px;
+}
+  

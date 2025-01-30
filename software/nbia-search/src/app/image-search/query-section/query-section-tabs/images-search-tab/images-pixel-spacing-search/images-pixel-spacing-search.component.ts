@@ -23,11 +23,9 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
         pixelSpacingSelection = 0;
         fromPixelSpacing: number = 0;
         toPixelSpacingTrailer: number = 15.0;
-        fromPixelSpacingTrailer: number = 0;
+        fromPixelSpacingTrailer: number = 0.1;
         toPixelSpacing: number = 15.0;
         disabled = false;
-        minValue: number = 0.0;
-        maxValue: number = 15.0;
         options: Options = {
             floor: 0,
             ceil: 15.0,
@@ -37,10 +35,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
         };
     
         resultsCount = -1;
-    
-        nonSpecifiedChecked = false;
-        nonSpecifiedCheckedTrailer = false;
-    
+
         /**
          * The list used by the HTML.
          */
@@ -101,15 +96,13 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
                 } );
     
     
-             // Just set the values, not the 'Apply "Available" slice thickness range'
+             // Just set the values, not the 'Apply pixel spacing range'
             this.parameterService.parameterPixelSpacingRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
                 async data => {
                     this.fromPixelSpacing = Number( data[1] );
                     this.toPixelSpacing = Number( data[2] );
-                    this.nonSpecifiedChecked = false;
                     this.onApplyPixelSpacingRangeClick( true );
                     this.commonService.setHaveUserInput( false );
-    
                 }
             );
     
@@ -148,51 +141,15 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
             this.commonService.setHaveUserInput( true );
             this.fromPixelSpacing = 0;
             this.toPixelSpacing = 15.0;
-            this.fromPixelSpacingTrailer = 0;
+            this.fromPixelSpacingTrailer = 0.1; // the init value is different to keep the apply button active
             this.toPixelSpacingTrailer = 15.0;
-            this.nonSpecifiedCheckedTrailer = false;
-    
-            this.nonSpecifiedChecked = false;
             this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             let PixelSpacingRangeForQuery: string[] = [];
             PixelSpacingRangeForQuery[0] = Consts.PIXEL_SPACING_RANGE_CRITERIA;
     
-            this.commonService.updateQuery( PixelSpacingRangeForQuery );
-            
+            this.commonService.updateQuery( PixelSpacingRangeForQuery );  
         }
-    
-          /**
-         * When the user clicks the "Apply" checkbox, add the date criteria to the query.
-         *
-         * @param checked
-         */
-          onApplyCheckboxClick( checked ) {
-            // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
-            this.commonService.setHaveUserInput( true );
-    
-            this.nonSpecifiedChecked = checked;
-            let PixelSpacingRangeForQuery: string[] = [];
-            PixelSpacingRangeForQuery[0] = Consts.PIXEL_SPACING_RANGE_CRITERIA;
-            PixelSpacingRangeForQuery[1] = this.fromPixelSpacing.toString();
-            PixelSpacingRangeForQuery[2] = this.toPixelSpacing.toString();
-    
-    
-            if( checked ){
-                // From
-              //  PixelSpacingRangeForQuery[1] = this.makeFormattedDate( this.fromDate );
-                // To
-             //   PixelSpacingRangeForQuery[2] = this.makeFormattedDate( this.toDate );
-    
-                // Update queryUrlService
-              //  this.queryUrlService.update( this.queryUrlService.DATE_RANGE,
-              //      this.makeFormattedDate( this.fromDate ) + '-' + this.makeFormattedDate( this.toDate ) );
-            }else{
-                // Remove dateRange (if any) in the queryUrlService
-              //  this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-            }
-            this.commonService.updateQuery( PixelSpacingRangeForQuery );
-        }
-    
+
          /**
          * Updates the query.
          * TODO Rename this, there is no longer a checkbox
@@ -226,8 +183,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
     
             this.toPixelSpacingTrailer = this.toPixelSpacing;
             this.fromPixelSpacingTrailer = this.fromPixelSpacing;
-            this.nonSpecifiedCheckedTrailer = this.nonSpecifiedChecked;
-            
+        
             this.commonService.updateQuery( PixelSpacingRangeForQuery );
     
         }
@@ -237,9 +193,8 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
          */
          onPixelSpacingRangeApply() {
             if( this.toPixelSpacingTrailer !== this.toPixelSpacing ||
-                this.fromPixelSpacingTrailer !== this.fromPixelSpacing ||
-                this.nonSpecifiedCheckedTrailer !== this.nonSpecifiedChecked ){
-    
+                this.fromPixelSpacingTrailer !== this.fromPixelSpacing){
+              
                 this.onApplyPixelSpacingRangeClick( true );
             }
         }

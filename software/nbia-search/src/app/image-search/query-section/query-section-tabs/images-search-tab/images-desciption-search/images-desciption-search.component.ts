@@ -17,6 +17,9 @@ import { takeUntil } from 'rxjs/operators';
 
 export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
 
+    showImagesDescriptionExplanation = false;
+    posY = 0;
+
     /**
      * For hide or show this group of criteria when the arrows next to the heading are clicked.
      */
@@ -53,6 +56,13 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
             this.showImageDescriptions = Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION_DEFAULT;
             this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION, this.showImageDescriptions );
         }
+
+
+        this.commonService.showImageDescriptionExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showImagesDescriptionExplanation = <boolean>data;
+            }
+        );
 
 
         // Used when the Clear button is clicked in the Display Query.
@@ -122,6 +132,12 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
         this.searchText = '';
         this.queryUrlService.clear( this.queryUrlService.IMAGE_DESCRIPTION );
     }
+
+    onImagesDescriptioneExplanationClick(e) {
+        this.showImagesDescriptionExplanation = true;
+        this.posY = e.view.pageYOffset + e.clientY;
+    }
+
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

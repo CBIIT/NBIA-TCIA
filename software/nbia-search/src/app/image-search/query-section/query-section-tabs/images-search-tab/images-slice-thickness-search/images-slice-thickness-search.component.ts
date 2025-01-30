@@ -24,11 +24,9 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
     sliceThicknessSelection = 0;
     fromSliceThickness: number = 0;
     toSliceThicknessTrailer: number = 1800.0;
-    fromSliceThicknessTrailer: number = 0;
+    fromSliceThicknessTrailer: number = 1;
     toSliceThickness: number = 1800.0;
     disabled = false;
-    minValue: number = 0.0;
-    maxValue: number = 1800.0;
     options: Options = {
         floor: 0,
         ceil: 1800.0,
@@ -38,9 +36,6 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
     };
 
     resultsCount = -1;
-
-    nonSpecifiedChecked = false;
-    nonSpecifiedCheckedTrailer = false;
 
     /**
      * The list used by the HTML.
@@ -105,7 +100,6 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
             async data => {
                 this.fromSliceThickness = Number( data[1] );
                 this.toSliceThickness = Number( data[2] );
-                this.nonSpecifiedChecked = false;
                 this.onApplySliceThicknessRangeClick( true );
                 this.commonService.setHaveUserInput( false );
 
@@ -149,11 +143,8 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         this.commonService.setHaveUserInput( true );
         this.fromSliceThickness = 0;
         this.toSliceThickness = 1800.0;
-        this.fromSliceThicknessTrailer = 0;
+        this.fromSliceThicknessTrailer = 1; // the init value is different to keep the apply button active
         this.toSliceThicknessTrailer = 1800.0;
-        this.nonSpecifiedCheckedTrailer = false;
-
-        this.nonSpecifiedChecked = false;
         this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
         let sliceThicknessRangeForQuery: string[] = [];
         sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
@@ -162,37 +153,6 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         
     }
 
-      /**
-     * When the user clicks the "Apply" checkbox, add the date criteria to the query.
-     *
-     * @param checked
-     */
-      onApplyCheckboxClick( checked ) {
-        // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
-        this.commonService.setHaveUserInput( true );
-
-        this.nonSpecifiedChecked = checked;
-        let sliceThicknessRangeForQuery: string[] = [];
-        sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
-        sliceThicknessRangeForQuery[1] = this.fromSliceThickness.toString();
-        sliceThicknessRangeForQuery[2] = this.toSliceThickness.toString();
-
-
-        if( checked ){
-            // From
-          //  sliceThicknessRangeForQuery[1] = this.makeFormattedDate( this.fromDate );
-            // To
-         //   sliceThicknessRangeForQuery[2] = this.makeFormattedDate( this.toDate );
-
-            // Update queryUrlService
-          //  this.queryUrlService.update( this.queryUrlService.DATE_RANGE,
-          //      this.makeFormattedDate( this.fromDate ) + '-' + this.makeFormattedDate( this.toDate ) );
-        }else{
-            // Remove dateRange (if any) in the queryUrlService
-          //  this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-        }
-        this.commonService.updateQuery( sliceThicknessRangeForQuery );
-    }
 
      /**
      * Updates the query.
@@ -227,7 +187,6 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
 
         this.toSliceThicknessTrailer = this.toSliceThickness;
         this.fromSliceThicknessTrailer = this.fromSliceThickness;
-        this.nonSpecifiedCheckedTrailer = this.nonSpecifiedChecked;
         
         this.commonService.updateQuery( sliceThicknessRangeForQuery );
 
@@ -238,8 +197,7 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
      */
      onSliceThicknessRangeApply() {
         if( this.toSliceThicknessTrailer !== this.toSliceThickness ||
-            this.fromSliceThicknessTrailer !== this.fromSliceThickness ||
-            this.nonSpecifiedCheckedTrailer !== this.nonSpecifiedChecked ){
+            this.fromSliceThicknessTrailer !== this.fromSliceThickness ){
 
             this.onApplySliceThicknessRangeClick( true );
         }

@@ -40,36 +40,13 @@
         </p>
         <ngx-slider [(value)]="fromPixelSpacing" [(highValue)]="toPixelSpacing" [options]="options"></ngx-slider>
     </div>
-
-      <!--Apply Available range  checkbox-->
-      <div  [ngClass]="{'hide-div': !showPixelSpacingRange}">
-        <input
-                type="checkbox"
-                class="query-panel-checkboxes available-checkbox"
-                [(ngModel)]="nonSpecifiedChecked"
-                (click)="onApplyCheckboxClick( $event.target.checked)">
-        <label class="query-panel-checkbox-label available-checkbox-label">
-            &nbsp;include non-specified pixel spacing
-        </label>
-    </div>
-
-    <div *ngIf="(fromPixelSpacing > 0 || toPixelSpacing < 15)  && showPixelSpacingRange" class="nbia-pixelSpacing-range-note">
-
-        <!-- Display To and/or From Range -->
-        <!--   It was decided this was not needed now that the same data is provided in the dropdown  (13_AUG_2020)
-               <span *ngIf="displayFromBaseLineFrom !== '' || displayFromBaseLineTo !== ''">
-                   From {{displayFromBaseLineFrom}} to {{displayFromBaseLineTo}}
-               </span>
-               <span *ngIf="displayFromBaseLineFrom === '' && displayFromBaseLineTo === ''">
-                   None
-               </span>
-       -->
+    <div *ngIf="showPixelSpacingRange" class="nbia-pixelSpacing-range-note">
         <input [ngClass]="{
                    disabled: (fromPixelSpacingTrailer === fromPixelSpacing &&
-                   toPixelSpacingTrailer === toPixelSpacing && nonSpecifiedCheckedTrailer === nonSpecifiedChecked ) ,
+                   toPixelSpacingTrailer === toPixelSpacing ) ,
 
                    'nbia-button-disabled': (fromPixelSpacingTrailer === fromPixelSpacing &&
-                   toPixelSpacingTrailer === toPixelSpacing && nonSpecifiedCheckedTrailer === nonSpecifiedChecked) 
+                   toPixelSpacingTrailer === toPixelSpacing ) 
                }"
                type="button"
                class="btn btn-default nbia-button nbia-pixelSpacing-range-update-button "
