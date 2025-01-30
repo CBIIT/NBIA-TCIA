@@ -123,7 +123,7 @@ import { ImagesPixelSpacingSearchComponent } from './image-search/query-section/
 import { ImagesSliceThicknessSearchComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-slice-thickness-search/images-slice-thickness-search.component';
 import { ImagesSliceThicknessExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-slice-thickness-search/images-slice-thickness-explanation/images-slice-thickness-explanation.component'; 
 import { ImagesPixelSpacingExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-pixel-spacing-search/images-pixel-spacing-explanation/images-pixel-spacing-explanation.component';
-
+import { ImagesDescriptionExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-desciption-search/images-description-explanation/images-description-explanation.component';
 /*
 const appRoutes: Routes = [
     { path: '', component: NbiaClientComponent },
@@ -228,7 +228,8 @@ const appRoutes: Routes = [
         UniversalMenuComponent,
         ClinicalTimePointsExplanationComponent,
         ImagesSliceThicknessExplanationComponent,
-        ImagesPixelSpacingExplanationComponent
+        ImagesPixelSpacingExplanationComponent,
+        ImagesDescriptionExplanationComponent
     ],
     imports: [
         BrowserModule,
