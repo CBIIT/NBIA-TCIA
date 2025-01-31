@@ -76,6 +76,15 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         }
     
     
+            // Called when the "Clear" button on the left side of the Display query at the top.
+            this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+                () => {
+                  
+                    this.totalQueryClear();
+                    this.onPatientAgeClearAllClick(true);
+                    this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
+                }
+            );
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
@@ -84,6 +93,32 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
             }
         );
     
+            this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+                () => {
+                    this.onPatientAgeClearAllClick(true);
+                    this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
+                } );
+    
+    
+             // Just set the values, not the 'Apply "Available" patient age range'
+            this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+                async data => {
+                    this.fromPatientAge = Number( data[1] );
+                    this.toPatientAge = Number( data[2] );
+                    this.onApplyPatientAgeRangeClick( true );
+                    this.commonService.setHaveUserInput( false );
+    
+                }
+            );
+    
+            // Get persisted showPatientAgeRange value.  Used to show, or collapse this category of criteria in the UI.
+            this.showPatientAgeRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT );
+            if( this.utilService.isNullOrUndefined( this.showPatientAgeRange ) ){
+                this.showPatientAgeRange = Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT;
+                this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT, this.showPatientAgeRange );
+            }
+    
+            this.initMonitorService.setPatientAgeRangeInit( true );
         this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.onPatientAgeClearAllClick();
@@ -112,20 +147,30 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
          */
         onShowPatientAgeRangeClick( show: boolean ) {
             this.showPatientAgeRange = show;
+        }
+    
+         /**
+         * Called when the user is totally clearing the complete current query
+         */
+         totalQueryClear() {
+            this.onPatientAgeClearAllClick(true);
             this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE, this.showPatientAgeRange );
         }
     
-        onPatientAgeClearAllClick() { 
+        onPatientAgeClearAllClick(totalClear: boolean = false) { 
             this.commonService.setHaveUserInput( true );
             this.fromPatientAge = 0;
             this.toPatientAge = 100;
             this.fromPatientAgeTrailer = 1;
             this.toPatientAgeTrailer = 100;
             this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-            let patientAgeRangeForQuery: string[] = [];
-            patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
+
+            if (!totalClear) {
+                let patientAgeRangeForQuery: string[] = [];
+                patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
     
-            this.commonService.updateQuery( patientAgeRangeForQuery );
+                this.commonService.updateQuery( patientAgeRangeForQuery );
+            }
             
         }
     

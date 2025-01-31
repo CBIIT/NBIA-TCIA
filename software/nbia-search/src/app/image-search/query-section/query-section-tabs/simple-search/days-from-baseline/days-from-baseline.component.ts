@@ -185,7 +185,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.currentEventTypeIndex = 0;
         this.currentEventTypeTrailer = 0;
 
-        this.onApplyFromBaselineCheckboxClick( false );
+        this.onApplyFromBaselineCheckboxClick( false, true );
     }
 
     /**
@@ -244,7 +244,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
      *
      * @param checked
      */
-    onApplyFromBaselineCheckboxClick( checked ) {
+    onApplyFromBaselineCheckboxClick( checked , totalClear: boolean = false) {
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
@@ -295,7 +295,9 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.fromBaseLineToTrailer = this.fromBaseLineTo;
         this.currentEventTypeTrailer = this.currentEventTypeIndex;
 
-        this.commonService.updateQuery( daysFromBaselineForQuery );
+        if (!totalClear) {
+            this.commonService.updateQuery( daysFromBaselineForQuery );
+        }
 
     }
 
