@@ -68,50 +68,41 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         );
 
 
-            // Get persisted PatientAge 
-            this.showPatientAgeRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE );
-            if( this.utilService.isNullOrUndefined( this.showPatientAgeRange ) ){
-                this.showPatientAgeRange = Consts.SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT;
-                this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE, this.showPatientAgeRange );
+        // Get persisted PatientAge 
+        this.showPatientAgeRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE );
+        if( this.utilService.isNullOrUndefined( this.showPatientAgeRange ) ){
+            this.showPatientAgeRange = Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE, this.showPatientAgeRange );
+        }
+    
+    
+        // Called when the "Clear" button on the left side of the Display query at the top.
+        this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            () => {
+                this.onPatientAgeClearAllClick( );
+                this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
             }
+        );
     
-    
-            // Called when the "Clear" button on the left side of the Display query at the top.
-            this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                () => {
-                  
-                    this.totalQueryClear();
-                    this.onPatientAgeClearAllClick( );
-                    this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-                }
-            );
-    
-            this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                () => {
-                    this.onPatientAgeClearAllClick();
-                    this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-                } );
-    
-    
-             // Just set the values, not the 'Apply "Available" patient age range'
-            this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                async data => {
-                    this.fromPatientAge = Number( data[1] );
-                    this.toPatientAge = Number( data[2] );
-                    this.onApplyPatientAgeRangeClick( true );
-                    this.commonService.setHaveUserInput( false );
-    
-                }
-            );
-    
-            // Get persisted showPatientAgeRange value.  Used to show, or collapse this category of criteria in the UI.
-            this.showPatientAgeRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT );
-            if( this.utilService.isNullOrUndefined( this.showPatientAgeRange ) ){
-                this.showPatientAgeRange = Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT;
-                this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT, this.showPatientAgeRange );
+        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            () => {
+                this.onPatientAgeClearAllClick();
+                this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
+            } );
+
+
+            // Just set the values, not the 'Apply "Available" patient age range'
+        this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            async data => {
+                this.fromPatientAge = Number( data[1] );
+                this.toPatientAge = Number( data[2] );
+                this.onApplyPatientAgeRangeClick( true );
+                this.commonService.setHaveUserInput( false );
+
             }
-    
-            this.initMonitorService.setPatientAgeRangeInit( true );
+        );
+
+           // this.initMonitorService.setPatientAgeRangeInit( true );
         }
         
         /**
@@ -121,19 +112,8 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
          */
         onShowPatientAgeRangeClick( show: boolean ) {
             this.showPatientAgeRange = show;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE, this.showPatientAgeRange );
         }
-    
-         /**
-         * Called when the user is totally clearing the complete current query
-         */
-         totalQueryClear() {
-            this.onPatientAgeClearAllClick();
-        }
-    
-        /**
-         *
-         * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
-         */
     
         onPatientAgeClearAllClick() { 
             this.commonService.setHaveUserInput( true );

@@ -51,12 +51,20 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-
     // Called when the "Clear" button on the left side of the Display query at the top.
     this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       () => {
-        this.selectedSex = { male: false, female: false, null: false };
-        this.initMonitorService.setPatientSexInit(true);
+        this.resetSelections();
+        this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
+        //this.initMonitorService.setPatientSexInit(true);
+      }
+    );
+
+     // Called when the "Clear" button on the left side of the Display query at the top.
+     this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      () => {
+        this.resetSelections();
+        this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
       }
     );
 
@@ -105,20 +113,6 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
     this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showPatientSex);
   }
 
-  onApplySexApplyChecked(status) {
-    let criteriaForQuery: string[] = [];
-    this.commonService.setHaveUserInput(true);
-    this.sexApply = status;
-
-    // This category's data for the query, the 0th element is always the category name.
-    criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
-    if (status) {
-     } else {
-      this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
-    }
-    this.commonService.updateQuery(criteriaForQuery);
-  }
-
   // Method to update selected options dynamically
   onSelectionChange(selected, checked): void {
     this.commonService.setHaveUserInput( true );
@@ -145,13 +139,14 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
 
   // Method to reset selections
   resetSelections(): void {
+    this.commonService.setHaveUserInput( true );
     this.selectedSex = { male: false, female: false, null: false };
     this.selectedOptions = [];
-    this.commonService.setHaveUserInput( true );
+    this.queryUrlService.clear( this.queryUrlService.PATIENT_SEX );
     let criteriaForQuery: string[] = [];
     criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
     this.commonService.updateQuery(criteriaForQuery);
-    this.queryUrlService.clear( this.queryUrlService.PATIENT_SEX );
+    
   }
 
   ngOnDestroy() {
