@@ -82,7 +82,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
                 () => {
                   
                     this.totalQueryClear();
-                    this.onPixelSpacingClearAllClick( );
+                    this.onPixelSpacingClearAllClick(true );
                    this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
                     this.initMonitorService.setPixelSpacingRangeInit(true);
 
@@ -91,7 +91,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
     
             this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
                 () => {
-                    this.onPixelSpacingClearAllClick();
+                    this.onPixelSpacingClearAllClick(true);
                     this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
                 } );
     
@@ -129,7 +129,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
          * Called when the user is totally clearing the complete current query
          */
          totalQueryClear() {
-            this.onPixelSpacingClearAllClick();
+            this.onPixelSpacingClearAllClick(true);
         }
     
         /**
@@ -137,17 +137,20 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
          * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
          */
     
-        onPixelSpacingClearAllClick() { 
+        onPixelSpacingClearAllClick(totalClear: boolean = false) { 
             this.commonService.setHaveUserInput( true );
             this.fromPixelSpacing = 0;
             this.toPixelSpacing = 15.0;
             this.fromPixelSpacingTrailer = 0.1; // the init value is different to keep the apply button active
             this.toPixelSpacingTrailer = 15.0;
             this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
-            let PixelSpacingRangeForQuery: string[] = [];
-            PixelSpacingRangeForQuery[0] = Consts.PIXEL_SPACING_RANGE_CRITERIA;
+
+            if (!totalClear) {
+                let PixelSpacingRangeForQuery: string[] = [];
+                PixelSpacingRangeForQuery[0] = Consts.PIXEL_SPACING_RANGE_CRITERIA;
     
-            this.commonService.updateQuery( PixelSpacingRangeForQuery );  
+                this.commonService.updateQuery( PixelSpacingRangeForQuery );  
+            }
         }
 
          /**

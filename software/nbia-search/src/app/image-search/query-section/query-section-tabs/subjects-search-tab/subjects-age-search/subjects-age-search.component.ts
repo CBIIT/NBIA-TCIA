@@ -81,14 +81,14 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
                 () => {
                   
                     this.totalQueryClear();
-                    this.onPatientAgeClearAllClick( );
+                    this.onPatientAgeClearAllClick(true);
                     this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
                 }
             );
     
             this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
                 () => {
-                    this.onPatientAgeClearAllClick();
+                    this.onPatientAgeClearAllClick(true);
                     this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
                 } );
     
@@ -127,7 +127,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
          * Called when the user is totally clearing the complete current query
          */
          totalQueryClear() {
-            this.onPatientAgeClearAllClick();
+            this.onPatientAgeClearAllClick(true);
         }
     
         /**
@@ -135,17 +135,20 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
          * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
          */
     
-        onPatientAgeClearAllClick() { 
+        onPatientAgeClearAllClick(totalClear: boolean = false) { 
             this.commonService.setHaveUserInput( true );
             this.fromPatientAge = 0;
             this.toPatientAge = 100;
             this.fromPatientAgeTrailer = 1;
             this.toPatientAgeTrailer = 100;
             this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-            let patientAgeRangeForQuery: string[] = [];
-            patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
+
+            if (!totalClear) {
+                let patientAgeRangeForQuery: string[] = [];
+                patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
     
-            this.commonService.updateQuery( patientAgeRangeForQuery );
+                this.commonService.updateQuery( patientAgeRangeForQuery );
+            }
             
         }
     

@@ -83,14 +83,14 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
             () => {
               
                 this.totalQueryClear();
-                this.onSliceThicknessClearAllClick( );
+                this.onSliceThicknessClearAllClick(true );
                 this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             }
         );
 
         this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.onSliceThicknessClearAllClick();
+                this.onSliceThicknessClearAllClick(true);
                 this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             } );
 
@@ -131,7 +131,7 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
      * Called when the user is totally clearing the complete current query
      */
      totalQueryClear() {
-        this.onSliceThicknessClearAllClick();
+        this.onSliceThicknessClearAllClick(true);
     }
 
     /**
@@ -139,17 +139,20 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
 
-    onSliceThicknessClearAllClick() { 
+    onSliceThicknessClearAllClick(totalClear: boolean = false) { 
         this.commonService.setHaveUserInput( true );
         this.fromSliceThickness = 0;
         this.toSliceThickness = 1800.0;
         this.fromSliceThicknessTrailer = 1; // the init value is different to keep the apply button active
         this.toSliceThicknessTrailer = 1800.0;
         this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
-        let sliceThicknessRangeForQuery: string[] = [];
-        sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
 
-        this.commonService.updateQuery( sliceThicknessRangeForQuery );
+        if (!totalClear) {
+            let sliceThicknessRangeForQuery: string[] = [];
+            sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
+
+            this.commonService.updateQuery( sliceThicknessRangeForQuery );
+        }
         
     }
 
