@@ -35,11 +35,6 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
     };
 
     /**
-     * The list used by the HTML.
-     */
-    criteriaList;
-
-    /**
      * For hide or show this group of criteria when the arrows next to the heading are clicked.
      */
    //showCriteriaList;
@@ -76,57 +71,25 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         }
     
     
-            // Called when the "Clear" button on the left side of the Display query at the top.
-            this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                () => {
-                  
-                    this.totalQueryClear();
-                    this.onPatientAgeClearAllClick(true);
-                    this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-                }
-            );
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.onPatientAgeClearAllClick( );
+                this.setInitValues();
                 this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
             }
         );
     
-            this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                () => {
-                    this.onPatientAgeClearAllClick(true);
-                    this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-                } );
-    
-    
-             // Just set the values, not the 'Apply "Available" patient age range'
-            this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-                async data => {
-                    this.fromPatientAge = Number( data[1] );
-                    this.toPatientAge = Number( data[2] );
-                    this.onApplyPatientAgeRangeClick( true );
-                    this.commonService.setHaveUserInput( false );
-    
-                }
-            );
-    
-            // Get persisted showPatientAgeRange value.  Used to show, or collapse this category of criteria in the UI.
-            this.showPatientAgeRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT );
-            if( this.utilService.isNullOrUndefined( this.showPatientAgeRange ) ){
-                this.showPatientAgeRange = Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT;
-                this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT, this.showPatientAgeRange );
-            }
-    
-            this.initMonitorService.setPatientAgeRangeInit( true );
+
+         // Reload the list of search criteria because a user has logged in,
+        // they may have different access to available search criteria.    
         this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.onPatientAgeClearAllClick();
+                this.setInitValues();
                 this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
             } );
 
 
-            // Just set the values, not the 'Apply "Available" patient age range'
+        // Just set the values, not the 'Apply "Available" patient age range'
         this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
                 this.fromPatientAge = Number( data[1] );
@@ -137,101 +100,93 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
             }
         );
 
-           // this.initMonitorService.setPatientAgeRangeInit( true );
-        }
+       this.initMonitorService.setPatientAgeRangeInit( true );
+    }
         
-        /**
-         * Hides or shows this group of criteria when the arrows next to the heading are clicked.
-         *
-         * @param show
-         */
-        onShowPatientAgeRangeClick( show: boolean ) {
-            this.showPatientAgeRange = show;
-        }
-    
-         /**
-         * Called when the user is totally clearing the complete current query
-         */
-         totalQueryClear() {
-            this.onPatientAgeClearAllClick(true);
-            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE, this.showPatientAgeRange );
-        }
-    
-        onPatientAgeClearAllClick(totalClear: boolean = false) { 
-            this.commonService.setHaveUserInput( true );
-            this.fromPatientAge = 0;
-            this.toPatientAge = 100;
-            this.fromPatientAgeTrailer = 1;
-            this.toPatientAgeTrailer = 100;
-            this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
+    /**
+     * Hides or shows this group of criteria when the arrows next to the heading are clicked.
+     *
+     * @param show
+     */
+    onShowPatientAgeRangeClick( show: boolean ) {
+        this.showPatientAgeRange = show;
+    }
 
-            if (!totalClear) {
-                let patientAgeRangeForQuery: string[] = [];
-                patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
-    
-                this.commonService.updateQuery( patientAgeRangeForQuery );
-            }
-            
+    setInitValues() {
+        this.commonService.setHaveUserInput( true );
+        this.fromPatientAge = 0;
+        this.toPatientAge = 100;
+        this.fromPatientAgeTrailer = 1;
+        this.toPatientAgeTrailer = 100;
+    }
+
+    onPatientAgeClearAllClick(totalClear: boolean = false) { 
+        this.setInitValues();
+        this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
+        let patientAgeRangeForQuery: string[] = [];
+        patientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
+        this.commonService.updateQuery( patientAgeRangeForQuery );
+        
+    }
+
+    /**
+     * Updates the query.
+     * TODO Rename this, there is no longer a checkbox
+     *
+     * @param checked
+     */
+    onApplyPatientAgeRangeClick( checked ) {
+        // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
+        this.commonService.setHaveUserInput( true );
+
+        // Build the query.
+        let PatientAgeRangeForQuery: string[] = [];
+        PatientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
+        // Checked, and the user has selected a range.
+        if(checked && (+this.fromPatientAge > 0) || (+this.toPatientAge < 100)){
+            let numFromPatientAge = Number( this.fromPatientAge );
+            PatientAgeRangeForQuery[1] = numFromPatientAge.toString();
+            let numToPatientAge = Number( this.toPatientAge );
+            PatientAgeRangeForQuery[2] = numToPatientAge.toString();
+
+            // Update queryUrlService  for share my query
+            this.queryUrlService.update( this.queryUrlService.PATIENT_AGE_RANGE, this.fromPatientAge + '-' + this.toPatientAge + 'mm' );
         }
-    
-         /**
-         * Updates the query.
-         * TODO Rename this, there is no longer a checkbox
-         *
-         * @param checked
-         */
-         onApplyPatientAgeRangeClick( checked ) {
-            // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
-            this.commonService.setHaveUserInput( true );
-    
-            // Build the query.
-            let PatientAgeRangeForQuery: string[] = [];
-            PatientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
-            // Checked, and the user has selected a range.
-            if(checked && (+this.fromPatientAge > 0) || (+this.toPatientAge < 100)){
-                let numFromPatientAge = Number( this.fromPatientAge );
-                PatientAgeRangeForQuery[1] = numFromPatientAge.toString();
-                let numToPatientAge = Number( this.toPatientAge );
-                PatientAgeRangeForQuery[2] = numToPatientAge.toString();
-    
-                // Update queryUrlService  for share my query
-                this.queryUrlService.update( this.queryUrlService.PATIENT_AGE_RANGE, this.fromPatientAge + '-' + this.toPatientAge + 'mm' );
-            }
-            if( ! checked )
-            {
-                // Remove PatientAgeRange (if any) in the queryUrlService
-                this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-                // If user has unchecked or have changed the event to none ("Select") or has no To AND From values, remove Days from baseline from the query
-                PatientAgeRangeForQuery.slice( 0, 1 );
-            }
-    
-            this.toPatientAgeTrailer = this.toPatientAge;
-            this.fromPatientAgeTrailer = this.fromPatientAge;
-            this.commonService.updateQuery( PatientAgeRangeForQuery );
-    
+        if( ! checked )
+        {
+            // Remove PatientAgeRange (if any) in the queryUrlService
+            this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
+            // If user has unchecked or have changed the event to none ("Select") or has no To AND From values, remove Days from baseline from the query
+            PatientAgeRangeForQuery.slice( 0, 1 );
         }
-    
-         /**
-         * If the user input values have changed, update the query.
-         */
-         onPatientAgeRangeApply() {
-            if( this.toPatientAgeTrailer !== this.toPatientAge ||
-                this.fromPatientAgeTrailer !== this.fromPatientAge){
-    
-                this.onApplyPatientAgeRangeClick( true );
-            }
+
+        this.toPatientAgeTrailer = this.toPatientAge;
+        this.fromPatientAgeTrailer = this.fromPatientAge;
+        this.commonService.updateQuery( PatientAgeRangeForQuery );
+
+    }
+
+        /**
+     * If the user input values have changed, update the query.
+     */
+        onPatientAgeRangeApply() {
+        if( this.toPatientAgeTrailer !== this.toPatientAge ||
+            this.fromPatientAgeTrailer !== this.fromPatientAge){
+
+            this.onApplyPatientAgeRangeClick( true );
         }
-    
-        onPatientAgeRangeExplanationClick(e) {
-            this.showPatientAgeRangeExplanation = true;
-            this.posY = e.view.pageYOffset + e.clientY;
-        }
-    
-    
-        ngOnDestroy() {
-            this.ngUnsubscribe.next();
-            this.ngUnsubscribe.complete();
-        }
+    }
+
+    onPatientAgeRangeExplanationClick(e) {
+        this.showPatientAgeRangeExplanation = true;
+        this.posY = e.view.pageYOffset + e.clientY;
+    }
+
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
     
 }
     

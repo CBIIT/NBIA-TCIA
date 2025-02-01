@@ -71,26 +71,30 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
 
 
         // Get persisted showSliceThicknessRange 
-        this.showSliceThicknessRange  = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE );
+        this.showSliceThicknessRange  = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS );
         if( this.utilService.isNullOrUndefined( this.showSliceThicknessRange  ) ){
-            this.showSliceThicknessRange  = Consts.SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT;
-            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE, this.showSliceThicknessRange  );
+            this.showSliceThicknessRange  = Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS_DEFAULT;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS, this.showSliceThicknessRange  );
         }
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-              
-                this.totalQueryClear();
-                this.onSliceThicknessClearAllClick(true );
+                this.fromSliceThickness = 0;
+                this.toSliceThickness = 1800.0;
+                this.fromSliceThicknessTrailer = 1; 
+                this.toSliceThicknessTrailer = 1800.0;
                 this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             }
         );
 
         this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.onSliceThicknessClearAllClick(true);
+                this.fromSliceThickness = 0;
+                this.toSliceThickness = 1800.0;
+                this.fromSliceThicknessTrailer = 1; 
+                this.toSliceThicknessTrailer = 1800.0;
                 this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             } );
 
@@ -127,33 +131,21 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         this.showSliceThicknessRange  = show;
     }
 
-     /**
-     * Called when the user is totally clearing the complete current query
-     */
-     totalQueryClear() {
-        this.onSliceThicknessClearAllClick(true);
-    }
-
     /**
      *
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
 
-    onSliceThicknessClearAllClick(totalClear: boolean = false) { 
+    onSliceThicknessClearAllClick() { 
         this.commonService.setHaveUserInput( true );
         this.fromSliceThickness = 0;
         this.toSliceThickness = 1800.0;
         this.fromSliceThicknessTrailer = 1; // the init value is different to keep the apply button active
         this.toSliceThicknessTrailer = 1800.0;
         this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
-
-        if (!totalClear) {
-            let sliceThicknessRangeForQuery: string[] = [];
-            sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
-
-            this.commonService.updateQuery( sliceThicknessRangeForQuery );
-        }
-        
+        let sliceThicknessRangeForQuery: string[] = [];
+        sliceThicknessRangeForQuery[0] = Consts.SLICE_THICKNESS_RANGE_CRITERIA;
+        this.commonService.updateQuery( sliceThicknessRangeForQuery );
     }
 
 

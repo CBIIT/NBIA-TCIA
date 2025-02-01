@@ -15,8 +15,6 @@ import { ParameterService } from '@app/common/services/parameter.service';
   styleUrls: ['../../../../../app.component.scss', '../subjects-search-tab.component.scss']
 })
 export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
-    sexApplySelection = 0;
-    sexApply = false;
 
     // Object to track selected states
     selectedSex = {
@@ -54,16 +52,17 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
     // Called when the "Clear" button on the left side of the Display query at the top.
     this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       () => {
-        this.resetSelections();
+        this.selectedSex = { male: false, female: false, null: false };
+        this.selectedOptions = [];
         this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
-        //this.initMonitorService.setPatientSexInit(true);
       }
     );
 
      // Called when the "Clear" button on the left side of the Display query at the top.
      this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       () => {
-        this.resetSelections();
+        this.selectedSex = { male: false, female: false, null: false };
+        this.selectedOptions = [];
         this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
       }
     );
@@ -99,7 +98,7 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
       this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_PATIENTSEX, this.showPatientSex);
     }
 
-    //this.initMonitorService.setPatientSexInit(true);
+    this.initMonitorService.setPatientSexInit(true);
   }
 
 
