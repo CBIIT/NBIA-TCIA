@@ -52,7 +52,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
             () => {
                 this.thirdPartyApply = false;
                 this.thirdPartyApplySelection = 2;
-                this.initMonitorService.setThirdPartyInit( true );
+                this.queryUrlService.clear( this.queryUrlService.THIRD_PARTY );
             }
         );
 
@@ -78,7 +78,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
             this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_THIRD_PARTY, this.showCriteriaList );
         }
 
-        this.initMonitorService.setThirdPartyInit( true );
+       // this.initMonitorService.setThirdPartyInit( true );
     }
 
 
