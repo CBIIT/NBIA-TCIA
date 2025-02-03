@@ -57,7 +57,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
         );
 
         this.parameterService.parameterThirdPartyEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
+           async data => {
                 this.thirdPartyApplySelection = (JSON.stringify( data ).toUpperCase() === '"YES"') ? 0 : 1;
                 this.onApplyThirdPartyChecked( true );
                 this.commonService.setHaveUserInput( false );
@@ -78,7 +78,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
             this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_THIRD_PARTY, this.showCriteriaList );
         }
 
-       // this.initMonitorService.setThirdPartyInit( true );
+        this.initMonitorService.setThirdPartyInit( true );
     }
 
 
