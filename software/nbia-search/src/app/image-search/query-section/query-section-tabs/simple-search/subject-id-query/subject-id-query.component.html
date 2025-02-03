@@ -10,12 +10,12 @@
 
         <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
             <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
-            Subject IDs
+            Identifiers
         </span>
 
         <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
-            Subject IDs
+            Identifiers
         </span>
 
     </div>
@@ -24,13 +24,13 @@
                     'hide-div': !showSubjectIds
                 }"
          class="text-input-div">
-        <span class="subject-id-prompt">Enter comma separated ID(s)</span>
+        <span class="subject-id-prompt">Enter comma separated Identifiers</span>
         <textarea ref-textarea [(ngModel)]="subjectText" class="subject-id-text"></textarea>
 
         <button class="btn nbia-button subject-id-query-button"
                 type="button"
               (click)="onSearchClick()">
-            Apply Subject IDs
+            Apply Identifiers
         </button>
     </div>
 </div>
