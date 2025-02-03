@@ -62,7 +62,6 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
             }
         );
 
-
         // Get persisted PatientAge 
         this.showPatientAgeRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PATIENTAGE );
         if( this.utilService.isNullOrUndefined( this.showPatientAgeRange ) ){
@@ -89,14 +88,29 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
             } );
 
 
-        // Just set the values, not the 'Apply "Available" patient age range'
+        // Just set the values, not the 'Apply patient age range'
         this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
-                this.fromPatientAge = Number( data[1] );
-                this.toPatientAge = Number( data[2] );
-                this.onApplyPatientAgeRangeClick( true );
-                this.commonService.setHaveUserInput( false );
-
+                try {
+                    let dataString = <string>data; //sample data: PatientAgeRangeCriteria=41-100
+                    let dataArray = dataString.match(/(\d+)-(\d+)/);
+                    if (dataArray && dataArray.length > 1) {
+                        this.fromPatientAge = Number(dataArray[1]); // match results start at index 1 (0 is the serach expression)
+                        this.toPatientAge = Number(dataArray[2]);
+                
+                        if (!isNaN(this.fromPatientAge) && !isNaN(this.toPatientAge)) {
+                            this.onApplyPatientAgeRangeClick(true);
+                            this.showPatientAgeRange = true;
+                            this.commonService.setHaveUserInput(false);
+                        } else {
+                            console.error("Invalid patient age values:", dataString);
+                        }
+                    } else {
+                        console.warn("Unexpected patient age format:", dataString);
+                    }
+                } catch (error) {
+                    console.error("Error processing patient age range:", error);
+                }
             }
         );
 
@@ -150,7 +164,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
             PatientAgeRangeForQuery[2] = numToPatientAge.toString();
 
             // Update queryUrlService  for share my query
-            this.queryUrlService.update( this.queryUrlService.PATIENT_AGE_RANGE, this.fromPatientAge + '-' + this.toPatientAge + 'mm' );
+            this.queryUrlService.update( this.queryUrlService.PATIENT_AGE_RANGE, this.fromPatientAge + '-' + this.toPatientAge );
         }
         if( ! checked )
         {

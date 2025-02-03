@@ -24,7 +24,7 @@
          </span>
 
            <!-- Uncheck all the Patient Sex -->
-        <label class="red-clear">
+        <label *ngIf="selectedOptions.length > 0 " class="red-clear">
           <img
             class="clicker cart-button-icon"
             src="assets/images/TOOLS/clear_red.png"

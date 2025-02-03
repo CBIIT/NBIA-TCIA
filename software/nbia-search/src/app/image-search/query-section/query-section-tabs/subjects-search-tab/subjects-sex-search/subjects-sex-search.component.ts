@@ -71,23 +71,39 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
     this.parameterService.parameterPatientSexEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       data => {
         // Deal with trailing (wrong) comma
+        //sample data : PatientSexCriteria=Female,Male
         data = (<any>data).replace( /,$/, '' );
 
         // Data can be multiple values, comma separated
         let criteriaListforSex = (<any>data).split( /\s*,\s*/ );
 
         if(criteriaListforSex.length > 0){
-          this.commonService.setHaveUserInput( false );
+          this.selectedOptions = [];
           for (let i = 0; i < criteriaListforSex.length; i++) {
-            if (criteriaListforSex[i] === 'M') { 
+            if (criteriaListforSex[i] === 'Male') { 
               this.selectedSex.male = true;   
-            } else if (criteriaListforSex[i] === 'F') {
+              this.selectedOptions.push('M');
+            } else if (criteriaListforSex[i] === 'Female') {
               this.selectedSex.female = true;
-            } else if (criteriaListforSex[i] === 'null') {
+              this.selectedOptions.push('F');
+            } else if (criteriaListforSex[i] === 'Null') {
               this.selectedSex.null = true;
+              this.selectedOptions.push('N');
             }
           }
-        }   
+          this.commonService.setHaveUserInput( true ); 
+        
+        
+          let criteriaForQuery: string[] = [];
+          criteriaForQuery.push(Consts.PATIENT_SEX_CRITERIA);
+          criteriaForQuery = criteriaForQuery.concat(this.selectedOptions);
+          this.commonService.updateQuery(criteriaForQuery);
+      
+          this.queryUrlService.update( this.queryUrlService.PATIENT_SEX, this.selectedOptions.join( ',' ) ); 
+          this.commonService.setHaveUserInput( false );  
+          this.showPatientSex = true;
+        }
+      
       }
     );
 
