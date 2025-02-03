@@ -5,6 +5,7 @@ import { UtilService } from '@app/common/services/util.service';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { QueryUrlService } from '@app/image-search/query-url/query-url.service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
+import { InitMonitorService } from '@app/common/services/init-monitor.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -36,7 +37,10 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
 
     constructor( private commonService: CommonService, private parameterService: ParameterService,
                  private queryUrlService: QueryUrlService, private apiServerService: ApiServerService,
-                 private utilService: UtilService ) {
+                 private initMonitorService: InitMonitorService, private utilService: UtilService ) {
+    }
+
+    ngOnInit() {
 
         this.parameterService.parameterImageDescriptionEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
@@ -46,9 +50,6 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
 
             }
         );
-    }
-
-    ngOnInit() {
 
         // Get persisted showCriteriaList value.  Used to show, or collapse this category of criteria in the UI.
         this.showImageDescriptions = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION );
@@ -72,6 +73,8 @@ export class ImagesDesciptionSearchComponent implements OnInit, OnDestroy{
                 this.queryUrlService.clear( this.queryUrlService.IMAGE_DESCRIPTION );
             }
         );
+
+        this.initMonitorService.setImageDescriptionInit( true );
 
     }
 

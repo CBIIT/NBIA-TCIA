@@ -136,6 +136,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
     async ngOnInit() {
 
+        // This will tell the parameter service that it can send any query criteria that where passed in the URL
+        this.initMonitorService.setManufacturerInit(true);
+
         /**
          * Set to true when a sbuscribe returns an error.
          * It is used where we are waiting on subscribed data, to tell us to stop waiting, there will be no data.
@@ -145,7 +148,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         let errorFlag = false;
 
         // Update the Manufacturer sort criteria from a persisted value (Alpha or NUm).
-        this.sortNumChecked = this.persistenceService.get( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT );
+       //this.sortNumChecked = this.persistenceService.get( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT );
         // If there is no persisted value, use the same one as the others (Sort by count).
         // if( this.utilService.isNullOrUndefined( this.sortNumChecked ) ){
         //     this.sortNumChecked = Properties.SORT_MANUFACTURER_LIST_BY_COUNT;
@@ -157,8 +160,16 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getManufacturerValuesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                try {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeManufacturerValues = data;
+                // sample results from API
+                // [{}, {Manufacturer: "Carestream"}, {Manufacturer: "CPS"}, {Manufacturer: "Eigen"},…]
+                if (this.completeManufacturerValues && this.completeManufacturerValues.length > 0) {
+                    if (this.utilService.isNullOrUndefined(this.completeManufacturerValues[0])) {
+                        this.completeManufacturerValues[0] = { Manufacturer: '- NOT SPECIFIED -' };
+                    } 
+                }
 
                 // If completeManufacturerValuesHold is null, this is the initial call.
                 // completeManufacturerValuesHold lets us reset completeManufacturerValues when ever needed.
@@ -170,6 +181,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
                     this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
                 }
+            } catch (error) {
+                console.error('Error in getManufacturerValuesEmitter.subscribe: ', error);
+            }
 
             }
         );
@@ -186,7 +200,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         // This call is to trigger populating this.completeManufacturerValues (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
-        this.loadingDisplayService.setLoading( true, 'Loading query data. This could take up to a minute.' );
+        this.loadingDisplayService.setLoading( true, 'Loading Manufacturer query data. This could take up to a minute.' );
 
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
@@ -198,85 +212,92 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         // Reload the list of search criteria because a user has logged in,
         // they may have different access to available search criteria.
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            async() => {
-                // This is used when a query included in the URL is to be rerun when a user logs in,
-                // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
+        // this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+        //     async() => {
+        //         // This is used when a query included in the URL is to be rerun when a user logs in,
+        //         // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
 
-                this.initMonitorService.setManufacturerRunning( true );
+        //         this.initMonitorService.setManufacturerRunning( true );
 
-                // The complete reset we need.
-                this.resetFlag = true;
-                this.completeManufacturerValues = null;
+        //         // The complete reset we need.
+        //         this.resetFlag = true;
+        //         this.completeManufacturerValues = null;
 
-                // Get the list of all Manufacturer Sites in the database and the number of records which contain each Manufacturer Site.
-                this.apiServerService.dataGet( 'v1/getManufacturerValues', '' );
-                while( (this.utilService.isNullOrUndefined( this.completeManufacturerValues )) && (!errorFlag) ){
-                    await this.commonService.sleep( Consts.waitTime );
-                }
-                this.completeManufacturerValuesHold = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValues );
+        //         // Get the list of all Manufacturer Sites in the database and the number of records which contain each Manufacturer Site.
+        //         this.apiServerService.dataGet( 'v1/getManufacturerValues', '' );
+        //         while( (this.utilService.isNullOrUndefined( this.completeManufacturerValues )) && (!errorFlag) ){
+        //             await this.commonService.sleep( Consts.waitTime );
+        //         }
+        //         this.completeManufacturerValuesHold = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValues );
 
-                // Was there a search passed in with the URL
-                if( this.parameterService.haveUrlSimpleSearchParameters() ){
-                    this.setInitialManufacturerValues();
-                    this.updateCheckboxCount();
-                }else{
-                    this.resetAll();
-                }
-                this.initMonitorService.setManufacturerRunning( false );
-            }
-        );
+        //         // Was there a search passed in with the URL
+        //         if( this.parameterService.haveUrlSimpleSearchParameters() ){
+        //             this.setInitialManufacturerValues();
+        //             this.updateCheckboxCount();
+        //         }else{
+        //             this.resetAll();
+        //         }
+        //         this.initMonitorService.setManufacturerRunning( false );
+        //     }
+        // );
 
 
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-               this.queryUrlService.clear(this.queryUrlService.MANUFACTURER);
                 this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
-               // this.initMonitorService.setManufacturerInit(true);
+                this.updateManufacturerValues( true );
+                this.queryUrlService.clear(this.queryUrlService.MANUFACTURER);
+
             }
         );
-
 
         // Called when a query included in the URL contained one or more Manufacturer sites.
         this.parameterService.parameterManufacturerEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+               
+              //  try {
                 // Deal with trailing (wrong) comma
-                data = (<any>data).replace( /,$/, '' );
+                // Data can be multiple string values, comma separated
+               // Ensure data is a string & remove trailing comma
+                    const manufacturerListQueryList = String(data).replace(/,$/, "").split(/\s*,\s*/);
+                    if (manufacturerListQueryList && manufacturerListQueryList.length > 0) {
 
-                // Data can be multiple values, comma separated
-                let manufacturerListQueryList = (<any>data).split( /\s*,\s*/ );
+                        // If we don't have one or more of the Manufacturer sites that where included in the query, add them to this.missingCriteria.
+                        // We will use this list later to tell the user they don't have access to everything they are trying to query.
+                        this.missingCriteria = [];
+                       
+                        manufacturerListQueryList.forEach(criteriaQuery => {
+                            const criteriaUpper = criteriaQuery.toUpperCase();
+                
+                            // Find all matching indices in manufacturerList
+                            const matchedIndices = this.completeManufacturerValues
+                            .map((manufacturer, index) => manufacturer['Manufacturer'].toUpperCase() === criteriaUpper ? index : -1)
+                            .filter(index => index !== -1);  // Remove non-matching (-1) indices
+                
+                            if (matchedIndices.length > 0) {
+                                matchedIndices.forEach(index => this.cBox[index]= true);
+                            } else {
+                                this.missingCriteria.push(`Manufacturer: "${criteriaQuery}" is not available.`);
+                            }
+                        })
 
-                // If we don't have one or more of the Manufacturer sites that where included in the query, add them to this.missingCriteria.
-                // We will use this list later to tell the user they don't have access to everything they are trying to query.
-                this.missingCriteria = [];
-                for( let criteriaQuery of manufacturerListQueryList ){
-                    let found = false;
+                        this.refreshFromURL();
+                        this.commonService.setHaveUserInput( false );
+                       
+                        this.showManufacturerValues = true;
 
-                    // Look at each available criteria
-                    for( let f = 0; f < this.manufacturerList.length; f++ ){
-                        if( criteriaQuery.toUpperCase() === this.manufacturerList[f].criteria.toUpperCase() ){
-                            found = true;
-                            this.onCheckboxClick( f, true );
-                            this.commonService.setHaveUserInput( false );
+                        if( this.missingCriteria.length > 0 ){
+                            // Each search category ( Collections, Image Modality, Manufacturer Sites ) adds to the over all list with this call
+                            this.commonService.updateMissingCriteriaArray( this.missingCriteria );
                         }
-                    }
+                        this.updateCheckboxCount();
+                        //this.setSequenceValue() ;
 
-                    // If one or more of the criteria we are trying to check/select is not in the list of available criteria.
-                    if( !found ){
-                        this.missingCriteria.push( 'Manufacturer: \"' + criteriaQuery + '\" is not available.' );
-                    }
-                }
-
-                if( this.missingCriteria.length > 0 ){
-                    // Each search category ( Collections, Image Modality, Manufacturer Sites ) adds to the over all list with this call
-                    this.commonService.updateMissingCriteriaArray( this.missingCriteria );
-                }
-
-                // (Re)sort the list because a checked criteria is higher than unchecked.
-                this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked ); // sortNumChecked is an optional bool
-                this.setSequenceValue();
-
+                     } else {
+                        console.error('Error in parameterManufacturerEmitter.subscribe: ', 'Invalid data');
+                     }
+                //} 
             } );
 
 
@@ -312,22 +333,65 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 if( f > 0 ){
                     criteriaString += ',';
                 }
-                criteriaString += this.manufacturerList[f]['Manufacturer'];
+                criteriaString += this.manufacturerList[f]['Manufacturer']?.replace(/,/g, ' ') || '- NOT SPECIFIED -';;
             }
         }
         this.queryUrlService.update( this.queryUrlService.MANUFACTURER, criteriaString );
     }
 
+    // refresh from the manufacturerList from the URL
+    refreshFromURL() {
+        // cBox is updated from the URL
+
+        let criteriaForQuery: string[] = [];
+        this.commonService.setHaveUserInput( true );
+
+        this.sendSelectedCriteriaString();
+
+        // This category's data for the query, the 0th element is always the category name.
+        criteriaForQuery.push( Consts.MANUFACTURER_CRITERIA );
+
+        for( let f = 0; f < this.manufacturerList.length; f++ ){
+            if( (!this.utilService.isNullOrUndefined( this.cBox[f] )) && (this.cBox[f]) ){
+                criteriaForQuery.push( this.manufacturerList[f]['Manufacturer'] );
+            }
+        }
+
+        // Tells SearchResultsTableComponent that the query has changed,
+        // SearchResultsTableComponent will (re)run the query &
+        // send updated query to the Query display at the top of the Search results section.
+        this.commonService.updateQuery( criteriaForQuery );
+    }
     /**
      * Adds a 'seq' field to the manufacturerList, it is the sequence which the criteria are displayed.<br>
      * This is used by the HTML when displaying only part of manufacturerList.
      */
     setSequenceValue() {
         let len = this.manufacturerList.length;
-        let seq = 0;
-        if(this.utilService.isNullOrUndefined(this.manufacturerList[0].manufacturer)){
-            this.manufacturerList[0].Manufacturer ='- Null -';
+        
+        if(this.utilService.isNullOrUndefined(this.manufacturerList[0].Manufacturer)){
+            this.manufacturerList[0].Manufacturer ='- NOT SPECIFIED -';
         }
+
+        // merge manufacturerList and cBox[] values
+        const combinedArray = this.manufacturerList.map((item, index) => ({
+            ...item, 
+            cBoxValue: this.cBox[index] }));
+        
+        // Sort based on cBox first (true first), then Manufacturer alphabetically
+        combinedArray.sort((a, b) => {
+            if(a.cBoxValue !== b.cBoxValue){
+                return b.cBoxValue - a.cBoxValue; // true values first
+            }
+            return a.Manufacturer.localeCompare(b.Manufacturer);
+        });
+
+        //extract sorted manufacturerList and cBox  
+        this.manufacturerList = combinedArray.map(item => ({
+            Manufacturer: item.Manufacturer }));
+        
+        this.cBox = combinedArray.map(item => item.cBoxValue);
+        let seq = 0;
         for( let f = 0; f < len; f++ ){
             this.manufacturerList[f].seq = seq;
             seq++;
@@ -339,9 +403,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      */
     setInitialManufacturerValues() {
         this.updateManufacturerValues( true );
-
-        // This will tell the parameter service that it can send any query criteria that where passed in the URL
-        this.initMonitorService.setManufacturerInit( true );
     }
 
     /**
@@ -363,18 +424,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.manufacturerList = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
-
-            // for( let f = 0; f < this.manufacturerList.length; f++ ){
-            //     this.manufacturerList[f].count = 0;
-            // }
-
-            // for( let dataCriteria of this.completeManufacturerValues ){
-            //     for( let f = 0; f < this.manufacturerList.length; f++ ){
-            //         if( this.manufacturerList[f].Manufacturer === dataCriteria.Manufacturer ){
-            //             this.manufacturerList[f].count = dataCriteria.count;
-            //         }
-            //     }
-            // }
         }
 
         if( (this.resetFlag) || (initCheckBox) ){
@@ -385,12 +434,14 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 this.cBox[f] = false;
             }
             this.updateCheckboxCount();
+        }else{
+            this.setSequenceValue()
         }
 
-        this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
-        this.manufacturerListHold = this.manufacturerList;
+       // this.setSequenceValue() ;
 
-        this.setSequenceValue();
+       // this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
+        this.manufacturerListHold = this.manufacturerList;
     }
 
 
@@ -433,7 +484,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.commonService.updateQuery( criteriaForQuery );
 
         // (Re)sort the list because a checked criteria is higher than unchecked.
-        this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
+        // moved into updateCheckboxCount
+       // this.setSequenceValue() ;
+       // this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
 
         // Update the query URL
         if( this.checkedCount === 0 ){
@@ -450,9 +503,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      */
     onShowManufacturerValuesClick( show: boolean ) {
         this.showManufacturerValues = show;
-        this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES, this.showManufacturerValues );
     }
 
+    // following functions are for the search within this criteria list (with the red magnifying glass), NOT the data search.
     /**
      * Clears the search text when the 'X' on the right side of the input is clicked.
      */
@@ -479,8 +532,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 n++;
             }
         }
-        this.manufacturerList = this.sortService.criteriaSort( tempList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
-
+        //this.manufacturerList = this.sortService.criteriaSort( tempList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
+        this.manufacturerList = tempList;
+        this.setSequenceValue() ;
         // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
         if( this.searchInput.length === 0 ){
             this.searchToolTip = 'Search';
@@ -542,6 +596,8 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 this.unCheckedCount++;
             }
         }
+
+        this.setSequenceValue()
     }
 
 
@@ -571,7 +627,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         }
 
         this.checkedCount = 0;
-        this.apiServerService.refreshCriteriaCounts();
+      //  this.apiServerService.refreshCriteriaCounts();
 
         if( !totalClear ){
             let criteriaForQuery: string[] = [];
@@ -595,7 +651,8 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // (Re)sort the list because a checked criteria is higher than unchecked.
         this.sortNumChecked = sortCriteria === 0;
         this.persistenceService.put( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT, this.sortNumChecked );
-        this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
+        //this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
+        this.setSequenceValue() ;
         this.setSequenceValue();
 
     }

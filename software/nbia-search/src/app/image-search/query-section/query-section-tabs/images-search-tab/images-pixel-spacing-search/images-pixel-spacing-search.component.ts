@@ -94,25 +94,43 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
                 this.toPixelSpacing = 15.0;
                 this.fromPixelSpacingTrailer = 0.1; 
                 this.toPixelSpacingTrailer = 15.0;
-                this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
+                this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
             } );
 
 
+            //  // Just set the values of pixel spacing range from URL parameter,
             // Just set the values, not the 'Apply pixel spacing range'
         this.parameterService.parameterPixelSpacingRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
-                this.fromPixelSpacing = Number( data[1] );
-                this.toPixelSpacing = Number( data[2] );
-                this.onApplyPixelSpacingRangeClick( true );
-                this.commonService.setHaveUserInput( false );
+                try {
+                    let dataString = <string>data; //sample data: PixelSpacingCriteria=0-12.5mm
+                    let dataArray = dataString.replace('--','-').replace('mm','').split( '-' );
+                    if (dataArray && dataArray.length > 1) {
+                        this.fromPixelSpacing = Number(dataArray[0]);
+                        this.toPixelSpacing = Number(dataArray[1]);
+                
+                        if (!isNaN(this.fromPixelSpacing) && !isNaN(this.toPixelSpacing)) {
+                            this.onApplyPixelSpacingRangeClick(true);
+                            this.showPixelSpacingRange = true;
+                            this.commonService.setHaveUserInput(false);
+                        } else {
+                            console.error("Invalid pixel spacing values:", dataString);
+                        }
+                    } else {
+                        console.warn("Unexpected pixel spacing format:", dataString);
+                    }
+                } catch (error) {
+                    console.error("Error processing pixel spacings range:", error);
+                }
+               
             }
         );
 
         // Get persisted showPixelSpacingRange value.  Used to show, or collapse this category of criteria in the UI.
-        this.showPixelSpacingRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS_DEFAULT );
+        this.showPixelSpacingRange = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_PIXEL_SPACING );
         if( this.utilService.isNullOrUndefined( this.showPixelSpacingRange ) ){
-            this.showPixelSpacingRange = Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS_DEFAULT;
-            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_SLICE_THICKNESS, this.showPixelSpacingRange );
+            this.showPixelSpacingRange = Consts.SHOW_CRITERIA_PIXEL_SPACING_DEFAULT;
+            this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_PIXEL_SPACING, this.showPixelSpacingRange );
         }
 
         this.initMonitorService.setPixelSpacingRangeInit( true );
@@ -138,7 +156,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
         this.toPixelSpacing = 15.0;
         this.fromPixelSpacingTrailer = 0.1; // the init value is different to keep the apply button active
         this.toPixelSpacingTrailer = 15.0;
-        this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
+        this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
         let PixelSpacingRangeForQuery: string[] = [];
         PixelSpacingRangeForQuery[0] = Consts.PIXEL_SPACING_RANGE_CRITERIA;
 
@@ -166,12 +184,12 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
             PixelSpacingRangeForQuery[2] = numToPixelSpacing.toString();
 
             // Update queryUrlService  for share my query
-            this.queryUrlService.update( this.queryUrlService.SLICE_THICKNESS, this.fromPixelSpacing + '-' + this.toPixelSpacing + 'mm' );
+            this.queryUrlService.update( this.queryUrlService.PIXEL_SPACING, this.fromPixelSpacing + '-' + this.toPixelSpacing + 'mm' );
         }
         if( ! checked )
         {
             // Remove PixelSpacingRange (if any) in the queryUrlService
-            this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
+            this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
             // If user has unchecked or have changed the event to none ("Select") or has no To AND From values, remove Days from baseline from the query
             PixelSpacingRangeForQuery.slice( 0, 1 );
         }

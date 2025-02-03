@@ -252,7 +252,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                 // This is used when a query included in the URL is to be rerun when a user logs in,
                 // so the query knows not to rerun until all the search criteria are set. @see LoginComponent.
 
-                this.initMonitorService.setModalityRunning( true );
+               this.initMonitorService.setModalityRunning( true );
 
                 // The complete reset we need.
                 this.resetFlag = true;
@@ -272,7 +272,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                 }else{
                     this.resetAll();
                 }
-                this.initMonitorService.setModalityRunning( false );
+               this.initMonitorService.setModalityRunning( false );
             }
         );
 
@@ -281,8 +281,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
-                this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );
-                 
+                this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );               
             }
         );
 

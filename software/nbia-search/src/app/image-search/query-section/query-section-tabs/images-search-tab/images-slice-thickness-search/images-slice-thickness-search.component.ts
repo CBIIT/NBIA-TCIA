@@ -98,15 +98,28 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
                 this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             } );
 
-
-         // Just set the values, not the 'Apply "Available" slice thickness range'
+         // Just set the values of slice thickness range from URL parameter, not the 'Apply slice thickness range
         this.parameterService.parameterSliceThicknessRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
-                this.fromSliceThickness = Number( data[1] );
-                this.toSliceThickness = Number( data[2] );
-                this.onApplySliceThicknessRangeClick( true );
-                this.commonService.setHaveUserInput( false );
-
+                try {
+                    let dataString = <string>data; //sample data: SliceThicknessCriteria=0-13mm
+                    let dataArray = dataString.replace('--','-').replace('mm','').split( '-' );
+                    if (dataArray && dataArray.length > 1) {
+                        this.fromSliceThickness = Number(dataArray[0]);
+                        this.toSliceThickness = Number(dataArray[1]);
+                        if (!isNaN(this.fromSliceThickness) && !isNaN(this.toSliceThickness)) {
+                            this.onApplySliceThicknessRangeClick(true);
+                            this.showSliceThicknessRange = true;
+                            this.commonService.setHaveUserInput(false);
+                        } else {
+                            console.error("Invalid slice thickness values:", dataString);
+                        }
+                    } else {
+                        console.warn("Unexpected slice thickness format:", dataString);
+                    }
+                } catch (error) {
+                    console.error("Error processing slice thickness range:", error);
+                }
             }
         );
 
