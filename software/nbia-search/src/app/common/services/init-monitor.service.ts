@@ -29,15 +29,21 @@ export class InitMonitorService{
 
     patientSexInit = false;
     patientAgeRangeInit = false;
+    patientHeightRangeInit = false;
+    patientWeightRangeInit = false;
     sliceThicknessRangeInit = false;
     imageDescriptionInit = false;
     pixelSpacingRangeInit = false;
+    nbiaProgramInit = false;
 
     patientSexRunning = false;
     patientAgeRangeRunning = false;
+    patientHeightRangeRunning = false;
+    patientWeightRangeRunning = false;
     sliceThicknessRangeRunning = false;
     imageDescriptionRunning = false;
     pixelSpacingRangeRunning = false;
+    nbiaProgramRunning = false;
 
     manufacturerInit = false;
     manufacturerRunning = false;    
@@ -143,6 +149,21 @@ export class InitMonitorService{
         return this.patientSexInit;
     }
 
+    setPatientHeightRangeInit( status ) {
+        this.patientHeightRangeInit = status;
+    }
+
+    getPatientHeightRangeInit() {
+        return this.patientHeightRangeInit;
+    }
+
+    setPatientWeightRangeInit( status ) {
+        this.patientWeightRangeInit = status;
+    }
+    getPatientWeightRangeInit() {
+        return this.patientWeightRangeInit;
+    }
+
     setSliceThicknessRangeInit( status ) {
         this.sliceThicknessRangeInit = status;
     }
@@ -172,6 +193,14 @@ export class InitMonitorService{
 
     getManufacturerInit() {
         return this.manufacturerInit;
+    }   
+
+    setNbiaProgramInit( status ) {      
+        this.nbiaProgramInit = status;
+    }
+
+    getNbiaProgramInit() {
+        return this.nbiaProgramInit;
     }   
 
     getAnyInit() {
@@ -213,6 +242,14 @@ export class InitMonitorService{
             res = true;
         }
 
+        if( this.patientHeightRangeInit ){
+            res = true;
+        }
+
+        if( this.patientWeightRangeInit ){
+            res = true;
+        }   
+
         if( this.sliceThicknessRangeInit ){
             res = true;
         }
@@ -227,7 +264,11 @@ export class InitMonitorService{
 
         if( this.manufacturerInit ){
             res = true;
-        }   
+        }  
+        
+        if( this.nbiaProgramInit ){
+            res = true;
+        }
         return res;
     }
 
@@ -312,6 +353,22 @@ export class InitMonitorService{
     getPatientSexRunning() {
         return this.patientSexRunning;
     }
+
+    setPatientHeightRangeRunning( status ) {
+        this.patientHeightRangeRunning = status;
+    }
+
+    getPatientHeightRangeRunning() {
+        return this.patientHeightRangeRunning;
+    }   
+
+    setPatientWeightRangeRunning( status ) {
+        this.patientWeightRangeRunning = status;
+    }
+
+    getPatientWeightRangeRunning() {
+        return this.patientWeightRangeRunning;
+    }
     
     setSliceThicknessRangeRunning( status ) {
         this.sliceThicknessRangeRunning = status;
@@ -343,6 +400,14 @@ export class InitMonitorService{
     getManufacturerRunning() {
         return this.manufacturerRunning;
     }   
+
+    setNbiaProgramRunning( status ) {
+        this.nbiaProgramRunning = status;
+    }
+
+    getNbiaProgramRunning() {
+        return this.nbiaProgramRunning;
+    }
 
     getAnyRunning() {
         let res = false;
@@ -385,6 +450,14 @@ export class InitMonitorService{
         if( this.patientSexRunning ){
             res = true;
         }
+
+        if( this.patientHeightRangeRunning ){
+            res = true;
+        }
+
+        if( this.patientWeightRangeRunning ){
+            res = true;
+        }
         
         if( this.sliceThicknessRangeRunning ){
             res = true;
@@ -400,7 +473,11 @@ export class InitMonitorService{
 
         if( this.manufacturerRunning ){
             res = true;
-        }   
+        }  
+        
+        if( this.nbiaProgramRunning ){
+            res = true;
+        }
         
         return res;
     }

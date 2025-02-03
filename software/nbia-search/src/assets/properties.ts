@@ -188,6 +188,9 @@ export let Properties = {
 
     URL_KEY_PATIENT_AGE_RANGE: 'PatientAgeRangeCriteria',
     URL_KEY_PATIENT_SEX: 'PatientSexCriteria',
+    URL_KEY_PATIENT_HEIGHT_RANGE: 'PatientHeightRangeCriteria',
+    URL_KEY_PATIENT_WEIGHT_RANGE: 'PatientWeightRangeCriteria',
+    URL_KEY_NBIA_PROGRAM: 'NBIAProgramCriteria',
 
     URL_KEY_COLLECTIONS: 'CollectionCriteria',
     // For backwards compatibility

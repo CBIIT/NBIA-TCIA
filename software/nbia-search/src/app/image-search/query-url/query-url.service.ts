@@ -137,7 +137,7 @@ export class QueryUrlService{
                         if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_PATIENT_AGE_RANGE])){
                             queryForLoggingObject[Properties.URL_KEY_PATIENT_AGE_RANGE] = [];
                         }
-                        queryForLoggingObject[Properties.URL_KEY_PATIENT_ID].push(this.queryData[f]);
+                        queryForLoggingObject[Properties.URL_KEY_PATIENT_AGE_RANGE].push(this.queryData[f]);
     
                         break;
                     case this.PATIENT_SEX:

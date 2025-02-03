@@ -750,7 +750,9 @@ export class CommonService{
                 if( item.length > maxCriteriaLen ){
                     item = item.substring( 0, maxCriteriaLen ) + '...';
                 }
-                displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // rc9.4 change Subject ID to Identifiers
+                displayQuery.push( { [Consts.CRITERIA]: 'Identifiers', 'name': item } );
             }
         }
 

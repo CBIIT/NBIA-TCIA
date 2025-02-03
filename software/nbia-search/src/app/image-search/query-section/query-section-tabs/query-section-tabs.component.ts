@@ -98,6 +98,7 @@ export class QuerySectionTabsComponent implements OnInit, OnDestroy{
         // Set the current tab from persisted setting, if there is one
         try{
             this.currentQueryTypeTab = JSON.parse( this.persistenceService.get( this.persistenceService.Field.QUERY_TYPE_TAB ) );
+           // this.currentQueryTypeTab = 0;
             this.displayMode = this.currentQueryTypeTab;
         }catch( e ){
         }

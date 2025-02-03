@@ -33,11 +33,14 @@ export class ParameterService{
 
     parameterPatientAgeRangeEmitter = new EventEmitter();
     parameterPatientSexEmitter = new EventEmitter();
+    parameterPatientHeightRangeEmitter = new EventEmitter();
+    parameterPatientWeightRangeEmitter = new EventEmitter();
     parameterSliceThicknessRangeEmitter = new EventEmitter();
     parameterImageDescriptionEmitter = new EventEmitter();
     parameterPixelSpacingRangeEmitter = new EventEmitter();
 
     parameterManufacturerEmitter = new EventEmitter();
+    parameterNbiaProgramEmitter = new EventEmitter();
 
     // Used for determining if cart from URL should be (re)loaded
     no = 0;
@@ -61,9 +64,12 @@ export class ParameterService{
 
     patientAgeRange = '';
     patientSex = '';
+    patientHeightRange = '';
+    patientWeightRange = '';
     sliceThicknessRange = '';
     pixelSpacingRange = '';
     imageDescription = '';
+    nbiaProgram = '';
 
     manufacturer = '';
 
@@ -415,6 +421,45 @@ export class ParameterService{
         return this.sliceThicknessRange;
     }
 
+    async setPatientHeightRange( patientHeightRange ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.patientHeightRange = patientHeightRange;
+
+        // Wait for the Patient Height query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPatientHeightRangeInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterPatientHeightRangeEmitter.emit( patientHeightRange );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+
+    getPatientHeightRange() {
+        return this.patientHeightRange;
+    }
+
+    async setPatientWeightRange( patientWeightRange ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.patientWeightRange = patientWeightRange;
+
+        // Wait for the Patient Weight query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getPatientWeightRangeInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterPatientWeightRangeEmitter.emit( patientWeightRange );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();
+    }
+    getPatientWeightRange() {   
+        return this.patientWeightRange;
+    }
+
     async setPixelSpacingRange( pixelSpacingRange ) {
         this.incStillWaitingOnAtLeastOneComponent();
         this.haveParametersToService = true;
@@ -453,6 +498,46 @@ export class ParameterService{
 
     getManufacturer() {
         return this.manufacturer;
+    }
+
+    async setImageDescription( imageDescription ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.imageDescription = imageDescription;
+
+        // Wait for the Image Description query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getImageDescriptionInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterImageDescriptionEmitter.emit( imageDescription );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();  
+    }   
+
+    getImageDescription() {
+        return this.imageDescription;
+    }
+
+    async setNbiaProgram( nbiaProgram ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
+        this.nbiaProgram = nbiaProgram;
+
+        // Wait for the Nbia Program query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getNbiaProgramInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
+        this.parameterNbiaProgramEmitter.emit( nbiaProgram );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();  
+    }
+
+    getNbiaProgram() {
+        return this.nbiaProgram;
     }
 
     setShowTest( showTest ) {

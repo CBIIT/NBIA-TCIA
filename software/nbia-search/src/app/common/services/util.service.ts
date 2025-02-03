@@ -93,14 +93,14 @@ export class UtilService{
         }
         let copyObj = [];
         for( let criteria of origObject ){
-            copyObj.push( this.copyManufacturerObject( criteria ) );
+            copyObj.push( this.copyManufacturerObject( criteria) ) ;
         }
         return copyObj;
     }
 
     copyManufacturerObject( origCrit ) {
         let copyCrit = {};
-        copyCrit['Manufacturer'] = origCrit['Manufacturer'];
+        copyCrit['Manufacturer'] = origCrit['Manufacturer']?.replace(/,/g, ' ') || '- NOT SPECIFIED -';;
         //copyCrit['ManufacturerModelName'] = origCrit['ManufacturerModelName'];
         if( !this.isNullOrUndefined( origCrit['seq'] ) ){
             copyCrit['seq'] = origCrit['seq'];
