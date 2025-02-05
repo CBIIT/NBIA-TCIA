@@ -14,7 +14,11 @@ import javax.ws.rs.core.Response.Status;
 
 @Path("/v2/getSeriesQCInfo")
 public class V2_getSeriesQCInfo extends getData {
-	private static final String[] columns={"SeriesInstanceUID", "Visibility", "ReleaseStatus", "ReleaseDate", "ImageCount", "Doi",  "LicenseName"};
+	private static final String[] columns = {
+		"SeriesInstanceUID", "Visibility", "ReleaseStatus", "ReleaseDate", 
+		"ImageCount", "Doi", "LicenseName", "Collection", "Site", "PatientID", 
+		"Modality", "StudyDescription", "SeriesDescription"
+	};
 	public final static String TEXT_CSV = "text/csv"; 
 	/**
 	 * This method get a set of series info filtered by series instance UID
