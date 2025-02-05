@@ -282,3 +282,7 @@ label {
 .collection-scroller-content {
     height: $query-collection-start-height;
 }
+
+.fixed-width {
+    width: $left-section-width - 45px;
+}
