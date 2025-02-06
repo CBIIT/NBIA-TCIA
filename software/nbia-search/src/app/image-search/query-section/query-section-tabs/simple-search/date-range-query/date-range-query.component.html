@@ -10,10 +10,11 @@
             Date Released
         </span>
 
-        <label *ngIf="! isAllEmpty()" class="red-clear"><img class="clicker cart-button-icon"
-                                                             src="assets/images/TOOLS/clear_red.png"
-                                                             alt="Search"
-                                                             (click)="onDateRangeClearAllClick(false)"></label>
+        <label *ngIf="checked" class="red-clear">
+            <img class="clicker cart-button-icon"
+            src="assets/images/TOOLS/clear_red.png"
+            alt="Search"
+            (click)="onDateRangeClearAllClick(false)"></label>
     </div>
 
 

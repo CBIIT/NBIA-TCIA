@@ -25,7 +25,7 @@
         </span>
 
         <!-- Search in the list of Manufacturer Site criteria  (The red magnifying glass)  -->
-        <!--
+        
         <label [ngClass]="{
            'search-glass': checkedCount == 0,
            'search-glass-with-clear': checkedCount > 0
@@ -33,12 +33,12 @@
                for="manufacturerSearchText"
                title="{{searchToolTip}}">
 
-            <img class="clicker"
-                 src="assets/images/search.png"
+            <img class="clicker application-menu-icon"
+            src="assets/images/TOOLS/search_red_43px.png"
                  alt="Search"
                  (click)="onSearchGlassClick()">
         </label>
-        -->
+        
 
         <!-- Uncheck all the Manufacturer Site criteria and restore their counts back to the full count in the database. -->
         <label
@@ -65,17 +65,16 @@
         <!-- This is not used, but we may want it back.  -->
         <div
             *ngIf="showSearch"
-            class="search-box"
-            [ngClass]="{
-                'box-with-focus':searchHasFocus
-             }"
-        >
+            class="search-box" >
 
             <input
                 type="text"
                 class="search-text-area"
                 id="ManufacturerSearchText"
-                placeholder="search"
+                placeholder="search manufacturer"
+                [ngClass]="{
+                    'box-with-focus':searchHasFocus
+                 }"
                 [(ngModel)]="searchInput"
                 (blur)="onSearchTextOutFocus(0)"
                 (focus)="onSearchTextFocus(0)"
@@ -87,11 +86,10 @@
                 <!-- The "X" to clear the search text -->
                 <span
                     *ngIf="searchInput.length > 0"
-                    class="glyphicon glyphicon-remove search-text-area-x close-x"
+                    class="search-text-area-x close-x"
                     (blur)="onSearchTextOutFocus(1)"
                     (focus)="onSearchTextFocus(1)"
-                    (click)="onClearManufacturerSearchInputClick()"
-                ></span>
+                    (click)="onClearManufacturerSearchInputClick()"> X </span>
             </label>
         </div>
         <!-- -----  End Search input  ----- -->

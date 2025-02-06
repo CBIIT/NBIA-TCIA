@@ -82,13 +82,13 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
           for (let i = 0; i < criteriaListforSex.length; i++) {
             if (criteriaListforSex[i] === 'Male') { 
               this.selectedSex.male = true;   
-              this.selectedOptions.push('M');
+              this.selectedOptions.push('Male');
             } else if (criteriaListforSex[i] === 'Female') {
               this.selectedSex.female = true;
-              this.selectedOptions.push('F');
+              this.selectedOptions.push('Female');
             } else if (criteriaListforSex[i] === 'Null') {
               this.selectedSex.null = true;
-              this.selectedOptions.push('N');
+              this.selectedOptions.push('Null');
             }
           }
           this.commonService.setHaveUserInput( true ); 

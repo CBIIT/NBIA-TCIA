@@ -486,6 +486,7 @@ export class ApiServerService implements OnDestroy {
 
         // Available  -  Date Range
         if ((allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0)) {
+            isSearchable = true;
               // Convert from MM/dd/yyyy to dd/MM/yyyy to match API expectation
               let fromDateParts = allData[Consts.DATE_RANGE_CRITERIA][0].split('/');
               let toDateParts = allData[Consts.DATE_RANGE_CRITERIA][1].split('/');

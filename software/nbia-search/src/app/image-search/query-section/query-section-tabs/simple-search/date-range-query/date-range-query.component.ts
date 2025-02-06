@@ -102,9 +102,12 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
     onDateRangeClearAllClick( totalClear: boolean ) {
-        this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
 
-        this.commonService.setHaveUserInput( true );
+         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
+         this.commonService.setHaveUserInput( true );
+
+        let datRangeForQuery: string[] = [];
+        datRangeForQuery[0] = 'DateRangeCriteria';
 
         this.setToDateToToday();
         this.setFromDate( Properties.LAST_ACCESS );
@@ -113,6 +116,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.applyCheckboxCalender = false;
 
         this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
+        this.commonService.updateQuery( datRangeForQuery );
 
     }
 
