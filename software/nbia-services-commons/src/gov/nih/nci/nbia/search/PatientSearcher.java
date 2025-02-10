@@ -206,10 +206,23 @@ public class PatientSearcher {
             }
         }
         List<PatientSearchResultWithModilityAndBodyPart> returnList=new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
+
+          
+
+
         // Convert to a list and sort prior to returning
         for (PatientSearchResultWithModalityAndBodyPartImpl patient:patients.values())
         {
-        	returnList.add(patient);
+          //Remove any that don't meet min study requirement
+          int minStudies = -1;
+          if (query.getMinNumberOfStudiesCriteria() != null) {
+            minStudies = query.getMinNumberOfStudiesCriteria().getMinNumberOfStudiesValue();
+            if (patient.getStudyIdentifiers().length > minStudies) {
+              returnList.add(patient);
+            }
+          } else {
+        	  returnList.add(patient);
+          }
         }
         Collections.sort(returnList);
 

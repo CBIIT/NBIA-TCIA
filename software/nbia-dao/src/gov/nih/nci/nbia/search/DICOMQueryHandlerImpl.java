@@ -302,6 +302,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	        String imageClause = imageCriteriaProcess(this.query);
 	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
 
+
 	        /* Run the query */
 	        logger.debug("Search Issuing query : " + hql);
 	        long startTime = System.currentTimeMillis();
@@ -405,7 +406,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
         whereStmt += processSeriesCriteria(query, handlerFac);
 
-        whereStmt += processMinimumStudiesCriteria(query);
+        //This was moved into PatientSearcher to switch from total to actual
+        //studies that fit the criteria
+        //whereStmt += processMinimumStudiesCriteria(query);
 
         whereStmt += processNumberOfMonthsCriteria(query, handlerFac);
 
@@ -1300,7 +1303,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     private static String processDescription(DICOMQuery theQuery) {
         DescriptionCriteria dc = theQuery.getDescriptionCriteria();
         if (dc != null) {
-          String searchString = dc.getSearchString().toUpperCase();
+          String searchString = dc.getSearchString().toUpperCase().replace("*", "%");
           if ((searchString != null) && (searchString.length() > 0)) {
               String[] words = searchString.split("\\s+"); // Split by whitespace
               StringBuilder conditionBuilder = new StringBuilder(" and (");
