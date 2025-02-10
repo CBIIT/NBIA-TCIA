@@ -18,8 +18,8 @@ import { takeUntil } from 'rxjs/operators';
 } )
 export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
-    fromDate: Date;
-    toDate: Date;
+    fromDate;
+    toDate;
     showCriteriaList = true;
     // disableUseDateRange = true;
     allEmpty = true;
@@ -280,16 +280,16 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         let dateRangeForQuery: string[] = [];
         dateRangeForQuery[0] = 'DateRangeCriteria';
         let twoDates = dateRange.split( /-/ );
-        dateRangeForQuery[1] = twoDates[0];
+        dateRangeForQuery[1] = twoDates[0];// mm/dd/yyyy
         dateRangeForQuery[2] = twoDates[1];
-        this.fromDate = this.convertStringToDate(twoDates[0]) ;
-        this.toDate = this.convertStringToDate(twoDates[1]);  
+        this.fromDate = this.convertStringToDate(twoDates[0]).toISOString().split('T')[0] ; // yyyy-mm-dd
+        this.toDate = this.convertStringToDate(twoDates[1]).toISOString().split('T')[0];  
         this.queryUrlService.update( this.queryUrlService.DATE_RANGE, dateRange );
         this.commonService.updateQuery( dateRangeForQuery );
         
     }
 
-    convertStringToDate( dateStr ):Date {
+    convertStringToDate( dateStr ): Date{
         // input date string is in the format "MM/DD/YYYY"
         let parts = dateStr.split( '/' ); // Split into ["MM", "DD", "YYYY"]
         return new Date( parts[2], parts[0] - 1, parts[1] ); // Year, Month (0-based), Day
