@@ -196,6 +196,11 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         this.posY = e.view.pageYOffset + e.clientY;
     }
 
+    isPatientAgeUnchecked() : boolean {
+        return (this.fromPatientAgeTrailer === this.fromPatientAge &&
+            this.toPatientAgeTrailer === this.toPatientAge)  || 
+            (this.fromPatientAge == 0 && this.toPatientAge == 100)
+    }
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

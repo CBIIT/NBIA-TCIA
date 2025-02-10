@@ -4,24 +4,11 @@
     <!-- ----------  Heading & hide/show buttons  ---------- -->
     <div class="query-panel-heading">
         <!-- Hide the sex Radio buttons.  Still show the heading (with this img to its left) -->
-        <span
-                *ngIf="showPatientAgeRange"
-                class="clicker"
-                (click)="onShowPatientAgeRangeClick(false)"
->
-            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+         <span class="clicker unselectable" (click)="onShowPatientAgeRangeClick(!showPatientAgeRange)">
+            <img *ngIf="showPatientAgeRange" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showPatientAgeRange" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Patient Age
         </span>
-
-        <!-- Show the Age range slider -->
-        <span
-                *ngIf="!showPatientAgeRange"
-                class="clicker"
-                (click)="onShowPatientAgeRangeClick(true)"
-        >
-            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
-            Patient Age
-         </span>
 
          <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  
          class="clicker  close-third-party-explanation-x" 
@@ -46,11 +33,9 @@
 
     <div *ngIf=" showPatientAgeRange" class="nbia-patientAge-range-note">
         <input [ngClass]="{
-                   disabled: (fromPatientAgeTrailer === fromPatientAge &&
-                   toPatientAgeTrailer === toPatientAge ) ,
+                   disabled: isPatientAgeUnchecked(),
 
-                   'nbia-button-disabled': (fromPatientAgeTrailer === fromPatientAge &&
-                   toPatientAgeTrailer === toPatientAge) 
+                   'nbia-button-disabled': isPatientAgeUnchecked()
                }"
                type="button"
                class="btn btn-default nbia-button nbia-patientAge-range-update-button "

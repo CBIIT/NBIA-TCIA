@@ -1,0 +1,14 @@
+@import '../../../../../../app.component.scss';
+
+
+.text-search-explanation{
+  width: 550px;
+  position: absolute;
+  top: 200px;
+  left: calc( 50% - 275px);
+}
+
+.text-search-explanation-text{
+  font-size: 12pt;
+  margin: 8px;
+}
