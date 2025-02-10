@@ -9,14 +9,17 @@
     width: 100%;
 }
 
-.dicom-data-column{
-    white-space: nowrap; /* Keep text in one line */
+.dicom-data-column {
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Show "..." for long text */
-    max-width: 100px; /* Adjust width as needed */
+    text-overflow: ellipsis;
+    max-width: 100px; /* Restrict initial width */
     border: solid 1px #bbb;
     width: calc(75% - 140px);
+    position: relative;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition */
 }
+
 
 .dicom-data-column:hover{
     overflow: auto;
