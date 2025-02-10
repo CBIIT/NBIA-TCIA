@@ -10,8 +10,18 @@
 }
 
 .dicom-data-column{
+    white-space: nowrap; /* Keep text in one line */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Show "..." for long text */
+    max-width: 100px; /* Adjust width as needed */
     border: solid 1px #bbb;
     width: calc(75% - 140px);
+}
+
+.dicom-data-column:hover{
+    overflow: auto;
+    white-space: normal; /* Allow text to wrap when hovering */
+    max-width: none; /* Remove width restriction */
 }
 
 .dicom-element-column{
