@@ -42,6 +42,9 @@ export class ParameterService{
     parameterManufacturerEmitter = new EventEmitter();
     parameterNbiaProgramEmitter = new EventEmitter();
 
+    parameterStudyCriteriaEmitter = new EventEmitter();
+    parameterSeriesCriteriaEmitter = new EventEmitter();
+
     // Used for determining if cart from URL should be (re)loaded
     no = 0;
     yes = 1;
@@ -70,6 +73,8 @@ export class ParameterService{
     pixelSpacingRange = '';
     imageDescription = '';
     nbiaProgram = '';
+    studyCriteria = '';
+    seriesCriteria = '';
 
     manufacturer = '';
 
@@ -142,12 +147,12 @@ export class ParameterService{
         this.wereAnySimpleSearchParametersSent = true;
         this.minimumStudies = minimumStudies;
 
-        this.commonService.setMinimumMatchedStudiesValue( +minimumStudies );
+        this.commonService.setMinimumMatchedStudiesValue( minimumStudies );
         // Wait for the Minimum Studies query component to be initialized so it can use this parameter.
         while( !this.initMonitorService.getMinimumStudiesInit() ){
             await this.commonService.sleep( this.waitTime );
         }
-        this.parameterMinimumStudiesEmitter.emit( +minimumStudies );
+        this.parameterMinimumStudiesEmitter.emit( minimumStudies );
         this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
         this.decStillWaitingOnAtLeastOneComponent();
     }
@@ -540,6 +545,24 @@ export class ParameterService{
         return this.nbiaProgram;
     }
 
+    setStudyCriteria( studyCriteria ) { 
+        this.studyCriteria = studyCriteria;
+        this.parameterStudyCriteriaEmitter.emit( studyCriteria );
+    }
+
+    getStudyCriteria() {
+        return this.studyCriteria;
+    }
+
+    setSeriesCriteria( seriesCriteria ) {
+        this.seriesCriteria = seriesCriteria;
+        this.parameterSeriesCriteriaEmitter.emit( seriesCriteria );
+    }   
+
+    getSeriesCriteria() {
+        return this.seriesCriteria;
+    }
+
     setShowTest( showTest ) {
         this.showTest = showTest;
         Properties.SHOW_TEST_TAB = showTest;
@@ -567,7 +590,7 @@ export class ParameterService{
 
 
     async resetUrlQuery() {
-        this.parameterMinimumStudiesEmitter.emit( +this.minimumStudies );
+        this.parameterMinimumStudiesEmitter.emit( this.minimumStudies );
 
         if( this.collections.length > 0 ){
             this.parameterCollectionEmitter.emit( this.collections );
@@ -636,6 +659,18 @@ export class ParameterService{
 
         if( this.manufacturer.length > 0 ){
             this.parameterManufacturerEmitter.emit( this.manufacturer );        
+        }
+
+        if( this.nbiaProgram.length > 0 ){
+            this.parameterNbiaProgramEmitter.emit( this.nbiaProgram );
+        }
+
+        if( this.studyCriteria.length > 0 ){
+            this.parameterStudyCriteriaEmitter.emit( this.studyCriteria );
+        }
+
+        if( this.seriesCriteria.length > 0 ){
+            this.parameterSeriesCriteriaEmitter.emit( this.seriesCriteria );
         }
 
         // We may need to wait here to give the criteria components time to populate.

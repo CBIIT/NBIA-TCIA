@@ -13,7 +13,7 @@ export class QueryUrlService{
     ANATOMICAL_SITE = 3;
     MIN_STUDIES = 4;
     DATE_RANGE = 5;
-    SUBJECT_ID = 6;
+    SUBJECT_ID = 6; // PART OF IDENTIFIER
     COLLECTIONS = 7;
     SPECIES = 8;
     PHANTOMS = 9;
@@ -26,6 +26,8 @@ export class QueryUrlService{
     PIXEL_SPACING = 16;
     IMAGE_DESCRIPTION = 17;
     MANUFACTURER = 18;
+    STUDY_UID = 19; // PART OF IDENTIFIER
+    SERIES_UID = 20; // PART OF IDENTIFIER
     API_URL = 0;
 
     queryUrlString = '';
@@ -171,6 +173,18 @@ export class QueryUrlService{
                         }
                         queryForLoggingObject[Properties.URL_KEY_MANUFACTURER].push(this.queryData[f]); 
                         break;
+                    case this.SERIES_UID:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_SERIES_ID])){
+                            queryForLoggingObject[Properties.URL_KEY_SERIES_ID] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_SERIES_ID].push(this.queryData[f]);
+                        break;
+                    case this.STUDY_UID:
+                        if( this.utilService.isNullOrUndefined( queryForLoggingObject[Properties.URL_KEY_STUDY_ID])){
+                            queryForLoggingObject[Properties.URL_KEY_STUDY_ID] = [];
+                        }
+                        queryForLoggingObject[Properties.URL_KEY_STUDY_ID].push(this.queryData[f]);
+                        break;
             }
             }
         }
@@ -275,7 +289,15 @@ export class QueryUrlService{
                     case this.MANUFACTURER:
                         this.queryUrlString += '&' + Properties.URL_KEY_MANUFACTURER + '=' + this.queryData[f];
                         queryUrlString += '&' + Properties.URL_KEY_MANUFACTURER + '=' + this.queryData[f];
-                        break;  
+                        break; 
+                    case this.SERIES_UID:
+                        this.queryUrlString += '&' + Properties.URL_KEY_SERIES_ID + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_SERIES_ID + '=' + this.queryData[f];
+                        break;
+                    case this.STUDY_UID:
+                        this.queryUrlString += '&' + Properties.URL_KEY_STUDY_ID + '=' + this.queryData[f];
+                        queryUrlString += '&' + Properties.URL_KEY_STUDY_ID + '=' + this.queryData[f];
+                        break; 
                 }
             }
         }

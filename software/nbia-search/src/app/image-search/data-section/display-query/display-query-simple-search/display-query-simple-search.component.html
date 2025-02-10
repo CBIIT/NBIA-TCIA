@@ -21,10 +21,11 @@
 
     <span class="display-on-top">
         <!-- Minimum matched studies -->
-        <span *ngIf="( comService.getMinimumMatchedStudiesValue() > 1 )&&( allCriteriaList.length > 0 ) ">
-            <span class="label label-default criteria-display criteria-display-title">
+        <span *ngIf="( comService.getMinimumMatchedStudiesStaus() ) && ( allCriteriaList.length > 0 ) ">
+            <span  class="label label-default criteria-display criteria-display-title">
                 Min studies {{commonService.getMinimumMatchedStudiesValue()}}
-            </span>&nbsp;-</span>
+            </span>&nbsp;-
+        </span>
 
             <!--  Truncated display query -->
             <span *ngIf="!showAllCriteria">

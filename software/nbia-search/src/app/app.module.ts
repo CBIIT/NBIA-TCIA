@@ -124,6 +124,9 @@ import { ImagesSliceThicknessSearchComponent } from './image-search/query-sectio
 import { ImagesSliceThicknessExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-slice-thickness-search/images-slice-thickness-explanation/images-slice-thickness-explanation.component'; 
 import { ImagesPixelSpacingExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-pixel-spacing-search/images-pixel-spacing-explanation/images-pixel-spacing-explanation.component';
 import { ImagesDescriptionExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-desciption-search/images-description-explanation/images-description-explanation.component';
+import { MinimumMatchedStudiesExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/minimum-matched-studies/minimum-matched-studies-explanation/minimum-matched-studies-explanation.component';    
+import { SubjectIdExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/subject-id-query/subject-id-explanation/subject-id-explanation.component'; 
+
 /*
 const appRoutes: Routes = [
     { path: '', component: NbiaClientComponent },
@@ -229,7 +232,9 @@ const appRoutes: Routes = [
         ClinicalTimePointsExplanationComponent,
         ImagesSliceThicknessExplanationComponent,
         ImagesPixelSpacingExplanationComponent,
-        ImagesDescriptionExplanationComponent
+        ImagesDescriptionExplanationComponent,
+        MinimumMatchedStudiesExplanationComponent,
+        SubjectIdExplanationComponent
     ],
     imports: [
         BrowserModule,

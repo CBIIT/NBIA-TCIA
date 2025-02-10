@@ -124,6 +124,12 @@ export class CommonService{
     showImageDescriptionExplanationEmitter = new EventEmitter();
     showImageDescriptionExplanation = false;
 
+    showMinimumMatchedStudiesExplanationEmitter = new EventEmitter();
+    showMinimumMatchedStudiesExplanation = false;
+
+    showSubjectIdExplanationEmitter = new EventEmitter();
+    showSubjectIdExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -355,6 +361,12 @@ export class CommonService{
         return this.minimumMatchedStudiesValue;
     }
 
+    getMinimumMatchedStudiesStaus(){
+        // check the value in minimumMatchedStudiesStaus
+        // return true if the value not default value (1-UIDs)
+        return this.minimumMatchedStudiesValue !== ('1' + Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT)
+    }
+
     setQueryBuilderAnyOrAll( value ) {
         this.queryBuilderAnyOrAll = value;
         this.queryBuilderAnyOrAllEmitter.emit( value );
@@ -492,6 +504,17 @@ export class CommonService{
         this.showImageDescriptionExplanation = e;
         this.showImageDescriptionExplanationEmitter.emit( this.showImageDescriptionExplanation );
     }
+
+    setShowMinimumMatchedStudiesExplanation( e ) {
+        this.showMinimumMatchedStudiesExplanation = e;
+        this.showMinimumMatchedStudiesExplanationEmitter.emit( this.showMinimumMatchedStudiesExplanation );
+    }
+
+    setShowSubjectIdExplanation( e ) {
+        this.showSubjectIdExplanation = e;
+        this.showSubjectIdExplanationEmitter.emit( this.showSubjectIdExplanation );
+    }
+
 
     clearSimpleSearchResults() {
         this.simpleSearchResults = '';
@@ -752,9 +775,34 @@ export class CommonService{
                 }
                 // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
                 // rc9.4 change Subject ID to Identifiers
-                displayQuery.push( { [Consts.CRITERIA]: 'Identifiers', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'Patient Identifiers', 'name': item } );
             }
         }
+
+        // Subject ID  (Series ID)
+        if( !this.utilService.isNullOrUndefined( allData[Consts.SERIES_CRITERIA] ) ){
+            for( let item of allData[Consts.SERIES_CRITERIA] ){
+                if( item.length > maxCriteriaLen ){
+                    item = item.substring( 0, maxCriteriaLen ) + '...';
+                }
+                // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // rc9.4 change Subject ID to Identifiers
+                displayQuery.push( { [Consts.CRITERIA]: 'Series Identifiers', 'name': item } );
+            }
+        }
+
+        //Subject ID (Study ID)
+        if( !this.utilService.isNullOrUndefined( allData[Consts.STUDY_CRITERIA] ) ){
+            for( let item of allData[Consts.STUDY_CRITERIA] ){
+                if( item.length > maxCriteriaLen ){
+                    item = item.substring( 0, maxCriteriaLen ) + '...';
+                }
+                // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // rc9.4 change Subject ID to Identifiers
+                displayQuery.push( { [Consts.CRITERIA]: 'Study Identifiers', 'name': item } );
+            }
+        }
+
 
         // Manufacturer
         if( !this.utilService.isNullOrUndefined( allData[Consts.MANUFACTURER_CRITERIA] ) ){

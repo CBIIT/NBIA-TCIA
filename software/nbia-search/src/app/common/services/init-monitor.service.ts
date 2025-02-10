@@ -35,6 +35,7 @@ export class InitMonitorService{
     imageDescriptionInit = false;
     pixelSpacingRangeInit = false;
     nbiaProgramInit = false;
+    subjectIdInit = false;
 
     patientSexRunning = false;
     patientAgeRangeRunning = false;
@@ -44,6 +45,7 @@ export class InitMonitorService{
     imageDescriptionRunning = false;
     pixelSpacingRangeRunning = false;
     nbiaProgramRunning = false;
+    subjectIdRunning = false;
 
     manufacturerInit = false;
     manufacturerRunning = false;    
@@ -201,7 +203,15 @@ export class InitMonitorService{
 
     getNbiaProgramInit() {
         return this.nbiaProgramInit;
-    }   
+    } 
+    
+    setSubjectIdInit( status ) {
+        this.subjectIdInit = status;
+    }
+
+    getSubjectIdInit() {
+        return this.subjectIdInit;
+    }
 
     getAnyInit() {
         let res = false;
@@ -269,6 +279,11 @@ export class InitMonitorService{
         if( this.nbiaProgramInit ){
             res = true;
         }
+
+        if( this.subjectIdInit ){
+            res = true;
+        }
+
         return res;
     }
 
@@ -409,6 +424,14 @@ export class InitMonitorService{
         return this.nbiaProgramRunning;
     }
 
+    setSubjectIdRunning( status ) {
+        this.subjectIdRunning = status;
+    }
+
+    getSubjectIdRunning() {
+        return this.subjectIdRunning;
+    }   
+
     getAnyRunning() {
         let res = false;
         if( this.collectionsRunning ){
@@ -476,6 +499,10 @@ export class InitMonitorService{
         }  
         
         if( this.nbiaProgramRunning ){
+            res = true;
+        }
+
+        if(this.subjectIdRunning) {
             res = true;
         }
         

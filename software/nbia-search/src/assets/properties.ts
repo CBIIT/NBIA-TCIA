@@ -185,6 +185,8 @@ export let Properties = {
     URL_KEY_PATIENT_ID: 'PatientCriteria',
     // For backwards compatibility
     URL_KEY_PATIENT_ID2: 'patientID',
+    URL_KEY_STUDY_ID: 'StudyCriteria',
+    URL_KEY_SERIES_ID: 'SeriesCriteria',
 
     URL_KEY_PATIENT_AGE_RANGE: 'PatientAgeRangeCriteria',
     URL_KEY_PATIENT_SEX: 'PatientSexCriteria',
@@ -203,6 +205,7 @@ export let Properties = {
     URL_KEY_THIRD_PARTY: 'ThirdPartyCriteria',
     URL_KEY_ANATOMICAL_SITE: 'AnatomicalSiteCriteria',
     URL_KEY_MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
+    URL_KEY_MINIMUM_STUDIES_DATES: 'MinNumberOfStudyDatesCriteria',
     URL_KEY_DATE_RANGE: 'DateRange',
     URL_KEY_SLICE_THICKNESS: 'SliceThicknessCriteria',
     URL_KEY_PIXEL_SPACING: 'PixelSpacingCriteria',

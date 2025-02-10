@@ -48,6 +48,8 @@ export const Consts = {
 
         waitTime: 50,
         CRITERIA: 'criteria',
+        MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT: '-UIDs',
+        MIMUMUM_MATCHED_STUDIES_TYPE_DATE: '-Dates',
 
         // The actual value to use when building the Rest call
         COLLECTION_CRITERIA: 'CollectionCriteria',
@@ -65,12 +67,15 @@ export const Consts = {
         ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
         ANATOMICAL_SITE: 'AnatomicalSite',
         MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
+        MINIMUM_STUDIES_TYPE_DATE: 'MinNumberOfStudyDatesCriteria',
         DAYS_FROM_BASELINE_CRITERIA: 'TimePointCriteria',
         EXCLUDE_COMMERCIAL_CRITERIA: 'ExcludeCommercialCriteria',
         IMAGE_MODALITY_CRITERIA: 'ImageModalityCriteria',
         IMAGE_MODALITY: 'ImageModality',
         MODALITY: 'Modality',
         PATIENT_CRITERIA: 'PatientCriteria',
+        STUDY_CRITERIA: 'StudyCriteria',
+        SERIES_CRITERIA: 'SeriesCriteria',
         MANUFACTURER_CRITERIA: 'ManufacturerCriteria',
         MANUFACTURER: 'Manufacturer',
         MANUFACTURER_MODEL_CRITERIA: 'ModelCriteria',

@@ -169,9 +169,9 @@ export class NbiaClientComponent implements OnInit, OnDestroy {
         let imageDescription = this.route.snapshot.queryParams[Properties.URL_KEY_IMAGE_DESCRIPTION];
         let imageManufacturer = this.route.snapshot.queryParams[Properties.URL_KEY_MANUFACTURER];
         let nbiaProgram = this.route.snapshot.queryParams[Properties.URL_KEY_NBIA_PROGRAM];
-        
-
-
+        let minimumStudiesDates = this.route.snapshot.queryParams[Properties.URL_KEY_MINIMUM_STUDIES_DATES];
+        let studyCriteria = this.route.snapshot.queryParams[Properties.URL_KEY_STUDY_ID];
+        let seriesCriteria = this.route.snapshot.queryParams[Properties.URL_KEY_SERIES_ID];
 
         if (!this.utilService.isNullOrUndefined(textSearchInput)) {
             this.parameterService.setTextSearch(textSearchInput);
@@ -285,6 +285,18 @@ export class NbiaClientComponent implements OnInit, OnDestroy {
 
         if (!this.utilService.isNullOrUndefined(nbiaProgram)) {
             this.parameterService.setNbiaProgram(nbiaProgram);
+        }
+
+        if (!this.utilService.isNullOrUndefined(minimumStudiesDates)) {
+           // this.parameterService.setMinimumStudiesDates(minimumStudiesDates);
+        }
+
+        if (!this.utilService.isNullOrUndefined(studyCriteria)) {
+            this.parameterService.setStudyCriteria(studyCriteria);
+        }
+
+        if (!this.utilService.isNullOrUndefined(seriesCriteria)) {
+            this.parameterService.setSeriesCriteria(seriesCriteria);
         }
 
     }

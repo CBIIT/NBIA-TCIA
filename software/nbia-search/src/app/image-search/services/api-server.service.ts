@@ -423,17 +423,30 @@ export class ApiServerService implements OnDestroy {
         // Minimum Studies
         if ((allData[Consts.MINIMUM_STUDIES] !== undefined) && (allData[Consts.MINIMUM_STUDIES].length > 0)) {
             isSearchable = true;
+            // input values like :TimePoint:1,2..
+            // or SudyUID:1,2..
 
             for (let item of allData[Consts.MINIMUM_STUDIES]) {
-
-                let msCount = +item - 1;
-                if (msCount > 0) {
-                    searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' + msCount;
-                    this.queryBuilderIndex++;
+             // Dynamically build regex pattern allowing `:`, `-`, or `=`
+                const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE})$`);
+                const match = item.match(pattern);
+                if(!match){
+                    console.log(`Invalid format: "${item}". Expected format: "X-Dates" or "X-UIDs" where X is a number.`);
+                }else{
+                    let msCount =  parseInt(match[1], 10) - 1;
+                    if (msCount > 0) {
+                         if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT) {
+                             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + 
+                             Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' + msCount;
+                         }else if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE) {
+                             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + 
+                             Consts.MINIMUM_STUDIES_TYPE_DATE + '&value' + this.queryBuilderIndex + '=' +msCount;
+                         }
+                        this.queryBuilderIndex++;
+                     }
                 }
             }
         }
-
 
         // Image Modality
         if ((allData[Consts.IMAGE_MODALITY_CRITERIA] !== undefined) && (allData[Consts.IMAGE_MODALITY_CRITERIA].length > 0)) {
@@ -580,6 +593,24 @@ export class ApiServerService implements OnDestroy {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.IMAGE_DESCRIPTION_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
                 this.queryBuilderIndex++;
             }
+        }
+
+        //Series Instance UID
+        if((allData[Consts.SERIES_CRITERIA] !== undefined) && (allData[Consts.SERIES_CRITERIA].length > 0)){    
+            isSearchable = true;
+            for (let item of allData[Consts.SERIES_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.SERIES_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        //Study Instance UID
+        if((allData[Consts.STUDY_CRITERIA] !== undefined) && (allData[Consts.STUDY_CRITERIA].length > 0)){    
+            isSearchable = true;
+            for (let item of allData[Consts.STUDY_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.STUDY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }   
         }
 
          // Add tool name to query so server can track usage.
