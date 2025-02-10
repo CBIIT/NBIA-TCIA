@@ -10,21 +10,21 @@
 }
 
 .dicom-data-column {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
     max-width: 100px; /* Restrict initial width */
     border: solid 1px #bbb;
     width: calc(75% - 140px);
     position: relative;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition */
+   // transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition */
 }
 
 
 .dicom-data-column:hover{
-    overflow: auto;
-    white-space: normal; /* Allow text to wrap when hovering */
-    max-width: none; /* Remove width restriction */
+    overflow-x: auto; /* Allow horizontal scroll when hovering */
+   // white-space: normal; /* Allow text to wrap when hovering */
+   // max-width: 200px; /* Remove width restriction */
 }
 
 .dicom-element-column{
