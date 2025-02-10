@@ -217,6 +217,11 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
         this.posY = e.view.pageYOffset + e.clientY;
     }
 
+    isPixelSpacingUnchanged():boolean { 
+        return (this.toPixelSpacingTrailer === this.toPixelSpacing && 
+            this.fromPixelSpacingTrailer === this.fromPixelSpacing ) ||
+            (this.toPixelSpacingTrailer === 15.0 && this.fromPixelSpacingTrailer === 0.0);
+    }
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

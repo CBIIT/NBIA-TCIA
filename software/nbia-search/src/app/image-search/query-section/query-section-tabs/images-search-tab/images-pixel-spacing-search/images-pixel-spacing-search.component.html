@@ -4,24 +4,12 @@
     <!-- ----------  Heading & hide/show Pixel Spacing  ---------- -->
     <div class="query-panel-heading">
         <!--   Still show the heading (with this img to its left) -->
-        <span
-                *ngIf="showPixelSpacingRange"
-                class="clicker unselectable"
-                (click)="onShowPixelSpacingRangeClick(false)"
-        >
-        <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
-        Pixel Spacing (millimeter)
-    </span>
-
-        <!-- Show the pixelSpacing range slider -->
-        <span
-                *ngIf="!showPixelSpacingRange"
-                class="clicker"
-                (click)="onShowPixelSpacingRangeClick(true)"
-        >
-            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
-            Pixel Spacing (millimeter)
+        <span class="clicker unselectable" (click)="onShowPixelSpacingRangeClick(!showPixelSpacingRange)">
+            <img *ngIf="showPixelSpacingRange" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showPixelSpacingRange" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Pixel Spacing (millimeter) - Row
         </span>
+
         <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onPixelSpacingRangeExplanationClick($event)">
         
     </div>
@@ -42,11 +30,9 @@
     </div>
     <div *ngIf="showPixelSpacingRange" class="nbia-pixelSpacing-range-note">
         <input [ngClass]="{
-                   disabled: (fromPixelSpacingTrailer === fromPixelSpacing &&
-                   toPixelSpacingTrailer === toPixelSpacing ) ,
+                   'disabled': isPixelSpacingUnchanged() ,
 
-                   'nbia-button-disabled': (fromPixelSpacingTrailer === fromPixelSpacing &&
-                   toPixelSpacingTrailer === toPixelSpacing ) 
+                   'nbia-button-disabled': isPixelSpacingUnchanged()      
                }"
                type="button"
                class="btn btn-default nbia-button nbia-pixelSpacing-range-update-button "

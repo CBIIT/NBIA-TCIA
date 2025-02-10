@@ -4,27 +4,14 @@
     <!-- ----------  Heading & hide/show slice thickness  ---------- -->
     <div class="query-panel-heading">
         <!--   Still show the heading (with this img to its left) -->
-        <span
-                *ngIf="showSliceThicknessRange "
-                class="clicker unselectable"
-                (click)="onShowSlickThicknessRangeClick(false)"
-        >
-        <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
-        Slice Thickness (millimeter)
-    </span>
-
-        <!-- Show the sliceThickness range slider -->
-        <span
-                *ngIf="!showSliceThicknessRange "
-                class="clicker"
-                (click)="onShowSlickThicknessRangeClick(true)"
-        >
-            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+        <span class="clicker unselectable" 
+            (click)="onShowSlickThicknessRangeClick(!showSliceThicknessRange)">
+            <img *ngIf="showSliceThicknessRange" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showSliceThicknessRange" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
             Slice Thickness (millimeter)
         </span>
-        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onSliceThicknessRangeExplanationClick($event)">
         
-
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onSliceThicknessRangeExplanationClick($event)">
     </div>
 
     <div
@@ -44,16 +31,13 @@
 
     <div *ngIf="showSliceThicknessRange " class="nbia-sliceThickness-range-note">
         <input [ngClass]="{
-                   disabled: (fromSliceThicknessTrailer === fromSliceThickness &&
-                   toSliceThicknessTrailer === toSliceThickness ) ,
-
-                   'nbia-button-disabled': (fromSliceThicknessTrailer === fromSliceThickness &&
-                   toSliceThicknessTrailer === toSliceThickness) 
+                   'disabled': isSliceThicknessUnchanged(),
+                   'nbia-button-disabled': isSliceThicknessUnchanged()
                }"
                type="button"
                class="btn btn-default nbia-button nbia-sliceThickness-range-update-button "
                value="Apply Slice Thickness"
-               (click)="onSliceThicknessRangeApply()"f
+               (click)="onSliceThicknessRangeApply()"
         >
     </div>
 

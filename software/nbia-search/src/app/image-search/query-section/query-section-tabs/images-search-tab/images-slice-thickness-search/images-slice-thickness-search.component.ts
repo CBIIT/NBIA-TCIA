@@ -216,6 +216,11 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         this.posY = e.view.pageYOffset + e.clientY;
     }
 
+    isSliceThicknessUnchanged(): boolean {
+        return (this.fromSliceThicknessTrailer === this.fromSliceThickness &&
+                this.toSliceThicknessTrailer === this.toSliceThickness) || 
+               (this.fromSliceThickness === 0 && this.toSliceThickness === 1800);
+    }
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();
