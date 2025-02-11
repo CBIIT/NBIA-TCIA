@@ -555,10 +555,13 @@ export class ApiServerService implements OnDestroy {
         if ((allData[Consts.PATIENT_SEX_CRITERIA] !== undefined) && (allData[Consts.PATIENT_SEX_CRITERIA].length > 0)) {
             isSearchable = true;
             // if all 3 are selected, we don't need to send the criteria
-            if(allData[Consts.PATIENT_SEX_CRITERIA].length < 3){
-                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_SEX_CRITERIA + '&value' + this.queryBuilderIndex + '=' + allData[Consts.PATIENT_SEX_CRITERIA].join(',').replace('Female', 'F').replace('Male','M').replace(',','\',\'' );
-                this.queryBuilderIndex++;
-            }
+            // if(allData[Consts.PATIENT_SEX_CRITERIA].length < 3){
+                for (let item of allData[Consts.PATIENT_SEX_CRITERIA]) {
+                    searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_SEX_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item.replace('Female', 'F').replace('Male','M');
+                //searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_SEX_CRITERIA + '&value' + this.queryBuilderIndex + '=' + allData[Consts.PATIENT_SEX_CRITERIA].join(',').replace('Female', 'F').replace('Male','M').replace(',','\',\'' );
+                    this.queryBuilderIndex++;
+                }
+            //}
         
         }
 
