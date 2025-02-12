@@ -297,6 +297,8 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
         if (!totalClear) {
             this.commonService.updateQuery( daysFromBaselineForQuery );
+        }else{
+            this.commonService.updateQuery( [Consts.DAYS_FROM_BASELINE_CRITERIA] );
         }
 
     }
