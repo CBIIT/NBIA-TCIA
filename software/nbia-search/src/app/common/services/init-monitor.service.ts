@@ -36,6 +36,8 @@ export class InitMonitorService{
     pixelSpacingRangeInit = false;
     nbiaProgramInit = false;
     subjectIdInit = false;
+    seriesCriteriaInit = false;
+    studyCriteriaInit = false;
 
     patientSexRunning = false;
     patientAgeRangeRunning = false;
@@ -46,6 +48,8 @@ export class InitMonitorService{
     pixelSpacingRangeRunning = false;
     nbiaProgramRunning = false;
     subjectIdRunning = false;
+    seriesCriteriaRunning = false;
+    studyCriteriaRunning = false;   
 
     manufacturerInit = false;
     manufacturerRunning = false;    
@@ -213,6 +217,22 @@ export class InitMonitorService{
         return this.subjectIdInit;
     }
 
+    setSeriesCriteriaInit( status ) {
+        this.seriesCriteriaInit = status;
+    }
+
+    getSeriesCriteriaInit() {
+        return this.seriesCriteriaInit;
+    }
+
+    setStudyCriteriaInit( status ) {
+        this.studyCriteriaInit = status;
+    }   
+
+    getStudyCriteriaInit() {
+        return this.studyCriteriaInit;
+    }
+
     getAnyInit() {
         let res = false;
         if( this.collectionsInit ){
@@ -281,6 +301,14 @@ export class InitMonitorService{
         }
 
         if( this.subjectIdInit ){
+            res = true;
+        }
+
+        if( this.seriesCriteriaInit ){
+            res = true;
+        }   
+
+        if( this.studyCriteriaInit ) {    
             res = true;
         }
 
@@ -432,6 +460,22 @@ export class InitMonitorService{
         return this.subjectIdRunning;
     }   
 
+    setSeriesCriteriaRunning( status ) {
+        this.seriesCriteriaRunning = status;
+    }
+
+    getSeriesCriteriaRunning() {
+        return this.seriesCriteriaRunning;
+    }
+
+    setStudyCriteriaRunning( status ) {
+        this.studyCriteriaRunning = status;
+    }
+
+    getStudyCriteriaRunning() {
+        return this.studyCriteriaRunning;
+    }   
+
     getAnyRunning() {
         let res = false;
         if( this.collectionsRunning ){
@@ -505,6 +549,14 @@ export class InitMonitorService{
         if(this.subjectIdRunning) {
             res = true;
         }
+
+        if(this.seriesCriteriaRunning) {
+            res = true;
+        }   
+
+        if(this.studyCriteriaRunning) {
+            res = true;
+        }   
         
         return res;
     }

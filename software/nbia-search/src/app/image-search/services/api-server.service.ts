@@ -522,8 +522,6 @@ export class ApiServerService implements OnDestroy {
                 this.queryBuilderIndex++;
             }
         }
-
-
         // Manufacturer
         if ((allData[Consts.MANUFACTURER_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_CRITERIA].length > 0)) {
             isSearchable = true;

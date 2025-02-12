@@ -168,9 +168,11 @@ export class ParameterService{
         this.wereAnySimpleSearchParametersSent = true;
         this.patientID = subjectId;
 
-
-        await this.commonService.sleep( 750 );
-        //  await this.commonService.sleep( this.waitTime );
+        while( !this.initMonitorService.getSubjectIdInit() ){
+            await this.commonService.sleep(3 * this.waitTime );
+        }
+       // await this.commonService.sleep( 750 );
+       // await this.commonService.sleep( this.waitTime );
 
 
         this.parameterSubjectIdEmitter.emit( subjectId );
@@ -545,18 +547,41 @@ export class ParameterService{
         return this.nbiaProgram;
     }
 
-    setStudyCriteria( studyCriteria ) { 
+    async setStudyCriteria( studyCriteria ) { 
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
         this.studyCriteria = studyCriteria;
+
+        // Wait for the Study Criteria query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getStudyCriteriaInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
         this.parameterStudyCriteriaEmitter.emit( studyCriteria );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();
+        
     }
 
     getStudyCriteria() {
         return this.studyCriteria;
     }
 
-    setSeriesCriteria( seriesCriteria ) {
+    async setSeriesCriteria( seriesCriteria ) {
+        this.incStillWaitingOnAtLeastOneComponent();
+        this.haveParametersToService = true;
+        this.wereAnySimpleSearchParametersSent = true;
         this.seriesCriteria = seriesCriteria;
+
+        // Wait for the series Criteria query component to be initialized so it can use this parameter.
+        while( !this.initMonitorService.getSeriesCriteriaInit() ){
+            await this.commonService.sleep( this.waitTime );
+        }
         this.parameterSeriesCriteriaEmitter.emit( seriesCriteria );
+        this.commonService.setResultsDisplayMode( Consts.SIMPLE_SEARCH );
+
+        this.decStillWaitingOnAtLeastOneComponent();        
     }   
 
     getSeriesCriteria() {

@@ -13,7 +13,7 @@
   </div>
 
   <!-- Any or All radio buttons  -->
-  <div *ngIf="!showMinimumMatchedStudies">
+  <div *ngIf="showMinimumMatchedStudies">
     <div *ngFor="let matchedTypeRadioLabel of matchedTypeRadioLabels; let i = index">
       <input type="radio" name="radioGroupMatchedType" class="thirdParty-radio" [value]="matchedTypeRadioLabel"
         [checked]="i === matchedTypeApplySelection" (change)="onMatchedTypeRadioChange(i)">
@@ -24,7 +24,7 @@
     </div>
   
     <div [ngClass]="{
-      'hide-div': showMinimumMatchedStudies,
+      'hide-div': !showMinimumMatchedStudies,
       'disabled': noQuery
       }" class="margin-left-20">
       <span>At least</span>

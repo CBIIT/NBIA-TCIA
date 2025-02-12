@@ -22,7 +22,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     /**
      * For hide or show this group of criteria when the arrows next to the heading are clicked.
      */
-    showSubjectIds;
+    showSubjectIds = true;
 
     /**
      * The comma separated list of Subject IDs to search for.  This is bound to the UI input.
@@ -35,7 +35,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     idTypeApplySelection = 0;
 
     criteraTypeList = [Consts.PATIENT_CRITERIA, Consts.SERIES_CRITERIA, Consts.STUDY_CRITERIA];
-    qureyUrlTypeList = [];    
+    queryUrlTypeList = [];    
 
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
@@ -43,12 +43,6 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     constructor( private commonService: CommonService, private parameterService: ParameterService,
                  private queryUrlService: QueryUrlService, private apiServerService: ApiServerService,
                   private initMonitorService: InitMonitorService, private utilService: UtilService ) {
-
-                    this.qureyUrlTypeList = [
-                        this.queryUrlService.SUBJECT_ID,
-                        this.queryUrlService.SERIES_UID,
-                        this.queryUrlService.STUDY_UID
-                    ];
     }
 
     ngOnInit() {
@@ -56,11 +50,13 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
         // Get persisted showCriteriaList value.  Used to show, or collapse this category of criteria in the UI.
         this.showSubjectIds = this.commonService.getCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID) ?? Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID_DEFAULT;
         this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_SUBJECT_ID, this.showSubjectIds);
+        try {   
+
 
 
         // Used when the Clear button is clicked in the Display Query.
         this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            () => this.resetSearch());
+           async () => await this.resetSearch());
 
         this.commonService.showSubjectIdExplanationEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             (data: boolean) => {
@@ -69,37 +65,42 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
 
 
         this.parameterService.parameterSubjectIdEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            (data: string) => {
+           async (data: string) => {
                 this.subjectText = data;
-                this.onSearchClick();
+                this.idTypeApplySelection = 0;
+                await this.onSearchClick();
                 this.commonService.setHaveUserInput( false );
 
             }
         );
 
         this.parameterService.parameterSeriesCriteriaEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            (data: string) => {
+            async (data: string) => {
                 this.subjectText = data;
                 this.idTypeApplySelection = 1;
-                this.onSearchClick();
+                await this.onSearchClick();
                 this.commonService.setHaveUserInput( false );
 
             }
         );
 
         this.parameterService.parameterStudyCriteriaEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(   
-            (data: string) => {
+           async (data: string) => {
                 this.subjectText = data;
                 this.idTypeApplySelection = 2;
-                this.onSearchClick();
+                await this.onSearchClick();
                 this.commonService.setHaveUserInput( false );
 
             }
         );  
 
         this.initMonitorService.setSubjectIdInit( true );
+        this.initMonitorService.setSeriesCriteriaInit( true );
+        this.initMonitorService.setStudyCriteriaInit( true );
+    } catch (error) {
+        console.error('Error in ngOnInit in subject-id-query component: ', error);
+        }
     }
-
     /**
      * Hides or shows this group of criteria when the arrows next to the heading are clicked.
      *
@@ -116,7 +117,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     onClearClick() {
         this.commonService.setHaveUserInput( true );
         this.subjectText = '';
-        this.queryUrlService.clear(this.qureyUrlTypeList[this.idTypeApplySelection]);
+        this.queryUrlService.clear(this.getSelectedQueryUrlType());
 
         // Update query with empty selection
         this.updateQuery([]);
@@ -125,26 +126,44 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     /**
      * Get the list of IDs, split them on commas, and ad to the query.
      */
-    onSearchClick() {
+    async onSearchClick() {
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
         // Comma delimited, Trim and normalize subjectText
-        let subjectIdForQuery = this.subjectText.replace( /^,?\s*,?/g, '' ).replace( /\s*,\s*/g, ',' ).replace( /\s*$/, '' ).split( ',' );
+        let subjectIdForQuery = this.subjectText.trim().replace( /^,?\s*,?/g, '' ).replace( /\s*,\s*/g, ',' ).replace( /\s*$/, '' ).split( ',' ).filter( item => item !== '' );
         
         // Clear all unselected query URL types
-        this.clearUnusedQueryUrls();
+        await Promise.all(this.getNonSelectedQueryUrlTypes().map(type => this.queryUrlService.clear(type)));
+
+        const selectedType = this.getSelectedQueryUrlType();
 
         if (subjectIdForQuery.length > 0 && subjectIdForQuery[0] !== '') {
             //Update selected query URL
-            this.queryUrlService.update(this.qureyUrlTypeList[this.idTypeApplySelection], subjectIdForQuery.join(','));
+            await this.queryUrlService.update(selectedType, subjectIdForQuery.join(','));
         } else {
-            this.queryUrlService.clear(this.qureyUrlTypeList[this.idTypeApplySelection]);
+            await this.queryUrlService.clear(selectedType);
         }
 
         // Ensure criteria type is added to query
         this.updateQuery(subjectIdForQuery);  
 
+    }
+
+    getSelectedQueryUrlType() {
+        return [
+            this.queryUrlService.SUBJECT_ID,
+            this.queryUrlService.SERIES_UID,
+            this.queryUrlService.STUDY_UID
+        ][this.idTypeApplySelection];
+    }
+
+    getNonSelectedQueryUrlTypes() {
+        return [
+            this.queryUrlService.SUBJECT_ID,
+            this.queryUrlService.SERIES_UID,
+            this.queryUrlService.STUDY_UID
+        ].filter((_, index) => index !== this.idTypeApplySelection);
     }
 
     /**
@@ -160,17 +179,6 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     onSubjectIdExplanationClick(e) {
         this.showSubjectIdExplanation = true;
         this.posY = e.view.pageYOffset + e.clientY;
-    }
-
-    /**
-     * Clears query URL entries that are not selected.
-     */
-    private clearUnusedQueryUrls() {
-        this.qureyUrlTypeList.forEach((item, index) => {
-            if (index !== this.idTypeApplySelection) {
-                this.queryUrlService.clear(item);
-            }
-        });
     }
 
     /**
@@ -190,9 +198,9 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     /**
      * Resets the search inputs and query.
      */
-    private resetSearch() {
+    private async resetSearch() {
         this.subjectText = '';
-        this.queryUrlService.clear(this.qureyUrlTypeList[this.idTypeApplySelection]);
+        await this.queryUrlService.clear(this.getSelectedQueryUrlType());
         this.idTypeApplySelection = 0;
     }
 

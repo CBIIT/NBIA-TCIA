@@ -16,7 +16,7 @@ import { QueryCriteriaInitService } from '@app/common/services/query-criteria-in
 import { HttpClient } from '@angular/common/http';
 
 /**
- * The list of selectable criteria that make up the Manufacturer LIST of the search query.
+ * The list of selectable Manufacturer that make up the Manufacturer LIST of the search query.
  */
 @Component( {
     selector: 'nbia-images-manufacturer-search',
@@ -32,42 +32,42 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     manufacturerList: any[] = [];
 
     /**
-     * Used by the UI search within this criteria list (with the red magnifying glass), NOT the data search.
+     * Used by the UI search within this Manufacturer list (with the red magnifying glass), NOT the data search.
      */
     manufacturerListHold: any[] = [];
     resetFlag: boolean = false;
 
     /**
-     * For hide or show this group of criteria when the arrows next to the heading are clicked.
+     * For hide or show this group of Manufacturer when the arrows next to the heading are clicked.
      */
     showManufacturerValues: boolean = false;
 
     /**
-     * For the 'X More' and 'Less...' in the list of criteria.
+     * For the 'X More' and 'Less...' in the list of Manufacturer.
      *
      * @type {boolean}
      */
     showAll: boolean = false;
 
     /**
-     * Used in the HTML when calculating how many criteria to display.  Checked criteria are always shown.
+     * Used in the HTML when calculating how many Manufacturer to display.  Checked Manufacturer are always shown.
      */
     unCheckedCount: number = 0;
 
     /**
-     * Used in the HTML when calculating how many criteria to display.  Checked criteria are always shown.
+     * Used in the HTML when calculating how many Manufacturer to display.  Checked Manufacturer are always shown.
      */
     checkedCount: number = 0;
 
     /**
-     * Tracks which criteria have been selected, used in the code, and the HTML.
+     * Tracks which Manufacturer have been selected, used in the code, and the HTML.
      *
      * @type {Array}
      */
     cBox = [];
 
     /**
-     * Used by the UI search within this criteria list (with the red magnifying glass), NOT the data search.
+     * Used by the UI search within this Manufacturer list (with the red magnifying glass), NOT the data search.
      *
      * @type {boolean}
      */
@@ -92,7 +92,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     completeManufacturerValuesHold: any[] = [   ];
 
     /**
-     * If a query passed in the URL has criteria that don't exist in our current list, they are put in the array, used to alert the user.
+     * If a query passed in the URL has Manufacturer that don't exist in our current list, they are put in the array, used to alert the user.
      *
      * @type {any[]}
      */
@@ -139,7 +139,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         let errorFlag = false;
 
         // ------------------------------------------------------------------------------------------
-        // Get the full complete criteria list.
+        // Get the full complete Manufacturer list.
         // ------------------------------------------------------------------------------------------
         this.apiServerService.getManufacturerValuesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
@@ -159,7 +159,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 if( this.completeManufacturerValuesHold == null || (this.completeManufacturerValuesHold && this.completeManufacturerValuesHold.length < 1)){
                     this.completeManufacturerValuesHold = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValues );
                 }else if( this.apiServerService.getSimpleSearchQueryHold() == null ){
-                     // There is no query (anymore) reset the list of criteria to the initial original values.
+                     // There is no query (anymore) reset the list of Manufacturer to the initial original values.
                     this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
                 }
             } catch (error) {
@@ -169,7 +169,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             }
         );
 
-        // React to errors when getting the full complete criteria list.
+        // React to errors when getting the full complete Manufacturer list.
         this.apiServerService.getManufacturerValuesErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( err ) => {
                 errorFlag = true;
@@ -199,7 +199,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // ------ END of subscribes ------
 
 
-        // Gets the list of Manufacturer Sites to be used as selectable search criteria in the 'Manufacturer Site' criteria panel in the Query section.
+        // Gets the list of Manufacturer Sites to be used as selectable search Manufacturer in the 'Manufacturer Site' criteria panel in the Query section.
         this.setInitialManufacturerValues();
 
         // Get persisted showManufacturerValues value.  Used to show, or collapse this category of criteria in the UI.
@@ -255,7 +255,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                     }),
                     catchError(error => {
                         console.error('Error fetching manufacturer values:', error);
-                        this.loadingDisplayService.setLoading(false, 'Failed to reload search criteria');
+                        this.loadingDisplayService.setLoading(false, 'Failed to reload search Manufacturer');
                         return of(null);
                     })
                 );
@@ -270,7 +270,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 this.resetAll();
             }
             this.initMonitorService.setManufacturerRunning(false);
-            this.loadingDisplayService.setLoading(false, 'Search criteria updated');
+            this.loadingDisplayService.setLoading(false, 'Search Manufacturer updated');
         });
     }
 
@@ -355,7 +355,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
     }
     /**
-     * Adds a 'seq' field to the manufacturerList, it is the sequence which the criteria are displayed.<br>
+     * Adds a 'seq' field to the manufacturerList, it is the sequence which the Manufacturer are displayed.<br>
      * This is used by the HTML when displaying only part of manufacturerList.
      */
     setSequenceValue() {
@@ -404,13 +404,13 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     setInitialManufacturerValues() {
         this.updateManufacturerValues( true );
 
-        // This will tell the parameter service that it can send any query criteria that where passed in the URL
+        // This will tell the parameter service that it can send any query Manufacturer that where passed in the URL
         this.initMonitorService.setManufacturerInit(true);
 
     }
 
     /**
-     * Sets up the list of criteria and initializes it's check boxes.
+     * Sets up the list of manufacturer and initializes it's check boxes.
      *
      * @param initCheckBox  Should all the check boxes be set to unchecked
      */
@@ -422,7 +422,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         }
 
         // If this is the first time this is running just copy the data to the manufacturerList
-        // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
+        // This will let us keep all of the manufacturerList, but the ones that are not included in "data" will have a count of zero.
         this.manufacturerList = this.resetFlag 
             ? this.completeManufacturerValues
             : this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
@@ -454,7 +454,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
 
     /**
-     * Called when a search criteria checkbox is checked or un checked.
+     * Called when a search Manufacturer checkbox is checked or un checked.
      * Triggers an update of the 'Query', (re)runs the search, and sends the updated query to the query display at the top of the Search results section.
      *
      * @param i  Which checkbox
@@ -488,7 +488,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // send updated query to the Query display at the top of the Search results section.
         this.commonService.updateQuery( criteriaForQuery );
 
-        // (Re)sort the list because a checked criteria is higher than unchecked.
+        // (Re)sort the list because a checked Manufacturer is higher than unchecked.
         // moved into updateCheckboxCount
        // this.setSequenceValue() ;
        // this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
@@ -502,7 +502,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
 
     /**
-     * Hides or shows this group of criteria when the arrows next to the heading are clicked.
+     * Hides or shows this group of Manufacturer when the arrows next to the heading are clicked.
      *
      * @param show
      */
@@ -510,7 +510,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.showManufacturerValues = show;
     }
 
-    // following functions are for the search within this criteria list (with the red magnifying glass), NOT the data search.
+    // following functions are for the search within this Manufacturer list (with the red magnifying glass), NOT the data search.
     /**
      * Clears the search text when the 'X' on the right side of the input is clicked.
      */
@@ -521,14 +521,13 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
 
     /**
-     * When the search, within this criteria list changes, NOT the data search.
+     * When the search, within this Manufacturer list changes, NOT the data search.
      * @NOTE This is currently commented out for Manufacturer Sites
      */
     onSearchChange() {
         let tempList = [];
         let n = 0;
-
-        for( let item of this.manufacturerListHold ){
+        for( let item of this.manufacturerList ){
             if(
                 item['Manufacturer'].toUpperCase().includes( this.searchInput.toUpperCase() ) ||
                 this.cBox[n]
@@ -538,7 +537,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             }
         }
         
-        this.manufacturerList = tempList;
+        this.manufacturerList = this.sortService.criteriaSort( tempList, this.cBox, false );  
         this.setSequenceValue() ;
         // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
         if( this.searchInput.length === 0 ){
@@ -575,7 +574,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         if( n === 1 ){
             this.searchXHasFocus = false;
         }
-
         this.searchHasFocus = this.searchXHasFocus || this.searchTextHasFocus;
     }
 
@@ -590,7 +588,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         }
         this.searchHasFocus = true;
     }
-
 
     updateCheckboxCount() {
         this.checkedCount = this.cBox.filter(checked => checked).length;
@@ -626,20 +623,16 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         this.checkedCount = 0;
       //  this.apiServerService.refreshCriteriaCounts();
-
-      
-            let criteriaForQuery: string[] = [];
-            criteriaForQuery.push( Consts.MANUFACTURER_CRITERIA );
+        let criteriaForQuery: string[] = [];
+        criteriaForQuery.push( Consts.MANUFACTURER_CRITERIA );
 
             // Tells SearchResultsTableComponent that the query has changed,
             // SearchResultsTableComponent will (re)run the query &
             // send updated query to the Query display at the top of the Search results section.
-            this.commonService.updateQuery( criteriaForQuery );
+        this.commonService.updateQuery( criteriaForQuery );
         
-
-
         this.queryUrlService.clear( this.queryUrlService.MANUFACTURER );
-        // Restore original criteria list and counts.
+        // Restore original Manufacturer list and counts.
         this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
         this.updateManufacturerValues( true );
     }
@@ -651,9 +644,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.persistenceService.put( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT, this.sortNumChecked );
         //this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
         this.setSequenceValue();
-
     }
-
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

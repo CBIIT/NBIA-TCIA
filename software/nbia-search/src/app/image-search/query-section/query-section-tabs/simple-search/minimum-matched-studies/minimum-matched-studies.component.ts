@@ -44,51 +44,33 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
                  private queryUrlService: QueryUrlService, private apiServerService: ApiServerService ) {
 
 
-        // Set starting value.
-        this.commonService.setMinimumMatchedStudiesValue(this.minNumberOfPoints.toString() + (this.matchedTypeApplySelection === 0 ? Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT :Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE) );
+        // Set starting value. 1-UIDs
+        this.setMinimumMatchedStudies();
     }
 
     ngOnInit() {
 
-        this.onChangeMinimumMatchedStudies(); // Default: minNumberOfPoints = 1
+        this.onChangeMinimumMatchedStudies(false); // Default: minNumberOfPoints = 1
 
         // Used when the Clear button is clicked in the Display Query
         this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
-                this.minNumberOfPoints = 1;
-                this.matchedTypeApplySelection = 0;
-                this.onChangeMinimumMatchedStudies( false );
-                this.commonService.emitSimpleSearchQueryForDisplay( [] );
+                this.resetSearch();
             }
         );
 
 
         this.parameterService.parameterMinimumStudiesEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-                const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE})$`);
-                const match = String(data).match(pattern);
-                if(!match){
-                    console.log(`Invalid format: "${data}". Expected format: "X-Dates" or "X-UIDs" where X is a number.`);
-                }else{
-                    let msCount =  parseInt(match[1], 10);
-                    this.minNumberOfPoints = msCount;
-                    this.matchedTypeApplySelection = match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT ? 0 : 1;
-                }
-               
-                this.commonService.setMinimumMatchedStudiesValue(String(data));
-                this.commonService.setHaveUserInput( false );
-                this.showMinimumMatchedStudies = true ;
-
+                this.handleUrlParameterMinimumStudies(data);
             }
         );
-
 
         this.commonService.showMinimumMatchedStudiesExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.showMinimumMatchedStudiesExplanation = <boolean>data;
             }
         );
-
 
         this.commonService.searchResultsCountEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
@@ -103,46 +85,74 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
             }
         );
 
-
         // This will tell the parameter service that it can now send us any query criteria that where passed in the URL
         this.initMonitorService.setMinimumStudiesInit( true );
 
     }
 
+    private setMinimumMatchedStudies(): void {
+        const type = this.matchedTypeApplySelection === 0 
+            ? Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT 
+            : Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE;
+        
+        this.commonService.setMinimumMatchedStudiesValue(`${this.minNumberOfPoints}${type}`);
+    }
+
+    private resetSearch(): void {
+        this.minNumberOfPoints = 1;
+        this.matchedTypeApplySelection = 0;
+        this.onChangeMinimumMatchedStudies(false);
+        this.commonService.emitSimpleSearchQueryForDisplay([]);
+    }
+
+    private handleUrlParameterMinimumStudies(data: string): void {
+        const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE})$`);
+        const match = String(data).match(pattern);
+
+        if (!match) {
+            console.error(`Invalid format: "${data}". Expected format: "X-Dates" or "X-UIDs" where X is a number.`);
+            return;
+        }
+
+        this.minNumberOfPoints = parseInt(match[1], 10);
+        this.matchedTypeApplySelection = match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT ? 0 : 1;
+        this.setMinimumMatchedStudies();
+        this.commonService.setHaveUserInput(false);
+        this.showMinimumMatchedStudies = true;
+    }
+
+
     /**
      * Called when the value of the UI "Number spinner" changes.
      */
-    onChangeMinimumMatchedStudies( runQuery = true ) {
+    async onChangeMinimumMatchedStudies( runQuery = true ) : Promise<void> {
         if( this.minNumberOfPoints < 1 ){
             this.minNumberOfPoints = 1;
         }
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false,
         // this method is by user action only, so set setHaveUserInput to true.
         this.commonService.setHaveUserInput( true );
-        const criteriaValue = this.minNumberOfPoints.toString() +  (this.matchedTypeApplySelection === 0 ? Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT  : Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE ) ; 
-
-        this.commonService.setMinimumMatchedStudiesValue(criteriaValue );
-        this.queryUrlService.update( this.queryUrlService.MIN_STUDIES, criteriaValue );
+        this.setMinimumMatchedStudies();
+        await this.queryUrlService.update( this.queryUrlService.MIN_STUDIES, this.commonService.getMinimumMatchedStudiesValue() );
 
         //////////////////////////////////////////////////
 
-        this.apiServerService.getCriteriaCounts();
+        await this.apiServerService.getCriteriaCounts();
 
         //////////////////////////////////////////////////
-        let criteriaForQuery: string[] = [];
-        criteriaForQuery.push( Consts.MINIMUM_STUDIES );
-        criteriaForQuery.push( criteriaValue );
+ 
         if( runQuery ){
-            this.commonService.updateQuery( criteriaForQuery );
+            this.commonService.updateQuery( [Consts.MINIMUM_STUDIES, this.commonService.getMinimumMatchedStudiesValue()]);
         }
     }
+
     onShowMinimumMatchedStudiesClick( show: boolean ){
         this.showMinimumMatchedStudies = show;
     }
 
     onMinimumMatchedStudieseExplanationClick(e) {
         this.showMinimumMatchedStudiesExplanation = true;
-        this.posY = e.view.pageYOffset + e.clientY;
+        this.posY = e.view?.pageYOffset + e.clientY;
     }
 
     onMatchedTypeRadioChange( selection ) {

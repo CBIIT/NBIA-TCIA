@@ -40,7 +40,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
     /**
      * For hide or show this group of criteria when the arrows next to the heading are clicked.
      */
-    showCriteriaList;
+    showCriteriaList = false;
 
     /**
      * For the 'X More' and 'Less...' in the list of criteria.
