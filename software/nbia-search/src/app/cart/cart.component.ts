@@ -89,7 +89,7 @@ export class CartComponent implements OnInit, OnDestroy{
      * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
      * @type {[string , string , string , string , string , string , string , string , string , string]}
      */
-    columnHeadings = ['X', 'Collection', 'Subject ID', 
+    columnHeadings = ['X', 'Collection', 'Patient ID', 
         'Study UID', 'Study Date', 'Study Description', 
         'Series ID', 'Series Description', 'Images', 
         'Viewers','DICOM','File Size', 'Annotation File Size'];
