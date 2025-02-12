@@ -1,6 +1,13 @@
 /*TODO unify parts of this with the Search results main panel (if it works out well) */
 @import '../../../../app.component.scss';
 
+.container-fluid-charts {
+    width: 100%;
+    padding-right: 1px;
+    padding-left: 1px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 
 .summary-main-panel {
     background-color: #f4f4f4;
@@ -19,7 +26,7 @@
 
     /*Push the charts down a little*/
     margin-bottom: 20px;
-    height: 62px;
+    // height: 62px;
     font-size: 18pt;
 }
 

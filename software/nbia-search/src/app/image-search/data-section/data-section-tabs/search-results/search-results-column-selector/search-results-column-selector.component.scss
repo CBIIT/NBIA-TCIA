@@ -3,18 +3,12 @@
 .column-selector {
     /* Keep the selection box on top of the button bar where they overlap. */
     z-index: $search-results-column-selector-z-index;
-
-
-
-
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
     position: relative;
     float: right;
-
     /* Overlap the to of the top two pixels of the selection box, over the bottom of the button bar - looks nice  */
-    top: -16px;
-    right: 18px;
+    top: -6px;
+    right: 50px;
 }
 
 .disabled{
