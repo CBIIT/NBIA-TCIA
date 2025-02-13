@@ -206,72 +206,14 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
          // Set initial manufacturer values
          this.getShowManufacturerValues();
 
+        // This will tell the parameter service that it can send any query Manufacturer that where passed in the URL
+        this.initMonitorService.setManufacturerInit(true);
+
     } // End ngOnInit
 
     private getShowManufacturerValues(): boolean {
         let value = this.commonService.getCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES);
         return value != null ? value : Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES_DEFAULT;
-    }
-
-    private fetchManufacturerValues(): Promise<void> {
-        
-        return new Promise((resolve) => {
-            this.apiServerService.getManufacturerValuesEmitter.pipe(
-                takeUntil(this.ngUnsubscribe),
-                filter(data => !!data),
-                tap(data => {
-                    this.queryCriteriaInitService.endQueryCriteriaInit();
-
-                    this.completeManufacturerValues = data;
-                    if (!this.completeManufacturerValuesHold) {
-                        this.completeManufacturerValuesHold = this.utilService.copyManufacturerObjectArray(data);
-                    } else if (!this.apiServerService.getSimpleSearchQueryHold()) {
-                        this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray(this.completeManufacturerValuesHold);
-                    }
-                }),
-                catchError(error => {
-                    console.error('Error loading manufacturer values:', error);
-                    return of(null);
-                })
-            ).subscribe(() => resolve());
-    
-        });
-    }
-
-    private handleLoginReload(): void {
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(
-            takeUntil(this.ngUnsubscribe),
-            switchMap(() => {
-                this.initMonitorService.setManufacturerRunning(true);
-                this.resetFlag = true;
-                this.completeManufacturerValues = null;
-    
-                this.loadingDisplayService.setLoading(true, 'Reloading manufacturer search criteria...');
-                return from(this.http.get <any> (`$this.apiBaseUrl}/v1/getManufacturerValues`).toPromise()).pipe(
-                    takeUntil(this.ngUnsubscribe),
-                    tap(data => {
-                        this.completeManufacturerValues = data;
-                        this.completeManufacturerValuesHold = this.utilService.copyManufacturerObjectArray(data);
-                    }),
-                    catchError(error => {
-                        console.error('Error fetching manufacturer values:', error);
-                        this.loadingDisplayService.setLoading(false, 'Failed to reload search Manufacturer');
-                        return of(null);
-                    })
-                );
-            }),
-            filter(data => !!data)
-        ).subscribe(() => {
-            if (this.parameterService.haveUrlSimpleSearchParameters()) {
-                this.setInitialManufacturerValues();
-                this.updateCheckboxCount();
-                this.setSequenceValue() ;
-            } else {
-                this.resetAll();
-            }
-            this.initMonitorService.setManufacturerRunning(false);
-            this.loadingDisplayService.setLoading(false, 'Search Manufacturer updated');
-        });
     }
 
     private handleSearchReset() {
@@ -307,13 +249,13 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 });
     
                 this.refreshFromURL();
-                this.commonService.setHaveUserInput(false);
                 this.showManufacturerValues = true;
                 if (this.missingCriteria.length > 0) {
                     this.commonService.updateMissingCriteriaArray(this.missingCriteria);
                 }
                 this.updateCheckboxCount();
                 this.setSequenceValue() ;
+                this.commonService.setHaveUserInput(false);
 
             } else {
                 console.error('Error in parameterManufacturerEmitter.subscribe: Invalid data');
@@ -403,10 +345,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      */
     setInitialManufacturerValues() {
         this.updateManufacturerValues( true );
-
-        // This will tell the parameter service that it can send any query Manufacturer that where passed in the URL
-        this.initMonitorService.setManufacturerInit(true);
-
     }
 
     /**

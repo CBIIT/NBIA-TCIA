@@ -22,7 +22,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
 
     fromPatientAge: number = 0;
     toPatientAgeTrailer: number = 100;
-    fromPatientAgeTrailer: number = 1; // the init value is different to keep the apply button active
+    fromPatientAgeTrailer: number = 0; // the init value is different to keep the apply button active
     toPatientAge: number = 100;
 
     nonAgeChecked = false;
@@ -77,16 +77,6 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
                 this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
             }
         );
-    
-
-         // Reload the list of search criteria because a user has logged in,
-        // they may have different access to available search criteria.    
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                this.setInitValues();
-                this.queryUrlService.clear( this.queryUrlService.PATIENT_AGE_RANGE );
-            } );
-
 
         // Just set the values, not the 'Apply patient age range'
         this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -130,7 +120,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         this.commonService.setHaveUserInput( true );
         this.fromPatientAge = 0;
         this.toPatientAge = 100;
-        this.fromPatientAgeTrailer = 1;
+        this.fromPatientAgeTrailer = 0;
         this.toPatientAgeTrailer = 100;
     }
 
@@ -199,7 +189,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
     isPatientAgeUnchecked() : boolean {
         return (this.fromPatientAgeTrailer === this.fromPatientAge &&
             this.toPatientAgeTrailer === this.toPatientAge)  || 
-            (this.fromPatientAge == 0 && this.toPatientAge == 100)
+            (this.fromPatientAge === 0 && this.toPatientAge === 100)
     }
 
     ngOnDestroy() {

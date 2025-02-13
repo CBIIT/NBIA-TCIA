@@ -58,15 +58,6 @@ export class SubjectsSexSearchComponent implements OnInit, OnDestroy {
       }
     );
 
-     // Called when the "Clear" button on the left side of the Display query at the top.
-     this.commonService.resetAllSimpleSearchForLoginEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      () => {
-        this.selectedSex = { male: false, female: false, null: false };
-        this.selectedOptions = [];
-        this.queryUrlService.clear(this.queryUrlService.PATIENT_SEX);
-      }
-    );
-
      // Called when a query included in the URL contained patient sex.
     this.parameterService.parameterPatientSexEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       data => {

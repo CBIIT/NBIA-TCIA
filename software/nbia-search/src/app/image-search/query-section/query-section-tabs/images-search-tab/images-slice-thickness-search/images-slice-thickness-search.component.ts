@@ -24,7 +24,7 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
     sliceThicknessSelection = 0;
     fromSliceThickness: number = 0;
     toSliceThicknessTrailer: number = 1800.0;
-    fromSliceThicknessTrailer: number = 1;
+    fromSliceThicknessTrailer: number = 0;
     toSliceThickness: number = 1800.0;
     disabled = false;
     options: Options = {
@@ -83,20 +83,11 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
             () => {
                 this.fromSliceThickness = 0;
                 this.toSliceThickness = 1800.0;
-                this.fromSliceThicknessTrailer = 1; 
+                this.fromSliceThicknessTrailer = 0; 
                 this.toSliceThicknessTrailer = 1800.0;
                 this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
             }
         );
-
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                this.fromSliceThickness = 0;
-                this.toSliceThickness = 1800.0;
-                this.fromSliceThicknessTrailer = 1; 
-                this.toSliceThicknessTrailer = 1800.0;
-                this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
-            } );
 
          // Just set the values of slice thickness range from URL parameter, not the 'Apply slice thickness range
         this.parameterService.parameterSliceThicknessRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
@@ -153,7 +144,7 @@ export class ImagesSliceThicknessSearchComponent implements OnInit, OnDestroy{
         this.commonService.setHaveUserInput( true );
         this.fromSliceThickness = 0;
         this.toSliceThickness = 1800.0;
-        this.fromSliceThicknessTrailer = 1; // the init value is different to keep the apply button active
+        this.fromSliceThicknessTrailer = 0; // the init value is different to keep the apply button active
         this.toSliceThicknessTrailer = 1800.0;
         this.queryUrlService.clear( this.queryUrlService.SLICE_THICKNESS );
         let sliceThicknessRangeForQuery: string[] = [];

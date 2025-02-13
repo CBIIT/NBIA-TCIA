@@ -98,13 +98,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
                 }
             } );
 
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                this.getInitialMinMaxTimePoints();
-                this.onClinicalTimepointsClearAllClick();
-                this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
-            } );
-
         // Used when there are query parameters in the URL.
         this.parameterService.parameterDaysFromBaselineEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {

@@ -21,9 +21,9 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
     posY = 0;
 
     pixelSpacingSelection = 0;
-    fromPixelSpacing: number = 0;
+    fromPixelSpacing: number = 0.0;
     toPixelSpacingTrailer: number = 15.0;
-    fromPixelSpacingTrailer: number = 0.1; // the init value is different to keep the apply button active
+    fromPixelSpacingTrailer: number = 0.0;
     toPixelSpacing: number = 15.0;
     disabled = false;
     options: Options = {
@@ -80,26 +80,16 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {         
-                this.fromPixelSpacing = 0;
+                this.fromPixelSpacing = 0.0;
                 this.toPixelSpacing = 15.0;
-                this.fromPixelSpacingTrailer = 0.1; 
+                this.fromPixelSpacingTrailer = 0.0; 
                 this.toPixelSpacingTrailer = 15.0;
                 this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
             }
         );
 
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                this.fromPixelSpacing = 0;
-                this.toPixelSpacing = 15.0;
-                this.fromPixelSpacingTrailer = 0.1; 
-                this.toPixelSpacingTrailer = 15.0;
-                this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
-            } );
-
-
-            //  // Just set the values of pixel spacing range from URL parameter,
-            // Just set the values, not the 'Apply pixel spacing range'
+        // Just set the values of pixel spacing range from URL parameter,
+        // Just set the values, not the 'Apply pixel spacing range'
         this.parameterService.parameterPixelSpacingRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
                 try {
@@ -152,9 +142,9 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
 
     onPixelSpacingClearAllClick() { 
         this.commonService.setHaveUserInput( true );
-        this.fromPixelSpacing = 0;
+        this.fromPixelSpacing = 0.0;
         this.toPixelSpacing = 15.0;
-        this.fromPixelSpacingTrailer = 0.1; // the init value is different to keep the apply button active
+        this.fromPixelSpacingTrailer = 0.0; 
         this.toPixelSpacingTrailer = 15.0;
         this.queryUrlService.clear( this.queryUrlService.PIXEL_SPACING );
         let PixelSpacingRangeForQuery: string[] = [];
@@ -220,7 +210,7 @@ export class ImagesPixelSpacingSearchComponent implements OnInit, OnDestroy{
     isPixelSpacingUnchanged():boolean { 
         return (this.toPixelSpacingTrailer === this.toPixelSpacing && 
             this.fromPixelSpacingTrailer === this.fromPixelSpacing ) ||
-            (this.toPixelSpacingTrailer === 15.0 && this.fromPixelSpacingTrailer === 0.0);
+            (this.toPixelSpacing === 15.0 && this.fromPixelSpacing === 0.0);
     }
 
     ngOnDestroy() {
