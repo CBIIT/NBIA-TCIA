@@ -71,6 +71,7 @@ import gov.nih.nci.ncia.criteria.ImagingObservationCharacteristicQuantificationC
 import gov.nih.nci.ncia.criteria.KilovoltagePeakDistribution;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
+import gov.nih.nci.ncia.criteria.MinNumberOfStudyDatesCriteria;
 import gov.nih.nci.ncia.criteria.ModalityAndedSearchCriteria;
 import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
@@ -121,6 +122,7 @@ public class DICOMQuery extends Query {
     private AnnotationOptionCriteria annotationOptionCriteria;
     private AnatomicalSiteCriteria anatomicalSiteCriteria;
     private MinNumberOfStudiesCriteria minNumberOfStudiesCriteria;
+    private MinNumberOfStudyDatesCriteria minNumberOfStudyDatesCriteria;
     private NumOfMonthsCriteria numOfMonthsCriteria;
     private CollectionCriteria collectionCriteria;
     private ConvolutionKernelCriteria convolutionKernelCriteria;
@@ -530,12 +532,29 @@ public class DICOMQuery extends Query {
     }
 
     /**
+     * @return Returns the minNumberOfStudyDatesCriteria.
+     */
+    public MinNumberOfStudyDatesCriteria getMinNumberOfStudyDatesCriteria() {
+        return minNumberOfStudyDatesCriteria;
+    }
+
+    /**
      * @param minNumberOfStudiesCriteria The minNumberOfStudiesCriteria to set.
      */
     public void setCriteria(MinNumberOfStudiesCriteria minNumberOfStudiesCriteria) {
         if (minNumberOfStudiesCriteria != null) {
             criteriaList.add(minNumberOfStudiesCriteria);
             this.minNumberOfStudiesCriteria = minNumberOfStudiesCriteria;
+        }
+    }
+
+    /**
+     * @param minNumberOfStudyDatesCriteria The minNumberOfStudyDatesCriteria to set.
+     */
+    public void setCriteria(MinNumberOfStudyDatesCriteria minNumberOfStudyDatesCriteria) {
+        if (minNumberOfStudyDatesCriteria != null) {
+            criteriaList.add(minNumberOfStudyDatesCriteria);
+            this.minNumberOfStudyDatesCriteria = minNumberOfStudyDatesCriteria;
         }
     }
 

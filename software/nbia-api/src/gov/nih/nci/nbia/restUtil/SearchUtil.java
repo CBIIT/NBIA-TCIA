@@ -37,6 +37,7 @@ import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
+import gov.nih.nci.ncia.criteria.MinNumberOfStudyDatesCriteria;
 import gov.nih.nci.ncia.criteria.ModalityAndedSearchCriteria;
 import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
@@ -244,6 +245,12 @@ public class SearchUtil {
 			    criteria.setMinNumberOfStudiesValue(new Integer(inFormParams.get("value"+i).get(0)));
 				query.setCriteria(criteria);
 				queryKey+="MinNumberOfStudiesCriteria"+inFormParams.get("value"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("MinNumberOfStudyDatesCriteria")){
+				MinNumberOfStudyDatesCriteria criteria=new MinNumberOfStudyDatesCriteria();
+			    criteria.setMinNumberOfStudyDatesValue(new Integer(inFormParams.get("value"+i).get(0)));
+				query.setCriteria(criteria);
+				queryKey+="MinNumberOfStudyDatesCriteria"+inFormParams.get("value"+i).get(0);
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ModalityAndedSearchCriteria")){
 				ModalityAndedSearchCriteria criteria=new ModalityAndedSearchCriteria();

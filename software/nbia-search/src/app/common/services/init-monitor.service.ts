@@ -508,9 +508,6 @@ export class InitMonitorService{
         if( this.dateRangeRunning ){
             res = true;
         }
-        if( this.dateRangeRunning ){
-            res = true;
-        }
         if( this.patientAgeRangeRunning ){
             res = true;
         }
