@@ -65,6 +65,10 @@ public class PatientSexCriteria extends MultipleValuePersistentCriteria
         return patientSexObjects;
     }
 
+    public boolean removePatientSex(String sex) {
+        return patientSexObjects != null && patientSexObjects.remove(sex);
+    }
+
     protected Collection<String> getMultipleValues() {
         return getPatientSexObjects();
     }

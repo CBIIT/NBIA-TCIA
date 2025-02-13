@@ -67,6 +67,7 @@ import gov.nih.nci.nbia.searchresult.PatientSearchResult;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultImpl;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModilityAndBodyPart;
 import gov.nih.nci.nbia.searchresult.PatientSearchResultWithModalityAndBodyPartImpl;
+import gov.nih.nci.nbia.searchresult.StudyIdentifiers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,10 +75,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+
+
 
 
 /**
@@ -213,16 +220,37 @@ public class PatientSearcher {
         // Convert to a list and sort prior to returning
         for (PatientSearchResultWithModalityAndBodyPartImpl patient:patients.values())
         {
-          //Remove any that don't meet min study requirement
-          int minStudies = -1;
-          if (query.getMinNumberOfStudiesCriteria() != null) {
-            minStudies = query.getMinNumberOfStudiesCriteria().getMinNumberOfStudiesValue();
-            if (patient.getStudyIdentifiers().length > minStudies) {
-              returnList.add(patient);
+            // Remove any that don't meet min study requirement
+            int minStudies = -1;
+            if (query.getMinNumberOfStudiesCriteria() != null) {
+                minStudies = query.getMinNumberOfStudiesCriteria().getMinNumberOfStudiesValue();
             }
-          } else {
-        	  returnList.add(patient);
-          }
+        
+            int minStudyDates = -1;
+            String studyIdList = "";
+            if (query.getMinNumberOfStudyDatesCriteria() != null) {
+                minStudyDates = query.getMinNumberOfStudyDatesCriteria().getMinNumberOfStudyDatesValue();
+
+                StudyIdentifiers[] studyIdentifiers = patient.getStudyIdentifiers();
+
+                Set<Integer> uniqueStudyIds = new HashSet<>();
+
+                for (StudyIdentifiers study : studyIdentifiers) {
+                    uniqueStudyIds.add(study.getStudyIdentifier()); 
+                }
+                studyIdList = uniqueStudyIds.stream()
+                            .map(String::valueOf) // Convert int to String
+                            .collect(Collectors.joining(","));
+
+
+            }
+        
+            boolean meetsStudyCriteria = patient.getStudyIdentifiers().length > minStudies;
+            boolean meetsStudyDateCriteria = dqh.getStudyDateNumber(studyIdList) > minStudyDates;
+        
+            if (meetsStudyCriteria && meetsStudyDateCriteria) {
+                returnList.add(patient);
+            }
         }
         Collections.sort(returnList);
 

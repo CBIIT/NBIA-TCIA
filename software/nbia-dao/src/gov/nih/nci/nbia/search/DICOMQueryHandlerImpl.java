@@ -79,6 +79,7 @@ import gov.nih.nci.ncia.criteria.ImagingObservationCharacteristicQuantificationC
 import gov.nih.nci.ncia.criteria.KilovoltagePeakDistribution;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
+import gov.nih.nci.ncia.criteria.MinNumberOfStudyDatesCriteria;
 import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
@@ -410,6 +411,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         //studies that fit the criteria
         //whereStmt += processMinimumStudiesCriteria(query);
 
+        //whereStmt += processMinimumStudyDatesCriteria(query);
+
         whereStmt += processNumberOfMonthsCriteria(query, handlerFac);
 
         whereStmt += processAnnotationCriteria(query);
@@ -491,6 +494,26 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         return minStudiesWhereStmt;
     }
 
+    private static String processMinimumStudyDatesCriteria(DICOMQuery theQuery) {
+        MinNumberOfStudiesCriteria msc = theQuery.getMinNumberOfStudiesCriteria();
+        String minStudiesWhereStmt = "";
+        if (msc != null) {
+            Integer tempInteger = msc.getMinNumberOfStudiesValue();
+            minStudiesWhereStmt += (AND + STUDY_NUMBER + tempInteger + " ");
+        }
+        return minStudiesWhereStmt;
+    }
+
+    public Integer getStudyDateNumber(String studyIdList) {
+        if (studyIdList == "") {  return 0;}
+        String studyHql = "select count(distinct s.studyDate) from Study s where s.id in (" + studyIdList + ")";
+
+
+	      List<Long> results = getHibernateTemplate().find(studyHql);
+        return (results != null && !results.isEmpty()) ? results.get(0).intValue() : 0;
+
+    }
+
     private static String processCollectionCriteria(DICOMQuery theQuery,
     		                                        CriteriaHandlerFactory theHandlerFac) throws Exception {
         CollectionCriteria cc = theQuery.getCollectionCriteria();
@@ -529,10 +552,25 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         PatientSexCriteria sc = theQuery.getPatientSexCriteria();
         CriteriaHandler handler = null;
 
+
         String patientSexWhereStmt = "";
         if (sc != null) {
+           //if "Null" is included in the search, remove it and set includeNull to true
+           boolean includeNull = sc.removePatientSex("Null");
+
 		       handler = theHandlerFac.createCriteriaCollection();
-           patientSexWhereStmt += (AND + handler.handle(PATIENT_SEX_FIELD, sc));
+           String searchString = handler.handle(PATIENT_SEX_FIELD, sc);
+           if (!searchString.equals(") ")) {
+             patientSexWhereStmt += (AND + " ("  + searchString);
+             if (includeNull) {
+              patientSexWhereStmt += " or p.patientSex is null";
+             }
+             patientSexWhereStmt += ") ";
+
+           } else if (includeNull) {
+             patientSexWhereStmt += " AND (p.patientSex is null) ";
+           }
+
            System.out.println("patientSexWhereStmt===="+patientSexWhereStmt);
         }
         return patientSexWhereStmt;
