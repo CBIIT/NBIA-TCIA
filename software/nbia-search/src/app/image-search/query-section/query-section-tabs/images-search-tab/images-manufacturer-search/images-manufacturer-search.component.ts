@@ -194,7 +194,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.handleSearchReset();
 
          // Process URL query parameters
-        // this.processUrlQueryParameters();
+        this.processUrlQueryParameters();
 
         // ------ END of subscribes ------
 
@@ -455,7 +455,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     onClearManufacturerSearchInputClick() {
         this.searchHasFocus = true;
         this.searchInput = '';
-        this.onSearchChange();
+        this.setSequenceValue();
     }
 
     /**
@@ -474,9 +474,12 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 n++;
             }
         }
+        if(tempList.length > 0){
+            this.adjustSequencesFromSearch(tempList);
+        }
         
-        this.manufacturerList = this.sortService.criteriaSort( tempList, this.cBox, false );  
-        this.setSequenceValue() ;
+       // this.manufacturerList = this.sortService.criteriaSort( tempList, this.cBox, false );  
+       // this.setSequenceValue() ;
         // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
         if( this.searchInput.length === 0 ){
             this.searchToolTip = 'Search';
@@ -497,11 +500,10 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     onSearchGlassClick() {
         this.showSearch = (!this.showSearch);
         if( !this.showSearch ){
-            this.manufacturerList = this.manufacturerListHold;
+           //this.manufacturerList = this.manufacturerListHold;
             this.onClearManufacturerSearchInputClick();
         }
     }
-
 
     onSearchTextOutFocus( n ) {
         // Text
@@ -549,11 +551,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
     onManufacturerClearAllClick( totalClear: boolean ) {
-
         // Used when there is a query from URL parameters, so we didn't want to run the search until all query criteria where set,
         // but then a user has added query criteria after the URL parameter search. this flag tells us (if true) don't wait, run the search.
         this.commonService.setHaveUserInput( true );
-
 
         for( let f = 0; f < this.cBox.length; f++ ){
             this.cBox[f] = false;
@@ -582,6 +582,34 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.persistenceService.put( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT, this.sortNumChecked );
         //this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
         this.setSequenceValue();
+    }
+
+    adjustSequencesFromSearch(tList) {
+        if (!tList || tList.length === 0) return;
+        // Extract manufacturers from tList for quick lookup
+        const matchedSet = new Set(tList.map(item => item.Manufacturer));
+        // Map to track original indexes (avoids extra lookups)
+        const originalIndexMap = new Map();
+        this.manufacturerList.forEach((item, index) => originalIndexMap.set(item.Manufacturer, index));
+    
+        // Partition array in a single loop for better performance
+        const tempItems = [];
+        const otherItems = [];
+    
+        for (const item of this.manufacturerList) {
+            if (matchedSet.has(item.Manufacturer)) {
+                tempItems.push(item);
+            } else {
+                otherItems.push(item);
+            }
+        }
+        // Concatenate and update `seq` in a single pass
+        const newManufacturerList = [...tempItems, ...otherItems].map((item, index) => ({ ...item, seq: index }));
+    
+        // Use direct indexing to reorder `cBox` efficiently
+        const newCBox = newManufacturerList.map(item => this.cBox[originalIndexMap.get(item.Manufacturer)]);
+        this.manufacturerList = newManufacturerList;
+        this.cBox = newCBox;
     }
 
     ngOnDestroy() {
