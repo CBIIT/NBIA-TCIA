@@ -287,10 +287,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 .filter((manufacturer, index) => this.cBox[index])
                 .map(manufacturer => manufacturer['Manufacturer'])  // get the Manufacturer value       
         ];
-
-        // Tells SearchResultsTableComponent that the query has changed,
-        // SearchResultsTableComponent will (re)run the query &
-        // send updated query to the Query display at the top of the Search results section.
         this.commonService.updateQuery( criteriaForQuery );
 
         this.sendSelectedCriteriaString();
@@ -421,15 +417,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             }
         });
 
-        // Tells SearchResultsTableComponent that the query has changed,
-        // SearchResultsTableComponent will (re)run the query &
-        // send updated query to the Query display at the top of the Search results section.
         this.commonService.updateQuery( criteriaForQuery );
-
-        // (Re)sort the list because a checked Manufacturer is higher than unchecked.
-        // moved into updateCheckboxCount
-       // this.setSequenceValue() ;
-       // this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked );   // sortNumChecked is a bool
 
         // Update the query URL
         if( this.checkedCount === 0 ){
@@ -463,17 +451,11 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      * @NOTE This is currently commented out for Manufacturer Sites
      */
     onSearchChange() {
-        let tempList = [];
-        let n = 0;
-        for( let item of this.manufacturerList ){
-            if(
-                item['Manufacturer'].toUpperCase().includes( this.searchInput.toUpperCase() ) ||
-                this.cBox[n]
-            ){
-                tempList.push( item );
-                n++;
-            }
-        }
+        const searchTerm = this.searchInput.toUpperCase();
+        const tempList = this.manufacturerList.filter(item => 
+            item.Manufacturer.toUpperCase().includes(searchTerm) || this.cBox[this.manufacturerList.indexOf(item)]
+        );
+       
         if(tempList.length > 0){
             this.adjustSequencesFromSearch(tempList);
         }
