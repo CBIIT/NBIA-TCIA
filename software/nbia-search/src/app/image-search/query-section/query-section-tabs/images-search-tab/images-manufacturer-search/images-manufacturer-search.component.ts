@@ -81,8 +81,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      *
      * @type {boolean}
      */
-        showAllForSearch = false;
-
+    showAllForSearch = false;
 
     searchToolTip = 'Search';
     showSearch: boolean = false;
@@ -208,7 +207,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         //this.getShowManufacturerValues();
 
         // This will tell the parameter service that it can send any query Manufacturer that where passed in the URL
-        this.initMonitorService.setManufacturerInit(false);
+        this.initMonitorService.setManufacturerInit(true);
 
     } // End ngOnInit
 

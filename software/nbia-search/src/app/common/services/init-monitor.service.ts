@@ -487,73 +487,73 @@ export class InitMonitorService{
         if( this.anatomicalSiteRunning ){
             res = true;
         }
-        if( this.speciesRunning ){
-            res = true;
-        }
-        if( this.phantomsRunning ){
-            res = true;
-        }
-        if( this.thirdPartyRunning ){
-            res = true;
-        }
-        if( this.excludeCommercialRunning ){
-            res = true;
-        }
-        if( this.daysFromBaselineRunning ){
-            res = true;
-        }
-        if( this.minimumStudiesRunning ){
-            res = true;
-        }
-        if( this.dateRangeRunning ){
-            res = true;
-        }
-        if( this.patientAgeRangeRunning ){
-            res = true;
-        }
-        if( this.patientSexRunning ){
-            res = true;
-        }
+        // if( this.speciesRunning ){
+        //     res = true;
+        // }
+        // if( this.phantomsRunning ){
+        //     res = true;
+        // }
+        // if( this.thirdPartyRunning ){
+        //     res = true;
+        // }
+        // if( this.excludeCommercialRunning ){
+        //     res = true;
+        // }
+        // if( this.daysFromBaselineRunning ){
+        //     res = true;
+        // }
+        // if( this.minimumStudiesRunning ){
+        //     res = true;
+        // }
+        // if( this.dateRangeRunning ){
+        //     res = true;
+        // }
+        // if( this.patientAgeRangeRunning ){
+        //     res = true;
+        // }
+        // if( this.patientSexRunning ){
+        //     res = true;
+        // }
 
-        if( this.patientHeightRangeRunning ){
-            res = true;
-        }
+        // if( this.patientHeightRangeRunning ){
+        //     res = true;
+        // }
 
-        if( this.patientWeightRangeRunning ){
-            res = true;
-        }
+        // if( this.patientWeightRangeRunning ){
+        //     res = true;
+        // }
         
-        if( this.sliceThicknessRangeRunning ){
-            res = true;
-        }
+        // if( this.sliceThicknessRangeRunning ){
+        //     res = true;
+        // }
         
-        if( this.imageDescriptionRunning ){
-            res = true;
-        }
+        // if( this.imageDescriptionRunning ){
+        //     res = true;
+        // }
 
-        if( this.pixelSpacingRangeRunning ){
-            res = true;
-        }
+        // if( this.pixelSpacingRangeRunning ){
+        //     res = true;
+        // }
 
-        if( this.manufacturerRunning ){
-            res = true;
-        }  
+        // if( this.manufacturerRunning ){
+        //     res = true;
+        // }  
         
-        if( this.nbiaProgramRunning ){
-            res = true;
-        }
+        // if( this.nbiaProgramRunning ){
+        //     res = true;
+        // }
 
-        if(this.subjectIdRunning) {
-            res = true;
-        }
+        // if(this.subjectIdRunning) {
+        //     res = true;
+        // }
 
-        if(this.seriesCriteriaRunning) {
-            res = true;
-        }   
+        // if(this.seriesCriteriaRunning) {
+        //     res = true;
+        // }   
 
-        if(this.studyCriteriaRunning) {
-            res = true;
-        }   
+        // if(this.studyCriteriaRunning) {
+        //     res = true;
+        // }   
         
         return res;
     }
