@@ -102,6 +102,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         this.minNumberOfPoints = 1;
         this.matchedTypeApplySelection = 0;
         this.onChangeMinimumMatchedStudies(false);
+        this.commonService.emitSimpleSearchQueryForDisplay([]);
 
     }
 
