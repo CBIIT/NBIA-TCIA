@@ -102,7 +102,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         this.minNumberOfPoints = 1;
         this.matchedTypeApplySelection = 0;
         this.onChangeMinimumMatchedStudies(false);
-        this.commonService.emitSimpleSearchQueryForDisplay([]);
+
     }
 
     private handleUrlParameterMinimumStudies(data: string): void {
@@ -158,6 +158,13 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
     onMatchedTypeRadioChange( selection ) {
         this.matchedTypeApplySelection = selection;
         this.onChangeMinimumMatchedStudies();
+    }
+
+    onMinimumMatchedClearAllClick() {
+        this.minNumberOfPoints = 1;
+        this.matchedTypeApplySelection = 0;
+        this.onChangeMinimumMatchedStudies(true);
+
     }
 
     ngOnDestroy() {

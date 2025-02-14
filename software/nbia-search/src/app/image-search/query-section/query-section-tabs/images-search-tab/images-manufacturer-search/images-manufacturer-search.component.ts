@@ -89,7 +89,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     inCollection = false;
 
     completeManufacturerValues;
-    completeManufacturerValuesHold: any[] = [   ];
+    completeManufacturerValuesHold: any[] = [];
 
     /**
      * If a query passed in the URL has Manufacturer that don't exist in our current list, they are put in the array, used to alert the user.
@@ -190,11 +190,12 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             await this.commonService.sleep( Consts.waitTime );
         }
         this.loadingDisplayService.setLoading( false, 'Done Loading query data' );
+        
         // Called when the "Clear" button on the left side of the Display query at the top.
-         this.handleSearchReset();
+        this.handleSearchReset();
 
          // Process URL query parameters
-         this.processUrlQueryParameters();
+        // this.processUrlQueryParameters();
 
         // ------ END of subscribes ------
 
@@ -203,11 +204,11 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.setInitialManufacturerValues();
 
         // Get persisted showManufacturerValues value.  Used to show, or collapse this category of criteria in the UI.
-         // Set initial manufacturer values
-         this.getShowManufacturerValues();
+        // Set initial manufacturer values
+        //this.getShowManufacturerValues();
 
         // This will tell the parameter service that it can send any query Manufacturer that where passed in the URL
-        this.initMonitorService.setManufacturerInit(true);
+        this.initMonitorService.setManufacturerInit(false);
 
     } // End ngOnInit
 

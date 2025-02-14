@@ -10,6 +10,16 @@
     <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"
       class="clicker  close-third-party-explanation-x" (click)="onMinimumMatchedStudieseExplanationClick($event)">
 
+    <!-- Reset the selections and restore the count to 1-->
+    <label *ngIf="(+matchedTypeApplySelection + minNumberOfPoints) > 1" class="red-clear-minimum-matched-studies">
+      <img
+        class="clicker cart-button-icon"
+        src="assets/images/TOOLS/clear_red.png"
+        alt="Search"
+        (click)="onMinimumMatchedClearAllClick(false)"
+      >
+    </label>
+
   </div>
 
   <!-- Any or All radio buttons  -->
