@@ -81,8 +81,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.onClinicalTimepointsClearAllClick();
-                // this.onApplyFromBaselineCheckboxClick( false );
+                this.resetSettings();
                 this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
                    
             }
@@ -164,7 +163,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.showClinicalTimepoints = state;
     }
 
-    onClinicalTimepointsClearAllClick() {
+    resetSettings() {
         this.fromBaseLineFrom = '';
         this.fromBaseLineFromTrailer = '';
         this.displayFromBaseLineFrom = '';
@@ -177,7 +176,10 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
         this.currentEventTypeIndex = 0;
         this.currentEventTypeTrailer = 0;
+    }
 
+    onClinicalTimepointsClearAllClick() {
+        this.resetSettings();
         this.onApplyFromBaselineCheckboxClick( false, true );
     }
 
@@ -308,7 +310,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             return;
         }
 
-
         this.currentEventTypeIndex = i;
         this.displayFromBaseLineFrom = this.getMinByEvent( this.eventTypeList[i] );
         this.displayFromBaseLineTo = this.getMaxByEvent( this.eventTypeList[i] );
@@ -341,7 +342,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         }
         return -1;
     }
-
 
     getMinByEvent( event ) {
         if( this.searchResultsMinMaxTimePoints['minTimepoints'] === null ){

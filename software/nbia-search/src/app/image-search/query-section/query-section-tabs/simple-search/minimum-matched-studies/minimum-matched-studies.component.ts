@@ -52,7 +52,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
 
         this.onChangeMinimumMatchedStudies(false); // Default: minNumberOfPoints = 1
 
-        // Used when the Clear button is clicked in the Display Query
+        //Used when the Clear button is clicked in the Display Query
         this.commonService.resetAllSimpleSearchEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             () => {
                 this.resetSearch();
@@ -102,7 +102,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         this.minNumberOfPoints = 1;
         this.matchedTypeApplySelection = 0;
         this.onChangeMinimumMatchedStudies(false);
-        this.commonService.emitSimpleSearchQueryForDisplay([]);
+       // this.commonService.emitSimpleSearchQueryForDisplay([]);
 
     }
 
@@ -134,16 +134,16 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
         // this method is by user action only, so set setHaveUserInput to true.
         this.commonService.setHaveUserInput( true );
         this.setMinimumMatchedStudies();
-        await this.queryUrlService.update( this.queryUrlService.MIN_STUDIES, this.commonService.getMinimumMatchedStudiesValue() );
 
-        //////////////////////////////////////////////////
-
-        await this.apiServerService.getCriteriaCounts();
-
-        //////////////////////////////////////////////////
- 
         if( runQuery ){
+            await this.queryUrlService.update( this.queryUrlService.MIN_STUDIES, this.commonService.getMinimumMatchedStudiesValue() );
+            //////////////////////////////////////////////////
+            await this.apiServerService.getCriteriaCounts();
+            //////////////////////////////////////////////////
             this.commonService.updateQuery( [Consts.MINIMUM_STUDIES, this.commonService.getMinimumMatchedStudiesValue()]);
+        }else{
+            this.queryUrlService.clear( this.queryUrlService.MIN_STUDIES );
+            this.commonService.emitSimpleSearchQueryForDisplay([]);
         }
     }
 
@@ -158,7 +158,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
 
     onMatchedTypeRadioChange( selection ) {
         this.matchedTypeApplySelection = selection;
-        this.onChangeMinimumMatchedStudies();
+        this.onChangeMinimumMatchedStudies(true);
     }
 
     onMinimumMatchedClearAllClick() {

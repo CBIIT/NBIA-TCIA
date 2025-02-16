@@ -24,8 +24,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
     // disableUseDateRange = true;
     allEmpty = true;
     checked = false;
-    // ------------------------------------------------------
-
     disableUseDateRange = true;
     applyCheckboxCalender = false;
 
@@ -38,8 +36,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         // Start with no dates entered
-        this.onDateRangeClearAllClick( false );
-
+        this.onDateRangeClearAllClick( true );
 
         // Get persisted showCriteriaList
         this.showCriteriaList = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE );
@@ -51,10 +48,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         // Used when the Clear button is clicked in the Display Query
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.totalQueryClear();
-                this.onDateRangeClearAllClick( false ); // @CHECKME
-                this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-                 
+                this.onDateRangeClearAllClick( true ); // true = the user has cleared the complete current query - no need to rerun the query             
             }
         );
 
@@ -63,7 +57,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
             data => {
                 // data input as "mm/dd/yyyy-mm/dd/yyyy" 
                 // Make sure the "No future dates" is update.
-                //this.initializeDisableFutureDates();
+                this.initializeDisableFutureDates();
 
                 let twoDates = (<any>data).split( /-/ );
                 if( twoDates.length !== 2 ){
@@ -73,8 +67,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
                 this.disableUseDateRange = false;
                 this.onUrlDateRange(<String>data);
                 this.commonService.setHaveUserInput( false );
-
-
             }
         );
 
@@ -95,18 +87,12 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.onDateRangeClearAllClick( true );
     }
 
-
+   
     /**
      *
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
-    onDateRangeClearAllClick( totalClear: boolean ) {
-
-         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
-         this.commonService.setHaveUserInput( true );
-
-        let dateRangeForQuery: string[] = [];
-        dateRangeForQuery[0] = 'DateRangeCriteria';
+    onDateRangeClearAllClick( totalClear: boolean = false) {
 
         this.setToDateToToday();
         this.setFromDate( Properties.LAST_ACCESS );
@@ -115,15 +101,17 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.applyCheckboxCalender = false;
 
         this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-        this.commonService.updateQuery( dateRangeForQuery );
 
+        if( !totalClear ){
+        // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
+            this.commonService.setHaveUserInput( true );
+            this.commonService.updateQuery( [Consts.DATE_RANGE_CRITERIA] );
+        }
     }
-
 
     setToDateToToday() {
         this.toDate = new Date();
     }
-
 
     /**
      *
@@ -154,7 +142,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
             return;
         }
 
-
         // Check for from date after to date
         if( this.fromDate > this.toDate ){
             // Bad year
@@ -171,7 +158,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         return new Date( year, month, 0 ).getDate();
     };
 
-
     onDateChange() {
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
@@ -183,7 +169,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
             this.onApplyCheckboxClick( true );
         }
     }
-
 
     onDateChangedTo( e) {
         this.validateDateRange();
