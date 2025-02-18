@@ -95,7 +95,7 @@
         <!-- -----  End Search input  ----- -->
 
         <!-- ----------  The Less/More... clickers at the top  ---------- -->
-        <div *ngIf="unCheckedCount > properties.CRITERIA_SHOW_COUNT">
+        <div *ngIf="(unCheckedCount > properties.CRITERIA_SHOW_COUNT) && (! showAllForSearch)">
             <a
                     *ngIf="!showAll"
                     class="moreOrLess"
@@ -111,17 +111,20 @@
 
         <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
         <div *ngFor="let criteria of manufacturerList ; let i = index" class="query-panel-checkboxes">
-            <span *ngIf="( criteria['seq']  < (  properties.CRITERIA_SHOW_COUNT + checkedCount) ) || showAll">
-                <input type="checkbox"
+            <span *ngIf="( criteria['seq']  < (  properties.CRITERIA_SHOW_COUNT + checkedCount) ) 
+            || showAll  || showAllForSearch"  >
+                <span>
+                    <input type="checkbox"
                        class="check-box"
                        id="checkbox-manufacturer-site{{i}}"
                        [(ngModel)]="cBox[i]"
                        (click)="onCheckboxClick(i, $event.target['checked'])">
+                </span>
 
                 <label
-                        class="criteria-entry-text"
-                        [attr.for]="'checkbox-manufacturer-site'+i">
-                    {{criteria['Manufacturer']}}
+                class="manufacturer-entry-text"
+                [attr.for]="'checkbox-manufacturer-site'+i">
+                {{criteria['Manufacturer']}}
                 </label>
 
             </span>
@@ -129,7 +132,7 @@
 
 
         <!-- ----------  The Less/More... clickers at the bottom  ---------- -->
-        <div *ngIf="unCheckedCount > properties.CRITERIA_SHOW_COUNT">
+        <div *ngIf="(unCheckedCount > properties.CRITERIA_SHOW_COUNT) && (! showAllForSearch) ">
             <a
                 *ngIf="!showAll"
                 class="moreOrLess"

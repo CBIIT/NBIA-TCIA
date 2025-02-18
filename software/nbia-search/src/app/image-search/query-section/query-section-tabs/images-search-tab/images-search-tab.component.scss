@@ -258,3 +258,23 @@ label {
 .collection-scroller-content {
     height: $query-collection-start-height;
 }
+
+
+.manufacturer-entry-text {
+   // margin-top: 4px;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px; /* Restrict initial width */
+}
+
+.manufacturer-entry-text:hover{
+    overflow-x: auto; /* Allow horizontal scroll when hovering */
+   // white-space: normal; /* Allow text to wrap when hovering */
+    text-overflow: clip;
+}
+
+
+
+

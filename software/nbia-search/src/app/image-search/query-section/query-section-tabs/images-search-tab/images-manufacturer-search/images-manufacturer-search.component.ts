@@ -149,7 +149,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 // [{}, {Manufacturer: "Carestream"}, {Manufacturer: "CPS"}, {Manufacturer: "Eigen"},…]
                 if (this.completeManufacturerValues && this.completeManufacturerValues.length > 0) {
                     if (!this.completeManufacturerValues[0]?.Manufacturer) {
-                        this.completeManufacturerValues[0] = { Manufacturer: '- NOT SPECIFIED -' };
+                        this.completeManufacturerValues[0] = { Manufacturer: 'NOT SPECIFIED' };
                     } 
                 }
 
@@ -263,14 +263,13 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         });
     }
 
-
     /**
      * Adds this manufacturer of search criteria to the query that the QueryUrlService will provide for "Share" -> "Share my query"
      */
     sendSelectedCriteriaString() {
         const selectedManufacturer = this.manufacturerList
             .filter((manufacturer, index) => this.cBox[index])
-            .map(manufacturer => manufacturer['Manufacturer']?.replace(/,/g, ' ') || '- NOT SPECIFIED -');  // get the Manufacturer value
+            .map(manufacturer => manufacturer['Manufacturer']?.replace(/,/g, ' ') || 'NOT SPECIFIED');  // get the Manufacturer value
         
         const criteriaString = encodeURIComponent(selectedManufacturer.join(','));
         this.queryUrlService.update( this.queryUrlService.MANUFACTURER, criteriaString );
@@ -299,7 +298,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     setSequenceValue() {
       
         if(!this.manufacturerList[0]?.Manufacturer){
-            this.manufacturerList[0].Manufacturer ='- NOT SPECIFIED -';
+            this.manufacturerList[0].Manufacturer ='NOT SPECIFIED';
         }
         // Get sorted arrays while keeping `cBox` in sync
         this.getSortedManufacturersAndCBox();
@@ -369,11 +368,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         }
 
         this.setSequenceValue() ;
-
-        // resort only when changed
-        // if(!this.resetFlag) {
-        //     this.setSequenceValue() ;
-        // }
         this.manufacturerListHold = [...this.manufacturerList];
     }
 
@@ -443,7 +437,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     onClearManufacturerSearchInputClick() {
         this.searchHasFocus = true;
         this.searchInput = '';
-        this.setSequenceValue();
+        this.onSearchChange();
     }
 
     /**
@@ -451,25 +445,32 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      * @NOTE This is currently commented out for Manufacturer Sites
      */
     onSearchChange() {
-        const searchTerm = this.searchInput.toUpperCase();
-        const tempList = this.manufacturerList.filter(item => 
-            item.Manufacturer.toUpperCase().includes(searchTerm) || this.cBox[this.manufacturerList.indexOf(item)]
-        );
-       
-        if(tempList.length > 0){
-            this.adjustSequencesFromSearch(tempList);
-        }
-        
-       // this.manufacturerList = this.sortService.criteriaSort( tempList, this.cBox, false );  
-       // this.setSequenceValue() ;
-        // This is not really needed, it is left from when I allowed the search to continue to be in effect when the text input was not visible.
-        if( this.searchInput.length === 0 ){
-            this.searchToolTip = 'Search';
-            this.showAllForSearch = false;
+        const searchTerm = this.searchInput.trim().toUpperCase();
+        const isSearchEmpty = searchTerm.length === 0;
+
+        if( isSearchEmpty ){
+            this.adjustSequencesFromSearch( this.manufacturerListHold);
         }else{
-            this.searchToolTip = this.searchInput;
-            this.showAllForSearch = true;
+            // Build a Set of checked manufacturers directly
+            const checkedManufacturers = new Set();
+            for (let i = 0; i < this.manufacturerList.length; i++) {
+                if (this.cBox[i]) {
+                    checkedManufacturers.add(this.manufacturerList[i].Manufacturer);
+                }
+            }
+
+            const tempList = this.manufacturerListHold.filter(item => 
+                checkedManufacturers.has(item.Manufacturer) || item.Manufacturer.toUpperCase().includes(searchTerm)      
+            );
+        
+            if(tempList.length > 0){
+                this.adjustSequencesFromSearch(tempList);
+            }
         }
+
+        this.searchToolTip = isSearchEmpty ? 'Search' : this.searchInput;
+        this.showAllForSearch = !isSearchEmpty;
+
     }
 
     /**
@@ -512,10 +513,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
 
     updateCheckboxCount() {
-        this.checkedCount = this.cBox.filter(checked => checked).length;
+        this.checkedCount = this.cBox.filter(checked => Boolean(checked)).length;
         this.unCheckedCount = this.cBox.length - this.checkedCount;
     }
-
 
     /**
      * To reset everything to it's initial state after a new user has logged in.
@@ -527,30 +527,21 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.setSequenceValue() ;
     }
 
-
     /**
      *
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
     onManufacturerClearAllClick( totalClear: boolean ) {
-        // Used when there is a query from URL parameters, so we didn't want to run the search until all query criteria where set,
-        // but then a user has added query criteria after the URL parameter search. this flag tells us (if true) don't wait, run the search.
         this.commonService.setHaveUserInput( true );
 
         for( let f = 0; f < this.cBox.length; f++ ){
             this.cBox[f] = false;
         }
-
         this.checkedCount = 0;
       //  this.apiServerService.refreshCriteriaCounts();
         let criteriaForQuery: string[] = [];
         criteriaForQuery.push( Consts.MANUFACTURER_CRITERIA );
-
-            // Tells SearchResultsTableComponent that the query has changed,
-            // SearchResultsTableComponent will (re)run the query &
-            // send updated query to the Query display at the top of the Search results section.
         this.commonService.updateQuery( criteriaForQuery );
-        
         this.queryUrlService.clear( this.queryUrlService.MANUFACTURER );
         // Restore original Manufacturer list and counts.
         this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
@@ -562,36 +553,32 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // (Re)sort the list because a checked Manufacturer is higher than unchecked.
         this.sortNumChecked = sortCriteria === 0;
         this.persistenceService.put( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT, this.sortNumChecked );
-        //this.manufacturerList = this.sortService.criteriaSort( this.manufacturerList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
         this.setSequenceValue();
     }
 
     adjustSequencesFromSearch(tList) {
+        // tlist as 
+        //{Manufacturer: 'CPS', seq: 0}
+
         if (!tList || tList.length === 0) return;
-        // Extract manufacturers from tList for quick lookup
-        const matchedSet = new Set(tList.map(item => item.Manufacturer));
-        // Map to track original indexes (avoids extra lookups)
+        const preListLength = this.manufacturerList.length;
         const originalIndexMap = new Map();
-        this.manufacturerList.forEach((item, index) => originalIndexMap.set(item.Manufacturer, index));
-    
-        // Partition array in a single loop for better performance
-        const tempItems = [];
-        const otherItems = [];
-    
-        for (const item of this.manufacturerList) {
-            if (matchedSet.has(item.Manufacturer)) {
-                tempItems.push(item);
-            } else {
-                otherItems.push(item);
-            }
-        }
-        // Concatenate and update `seq` in a single pass
-        const newManufacturerList = [...tempItems, ...otherItems].map((item, index) => ({ ...item, seq: index }));
-    
-        // Use direct indexing to reorder `cBox` efficiently
-        const newCBox = newManufacturerList.map(item => this.cBox[originalIndexMap.get(item.Manufacturer)]);
-        this.manufacturerList = newManufacturerList;
+        this.manufacturerList.forEach((item, index) => originalIndexMap.set(item.Manufacturer, index))
+
+        const newCBox = tList.map(item =>  {
+            const originalIndex = originalIndexMap.get(item.Manufacturer);
+            return originalIndex !== undefined ? this.cBox[originalIndex] || false : false;
+        });
+        
+        this.manufacturerList = tList.map((item, index) => ({ ...item, seq: index }));
+
         this.cBox = newCBox;
+
+        if( !(preListLength > this.manufacturerList.length) ){
+            this.setSequenceValue();
+        }
+
+        this.updateCheckboxCount();
     }
 
     ngOnDestroy() {
