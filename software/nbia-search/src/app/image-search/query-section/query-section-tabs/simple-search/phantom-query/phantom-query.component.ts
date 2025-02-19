@@ -19,6 +19,9 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
     phantomApply = false;
     phantomApplySelection = 2;
 
+    showPhantomQueryExplanation = false;
+    posY = 0;
+
     /**
      * The list used by the HTML.
      */
@@ -69,6 +72,12 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
             this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PHANTOMS, this.showCriteriaList );
         }
 
+        this.commonService.showPhantomQueryExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showPhantomQueryExplanation = <boolean>data;
+            }
+        );
+
         this.initMonitorService.setPhantomsInit( true );
     }
 
@@ -107,6 +116,11 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
             this.queryUrlService.clear( this.queryUrlService.PHANTOMS );
         }
         this.commonService.updateQuery( criteriaForQuery );
+    }
+
+    onPhantomQueryExplanationClick(e) {
+        this.showPhantomQueryExplanation = true;
+        this.posY = e.view?.pageYOffset + e.clientY;
     }
 
     ngOnDestroy() {

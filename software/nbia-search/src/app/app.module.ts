@@ -126,7 +126,7 @@ import { ImagesPixelSpacingExplanationComponent } from './image-search/query-sec
 import { ImagesDescriptionExplanationComponent } from './image-search/query-section/query-section-tabs/images-search-tab/images-desciption-search/images-description-explanation/images-description-explanation.component';
 import { MinimumMatchedStudiesExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/minimum-matched-studies/minimum-matched-studies-explanation/minimum-matched-studies-explanation.component';    
 import { SubjectIdExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/subject-id-query/subject-id-explanation/subject-id-explanation.component'; 
-
+import { PhantomQueryExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query-explanation/phantom-query-explanation.component';   
 /*
 const appRoutes: Routes = [
     { path: '', component: NbiaClientComponent },
@@ -234,7 +234,8 @@ const appRoutes: Routes = [
         ImagesPixelSpacingExplanationComponent,
         ImagesDescriptionExplanationComponent,
         MinimumMatchedStudiesExplanationComponent,
-        SubjectIdExplanationComponent
+        SubjectIdExplanationComponent,
+        PhantomQueryExplanationComponent
     ],
     imports: [
         BrowserModule,

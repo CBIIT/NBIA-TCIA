@@ -48,8 +48,8 @@ export const Consts = {
 
         waitTime: 50,
         CRITERIA: 'criteria',
-        MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT: '-UIDs',
-        MIMUMUM_MATCHED_STUDIES_TYPE_DATE: '-Dates',
+        MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT: '-Dates',
+        MIMUMUM_MATCHED_STUDIES_TYPE_UIDS: '-UIDs',
 
         // The actual value to use when building the Rest call
         COLLECTION_CRITERIA: 'CollectionCriteria',

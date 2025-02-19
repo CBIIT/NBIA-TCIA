@@ -4,7 +4,7 @@
     <span class="clicker" (click)="onShowMinimumMatchedStudiesClick(!showMinimumMatchedStudies)">
       <img *ngIf="showMinimumMatchedStudies" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
       <img *ngIf="!showMinimumMatchedStudies" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
-      DICOM studies
+      Number of DICOM studies
     </span>
 
     <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"
@@ -42,9 +42,6 @@
       [ngClass]="{
             'disabled-spinner': noQuery
         }" [disabled]="noQuery" [(ngModel)]="minNumberOfPoints" (change)="onChangeMinimumMatchedStudies()">
-      
-        <span>{{ minNumberOfPoints > 1 ? 'points' : 'point' }}</span>
-      <span> (DICOM studies)</span>
     </div>
   </div>
 </div>

@@ -21,7 +21,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
 
     showMinimumMatchedStudies = true;
 
-    matchedTypeRadioLabels = ['Study UID', 'Study Time Point'];
+    matchedTypeRadioLabels = ['Study Dates', 'Study UIDs'];
     matchedTypeApply = false;
     matchedTypeApplySelection = 0;
 
@@ -44,7 +44,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
                  private queryUrlService: QueryUrlService, private apiServerService: ApiServerService ) {
 
 
-        // Set starting value. 1-UIDs
+        // Set starting value. 1-Dates
         this.setMinimumMatchedStudies();
     }
 
@@ -93,7 +93,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
     private setMinimumMatchedStudies(): void {
         const type = this.matchedTypeApplySelection === 0 
             ? Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT 
-            : Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE;
+            : Consts.MIMUMUM_MATCHED_STUDIES_TYPE_UIDS;
         
         this.commonService.setMinimumMatchedStudiesValue(`${this.minNumberOfPoints}${type}`);
     }
@@ -107,7 +107,7 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
     }
 
     private handleUrlParameterMinimumStudies(data: string): void {
-        const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE})$`);
+        const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_UIDS})$`);
         const match = String(data).match(pattern);
 
         if (!match) {

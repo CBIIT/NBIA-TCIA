@@ -428,7 +428,7 @@ export class ApiServerService implements OnDestroy {
 
             for (let item of allData[Consts.MINIMUM_STUDIES]) {
              // Dynamically build regex pattern allowing `:`, `-`, or `=`
-                const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE})$`);
+                const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_UIDS})$`);
                 const match = item.match(pattern);
                 if(!match){
                     console.log(`Invalid format: "${item}". Expected format: "X-Dates" or "X-UIDs" where X is a number.`);
@@ -437,10 +437,10 @@ export class ApiServerService implements OnDestroy {
                     if (msCount > 0) {
                          if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT) {
                              searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + 
-                             Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' + msCount;
-                         }else if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DATE) {
+                             Consts.MINIMUM_STUDIES_TYPE_DATE + '&value' + this.queryBuilderIndex + '=' + msCount;
+                         }else if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_UIDS) {
                              searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + 
-                             Consts.MINIMUM_STUDIES_TYPE_DATE + '&value' + this.queryBuilderIndex + '=' +msCount;
+                             Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' +msCount;
                          }
                         this.queryBuilderIndex++;
                      }

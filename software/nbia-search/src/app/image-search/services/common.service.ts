@@ -130,6 +130,9 @@ export class CommonService{
     showSubjectIdExplanationEmitter = new EventEmitter();
     showSubjectIdExplanation = false;
 
+    showPhantomQueryExplanationEmitter = new EventEmitter();
+    showPhantomQueryExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -513,6 +516,11 @@ export class CommonService{
     setShowSubjectIdExplanation( e ) {
         this.showSubjectIdExplanation = e;
         this.showSubjectIdExplanationEmitter.emit( this.showSubjectIdExplanation );
+    }
+
+    setShowPhantomQueryExplanation( e ) {
+        this.showPhantomQueryExplanation = e;
+        this.showPhantomQueryExplanationEmitter.emit( this.showPhantomQueryExplanation );
     }
 
 
