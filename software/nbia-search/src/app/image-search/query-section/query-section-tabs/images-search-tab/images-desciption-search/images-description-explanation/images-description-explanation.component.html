@@ -11,9 +11,25 @@
     </div>
 
     <div class="iamges-tab-explanation-text bg-white p-2">
-
-        This filter allows you to refine search results matches Series Description, Study Description, and ProtocolName fields.
-        See <a href="https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+User%27s+Guide#CancerImagingArchiveUser'sGuide-PerformingaSimpleSearch"  target="_BLANK">Performing a Simple Search</a> for more information.
+      This filter allows you to refine search results to those matching the Series Description, Study Description, and Protocol Name fields. Results include datasets that have one or more of the search terms separated by spaces.  The search is case-insensitive.
+      <br>
+Example Search: head neck
+<br>
+This search will return results that contain 'head' or 'neck.'
+<br>
+<br>
+Wildcards can be used for partial word matching.
+<br>
+Example Search: h*d neck
+<br>
+This search will return results that contain 'neck' or any word that resembles 'h' + zero or more characters + 'd.'
+<br>
+<br>
+Use double quotes to ensure that a multiple word phrase is included.
+<br>
+Example Search: "head neck"
+<br>
+This search only returns results that contain the exact match "head neck" in the description.
     </div>
 </span>
 
