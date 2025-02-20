@@ -5,7 +5,7 @@ export let Properties = {
     //TEST_VERSION: '1.0.12a',
 
     // APr 2024
-    CURRENT_YEAR:'2024',
+    CURRENT_YEAR:'2025',
     VERSION: '9.3',
     TEST_VERSION: '9.3',
     RELEASE_COMMIT: '21387774',

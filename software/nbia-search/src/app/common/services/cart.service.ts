@@ -156,6 +156,35 @@ export class CartService implements OnDestroy{
         this.apiServerService.doSearch( Consts.SERIES_FOR_SUBJECT, query, subjectId, selected );
     }
 
+    /**
+     * Adds List series to the cart.
+     */
+    cartListAdd(seriesList){
+        if (!seriesList || seriesList.length === 0) return;
+        // list structure 
+        // seriesUID: series.seriesUID, studyId: series.studyId, 
+        // subjectId: series.subjectId, seriesPkId: series.seriesPkId, 
+        // exactSize: series.exactSize
+        // Precompute cart IDs for fast lookup (avoids multiple cartHas calls)
+        const cartIds = new Set(this.cart.map(item => item.id));
+
+        const newItems = seriesList.filter(series => !cartIds.has(series.seriesId))
+        .map(series => ({
+            'uid': series.seriesUID,
+            'studyId': series.studyId||'',
+            'subjectId': series.subjectId||'',
+            'seriesPkId': series.seriesPkId,
+            'seriesInstanceUid': '',
+            'size': series.seriesSize,
+            'disabled': false
+        }));
+        
+        if(newItems.length > 0){
+            this.cart.push(...newItems);
+            this.cartChangeEmitter.emit(this.cart);
+            this.updateCartCount();
+        }
+    }
 
     /**
      * Adds one series to the cart.
