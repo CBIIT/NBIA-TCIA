@@ -288,21 +288,35 @@ export class CartComponent implements OnInit, OnDestroy{
         //   studyDescription
         this.apiServerService.seriesForCartFromSeriesIdResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                if (!data || data.length === 0) return;
+                let newSeriesList = [];
+                let bulkCartAddData = [];
                 for( let item of <any>data ){
+                    const formattedDate  = new Date(item.Date);  
                     for( let series of item.seriesList ){
                         // This date is for display
-                        series['formattedStudyDate'] = new Date( item.date );
-
+                        series['formattedStudyDate'] = formattedDate;
                         // This date is for sorting
                         series['studyDate'] = item.date;
                         series['studyDescription'] = item.description;
-                        this.addSeriesToCartList( series );
+                        newSeriesList.push(series);
 
                         if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
-                            this.cartService.cartAdd( series.seriesUID, series.studyId, series.subjectId, series.seriesPkId, '', series.exactSize );
+                            bulkCartAddData.push({ 
+                                seriesUID: series.seriesUID, studyId: series.studyId||'', 
+                                subjectId: series.subjectId||'', seriesPkId: series.seriesPkId, 
+                                exactSize: series.exactSize });
                         }
 
                     }
+                }
+
+                //Batch add all series to cart
+                this.addSeriesListToCartList(newSeriesList);
+
+                //Bulk cartAdd 
+                if(bulkCartAddData.length > 0){
+                    this.cartService.cartListAdd(bulkCartAddData);
                 }
 
                 // FIXME - is there a better place to set this
@@ -318,6 +332,7 @@ export class CartComponent implements OnInit, OnDestroy{
                 this.loadingDisplayService.setLoading( false );
             }
         );
+
         this.apiServerService.seriesForCartFromSeriesIdErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'CartComponent seriesForCartResultsErrorEmitter.subscribe: ', err );
@@ -504,6 +519,17 @@ export class CartComponent implements OnInit, OnDestroy{
         this.refreshListAfterSorting();
         this.loadingDisplayService.setLoading( false );
 
+    }
+
+    addSeriesListToCartList( seriesList ) {
+        if (!seriesList || seriesList.length === 0) return;
+        const cartUIDs = new Set(this.cartList.map(item => item.seriesUID));
+        const newSeries = seriesList.filter(series => !cartUIDs.has(series.seriesUID));
+        if (newSeries.length > 0) {
+            this.cartList.push(...newSeries);
+            // Push each series along with an empty object
+            newSeries.forEach(series => this.seriesListForDisplay.push(series, {}));
+        }
     }
 
     addSeriesToCartList( series ) {
