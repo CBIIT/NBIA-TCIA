@@ -1237,9 +1237,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             }
     		if (((fromDateString != null) && (fromDateString.length() > 0)) &&
     			    ((toDateString != null) && (toDateString.length() > 0))) {
-    	         	return "and to_days(gs.dateReleased) >= to_days('" +
+    	         	return "and to_days(series.dateReleased) >= to_days('" +
     	            	       fromDateString +
-    	            	       "') and to_days(gs.dateReleased) <= to_days('" +
+    	            	       "') and to_days(series.dateReleased) <= to_days('" +
     	            	       toDateString + "')";
     	        }
     	        else {
@@ -1341,13 +1341,14 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     private static String processDescription(DICOMQuery theQuery) {
         DescriptionCriteria dc = theQuery.getDescriptionCriteria();
         if (dc != null) {
-          String searchString = dc.getSearchString().toUpperCase().replace("*", "%");
+          String searchString = dc.getSearchString().toUpperCase().replace("*", "%").replaceAll("\\s+", " ");
           if ((searchString != null) && (searchString.length() > 0)) {
-              String[] words = searchString.split("\\s+"); // Split by whitespace
+              //split by whitespace but respect quotes
+              String[] words = searchString.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
               StringBuilder conditionBuilder = new StringBuilder(" and (");
               
               for (int i = 0; i < words.length; i++) {
-                  String word = words[i];
+                  String word = words[i].replace("\"","");
                   if (i > 0) {
                       conditionBuilder.append(" or ");
                   }
@@ -1357,6 +1358,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
               }
               
               conditionBuilder.append(")");
+              System.out.println(conditionBuilder.toString());
               return conditionBuilder.toString();
           }
         }
