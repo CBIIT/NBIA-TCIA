@@ -291,14 +291,32 @@ export class CartComponent implements OnInit, OnDestroy{
                 if (!data || data.length === 0) return;
                 let newSeriesList = [];
                 let bulkCartAddData = [];
+
+                this.excludeCommercialCount = 0;
+                this.excludeCommercialFlag = false;
+                this.showExcludeCommercialWarning = false;
+
                 for( let item of <any>data ){
-                    const formattedDate  = new Date(item.Date);  
+                    const formattedDate  = new Date(item.Date);
+                    const excludeCommercial = !Properties.NO_LICENSE && 
+                        !this.utilService.isNullOrUndefinedOrEmpty(item['excludeCommercial']) &&
+                        this.utilService.isTrue(item['excludeCommercial']);
+                    
+                    if (this.showExcludeCommercialWarningPref && excludeCommercial) {
+                        this.excludeCommercialFlag = true;
+                        this.showExcludeCommercialWarning = true;
+                        this.excludeCommercialCount += item['seriesList'].length;
+                    }
+                    
                     for( let series of item.seriesList ){
                         // This date is for display
                         series['formattedStudyDate'] = formattedDate;
                         // This date is for sorting
                         series['studyDate'] = item.date;
                         series['studyDescription'] = item.description;
+                        if (!Properties.NO_LICENSE) {
+                            series['exCom'] = excludeCommercial;
+                        }
                         newSeriesList.push(series);
 
                         if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
