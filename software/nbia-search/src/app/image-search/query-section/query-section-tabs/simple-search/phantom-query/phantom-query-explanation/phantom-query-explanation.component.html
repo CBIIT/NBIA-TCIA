@@ -3,7 +3,7 @@
         [ngStyle]="{'top':(posY - 230) + 'px'}"
 >
     <div class="card-nbia-header-default p-2">
-        <div >Clinical Time Point
+        <div >Image Phantoms
             <span class=" close-x clicker unselectable" (click)="onPhantomQueryExplanationCloseClick()">
                 X
             </span>
@@ -11,9 +11,7 @@
     </div>
 
     <div class="third-party-explanation-text bg-white p-2">
-        Some datasets encode Clinical Time Point information in the image metadata.
-        This filter allows you to refine search results based on how many days have passed since a particular clinical event occurred when these metadata are included by the data submitter (e.g. "Days since diagnosis").
-        See <a href="https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+User%27s+Guide#CancerImagingArchiveUser'sGuide-PerformingaSimpleSearch"  target="_BLANK">Performing a Simple Search</a> for more information.
+        Some datasets encode <a href="https://www.nist.gov/physics/what-are-imaging-phantoms" target="_BLANK">Imaging Phantoms </a> information in the image metadata. This filter allows you to refine search results based if includes image phantoms in the clinical event. See <a href="https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+User%27s+Guide#CancerImagingArchiveUser'sGuide-PerformingaSimpleSearch" target="_BLANK">Performing a Simple Search</a> for more information.
     </div>
 </span>
 
