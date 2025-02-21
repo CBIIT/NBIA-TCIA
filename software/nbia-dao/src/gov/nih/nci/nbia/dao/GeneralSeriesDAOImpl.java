@@ -578,16 +578,16 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
         + " from GeneralSeries s join s.generalImageCollection gi where s.visibility in ('1') ";
       List<String> paramList = new ArrayList<String>();
       int i = 0;
-      if (i > 0) {
-        Object[] values = paramList.toArray(new Object[paramList.size()]);
-        rs = getHibernateTemplate().find(hql + where.toString(), values);
-      } else
-        rs = getHibernateTemplate().find(hql + where.toString());
       if (seriesInstanceUID != null) {
         where = where.append(" and s.seriesInstanceUID=?");
         paramList.add(seriesInstanceUID);
         ++i;
       }
+      if (i > 0) {
+        Object[] values = paramList.toArray(new Object[paramList.size()]);
+        rs = getHibernateTemplate().find(hql + where.toString(), values);
+      } else
+        rs = getHibernateTemplate().find(hql + where.toString());
       return rs;
   }
 
