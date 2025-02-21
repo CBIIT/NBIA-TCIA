@@ -112,12 +112,12 @@ public class PatientDAOImpl extends AbstractDAO
 		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 
 		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
-				" where gs.visibility in ('1') and p.id = ? and p.id = gs.patientPkId "+ whereCondition;
+				" where gs.visibility in ('1') and p.patientId = ? and p.id = gs.patientPkId "+ whereCondition;
 		List<Object[]> rs = collection == null ?
-				getHibernateTemplate().find(hql):
-				getHibernateTemplate().find(hql, patientId.toUpperCase(), collection.toUpperCase()); // protect against sql injection
+				getHibernateTemplate().find(hql, patientId.toUpperCase()) : 
+				getHibernateTemplate().find(hql, patientId.toUpperCase(), collection.toUpperCase()); 
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
+      System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);
 	    fillInHuman(rs);
         return rs;
 	}
