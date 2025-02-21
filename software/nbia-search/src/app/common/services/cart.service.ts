@@ -170,12 +170,12 @@ export class CartService implements OnDestroy{
 
         const newItems = seriesList.filter(series => !cartIds.has(series.seriesId))
         .map(series => ({
-            'uid': series.seriesUID,
+            'id': series.seriesUID,
             'studyId': series.studyId||'',
             'subjectId': series.subjectId||'',
             'seriesPkId': series.seriesPkId,
             'seriesInstanceUid': '',
-            'size': series.seriesSize,
+            'size': series.exactSize,
             'disabled': false
         }));
         
