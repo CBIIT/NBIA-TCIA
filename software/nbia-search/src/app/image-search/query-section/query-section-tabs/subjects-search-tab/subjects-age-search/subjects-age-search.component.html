@@ -21,9 +21,9 @@
             'hide-div': !showPatientAgeRange
         }"  class="nbia-age-range-slider" >
    
-      <p> <input type="number" maxlength="2" step="1" min="0" max="99" [(ngModel)]="fromPatientAge"  class="age-input-box">  to 
-      <input type="number" maxlength="3" min="1" max="100" [(ngModel)]="toPatientAge" class="age-input-box"> years old   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <label *ngIf="fromPatientAge > 0 || toPatientAge < 99 " > 
+      <p> <input type="number" maxlength="2" step="1" min="0" max="89" [(ngModel)]="fromPatientAge"  class="age-input-box">  to 
+      <input type="number" maxlength="3" min="1" max="90" [(ngModel)]="toPatientAge" class="age-input-box"> years old   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="fromPatientAge > 0 || toPatientAge < 89 " > 
         <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
              (click)="onPatientAgeClearAllClick(false)">
         </label>
