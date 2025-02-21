@@ -250,7 +250,7 @@ export const Consts = {
                     'seq': 1
                 },
                 {
-                    'name': 'Subject ID',
+                    'name': 'Patient ID',
                     'selected': true,
                     'required': true,
                     'textSearch': true,

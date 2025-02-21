@@ -116,7 +116,7 @@ export class UtilService{
      */
     csvFormatCart( s ) {
         // The heading
-        let csvRow = 'Subject ID,Study UID,Study Date,Study Description,Series ID,Series Description,Number of images,File Size,Annotation File Size\n';
+        let csvRow = 'Patient ID,Study UID,Study Date,Study Description,Series ID,Series Description,Number of images,File Size,Annotation File Size\n';
         for( let row of s ){
             if( (this.isNullOrUndefined( row.disabled )) || (!row.disabled) ){
                 csvRow += this.csvFormatOneField( row.patientId ) + ',' +
