@@ -369,6 +369,19 @@ public class getData {
 		return results;
 	}
 
+	protected List<Object[]> getPatientByCollectionAndId(String collection, String patientId, List<String> authorizedCollections) {
+		List<Object []> results = null;
+
+		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
+		try {
+			results = tDao.getPatientByCollectionAndId(collection, patientId, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<Object[]>) results;
+	}
+
 	protected List<Object[]> getPatientByCollection(String collection, List<String> authorizedCollections) {
 		List<Object []> results = null;
 
