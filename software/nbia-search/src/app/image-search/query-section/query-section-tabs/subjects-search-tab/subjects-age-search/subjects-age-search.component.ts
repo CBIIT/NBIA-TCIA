@@ -21,14 +21,14 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
     posY = 0;
 
     fromPatientAge: number = 0;
-    toPatientAgeTrailer: number = 100;
+    toPatientAgeTrailer: number = 90;
     fromPatientAgeTrailer: number = 0; // the init value is different to keep the apply button active
-    toPatientAge: number = 100;
+    toPatientAge: number = 90;
 
     nonAgeChecked = false;
     options: Options = {
         floor: 0,
-        ceil: 100,
+        ceil: 90,
         step: 1,
         enforceStep: false,
         enforceRange: false,
@@ -82,7 +82,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         this.parameterService.parameterPatientAgeRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
                 try {
-                    let dataString = <string>data; //sample data: PatientAgeRangeCriteria=41-100
+                    let dataString = <string>data; //sample data: PatientAgeRangeCriteria=41-90
                     let dataArray = dataString.match(/(\d+)-(\d+)/);
                     if (dataArray && dataArray.length > 1) {
                         this.fromPatientAge = Number(dataArray[1]); // match results start at index 1 (0 is the serach expression)
@@ -119,9 +119,9 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
     setInitValues() {
         this.commonService.setHaveUserInput( true );
         this.fromPatientAge = 0;
-        this.toPatientAge = 100;
+        this.toPatientAge = 90;
         this.fromPatientAgeTrailer = 0;
-        this.toPatientAgeTrailer = 100;
+        this.toPatientAgeTrailer = 90;
     }
 
     onPatientAgeClearAllClick(totalClear: boolean = false) { 
@@ -147,7 +147,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
         let PatientAgeRangeForQuery: string[] = [];
         PatientAgeRangeForQuery[0] = Consts.PATIENT_AGE_RANGE_CRITERIA;
         // Checked, and the user has selected a range.
-        if(checked && (+this.fromPatientAge > 0) || (+this.toPatientAge < 100)){
+        if(checked && (+this.fromPatientAge > 0) || (+this.toPatientAge < 90)){
             let numFromPatientAge = Number( this.fromPatientAge );
             PatientAgeRangeForQuery[1] = numFromPatientAge.toString();
             let numToPatientAge = Number( this.toPatientAge );
@@ -189,7 +189,7 @@ export class SubjectsAgeSearchComponent implements OnInit, OnDestroy{
     isPatientAgeUnchecked() : boolean {
         return (this.fromPatientAgeTrailer === this.fromPatientAge &&
             this.toPatientAgeTrailer === this.toPatientAge)  || 
-            (this.fromPatientAge === 0 && this.toPatientAge === 100)
+            (this.fromPatientAge === 0 && this.toPatientAge === 90)
     }
 
     ngOnDestroy() {
