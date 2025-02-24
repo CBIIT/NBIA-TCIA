@@ -2,11 +2,11 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { UtilService } from './util.service';
 import { ParameterService } from './parameter.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, timeout } from 'rxjs/operators';
+import { catchError, timeout,tap } from 'rxjs/operators';
 import { Consts, TokenStatus } from '@app/constants';
 import { Properties } from '@assets/properties';
 import { AccessTokenService } from './access-token.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { LoadingDisplayService } from '@app/admin-common/components/loading-display/loading-display.service';
 import {
     DisplayDynamicQueryService
@@ -314,21 +314,16 @@ export class ApiService{
      * @param idList
      */
     getSites( idList ){
-        let seriesIdArg = '';
-        for( let f = 0; f < idList.length; f++ ){
-            seriesIdArg += 'seriesId=' + idList[f] + '&';
-        }
-        // Remove last "&"
-        seriesIdArg = seriesIdArg.slice( 0, -1 );
-
-        this.doPost( 'getSitesForSeries', seriesIdArg ).subscribe(
-            ( data ) => {
-                this.getSitesForSeriesEmitter.emit( data );
-            },
-            error => {
-                this.getSitesForSeriesEmitter.emit( error['error'] );
-            }
-        )
+        let seriesIdArg = idList.map(id => `seriesId=${id}`).join('&');
+         // Return the observable instead of just emitting an event
+        return this.doPost('getSitesForSeries', seriesIdArg).pipe(
+            tap(data => this.getSitesForSeriesEmitter.emit(data)), // Keep emitting if needed
+            catchError(error => {
+                this.getSitesForSeriesEmitter.emit(error.error);
+                return throwError(() => 
+                    new Error(error.error || 'Unknown error in getSites ')); // Ensure error propagates
+            })
+        );
     }
 
     getDynamicCriteriaSelectionMenuData(){
