@@ -5,7 +5,7 @@
     <span class="btn-group clicker">
         <input
             type="number"
-            class="number-spinner rows-per-page-spinner" min="1"
+            class="number-spinner rows-per-page-spinner" min="1" max="500"
             [(ngModel)]="rowsPerPage"
             (change)="onChangeResultsPerPage()"
         >
