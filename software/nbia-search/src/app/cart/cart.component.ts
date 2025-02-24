@@ -169,12 +169,15 @@ export class CartComponent implements OnInit, OnDestroy{
             data => {
                 // We now have the list of series
                 let seriesList = '';
+                this.loadingDisplayService.setLoading( true, 'Retrieving series data...' );
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isNullOrUndefined( data['seriesInstanceUIDs'] )) ){
                     seriesList = data['seriesInstanceUIDs'].map( series => `list=${series}` ).join( '&' );
                     this.apiServerService.doSearch( Consts.DRILL_DOWN_CART_FROM_SERIES, seriesList );
                 }else{
                     console.error( 'getSharedListResultsEmitter.subscribe data: ', data );
                 }
+
+                this.loadingDisplayService.setLoading( false );
 
             }
         );
@@ -291,7 +294,6 @@ export class CartComponent implements OnInit, OnDestroy{
                 if (!data || data.length === 0) return;
                 let newSeriesList = [];
                 let bulkCartAddData = [];
-
                 this.excludeCommercialCount = 0;
                 this.excludeCommercialFlag = false;
                 this.showExcludeCommercialWarning = false;

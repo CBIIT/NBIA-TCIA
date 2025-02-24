@@ -849,6 +849,10 @@ public class QcStatusDAOImpl extends AbstractDAO
 				if (releasedStatus!=null) {
 					gs.setReleasedStatus(releasedStatus);
 					qsh.setNewReleasedStatus(releasedStatus);
+					if(releasedStatus.equalsIgnoreCase("No")){
+						gs.setDateReleased(null);
+						qsh.setDateReleased(null);;
+					}
 				}
 				if (url!=null) {
 					gs.setDescriptionURI(url);
@@ -860,8 +864,8 @@ public class QcStatusDAOImpl extends AbstractDAO
 					qsh.setSite(site);
 				}	
 				if (dateReleased!=null) {
-					gs.setDateReleased(dateReleased);;
-					qsh.setDateReleased(dateReleased);;
+					gs.setDateReleased(dateReleased);
+					qsh.setDateReleased(dateReleased);
 				}
 				getHibernateTemplate().update(gs);
 				getHibernateTemplate().bulkUpdate(updateHql);	
