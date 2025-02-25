@@ -15,9 +15,19 @@ import javax.ws.rs.core.Response.Status;
 @Path("/v2/getSeriesQCInfo")
 public class V2_getSeriesQCInfo extends getData {
 	private static final String[] columns = {
-		"SeriesInstanceUID", "Visibility", "ReleaseStatus", "ReleaseDate", 
-		"ImageCount", "Doi", "LicenseName", "Collection", "Site", "PatientID", 
-		"Modality", "StudyDescription", "SeriesDescription"
+		"SeriesInstanceUID", 
+		"Visibility", 
+		"ReleaseStatus", 
+		"ReleaseDate", 
+		"ImageCount",
+		"Doi",
+		"LicenseName",
+		"Site",
+		"Project",
+		"PatientID",
+		"Modality",
+		"StudyDescription",
+		"SeriesDescription"	 
 	};
 	public final static String TEXT_CSV = "text/csv"; 
 	/**
