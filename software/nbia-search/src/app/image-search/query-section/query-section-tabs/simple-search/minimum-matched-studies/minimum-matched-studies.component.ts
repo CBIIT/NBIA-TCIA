@@ -129,6 +129,8 @@ export class MinimumMatchedStudiesComponent implements OnInit, OnDestroy{
     async onChangeMinimumMatchedStudies( runQuery = true ) : Promise<void> {
         if( this.minNumberOfPoints < 1 ){
             this.minNumberOfPoints = 1;
+        }else if( this.minNumberOfPoints > 99999 ){
+            this.minNumberOfPoints = 99999;
         }
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false,
         // this method is by user action only, so set setHaveUserInput to true.
