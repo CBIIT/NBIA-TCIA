@@ -27,6 +27,24 @@
             <th class="data-table-thead-th">
                 License
             </th>
+            <th class="data-table-thead-th">
+                Site
+            </th>
+            <th class="data-table-thead-th">
+                Project
+            </th>
+            <th class="data-table-thead-th">
+                Patient ID
+            </th>
+            <th class="data-table-thead-th">
+                Modality
+            </th>
+            <th class="data-table-thead-th">
+                Study Description
+            </th>
+            <th class="data-table-thead-th">
+                Series Description
+            </th>
         </tr>
         </thead>
 
@@ -58,7 +76,25 @@
             </td>
             <td class="data-table-body-td">
                 {{ row["LicenseName"] }}
-            </td>			
+            </td>	
+            <td class="data-table-body-td">
+                {{ row["Site"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["Project"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["PatientID"] }}
+            </td>	
+            <td class="data-table-body-td">
+                {{ row["Modality"] }}
+            </td>
+            <td class="data-table-body-td">
+                {{ row["StudyDescription"] }}
+            </td>		
+            <td class="data-table-body-td">
+                {{ row["SeriesDescription"] }}
+            </td>	
         </tr>
         </tbody>
     </table>
