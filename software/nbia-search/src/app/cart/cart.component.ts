@@ -525,6 +525,20 @@ export class CartComponent implements OnInit, OnDestroy{
         this.loadingDisplayService.setLoadingOff();
     }
 
+    cartListCleanUp(){
+        // when series checkbox is unchecked on search page, these series would be removed
+        // from cart , need remove them from cartList 
+        // match cart[idx].id to cartList[idx].seriesId
+        if(this.cartList.length > 0 && this.cartList.length > this.cart.length){
+             // Create a Set of cart item IDs for quick lookup
+            const cartIds = new Set(this.cart.map(item => item.id));
+
+            // Filter out items from cartList whose seriesId is not in cart
+            this.cartList = this.cartList.filter(item => cartIds.has(item.seriesId));
+            
+        }
+    }
+
 
     /**
      * Update the sort state for column i then (Re)sort cart contents.
@@ -596,6 +610,11 @@ export class CartComponent implements OnInit, OnDestroy{
         this.allDisabled = true;
         //     
         if (!this.cart || this.cart.length === 0) return; // Handle empty cart case
+
+
+        if(this.cartList.length > 0 && this.cartList.length > this.cart.length){
+            this.cartListCleanUp();
+        }
 
         // Temporary arrays for efficient string building
         let queryList: string[] = [];
