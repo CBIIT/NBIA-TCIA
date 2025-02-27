@@ -28,17 +28,17 @@ export let Properties = {
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
-    OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
+    OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT', 'SR', 'SEG', 'RTSTRUCT'],
 
     // This value can be changed in the config file.
     // If this is left an empty string, the API server url will be used .
-    OHIF_SERVER_URL: '',
+    OHIF_SERVER_URL: 'https://dicom-stg.cancerimagingarchive.net',
 
     // The path and parameters must be filled out, even if server url is left empty
     OHIF_SERVER_PATH: 'viewer',
 
-    OHIF_STUDY_PARAMETER: 'study=',
-    OHIF_SERIES_PARAMETER: 'series=',
+    OHIF_STUDY_PARAMETER: 'StudyInstanceUIDs=',
+    OHIF_SERIES_PARAMETER: 'SeriesInstanceUIDs=',
 
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
