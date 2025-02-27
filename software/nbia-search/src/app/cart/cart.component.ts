@@ -650,8 +650,30 @@ export class CartComponent implements OnInit, OnDestroy{
         this.cartList[i/2].disabled = !this.cartList[i/2].disabled;
         this.cart[i/2].disabled = this.cartList[i/2].disabled;
 
-        this.updateCartList();
+        this.updateCartListAfterClick();
         this.cartService.setCartEnableCartById( this.cart[i/2].id, !this.cart[i/2].disabled );
+    }
+
+    updateCartListAfterClick(){
+         // Query used for download
+         this.seriesListForQuery = '';
+         this.seriesListForDownloadQuery = '';
+         this.allDisabled = true;
+
+         let queryList: string[] = [];
+         let downloadQueryList: string[] = [];
+ 
+         this.cart.forEach((item, index) => { 
+             queryList.push(item.seriesPkId);
+             if (!item.disabled) {
+                 downloadQueryList.push(item.seriesPkId);
+                 this.allDisabled = false;
+             }
+         });
+ 
+         // Construct final query strings
+         this.seriesListForQuery = queryList.length ? queryList.map(item => 'list=' + item).join('&') : '';
+         this.seriesListForDownloadQuery = downloadQueryList.length ? downloadQueryList.map(item => 'list=' + item).join('&') : '';
     }
 
 
