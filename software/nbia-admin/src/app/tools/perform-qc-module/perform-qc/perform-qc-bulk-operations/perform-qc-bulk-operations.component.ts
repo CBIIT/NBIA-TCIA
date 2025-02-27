@@ -179,7 +179,7 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     async updateSiteList(){
-        let runaway = 10;
+        let runaway = 60;
         this.apiService.getSites(this.selectedSiteIdArray);
     
         while ((this.selectedSiteIdArray === undefined || 
