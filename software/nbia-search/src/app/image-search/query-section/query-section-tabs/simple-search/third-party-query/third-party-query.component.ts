@@ -15,10 +15,10 @@ import { Consts } from '@app/consts';
 } )
 export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
 
-    thirdPartyRadioLabels = ['Only 3rd-Party Results', 'Exclude 3rd-Party Results', 'Include 3rd-Party Results'];
-    thirdPartyShortRadioLabels = ['Only', 'Exclude', ''];
+    thirdPartyRadioLabels = ['Include Analysis Results', 'Exclude Analysis Results', 'Only Analysis Results' ];
+    thirdPartyShortRadioLabels = ['', 'Exclude', 'Only'];
     thirdPartyApply = false;
-    thirdPartyApplySelection = 2;
+    thirdPartyApplySelection = 0;
 
     /**
      * The list used by the HTML.
@@ -51,14 +51,14 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.thirdPartyApply = false;
-                this.thirdPartyApplySelection = 2;
+                this.thirdPartyApplySelection = 0;
                 this.queryUrlService.clear( this.queryUrlService.THIRD_PARTY );
             }
         );
 
         this.parameterService.parameterThirdPartyEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
            async data => {
-                this.thirdPartyApplySelection = (JSON.stringify( data ).toUpperCase() === '"YES"') ? 0 : 1;
+                this.thirdPartyApplySelection = (JSON.stringify( data ).toUpperCase() === '"YES"') ? 2 : 1;
                 this.onApplyThirdPartyChecked( true );
                 this.commonService.setHaveUserInput( false );
             }
@@ -94,7 +94,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
 
     onThirdPartyRadioChange( value ) {
         this.thirdPartyApplySelection = value;
-        if( value === 2 ){
+        if( value === 0 ){
             this.thirdPartyApply = false;
         }else{
             this.thirdPartyApply = true;
@@ -114,7 +114,7 @@ export class ThirdPartyQueryComponent implements OnInit, OnDestroy{
         // This category's data for the query, the 0th element is always the category name.
         criteriaForQuery.push( Consts.THIRD_PARTY_CRITERIA );
         if( status ){
-            let selection = (this.thirdPartyApplySelection === 0) ? 'YES' : 'NO';
+            let selection = (this.thirdPartyApplySelection === 2) ? 'YES' : 'NO';
             criteriaForQuery.push( selection );
             this.queryUrlService.update( this.queryUrlService.THIRD_PARTY, selection );
         }else{
