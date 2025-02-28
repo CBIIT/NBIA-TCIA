@@ -382,7 +382,7 @@ export class CartComponent implements OnInit, OnDestroy{
         // called by commonService.sharedListDoSave
         this.commonService.sharedListSaveFromCartEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                this.buildSeriesList();
+                //this.buildSeriesList();
                 let query = this.seriesListForDownloadQuery + '&name=' + data['name'];
                 if( !this.utilService.isNullOrUndefined( data['description'] ) ){
                     query += '&description=' + data['description'];
@@ -459,7 +459,7 @@ export class CartComponent implements OnInit, OnDestroy{
                     // Need to use this emitter for text and query downloads now also
                     return;
                 }
-                this.buildSeriesList();
+               // this.buildSeriesList();
 
                 // Send to log
                 let logData = this.historyLogService.doLog( Consts.DOWNLOAD_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), this.cartList );
@@ -628,7 +628,7 @@ export class CartComponent implements OnInit, OnDestroy{
             queryList.push(item.seriesPkId);
 
             if (!item.disabled) {
-                downloadQueryList.push(item.seriesPkId);
+                downloadQueryList.push(item.id);
                 this.allDisabled = false;
             }
         });
@@ -666,7 +666,7 @@ export class CartComponent implements OnInit, OnDestroy{
          this.cart.forEach((item, index) => { 
              queryList.push(item.seriesPkId);
              if (!item.disabled) {
-                 downloadQueryList.push(item.seriesPkId);
+                 downloadQueryList.push(item.id);
                  this.allDisabled = false;
              }
          });
