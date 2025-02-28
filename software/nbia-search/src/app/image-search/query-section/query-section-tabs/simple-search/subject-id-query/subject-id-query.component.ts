@@ -30,11 +30,11 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
      */
     subjectText = '';
 
-    idTypeRadioLabels = ['Patient ID', 'Series Instance UID', 'Study Instance UID'];
+    idTypeRadioLabels = ['Patient ID', 'Study Instance UID' , 'Series Instance UID'];
     idTypeApply = false;
     idTypeApplySelection = 0;
 
-    criteraTypeList = [Consts.PATIENT_CRITERIA, Consts.SERIES_CRITERIA, Consts.STUDY_CRITERIA];
+    criteraTypeList = [Consts.PATIENT_CRITERIA, Consts.STUDY_CRITERIA, Consts.SERIES_CRITERIA];
     queryUrlTypeList = [];    
 
 
@@ -77,7 +77,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
         this.parameterService.parameterSeriesCriteriaEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             async (data: string) => {
                 this.subjectText = data;
-                this.idTypeApplySelection = 1;
+                this.idTypeApplySelection = 2;
                 await this.onSearchClick();
                 this.commonService.setHaveUserInput( false );
 
@@ -87,7 +87,7 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
         this.parameterService.parameterStudyCriteriaEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(   
            async (data: string) => {
                 this.subjectText = data;
-                this.idTypeApplySelection = 2;
+                this.idTypeApplySelection = 1;
                 await this.onSearchClick();
                 this.commonService.setHaveUserInput( false );
 
@@ -153,16 +153,17 @@ export class SubjectIdQueryComponent implements OnInit, OnDestroy{
     getSelectedQueryUrlType() {
         return [
             this.queryUrlService.SUBJECT_ID,
-            this.queryUrlService.SERIES_UID,
-            this.queryUrlService.STUDY_UID
+            this.queryUrlService.STUDY_UID,
+            this.queryUrlService.SERIES_UID
         ][this.idTypeApplySelection];
     }
 
     getNonSelectedQueryUrlTypes() {
         return [
             this.queryUrlService.SUBJECT_ID,
-            this.queryUrlService.SERIES_UID,
-            this.queryUrlService.STUDY_UID
+            this.queryUrlService.STUDY_UID,
+            this.queryUrlService.SERIES_UID
+            
         ].filter((_, index) => index !== this.idTypeApplySelection);
     }
 
