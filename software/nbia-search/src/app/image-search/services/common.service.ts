@@ -747,7 +747,7 @@ export class CommonService{
         // Phantoms
         if( !this.utilService.isNullOrUndefined( allData[Consts.PHANTOMS_CRITERIA] ) ){
             for( let item of allData[Consts.PHANTOMS_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'phantom', 'name': (item === '0') ? 'Only' : 'Exclude' } );
+                displayQuery.push( { [Consts.CRITERIA]: 'phantom', 'name': (item === '2') ? 'Only' : 'Exclude' } );
             }
         }
 
@@ -755,7 +755,7 @@ export class CommonService{
         if( !this.utilService.isNullOrUndefined( allData[Consts.THIRD_PARTY_CRITERIA] ) ){
             for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
                 displayQuery.push( {
-                    [Consts.CRITERIA]: 'thirdParty',
+                    [Consts.CRITERIA]: 'AnalysisResults',
                     'name': (item.toUpperCase() === 'YES') ? 'Only' : 'Exclude'
                 } );
             }
