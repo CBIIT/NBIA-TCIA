@@ -159,7 +159,11 @@ public class PatientAccessDAOImpl extends AbstractDAO
 					                if (image.getMrImage()!=null)
 					                {
 					                	MRImage mrImage = image.getMrImage();
-					                	imageDoc.setImageTypeValue3(mrImage.getImageTypeValue3());
+                            if (mrImage.getImageTypeValue3() != null) {
+					                	  imageDoc.setImageTypeValue3(mrImage.getImageTypeValue3());
+                            } else {
+                              imageDoc.setImageTypeValue3("UNKNOWN");
+                            }
 					                	imageDoc.setScanningSequence(mrImage.getScanningSequence());
 					                	imageDoc.setSequenceVariant(mrImage.getSequenceVariant());
 					                	imageDoc.setSequenceName(mrImage.getSequenceName());
@@ -323,7 +327,11 @@ public class PatientAccessDAOImpl extends AbstractDAO
             if (image.getMrImage()!=null)
             {
             	MRImage mrImage = image.getMrImage();
-            	imageDoc.setImageTypeValue3(mrImage.getImageTypeValue3());
+              if (mrImage.getImageTypeValue3() != null) {
+					      imageDoc.setImageTypeValue3(mrImage.getImageTypeValue3());
+              } else {
+                imageDoc.setImageTypeValue3("UNKNOWN");
+              }
             	imageDoc.setScanningSequence(mrImage.getScanningSequence());
             	imageDoc.setSequenceVariant(mrImage.getSequenceVariant());
             	imageDoc.setSequenceName(mrImage.getSequenceName());

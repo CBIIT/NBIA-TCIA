@@ -6,7 +6,23 @@
                    'active': activeTab === 0
                }"
                   (click)="onTabClick(0 )"
-            >Simple Search</span>
+            >General </span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 1
+               }"
+                  (click)="onTabClick(1 )"
+            >Patients</span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link unselectable"
+                  [ngClass]="{
+                   'active': activeTab === 2
+               }"
+                  (click)="onTabClick(2 )"
+            >Images</span>
         </li>
 
     </ul>
@@ -20,10 +36,24 @@
     >
 </span>
 
-<nbia-simple-search
+<nbia-general-search-tab
         [ngClass]="{
         'active': activeTab === 0,
         'hide': activeTab !== 0
     }"
-></nbia-simple-search>
+></nbia-general-search-tab>
+
+<nbia-subjects-search-tab
+        [ngClass]="{
+        'active': activeTab === 1,
+        'hide': activeTab !== 1
+    }"
+></nbia-subjects-search-tab>
+
+<nbia-images-search-tab
+        [ngClass]="{
+        'active': activeTab === 2,
+        'hide': activeTab !== 2
+    }"
+></nbia-images-search-tab>
 

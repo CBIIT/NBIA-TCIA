@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 } )
 export class QueryCriteriaInitService{
     pendingCount = -1;
-    queryCountNumber = 3;
+    queryCountNumber = 4;
     queryCountTotal = 0;
 
     constructor() {

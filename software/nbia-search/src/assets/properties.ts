@@ -5,7 +5,7 @@ export let Properties = {
     //TEST_VERSION: '1.0.12a',
 
     // APr 2024
-    CURRENT_YEAR:'2024',
+    CURRENT_YEAR:'2025',
     VERSION: '9.3',
     TEST_VERSION: '9.3',
     RELEASE_COMMIT: '21387774',
@@ -28,17 +28,17 @@ export let Properties = {
 
     // This value can be changed in the config file.
     // Only series with these modalities will show the OHIF viewer button
-    OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT'],
+    OHIF_MODALITIES: ['MG', 'CT', 'MR', 'PT', 'DX', 'CR', 'SC', 'NM', 'CTPT', 'SR', 'SEG', 'RTSTRUCT'],
 
     // This value can be changed in the config file.
     // If this is left an empty string, the API server url will be used .
-    OHIF_SERVER_URL: '',
+    OHIF_SERVER_URL: 'https://dicom-stg.cancerimagingarchive.net',
 
     // The path and parameters must be filled out, even if server url is left empty
     OHIF_SERVER_PATH: 'viewer',
 
-    OHIF_STUDY_PARAMETER: 'study=',
-    OHIF_SERIES_PARAMETER: 'series=',
+    OHIF_STUDY_PARAMETER: 'StudyInstanceUIDs=',
+    OHIF_SERIES_PARAMETER: 'SeriesInstanceUIDs=',
 
     // This value can be changed in the config file.
     // Show the OHIF viewer button at the Subject and Study levels - Don't set this to "true" yet...
@@ -135,6 +135,8 @@ export let Properties = {
     SHOW_THIRD_PARTY: true,
 
     SHOW_QUERY_BUILDER: false,
+    SHOW_SUBJECTS_TAB: false,
+    SHOW_IMAGES_TAB: false,
     SHOW_SEARCH_SHARED_LIST_TAB: false,
     SHOW_SEARCH_STUDY_TAB: false,
 
@@ -151,6 +153,12 @@ export let Properties = {
 
     SHOW_HEADER: true,
     SHOW_UNIVERSAL_MENU: true,
+
+    SHOW_PATIENT_SEX: false,
+    SHOW_PATIENT_AGE: false,
+    SHOW_SLICE_THICKNESS: false,
+    SHOW_PIXEL_SPACING: false,
+    SHOW_IMAGE_DESCRIPTION: false,
 
     USE_COLLECTIONS_LESS_MORE: true,
 
@@ -177,6 +185,14 @@ export let Properties = {
     URL_KEY_PATIENT_ID: 'PatientCriteria',
     // For backwards compatibility
     URL_KEY_PATIENT_ID2: 'patientID',
+    URL_KEY_STUDY_ID: 'StudyCriteria',
+    URL_KEY_SERIES_ID: 'SeriesCriteria',
+
+    URL_KEY_PATIENT_AGE_RANGE: 'PatientAgeRangeCriteria',
+    URL_KEY_PATIENT_SEX: 'PatientSexCriteria',
+    URL_KEY_PATIENT_HEIGHT_RANGE: 'PatientHeightRangeCriteria',
+    URL_KEY_PATIENT_WEIGHT_RANGE: 'PatientWeightRangeCriteria',
+    URL_KEY_NBIA_PROGRAM: 'NBIAProgramCriteria',
 
     URL_KEY_COLLECTIONS: 'CollectionCriteria',
     // For backwards compatibility
@@ -189,7 +205,14 @@ export let Properties = {
     URL_KEY_THIRD_PARTY: 'ThirdPartyCriteria',
     URL_KEY_ANATOMICAL_SITE: 'AnatomicalSiteCriteria',
     URL_KEY_MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
+    URL_KEY_MINIMUM_STUDIES_DATES: 'MinNumberOfStudyDatesCriteria',
     URL_KEY_DATE_RANGE: 'DateRange',
+    URL_KEY_SLICE_THICKNESS: 'SliceThicknessCriteria',
+    URL_KEY_PIXEL_SPACING: 'PixelSpacingCriteria',
+    URL_KEY_IMAGE_DESCRIPTION: 'ImageDescriptionCriteria',
+    URL_KEY_MANUFACTURER: 'ManufacturerCriteria',
+
+
     URL_KEY_TEXT_SEARCH: 'text-search',
     URL_KEY_SHARED_LIST: 'saved-cart',
 

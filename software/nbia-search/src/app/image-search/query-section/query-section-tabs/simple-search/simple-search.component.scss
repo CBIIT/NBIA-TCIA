@@ -36,6 +36,9 @@ label {
 .phantom-query-panel {
     padding-bottom: 8px;
 }
+.species-query-panel {
+    padding-bottom: 8px;
+}   
 
 .query-panel {
     background-color: #fff;
@@ -45,7 +48,7 @@ label {
 }
 
 .moreOrLess {
-    margin-left: 266px;
+    margin-left: 250px;
     /*  It's a link, but we want no underline */
     text-decoration: none;
     cursor: pointer;
@@ -153,6 +156,17 @@ label {
     cursor: pointer;
 }
 
+.idType-radio {
+    color: #3a3a3a;
+    margin-left: 15pt;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.idType-radio-label {
+    cursor: pointer;
+}
+
 .sort-text {
     color: #3a3a3a;
     font-size: 9pt;
@@ -186,6 +200,21 @@ label {
     border: solid #cfcfcf 1px;
 }
 
+.idType-apply-checkbox {
+    margin-left: 25px;
+    cursor: default;
+
+    padding: 6px;
+    /*           h-offset   v-offset   blur    spread   color          */
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.075);
+
+
+    border-radius: 5px;
+    border: solid #cfcfcf 1px;
+}
+
+
 .phantoms-apply-glyph {
     //margin-left: 5pt;
     cursor: default;
@@ -208,6 +237,10 @@ label {
 }
 
 .thirdParty-status {
+    font-size: 10pt;
+}
+
+.idType-status {
     font-size: 10pt;
 }
 
@@ -237,4 +270,12 @@ label {
 
 .collection-scroller-content {
     height: $query-collection-start-height;
+}
+
+.red-clear-subject-ids{
+    position: absolute;
+    left: $left-section-width - 70px;
+}
+.margin-left-20 {
+    margin-left: 20px;
 }

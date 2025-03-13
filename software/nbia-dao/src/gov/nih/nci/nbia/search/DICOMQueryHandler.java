@@ -116,4 +116,5 @@ public interface DICOMQueryHandler {
      */
     public List<PatientStudySeriesTriple> findTriples(DICOMQuery theQuery) throws DataAccessException;
     public List<PatientStudySeriesQuintuple> findQuintles(DICOMQuery theQuery) throws DataAccessException;
+    public Integer getStudyDateNumber(String studyListId);
 }

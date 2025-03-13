@@ -1,0 +1,49 @@
+<!-- ----------  This is the left side Phantom Radio buttons  ---------- -->
+<div class="query-panel subjects-sex-query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+        <!-- Hide the sex Radio buttons.  Still show the heading (with this img to its left) -->
+         <span class="clicker unselectable" (click)="onShowPatientAgeRangeClick(!showPatientAgeRange)">
+            <img *ngIf="showPatientAgeRange" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showPatientAgeRange" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Patient Age
+        </span>
+
+         <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  
+         class="clicker  close-third-party-explanation-x" 
+         (click)="onPatientAgeRangeExplanationClick($event)">
+
+    </div>
+
+    <div
+            [ngClass]="{
+            'hide-div': !showPatientAgeRange
+        }"  class="nbia-age-range-slider" >
+   
+      <p> <input type="number" maxlength="2" step="1" min="0" max="89" [(ngModel)]="fromPatientAge"  class="age-input-box">  to 
+      <input type="number" maxlength="3" min="1" max="90" [(ngModel)]="toPatientAge" class="age-input-box"> years old   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="fromPatientAge > 0 || toPatientAge < 89 " > 
+        <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
+             (click)="onPatientAgeClearAllClick(false)">
+        </label>
+        </p>
+        <ngx-slider [(value)]="fromPatientAge" [(highValue)]="toPatientAge" [options]="options"></ngx-slider>
+    </div>
+
+    <div *ngIf=" showPatientAgeRange" class="nbia-patientAge-range-note">
+        <input [ngClass]="{
+                   disabled: isPatientAgeUnchecked(),
+                   'nbia-button-disabled': isPatientAgeUnchecked()
+               }"
+               type="button"
+               class="btn btn-default nbia-button nbia-patientAge-range-update-button "
+               value="Apply Patient Age"
+               (click)="onPatientAgeRangeApply()"
+        >
+    </div>
+
+</div>
+<nbia-subjects-age-explanation
+*ngIf="showPatientAgeRangeExplanation" [posY]="posY"
+></nbia-subjects-age-explanation>

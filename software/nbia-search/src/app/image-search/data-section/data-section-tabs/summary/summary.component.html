@@ -1,22 +1,47 @@
 <!-- ----------  Parent container for three Pie charts  ---------- -->
 
-<div class="container-fluid summary-main-panel "
->
-    <!-- -----  Results count at the top  ----- -->
-    <div class="row">
-        <div class="main-panel-heading"
+<div class="container-fluid-charts summary-main-panel ">
+    <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                <span
+                *ngIf="showChartViews"
+                class="clicker"
+                (click)="onShowChartViewsClick(false)"
         >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <span class="summary-chart-title"> &nbsp;&nbsp; Result Charts </span>
+        </span>
+
+        <span
+                *ngIf="!showChartViews"
+                class="clicker"
+                (click)="onShowChartViewsClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            <span class="summary-chart-title"> &nbsp;&nbsp; Result Charts </span>
+        </span>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+    <!-- -----  Results count at the top  ----- -->
+    <ng-container *ngIf="searchResultsCount !== null" >
+        <div class="main-panel-heading">
             <span *ngIf="searchResultsCount > -1"
-                    class="badge badge-info p-2">Search results count:
+                    class="badge badge-info p-2">Search results of subject count:
                 <!-- -1 is no search, 0 is no results -->
                 <span>{{searchResultsCount}}</span>
             </span>
+            <span *ngIf="searchResultsCount < 0"
+                class="badge badge-info p-2">Summary of subject count:
+
+        </span>
         </div>
-    </div>
+    </ng-container>
 
 
     <!-- -----  The Pie charts  ----- -->
-    <div class="row chart-row">
+    <div class="row chart-row" >
 
         <!-- Collections -->
         <div class="col-sm-4 chart-col-left">
@@ -36,6 +61,8 @@
             </nbia-pie-chart-anatomical-site>
         </div>
     </div>
+    </mat-expansion-panel>
+    </mat-accordion>
 
 
     <!--

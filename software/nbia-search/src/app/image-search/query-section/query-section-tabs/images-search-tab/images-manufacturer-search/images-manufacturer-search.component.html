@@ -1,0 +1,150 @@
+<!-- ----------  This is the left side Manufacturer Site list of check boxes.  ---------- -->
+<div class="query-panel">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+
+        <!-- Hide the Manufacturer Site list.  Still show the heading (with this img to its left) -->
+        <span
+            *ngIf="showManufacturerValues"
+            class="clicker"
+            (click)="onShowManufacturerValuesClick(false)"
+        >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Manufacturer
+        </span>
+
+        <!-- Show the Manufacturer Site list -->
+        <span
+            *ngIf="!showManufacturerValues"
+            class="clicker"
+            (click)="onShowManufacturerValuesClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Manufacturer
+        </span>
+
+        <!-- Search in the list of Manufacturer Site criteria  (The red magnifying glass)  -->
+        
+        <label [ngClass]="{
+           'search-glass': checkedCount == 0,
+           'search-glass-with-clear': checkedCount > 0
+           }"
+               for="manufacturerSearchText"
+               title="{{searchToolTip}}">
+
+            <img class="clicker application-menu-icon"
+            src="assets/images/TOOLS/search_red_43px.png"
+                 alt="Search"
+                 (click)="onSearchGlassClick()">
+        </label>
+        
+
+        <!-- Uncheck all the Manufacturer Site criteria and restore their counts back to the full count in the database. -->
+        <label
+            *ngIf="checkedCount > 0"
+            class="red-clear"
+        >
+            <img
+                class="clicker cart-button-icon"
+                src="assets/images/TOOLS/clear_red.png"
+                alt="Search"
+                (click)="onManufacturerClearAllClick(false)"
+            >
+        </label>
+    </div>
+
+    <!-- ----------  Search input  ---------- -->
+    <div
+        [ngClass]="{
+            'hide-div': !showManufacturerValues
+        }"
+    >
+
+        <!-- -----  Manufacturer list search input (Red magnifying glass) only used in Collections (so far)  ----- -->
+        <!-- This is not used, but we may want it back.  -->
+        <div
+            *ngIf="showSearch"
+            class="search-box" >
+
+            <input
+                type="text"
+                class="search-text-area"
+                id="manufacturerSearchText"
+                placeholder="search manufacturer"
+                [ngClass]="{
+                    'box-with-focus':searchHasFocus
+                 }"
+                [(ngModel)]="searchInput"
+                (blur)="onSearchTextOutFocus(0)"
+                (focus)="onSearchTextFocus(0)"
+                (ngModelChange)="onSearchChange()"
+            >
+
+            <!-- This needs to be "for", "not ngFor", it needs to be hidden, not removed from the DOM -->
+          
+                <!-- The "X" to clear the search text -->
+                <span
+                    *ngIf="searchInput.length > 0"
+                    class="search-text-area-x close-x"
+                    (blur)="onSearchTextOutFocus(1)"
+                    (focus)="onSearchTextFocus(1)"
+                    (click)="onClearManufacturerSearchInputClick()"> X </span>
+
+        </div>
+        <!-- -----  End Search input  ----- -->
+
+        <!-- ----------  The Less/More... clickers at the top  ---------- -->
+        <div *ngIf="(unCheckedCount > properties.CRITERIA_SHOW_COUNT) && (! showAllForSearch)">
+            <a
+                    *ngIf="!showAll"
+                    class="moreOrLess"
+                    (click)="onMoreClick()"
+            >
+                {{unCheckedCount - properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a
+                    *ngIf="showAll"
+                    class="moreOrLess"
+                    (click)="onLessClick()"
+            >&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
+        <!-- -----  This list of checkboxes, criteria texts, and count boxes  ----- -->
+        <div *ngFor="let criteria of manufacturerList ; let i = index" class="query-panel-checkboxes">
+            <span *ngIf="( criteria['seq']  < (  properties.CRITERIA_SHOW_COUNT + checkedCount) ) 
+            || showAll  || showAllForSearch"  >
+                <span>
+                    <input type="checkbox"
+                       class="check-box"
+                       id="checkbox-manufacturer-site{{i}}"
+                       [(ngModel)]="cBox[i]"
+                       (click)="onCheckboxClick(i, $event.target['checked'])">
+                </span>
+
+                <label
+                class="manufacturer-entry-text"
+                [attr.for]="'checkbox-manufacturer-site'+i">
+                {{criteria['Manufacturer']}}
+                </label>
+
+            </span>
+        </div>
+
+
+        <!-- ----------  The Less/More... clickers at the bottom  ---------- -->
+        <div *ngIf="(unCheckedCount > properties.CRITERIA_SHOW_COUNT) && (! showAllForSearch) ">
+            <a
+                *ngIf="!showAll"
+                class="moreOrLess"
+                (click)="onMoreClick()"
+            >
+                {{unCheckedCount - properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a
+                *ngIf="showAll"
+                class="moreOrLess"
+                (click)="onLessClick()"
+            >&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div>
+
+    </div>
+</div>

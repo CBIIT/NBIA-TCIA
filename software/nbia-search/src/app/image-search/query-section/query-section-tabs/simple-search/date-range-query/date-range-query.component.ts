@@ -18,14 +18,12 @@ import { takeUntil } from 'rxjs/operators';
 } )
 export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
-    fromDate: Date;
-    toDate: Date;
+    fromDate;
+    toDate;
     showCriteriaList = true;
     // disableUseDateRange = true;
     allEmpty = true;
     checked = false;
-    // ------------------------------------------------------
-
     disableUseDateRange = true;
     applyCheckboxCalender = false;
 
@@ -38,8 +36,7 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
     ngOnInit() {
         // Start with no dates entered
-        this.onDateRangeClearAllClick( false );
-
+        this.onDateRangeClearAllClick( true );
 
         // Get persisted showCriteriaList
         this.showCriteriaList = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE );
@@ -51,29 +48,25 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         // Used when the Clear button is clicked in the Display Query
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.totalQueryClear();
-                this.onDateRangeClearAllClick( false ); // @CHECKME
+                this.onDateRangeClearAllClick( true ); // true = the user has cleared the complete current query - no need to rerun the query             
             }
         );
 
         // Just set the dates, not the 'Apply "Available" date range'
         this.parameterService.parameterDateRangeEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-
+                // data input as "mm/dd/yyyy-mm/dd/yyyy" 
                 // Make sure the "No future dates" is update.
                 this.initializeDisableFutureDates();
 
                 let twoDates = (<any>data).split( /-/ );
-                let dateParts = twoDates[0].split( /\// );
-
-                dateParts = twoDates[1].split( /\// );
-
+                if( twoDates.length !== 2 ){
+                    return;
+                }
                 this.checked = true;
                 this.disableUseDateRange = false;
-                this.onDateChange();
+                this.onUrlDateRange(<String>data);
                 this.commonService.setHaveUserInput( false );
-
-
             }
         );
 
@@ -94,15 +87,12 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.onDateRangeClearAllClick( true );
     }
 
-
+   
     /**
      *
      * @param {boolean} totalClear  true = the user has cleared the complete current query - no need to rerun the query
      */
-    onDateRangeClearAllClick( totalClear: boolean ) {
-        this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
-
-        this.commonService.setHaveUserInput( true );
+    onDateRangeClearAllClick( totalClear: boolean = false) {
 
         this.setToDateToToday();
         this.setFromDate( Properties.LAST_ACCESS );
@@ -112,13 +102,16 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
 
         this.queryUrlService.clear( this.queryUrlService.DATE_RANGE );
 
+        if( !totalClear ){
+        // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
+            this.commonService.setHaveUserInput( true );
+            this.commonService.updateQuery( [Consts.DATE_RANGE_CRITERIA] );
+        }
     }
-
 
     setToDateToToday() {
         this.toDate = new Date();
     }
-
 
     /**
      *
@@ -149,7 +142,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
             return;
         }
 
-
         // Check for from date after to date
         if( this.fromDate > this.toDate ){
             // Bad year
@@ -166,7 +158,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         return new Date( year, month, 0 ).getDate();
     };
 
-
     onDateChange() {
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
@@ -179,7 +170,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         }
     }
 
-
     onDateChangedTo( e) {
         this.validateDateRange();
         this.onDateChange();
@@ -191,7 +181,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.onDateChange();
     }
 
-
     /**
      * Show or collapse the DateRange component.
      *
@@ -201,7 +190,6 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         this.showCriteriaList = show;
         this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_AVAILABLE, this.showCriteriaList );
     }
-
 
     isAllEmpty() {
 
@@ -269,6 +257,28 @@ export class DateRangeQueryComponent implements OnInit, OnDestroy{
         date += d.month + '/' + d.year;
 
         return date;
+    }
+
+    onUrlDateRange( dateRange ) {
+        this.commonService.setHaveUserInput( true );
+
+        let dateRangeForQuery: string[] = [];
+        dateRangeForQuery[0] = 'DateRangeCriteria';
+        let twoDates = dateRange.split( /-/ );
+        dateRangeForQuery[1] = twoDates[0];// mm/dd/yyyy
+        dateRangeForQuery[2] = twoDates[1];
+        this.fromDate = this.convertStringToDate(twoDates[0]).toISOString().split('T')[0] ; // yyyy-mm-dd
+        this.toDate = this.convertStringToDate(twoDates[1]).toISOString().split('T')[0];  
+        this.queryUrlService.update( this.queryUrlService.DATE_RANGE, dateRange );
+        this.commonService.updateQuery( dateRangeForQuery );
+        
+    }
+
+    convertStringToDate( dateStr ): Date{
+        // input date string is in the format "MM/DD/YYYY"
+        let parts = dateStr.split( '/' ); // Split into ["MM", "DD", "YYYY"]
+        return new Date( parts[2], parts[0] - 1, parts[1] ); // Year, Month (0-based), Day
+
     }
 
     ngOnDestroy() {

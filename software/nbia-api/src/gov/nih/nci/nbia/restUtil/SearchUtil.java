@@ -30,12 +30,20 @@ import gov.nih.nci.ncia.criteria.AuthorizationCriteria;
 import gov.nih.nci.ncia.criteria.CollectionCriteria;
 import gov.nih.nci.ncia.criteria.DataLicenseCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
+import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.DescriptionCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
+import gov.nih.nci.ncia.criteria.MinNumberOfStudyDatesCriteria;
 import gov.nih.nci.ncia.criteria.ModalityAndedSearchCriteria;
 import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.PatientSexCriteria;
+import gov.nih.nci.ncia.criteria.StudyCriteria;
+import gov.nih.nci.ncia.criteria.SeriesCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.SoftwareVersionCriteria;
 import gov.nih.nci.ncia.criteria.SpeciesCriteria;
@@ -107,6 +115,18 @@ public class SearchUtil {
 					queryKey+="ImageModalityCriteria"+inFormParams.get("value"+i).get(0);
 				}
 			}
+
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientSexCriteria")){
+				if (query.getPatientSexCriteria()==null){
+					PatientSexCriteria criteria=new PatientSexCriteria();
+				   criteria.setPatientSexValue(inFormParams.get("value"+i).get(0));
+				   query.setCriteria(criteria);
+				   queryKey+="PatientSexCriteria"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getPatientSexCriteria().setPatientSexValue(inFormParams.get("value"+i).get(0));
+					queryKey+="PatientSexCriteria"+inFormParams.get("value"+i).get(0);
+				}
+			}
 			
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("AnatomicalSiteCriteria")){
 				if (query.getAnatomicalSiteCriteria()==null){
@@ -160,6 +180,33 @@ public class SearchUtil {
 				query.setCriteria(criteria);
 				queryKey+="DateRangeCriteria"+inFormParams.get("fromDate"+i).get(0)+inFormParams.get("toDate"+i).get(0);
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientAgeRangeCriteria")){
+				PatientAgeRangeCriteria criteria=new PatientAgeRangeCriteria();
+			    criteria.setFrom(inFormParams.get("from"+i).get(0));
+			    criteria.setTo(inFormParams.get("to"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="PatientAgeRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("DescriptionCriteria")){
+				DescriptionCriteria criteria=new DescriptionCriteria();
+			    criteria.setSearchString(inFormParams.get("value"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="DescriptionCriteria"+inFormParams.get("value"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PixelSpacingRangeCriteria")){
+				PixelSpacingRangeCriteria criteria=new PixelSpacingRangeCriteria();
+			    criteria.setFrom(inFormParams.get("from"+i).get(0));
+			    criteria.setTo(inFormParams.get("to"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="PixelSpacingRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("SliceThicknessRangeCriteria")){
+				SliceThicknessRangeCriteria criteria=new SliceThicknessRangeCriteria();
+			    criteria.setFrom(inFormParams.get("from"+i).get(0));
+			    criteria.setTo(inFormParams.get("to"+i).get(0));
+				query.setCriteria(criteria);
+				queryKey+="SliceThicknessRangeCriteria"+inFormParams.get("from"+i).get(0)+inFormParams.get("to"+i).get(0);
+			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("PatientCriteria")){
 				if (query.getPatientCriteria()==null){
 					PatientCriteria criteria=new PatientCriteria();
@@ -171,11 +218,39 @@ public class SearchUtil {
 					queryKey+="PatientCriteria"+inFormParams.get("value"+i).get(0);
 				}
 			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("StudyCriteria")){
+				if (query.getStudyCriteria()==null){
+					StudyCriteria criteria=new StudyCriteria();
+				   criteria.setCollectionValue(inFormParams.get("value"+i).get(0));
+				   query.setCriteria(criteria);
+				   queryKey+="StudyCriteria"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getStudyCriteria().setCollectionValue(inFormParams.get("value"+i).get(0));
+					queryKey+="StudyCriteria"+inFormParams.get("value"+i).get(0);
+				}
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("SeriesCriteria")){
+				if (query.getSeriesCriteria()==null){
+					SeriesCriteria criteria=new SeriesCriteria();
+				   criteria.setCollectionValue(inFormParams.get("value"+i).get(0));
+				   query.setCriteria(criteria);
+				   queryKey+="SeriesCriteria"+inFormParams.get("value"+i).get(0);
+				} else {
+					query.getSeriesCriteria().setCollectionValue(inFormParams.get("value"+i).get(0));
+					queryKey+="SeriesCriteria"+inFormParams.get("value"+i).get(0);
+				}
+			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("MinNumberOfStudiesCriteria")){
 				MinNumberOfStudiesCriteria criteria=new MinNumberOfStudiesCriteria();
 			    criteria.setMinNumberOfStudiesValue(new Integer(inFormParams.get("value"+i).get(0)));
 				query.setCriteria(criteria);
 				queryKey+="MinNumberOfStudiesCriteria"+inFormParams.get("value"+i).get(0);
+			}
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("MinNumberOfStudyDatesCriteria")){
+				MinNumberOfStudyDatesCriteria criteria=new MinNumberOfStudyDatesCriteria();
+			    criteria.setMinNumberOfStudyDatesValue(new Integer(inFormParams.get("value"+i).get(0)));
+				query.setCriteria(criteria);
+				queryKey+="MinNumberOfStudyDatesCriteria"+inFormParams.get("value"+i).get(0);
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("ModalityAndedSearchCriteria")){
 				ModalityAndedSearchCriteria criteria=new ModalityAndedSearchCriteria();

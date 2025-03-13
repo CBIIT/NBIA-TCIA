@@ -12,8 +12,8 @@ import {Properties} from '@assets/properties';
         trigger('showToolTip', [
             state('true', style({opacity: 1})),
             state('false', style({opacity: 0})),
-            transition('0 => 1', animate('0')),
-            transition('1 => 0', animate('0'))
+            transition('0 => 1', animate('0.01s')),
+            transition('1 => 0', animate('0.01s'))
         ])
     ]
 

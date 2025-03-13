@@ -30,6 +30,10 @@
                     class="phantoms-status"
             > ({{phantomRadioLabels[phantomApplySelection]}})</span>
          </span>
+
+
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onPhantomQueryExplanationClick($event)">
+        
     </div>
 
     <div
@@ -70,3 +74,7 @@
 
     </div>
 </div>
+
+<nbia-phantom-query-explanation *ngIf="showPhantomQueryExplanation"
+  [posY]="posY">
+</nbia-phantom-query-explanation>

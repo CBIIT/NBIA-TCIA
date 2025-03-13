@@ -1,7 +1,7 @@
 <!-- ----------  Shown when Cart button at the top right Header menu is clicked.  ---------- -->
 <!-- ----- Shown while the table is populate with series data, this can take a while depending on the number of series.  ----- -->
-<div *ngIf="busy" class="label label-primary nbia-loading-label">Loading data...</div>
-<div *ngIf="! busy" class="cart-list-div">
+<div *ngIf="isCartLoading" class="label label-primary nbia-loading-label"><p>Loading data...</p></div>
+<div *ngIf="! isCartLoading" class="cart-list-div">
     <!-- Top heading:  "Showing X - Y of Z"   -->
     <span *ngIf="seriesListForDisplay.length > 0" class="cart-page-rows">
     Showing <b>{{firstRow + 1}}

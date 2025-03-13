@@ -1,0 +1,47 @@
+<div class="query-panel">
+
+    <div class="query-panel-heading">
+        <span *ngIf="showImageDescriptions" class="clicker" (click)="onShowImageDescriptionsClick(false)">
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Image Description 
+        </span>
+
+        <span *ngIf="!showImageDescriptions" class="clicker" (click)="onShowImageDescriptionsClick(true)">
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Image Description
+        </span>
+
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  
+        class="clicker  close-third-party-explanation-x" 
+        (click)="onImagesDescriptioneExplanationClick($event)">
+
+          <!-- Reset the input-->
+          <label *ngIf="searchText.length > 0" class="red-clear-images-descp" >
+          <img
+              class="clicker cart-button-icon"
+              src="assets/images/TOOLS/clear_red.png"
+              alt="Clear"
+              (click)="onClearClick()"
+          >
+        </label>
+       
+    </div>
+
+    <div [ngClass]="{
+                    'hide-div': !showImageDescriptions
+                }"
+         class="description-input-div">
+        <span class="images-descp-prompt">Contains</span>
+        <textarea ref-textarea [(ngModel)]="searchText" class="images-descp-text"></textarea>
+
+        <button class="btn nbia-button images-descp-query-button"
+                type="button"
+              (click)="onSearchClick()">
+            Apply Description
+        </button>
+    </div>
+</div>
+
+<nbia-images-description-explanation 
+*ngIf="showImagesDescriptionExplanation" [posY]="posY"
+></nbia-images-description-explanation>

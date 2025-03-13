@@ -20,6 +20,7 @@ export class SaveCartComponent implements OnInit, OnDestroy{
 
     showSaveCartUrl = false;
     displayUrl = 'Waiting for URL con...';
+    saveCartName = '';
 
     NONE = -1;
     WAITING = 0;
@@ -27,6 +28,7 @@ export class SaveCartComponent implements OnInit, OnDestroy{
     BAD = 2;
     DUPE = 3;
     status = this.NONE;
+    isSaving = false; // For the spinner
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -38,32 +40,19 @@ export class SaveCartComponent implements OnInit, OnDestroy{
         this.commonService.saveMyCartPopupEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
                 this.menuService.lockMenu();
-                this.saveSharedListFromCart( this.createName() );
+                this.saveSharedListFromCart();
                 this.showSaveCartUrl = true;
             }
         );
 
 
         this.apiServerService.saveSharedListResultsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            data => {
-                this.status = this.GOOD;
-            }
+           () => { this.onSaveSuccess(); }
         );
 
         this.apiServerService.saveSharedListErrorEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            err => {
-
-                // Is it an error because this List name is already being used?
-                if( err['_body'] === 'Duplicate list name' ){
-                    this.status = this.DUPE;
-                }
-                else{
-                    this.status = this.BAD;
-                    console.error( 'Save shared list ERROR: ', err['status'] );
-                    console.error( 'Save shared list ERROR: ', err['_body'] );
-                }
-            }
-        );
+           err => { this.onSaveError(err); }
+        );  
 
 
     }
@@ -72,25 +61,49 @@ export class SaveCartComponent implements OnInit, OnDestroy{
         return 'nbia-' + Math.floor( Math.random() * 10000 ) + new Date().valueOf();
     }
 
-    async saveSharedListFromCart( name ) {
+    async saveSharedListFromCart() {
         this.status = this.WAITING;
-        this.commonService.sharedListDoSave( name, 'sharedList:' + name, '' );
+        this.isSaving = true;
+        this.displayUrl = "⏳ Saving cart, please wait ..."; // Initial status
+        this.saveCartName = this.createName();
+        this.commonService.sharedListDoSave( this.saveCartName, 'sharedList:' + this.saveCartName, '' );
 
-        while( this.status === this.WAITING ){
-            await this.commonService.sleep( Consts.waitTime );
+        while (this.status === this.WAITING) {
+            await this.delay(500); // Simulate waiting for backend
         }
 
-        if( this.status === this.GOOD ){
-            this.displayUrl = location.href.toString().replace( /\?.*/, '' ) + '?' + Properties.URL_KEY_SHARED_LIST + '=' + name;
+        // while( this.status === this.WAITING ){
+        //     await this.commonService.sleep( Consts.waitTime );
+        // }
 
-            this.status = this.NONE;
-            this.apiServerService.log( this.historyLogService.doLog( Consts.SAVE_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), name ) );
+        // if( this.status === this.GOOD ){
+        //     this.displayUrl = location.href.toString().replace( /\?.*/, '' ) + '?' + Properties.URL_KEY_SHARED_LIST + '=' + name;
 
-        }
-        else if( this.status === this.BAD ){
-            alert( 'Error saving Cart.' ); // TODO
-            this.status = this.NONE;
-        }
+        //     this.status = this.NONE;
+        //     this.apiServerService.log( this.historyLogService.doLog( Consts.SAVE_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), name ) );
+
+        // }
+        // else if( this.status === this.BAD ){
+        //     alert( 'Error saving Cart.' ); // TODO
+        //     this.status = this.NONE;
+        // }
+    }
+
+    onSaveSuccess() {
+        this.isSaving = false;
+        this.displayUrl = `${location.href.toString().replace(/\?.*/, '')}?${Properties.URL_KEY_SHARED_LIST}=${this.saveCartName}`;
+        this.status = this.NONE;
+        this.apiServerService.log( this.historyLogService.doLog( Consts.SAVE_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), this.saveCartName));
+    }
+
+    onSaveError(err: any) {
+        this.isSaving = false;
+        this.displayUrl = "❌ Error saving cart. Please try again.";
+        console.error('Save error:', err);
+    }
+
+    delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
 

@@ -11,7 +11,7 @@
             (click)="onShowCriteriaListClick(false)"
         >
             <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
-            Anatomical Site
+            Body Part Examined
         </span>
 
         <!-- Show the Anatomical Site list -->
@@ -21,36 +21,9 @@
             (click)="onShowCriteriaListClick(true)"
         >
             <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
-            Anatomical Site
+            Body Part Examined
         </span>
 
-
-        <!-- Sort order buttons (alpha or num) -->
-        <span
-                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
-                class="sort-text"
-        >
-             &nbsp;&nbsp;Sort:
-             <label for="sortAlphaCheckedAnatomical">alpha
-                 <input
-                         type="radio"
-                         name="radioGroupCollectionSortAnatomical"
-                         [checked]="sortAlphaChecked"
-                         id="sortAlphaCheckedAnatomical"
-                         (change)="onSetSort(1)"
-                 >
-             </label>
-             &nbsp;
-             <label for="sortNumCheckedAnatomical">num
-                 <input
-                         type="radio"
-                         name="radioGroupCollectionSortAnatomical"
-                         [(checked)]="sortNumChecked"
-                         id="sortNumCheckedAnatomical"
-                         (change)="onSetSort(0)"
-                 >
-                </label>
-            </span>
 
 
 
@@ -84,6 +57,37 @@
                 (click)="onAnatomicalSiteClearAllClick(false)"
             >
         </label>
+    </div>
+
+    <div  *ngIf="showCriteriaList">
+
+        <!-- Sort order buttons (alpha or num) -->
+        <span
+                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
+                class="sort-text"
+        >
+             &nbsp;&nbsp;Sort:
+             <label for="sortAlphaCheckedAnatomical">alpha
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSortAnatomical"
+                         [checked]="sortAlphaChecked"
+                         id="sortAlphaCheckedAnatomical"
+                         (change)="onSetSort(1)"
+                 >
+             </label>
+             &nbsp;
+             <label for="sortNumCheckedAnatomical">num
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSortAnatomical"
+                         [(checked)]="sortNumChecked"
+                         id="sortNumCheckedAnatomical"
+                         (change)="onSetSort(0)"
+                 >
+                </label>
+            </span>
+
     </div>
 
     <!-- ----------  Search input  ---------- -->

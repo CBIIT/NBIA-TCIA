@@ -16,8 +16,15 @@
                 You can do it using the following URL.
             </div>
             <br>
-            <div class="display-url-text">
-                {{displayUrl}}
+            <!-- Spinner during saving -->
+            <div *ngIf="isSaving" class="spinner-container">
+                <div class="spinner"></div>
+                <span class="saving-text">{{ displayUrl }}</span>
+            </div>
+
+            <!-- Display URL after save is completed -->
+            <div *ngIf="!isSaving" class="display-url-text">
+                {{ displayUrl }}
             </div>
 
             <!-- Two buttons -->

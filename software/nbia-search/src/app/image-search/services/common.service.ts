@@ -112,6 +112,27 @@ export class CommonService{
     showClinicalTimePointsExplanationEmitter = new EventEmitter();
     showClinicalTimePointsExplanation = false;
 
+    showPatientAgeRangeExplanationEmitter = new EventEmitter();
+    showPatientAgeRangeExplanation = false;
+
+    showSliceThicknessRangeExplanationEmitter = new EventEmitter();
+    showSliceThicknessRangeExplanation = false;
+
+    showPixelSpacingRangeExplanationEmitter = new EventEmitter();
+    showPixelSpacingRangeExplanation = false;
+
+    showImageDescriptionExplanationEmitter = new EventEmitter();
+    showImageDescriptionExplanation = false;
+
+    showMinimumMatchedStudiesExplanationEmitter = new EventEmitter();
+    showMinimumMatchedStudiesExplanation = false;
+
+    showSubjectIdExplanationEmitter = new EventEmitter();
+    showSubjectIdExplanation = false;
+
+    showPhantomQueryExplanationEmitter = new EventEmitter();
+    showPhantomQueryExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -227,7 +248,6 @@ export class CommonService{
     resultsDisplayMode;
     resultsDisplayModeEmitter = new EventEmitter();
 
-
     showDataSectionEmitter = new EventEmitter();
 
     showQuerySectionEmitter = new EventEmitter();
@@ -240,7 +260,6 @@ export class CommonService{
 
     // TODO explain
     showQueryUrlEmitter = new EventEmitter();
-
 
     // TODO explain
     isSearchable = false;
@@ -345,6 +364,11 @@ export class CommonService{
         return this.minimumMatchedStudiesValue;
     }
 
+    getMinimumMatchedStudiesStaus(){
+        // check the value in minimumMatchedStudiesStaus
+        // return true if the value not default value (1-UIDs)
+        return this.minimumMatchedStudiesValue !== ('1' + Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT)
+    }
 
     setQueryBuilderAnyOrAll( value ) {
         this.queryBuilderAnyOrAll = value;
@@ -463,6 +487,42 @@ export class CommonService{
         this.showThirdPartyExplanation = e;
         this.showThirdPartyExplanationEmitter.emit( this.showThirdPartyExplanation );
     }
+
+    setShowPatientAgeRangeExplanation( e ) {
+        this.showPatientAgeRangeExplanation = e;
+        this.showPatientAgeRangeExplanationEmitter.emit( this.showPatientAgeRangeExplanation );
+    }
+
+    setShowSliceThicknessRangeExplanation( e ) {
+        this.showSliceThicknessRangeExplanation = e;
+        this.showSliceThicknessRangeExplanationEmitter.emit( this.showSliceThicknessRangeExplanation );
+    }
+
+    setShowPixelSpacingRangeExplanation( e ) { 
+        this.showPixelSpacingRangeExplanation = e;
+        this.showPixelSpacingRangeExplanationEmitter.emit( this.showPixelSpacingRangeExplanation );
+    }
+
+    setShowImageDescriptionExplanation( e ) {
+        this.showImageDescriptionExplanation = e;
+        this.showImageDescriptionExplanationEmitter.emit( this.showImageDescriptionExplanation );
+    }
+
+    setShowMinimumMatchedStudiesExplanation( e ) {
+        this.showMinimumMatchedStudiesExplanation = e;
+        this.showMinimumMatchedStudiesExplanationEmitter.emit( this.showMinimumMatchedStudiesExplanation );
+    }
+
+    setShowSubjectIdExplanation( e ) {
+        this.showSubjectIdExplanation = e;
+        this.showSubjectIdExplanationEmitter.emit( this.showSubjectIdExplanation );
+    }
+
+    setShowPhantomQueryExplanation( e ) {
+        this.showPhantomQueryExplanation = e;
+        this.showPhantomQueryExplanationEmitter.emit( this.showPhantomQueryExplanation );
+    }
+
 
     clearSimpleSearchResults() {
         this.simpleSearchResults = '';
@@ -633,7 +693,7 @@ export class CommonService{
      * @param allData  an array of selected criteria
      */
     emitSimpleSearchQueryForDisplay( allData ) {
-        let maxCriteriaLen = 15; // @FIXME make this a constant
+        let maxCriteriaLen = 25; // @FIXME make this a constant
         let displayQuery = [];
 
 
@@ -687,7 +747,7 @@ export class CommonService{
         // Phantoms
         if( !this.utilService.isNullOrUndefined( allData[Consts.PHANTOMS_CRITERIA] ) ){
             for( let item of allData[Consts.PHANTOMS_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'phantom', 'name': (item === '0') ? 'Only' : 'Exclude' } );
+                displayQuery.push( { [Consts.CRITERIA]: 'phantom', 'name': (item === '2') ? 'Only' : 'Exclude' } );
             }
         }
 
@@ -695,7 +755,7 @@ export class CommonService{
         if( !this.utilService.isNullOrUndefined( allData[Consts.THIRD_PARTY_CRITERIA] ) ){
             for( let item of allData[Consts.THIRD_PARTY_CRITERIA] ){
                 displayQuery.push( {
-                    [Consts.CRITERIA]: 'thirdParty',
+                    [Consts.CRITERIA]: 'AnalysisResults',
                     'name': (item.toUpperCase() === 'YES') ? 'Only' : 'Exclude'
                 } );
             }
@@ -711,7 +771,7 @@ export class CommonService{
         // Anatomical Site
         if( !this.utilService.isNullOrUndefined( allData[Consts.ANATOMICAL_SITE_CRITERIA] ) ){
             for( let item of allData[Consts.ANATOMICAL_SITE_CRITERIA] ){
-                displayQuery.push( { [Consts.CRITERIA]: 'anatomical', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'BodyPartExamined', 'name': item } );
             }
         }
 
@@ -721,15 +781,42 @@ export class CommonService{
                 if( item.length > maxCriteriaLen ){
                     item = item.substring( 0, maxCriteriaLen ) + '...';
                 }
-                displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // rc9.4 change Subject ID to Identifiers
+                displayQuery.push( { [Consts.CRITERIA]: 'Patient Identifiers', 'name': item } );
             }
         }
+
+        // Subject ID  (Series ID)
+        if( !this.utilService.isNullOrUndefined( allData[Consts.SERIES_CRITERIA] ) ){
+            for( let item of allData[Consts.SERIES_CRITERIA] ){
+                if( item.length > maxCriteriaLen ){
+                    item = item.substring( 0, maxCriteriaLen ) + '...';
+                }
+                // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // rc9.4 change Subject ID to Identifiers
+                displayQuery.push( { [Consts.CRITERIA]: 'Series Identifiers', 'name': item } );
+            }
+        }
+
+        //Subject ID (Study ID)
+        if( !this.utilService.isNullOrUndefined( allData[Consts.STUDY_CRITERIA] ) ){
+            for( let item of allData[Consts.STUDY_CRITERIA] ){
+                if( item.length > maxCriteriaLen ){
+                    item = item.substring( 0, maxCriteriaLen ) + '...';
+                }
+                // displayQuery.push( { [Consts.CRITERIA]: 'subjectId', 'name': item } );
+                // rc9.4 change Subject ID to Identifiers
+                displayQuery.push( { [Consts.CRITERIA]: 'Study Identifiers', 'name': item } );
+            }
+        }
+
 
         // Manufacturer
         if( !this.utilService.isNullOrUndefined( allData[Consts.MANUFACTURER_CRITERIA] ) ){
             for( let item of allData[Consts.MANUFACTURER_CRITERIA] ){
                 // displayQuery.push( { [Consts.CRITERIA]: 'manufacturer', 'name': item } );
-                displayQuery.push( { [Consts.CRITERIA]: 'manufacturerModel', 'name': item } );
+                displayQuery.push( { [Consts.CRITERIA]: 'manufacturer', 'name': item } );
             }
         }
 
@@ -756,6 +843,44 @@ export class CommonService{
             }
         }
 
+         // Patient Age Range
+         if( !this.utilService.isNullOrUndefined( allData[Consts.PATIENT_AGE_RANGE_CRITERIA] ) ){
+            for( let item of allData[Consts.PATIENT_AGE_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'patientAgeRange', 'name': item } );          
+            }
+            // displayQuery.push( { [Consts.CRITERIA]: 'patientAgeRange', 'name': allData[Consts.PATIENT_AGE_RANGE_CRITERIA][0] + ' ' +
+            //     allData[Consts.PATIENT_AGE_RANGE_CRITERIA][1] + ' to ' + allData[Consts.PATIENT_AGE_RANGE_CRITERIA][2] + ' (years old)' } );
+            
+        }
+
+         // Patient sex
+         if( !this.utilService.isNullOrUndefined( allData[Consts.PATIENT_SEX_CRITERIA] ) ){
+            for( let item of allData[Consts.PATIENT_SEX_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'patientSex', 'name': item } );
+            }
+        }
+
+         // Slice Thickness Range
+        if( !this.utilService.isNullOrUndefined( allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA] ) ){
+            for( let item of allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'sliceThicknessRange', 'name': item } );          
+            }
+        }
+
+        // Pixel Spacing Range
+        if( !this.utilService.isNullOrUndefined( allData[Consts.PIXEL_SPACING_RANGE_CRITERIA] ) ){ 
+            for( let item of allData[Consts.PIXEL_SPACING_RANGE_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'pixelSpacingRange', 'name': item } );          
+            } 
+        }
+
+        // Image Description
+        if( !this.utilService.isNullOrUndefined( allData[Consts.IMAGE_DESCRIPTION_CRITERIA] ) ){
+            for( let item of allData[Consts.IMAGE_DESCRIPTION_CRITERIA] ){
+                displayQuery.push( { [Consts.CRITERIA]: 'imageDescription', 'name': item } );
+            }
+        }
+
         this.currentSimpleSearchQuery = displayQuery;
         this.updateSimpleSearchQueryForDisplayEmitter.emit( displayQuery );
     }
@@ -767,7 +892,6 @@ export class CommonService{
     emitQueryBuilderQueryForDisplay( queryData ) {
         this.updateQueryBuilderForDisplayEmitter.emit( queryData );
     }
-
 
     clearAllQueryBuilder() {
         this.clearAllQueryBuilderEmitter.emit();

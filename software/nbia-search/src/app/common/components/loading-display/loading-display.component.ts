@@ -4,6 +4,7 @@ import { CommonService } from '@app/image-search/services/common.service';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { set } from 'd3';
 
 @Component( {
     selector: 'nbia-loading-display',
@@ -31,26 +32,28 @@ export class LoadingDisplayComponent implements OnInit, OnDestroy{
 
 
         this.loadingDisplayService.isLoadingEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            async data => {
+            data => {
 
                 // This small wait will keep showBusy from getting out of sync between parent and child which caused the following error:
                 // "Error: Expression has changed after it was checked. Previous value: 'hide-item: true'. Current value: 'hide-item: false'."
-                await this.commonService.sleep( 10 );
-
-                this.message = data['message'];
-                this.subMessage = data['subMessage'];
-                this.showBusy = data['value'];
+               // await this.commonService.sleep( 10 );
+                setTimeout(() => {
+                    this.message = data['message'];
+                    this.subMessage = data['subMessage'];
+                    this.showBusy = data['value'];
+                }, 10);
             }
         );
 
 
         this.loadingDisplayService.isLoadingSubMessageEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-            async data => {
+             data => {
                 // This small wait will keep showBusy from getting out of sync between parent and child which caused the following error:
                 // "Error: Expression has changed after it was checked. Previous value: 'hide-item: true'. Current value: 'hide-item: false'."
-                await this.commonService.sleep( 10 );
-
-                this.subMessage = <string>data;
+               // await this.commonService.sleep( 10 );
+                setTimeout(() => {
+                    this.subMessage = <string>data;
+                }, 10);
             }
         );
     }

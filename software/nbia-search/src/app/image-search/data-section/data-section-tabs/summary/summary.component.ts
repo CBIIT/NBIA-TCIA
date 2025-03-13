@@ -19,9 +19,23 @@ export class SummaryComponent implements OnInit, OnDestroy{
      */
     searchResultsCount = -1;
 
+    /**
+     * For hide or show this group of Charts when the arrows next to the heading are clicked.
+     */
+    showChartViews;
+
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor( private commonService: CommonService ) {
+    }
+
+     /**
+     * Hides or shows this group of criteria when the arrows next to the heading are clicked.
+     *
+     * @param show
+     */
+     onShowChartViewsClick( show: boolean ) {
+        this.showChartViews = show;
     }
 
     ngOnInit() {

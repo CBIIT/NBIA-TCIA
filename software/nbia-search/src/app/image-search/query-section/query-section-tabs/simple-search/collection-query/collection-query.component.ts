@@ -299,6 +299,7 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
+                this.queryUrlService.clear( this.queryUrlService.COLLECTIONS );          
             }
         );
 

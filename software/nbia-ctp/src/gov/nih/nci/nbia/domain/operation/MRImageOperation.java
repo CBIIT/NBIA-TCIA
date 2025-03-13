@@ -86,6 +86,8 @@ public class MRImageOperation extends DomainOperation implements
             String[] token = temp.split("\\\\");
             if (token.length >= 3) {
                 mri.setImageTypeValue3(token[2]);
+            } else {
+                mri.setImageTypeValue3("UNKNOWN");
             }
         }
 

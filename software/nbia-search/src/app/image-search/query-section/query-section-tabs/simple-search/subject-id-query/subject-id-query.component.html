@@ -1,36 +1,56 @@
-<div class="query-panel"
-     [ngClass]="{
-                    'query-panel-long': showSubjectIds
-                }">
+<div class="query-panel species-query-panel"
+     [ngClass]="{ 'query-panel-long': showSubjectIds }">
 
     <div class="query-panel-heading">
-        <label *ngIf="subjectText.length > 0" class="red-clear">
-            <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="Search" (click)="onClearClick()">
+        <label *ngIf="subjectText.length > 0" class="red-clear-subject-ids">
+            <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" 
+            alt="Clear" (click)="onClearClick()">
         </label>
 
-        <span *ngIf="showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(false)">
-            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
-            Subject IDs
+        <span class="clicker" (click)="onShowSubjectIdsClick(!showSubjectIds)">
+            <img *ngIf="showSubjectIds" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showSubjectIds" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Identifiers
         </span>
-
-        <span *ngIf="!showSubjectIds" class="clicker" (click)="onShowSubjectIdsClick(true)">
-            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
-            Subject IDs
-        </span>
+        
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small" 
+         class="clicker  close-third-party-explanation-x" 
+         (click)="onSubjectIdExplanationClick($event)">
 
     </div>
 
-    <div [ngClass]="{
-                    'hide-div': !showSubjectIds
-                }"
-         class="text-input-div">
-        <span class="subject-id-prompt">Enter comma separated ID(s)</span>
-        <textarea ref-textarea [(ngModel)]="subjectText" class="subject-id-text"></textarea>
+    <div [ngClass]="{ 'hide-div': !showSubjectIds}">
 
-        <button class="btn nbia-button subject-id-query-button"
+    <!-- Radio Buttons for Identifier Type   -->
+        <div *ngFor="let idTypeRadioLabel of idTypeRadioLabels; let i = index">
+            <input type="radio" name="radioGroupIdType"
+            class="idType-radio"
+            [value]="idTypeRadioLabel"
+            [checked]="i === idTypeApplySelection"
+            (change)="onIdTypeRadioChange(i)">
+ 
+            <span
+             class="idType-radio-label"
+             (click)="onIdTypeRadioChange(i)"
+            >
+            {{idTypeRadioLabel}}
+            </span>
+        </div>
+
+        <div class="text-input-div">
+            <span class="subject-id-prompt">Enter comma separated Identifiers</span>
+            <textarea name="subjectText" ref-textarea [(ngModel)]="subjectText" class="subject-id-text"></textarea>
+
+            <button class="btn nbia-button subject-id-query-button"
                 type="button"
               (click)="onSearchClick()">
-            Apply Subject IDs
-        </button>
+                 Apply Identifiers
+            </button>
+        </div>
     </div>
 </div>
+
+<nbia-subject-id-explanation
+        *ngIf="showSubjectIdExplanation"
+        [posY]="posY"
+></nbia-subject-id-explanation>

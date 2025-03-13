@@ -192,6 +192,18 @@ export class ApiServerService implements OnDestroy {
      */
     getManufacturerTreeErrorEmitter = new EventEmitter();
 
+    /**
+    * Used by emitGetResults when dataGet is called
+    * @type {EventEmitter<any>}
+    */
+    getManufacturerValuesEmitter = new EventEmitter();
+
+    /**
+      * Used by emitGetError when dataGet is called
+      * @type {EventEmitter<any>}
+    */
+    getManufacturerValuesErrorEmitter = new EventEmitter();
+
     collectionLicenses;
     collectionLicensesResultsEmitter = new EventEmitter();
     collectionLicensesErrorEmitter = new EventEmitter();
@@ -263,6 +275,7 @@ export class ApiServerService implements OnDestroy {
     criteriaCountsAnatomicalSite: NumberHash = {};
     criteriaCountsCollection: NumberHash = {};
     criteriaCountsSpecies: NumberHash = {};
+    criteriaCountsManufacturer: NumberHash = {};
 
     simpleSearchQueryTrailer = '';
 
@@ -346,7 +359,9 @@ export class ApiServerService implements OnDestroy {
 
     // Just for testing
     showAllQueryData(allData) {
-        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'SpeciesCriteria'];
+        let criteriaStr = ['CollectionCriteria', 'ImageModalityCriteria', 'AnatomicalSiteCriteria', 'PatientCriteria', 'ManufacturerCriteria', 'MinNumberOfStudiesCriteria', 'SpeciesCriteria',
+            'PhantomCriteria', 'ThirdPartyCriteria', 'DateRangeCriteria', 'PatientSexCriteria', 'ManufacturerCriteria', 'ManufacturerModelCriteria', 'ManufacturerSoftwareVersionCriteria', 'ExcludeCommercialCriteria' 
+        ];
         for (let name of criteriaStr) {
             if ((!this.utilService.isNullOrUndefined(allData[name])) && (allData[name].length > 0)) {
                 console.log('allQueryData[' + name + ']: ', allData[name]);
@@ -408,17 +423,30 @@ export class ApiServerService implements OnDestroy {
         // Minimum Studies
         if ((allData[Consts.MINIMUM_STUDIES] !== undefined) && (allData[Consts.MINIMUM_STUDIES].length > 0)) {
             isSearchable = true;
+            // input values like :TimePoint:1,2..
+            // or SudyUID:1,2..
 
             for (let item of allData[Consts.MINIMUM_STUDIES]) {
-
-                let msCount = +item - 1;
-                if (msCount > 0) {
-                    searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' + msCount;
-                    this.queryBuilderIndex++;
+             // Dynamically build regex pattern allowing `:`, `-`, or `=`
+                const pattern = new RegExp(`^(\\d+)(${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT}|${Consts.MIMUMUM_MATCHED_STUDIES_TYPE_UIDS})$`);
+                const match = item.match(pattern);
+                if(!match){
+                    console.log(`Invalid format: "${item}". Expected format: "X-Dates" or "X-UIDs" where X is a number.`);
+                }else{
+                    let msCount =  parseInt(match[1], 10) - 1;
+                    if (msCount > 0) {
+                         if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT) {
+                             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + 
+                             Consts.MINIMUM_STUDIES_TYPE_DATE + '&value' + this.queryBuilderIndex + '=' + msCount;
+                         }else if (match[2] === Consts.MIMUMUM_MATCHED_STUDIES_TYPE_UIDS) {
+                             searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + 
+                             Consts.MINIMUM_STUDIES + '&value' + this.queryBuilderIndex + '=' +msCount;
+                         }
+                        this.queryBuilderIndex++;
+                     }
                 }
             }
         }
-
 
         // Image Modality
         if ((allData[Consts.IMAGE_MODALITY_CRITERIA] !== undefined) && (allData[Consts.IMAGE_MODALITY_CRITERIA].length > 0)) {
@@ -471,6 +499,7 @@ export class ApiServerService implements OnDestroy {
 
         // Available  -  Date Range
         if ((allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0)) {
+            isSearchable = true;
               // Convert from MM/dd/yyyy to dd/MM/yyyy to match API expectation
               let fromDateParts = allData[Consts.DATE_RANGE_CRITERIA][0].split('/');
               let toDateParts = allData[Consts.DATE_RANGE_CRITERIA][1].split('/');
@@ -493,8 +522,6 @@ export class ApiServerService implements OnDestroy {
                 this.queryBuilderIndex++;
             }
         }
-
-
         // Manufacturer
         if ((allData[Consts.MANUFACTURER_CRITERIA] !== undefined) && (allData[Consts.MANUFACTURER_CRITERIA].length > 0)) {
             isSearchable = true;
@@ -521,7 +548,73 @@ export class ApiServerService implements OnDestroy {
                 this.queryBuilderIndex++;
             }
         }
-        // Add tool name to query so server can track usage.
+       
+        //PatientSex
+        if ((allData[Consts.PATIENT_SEX_CRITERIA] !== undefined) && (allData[Consts.PATIENT_SEX_CRITERIA].length > 0)) {
+            isSearchable = true;
+            // if all 3 are selected, we don't need to send the criteria
+            // if(allData[Consts.PATIENT_SEX_CRITERIA].length < 3){
+                for (let item of allData[Consts.PATIENT_SEX_CRITERIA]) {
+                    searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_SEX_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item.replace('Female', 'F').replace('Male','M');
+                //searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_SEX_CRITERIA + '&value' + this.queryBuilderIndex + '=' + allData[Consts.PATIENT_SEX_CRITERIA].join(',').replace('Female', 'F').replace('Male','M').replace(',','\',\'' );
+                    this.queryBuilderIndex++;
+                }
+            //}
+        
+        }
+
+        //PatientAge Range
+        if ((allData[Consts.PATIENT_AGE_RANGE_CRITERIA] !== undefined) && (allData[Consts.PATIENT_AGE_RANGE_CRITERIA].length > 0)) {
+            isSearchable = true;
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PATIENT_AGE_RANGE_CRITERIA + '&from' + this.queryBuilderIndex + '=' +
+            allData[Consts.PATIENT_AGE_RANGE_CRITERIA][0] + '&to' + (this.queryBuilderIndex) + '=' + allData[Consts.PATIENT_AGE_RANGE_CRITERIA][1];
+            this.queryBuilderIndex++;
+        }
+
+        //Slice Thickness Range
+        if ((allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA] !== undefined) && (allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA].length > 0)) {
+            isSearchable = true;
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.SLICE_THICKNESS_RANGE_CRITERIA + '&from' + this.queryBuilderIndex + '=' +
+            allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA][0] + '&to' + (this.queryBuilderIndex) + '=' + allData[Consts.SLICE_THICKNESS_RANGE_CRITERIA][1];
+            this.queryBuilderIndex++;
+        }
+
+        //Pixel Spacing Range
+        if ((allData[Consts.PIXEL_SPACING_RANGE_CRITERIA] !== undefined) && (allData[Consts.PIXEL_SPACING_RANGE_CRITERIA].length > 0)) {
+            isSearchable = true;
+            searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.PIXEL_SPACING_RANGE_CRITERIA + '&from' + this.queryBuilderIndex + '=' +
+            allData[Consts.PIXEL_SPACING_RANGE_CRITERIA][0] + '&to' + (this.queryBuilderIndex) + '=' + allData[Consts.PIXEL_SPACING_RANGE_CRITERIA][1];
+            this.queryBuilderIndex++;
+        }
+
+        //Image Description
+        if ((allData[Consts.IMAGE_DESCRIPTION_CRITERIA] !== undefined) && (allData[Consts.IMAGE_DESCRIPTION_CRITERIA].length > 0)) {
+            isSearchable = true;
+            for (let item of allData[Consts.IMAGE_DESCRIPTION_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.IMAGE_DESCRIPTION_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        //Series Instance UID
+        if((allData[Consts.SERIES_CRITERIA] !== undefined) && (allData[Consts.SERIES_CRITERIA].length > 0)){    
+            isSearchable = true;
+            for (let item of allData[Consts.SERIES_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.SERIES_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }
+        }
+
+        //Study Instance UID
+        if((allData[Consts.STUDY_CRITERIA] !== undefined) && (allData[Consts.STUDY_CRITERIA].length > 0)){    
+            isSearchable = true;
+            for (let item of allData[Consts.STUDY_CRITERIA]) {
+                searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.STUDY_CRITERIA + '&value' + this.queryBuilderIndex + '=' + item;
+                this.queryBuilderIndex++;
+            }   
+        }
+
+         // Add tool name to query so server can track usage.
 
         if (searchQuery.length > 0) {
             searchQuery += '&tool=nbiaclient';
@@ -1084,7 +1177,9 @@ export class ApiServerService implements OnDestroy {
             this.getEventTypesEmitter.emit(res);
         } else if (queryType === Consts.GET_MIN_MAX_TIME_POINTS) {
             this.getMinMaxTimepointsEmitter.emit(res);
-        } else if (queryType === 'getManufacturerTree') {
+        }else if (queryType === 'v1/getManufacturerValues') {
+            this.getManufacturerValuesEmitter.emit(res);
+        }else if (queryType === 'getManufacturerTree') {
             this.getManufacturerTreeEmitter.emit(res);
         } else if (queryType === Consts.DICOM_TAGS) {
             this.getDicomTagsEmitter.emit({'id': id, 'res': res});
@@ -1112,6 +1207,8 @@ export class ApiServerService implements OnDestroy {
             this.getSpeciesTaxErrorEmitter.emit(err);
         } else if (queryType === 'getEventTypes') {
             this.getEventTypesErrorEmitter.emit(err);
+        } else if (queryType === 'v1/getManufacturerValues') {
+            this.getManufacturerValuesErrorEmitter.emit(err);
         } else if (queryType === 'getManufacturerTree') {
             this.getManufacturerTreeErrorEmitter.emit(err);
         } else if (queryType.replace(/\?.*/g, '') === Consts.DICOM_TAGS) {

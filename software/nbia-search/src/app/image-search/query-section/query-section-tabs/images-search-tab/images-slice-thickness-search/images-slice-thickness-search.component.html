@@ -1,0 +1,47 @@
+<!-- ----------  This is the left side Slice Thickness  ---------- -->
+<div class="query-panel slice-thickness-query-panel">
+
+    <!-- ----------  Heading & hide/show slice thickness  ---------- -->
+    <div class="query-panel-heading">
+        <!--   Still show the heading (with this img to its left) -->
+        <span class="clicker unselectable" 
+            (click)="onShowSlickThicknessRangeClick(!showSliceThicknessRange)">
+            <img *ngIf="showSliceThicknessRange" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showSliceThicknessRange" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Slice Thickness (millimeter)
+        </span>
+        
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onSliceThicknessRangeExplanationClick($event)">
+    </div>
+
+    <div
+            [ngClass]="{
+            'hide-div': !showSliceThicknessRange 
+        }"  class="nbia-sliceThickness-range-slider" >
+   
+      <p> <input type="number" maxlength="5" min="0" max="1800" step="0.5" [(ngModel)]="fromSliceThickness"  class="sliceThickness-input-box">  to 
+      <input type="number" maxlength="5" min="0" step="0.5" max="1800" [(ngModel)]="toSliceThickness" class="sliceThickness-input-box"> mm   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="fromSliceThickness > 0 || toSliceThickness < 1800 " > 
+        <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
+             (click)="onSliceThicknessClearAllClick()">
+        </label>
+        </p>
+        <ngx-slider [(value)]="fromSliceThickness" [(highValue)]="toSliceThickness" [options]="options"></ngx-slider>
+    </div>
+
+    <div *ngIf="showSliceThicknessRange " class="nbia-sliceThickness-range-note">
+        <input [ngClass]="{
+                   'disabled': isSliceThicknessUnchanged(),
+                   'nbia-button-disabled': isSliceThicknessUnchanged()
+               }"
+               type="button"
+               class="btn btn-default nbia-button nbia-sliceThickness-range-update-button "
+               value="Apply Slice Thickness"
+               (click)="onSliceThicknessRangeApply()"
+        >
+    </div>
+
+</div>
+<nbia-images-slice-thickness-explanation 
+*ngIf="showSliceThicknessRangeExplanation" [posY]="posY"
+></nbia-images-slice-thickness-explanation>

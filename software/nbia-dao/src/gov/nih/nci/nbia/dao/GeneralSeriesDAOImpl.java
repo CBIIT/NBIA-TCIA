@@ -347,8 +347,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     List<Object[]> rs = null;
     String hql = "select s.seriesInstanceUID, s.studyInstanceUID, s.modality, s.protocolName, s.seriesDate, s.seriesDesc, "
       + "s.bodyPartExamined, s.seriesNumber, s.annotationsFlag, s.project, s.patientId, s.generalEquipment.manufacturer, "
-      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.dateReleased, "
-      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.maxSubmissionTimestamp, "
+      + "s.generalEquipment.manufacturerModelName, s.generalEquipment.softwareVersions, s.imageCount, s.maxSubmissionTimestamp, "
+      + "s.licenseName, s.licenseURL, s.descriptionURI, s.totalSize, s.dateReleased, "
       + "s.studyDesc, s.studyDate, s.thirdPartyAnalysis "
       + " from GeneralSeries s where s.visibility in ('1') ";
 
@@ -578,16 +578,16 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
         + " from GeneralSeries s join s.generalImageCollection gi where s.visibility in ('1') ";
       List<String> paramList = new ArrayList<String>();
       int i = 0;
-      if (i > 0) {
-        Object[] values = paramList.toArray(new Object[paramList.size()]);
-        rs = getHibernateTemplate().find(hql + where.toString(), values);
-      } else
-        rs = getHibernateTemplate().find(hql + where.toString());
       if (seriesInstanceUID != null) {
         where = where.append(" and s.seriesInstanceUID=?");
         paramList.add(seriesInstanceUID);
         ++i;
       }
+      if (i > 0) {
+        Object[] values = paramList.toArray(new Object[paramList.size()]);
+        rs = getHibernateTemplate().find(hql + where.toString(), values);
+      } else
+        rs = getHibernateTemplate().find(hql + where.toString());
       return rs;
   }
 
@@ -1437,10 +1437,11 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
 
 private List<Object []> getSeriesQCInfoDTOs(List<String> seriesIds, List <String> authorizedSites) {
   String sQL = "select s.SERIES_INSTANCE_UID, s.VISIBILITY, s.RELEASED_STATUS, s.DATE_RELEASED, " +
-    "( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, "+
-    " s.DESCRIPTION_URI, "+
-    " s.license_name, s.date_released "+
-    "from GENERAL_SERIES s";	
+    "( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, " +
+    " s.DESCRIPTION_URI," +
+    " s.license_name," +
+    " s.site, s.project, s.patient_id, s.modality, s.study_desc, s.series_desc " +
+    " from GENERAL_SERIES s";
 
   StringBuffer where = new StringBuffer();
   where = where.append(" and concat(concat(s.project, '//'), s.site) in (");

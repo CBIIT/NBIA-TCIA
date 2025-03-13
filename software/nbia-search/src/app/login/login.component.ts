@@ -299,14 +299,15 @@ export class LoginComponent implements OnInit, OnDestroy{
                 this.commonService.reInitCharts();
 
                 // Reload available search criteria, it can be different for each user.
-                this.commonService.resetAllSimpleSearchForLogin();
+               // this.commonService.resetAllSimpleSearchForLogin();
                 this.commonService.clearSimpleSearchResults();
                 // For clearing all queries, search results, and resetting available Collections, Image Modality, etc, for a newly logged in user,
                 // this.commonService.resetAllSimpleSearch();  // FIXME Make sure we don't need this
 
                 // Clear the Text Search
-                this.commonService.clearTextSearchUserInput();
-                this.commonService.clearTextSearchResults();
+                // disabled for RC9.4 - disabled Text Search
+              //  this.commonService.clearTextSearchUserInput();
+              //  this.commonService.clearTextSearchResults();
 
                 this.cartService.clearCart();
 
@@ -335,6 +336,7 @@ export class LoginComponent implements OnInit, OnDestroy{
                     }, 500 );
 
                 }
+                
                 setTimeout( async() => {
                     while( this.initMonitorService.getAnyRunning() ){
                         await this.commonService.sleep( 10 );

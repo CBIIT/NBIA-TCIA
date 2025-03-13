@@ -90,37 +90,65 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             data => {
                 this.upDateSelectedSiteIdArray();
             } );
-
-
-        this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            data => {
-                if( typeof data === 'object' && data[0].length > 1 ){
-                    this.siteDropdownArray = data;
-                    this.newSite = this.siteDropdownArray[0];
-
-                }else{
-                    if( data.startsWith( 'The series do not belong to one collection' ) ){
-                        if( this.showUpdateCollectionSite ){
-                            alert( 'Can not update Series Sites for series from multiple Collections.\nDeselecting "Update Site"' );
-                            this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
-                        }
-                    }else{
-                        this.siteDropdownArray = data;
-                        alert( 'getSitesForSeriesEmitter error' );
-                    }
-
-                }
-
-            },
+        
+        this.apiService.getSitesForSeriesEmitter.pipe(
+            takeUntil(this.ngUnsubscribe)
+        ).subscribe( 
+            data => this.processSiteData(data),
             err => {
-                alert( 'err: ' + err['message'] );
+               alert( 'err: ' + err['message'] );
             }
         );
+
+
+        // this.apiService.getSitesForSeriesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+        //     data => {
+        //         if( typeof data === 'object' && data[0].length > 1 ){
+        //             this.siteDropdownArray = data;
+        //             this.newSite = this.siteDropdownArray[0];
+
+        //         }else{
+        //             if( data.startsWith( 'The series do not belong to one collection' ) ){
+        //                 if( this.showUpdateCollectionSite ){
+        //                     alert( 'Can not update Series Sites for series from multiple Collections.\nDeselecting "Update Site"' );
+        //                     this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
+        //                 }
+        //             }else{
+        //                 this.siteDropdownArray = data;
+        //                 alert( 'getSitesForSeriesEmitter error' );
+        //             }
+
+        //         }
+
+        //     },
+        //     err => {
+        //         alert( 'err: ' + err['message'] );
+        //     }
+        // );
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
 
         this.logText = '';
+    }
+    
+    processSiteData(data){
+        
+        if( typeof data === 'object' && data[0].length > 1 ){
+            this.siteDropdownArray = data;
+            this.newSite = this.siteDropdownArray[0];
+
+        }else{
+            if( data.startsWith( 'The series do not belong to one collection' ) ){
+                if( this.showUpdateCollectionSite ){
+                    alert( 'Can not update Series Sites for series from multiple Collections.\nDeselecting "Update Site"' );
+                    this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
+                }
+            }else{
+                this.siteDropdownArray = data;
+                alert( 'getSitesForSeriesEmitter error' );
+            }
+        }
     }
 
     releasedCalendarIconClick( e ){
@@ -151,16 +179,21 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     }
 
     async updateSiteList(){
-        let runaway = 10;
-        this.apiService.getSites( this.selectedSiteIdArray );
-
-        while( (this.selectedSiteIdArray === undefined || this.selectedSiteIdArray.length === undefined || this.selectedSiteIdArray.length < 1) && runaway > 0 ){
+        let runaway = 60;
+        this.apiService.getSites(this.selectedSiteIdArray);
+    
+        while ((this.selectedSiteIdArray === undefined || 
+                this.selectedSiteIdArray.length === undefined || 
+                this.selectedSiteIdArray.length < 1) && runaway > 0) {
             runaway--;
-            await this.utilService.sleep( 500 );
+            await this.utilService.sleep(500);
         }
-
+    
+        // Avoid duplicate subscriptions: If ngOnInit() already subscribed, we only need to trigger API
+        if (runaway === 0) {
+            console.warn('updateSiteList: Timeout waiting for selectedSiteIdArray');
+        }
     }
-
 
     onQcBulkStatusClick( i ){
         this.visible = i;
@@ -181,43 +214,33 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
 
     onQcBulkUpdateClick(){
         // @CHECKME let query = 'projectSite=' + this.collectionSite;
-        let query = '';
+        let queryParams = new URLSearchParams();
+        let seriesForNewSite = [];
         for( let row of this.searchResults ){
             if( row['selected'] ){
-                query += '&seriesId=' + row['series'];
+                queryParams.append('seriesId', row['series']);
+                seriesForNewSite.push(row['series']);
             }
         }
 
-        if( this.isComplete === this.YES ){
-            query += '&complete=Complete';
-        }
-        if( this.isComplete === this.NO ){
-            query += '&complete=Not Complete';
-        }
+        if (this.isComplete === this.YES) queryParams.append('complete', 'Complete');
+        if (this.isComplete === this.NO) queryParams.append('complete', 'Not Complete');
 
-        if( this.showUpdateDescriptionUri ){
-            query += '&url=' + this.descriptionUri;
-        }
+        if (this.showUpdateDescriptionUri) queryParams.append('url', this.descriptionUri);
 
-        // Add Yes for isReleased and released Date
-        if( this.isReleased === this.YES ){
-            query += '&released=released&dateReleased=' + this.releaseDate;
+        if (this.isReleased === this.YES) {
+            queryParams.append('released', 'released');
+            queryParams.append('dateReleased', this.releaseDate);
         }
-        if( this.isReleased === this.NO ){
-            query += '&released=NotReleased';
-        }
+        if (this.isReleased === this.NO) queryParams.append('released', 'NotReleased');
 
-        if( this.useBatchNumber ){
-            query += '&batch=' + this.batchNumber;
-        }
+        if (this.useBatchNumber) queryParams.append('batch', this.batchNumber.toString());
 
-        if( this.visible >= 0 ){
-            query += '&newQcStatus=' + Properties.QC_STATUSES[this.visible];
-        }
+        if (this.visible >= 0) queryParams.append('newQcStatus', Properties.QC_STATUSES[this.visible]);
 
-        if( !this.utilService.isNullOrUndefinedOrEmpty( this.logText ) ){
-            query += '&comment=' + this.logText;
-        }
+        if (!this.utilService.isNullOrUndefinedOrEmpty(this.logText)) queryParams.append('comment', this.logText);
+
+        let query = queryParams.toString(); // Converts to "seriesId=123&complete=Complete..."
 
         if( Properties.DEMO_MODE ){
             console.log( 'DEMO mode: Perform QC  Update ', query );
@@ -226,16 +249,8 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
             this.apiService.doSubmit( Consts.TOOL_BULK_QC, query );
         }
 
-
         // Update the series site if "Update" checkbox is selected
         if( this.showUpdateCollectionSite ){
-
-            let seriesForNewSite = [];
-            for( let row of this.searchResults ){
-                if( row['selected'] ){
-                    seriesForNewSite.push( row['series'] );
-                }
-            }
             if( Properties.DEMO_MODE ){
                 console.log( 'DEMO mode submitSiteForSeries', this.apiService.submitSiteForSeries( this.newSite, seriesForNewSite ) );
                 // console.log( 'DEMO mode submitSiteForSeries', this.apiService.submitSiteForSeries( this.siteDropdownArray[this.newSite], seriesForNewSite ) );

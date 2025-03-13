@@ -86,6 +86,28 @@ export class UtilService{
         return copyCrit;
     }
 
+    // Manufacturer values copy
+    copyManufacturerObjectArray( origObject ) {
+        if( origObject === null ){
+            return origObject;
+        }
+        let copyObj = [];
+        for( let criteria of origObject ){
+            copyObj.push( this.copyManufacturerObject( criteria) ) ;
+        }
+        return copyObj;
+    }
+
+    copyManufacturerObject( origCrit ) {
+        let copyCrit = {};
+        copyCrit['Manufacturer'] = origCrit['Manufacturer']?.replace(/,/g, ' ') || '- NOT SPECIFIED -';;
+        //copyCrit['ManufacturerModelName'] = origCrit['ManufacturerModelName'];
+        if( !this.isNullOrUndefined( origCrit['seq'] ) ){
+            copyCrit['seq'] = origCrit['seq'];
+        }
+        return copyCrit;
+    }
+
     /**
      * Build a csv formatted string from a cart list, with a header row
      *
@@ -94,7 +116,7 @@ export class UtilService{
      */
     csvFormatCart( s ) {
         // The heading
-        let csvRow = 'Subject ID,Study UID,Study Date,Study Description,Series ID,Series Description,Number of images,File Size,Annotation File Size\n';
+        let csvRow = 'Patient ID,Study UID,Study Date,Study Description,Series ID,Series Description,Number of images,File Size,Annotation File Size\n';
         for( let row of s ){
             if( (this.isNullOrUndefined( row.disabled )) || (!row.disabled) ){
                 csvRow += this.csvFormatOneField( row.patientId ) + ',' +

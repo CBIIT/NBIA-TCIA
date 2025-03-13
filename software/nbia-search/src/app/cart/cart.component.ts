@@ -17,6 +17,7 @@ import { takeUntil, timeout } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Properties } from '@assets/properties';
 import { PersistenceService } from '@app/common/services/persistence.service';
+import { set } from 'd3';
 
 
 @Component( {
@@ -89,7 +90,7 @@ export class CartComponent implements OnInit, OnDestroy{
      * The column headings. The first element "X" is just a place holder, the HTML displays a cart button with a red X on it.
      * @type {[string , string , string , string , string , string , string , string , string , string]}
      */
-    columnHeadings = ['X', 'Collection', 'Subject ID', 
+    columnHeadings = ['X', 'Collection', 'Patient ID', 
         'Study UID', 'Study Date', 'Study Description', 
         'Series ID', 'Series Description', 'Images', 
         'Viewers','DICOM','File Size', 'Annotation File Size'];
@@ -107,7 +108,7 @@ export class CartComponent implements OnInit, OnDestroy{
      * For the busy/working/loading warning.  @TODO still a work in progress.
      * @type {boolean}
      */
-    busy = false;
+    isCartLoading = false;
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -119,7 +120,6 @@ export class CartComponent implements OnInit, OnDestroy{
                  private historyLogService: HistoryLogService, private utilService: UtilService,
                  private httpClient: HttpClient, private persistenceService: PersistenceService ) {
     }
-
 
     ngOnInit() {
 
@@ -138,12 +138,10 @@ export class CartComponent implements OnInit, OnDestroy{
 
         this.cartService.cartClearEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-               // this.cartList = [];
                 this.seriesListForDisplay = [];
                 this.cartList = [];
             }
         );
-
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // When the cart menu is clicked in the top right of the nav bar or a shared list was passed in the URL
@@ -162,9 +160,7 @@ export class CartComponent implements OnInit, OnDestroy{
                         this.loadingDisplayService.setLoading( true, 'Updating Cart' );
                         this.apiServerService.doSearch( Consts.DRILL_DOWN_CART, this.seriesListForQuery );
                     }
-                }
-
-                
+                }          
             }
         );
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,16 +169,15 @@ export class CartComponent implements OnInit, OnDestroy{
             data => {
                 // We now have the list of series
                 let seriesList = '';
+                this.loadingDisplayService.setLoading( true, 'Retrieving series data...' );
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isNullOrUndefined( data['seriesInstanceUIDs'] )) ){
-                    for( let series of data['seriesInstanceUIDs'] ){
-                        seriesList += '&list=' + series;
-                    }
-                    // Remove leading &
-                    seriesList = seriesList.substr( 1 );
+                    seriesList = data['seriesInstanceUIDs'].map( series => `list=${series}` ).join( '&' );
                     this.apiServerService.doSearch( Consts.DRILL_DOWN_CART_FROM_SERIES, seriesList );
                 }else{
                     console.error( 'getSharedListResultsEmitter.subscribe data: ', data );
                 }
+
+                this.loadingDisplayService.setLoading( false );
 
             }
         );
@@ -235,9 +230,6 @@ export class CartComponent implements OnInit, OnDestroy{
             }
         );
 
-
-
-
         // Gets subjects, adds their series to cartList.
         //
         // Adds to the series:
@@ -245,41 +237,44 @@ export class CartComponent implements OnInit, OnDestroy{
         //   studyDescription
         this.apiServerService.seriesForCartResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             async data => {
+                // ensure UI updates before processing data
+                this.isCartLoading = true;
+                // loading is in currentMenuItemEmitter block
+                //this.loadingDisplayService.setLoading( true , 'Loading Cart data...' );
+              //  setTimeout(() => {
                 this.excludeCommercialCount = 0;
                 this.excludeCommercialFlag = false;
                 this.showExcludeCommercialWarning = false;
 
-                for( let item of <any>data ){
-
-                    if( this.showExcludeCommercialWarningPref ){
-                        if(
-                            (!Properties.NO_LICENSE) &&
-                            ((!this.utilService.isNullOrUndefinedOrEmpty( item['excludeCommercial'] )) && (this.utilService.isTrue( item['excludeCommercial'] )))
-                        ){
-                            this.excludeCommercialFlag = (item['excludeCommercial'] === null) ? false : this.utilService.isTrue( item['excludeCommercial'] );
-                            this.showExcludeCommercialWarning = this.excludeCommercialFlag;
-                            this.excludeCommercialCount += item['seriesList'].length;
-                        }
+                data.forEach(item => {
+                    const excludeCommercial = !Properties.NO_LICENSE && 
+                        !this.utilService.isNullOrUndefinedOrEmpty(item['excludeCommercial']) &&
+                        this.utilService.isTrue(item['excludeCommercial']);
+        
+                    if (this.showExcludeCommercialWarningPref && excludeCommercial) {
+                        this.excludeCommercialFlag = true;
+                        this.showExcludeCommercialWarning = true;
+                        this.excludeCommercialCount += item['seriesList'].length;
                     }
-
-                    for( let series of item.seriesList ){
-                        if( !Properties.NO_LICENSE ){
-                            series['exCom'] = (!this.utilService.isNullOrUndefinedOrEmpty( item['excludeCommercial'] )) && (this.utilService.isTrue( item['excludeCommercial'] ));
+        
+                    item.seriesList.forEach(series => {
+                        if (!Properties.NO_LICENSE) {
+                            series['exCom'] = excludeCommercial;
                         }
                         series['studyDate'] = item.date;
                         series['studyDescription'] = item.description;
-                        this.addSeriesToCartList( series );
-                    }
-                }
+                        this.addSeriesToCartList(series);
+                    });
+                });
                 this.commonService.updateCartCount( this.cartList.length );
                 this.sortService.doSort( this.cartList );
                 this.refreshListAfterSorting();
-                this.busy = false;
+                this.isCartLoading = false;
 
-                this.loadingDisplayService.setLoading( false );
-            }
+               this.loadingDisplayService.setLoading( false );
+          // }, 0);
+            }   
         );
-
 
         this.apiServerService.seriesForCartResultsErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
@@ -288,8 +283,6 @@ export class CartComponent implements OnInit, OnDestroy{
             }
         );
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
         // Gets subjects, adds their series to cartList.
         //
         // Adds to the series:
@@ -298,21 +291,52 @@ export class CartComponent implements OnInit, OnDestroy{
         //   studyDescription
         this.apiServerService.seriesForCartFromSeriesIdResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
+                if (!data || data.length === 0) return;
+                let newSeriesList = [];
+                let bulkCartAddData = [];
+                this.excludeCommercialCount = 0;
+                this.excludeCommercialFlag = false;
+                this.showExcludeCommercialWarning = false;
+
                 for( let item of <any>data ){
+                    const formattedDate  = new Date(item.Date);
+                    const excludeCommercial = !Properties.NO_LICENSE && 
+                        !this.utilService.isNullOrUndefinedOrEmpty(item['excludeCommercial']) &&
+                        this.utilService.isTrue(item['excludeCommercial']);
+                    
+                    if (this.showExcludeCommercialWarningPref && excludeCommercial) {
+                        this.excludeCommercialFlag = true;
+                        this.showExcludeCommercialWarning = true;
+                        this.excludeCommercialCount += item['seriesList'].length;
+                    }
+                    
                     for( let series of item.seriesList ){
                         // This date is for display
-                        series['formattedStudyDate'] = new Date( item.date );
-
+                        series['formattedStudyDate'] = formattedDate;
                         // This date is for sorting
                         series['studyDate'] = item.date;
                         series['studyDescription'] = item.description;
-                        this.addSeriesToCartList( series );
+                        if (!Properties.NO_LICENSE) {
+                            series['exCom'] = excludeCommercial;
+                        }
+                        newSeriesList.push(series);
 
                         if( this.parameterService.haveUrlSharedList() === this.parameterService.yes ){
-                            this.cartService.cartAdd( series.seriesUID, series.studyId, series.subjectId, series.seriesPkId, '', series.exactSize );
+                            bulkCartAddData.push({ 
+                                seriesUID: series.seriesUID, studyId: series.studyId||'', 
+                                subjectId: series.subjectId||'', seriesPkId: series.seriesPkId, 
+                                exactSize: series.exactSize });
                         }
 
                     }
+                }
+
+                //Batch add all series to cart
+                this.addSeriesListToCartList(newSeriesList);
+
+                //Bulk cartAdd 
+                if(bulkCartAddData.length > 0){
+                    this.cartService.cartListAdd(bulkCartAddData);
                 }
 
                 // FIXME - is there a better place to set this
@@ -324,10 +348,11 @@ export class CartComponent implements OnInit, OnDestroy{
                 this.sortService.doSort( this.cartList );
                 this.commonService.updateCartCount( this.cartList.length );
 
-                this.busy = false;
+                this.isCartLoading = false;
                 this.loadingDisplayService.setLoading( false );
             }
         );
+
         this.apiServerService.seriesForCartFromSeriesIdErrorEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             err => {
                 console.error( 'CartComponent seriesForCartResultsErrorEmitter.subscribe: ', err );
@@ -357,17 +382,13 @@ export class CartComponent implements OnInit, OnDestroy{
         // called by commonService.sharedListDoSave
         this.commonService.sharedListSaveFromCartEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
-                this.buildSeriesList();
-
+                //this.buildSeriesList();
                 let query = this.seriesListForDownloadQuery + '&name=' + data['name'];
-
                 if( !this.utilService.isNullOrUndefined( data['description'] ) ){
                     query += '&description=' + data['description'];
-
                 }
                 if( !this.utilService.isNullOrUndefined( data['url'] ) ){
                     query += '&url=' + data['url'];
-
                 }
                 this.apiServerService.doSearch( Consts.CREATE_SHARED_LIST, query );
 
@@ -438,7 +459,7 @@ export class CartComponent implements OnInit, OnDestroy{
                     // Need to use this emitter for text and query downloads now also
                     return;
                 }
-                this.buildSeriesList();
+               // this.buildSeriesList();
 
                 // Send to log
                 let logData = this.historyLogService.doLog( Consts.DOWNLOAD_CART_LOG_TEXT, this.apiServerService.getCurrentUser(), this.cartList );
@@ -494,22 +515,28 @@ export class CartComponent implements OnInit, OnDestroy{
 
 
     buildSeriesList() {
-        this.seriesListForDownloadQuery = '';
-        let len = this.cart.length;
-        // Loop through list of Cart entries.
-        for( let f = 0; f < len; f++ ){
-            if( !this.cart[f].disabled ){
-                this.seriesListForDownloadQuery += '&list=' + this.cart[f].id;
-            }
-        }
-
-        // Remove leading &
-        this.seriesListForDownloadQuery = this.seriesListForDownloadQuery.substr( 1 );
-
+        this.seriesListForDownloadQuery = this.cart
+        .filter(item => !item.disabled)
+        .map(item => `list=${item.id}`)
+        .join('&');
     }
 
     done() {
         this.loadingDisplayService.setLoadingOff();
+    }
+
+    cartListCleanUp(){
+        // when series checkbox is unchecked on search page, these series would be removed
+        // from cart , need remove them from cartList 
+        // match cart[idx].id to cartList[idx].seriesId
+        if(this.cartList.length > 0 && this.cartList.length > this.cart.length){
+             // Create a Set of cart item IDs for quick lookup
+            const cartIds = new Set(this.cart.map(item => item.id));
+
+            // Filter out items from cartList whose seriesId is not in cart
+            this.cartList = this.cartList.filter(item => cartIds.has(item.seriesId));
+            
+        }
     }
 
 
@@ -528,19 +555,24 @@ export class CartComponent implements OnInit, OnDestroy{
 
     }
 
+    addSeriesListToCartList( seriesList ) {
+        if (!seriesList || seriesList.length === 0) return;
+        const cartUIDs = new Set(this.cartList.map(item => item.seriesUID));
+        const newSeries = seriesList.filter(series => !cartUIDs.has(series.seriesUID));
+        if (newSeries.length > 0) {
+            this.cartList.push(...newSeries);
+            // Push each series along with an empty object
+            newSeries.forEach(series => this.seriesListForDisplay.push(series, {}));
+        }
+    }
+
     addSeriesToCartList( series ) {
         // See if it is already in the list
-        let len = this.cartList.length;
-        for( let f = 0; f < len; f++ ){
-            if( this.cartList[f].seriesUID === series.seriesUID ){
-                return;
-            }
+        // Check if the series is already in the list
+        if (!this.cartList.some(item => item.seriesUID === series.seriesUID)) {
+            this.cartList.push(series);
+            this.seriesListForDisplay.push(series, {});
         }
-        this.cartList.push( series );
-
-        this.seriesListForDisplay.push( series );
-        this.seriesListForDisplay.push( {} );
-
     }
 
     disableCommercialSeries() {
@@ -548,8 +580,7 @@ export class CartComponent implements OnInit, OnDestroy{
         for( let f = 0; f < len; f++ ){
             this.cartList[f].disabled = this.cartList[f].exCom;
         }
-        //this.updateCartList();
-
+       
         let lenForDisplay = this.seriesListForDisplay.length;
         for( let f = 0; f < lenForDisplay; f++ ){
             this.seriesListForDisplay[f].disabled = this.seriesListForDisplay[f].exCom;
@@ -575,25 +606,36 @@ export class CartComponent implements OnInit, OnDestroy{
         this.seriesListForQuery = '';
         this.seriesListForDownloadQuery = '';
         //this.seriesListForDisplay = [];
-        let len = this.cart.length;
+        //let len = this.cart.length;
         this.allDisabled = true;
-        for( let f = 0; f < len; f++ ){
+        //     
+        if (!this.cart || this.cart.length === 0) return; // Handle empty cart case
 
-            // TODO refactor this when time permits
-            if(( this.cartList[f] !== undefined) ){
-                this.cart[f].disabled = this.cartList[f].disabled;
-            }
 
-            if(!this.cart[f].disabled){
-                this.seriesListForDownloadQuery += '&list=' + this.cart[f].seriesPkId;
-                this.allDisabled = false;
-            }
-            this.seriesListForQuery += '&list=' + this.cart[f].seriesPkId;
+        if(this.cartList.length > 0 && this.cartList.length > this.cart.length){
+            this.cartListCleanUp();
         }
 
-        // Remove leading &
-        this.seriesListForQuery = this.seriesListForQuery.substr( 1 );
-        this.seriesListForDownloadQuery = this.seriesListForDownloadQuery.substr( 1 );
+        // Temporary arrays for efficient string building
+        let queryList: string[] = [];
+        let downloadQueryList: string[] = [];
+
+        this.cart.forEach((item, index) => {
+            if (this.cartList[index] !== undefined) {
+                item.disabled = this.cartList[index].disabled;
+            }
+
+            queryList.push(item.seriesPkId);
+
+            if (!item.disabled) {
+                downloadQueryList.push(item.id);
+                this.allDisabled = false;
+            }
+        });
+
+        // Construct final query strings
+        this.seriesListForQuery = queryList.length ? queryList.map(item => 'list=' + item).join('&') : '';
+        this.seriesListForDownloadQuery = downloadQueryList.length ? downloadQueryList.map(item => 'list=' + item).join('&') : '';
     }
 
 
@@ -608,8 +650,30 @@ export class CartComponent implements OnInit, OnDestroy{
         this.cartList[i/2].disabled = !this.cartList[i/2].disabled;
         this.cart[i/2].disabled = this.cartList[i/2].disabled;
 
-        this.updateCartList();
+        this.updateCartListAfterClick();
         this.cartService.setCartEnableCartById( this.cart[i/2].id, !this.cart[i/2].disabled );
+    }
+
+    updateCartListAfterClick(){
+         // Query used for download
+         this.seriesListForQuery = '';
+         this.seriesListForDownloadQuery = '';
+         this.allDisabled = true;
+
+         let queryList: string[] = [];
+         let downloadQueryList: string[] = [];
+ 
+         this.cart.forEach((item, index) => { 
+             queryList.push(item.seriesPkId);
+             if (!item.disabled) {
+                 downloadQueryList.push(item.id);
+                 this.allDisabled = false;
+             }
+         });
+ 
+         // Construct final query strings
+         this.seriesListForQuery = queryList.length ? queryList.map(item => 'list=' + item).join('&') : '';
+         this.seriesListForDownloadQuery = downloadQueryList.length ? downloadQueryList.map(item => 'list=' + item).join('&') : '';
     }
 
 
@@ -637,8 +701,6 @@ export class CartComponent implements OnInit, OnDestroy{
         }
 
     }
-
-    
 
     onDicomClick( i ) {
         this.dicomDataShowQ[i] = !this.dicomDataShowQ[i];
@@ -688,8 +750,6 @@ export class CartComponent implements OnInit, OnDestroy{
         }
 
     }
-
-
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();

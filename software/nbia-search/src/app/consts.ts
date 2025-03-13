@@ -48,6 +48,8 @@ export const Consts = {
 
         waitTime: 50,
         CRITERIA: 'criteria',
+        MIMUMUM_MATCHED_STUDIES_TYPE_DEFAULT: '-Dates',
+        MIMUMUM_MATCHED_STUDIES_TYPE_UIDS: '-UIDs',
 
         // The actual value to use when building the Rest call
         COLLECTION_CRITERIA: 'CollectionCriteria',
@@ -62,16 +64,18 @@ export const Consts = {
         // The query type used in the client code to identify the type.
         SPECIES: 'Species',
 
-
         ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
         ANATOMICAL_SITE: 'AnatomicalSite',
         MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
+        MINIMUM_STUDIES_TYPE_DATE: 'MinNumberOfStudyDatesCriteria',
         DAYS_FROM_BASELINE_CRITERIA: 'TimePointCriteria',
         EXCLUDE_COMMERCIAL_CRITERIA: 'ExcludeCommercialCriteria',
         IMAGE_MODALITY_CRITERIA: 'ImageModalityCriteria',
         IMAGE_MODALITY: 'ImageModality',
         MODALITY: 'Modality',
         PATIENT_CRITERIA: 'PatientCriteria',
+        STUDY_CRITERIA: 'StudyCriteria',
+        SERIES_CRITERIA: 'SeriesCriteria',
         MANUFACTURER_CRITERIA: 'ManufacturerCriteria',
         MANUFACTURER: 'Manufacturer',
         MANUFACTURER_MODEL_CRITERIA: 'ModelCriteria',
@@ -81,6 +85,18 @@ export const Consts = {
         DATE_RANGE_CRITERIA: 'DateRangeCriteria',
         PHANTOMS_CRITERIA: 'PhantomCriteria',
         THIRD_PARTY_CRITERIA: 'ThirdPartyAnalysis',
+
+        PATIENT_SEX: 'PatientSex',
+        PATIENT_AGE_RANGE: 'PatientAgeRange',
+        SLICE_THICKNESS_RANGE: 'SliceThicknessRange',
+        PIXEL_SPACING_RANGE: 'PixelSpacingRange',
+        IMAGE_DESCRIPTION: 'ImageDescription',
+
+        PATIENT_SEX_CRITERIA: 'PatientSexCriteria',
+        PATIENT_AGE_RANGE_CRITERIA: 'PatientAgeRangeCriteria',
+        SLICE_THICKNESS_RANGE_CRITERIA: 'SliceThicknessRangeCriteria',
+        PIXEL_SPACING_RANGE_CRITERIA: 'PixelSpacingRangeCriteria',
+        IMAGE_DESCRIPTION_CRITERIA: 'DescriptionCriteria',
 
         ALERT_BOX_WIDTH_DEFAULT: 400,
 
@@ -179,13 +195,28 @@ export const Consts = {
         SHOW_CRITERIA_QUERY_SUBJECT_ID: 'showQuerySubjectIds',
         SHOW_CRITERIA_MINIMUM_MATCHED_STUDIES: 'showQueryMinimumMatchedStudies',
 
+        SHOW_CRITERIA_QUERY_PATIENTSEX: 'showQueryPatientSex',
+        SHOW_CRITERIA_QUERY_PATIENTAGE: 'showQueryPatientAge',
+        SHOW_CRITERIA_QUERY_SLICE_THICKNESS: 'showQuerySliceThickness',
+        SHOW_CRITERIA_PIXEL_SPACING: 'showQueryPixelSpacing',
+        SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION: 'showQueryImageDescription',
+        SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES: 'showQueryManufacturerValues',
+       
+
         SHOW_CRITERIA_QUERY_THIRD_PARTY_DEFAULT: false,
         SHOW_CRITERIA_QUERY_PHANTOMS_DEFAULT: false,
-        SHOW_CRITERIA_QUERY_SPECIES_DEFAULT: true,
+        SHOW_CRITERIA_QUERY_SPECIES_DEFAULT: false,
         SHOW_CRITERIA_QUERY_COLLECTIONS_DEFAULT: true,
-        SHOW_CRITERIA_QUERY_ANATOMICAL_SITE_DEFAULT: true,
-        SHOW_CRITERIA_QUERY_IMAGE_MODALITY_DEFAULT: true,
+        SHOW_CRITERIA_QUERY_ANATOMICAL_SITE_DEFAULT: false,
+        SHOW_CRITERIA_QUERY_IMAGE_MODALITY_DEFAULT: false,
         SHOW_CRITERIA_QUERY_MANUFACTURER_MODEL_DEFAULT: false,
+
+        SHOW_CRITERIA_QUERY_PATIENTSEX_DEFAULT: false,
+        SHOW_CRITERIA_QUERY_PATIENTAGE_DEFAULT: false,
+        SHOW_CRITERIA_QUERY_SLICE_THICKNESS_DEFAULT: false,
+        SHOW_CRITERIA_PIXEL_SPACING_DEFAULT: false,
+        SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION_DEFAULT: false,
+        SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES_DEFAULT: false,
 
         SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT: false,
         SHOW_CRITERIA_QUERY_SUBJECT_ID_DEFAULT: false,
@@ -219,7 +250,7 @@ export const Consts = {
                     'seq': 1
                 },
                 {
-                    'name': 'Subject ID',
+                    'name': 'Patient ID',
                     'selected': true,
                     'required': true,
                     'textSearch': true,

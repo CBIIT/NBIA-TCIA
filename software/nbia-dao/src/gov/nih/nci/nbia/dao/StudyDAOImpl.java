@@ -198,6 +198,7 @@ public class StudyDAOImpl extends AbstractDAO
         // Loop through the results.  There is one result for each series
         while (iter.hasNext()) {
         	Object[] row = iter.next();
+			boolean excludeFlag=false;
 
             // Create the seriesDTO
             SeriesDTO seriesDTO = new SeriesDTO();
@@ -227,12 +228,19 @@ public class StudyDAOImpl extends AbstractDAO
             seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[20]));
             seriesDTO.setDescriptionURI(Util.nullSafeString(row[21]));
             seriesDTO.setProject(Util.nullSafeString(row[22]));
+			if (row[23]!=null&&row[23].toString().equalsIgnoreCase("YES")){
+            	excludeFlag=true;
+            }
             // Try to get the study if it already exists
             StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
 
             if (studyDTO != null) {
                 // Study already exists.  Just add series info
                 studyDTO.getSeriesList().add(seriesDTO);
+				if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
+
             } else {
                 // Create the StudyDTO
                 studyDTO = new StudyDTO();
@@ -249,6 +257,9 @@ public class StudyDAOImpl extends AbstractDAO
 
                 // Add the study to the list
                 studyList.put(studyDTO.getId(), studyDTO);
+				if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
             }
         }
 
@@ -505,7 +516,7 @@ public class StudyDAOImpl extends AbstractDAO
 	}
 
 	/////////////////////////////////////PRIVATE/////////////////////////////////////////
-    private static final String SQL_QUERY_SELECT = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, series.project, series.annotationTotalSize, series.maxFrameCount, series.patientPkId, study.studyId, series.bodyPartExamined, series.thirdPartyAnalysis, series.descriptionURI, series.project  ";
+    private static final String SQL_QUERY_SELECT = "SELECT distinct series.id, study.id, study.studyInstanceUID, series.seriesInstanceUID, study.studyDate, study.studyDesc, series.imageCount, series.seriesDesc, series.modality, ge.manufacturer, series.seriesNumber, series.annotationsFlag, series.totalSize, series.patientId, series.project, series.annotationTotalSize, series.maxFrameCount, series.patientPkId, study.studyId, series.bodyPartExamined, series.thirdPartyAnalysis, series.descriptionURI, series.project , series.excludeCommercial ";
     private static final String SQL_QUERY_FROM = "FROM Study study join study.generalSeriesCollection series join series.generalEquipment ge ";
     private static final String SQL_QUERY_WHERE = "WHERE series.visibility in ('1') ";
 

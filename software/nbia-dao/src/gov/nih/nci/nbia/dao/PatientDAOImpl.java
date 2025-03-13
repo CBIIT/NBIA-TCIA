@@ -100,6 +100,35 @@ public class PatientDAOImpl extends AbstractDAO
 	 * Assigned during the process of curating the data. The info is kept under project column
 	 */
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollectionAndId(String collection, String patientId, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer whereCondition = new StringBuffer();
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+
+		whereCondition.append(collection == null ? "":" and UPPER(gs.project)=?");
+		whereCondition.append(addAuthorizedProjAndSites(authorizedProjAndSites));
+
+		String hql = "select distinct p.patientId, p.patientName, p.patientBirthDate, p.patientSex, p.ethnicGroup, gs.project, p.qcSubject, p.speciesCode, p.species from Patient as p, GeneralSeries as gs " +
+				" where gs.visibility in ('1') and p.patientId = ? and p.id = gs.patientPkId "+ whereCondition;
+		List<Object[]> rs = collection == null ?
+				getHibernateTemplate().find(hql, patientId.toUpperCase()) : 
+				getHibernateTemplate().find(hql, patientId.toUpperCase(), collection.toUpperCase()); 
+				
+      System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);
+	    fillInHuman(rs);
+        return rs;
+	}
+
+	/**
+	 * Fetch Patient Object through project, ie. collection
+	 * This method is used for NBIA Rest API.
+	 * @param collection A label used to name a set of images collected for a specific trial or other reason.
+	 * Assigned during the process of curating the data. The info is kept under project column
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientByCollection(String collection, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		StringBuffer whereCondition = new StringBuffer();

@@ -1,7 +1,7 @@
 @import '../../../../../app.component.scss';
 
 .minimum-matched-studies-div {
-    padding-bottom: 6px;
+    padding-bottom: 10px;
 }
 
 .disabled{
@@ -11,3 +11,9 @@
 .disabled-spinner{
     background-color: #eee;
 }
+
+.red-clear-minimum-matched-studies {
+    position: absolute;
+    left: $left-section-width - 70px;
+}
+  

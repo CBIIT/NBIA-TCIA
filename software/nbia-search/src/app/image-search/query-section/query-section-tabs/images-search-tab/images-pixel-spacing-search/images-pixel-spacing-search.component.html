@@ -1,0 +1,47 @@
+<!-- ----------  This is the left side Pixel Spacing  ---------- -->
+<div class="query-panel pixel-spacing-query-panel">
+
+    <!-- ----------  Heading & hide/show Pixel Spacing  ---------- -->
+    <div class="query-panel-heading">
+        <!--   Still show the heading (with this img to its left) -->
+        <span class="clicker unselectable" (click)="onShowPixelSpacingRangeClick(!showPixelSpacingRange)">
+            <img *ngIf="showPixelSpacingRange" class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            <img *ngIf="!showPixelSpacingRange" class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Pixel Spacing (millimeter) - Row
+        </span>
+
+        <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"  class="clicker  close-third-party-explanation-x" (click)="onPixelSpacingRangeExplanationClick($event)">
+        
+    </div>
+
+    <div
+            [ngClass]="{
+            'hide-div': !showPixelSpacingRange
+        }"  class="nbia-pixelSpacing-range-slider " >
+   
+      <p> <input type="number" maxlength="4" min="0" max="15" step="0.5" [(ngModel)]="fromPixelSpacing"  class="pixelSpacing-input-box">  to 
+      <input type="number" maxlength="5" min="0" max="15" step="0.5" [(ngModel)]="toPixelSpacing" class="pixelSpacing-input-box"> mm   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label *ngIf="fromPixelSpacing > 0 || toPixelSpacing < 15 " > 
+        <img class="clicker cart-button-icon" src="assets/images/TOOLS/clear_red.png" alt="reset"
+             (click)="onPixelSpacingClearAllClick()">
+        </label>
+        </p>
+        <ngx-slider [(value)]="fromPixelSpacing" [(highValue)]="toPixelSpacing" [options]="options"></ngx-slider>
+    </div>
+    <div *ngIf="showPixelSpacingRange" class="nbia-pixelSpacing-range-note">
+        <input [ngClass]="{
+                   'disabled': isPixelSpacingUnchanged() ,
+
+                   'nbia-button-disabled': isPixelSpacingUnchanged()      
+               }"
+               type="button"
+               class="btn btn-default nbia-button nbia-pixelSpacing-range-update-button "
+               value="Apply Pixel Spacing"
+               (click)="onPixelSpacingRangeApply()"
+        >
+    </div>
+
+</div>
+<nbia-images-pixel-spacing-explanation 
+*ngIf="showPixelSpacingRangeExplanation" [posY]="posY"
+></nbia-images-pixel-spacing-explanation>

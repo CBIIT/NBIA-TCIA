@@ -1,0 +1,93 @@
+<!-- ----------  This is the left side Phantom Radio buttons  ---------- -->
+<div class="query-panel subjects-sex-search-panel fixed-width">
+
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+        <!-- Hide the sex checkbox.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showPatientSex"
+                class="clicker"
+                (click)="onShowPatientSexClick(false)"
+        >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Patient Sex
+        </span>
+
+        <!-- Show the sex Radio buttons -->
+        <span
+                *ngIf="!showPatientSex"
+                class="clicker"
+                (click)="onShowPatientSexClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Patient Sex
+         </span>
+
+           <!-- Uncheck all the Patient Sex -->
+        <label *ngIf="selectedOptions.length > 0 " class="red-clear">
+          <img
+            class="clicker cart-button-icon"
+            src="assets/images/TOOLS/clear_red.png"
+            alt="Search"
+            (click)="resetSelections()"
+          >
+        </label>
+
+    </div>
+
+    <!--  Sex Selection -->
+    <div [ngClass]="{
+            'hide-div': !showPatientSex
+        }"
+    >
+    <div class="query-panel-checkboxes">
+      <span>
+          <input type="checkbox"
+                 class="check-box"
+                 id="checkbox-f"
+                 [(ngModel)]="selectedSex.female"
+                 (click)="onSelectionChange('female', $event.target['checked'])">
+
+          <label
+                  class="criteria-entry-text"
+                  [attr.for]="'checkbox-f'">
+              Female
+          </label>
+      </span>
+    </div>
+
+    <div class="query-panel-checkboxes">
+      <span>
+          <input type="checkbox"
+                 class="check-box"
+                 id="checkbox-m"
+                 [(ngModel)]="selectedSex.male"
+                 (click)="onSelectionChange('male', $event.target['checked'])">
+
+          <label
+                  class="criteria-entry-text"
+                  [attr.for]="'checkbox-m'">
+              Male
+          </label>
+      </span>
+    </div>
+
+    <div class="query-panel-checkboxes">
+      <span>
+          <input type="checkbox"
+                 class="check-box"
+                 id="checkbox-n"
+                 [(ngModel)]="selectedSex.null"
+                 (click)="onSelectionChange('null', $event.target['checked'])">
+
+          <label
+                  class="criteria-entry-text"
+                  [attr.for]="'checkbox-n'">
+              Not Specified (Null)
+          </label>
+      </span>
+    </div>
+
+          
+    </div>
+</div>

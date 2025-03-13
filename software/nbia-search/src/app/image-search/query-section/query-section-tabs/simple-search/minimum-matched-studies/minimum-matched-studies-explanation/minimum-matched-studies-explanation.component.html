@@ -1,0 +1,19 @@
+<span
+        class="card-nbia-default text-search-explanation alert-box-div alert-box-shadow"
+        [ngStyle]="{'top':(posY - 230) + 'px'}"
+>
+    <div class="card-nbia-header-default p-2">
+        <div >Minimum Matched Studies
+            <span class=" close-x clicker unselectable" (click)="onMinimumMatchedStudiesExplanationCloseClick()">
+                X
+            </span>
+        </div>
+    </div>
+
+    <div class="third-party-explanation-text bg-white p-2">
+        A "DICOM Study" is a set of related series that occurred on a given date. This filter allows you to refine Search results to only include Patients with more than a specified number of DICOM studies. The most common use case for this filter is to identify Patients who were imaged at more than one time point (at least as many as you've selected). Use the Study Date option for this purpose.
+        This filter allows you to refine Search results to show only studies with a minimum selected number of study UIDs or Dates (time points) that occur on the same date.
+        See <a href="https://wiki.cancerimagingarchive.net/display/NBIA/Cancer+Imaging+Archive+User%27s+Guide#CancerImagingArchiveUser'sGuide-PerformingaSimpleSearch"  target="_BLANK">Performing a Simple Search</a> for more information.
+    </div>
+</span>
+

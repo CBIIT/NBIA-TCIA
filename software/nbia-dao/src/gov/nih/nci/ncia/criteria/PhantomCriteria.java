@@ -53,9 +53,9 @@ public class PhantomCriteria extends SingleValuePersistentCriteria
 
 	private static final long serialVersionUID = 1L;
  
-	public final static String PhantomOnly = "0";
+	public final static String PhantomOnly = "2"; // RC 9.4 changed the sequence of the options
 	public final static String ExcludePhantom = "1";
-	public final static String Everything = "2";
+	public final static String Everything = "0";
 
     private String qcSubjectOption;
 

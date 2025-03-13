@@ -81,8 +81,9 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.onClinicalTimepointsClearAllClick();
-                // this.onApplyFromBaselineCheckboxClick( false );
+                this.resetSettings();
+                this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
+                   
             }
         );
 
@@ -94,13 +95,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
                 if( data === -1 ){
                     this.getInitialMinMaxTimePoints();
                 }
-            } );
-
-        this.commonService.resetAllSimpleSearchForLoginEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
-            () => {
-                this.getInitialMinMaxTimePoints();
-                this.onClinicalTimepointsClearAllClick();
-                this.queryUrlService.clear( this.queryUrlService.DAYS_FROM_BASELINE );
             } );
 
         // Used when there are query parameters in the URL.
@@ -169,7 +163,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.showClinicalTimepoints = state;
     }
 
-    onClinicalTimepointsClearAllClick() {
+    resetSettings() {
         this.fromBaseLineFrom = '';
         this.fromBaseLineFromTrailer = '';
         this.displayFromBaseLineFrom = '';
@@ -182,8 +176,11 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
 
         this.currentEventTypeIndex = 0;
         this.currentEventTypeTrailer = 0;
+    }
 
-        this.onApplyFromBaselineCheckboxClick( false );
+    onClinicalTimepointsClearAllClick() {
+        this.resetSettings();
+        this.onApplyFromBaselineCheckboxClick( false, true );
     }
 
     /**
@@ -242,7 +239,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
      *
      * @param checked
      */
-    onApplyFromBaselineCheckboxClick( checked ) {
+    onApplyFromBaselineCheckboxClick( checked , totalClear: boolean = false) {
         // If this method was called from a URL parameter search, setHaveUserInput will be set to false by the calling method after this method returns.
         this.commonService.setHaveUserInput( true );
 
@@ -293,7 +290,11 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         this.fromBaseLineToTrailer = this.fromBaseLineTo;
         this.currentEventTypeTrailer = this.currentEventTypeIndex;
 
-        this.commonService.updateQuery( daysFromBaselineForQuery );
+        if (!totalClear) {
+            this.commonService.updateQuery( daysFromBaselineForQuery );
+        }else{
+            this.commonService.updateQuery( [Consts.DAYS_FROM_BASELINE_CRITERIA] );
+        }
 
     }
 
@@ -308,7 +309,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         ){
             return;
         }
-
 
         this.currentEventTypeIndex = i;
         this.displayFromBaseLineFrom = this.getMinByEvent( this.eventTypeList[i] );
@@ -342,7 +342,6 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
         }
         return -1;
     }
-
 
     getMinByEvent( event ) {
         if( this.searchResultsMinMaxTimePoints['minTimepoints'] === null ){

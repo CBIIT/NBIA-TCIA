@@ -42,7 +42,7 @@ public class V1_getPatient extends getData{
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
-	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("format") String format) {
+	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("format") String format, @QueryParam("PatientId") String patientId) {
 		List<String> authorizedCollections = null;
 		
 		try {
@@ -51,8 +51,14 @@ public class V1_getPatient extends getData{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		List<Object[]> data = getPatientByCollection(collection, authorizedCollections);
+    
+		List<Object[]> data = null;
+    if (patientId != null) {
+		   data = getPatientByCollectionAndId(collection, patientId, authorizedCollections );
+    } else {
+		   data = getPatientByCollection(collection, authorizedCollections );
+    }
+
 		return formatResponse(format, data, columns);
 	}
 }

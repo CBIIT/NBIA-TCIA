@@ -15,9 +15,12 @@ import { ParameterService } from '@app/common/services/parameter.service';
 } )
 export class PhantomQueryComponent implements OnInit, OnDestroy{
 
-    phantomRadioLabels = ['Only Phantoms', 'Exclude Phantoms', 'Include Phantoms'];
+    phantomRadioLabels = ['Include Phantoms', 'Exclude Phantoms', 'Only Phantoms'];
     phantomApply = false;
-    phantomApplySelection = 2;
+    phantomApplySelection = 0;
+
+    showPhantomQueryExplanation = false;
+    posY = 0;
 
     /**
      * The list used by the HTML.
@@ -47,8 +50,9 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
                 this.phantomApply = false;
-                this.phantomApplySelection = 2;
-                this.initMonitorService.setPhantomsInit( true );
+                this.phantomApplySelection = 0;
+                this.queryUrlService.clear( this.queryUrlService.PHANTOMS );
+            
             }
         );
 
@@ -68,6 +72,12 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
             this.commonService.setCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_PHANTOMS, this.showCriteriaList );
         }
 
+        this.commonService.showPhantomQueryExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showPhantomQueryExplanation = <boolean>data;
+            }
+        );
+
         this.initMonitorService.setPhantomsInit( true );
     }
 
@@ -84,7 +94,7 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
 
     onPhantomRadioChange( value ) {
         this.phantomApplySelection = value;
-        if( value === 2 ){
+        if( value === 0 ){
             this.phantomApply = false;
         }else{
             this.phantomApply = true;
@@ -106,6 +116,11 @@ export class PhantomQueryComponent implements OnInit, OnDestroy{
             this.queryUrlService.clear( this.queryUrlService.PHANTOMS );
         }
         this.commonService.updateQuery( criteriaForQuery );
+    }
+
+    onPhantomQueryExplanationClick(e) {
+        this.showPhantomQueryExplanation = true;
+        this.posY = e.view?.pageYOffset + e.clientY;
     }
 
     ngOnDestroy() {

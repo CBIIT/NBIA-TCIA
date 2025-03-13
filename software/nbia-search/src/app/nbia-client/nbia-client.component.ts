@@ -160,6 +160,19 @@ export class NbiaClientComponent implements OnInit, OnDestroy {
         let excludeCommercial = this.route.snapshot.queryParams[Properties.URL_KEY_EXCLUDE_COMMERCIAL];
         let daysFromBaseline = this.route.snapshot.queryParams[Properties.URL_KEY_DAYS_FROM_BASELINE];
 
+        let sliceThicknessRange = this.route.snapshot.queryParams[Properties.URL_KEY_SLICE_THICKNESS];  
+        let pixelSpacingRange = this.route.snapshot.queryParams[Properties.URL_KEY_PIXEL_SPACING];
+        let patientAgeRange = this.route.snapshot.queryParams[Properties.URL_KEY_PATIENT_AGE_RANGE];
+        let patientWeightRange = this.route.snapshot.queryParams[Properties.URL_KEY_PATIENT_WEIGHT_RANGE];
+        let patientHeightRange = this.route.snapshot.queryParams[Properties.URL_KEY_PATIENT_HEIGHT_RANGE];  
+        let patientSex = this.route.snapshot.queryParams[Properties.URL_KEY_PATIENT_SEX];
+        let imageDescription = this.route.snapshot.queryParams[Properties.URL_KEY_IMAGE_DESCRIPTION];
+        let imageManufacturer = this.route.snapshot.queryParams[Properties.URL_KEY_MANUFACTURER];
+        let nbiaProgram = this.route.snapshot.queryParams[Properties.URL_KEY_NBIA_PROGRAM];
+        let minimumStudiesDates = this.route.snapshot.queryParams[Properties.URL_KEY_MINIMUM_STUDIES_DATES];
+        let studyCriteria = this.route.snapshot.queryParams[Properties.URL_KEY_STUDY_ID];
+        let seriesCriteria = this.route.snapshot.queryParams[Properties.URL_KEY_SERIES_ID];
+
         if (!this.utilService.isNullOrUndefined(textSearchInput)) {
             this.parameterService.setTextSearch(textSearchInput);
         }
@@ -234,9 +247,56 @@ export class NbiaClientComponent implements OnInit, OnDestroy {
             this.parameterService.setApiUrl(apiUrl);
         }
 
-
         if (!this.utilService.isNullOrUndefined(sharedList)) {
             this.parameterService.setSharedListName(sharedList);
+        }
+
+        if (!this.utilService.isNullOrUndefined(sliceThicknessRange)) {
+            this.parameterService.setSliceThicknessRange(sliceThicknessRange);
+        }
+
+        if (!this.utilService.isNullOrUndefined(pixelSpacingRange)) {
+            this.parameterService.setPixelSpacingRange(pixelSpacingRange);
+        }   
+
+        if (!this.utilService.isNullOrUndefined(patientAgeRange)) {
+            this.parameterService.setPatientAgeRange(patientAgeRange);
+        }
+
+        if (!this.utilService.isNullOrUndefined(patientWeightRange)) {
+            this.parameterService.setPatientWeightRange(patientWeightRange);
+        }
+
+        if (!this.utilService.isNullOrUndefined(patientHeightRange)) {
+            this.parameterService.setPatientHeightRange(patientHeightRange);
+        }
+
+        if (!this.utilService.isNullOrUndefined(patientSex)) {
+            this.parameterService.setPatientSex(patientSex);
+        }
+
+        if (!this.utilService.isNullOrUndefined(imageDescription)) {
+            this.parameterService.setImageDescription(imageDescription);
+        }
+
+        if (!this.utilService.isNullOrUndefined(imageManufacturer)) {
+            this.parameterService.setManufacturer(imageManufacturer);
+        }
+
+        if (!this.utilService.isNullOrUndefined(nbiaProgram)) {
+            this.parameterService.setNbiaProgram(nbiaProgram);
+        }
+
+        if (!this.utilService.isNullOrUndefined(minimumStudiesDates)) {
+           // this.parameterService.setMinimumStudiesDates(minimumStudiesDates);
+        }
+
+        if (!this.utilService.isNullOrUndefined(studyCriteria)) {
+            this.parameterService.setStudyCriteria(studyCriteria);
+        }
+
+        if (!this.utilService.isNullOrUndefined(seriesCriteria)) {
+            this.parameterService.setSeriesCriteria(seriesCriteria);
         }
 
     }

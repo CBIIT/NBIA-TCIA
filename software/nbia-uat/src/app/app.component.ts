@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 	showAuthorPG: boolean;
 	selectedTabHeader = "User";
 	version = '2.4';
-	currentYear = '2024';
+	currentYear = '2025';
 	commit = '5fa63f0';
 	hostName:string;
 	@ViewChild(TabView) tabView: TabView;

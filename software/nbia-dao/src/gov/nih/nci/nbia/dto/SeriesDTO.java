@@ -214,11 +214,14 @@ public class SeriesDTO implements Comparable<SeriesDTO>  {
      * @param o
      */
     public int compareTo(SeriesDTO o) {
-        // Series should be ordered according to series number
-        if ((getSeriesNumber() != null) && (o.getSeriesNumber() != null)) {
-            return this.getSeriesNumber().compareTo(o.getSeriesNumber());
+        if (this.getSeriesNumber() == null && o.getSeriesNumber() == null) {
+            return this.getSeriesUID().compareTo(o.getSeriesUID());
+        } else if (this.getSeriesNumber() == null) {
+            return 1; // Null is treated as larger 
+        } else if (o.getSeriesNumber() == null) {
+            return -1; // Null is treated as larger
         } else {
-            return 0;
+            return this.getSeriesNumber().compareTo(o.getSeriesNumber());
         }
     }
 

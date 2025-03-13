@@ -64,6 +64,12 @@ import gov.nih.nci.ncia.criteria.ConvolutionKernelCriteria;
 import gov.nih.nci.ncia.criteria.CurationStatusDateCriteria;
 import gov.nih.nci.ncia.criteria.DataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.DateRangeCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
+import gov.nih.nci.ncia.criteria.PatientAgeRangeCriteria;
+import gov.nih.nci.ncia.criteria.DescriptionCriteria;
+import gov.nih.nci.ncia.criteria.PixelSpacingRangeCriteria;
+import gov.nih.nci.ncia.criteria.SliceThicknessRangeCriteria;
 import gov.nih.nci.ncia.criteria.DxDataCollectionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 import gov.nih.nci.ncia.criteria.ImageSliceThickness;
@@ -73,10 +79,14 @@ import gov.nih.nci.ncia.criteria.ImagingObservationCharacteristicQuantificationC
 import gov.nih.nci.ncia.criteria.KilovoltagePeakDistribution;
 import gov.nih.nci.ncia.criteria.ManufacturerCriteria;
 import gov.nih.nci.ncia.criteria.MinNumberOfStudiesCriteria;
+import gov.nih.nci.ncia.criteria.MinNumberOfStudyDatesCriteria;
 import gov.nih.nci.ncia.criteria.ModelCriteria;
 import gov.nih.nci.ncia.criteria.NumFrameOptionCriteria;
 import gov.nih.nci.ncia.criteria.NumOfMonthsCriteria;
 import gov.nih.nci.ncia.criteria.PatientCriteria;
+import gov.nih.nci.ncia.criteria.PatientSexCriteria;
+import gov.nih.nci.ncia.criteria.StudyCriteria;
+import gov.nih.nci.ncia.criteria.SeriesCriteria;
 import gov.nih.nci.ncia.criteria.PhantomCriteria;
 import gov.nih.nci.ncia.criteria.ReconstructionDiameterCriteria;
 import gov.nih.nci.ncia.criteria.SeriesDescriptionCriteria;
@@ -152,6 +162,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     /* Constants for fields */
     private static final String COLLECTION_FIELD = "dp.project ";
     private static final String SPECIES_FIELD = "p.speciesCode ";
+    private static final String PATIENT_SEX_FIELD = "p.patientSex";
     private static final String THIRD_PARTY_FIELD = "series.thirdPartyAnalysis ";
     private static final String SITE_FIELD = "series.site ";
     private static final String IMAGE_MODALITY_FIELD = "series.modality ";
@@ -292,6 +303,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	        String imageClause = imageCriteriaProcess(this.query);
 	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
 
+
 	        /* Run the query */
 	        logger.debug("Search Issuing query : " + hql);
 	        long startTime = System.currentTimeMillis();
@@ -385,7 +397,21 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         
         whereStmt += processPatientCriteria(query, handlerFac);
 
-        whereStmt += processMinimumStudiesCriteria(query);
+        whereStmt += processPatientSexCriteria(query, handlerFac);
+        
+        whereStmt += processPatientAgeRange(query);
+
+        whereStmt += processDescription(query);
+
+        whereStmt += processStudyCriteria(query, handlerFac);
+
+        whereStmt += processSeriesCriteria(query, handlerFac);
+
+        //This was moved into PatientSearcher to switch from total to actual
+        //studies that fit the criteria
+        //whereStmt += processMinimumStudiesCriteria(query);
+
+        //whereStmt += processMinimumStudyDatesCriteria(query);
 
         whereStmt += processNumberOfMonthsCriteria(query, handlerFac);
 
@@ -468,6 +494,26 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         return minStudiesWhereStmt;
     }
 
+    private static String processMinimumStudyDatesCriteria(DICOMQuery theQuery) {
+        MinNumberOfStudiesCriteria msc = theQuery.getMinNumberOfStudiesCriteria();
+        String minStudiesWhereStmt = "";
+        if (msc != null) {
+            Integer tempInteger = msc.getMinNumberOfStudiesValue();
+            minStudiesWhereStmt += (AND + STUDY_NUMBER + tempInteger + " ");
+        }
+        return minStudiesWhereStmt;
+    }
+
+    public Integer getStudyDateNumber(String studyIdList) {
+        if (studyIdList == "") {  return 0;}
+        String studyHql = "select count(distinct s.studyDate) from Study s where s.id in (" + studyIdList + ")";
+
+
+	      List<Long> results = getHibernateTemplate().find(studyHql);
+        return (results != null && !results.isEmpty()) ? results.get(0).intValue() : 0;
+
+    }
+
     private static String processCollectionCriteria(DICOMQuery theQuery,
     		                                        CriteriaHandlerFactory theHandlerFac) throws Exception {
         CollectionCriteria cc = theQuery.getCollectionCriteria();
@@ -501,6 +547,35 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         return speciesWhereStmt;
     }
     
+    private static String processPatientSexCriteria(DICOMQuery theQuery,
+            CriteriaHandlerFactory theHandlerFac) throws Exception {
+        PatientSexCriteria sc = theQuery.getPatientSexCriteria();
+        CriteriaHandler handler = null;
+
+
+        String patientSexWhereStmt = "";
+        if (sc != null) {
+           //if "Null" is included in the search, remove it and set includeNull to true
+           boolean includeNull = sc.removePatientSex("Null");
+
+		       handler = theHandlerFac.createCriteriaCollection();
+           String searchString = handler.handle(PATIENT_SEX_FIELD, sc);
+           if (!searchString.equals(") ")) {
+             patientSexWhereStmt += (AND + " ("  + searchString);
+             if (includeNull) {
+              patientSexWhereStmt += " or p.patientSex is null";
+             }
+             patientSexWhereStmt += ") ";
+
+           } else if (includeNull) {
+             patientSexWhereStmt += " AND (p.patientSex is null) ";
+           }
+
+           System.out.println("patientSexWhereStmt===="+patientSexWhereStmt);
+        }
+        return patientSexWhereStmt;
+    }
+    
     private static String processThirdPartyAnalysisCriteria(DICOMQuery theQuery,
             CriteriaHandlerFactory theHandlerFac) throws Exception {
     	ThirdPartyAnalysisCriteria tc = theQuery.getThirdPartyAnalysisCriteria();
@@ -510,7 +585,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         if (tc != null) {
            handler = theHandlerFac.createThirdPartyAnalyisCriteria();
            thirdWhereStmt += (AND + handler.handle(THIRD_PARTY_FIELD, tc));
-           System.out.println("speciesWhereStmt===="+thirdWhereStmt);
+           System.out.println("thirdWhereStmt===="+thirdWhereStmt);
         }
         return thirdWhereStmt;
     }
@@ -557,6 +632,35 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		}
 		return patientWhereStmt;
 }
+
+    private static String processStudyCriteria(DICOMQuery theQuery,
+            									 CriteriaHandlerFactory theHandlerFac) throws Exception {
+		StudyCriteria pc = theQuery.getStudyCriteria();
+		CriteriaHandler handler = null;
+
+		String studyWhereStmt = "";
+		if (pc != null) {
+
+		handler = theHandlerFac.createCriteriaCollection();
+		studyWhereStmt += (AND + handler.handle(STUDY_INSTANCE_UID, pc));
+		}
+		return studyWhereStmt;
+}
+
+    private static String processSeriesCriteria(DICOMQuery theQuery,
+            									 CriteriaHandlerFactory theHandlerFac) throws Exception {
+		SeriesCriteria pc = theQuery.getSeriesCriteria();
+		CriteriaHandler handler = null;
+
+		String seriesWhereStmt = "";
+		if (pc != null) {
+
+		handler = theHandlerFac.createCriteriaCollection();
+		seriesWhereStmt += (AND + handler.handle(SERIES_INSTANCE_UID, pc));
+		}
+		return seriesWhereStmt;
+}
+
     private static String processTimePointCriteria(DICOMQuery theQuery) throws Exception {
     	TimePointCriteria tc = theQuery.getTimePointCriteria();
 
@@ -941,6 +1045,18 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             imgWhere += dateRangeClause;
         }
 
+        String pixelSpacingRangeClause = processPixelSpacingRange(theQuery);
+        if(!pixelSpacingRangeClause.equals("")) {
+            imageCriteriaIncluded = true;
+            imgWhere += pixelSpacingRangeClause;
+        }
+
+        String sliceThicknessRangeClause = processSliceThicknessRange(theQuery);
+        if(!sliceThicknessRangeClause.equals("")) {
+            imageCriteriaIncluded = true;
+            imgWhere += sliceThicknessRangeClause;
+        }
+
         // Build the HQL
         // Always include non-image criteria query
         String hql = "";//selectStmt + fromStmt + whereStmt;
@@ -1121,9 +1237,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             }
     		if (((fromDateString != null) && (fromDateString.length() > 0)) &&
     			    ((toDateString != null) && (toDateString.length() > 0))) {
-    	         	return "and to_days(gs.dateReleased) >= to_days('" +
+    	         	return "and to_days(series.dateReleased) >= to_days('" +
     	            	       fromDateString +
-    	            	       "') and to_days(gs.dateReleased) <= to_days('" +
+    	            	       "') and to_days(series.dateReleased) <= to_days('" +
     	            	       toDateString + "')";
     	        }
     	        else {
@@ -1131,6 +1247,121 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     			}
         }
 
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the patient age range
+     * portion of the query.  Returns 0 length string if no patient age range
+     */
+    private static String processPatientAgeRange(DICOMQuery theQuery) {
+        PatientAgeRangeCriteria pc = theQuery.getPatientAgeRangeCriteria();
+        String fromString = null;
+        String toString = null;
+        
+
+        if ((pc != null) && !(pc.isEmpty())) {
+          fromString = pc.getFrom();
+          toString = pc.getTo();
+          if (((fromString != null) && (fromString.length() > 0)) &&
+              ((toString != null) && (toString.length() > 0))) {
+
+            return " and (CASE " +
+               "WHEN LOWER(series.patientAge) LIKE '%y' THEN REPLACE(LOWER(series.patientAge), 'y', '') " +
+               "WHEN LOWER(series.patientAge) LIKE '%w' THEN floor(REPLACE(LOWER(series.patientAge), 'w', '') / 52) " +
+               "WHEN LOWER(series.patientAge) LIKE '%m' THEN floor(REPLACE(LOWER(series.patientAge), 'm', '') / 12) " +
+               "ELSE NULL " +
+               "END " +
+               "between " + fromString + " and " + toString + " )";
+          }
+          else {
+            return "";
+          }
+        }
+        
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the pixel spacing range
+     * portion of the query.  Returns 0 length string if no pixel spacing range
+     */
+    private static String processPixelSpacingRange(DICOMQuery theQuery) {
+        PixelSpacingRangeCriteria pc = theQuery.getPixelSpacingRangeCriteria();
+        String fromString = null;
+        String toString = null;
+        
+
+        if ((pc != null) && !(pc.isEmpty())) {
+          fromString = String.valueOf(Double.parseDouble(pc.getFrom()));
+          toString = String.valueOf(Double.parseDouble(pc.getTo()));
+
+          if (((fromString != null) && (fromString.length() > 0)) &&
+              ((toString != null) && (toString.length() > 0))) {
+
+            return " and (gi.pixelSpacing " +
+               "between " + fromString + " and " + toString + " )";
+          }
+          else {
+            return "";
+          }
+        }
+        
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the slice thickness range
+     * portion of the query.  Returns 0 length string if no slice thickness range
+     */
+    private static String processSliceThicknessRange(DICOMQuery theQuery) {
+        SliceThicknessRangeCriteria pc = theQuery.getSliceThicknessRangeCriteria();
+        String fromString = null;
+        String toString = null;
+        
+
+        if ((pc != null) && !(pc.isEmpty())) {
+          fromString = String.valueOf(Double.parseDouble(pc.getFrom()));
+          toString = String.valueOf(Double.parseDouble(pc.getTo()));
+
+          if (((fromString != null) && (fromString.length() > 0)) &&
+              ((toString != null) && (toString.length() > 0))) {
+
+            return " and (gi.sliceThickness " +
+               "between " + fromString + " and " + toString + " )";
+          }
+          else {
+            return "";
+          }
+        }
+        
+        return "";
+    }
+    /**
+     * Given a query, returns the where clause for the Description Criteria
+     * portion of the query.  Returns 0 length string if no results
+     */
+    private static String processDescription(DICOMQuery theQuery) {
+        DescriptionCriteria dc = theQuery.getDescriptionCriteria();
+        if (dc != null) {
+          String searchString = dc.getSearchString().toUpperCase().replace("*", "%").replaceAll("\\s+", " ");
+          if ((searchString != null) && (searchString.length() > 0)) {
+              //split by whitespace but respect quotes
+              String[] words = searchString.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+              StringBuilder conditionBuilder = new StringBuilder(" and (");
+              
+              for (int i = 0; i < words.length; i++) {
+                  String word = words[i].replace("\"","");
+                  if (i > 0) {
+                      conditionBuilder.append(" or ");
+                  }
+                  conditionBuilder.append("(series.studyDesc like '%").append(word).append("%' or ")
+                                  .append("series.seriesDesc like '%").append(word).append("%' or ")
+                                  .append("series.protocolName like '%").append(word).append("%')");
+              }
+              
+              conditionBuilder.append(")");
+              System.out.println(conditionBuilder.toString());
+              return conditionBuilder.toString();
+          }
+        }
         return "";
     }
 }

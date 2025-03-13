@@ -15,10 +15,10 @@ import { takeUntil } from 'rxjs/operators';
 } )
 export class PieChartAnatomicalSiteComponent implements OnInit, OnDestroy{
     parentNativeElement: any;
-
-    chartName = 'Anatomical Sites';
-    chartFooter = 'Anatomical Site';
-    chartFooterPlural = 'Anatomical Sites';
+// changed 'Anatomical Sites' to 'Body Part Examined'
+    chartName = 'Body Part Examined';
+    chartFooter = 'Body Part Examined';
+    chartFooterPlural = 'Body Parts Examined';
     showAnatomicalSiteChart = true;
 
     /**
