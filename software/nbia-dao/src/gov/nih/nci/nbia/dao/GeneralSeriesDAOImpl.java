@@ -39,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -295,6 +296,44 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     return rs;
   }
+  private StringBuffer addAuthorizedProjAndSites2(List<String> authorizedProjAndSites) {
+    StringBuffer where = new StringBuffer();
+
+    if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+      where = where.append(" and concat(s.project, '//', s.site) in (");
+
+      for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+        String str = projAndSites.next();
+        where.append(str);
+
+        if (projAndSites.hasNext()) {
+          where.append(",");
+        }
+      }
+      where.append(")");
+    }
+
+    return where;
+  }
+  private StringBuffer addAuthorizedProjAndSitesCaseStatement(List<String> authorizedProjAndSites) {
+    StringBuffer where = new StringBuffer();
+
+    if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+      where = where.append(" case when concat(s.project, '//', s.site) in (");
+
+      for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+        String str = projAndSites.next();
+        where.append(str);
+
+        if (projAndSites.hasNext()) {
+          where.append(",");
+        }
+      }
+      where.append(") then 1 else 0 end as authorized ");
+    }
+
+    return where;
+  }
 
   /**
    * Construct the partial where clause which contains checking with authorized
@@ -321,6 +360,101 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     return where;
   }
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<Object[]> getSeries_v4(String collection, String patientId, String studyInstanceUid, List<String> authCol, String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer, String seriesInstanceUID) throws DataAccessException {
+
+
+    StringBuffer where = new StringBuffer();
+    List<Object[]> rs = null;
+    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, s.series_date, s.series_desc, "
+      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, e.manufacturer, "
+      + "e.manufacturer_model_name, e.software_versions, "
+      + "(select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, "
+      + "s.max_submission_timestamp, "
+      + "s.license_name, s.license_url, s.description_uri, "
+      + "(select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as total_size, "
+      + "s.date_released, "
+      + "s.study_desc, s.study_date, s.third_party_analysis, "
+      + addAuthorizedProjAndSitesCaseStatement(authCol) 
+      + " from general_series s join general_equipment e " 
+      + " on s.general_equipment_pk_id = e.general_equipment_pk_id where s.visibility in ('1') ";
+
+    Map<String, Object> params = new HashMap<>();
+    int i = 0;
+
+    if (collection != null) {
+      where = where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+      ++i;
+    }
+    if (patientId != null) {
+      where = where.append(" and UPPER(s.patient_id)=:patientId");
+      params.put("patientId", patientId.toUpperCase());
+      ++i;
+    }
+    if (studyInstanceUid != null) {
+      where = where.append(" and s.study_instance_uid=:study_instance_uid");
+      params.put("study_instance_uid", studyInstanceUid);
+      ++i;
+    }
+    if (modality != null) {
+      where = where.append(" and s.modality=:modality");
+      params.put("modality", modality);
+      ++i;
+    }
+    if (bodyPartExamined != null) {
+      where = where.append(" and s.body_part_examined=:body_part_examined");
+      params.put("body_part_examined", bodyPartExamined);
+      ++i;
+    }
+    if (manufacturerModelName != null) {
+      where = where.append(" and e.manufacturer_model_name=:manufacturer_model_name");
+      params.put("manufacturer_model_name", manufacturerModelName);
+      ++i;
+    }
+    if (manufacturer != null) {
+      where = where.append(" and e.manufacturer=:manufacturer");
+      params.put("manufacturer", manufacturer);
+      ++i;
+    }
+    if (seriesInstanceUID != null) {
+      where = where.append(" and s.series_instance_uid=:series_instance_uid");
+      params.put("series_instance_uid", seriesInstanceUID);
+      ++i;
+    }
+
+    //where.append(" and exists("
+    //  + " select 1 from csm_user join csm_user_group ug on csm_user.USER_ID = ug.user_id "
+    //  + "join csm_user_group_role_pg cugrp on cugrp.GROUP_ID = ug.group_id "
+    //  + "join csm_pg_pe cpp on cpp.PROTECTION_GROUP_ID = cugrp.PROTECTION_GROUP_ID "
+    //  + "join csm_protection_element cpe on cpe.PROTECTION_ELEMENT_ID = cpp.PROTECTION_ELEMENT_ID "
+    //  + "where csm_user.LOGIN_NAME = :userName and cugrp.ROLE_ID = '1' and cpe.PROTECTION_ELEMENT_NAME = concat('NCIA.', s.project, '//', s.site))"
+    //);
+
+    //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+    //				+ hql + where.toString());
+
+    sql = sql + where.toString();
+    //System.out.println(sql);
+
+    //long startTime = System.currentTimeMillis();
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+    
+    List<Object[]> seriesResults = query.list();
+
+    //long endTime = System.currentTimeMillis();
+    //System.out.println("Query execution time: " + (endTime - startTime) + " ms");
+
+    return seriesResults;
+
+  }
+
 
   /**
    * Fetch set of series objects filtered by project, ie. collection, patientId
@@ -400,11 +534,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
     //				+ hql + where.toString());
 
+
     if (i > 0) {
       Object[] values = paramList.toArray(new Object[paramList.size()]);
       rs = getHibernateTemplate().find(hql + where.toString(), values);
     } else
       rs = getHibernateTemplate().find(hql + where.toString());
+
 
     return rs;
   }
