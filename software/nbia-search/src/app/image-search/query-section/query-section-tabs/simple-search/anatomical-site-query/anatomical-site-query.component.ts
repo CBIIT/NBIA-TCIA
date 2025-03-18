@@ -340,15 +340,10 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
      * Adds this category of search criteria to the query that the QueryUrlService will provide for "Share" -> "Share my query"
      */
     sendSelectedCriteriaString() {
-        let criteriaString = '';
-        for( let f = 0; f < this.cBox.length; f++ ){
-            if( this.cBox[f] ){
-                if( f > 0 ){
-                    criteriaString += ',';
-                }
-                criteriaString += this.criteriaList[f]['criteria'];
-            }
-        }
+        let criteriaString = this.criteriaList
+        .filter((_, index) => this.cBox[index])  // Keep only selected criteria
+        .map(item => item.criteria)  // Extract the criteria names
+        .join(',');  // Join with commas
         this.queryUrlService.update( this.queryUrlService.ANATOMICAL_SITE, criteriaString );
     }
 
@@ -365,25 +360,14 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         }
 
         // Find our (Anatomical Site) data
-        let anatomicalSiteCriteriaObj;
-
-        // data.res is an array of Objects,  each object is one criteria's data.
-        for( let criteria of data.res ){
-            if( criteria.criteria === 'Anatomical Site' ){
-                anatomicalSiteCriteriaObj = criteria.values;
-            }
-        }
+        const anatomicalSiteCriteriaObj = data.res.find(criteria => criteria.criteria === 'Anatomical Site')?.values;
 
         // Before we update the list, save the original list so we can restore checkboxes by criteria name.
-        let criteriaListTemp = this.criteriaList;
+        const criteriaListTemp = [...this.criteriaList];
 
-        let cBoxHold = [];
+        const cBoxHold = [...this.cBox];
         // Before we update the criteria list, save all the checked boxes.
-        for( let f = 0; f < this.cBox.length; f++ ){
-            cBoxHold[f] = this.cBox[f];
-        }
-
-
+       
         // If there is no query just reset criteriaList to criteriaListHold.
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
             this.criteriaList = this.criteriaListHold;
@@ -395,17 +379,13 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
             }
 
             // CHECKME - this is a hasty fix, is there is a better way
-            for( let criteria of this.completeCriteriaList ){
-                criteria.count = 0;
-            }
-
-            for( let criteria of anatomicalSiteCriteriaObj ){
-                for( let completeCriteria of this.completeCriteriaList ){
-                    if( criteria.criteria === completeCriteria.criteria ){
-                        completeCriteria.count = criteria.count;
-                    }
+            this.completeCriteriaList.forEach( item => {
+                if (anatomicalSiteCriteriaObj.some(criteria => criteria.criteria === item.criteria)) {
+                    item.count = anatomicalSiteCriteriaObj.find(criteria => criteria.criteria === item.criteria).count;
+                }else{
+                    item.count = 0;
                 }
-            }
+            });
         }
 
         this.updateCriteriaList( false );
@@ -413,19 +393,17 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         // Put back the checkboxes.
         // After the criteria list has been changed check the checkbox for any criteria that is in the list,
         // that was also in the criteriaListTemp list and is true in cBoxHold[] array.
-        let len = this.criteriaList.length;
-        for( let f0 = 0; f0 < len; f0++ ){
-            this.cBox[f0] = false;
-        }
-        for( let f0 = 0; f0 < len; f0++ ){
-            for( let f1 = 0; f1 < criteriaListTemp.length; f1++ ){
-                if( criteriaListTemp[f1].criteria === this.criteriaList[f0].criteria ){
-                    if( cBoxHold[f1] ){
-                        this.cBox[f0] = true;
-                    }
-                }
+        this.cBox = Array(this.criteriaList.length).fill(false);
+        // Create a lookup Map from criteriaListTemp for faster access
+        let criteriaMap = new Map(criteriaListTemp.map((item, index) => [item.criteria, index]));
+
+        // Update cBox based on cBoxHold
+        this.criteriaList.forEach((item, index) => {
+            let tempIndex = criteriaMap.get(item.criteria);
+            if (tempIndex !== undefined && cBoxHold[tempIndex]) {
+                this.cBox[index] = true;
             }
-        }
+        });
 
         // Need to sort after checkboxes change.
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked );  // sortNumChecked is a boolean.
@@ -470,32 +448,38 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
         // If this is the first time this is running just copy the data to the criteriaList
         if( this.resetFlag ){
-            this.criteriaList = this.completeCriteriaList;
+            this.criteriaList = this.completeCriteriaList.map( item => (
+                {
+                    ...item,
+                    unfilteredCount: item.count
+
+                }
+            ));
 
         }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
 
-            for( let f = 0; f < this.criteriaList.length; f++ ){
-                this.criteriaList[f].count = 0;
-            }
-
-            for( let dataCriteria of this.completeCriteriaList ){
-                for( let f = 0; f < this.criteriaList.length; f++ ){
-                    if( this.criteriaList[f].criteria === dataCriteria.criteria ){
-                        this.criteriaList[f].count = dataCriteria.count;
-                    }
+            this.criteriaList = this.criteriaList.map( item => (
+                { ...item,
+                    count: 0,
+                    unfilteredCount: item.count
                 }
-            }
+            ));
+
+            const criteriaMap = new Map(this.completeCriteriaList.map(item => [item.criteria, item.count]));
+
+            // Update criteriaList using the Map
+            this.criteriaList.forEach(item => {
+                if (criteriaMap.has(item.criteria)) {
+                    item.count = criteriaMap.get(item.criteria);
+                }
+            });         
         }
 
         if( (this.resetFlag) || (initCheckBox) ){
             this.resetFlag = false;
-            this.cBox = [];
-            let len = this.criteriaList.length;
-            for( let f = 0; f < len; f++ ){
-                this.cBox[f] = false;
-            }
+            this.cBox = Array(this.criteriaList.length).fill(false);
             this.updateCheckboxCount();
         }
 
