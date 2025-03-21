@@ -253,10 +253,13 @@ public class PatientDAOImpl extends AbstractDAO
 			"s.patientAge, s.longitudinalTemporalEventType, s.longitudinalTemporalOffsetFromEvent, " +
 			"gs.seriesInstanceUID, gs.project, gs.modality, gs.protocolName, gs.seriesDate, gs.seriesDesc, " +
 			"gs.bodyPartExamined, gs.seriesNumber, gs.annotationsFlag, gs.generalEquipment.manufacturer, " +
-			"gs.generalEquipment.manufacturerModelName, gs.generalEquipment.softwareVersions, gs.imageCount, " +
+			"gs.generalEquipment.manufacturerModelName, " + 
+			" COALESCE(CAST(gi.pixelSpacing AS string ), 'n/a'), COALESCE(CAST(gi.sliceThickness AS string), 'n/a'), " +
+			"gs.generalEquipment.softwareVersions, gs.imageCount, " +
 			"gs.maxSubmissionTimestamp, gs.licenseName, gs.licenseURL, gs.descriptionURI, gs.totalSize, " +
 			"gs.dateReleased,  gs.thirdPartyAnalysis " +
 			"from GeneralSeries gs " +
+			"join gs.generalImageCollection gi " +
 			"join gs.study s " +
 			"join s.patient  p " +
 			whereCondition.toString();
@@ -266,10 +269,12 @@ public class PatientDAOImpl extends AbstractDAO
 
 		List<Object[]> results = getHibernateTemplate().find(hql);
 		for (Object[] patient:results) {
+			
 			if (patient[5]==null) patient[5]="NO";
 			if (patient[6]==null) patient[6]="337915000";
 			if (patient[7]==null) patient[7]="Homo sapiens";
 		}
+		results.forEach(System.out::println);
 		return results;
 	}
 	/**
