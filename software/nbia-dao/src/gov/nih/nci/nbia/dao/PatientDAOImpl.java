@@ -254,7 +254,7 @@ public class PatientDAOImpl extends AbstractDAO
 			"gs.seriesInstanceUID, gs.project, gs.modality, gs.protocolName, gs.seriesDate, gs.seriesDesc, " +
 			"gs.bodyPartExamined, gs.seriesNumber, gs.annotationsFlag, gs.generalEquipment.manufacturer, " +
 			"gs.generalEquipment.manufacturerModelName, " + 
-			" COALESCE(CAST(gi.pixelSpacing AS string ), 'n/a'), COALESCE(CAST(gi.sliceThickness AS string), 'n/a'), " +
+			"gi.pixelSpacing, gi.sliceThickness, " +
 			"gs.generalEquipment.softwareVersions, gs.imageCount, " +
 			"gs.maxSubmissionTimestamp, gs.licenseName, gs.licenseURL, gs.descriptionURI, gs.totalSize, " +
 			"gs.dateReleased,  gs.thirdPartyAnalysis " +
