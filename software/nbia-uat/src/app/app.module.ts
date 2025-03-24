@@ -10,7 +10,7 @@ import { UserComponent } from './user/user.component';
 import { LoadingDisplayService } from './common/components/loading-display/loading-display.service';
 import { LoadingDisplayComponent } from './common/components/loading-display/loading-display.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -37,8 +37,7 @@ import { UgMemberList } from './group/ugmemberlist';
 import { UgMemberService } from './group/ugmemberservice';
 import { UserToGroupComponent } from './userToGroup/userToGroup.component';
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         GroupComponent,
         PeComponent,
@@ -51,9 +50,7 @@ import { UserToGroupComponent } from './userToGroup/userToGroup.component';
         UgMemberList,
         UserToGroupComponent
     ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         ButtonModule,
         CheckboxModule,
         ConfirmDialogModule,
@@ -68,9 +65,5 @@ import { UserToGroupComponent } from './userToGroup/userToGroup.component';
         TabViewModule,
         TooltipModule,
         FormsModule,
-        BrowserAnimationsModule
-    ],
-    providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService, ConfirmationService],
-    bootstrap: [AppComponent]
-})
+        BrowserAnimationsModule], providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService, ConfirmationService, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

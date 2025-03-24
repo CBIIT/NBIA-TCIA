@@ -38,6 +38,9 @@ export class PeComponent implements OnInit {
 	appName: string = "NCIA.";
 	comma: string = ", ";
 	
+  get fullAppName(): string {
+    return this.appName + this.pe.collection + this.comma + this.appName + this.pe.collection + this.combSym + this.pe.site;
+  }
 
   constructor(private appservice: ConfigService, private peService: PeService, private globals: Globals, private loadingDisplayService: LoadingDisplayService) { 
   	if (this.globals.wikiBaseUrl === "") {
