@@ -374,7 +374,7 @@ public class getData {
 
 		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
 		try {
-			results = tDao.getPatientByCollectionAndId(collection, patientId, authorizedCollections);
+			results = tDao.getPatientByCollectionAndId_v4(collection, patientId, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -387,7 +387,7 @@ public class getData {
 
 		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
 		try {
-			results = tDao.getPatientByCollection(collection, authorizedCollections);
+			results = tDao.getPatientByCollection_v4(collection, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -400,7 +400,7 @@ public class getData {
 
 		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
 		try {
-			results = tDao.getPatientByCollection(collection, dateFrom, authorizedCollections);
+			results = tDao.getPatientByCollection_v4(collection, dateFrom, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -412,7 +412,7 @@ public class getData {
 
 		PatientDAO tDao = (PatientDAO)SpringApplicationContext.getBean("patientDAO");
 		try {
-			results = tDao.getPatientByCollectionAndModality(collection, modality, authorizedCollections);
+			results = tDao.getPatientByCollectionAndModality_v4(collection, modality, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -425,7 +425,7 @@ public class getData {
 
 		StudyDAO tDao = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
 		try {
-			results = tDao.getPatientStudy(collection, patientId, studyInstanceUid, authorizedCollections);
+			results = tDao.getPatientStudy_v4(collection, patientId, studyInstanceUid, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -437,7 +437,7 @@ public class getData {
 
 		StudyDAO tDao = (StudyDAO)SpringApplicationContext.getBean("studyDAO");
 		try {
-			results = tDao.getPatientStudyFromDate(collection, patientId, dateFrom, authorizedCollections);
+			results = tDao.getPatientStudyFromDate_v4(collection, patientId, dateFrom, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();

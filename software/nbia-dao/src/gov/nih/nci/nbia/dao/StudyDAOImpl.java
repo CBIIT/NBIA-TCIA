@@ -32,6 +32,10 @@ import java.math.BigDecimal;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -320,6 +324,61 @@ public class StudyDAOImpl extends AbstractDAO
         return rs;
 	}
 	
+	/**
+	 * Fetch a set of patient/study info filtered by query keys
+	 * This method is used for NBIA Rest API.
+	 * @param collection A label used to name a set of images collected for a specific trial or other reason.	 * Assigned during the process of curating the data. The info is kept under project column
+	 * @param patientId Patient ID
+	 * @param studyInstanceUid Study Instance UID
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientStudy_v4(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+		StringBuffer where = new StringBuffer();
+		Map<String, Object> params = new HashMap<>();
+
+
+		String sql = "select s.study_instance_uid, s.study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+				"s.patient_age, p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, " +
+				"p.ethnic_group, gs.project, " +
+				"count(gs.id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " 
+        + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
+				" from study s, general_series gs " +
+        "left join patient p on s.patient_pk_id = p.patient_pk_id" + 
+        " where s.study_instance_uid = gs.study_instance_uid and gs.visibility in ('1') ";
+		
+
+		if (collection != null) {
+			where = where.append(" and UPPER(gs.project)=:project");
+			params.put("project", collection.toUpperCase());
+		}
+		if (patientId != null) {
+			where = where.append(" and UPPER(p.patient_id)=:patientId");
+			params.put("patientId", patientId.toUpperCase());
+		}
+		if (studyInstanceUid != null) {
+			where = where.append(" and UPPER(s.study_instance_uid)=:studyInstanceUid");
+			params.put("studyInstanceUid", studyInstanceUid.toUpperCase());
+		}
+
+		where.append(" group by s.id ");
+		
+	  System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<Object[]> rs = query.list();
+  
+    return rs;
+	}
 	
 	
 	/**
@@ -436,6 +495,52 @@ public class StudyDAOImpl extends AbstractDAO
 			}
 		}
 		return returnValue;
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientStudyFromDate_v4(String collection, String patientId, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}		
+		String sql = "select distinct s.study_instance_uid, s.study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+				"s.patient_age, p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, " +
+				"p.ethnic_group, gs.project, " +
+				"count(gs.id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event "  
+        + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
+				" from study s, general_series gs " +
+        "left join patient p on s.patient_pk_id = p.patient_pk_id" + 
+        "where s.study_instance_uid=gs.study_instance_uid and gs.visibility in ('1') ";
+		StringBuffer where = new StringBuffer();
+		
+		Map<String, Object> params = new HashMap<>();
+
+		if (collection != null) {
+			where = where.append(" and UPPER(gs.project)=:project");
+			params.put(":project", collection.toUpperCase());
+		}
+		if (patientId != null) {
+			where = where.append(" and UPPER(p.patient_id)=:patientId");
+			params.put("patientId", patientId.toUpperCase());
+		}
+		if (dateFrom != null) {
+			where = where.append("  and gs.date_released >= to_date(:dateFrom, 'MM/dd/yyyy')");
+			params.put("dateFrom", dateFrom);
+		}
+
+		where.append(" group by s.id ");		
+  	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
+		
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<Object[]> rs = query.list();
+
+    return rs;
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -867,4 +972,24 @@ public class StudyDAOImpl extends AbstractDAO
             return whereStmt;
         }
     }
+
+  private StringBuffer addAuthorizedProjAndSitesCaseStatement(List<String> authorizedProjAndSites) {
+    StringBuffer where = new StringBuffer();
+
+    if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+      where = where.append(" case when concat(s.project, '//', s.site) in (");
+
+      for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+        String str = projAndSites.next();
+        where.append(str);
+
+        if (projAndSites.hasNext()) {
+          where.append(",");
+        }
+      }
+      where.append(") then 1 else 0 end as authorized ");
+    }
+
+    return where;
+  }
 }

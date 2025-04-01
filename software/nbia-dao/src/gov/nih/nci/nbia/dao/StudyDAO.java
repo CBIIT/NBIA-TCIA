@@ -32,7 +32,9 @@ public interface StudyDAO  {
     public List<StudyDTO> findStudiesBySeriesIdForCart(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesUIds(Collection<String> seriesPkIds) throws DataAccessException;
 	public List<Object[]> getSeriesMetadata(List<String> seriesIDs, List<String> authorizedProjAndSites) throws DataAccessException;
+    public List<Object[]> getPatientStudy_v4(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException;
     public List<Object[]> getPatientStudy(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException;
+    public List<Object[]> getPatientStudyFromDate_v4(String collection, String patientId, String fromDate, List<String> authorizedProjAndSites) throws DataAccessException;
     public List<Object[]> getPatientStudyFromDate(String collection, String patientId, String fromDate, List<String> authorizedProjAndSites) throws DataAccessException;
     public List<Object[]> getPatientStudyBySeries(String series, List<String> authorizedProjAndSites) throws DataAccessException;
     /**

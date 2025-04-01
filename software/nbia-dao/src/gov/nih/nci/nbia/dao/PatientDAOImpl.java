@@ -26,6 +26,10 @@ import java.util.HashMap;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +104,49 @@ public class PatientDAOImpl extends AbstractDAO
 	 * Assigned during the process of curating the data. The info is kept under project column
 	 */
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollectionAndId_v4(String collection, String patientId, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer where = new StringBuffer();
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where = where.append(" and UPPER(gs.project) = :project");
+      params.put("project", collection.toUpperCase());
+    }
+
+		String sql = "select distinct p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
+				" where gs.visibility in ('1') and p.patient_id = :patientId and p.id = gs.patient_pk_id "+ where;
+    params.put("patientId", patientId);
+				
+    System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollectionAndId_v4() - downloadable visibility - sql is: " + sql);
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<Object[]> rs = query.list();
+
+
+    fillInHuman(rs);
+    return rs;
+	}
+
+
+	/**
+	 * Fetch Patient Object through project, ie. collection
+	 * This method is used for NBIA Rest API.
+	 * @param collection A label used to name a set of images collected for a specific trial or other reason.
+	 * Assigned during the process of curating the data. The info is kept under project column
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientByCollectionAndId(String collection, String patientId, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		StringBuffer whereCondition = new StringBuffer();
@@ -120,6 +167,47 @@ public class PatientDAOImpl extends AbstractDAO
       System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);
 	    fillInHuman(rs);
         return rs;
+	}
+
+	/**
+	 * Fetch Patient Object through project, ie. collection
+	 * This method is used for NBIA Rest API.
+	 * @param collection A label used to name a set of images collected for a specific trial or other reason.
+	 * Assigned during the process of curating the data. The info is kept under project column
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollection_v4(String collection, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer where = new StringBuffer();
+				
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where = where.append(" and UPPER(gs.project) = :project");
+      params.put("project", collection.toUpperCase());
+    }
+
+
+		String sql = "select distinct p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species , " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
+				" where gs.visibility in ('1') and p.id = gs.patient_pk_id "+ where;
+				
+	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<Object[]> rs = query.list();
+
+  	fillInHuman(rs);
+    return rs;
 	}
 
 	/**
@@ -179,6 +267,43 @@ public class PatientDAOImpl extends AbstractDAO
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollection_v4(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer where = new StringBuffer();
+    Map<String, Object> params = new HashMap<>();
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+
+    if (collection != null) {
+      where = where.append(" and UPPER(gs.project) = :project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (dateFrom != null) {
+      where = where.append(" and gs.date_released >= to_date(:dateFrom, 'MM/dd/yyyy')");
+      params.put("dateFrom", dateFrom);
+    }
+
+		String sql = "select distinct p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species , " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
+				" where gs.visibility in ('1') and p.id = gs.patient_pk_id "+ where;
+				
+	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<Object[]> rs = query.list();
+
+
+	  fillInHuman(rs);
+    return rs;
+	}
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException
 	{
 		StringBuffer whereCondition = new StringBuffer();
@@ -206,6 +331,41 @@ public class PatientDAOImpl extends AbstractDAO
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
 	    fillInHuman(rs);
         return rs;
+	}
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getPatientByCollectionAndModality_v4(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException
+	{
+		StringBuffer whereCondition = new StringBuffer();
+		StringBuffer where = new StringBuffer();
+		
+		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+			return null;
+		}
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where = where.append(" and UPPER(gs.project) = :project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (modality != null) {
+      where = where.append(" and UPPER(gs.modality) = :modality");
+      params.put("modality", modality.toUpperCase());
+    }
+
+		String sql = "select distinct p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
+				" where gs.visibility in ('1') and p.id = gs.patient_pk_id "+ where;
+				
+	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<Object[]> rs = query.list();
+	  fillInHuman(rs);
+    return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientByCollectionAndModality(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException
@@ -327,5 +487,25 @@ public class PatientDAOImpl extends AbstractDAO
        }
    	return theWhereStmt;
    }
+
+  private StringBuffer addAuthorizedProjAndSitesCaseStatement(List<String> authorizedProjAndSites) {
+    StringBuffer where = new StringBuffer();
+
+    if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+      where = where.append(" case when concat(s.project, '//', s.site) in (");
+
+      for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+        String str = projAndSites.next();
+        where.append(str);
+
+        if (projAndSites.hasNext()) {
+          where.append(",");
+        }
+      }
+      where.append(") then 1 else 0 end as authorized ");
+    }
+
+    return where;
+  }
 
 }
