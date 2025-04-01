@@ -59,7 +59,7 @@ public class getData {
 		if ("keycloak".equalsIgnoreCase(NCIAConfig.getAuthenticationConfig())) {
 			String token = httpRequest.getHeader("Authorization");
 
-			if (token.equalsIgnoreCase("Bearer undefined")) {
+			if (token == null || token.equalsIgnoreCase("Bearer undefined") ) {
 				// System.out.println("Token is undefined using NBIA_GUEST");
 				userName = NCIAConfig.getGuestUsername();
 			} else {
