@@ -341,14 +341,14 @@ public class StudyDAOImpl extends AbstractDAO
 		Map<String, Object> params = new HashMap<>();
 
 
-		String sql = "select s.study_instance_uid, to_char(s.study_date, '%m/%d/%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-				"s.patient_age, p.patient_id, p.patient_name, to_char(p.patient_birth_date, '%m/%d/%Y'), p.patient_sex, " +
+		String sql = "select s.study_instance_uid, date_format(s.study_date, '%m/%d/%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+				"s.patient_age, p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m/%d/%Y'), p.patient_sex, " +
 				"p.ethnic_group, gs.project, " +
-				"count(gs.id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " 
+				"count(gs.general_series_pk_id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " 
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
-				" from study s, general_series gs " +
+				" from study s join general_series gs on s.study_instance_uid = gs.study_instance_uid " +
         "left join patient p on s.patient_pk_id = p.patient_pk_id" + 
-        " where s.study_instance_uid = gs.study_instance_uid and gs.visibility in ('1') ";
+        " where gs.visibility in ('1') ";
 		
 
 		if (collection != null) {
@@ -364,7 +364,7 @@ public class StudyDAOImpl extends AbstractDAO
 			params.put("studyInstanceUid", studyInstanceUid.toUpperCase());
 		}
 
-		where.append(" group by s.id ");
+		where.append(" group by s.study_pk_id ");
 		
 	  System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
 
@@ -503,14 +503,14 @@ public class StudyDAOImpl extends AbstractDAO
 		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
 			return null;
 		}		
-		String sql = "select distinct s.study_instance_uid, to_char(s.study_date, '%m/%d/%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-				"s.patient_age, p.patient_id, p.patient_name, to_char(p.patient_birth_date, '%m/%d/%Y'), p.patient_sex, " +
+		String sql = "select distinct s.study_instance_uid, date_format(s.study_date, '%m/%d/%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+				"s.patient_age, p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m/%d/%Y'), p.patient_sex, " +
 				"p.ethnic_group, gs.project, " +
-				"count(gs.id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event "  
+				"count(gs.general_series_pk_id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, "  
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
-				" from study s, general_series gs " +
-        "left join patient p on s.patient_pk_id = p.patient_pk_id" + 
-        "where s.study_instance_uid=gs.study_instance_uid and gs.visibility in ('1') ";
+				" from study s join general_series gs on s.study_instance_uid = gs.study_instance_uid " +
+        "left join patient p on s.patient_pk_id = p.patient_pk_id " + 
+        "where gs.visibility in ('1') ";
 		StringBuffer where = new StringBuffer();
 		
 		Map<String, Object> params = new HashMap<>();
@@ -524,11 +524,11 @@ public class StudyDAOImpl extends AbstractDAO
 			params.put("patientId", patientId.toUpperCase());
 		}
 		if (dateFrom != null) {
-			where = where.append("  and gs.date_released >= to_date(:dateFrom, 'MM/dd/yyyy')");
+			where = where.append("  and gs.date_released >= STR_TO_DATE(:dateFrom, '%m/%d/%Y')");
 			params.put("dateFrom", dateFrom);
 		}
 
-		where.append(" group by s.id ");		
+		where.append(" group by s.study_pk_id ");		
   	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
 		
     // Create the query and set parameters in one go
@@ -977,7 +977,7 @@ public class StudyDAOImpl extends AbstractDAO
     StringBuffer where = new StringBuffer();
 
     if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
-      where = where.append(" case when concat(s.project, '//', s.site) in (");
+      where = where.append(" case when concat(gs.project, '//', gs.site) in (");
 
       for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
         String str = projAndSites.next();
