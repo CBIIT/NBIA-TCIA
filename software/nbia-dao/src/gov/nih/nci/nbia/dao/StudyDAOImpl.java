@@ -341,8 +341,8 @@ public class StudyDAOImpl extends AbstractDAO
 		Map<String, Object> params = new HashMap<>();
 
 
-		String sql = "select s.study_instance_uid, s.study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-				"s.patient_age, p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, " +
+		String sql = "select s.study_instance_uid, to_char(s.study_date, '%m/%d/%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+				"s.patient_age, p.patient_id, p.patient_name, to_char(p.patient_birth_date, '%m/%d/%Y'), p.patient_sex, " +
 				"p.ethnic_group, gs.project, " +
 				"count(gs.id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " 
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
@@ -503,8 +503,8 @@ public class StudyDAOImpl extends AbstractDAO
 		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
 			return null;
 		}		
-		String sql = "select distinct s.study_instance_uid, s.study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-				"s.patient_age, p.patient_id, p.patient_name, p.patient_birth_date, p.patient_sex, " +
+		String sql = "select distinct s.study_instance_uid, to_char(s.study_date, '%m/%d/%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+				"s.patient_age, p.patient_id, p.patient_name, to_char(p.patient_birth_date, '%m/%d/%Y'), p.patient_sex, " +
 				"p.ethnic_group, gs.project, " +
 				"count(gs.id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event "  
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
