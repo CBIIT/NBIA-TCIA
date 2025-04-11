@@ -727,6 +727,41 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       return rs;
   }
 
+  public List<Object[]> getSeriesSize_v4(String seriesInstanceUID, List<String> authorizedProjAndSites)
+          throws DataAccessException {
+  
+      if (authorizedProjAndSites == null || authorizedProjAndSites.isEmpty()){
+          return null;
+      }
+  
+      StringBuffer where = new StringBuffer();
+      Map<String, Object> params = new HashMap<>();
+  
+      String sql = "select sum(gi.dicom_size), s.image_count, " +
+                   addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
+                   " from general_series s join general_image_collection gi on s.id = gi.series_id " +
+                   " where s.visibility in ('1') ";
+  
+      if (seriesInstanceUID != null) {
+          where.append(" and UPPER(s.series_instance_uid) = :seriesInstanceUID");
+          params.put("seriesInstanceUID", seriesInstanceUID.toUpperCase());
+      }
+  
+      sql += where.toString();
+  
+      System.out.println("===== In nbia-dao, getSeriesSize_v4() - SQL is: " + sql);
+  
+      // Create the query and set parameters in one go
+      Query query = this.getHibernateTemplate()
+                        .getSessionFactory()
+                        .getCurrentSession()
+                        .createSQLQuery(sql)
+                        .setProperties(params);
+  
+      List<Object[]> rs = query.list();
+      return rs;
+  }
+
   @Transactional(propagation = Propagation.REQUIRED)
   public Collection<String> findDistinctModalitiesFromVisibleSeries() throws DataAccessException {
     String hql = "select distinct modality " + "from GeneralSeries "
@@ -1921,4 +1956,25 @@ public String getCollectionNameForSeriesInstanceUid(String seriesId) throws Data
     return collections.get(0);
 
 }
+
+private StringBuffer addAuthorizedProjAndSitesCaseStatement(List<String> authorizedProjAndSites) {
+  StringBuffer where = new StringBuffer();
+
+  if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+    where = where.append(" case when concat(s.project, '//', s.site) in (");
+
+    for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+      String str = projAndSites.next();
+      where.append(str);
+
+      if (projAndSites.hasNext()) {
+        where.append(",");
+      }
+    }
+    where.append(") then 1 else 0 end as authorized ");
+  }
+
+  return where;
+}
+
 }
