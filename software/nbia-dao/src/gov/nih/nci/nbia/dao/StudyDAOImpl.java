@@ -372,7 +372,7 @@ public class StudyDAOImpl extends AbstractDAO
     Query query = this.getHibernateTemplate()
         .getSessionFactory()
         .getCurrentSession()
-        .createSQLQuery(sql)
+        .createSQLQuery(sql + where.toString())
         .setProperties(params);
 
     List<Object[]> rs = query.list();
@@ -535,7 +535,7 @@ public class StudyDAOImpl extends AbstractDAO
     Query query = this.getHibernateTemplate()
         .getSessionFactory()
         .getCurrentSession()
-        .createSQLQuery(sql)
+        .createSQLQuery(sql + where.toString())
         .setProperties(params);
 
     List<Object[]> rs = query.list();

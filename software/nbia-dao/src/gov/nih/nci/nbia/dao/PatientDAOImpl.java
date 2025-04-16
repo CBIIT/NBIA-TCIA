@@ -335,7 +335,6 @@ public class PatientDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getPatientByCollectionAndModality_v4(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException
 	{
-		StringBuffer whereCondition = new StringBuffer();
 		StringBuffer where = new StringBuffer();
 		
 		if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
@@ -352,7 +351,9 @@ public class PatientDAOImpl extends AbstractDAO
       params.put("modality", modality.toUpperCase());
     }
 
-		String sql = "select distinct p.patient_id, " +  addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
+		String sql = "select distinct p.patient_id, " 
+      + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites)
+      + ", p.patient_name, p.patient_birth_date, p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description from patient as p, general_series as gs " +
 				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where;
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				

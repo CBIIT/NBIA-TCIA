@@ -37,6 +37,7 @@ public class PatientStudySeriesQuintuple {
     private int seriesPkId;
     private int studyPkId;
     private int patientPkId;
+    private Integer authorized = null;
     private String modality;
     private String bodyPart;
     private String species;
@@ -58,6 +59,20 @@ public class PatientStudySeriesQuintuple {
      */
     public void setPatientPkId(int patientPkId) {
         this.patientPkId = patientPkId;
+    }
+
+    /**
+     * @return Returns authorized.
+     */
+    public Integer getAuthorized() {
+        return authorized;
+    }
+
+    /**
+     * @param authorized The authorized value to set.
+     */
+    public void setAuthorized(Integer authorized) {
+        this.authorized= authorized;
     }
 
     public int getSeriesPkId() {
