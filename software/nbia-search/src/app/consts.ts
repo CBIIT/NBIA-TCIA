@@ -43,7 +43,7 @@ export const Consts = {
         API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS: 'getRestrictionsForSimpleSearch',
         API_MANIFEST_FROM_TEXT_SEARCH_RESULTS: 'getManifestForTextSearch',
         API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS: 'getRestrictionsForTextSearch',
-        API_CANCERIMAGINGARCHIVE_PROGRAM: 'https://cancerimagingarchive.net/api/v1/programs',
+        API_CANCERIMAGINGARCHIVE_PROGRAM: 'https://cancerimagingarchive.net/api/v1/programs?per_page=50',
 
         // API_SAVE_SHARED_LIST_URL: 'nbia-api/services/createSharedList',
 
