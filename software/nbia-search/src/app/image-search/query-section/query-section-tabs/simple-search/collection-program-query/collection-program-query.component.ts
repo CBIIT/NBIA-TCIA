@@ -231,7 +231,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             await this.commonService.sleep( Consts.waitTime );
         }
         this.loadingDisplayService.setLoading( false, 'Done updateCriteriaList' );
-        this.loadNbiaProgramList();
+        await this.loadNbiaProgramList();
 
         // ------------------------------------------------------------------------------------------
 
@@ -317,7 +317,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         );
 
          // Process URL query parameters
-         this.processUrlQueryParameters();
+        this.processUrlQueryParameters();
 
 
         // ------ END of subscribes ------
@@ -349,7 +349,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         ).subscribe(
             data => {
             const criteriaListQueryList = String(data).replace(/,$/, "").split(/\s*,\s*/);
-    
+           
             if (criteriaListQueryList.length > 0) {
                 this.missingCriteria = [];
                 const collectionsSet = new Set(criteriaListQueryList.map(name => name.toUpperCase()));
@@ -456,14 +456,15 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     /**
      * Loads the list of Collections to be used as selectable search TCIA-program in the 'Collections' TCIA-program panel in the Query section.
      */
-    private loadNbiaProgramList() {
+    async loadNbiaProgramList() : Promise<void> {
         this.loadingDisplayService.setLoading(true, 'Loading Manufacturer query data...');
-    
-        this.apiServerService.doGetNBIAProgram().pipe(
+        return new Promise<void>( ( resolve, reject ) => {
+            this.apiServerService.doGetNBIAProgram().pipe(
             takeUntil(this.ngUnsubscribe),
             catchError(err => {
                 console.error('Error fetching manufacturer values:', err);
                 this.loadingDisplayService.setLoading(false, 'Failed to load data');
+                reject(err);
                 return [];
             })
         ).subscribe(data => {
@@ -508,6 +509,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 console.warn('Received empty tciaProgram list from API.');
             }
             this.loadingDisplayService.setLoading(false, 'Done loading query data');
+            resolve();
+        });
         });
     }
 
