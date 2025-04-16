@@ -1402,6 +1402,25 @@ export class ApiServerService implements OnDestroy {
         return results;
     }
 
+    doGetNBIAProgram() {
+        let getUrl = Consts.API_CANCERIMAGINGARCHIVE_PROGRAM;
+
+        if (Properties.DEBUG_CURL) {
+            let curl = 'curl  -k \'' + getUrl + '\'';
+            console.log('doGet: ' + curl);
+        }
+
+        let results;
+        try {
+            results = this.httpClient.get(getUrl).pipe(timeout(Properties.HTTP_TIMEOUT));
+        } catch (e) {
+            // TODO react to error.
+            console.error('doGetNBIAProgram Exception: ' + e);
+        }
+
+        return results;
+    }
+
 
     downloadSeriesList(seriesList) {
         let query = seriesList + '&password=' + this.currentApiPassword + '&includeAnnotation=true';
