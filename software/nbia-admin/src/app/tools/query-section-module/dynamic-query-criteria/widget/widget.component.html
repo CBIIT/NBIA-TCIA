@@ -223,7 +223,7 @@
 
 
         <!-- ----- Calendar dates when collapsed ----- -->
-        <div class="ml-3" *ngIf="(! widgetShowCriteria) && criteriaCalendar && date0 !== undefined && date1 !== undefined">
+        <div class="ml-3" *ngIf="(! widgetShowCriteria) && criteriaCalendar && date0 != null && date1 != null">
             <span *ngIf="applyState">
                 *
             </span>
@@ -304,7 +304,7 @@
     <!-- TODO add font sizing -->
     <!-- ----- Subheading ----- -->
     <div
-        *ngIf="widgetShowCriteria  && criteriaSubheading !== undefined  && criteriaSubheading.length > 0 && (!criteriaSingleLineRadio)">
+        *ngIf="widgetShowCriteria  && criteriaSubheading != null  && criteriaSubheading.length > 0 && (!criteriaSingleLineRadio)">
         <span class="dynamic-query-subheading">{{criteriaSubheading}}</span>
     </div>
     <!-- ----- END Subheading ----- -->

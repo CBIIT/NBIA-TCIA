@@ -621,7 +621,7 @@ export class CartComponent implements OnInit, OnDestroy{
         let downloadQueryList: string[] = [];
 
         this.cart.forEach((item, index) => {
-            if (this.cartList[index] !== undefined) {
+            if (this.cartList[index] != null) {
                 item.disabled = this.cartList[index].disabled;
             }
 

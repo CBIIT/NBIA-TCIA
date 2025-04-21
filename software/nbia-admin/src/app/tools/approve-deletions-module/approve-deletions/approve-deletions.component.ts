@@ -53,7 +53,7 @@ export class ApproveDeletionsComponent implements OnInit, OnDestroy{
             .subscribe( ( data ) => {
                 this.userRoles = data;
                 if(
-                    this.userRoles !== undefined &&
+                    this.userRoles != null &&
                     this.userRoles.indexOf( 'NCIA.SUPER_CURATOR' ) > -1
                 ){
                     this.roleIsGood = true;

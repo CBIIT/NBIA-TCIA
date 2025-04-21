@@ -61,7 +61,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
             .subscribe( ( data ) => {
                 this.userRoles = data;
                 if(
-                    this.userRoles !== undefined &&
+                    this.userRoles != null &&
                     this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1
                 ){
                     this.roleIsGood = true;

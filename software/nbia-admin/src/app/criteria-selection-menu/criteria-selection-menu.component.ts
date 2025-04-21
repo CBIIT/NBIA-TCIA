@@ -67,7 +67,7 @@ this.elementsUsed = this.criteriaSelectionMenuService.getElementsUsed();
                             } else
 
                             // Required criteria
-                            if( (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired'] !== undefined) && (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired']) ){
+                            if( (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired'] != null) && (this.criteriaData[n]['criteriaObjects'][i]['configuration']['dynamicQueryCriteriaRequired']) ){
                                 // Add the widget
                                 this.omit[n] = false;
                                 this.or[n] = false;
@@ -858,9 +858,9 @@ this.criteriaSelectionMenuService.setRequiredCriteriaData( this.requiredCriteria
 
                 // Add the And or Or from the radio buttons in popup menu
                 // @TODO these should be constants.
-                if( this.and[n] !== undefined && this.and[n] ){
+                if( this.and[n] != null && this.and[n] ){
                     critJson0['configuration']['widgetAndOrOr'] = 'AND';
-                }else if( this.or[n] !== undefined && this.or[n] ){
+                }else if( this.or[n] != null && this.or[n] ){
                     critJson0['configuration']['widgetAndOrOr'] = 'OR';
                 }
 

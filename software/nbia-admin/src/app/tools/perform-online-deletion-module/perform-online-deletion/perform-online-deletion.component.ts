@@ -44,7 +44,7 @@ export class PerformOnlineDeletionComponent implements OnInit, OnDestroy{
         this.apiService.updatedUserRolesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.userRoles = data;
-                if( this.userRoles !== undefined && this.userRoles.indexOf( 'NCIA.DELETE_ADMIN' ) > -1 ){
+                if( this.userRoles != null && this.userRoles.indexOf( 'NCIA.DELETE_ADMIN' ) > -1 ){
                     this.roleIsGood = true;
                 }
             } );
