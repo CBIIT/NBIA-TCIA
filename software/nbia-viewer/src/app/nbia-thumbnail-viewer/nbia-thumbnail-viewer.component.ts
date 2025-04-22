@@ -210,7 +210,7 @@ console.log('MHL Cookie says user is guest.  Try to get a new token.');
                             }
                         );
 
-                        while( token === undefined ){
+                        while( token == null ){
                             await this.utilService.sleep( 50 );
                         }
                         if( token === null ){
@@ -254,7 +254,7 @@ console.log('MHL Cookie says user is guest.  Try to get a new token.');
                                 token = null;
                             }
                         );
-                        while( token === undefined ){
+                        while( token == null ){
                             await this.utilService.sleep( 50 );
                         }
                         if( token === null ){

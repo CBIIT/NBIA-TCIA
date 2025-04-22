@@ -3,7 +3,7 @@ import { CartService } from './cart.service';
 import { CommonService } from '@app/image-search/services/common.service';
 import { ConnectionBackend, Http, HttpModule } from '@angular/http';
 import { PersistenceService } from './persistence.service';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { ApiServerService } from '@app/image-search/services/api-server.service';
 import { ParameterService } from '@app/common/services/parameter.service';
 import { InitMonitorService } from '@app/common/services/init-monitor.service';

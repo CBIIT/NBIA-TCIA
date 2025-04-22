@@ -31,7 +31,7 @@ export class ToolTitleComponent implements OnInit{
     async ngOnInit() {
 
         // Wait for  @Input() currentTool to be populated
-        while( this.currentTool === undefined ){
+        while( this.currentTool == null ){
             await this.utilService.sleep( Consts.waitTime );
         }
 

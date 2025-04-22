@@ -107,7 +107,7 @@ export class EditLicenseComponent implements OnInit, OnDestroy{
             .subscribe( ( data ) => {
                 this.userRoles = data;
                 if(
-                    this.userRoles !== undefined &&
+                    this.userRoles != null &&
                     this.userRoles.indexOf(
                         'NCIA.MANAGE_COLLECTION_DESCRIPTION'
                     ) > -1

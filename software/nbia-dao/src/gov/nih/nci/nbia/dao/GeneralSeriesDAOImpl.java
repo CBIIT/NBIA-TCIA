@@ -1957,24 +1957,5 @@ public String getCollectionNameForSeriesInstanceUid(String seriesId) throws Data
 
 }
 
-private StringBuffer addAuthorizedProjAndSitesCaseStatement(List<String> authorizedProjAndSites) {
-  StringBuffer where = new StringBuffer();
-
-  if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
-    where = where.append(" case when concat(s.project, '//', s.site) in (");
-
-    for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
-      String str = projAndSites.next();
-      where.append(str);
-
-      if (projAndSites.hasNext()) {
-        where.append(",");
-      }
-    }
-    where.append(") then 1 else 0 end as authorized ");
-  }
-
-  return where;
-}
 
 }

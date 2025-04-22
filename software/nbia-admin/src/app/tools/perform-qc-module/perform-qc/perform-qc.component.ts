@@ -61,7 +61,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
             .subscribe( ( data ) => {
                 this.userRoles = data;
                 if(
-                    this.userRoles !== undefined &&
+                    this.userRoles != null &&
                     this.userRoles.indexOf( 'NCIA.MANAGE_VISIBILITY_STATUS' ) > -1
                 ){
                     this.roleIsGood = true;
@@ -103,7 +103,7 @@ export class PerformQcComponent implements OnInit, OnDestroy{
 
     async init(){
         // Make sure we are logged in
-        while( (this.accessTokenService.getAccessToken() === undefined) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+        while( (this.accessTokenService.getAccessToken() == null) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
         this.apiService.getRoles();

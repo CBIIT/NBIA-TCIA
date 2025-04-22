@@ -49,6 +49,20 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
         return subjectId;
     }
 
+    /**
+     * Set the authorized value 
+     */
+    public void setAuthorized(Integer authorized) {
+        this.authorized = authorized;
+    }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    public Integer getAuthorized() {
+        return authorized;
+    }
 
     /**
      * Set the project/collection for this patient.
@@ -307,4 +321,5 @@ public class PatientSearchResultWithModalityAndBodyPartImpl implements PatientSe
     private Map<String, HashSet<Integer>> timepoints = new HashMap<String, HashSet<Integer>>();
     private Integer totalNumberOfStudies;
     private Integer totalNumberOfSeries;
+    private Integer authorized = null;
 }

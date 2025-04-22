@@ -45,7 +45,7 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
     getLastFirstIndex(){
         this.firstElementIndex = 0;
         for( let f = 0; f < this.niceDisplayData.length; f++ ){
-            if( this.niceDisplayData[f] !== undefined ){
+            if( this.niceDisplayData[f] != null ){
                 this.firstElementIndex = f;
                 break;
             }
@@ -55,7 +55,7 @@ export class DisplayDynamicQueryComponent implements OnInit, OnDestroy{
     getLastElementIndex() {
         this.lastElementIndex = 0;
         for( let f = 0; f < this.niceDisplayData.length; f++ ){
-            if( this.niceDisplayData[f] !== undefined ){
+            if( this.niceDisplayData[f] != null ){
                 this.lastElementIndex = f;
             }
         }

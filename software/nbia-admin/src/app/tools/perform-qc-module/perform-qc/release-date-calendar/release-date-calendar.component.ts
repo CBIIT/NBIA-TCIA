@@ -54,7 +54,7 @@ export class ReleaseDateCalendarComponent implements OnInit{
 
 
     setDaysArray(){
-        if( this.date3 === undefined ){ // For when before it's been set
+        if( this.date3 == null ){ // For when before it's been set
             this.date3 = new Date();
         }else{
             this.date3 = new Date( this.year, this.month, this.day );

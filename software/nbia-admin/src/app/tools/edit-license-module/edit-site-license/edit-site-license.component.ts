@@ -89,7 +89,7 @@ export class EditSiteLicenseComponent implements OnInit{
                 this.collectionName = data['collectionName'];
                 this.siteName = data['siteName'];
 
-                if( data['licenseDTO'] === null || data['licenseDTO'] === undefined || data['licenseDTO']['longName'] === undefined ){
+                if( data['licenseDTO'] === null || data['licenseDTO'] == null || data['licenseDTO']['longName'] == null ){
                    // this.statusText = 'Warning: Could not get current license for this site'; // @TODO we should be able to remove statusText
                    // this.currentSelectedSiteLicenseLongName = this.longNameList[0];  // If they have no License use the first one until/unless they select another
                     this.currentSelectedSiteLicenseLongName = this.noLicText;

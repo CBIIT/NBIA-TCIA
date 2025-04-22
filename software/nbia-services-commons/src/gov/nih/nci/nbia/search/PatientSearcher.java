@@ -151,6 +151,117 @@ public class PatientSearcher {
         return returnList;
     }
 
+    public List<PatientSearchResultWithModilityAndBodyPart> searchForPatientsExtended_v4(DICOMQuery query) throws Exception {
+
+        Map<Integer, PatientSearchResultWithModalityAndBodyPartImpl> patients = new HashMap<Integer, PatientSearchResultWithModalityAndBodyPartImpl>();
+        long startTime = System.currentTimeMillis();
+
+        // Run the query
+        DICOMQueryHandler dqh = (DICOMQueryHandler)SpringApplicationContext.getBean("dicomQueryHandler");
+        List<PatientStudySeriesQuintuple> resultSets = dqh.findQuintles_v4(query);
+
+        Iterator<PatientStudySeriesQuintuple> iter = resultSets.iterator();
+
+        while (iter.hasNext()) {
+        	PatientStudySeriesQuintuple prs = (PatientStudySeriesQuintuple) iter.next();
+
+            Integer patientId = prs.getPatientPkId();
+            Integer studyId = prs.getStudyPkId();
+            Integer seriesId = prs.getSeriesPkId();
+            String modality = prs.getModality();
+            String bodyPart = prs.getBodyPart();
+            String species =prs.getSpecies();
+            String event = prs.getEventType();
+            Integer offset=prs.getEventOffset();
+            int authorized = prs.getAuthorized();
+
+            // Look to see if patient has already been encountered
+            PatientSearchResultWithModalityAndBodyPartImpl patient = patients.get(patientId);
+
+            if (patient != null) {
+                if (isModalityAll(query)) {
+					// Patient is already in list, just add series, modality and bodyPart data
+					patient.addSeriesForStudy(studyId, seriesId, modality);
+				}  else  {
+					patient.addSeriesForStudy(studyId, seriesId, null);
+				}
+				patient.addModalities(modality);
+                patient.addBodyParts(bodyPart);
+                patient.addSpecies(species);
+                patient.addTimepoints(event, offset);
+            } else {
+                // Need to add the patient to the list
+            	PatientSearchResultWithModalityAndBodyPartImpl patientDTO = new PatientSearchResultWithModalityAndBodyPartImpl();
+                patientDTO.setId(prs.getPatientPkId());
+
+                if (isModalityAll(query)) {
+					// Add the series and study to the list
+					patientDTO.addSeriesForStudy(studyId, seriesId, modality);
+				}   else  {
+					patientDTO.addSeriesForStudy(studyId, seriesId, null);
+				}
+				// Get the other patient data from the cache
+                StudyNumberDTO cachedPatientData = ApplicationFactory.getInstance().getStudyNumberMap().getStudiesForPatient(prs.getPatientPkId());
+                patientDTO.setTotalNumberOfStudies(cachedPatientData.getStudyNumber());
+                patientDTO.setTotalNumberOfSeries(cachedPatientData.getSeriesNumber());
+                patientDTO.setSubjectId(cachedPatientData.getPatientId());
+                patientDTO.setProject(cachedPatientData.getProject());
+                patientDTO.setAuthorized(authorized);
+                patientDTO.addModalities(modality);
+                patientDTO.addBodyParts(bodyPart);
+                patientDTO.addSpecies(species);
+                patientDTO.addTimepoints(event, offset);
+                patients.put(patientId, patientDTO);
+            }
+        }
+        List<PatientSearchResultWithModilityAndBodyPart> returnList=new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
+
+          
+
+
+        // Convert to a list and sort prior to returning
+        for (PatientSearchResultWithModalityAndBodyPartImpl patient:patients.values())
+        {
+            // Remove any that don't meet min study requirement
+            int minStudies = -1;
+            if (query.getMinNumberOfStudiesCriteria() != null) {
+                minStudies = query.getMinNumberOfStudiesCriteria().getMinNumberOfStudiesValue();
+            }
+        
+            int minStudyDates = -1;
+            String studyIdList = "";
+            if (query.getMinNumberOfStudyDatesCriteria() != null) {
+                minStudyDates = query.getMinNumberOfStudyDatesCriteria().getMinNumberOfStudyDatesValue();
+
+                StudyIdentifiers[] studyIdentifiers = patient.getStudyIdentifiers();
+
+                Set<Integer> uniqueStudyIds = new HashSet<>();
+
+                for (StudyIdentifiers study : studyIdentifiers) {
+                    uniqueStudyIds.add(study.getStudyIdentifier()); 
+                }
+                studyIdList = uniqueStudyIds.stream()
+                            .map(String::valueOf) // Convert int to String
+                            .collect(Collectors.joining(","));
+
+
+            }
+        
+            boolean meetsStudyCriteria = patient.getStudyIdentifiers().length > minStudies;
+            boolean meetsStudyDateCriteria = dqh.getStudyDateNumber(studyIdList) > minStudyDates;
+        
+            if (meetsStudyCriteria && meetsStudyDateCriteria) {
+                returnList.add(patient);
+            }
+        }
+        Collections.sort(returnList);
+
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        query.setElapsedTimeInMillis(elapsedTime);
+        logger.debug("Results returned and built into DTOs in " + elapsedTime +" ms.");
+
+        return returnList;
+    }
     public List<PatientSearchResultWithModilityAndBodyPart> searchForPatientsExtended(DICOMQuery query) throws Exception {
 
         Map<Integer, PatientSearchResultWithModalityAndBodyPartImpl> patients = new HashMap<Integer, PatientSearchResultWithModalityAndBodyPartImpl>();

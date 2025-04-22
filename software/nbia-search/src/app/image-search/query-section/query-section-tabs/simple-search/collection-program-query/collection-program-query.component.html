@@ -1,0 +1,204 @@
+<!-- ----------  This is the left side Collections list of check boxes.  ---------- -->
+
+<!-- -----  Tool top that shows the Collection description  ----- -->
+<nbia-tool-tip
+
+        (mouseover)="mouseOverToolTip()"
+        (mouseleave)="mouseleaveToolTip()"
+        (mouseout)="mouseleaveToolTip()"
+
+        [(showToolTip)]=showToolTip
+        [toolTipY]=toolTipY
+        [toolTipText]=toolTipText
+        [toolTipHeading]=toolTipHeading
+></nbia-tool-tip>
+
+<div class="query-panel">
+    <!-- ----------  Heading & hide/show buttons  ---------- -->
+    <div class="query-panel-heading">
+        <!-- Hide the Collections list.  Still show the heading (with this img to its left) -->
+        <span
+                *ngIf="showTciaProgramList"
+                class="clicker"
+                (click)="onShowTciaProgramListClick(false)"
+        >
+            <img class="chevron-down-icon" src="assets/images/TOOLS/chevron_down_red.png">
+            Collections
+        </span>
+
+        <span
+                *ngIf="!showTciaProgramList"
+                class="clicker"
+                (click)="onShowTciaProgramListClick(true)"
+        >
+            <img class="chevron-right-icon" src="assets/images/TOOLS/chevron_right_red.png">
+            Collections
+        </span>
+
+        <!-- Sort order buttons (alpha or num) -->
+        <span
+                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
+                class="sort-text"
+        >
+             &nbsp;&nbsp;Sort:
+             <label for="sortAlphaChecked">alpha
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSort"
+                         [checked]="sortAlphaChecked"
+                         id="sortAlphaChecked"
+                         (change)="onSetSort(1)"
+                 >
+             </label>
+             &nbsp;
+             <label for="sortNumChecked">num
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSort"
+                         [(checked)]="sortNumChecked"
+                         id="sortNumChecked"
+                         (change)="onSetSort(0)"
+                 >
+                </label>
+            </span>
+
+        <!--  Search the list of Collections (The red magnifying glass) -->
+        <label
+                class="search-glass-with-clear"
+                for="collectionsSearchText"
+                title="{{searchToolTip}}"
+        >
+            <img
+                    class="clicker application-menu-icon"
+                    src="assets/images/TOOLS/search_red_43px.png"
+                    alt="Search"
+                    (click)="onSearchGlassClick()"
+            >
+        </label>
+
+        <!-- Uncheck all the Collection criteria and restore their counts back to the full count in the database. -->
+        <label *ngIf="checkedCount > 0" class="red-clear">
+            <img
+                    class="clicker cart-button-icon"
+                    src="assets/images/TOOLS/clear_red.png"
+                    alt="Search"
+                    (click)="onCollectionsClearAllClick(false)"
+            >
+        </label>
+    </div>
+
+    <div [ngClass]="{ 'hide-div': !showTciaProgramList}">
+
+         <!-- -----  Criteria list search input (Red magnifying glass)  ----- -->
+         <div *ngIf="showSearch" class="search-box">
+
+            <input type="text" class="search-text-area" id="collectionsSearchText" placeholder="search"
+                   [ngClass]="{
+                       'box-with-focus':searchHasFocus
+                   }"
+                   [(ngModel)]="searchInput"
+                   (blur)="onSearchTextOutFocus(0)"
+                   (focus)="onSearchTextFocus(0)"
+                   (ngModelChange)="onSearchChange()">
+
+            <!-- The "X" to clear the search text -->
+            <span *ngIf="searchInput.length > 0"
+                  class="search-text-area-x close-x"
+                  (blur)="onSearchTextOutFocus(1)"
+                  (focus)="onSearchTextFocus(1)"
+                  (click)="onClearSearchInputClick()">X
+            </span>
+        </div>
+        <!-- -----  End Search input  ----- -->
+
+        <!-- ----------  The Less/More... clickers at the top  ---------- -->
+        <div *ngIf="
+            unCheckedCount > properties.CRITERIA_SHOW_COUNT && properties.USE_TCIAPROGRAMS_LESS_MORE
+        ">
+            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll"> {{unCheckedCount -
+            properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
+        </div> 
+
+        <div *ngFor="let program of (showAll ? tciaProgramList : tciaProgramList.slice(0, properties.CRITERIA_SHOW_COUNT)); let i = index" class="query-panel-checkboxes">
+
+            <div class="program-header" [ngStyle]="{
+                'border-bottom': expandedPrograms[i] ? '1px dashed #ccc' : 'none'
+              }"  >
+              <mat-icon class="expand-icon" (click)="toggleProgramExpand(i); $event.stopPropagation()">
+                {{ expandedPrograms[i] ? 'expand_more' : 'chevron_right' }}
+              </mat-icon>
+          
+              <mat-checkbox
+                [(ngModel)]="program.selected"
+                [indeterminate]="program.indeterminate"
+                (change)="onProgramCheckboxChange(i)"
+                (click)="$event.stopPropagation()"
+                color="primary"
+              ></mat-checkbox>
+          
+              <span class="program-title">
+                {{ program.programName }}
+                <span class="count-span">({{ program.totalCount }}/{{ program.totalUnfilteredCount }})</span>
+              </span>
+            </div>
+          
+            <!-- Collections -->
+            <div *ngIf="expandedPrograms[i]">
+                <div *ngFor="let collection of (showAllCollections[i] ? 
+                    program.relatedCollectionsList : program.relatedCollectionsList.slice(0, properties.CRITERIA_SHOW_COUNT )) ; let j = index">
+                    <div class="collection-row">
+                        <!-- Left side: Checkbox and label -->
+                        <div class="left-info">
+                            
+                        <span>
+                            <input type="checkbox"
+                                    class="check-box"
+                                    id="checkbox-collection{{i}}"
+                                    [(ngModel)]="collection.selected"
+                                    (change)="onCollectionCheckboxChange(i,j)"
+                            >
+                        </span>
+
+                        <!-- <mat-checkbox class="check-box checkbox-collection"
+                        id="checkbox-collection{{j}}"
+                        [(ngModel)]="collection.selected"
+                        (change)="onCollectionCheckboxChange(i,j)"
+                        color="primary"
+                        >
+                        </mat-checkbox> -->
+                    
+                        <label
+                        class="criteria-entry-text"
+                        [attr.for]="'checkbox-collection'+j"
+                        [title]="collection.criteria" >
+                        {{ collection.criteria }}
+                        </label>        
+                        &nbsp;<img
+                            src="assets/images/icons/info_blue_32px.png"
+                            class="filter-red mx-1"
+                            (click)="onCollectionDescriptionClick($event, collection.criteria )"
+                            title="Collection description"
+                            >
+                        </div>
+                        <div class="count-box-wrapper">
+                            
+                            <span  [ngClass]="{
+                            'count-box': collection.count > 0,
+                            'count-box_zero': collection.count <= 0
+                            }">{{ collection.count }}/{{ collection.unfilteredCount }}</span>
+                        </div>
+                    </div>
+                
+                </div>
+                   <!-- Toggle Link -->
+                <div *ngIf="program.relatedCollectionsList.length > properties.CRITERIA_SHOW_COUNT " class="ml-4">
+                 <a class="text-primary cursor-pointer" (click)="toggleCollectionVisibility(i)">
+                {{ showAllCollections[i] ? 'Less...' : (program.relatedCollectionsList.length - properties.CRITERIA_SHOW_COUNT) + ' more...' }}
+                </a>
+                </div>
+            </div>
+          </div>
+    </div>
+    <!-- ----------  This is the left side Collections list of check boxes.  ---------- -->
+</div>

@@ -63,6 +63,14 @@ export class UtilService{
         return false;
     }
 
+    // In a util service or inside your component
+    normalizeName(name: string): string {
+        if (!name) return '';
+        return name
+        .toLowerCase()
+        .replace(/[\s_-]+/g, '')  // remove spaces, dashes, underscores
+        .trim();
+    }
 
     copyCriteriaObjectArray( origObject ) {
         if( origObject === null ){

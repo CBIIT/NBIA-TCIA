@@ -36,7 +36,7 @@ export class CineModeBravoService{
     openCineMode( series, collectionSite, searchResultsIndex ) {
 
         // For "Next/Skip" we don't always have collectionSite  @TODO clean this up so that we don't bother sending/receiving collectionSite, it is in series['collectionSite']
-        if( collectionSite === undefined || collectionSite.length < 1){
+        if( collectionSite == null || collectionSite.length < 1){
             collectionSite = series['collectionSite'];
         }
         this.displayCineModeBravoImagesEmitter.emit( {
@@ -69,7 +69,7 @@ export class CineModeBravoService{
      * @see SearchResultsSectionBravoComponent.hideShowCineMode()
      */
     hideCineMode( s? ) {
-        if( s === undefined ){
+        if( s == null ){
             this.hideCine = !this.hideCine;
         }else{
             this.hideCine = s;

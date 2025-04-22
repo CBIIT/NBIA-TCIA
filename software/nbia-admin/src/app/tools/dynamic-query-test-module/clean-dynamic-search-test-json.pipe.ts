@@ -7,7 +7,7 @@ export class CleanDynamicSearchTestJsonPipe implements PipeTransform {
 
 
     transform(value: string): any {
-        if (value === undefined) {
+        if (value == null) {
             return null;
         }
         let result: string = value.replace(/"sequenceNumber.*/g, '')
