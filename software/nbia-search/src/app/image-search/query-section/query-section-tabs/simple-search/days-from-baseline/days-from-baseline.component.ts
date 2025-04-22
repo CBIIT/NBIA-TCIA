@@ -348,7 +348,7 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
             return '';
         }
         let val = this.searchResultsMinMaxTimePoints['minTimepoints'][event];
-        if( val !== undefined ){
+        if( val != null ){
             return val;
         }
         return '';

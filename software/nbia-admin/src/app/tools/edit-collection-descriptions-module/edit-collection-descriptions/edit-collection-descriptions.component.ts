@@ -223,7 +223,7 @@ export class EditCollectionDescriptionsComponent implements OnInit, OnDestroy{
 
     async init(){
         // Make sure we are logged in
-        while( (this.accessTokenService.getAccessToken() === undefined) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
+        while( (this.accessTokenService.getAccessToken() == null) || this.accessTokenService.getAccessToken() <= TokenStatus.NO_TOKEN_YET ){
             await this.utilService.sleep( Consts.waitTime );
         }
 

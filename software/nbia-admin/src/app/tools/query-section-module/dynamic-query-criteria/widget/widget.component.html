@@ -483,16 +483,16 @@
             *ngIf="criteriaApplyButton"
             [disabled]="(! haveInput) &&      (
                 (
-                    (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
-                    (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                    (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) &&
+                    (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                 )
                 ||
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
                         (
-                            (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) ||
-                            (date1 === undefined || date1['formatted']  === undefined|| date1['formatted'].length < 1)
+                            (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) ||
+                            (date1 == null || date1['formatted']  == null|| date1['formatted'].length < 1)
                         ) &&
                         ( ! criteriaCalendarAllowOneEmpty )
                     )
@@ -515,16 +515,16 @@
              [ngClass]="{
                      'disabled-text':             (
                 (
-                    (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
-                    (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                    (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) &&
+                    (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                 )
                 ||
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
                             (
-                                (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) ||
-                                (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                                (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) ||
+                                (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                             ) &&
                             ( ! criteriaCalendarAllowOneEmpty )
                     )
@@ -541,16 +541,16 @@
                 id="list-checkbox-cal-{{sequenceNumber}}"
                 [disabled]="            (
                 (
-                    (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
-                    (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                    (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) &&
+                    (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                 )
                 ||
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
                             (
-                                (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) ||
-                                (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                                (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) ||
+                                (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                             ) &&
                             ( ! criteriaCalendarAllowOneEmpty )
                     )

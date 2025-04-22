@@ -62,7 +62,7 @@ export class QuerySectionComponent implements OnInit, OnDestroy{
 
         // @TODO explain why this is being done in this location
         let requiredCriteriaData = undefined;
-        while( requiredCriteriaData === undefined){
+        while( requiredCriteriaData == null){
             await this.utilService.sleep( Consts.waitTime );
             requiredCriteriaData = this.criteriaSelectionMenuService.getRequiredCriteriaData();
         }

@@ -273,7 +273,7 @@ export class WidgetCalendarBravoComponent implements OnInit, OnDestroy{
     }
 
     isToday( d, m? ){
-        if( m === undefined ){
+        if( m == null ){
             m = this.month;
         }
         /*

@@ -33,7 +33,7 @@
                         *ngIf="
                             showDicomData &&
                             ((!!dicomData && dicomData.length <= 1) ||
-                                dicomData === undefined)
+                                dicomData == null )
                         "
                     >
                         <span class="cine-mode-progress-bar-data-loading-text"

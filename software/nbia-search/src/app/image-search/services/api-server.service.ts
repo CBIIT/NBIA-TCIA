@@ -1105,7 +1105,7 @@ export class ApiServerService implements OnDestroy {
      * @param accessToken
      */
     doPost(queryType, query, accessToken ?) {
-        if (accessToken === undefined) {
+        if (accessToken == null) {
             accessToken = this.accessToken;
         }
 
@@ -1495,7 +1495,7 @@ export class ApiServerService implements OnDestroy {
      */
     getAccessToken(user, password, secret): Observable<any> {
         // Guest user
-        if( user === undefined){
+        if( user == null){
             user = Properties.DEFAULT_USER;
             password = Properties.DEFAULT_PASSWORD;
         }

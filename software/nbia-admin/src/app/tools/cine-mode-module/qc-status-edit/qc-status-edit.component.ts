@@ -154,7 +154,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     async updateSiteList(){
         let runaway = 10;
 
-        while( (this.seriesData === undefined) && runaway > 0 ){
+        while( (this.seriesData == null) && runaway > 0 ){
             runaway--;
             await this.utilService.sleep( 500 );
         }

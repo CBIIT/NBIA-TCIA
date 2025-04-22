@@ -182,8 +182,8 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
         let runaway = 60;
         this.apiService.getSites(this.selectedSiteIdArray);
     
-        while ((this.selectedSiteIdArray === undefined || 
-                this.selectedSiteIdArray.length === undefined || 
+        while ((this.selectedSiteIdArray == null || 
+                this.selectedSiteIdArray.length == null || 
                 this.selectedSiteIdArray.length < 1) && runaway > 0) {
             runaway--;
             await this.utilService.sleep(500);

@@ -110,7 +110,7 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
 
 
     isStudyInThisSubject( study ) {
-        if( study === undefined )
+        if( study == null )
         {
             return false;
         }

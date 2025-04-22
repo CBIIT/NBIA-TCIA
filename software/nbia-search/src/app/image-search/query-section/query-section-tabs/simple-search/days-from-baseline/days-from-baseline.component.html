@@ -70,8 +70,8 @@
 
                                     *ngFor="let eventType of eventTypeList; let c = index"
                                     [ngClass]="{
-                                        'disabled': (searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined) &&
-                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined) &&
+                                        'disabled': (searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] == null) &&
+                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] == null) &&
                                          c > 0
                                     }"
                                     (click)="onEventTypeDropdownClick(c)"
@@ -86,8 +86,8 @@
                                         &nbsp;Available range: {{searchResultsMinMaxTimePoints['minTimepoints'][eventType]}}&nbsp;To&nbsp;{{searchResultsMinMaxTimePoints['maxTimepoints'][eventType]}}
                                     </span>
                                     <span
-                                            *ngIf="(searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] === undefined) &&
-                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] === undefined) &&
+                                            *ngIf="(searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] == null) &&
+                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] == null) &&
                                       c > 0">
                                         &nbsp;Available range:&nbsp;N/A
                                     </span>

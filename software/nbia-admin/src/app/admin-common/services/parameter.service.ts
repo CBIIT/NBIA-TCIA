@@ -66,7 +66,7 @@ export class ParameterService{
             //let tokens = this.route.snapshot.queryParams[Consts.URL_KEY_TOKEN];
             // Attempt to retrieve the tokens from local storage
             let tokens = localStorage.getItem(Consts.URL_KEY_TOKEN);
-            if( tokens !== undefined){
+            if( tokens != null){
                 Properties.HAVE_URL_TOKEN = true;
 
                 var tokenParts = tokens.split( ':' );

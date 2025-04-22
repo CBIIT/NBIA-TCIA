@@ -219,7 +219,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         this.criteriaSubheading = this.queryCriteriaData['dynamicQueryCriteriaSubHeading'];
         this.criteriaApplyButton = this.queryCriteriaData['dynamicQueryCriteriaApplyButton'];
         this.criteriaApplyCheckbox = this.queryCriteriaData['dynamicQueryCriteriaApplyCheckbox'];
-        if( this.criteriaApplyCheckbox === undefined ){
+        if( this.criteriaApplyCheckbox == null ){
             this.criteriaApplyCheckbox = false;
         }
         this.criteriaApplyText = this.queryCriteriaData['dynamicQueryCriteriaApplyText'];
@@ -257,11 +257,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
             this.widgetType = WIDGET_TYPE.CALENDAR;
         }
         this.criteriaCalendarPrompt0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPrompt0'];
-        if( this.criteriaCalendarPrompt0 === undefined ){
+        if( this.criteriaCalendarPrompt0 == null ){
             this.criteriaCalendarPrompt0 = '';
         }
         this.criteriaCalendarPrompt1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPrompt1'];
-        if( this.criteriaCalendarPrompt1 === undefined ){
+        if( this.criteriaCalendarPrompt1 == null ){
             this.criteriaCalendarPrompt1 = '';
         }
         this.criteriaCalendarPlaceHolder0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder0'];

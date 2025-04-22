@@ -470,7 +470,7 @@ export class CartComponent implements OnInit, OnDestroy{
                 this.apiServerService.downloadSeriesList( this.seriesListForDownloadQuery ).subscribe(
                     data_inner => {
                         let databasketId = data_inner.match(/databasketId=(.*)/);
-                        if( databasketId[1] === undefined ){
+                        if( databasketId[1] == null ){
                             console.error('Error can not get databasketId from manifest data.');
                         }
                         let tciaManifestFile = new Blob( [data_inner], { type: 'application/x-nbia-manifest-file' } );

@@ -694,7 +694,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
         this.apiServerService.doPost(Consts.API_MANIFEST_FROM_SEARCH_RESULTS, this.commonService.getDownloadManifestQuery(), this.apiServerService.showToken()).subscribe(
             (manifestData: any) => {
                 let databasketId = manifestData.match(/databasketId=(.*)/);
-                if (databasketId[1] === undefined) {
+                if (databasketId[1] == null) {
                     console.error('Error can not get databasketId from manifest data.');
                 }
 
@@ -721,7 +721,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
         this.apiServerService.doPost(Consts.API_MANIFEST_FROM_TEXT_SEARCH_RESULTS, 'textValue=' + this.apiServerService.getTextSearchQueryHold(), this.apiServerService.showToken()).subscribe(
             (manifestData: any) => {
                 let databasketId = manifestData.match(/databasketId=(.*)/);
-                if (databasketId[1] === undefined) {
+                if (databasketId[1] == null) {
                     console.error('Error can not get databasketId from manifest data.');
                 }
 
