@@ -300,6 +300,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                     this.updateCheckboxCount();
                 }else{
                     this.resetAll();
+                    this.updateCheckboxCount();
                 }
                 this.initMonitorService.setCollectionsRunning( false );
             }
@@ -1037,7 +1038,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
      * To reset everything to it's initial state after a new user has logged in.
      */
     resetAll() {
-        //this.updateTciaProgramList();
+        this.updateTciaProgramList();
         this.onCollectionsClearAllClick( true ); // true will keep the updateQuery from being called.
     }
 
