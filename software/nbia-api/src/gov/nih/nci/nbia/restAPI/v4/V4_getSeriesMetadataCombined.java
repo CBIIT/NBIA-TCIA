@@ -65,4 +65,5 @@ public class V4_getSeriesMetadataCombined extends getData {
         };
 
         return formatResponse("CSV-DOWNLOAD", results, columns);
+    }
 }
