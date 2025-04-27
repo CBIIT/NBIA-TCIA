@@ -67,12 +67,12 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     /**
      * Used in the HTML when calculating how many criteria to display.  Checked criteria are always shown.
      */
-    unCheckedCount;
+    uncheckedProgramCount = 1;
 
     /**
      * Used in the HTML when calculating how many criteria to display.  Checked criteria are always shown.
      */
-    checkedCount;
+    checkedProgramCount = 0;
 
     /**
      * Tracks which criteria have been selected, used in the code, and the HTML.
@@ -296,10 +296,11 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
                 // Was there a search passed in with the URL
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
-                    this.updateTciaProgramList();
+                    this.initTciaProgramList();
                     this.updateCheckboxCount();
                 }else{
-                    this.resetAll();
+                    this.initTciaProgramList();
+                    this.onCollectionsClearAllClick( true ); // true will keep the updateQuery from being called.
                     this.updateCheckboxCount();
                 }
                 this.initMonitorService.setCollectionsRunning( false );
@@ -328,9 +329,9 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
        // this.setInitialTciaProgramList();
 
         if( !this.utilService.isNullOrUndefined( this.tciaProgramList ) ){
-            this.unCheckedCount = this.tciaProgramList.length;
+            this.uncheckedProgramCount = this.tciaProgramList.length;
         }else{
-            this.unCheckedCount = 0;
+            this.uncheckedProgramCount = 0;
         }
 
         // Get persisted showTciaProgramList value.  Used to show, or collapse this category of criteria in the UI.
@@ -486,25 +487,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 }).sort((a, b) => (a.programName ?? '').localeCompare(b.programName ?? '', undefined, { sensitivity: 'base' }));
                 // init time, run only once
                 console.log('this.tciaProgramList one time - 1');
-                this.updateCriteriaList();
-                this.initProgramListWithCounts(this.tciaProgramList, this.criteriaList);
-                this.tciaProgramListHold = [...this.tciaProgramList];
-
-                this.showAllCollections = new Array(this.tciaProgramList.length).fill(false);
-                this.expandedPrograms = new Array(this.tciaProgramList.length).fill(false);
-                this.completeTciaProgramList = this.tciaProgramList.map(item => ({
-                    ...item,
-                    count: item.relatedCollectionsList.length
-                }));
-                this.completeTciaProgramListHold = this.tciaProgramList.map(item => ({
-                    ...item,
-                    count: item.relatedCollectionsList.length
-                }));
-                if( !this.utilService.isNullOrUndefined( this.tciaProgramList ) ){
-                    this.unCheckedCount = this.tciaProgramList.length;
-                }else{
-                    this.unCheckedCount = 0;
-                }
+                this.initTciaProgramList();
                 
             } else {
                 console.warn('Received empty tciaProgram list from API.');
@@ -513,6 +496,28 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             resolve();
         });
         });
+    }
+
+    initTciaProgramList() {
+        this.updateCriteriaList();
+        this.initProgramListWithCounts(this.tciaProgramList, this.criteriaList);
+        this.tciaProgramListHold = [...this.tciaProgramList];
+
+        this.showAllCollections = new Array(this.tciaProgramList.length).fill(false);
+        this.expandedPrograms = new Array(this.tciaProgramList.length).fill(false);
+        this.completeTciaProgramList = this.tciaProgramList.map(item => ({
+            ...item,
+            count: item.relatedCollectionsList.length
+        }));
+        this.completeTciaProgramListHold = this.tciaProgramList.map(item => ({
+            ...item,
+            count: item.relatedCollectionsList.length
+        }));
+        if( !this.utilService.isNullOrUndefined( this.tciaProgramList ) ){
+            this.uncheckedProgramCount = this.tciaProgramList.length;
+        }else{
+            this.uncheckedProgramCount = 0;
+        }
     }
 
     private setOriginalString(value: any): string {
@@ -1022,13 +1027,13 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
     updateCheckboxCount() {
         let len = this.tciaProgramList.length;
-        this.unCheckedCount = 0;
-        this.checkedCount = 0;
+        this.uncheckedProgramCount = 0;
+        this.checkedProgramCount = 0;
         for( let f = 0; f < len; f++ ){
             if( this.tciaProgramList[f].selected || this.tciaProgramList[f].indeterminate ){
-                this.checkedCount++;
+                this.checkedProgramCount++;
             }else{
-                this.unCheckedCount++;
+                this.uncheckedProgramCount++;
             }
         }
     }
@@ -1057,8 +1062,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             relatedCollectionsList: resetCollections,
           };
         });
-        this.unCheckedCount = this.tciaProgramList.length;
-        this.checkedCount = 0;
+        this.uncheckedProgramCount = this.tciaProgramList.length;
+        this.checkedProgramCount = 0;
       }
 
 
@@ -1076,8 +1081,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         //       collection.selected = false;
         //     });
         //   });
-        this.checkedCount = 0;
-        this.unCheckedCount = this.tciaProgramList.length;
+        this.checkedProgramCount = 0;
+        this.uncheckedProgramCount = this.tciaProgramList.length;
         this.apiServerService.refreshCriteriaCounts();
 
         if( !totalClear ){

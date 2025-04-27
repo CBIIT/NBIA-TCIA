@@ -122,12 +122,6 @@
   border-top: 2px solid #ccc
 }
 
-.expand-icon {
-  font-size: 20px;
-  margin-right: 8px;
-  color: #444;
-}
-
 .program-title {
   margin-left: 8px;
 }
@@ -151,6 +145,11 @@
   cursor: pointer;
   vertical-align: middle;
   padding-left: 5px;
+  transition: transform 0.3s ease; /* Smooth transition */
+  transform: rotate(0deg); /* Default not rotated */
+}
+.expand-icon.rotated {
+  transform: rotate(90deg); /* Rotate 90 degrees when expanded */
 }
 
 .criteria-entry-text {

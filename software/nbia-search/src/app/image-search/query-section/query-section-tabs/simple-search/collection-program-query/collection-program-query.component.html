@@ -77,7 +77,7 @@
         </label>
 
         <!-- Uncheck all the Collection criteria and restore their counts back to the full count in the database. -->
-        <label *ngIf="checkedCount > 0" class="red-clear">
+        <label *ngIf="checkedProgramCount > 0" class="red-clear">
             <img
                     class="clicker cart-button-icon"
                     src="assets/images/TOOLS/clear_red.png"
@@ -113,20 +113,21 @@
 
         <!-- ----------  The Less/More... clickers at the top  ---------- -->
         <div *ngIf="
-            unCheckedCount > properties.CRITERIA_SHOW_COUNT && properties.USE_TCIAPROGRAMS_LESS_MORE
+            uncheckedProgramCount > properties.CRITERIA_SHOW_COUNT && properties.USE_TCIAPROGRAMS_LESS_MORE
         ">
-            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll"> {{unCheckedCount -
-            properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
+            <a (click)="onMoreClick()" class="moreOrLess" *ngIf="!showAll"> {{uncheckedProgramCount -
+           properties.CRITERIA_SHOW_COUNT }}&nbsp;More...</a>
             <a (click)="onLessClick()" class="moreOrLess" *ngIf="showAll">&nbsp;&nbsp;&nbsp;&nbsp;Less...</a>
         </div> 
 
-        <div *ngFor="let program of (showAll ? tciaProgramList : tciaProgramList.slice(0, properties.CRITERIA_SHOW_COUNT)); let i = index" class="query-panel-checkboxes">
-
+        <div *ngFor="let program of (showAll ? tciaProgramList : tciaProgramList.slice(0, properties.CRITERIA_SHOW_COUNT + (checkedProgramCount || 0))); let i = index" class="query-panel-checkboxes">
             <div class="program-header" [ngStyle]="{
                 'border-bottom': expandedPrograms[i] ? '1px dashed #ccc' : 'none'
               }"  >
-              <mat-icon class="expand-icon" (click)="toggleProgramExpand(i); $event.stopPropagation()">
-                {{ expandedPrograms[i] ? 'expand_more' : 'chevron_right' }}
+              <mat-icon class="expand-icon" [class.rotated]="expandedPrograms[i]" 
+              (click)="toggleProgramExpand(i); $event.stopPropagation()">
+              chevron_right
+                <!-- {{ expandedPrograms[i] ? 'expand_more' : 'chevron_right' }} -->
               </mat-icon>
           
               <mat-checkbox
@@ -154,23 +155,15 @@
                         <span>
                             <input type="checkbox"
                                     class="check-box"
-                                    id="checkbox-collection{{i}}"
+                                    id="checkbox-collection-{{i}}-{{j}}"
                                     [(ngModel)]="collection.selected"
                                     (change)="onCollectionCheckboxChange(i,j)"
                             >
                         </span>
-
-                        <!-- <mat-checkbox class="check-box checkbox-collection"
-                        id="checkbox-collection{{j}}"
-                        [(ngModel)]="collection.selected"
-                        (change)="onCollectionCheckboxChange(i,j)"
-                        color="primary"
-                        >
-                        </mat-checkbox> -->
                     
                         <label
                         class="criteria-entry-text"
-                        [attr.for]="'checkbox-collection'+j"
+                        [attr.for]="'checkbox-collection-'+i+'-'+j"
                         [title]="collection.criteria" >
                         {{ collection.criteria }}
                         </label>        
