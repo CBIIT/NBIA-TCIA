@@ -143,6 +143,57 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
    *            Body Part Examined
    */
   @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> getModalityValues_v4(String collection, String bodyPart, List<String> authorizedProjAndSites)
+    throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }		
+
+    String sql = "select distinct(upper(modality)) from general_series s where visibility in ('1') ";
+    String order = " order by upper(modality)";
+    StringBuffer where = new StringBuffer();
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (bodyPart != null) {
+      where.append(" and UPPER(s.body_part_examined)=:bodyPart");
+      params.put("bodyPart", bodyPart.toUpperCase());
+    }
+
+    sql = sql + where.toString() + order;
+
+    System.out.println(
+        "===== In nbia-dao, GeneralSeriesDAOImpl:getModalityValues_v4() - downloadable visibility sql is: " + sql);
+        
+    // Create the query and set parameters in one go
+
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+    return rs;
+
+  }
+  /**
+   * Fetch set of Modality through project, ie. collection, and bodyPartExamined
+   * This method is used for NBIA Rest API.
+   * 
+   * @param collection
+   *            A label used to name a set of images collected for a specific
+   *            trial or other reason. Assigned during the process of curating the
+   *            data. The info is kept under project column
+   * @param bodyPart
+   *            Body Part Examined
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<String> getModalityValues(String collection, String bodyPart, List<String> authorizedProjAndSites)
     throws DataAccessException {
 
@@ -183,6 +234,56 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     return rs;
   }
 
+  /**
+   * Fetch set of body part values through project, ie. collection, and modality
+   * This method is used for NBIA Rest API.
+   * 
+   * @param collection
+   *            A label used to name a set of images collected for a specific
+   *            trial or other reason. Assigned during the process of curating the
+   *            data. The info is kept under project column
+   * @param modality
+   *            Body Part Examined
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> getBodyPartValues_v4(String collection, String modality, List<String> authorizedProjAndSites)
+    throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }				
+
+    String sql = "select distinct(upper(body_part_examined)) from general_series s where visibility in ('1') ";
+    String order = " order by upper(body_part_examined)";
+    Map<String, Object> params = new HashMap<>();
+
+    StringBuffer where = new StringBuffer();
+    if (collection != null) {
+      where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (modality != null) {
+      where.append(" and UPPER(s.modality)=:modality");
+      params.put("modality", modality.toUpperCase());
+    }
+
+    sql = sql + where.toString() + order;
+
+    System.out.println(
+        "===== In nbia-dao, GeneralSeriesDAOImpl:getBodyPartValues_v4() - downloadable visibility sql is: " + sql);
+
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+    return rs;
+  }
   /**
    * Fetch set of body part values through project, ie. collection, and modality
    * This method is used for NBIA Rest API.
@@ -237,6 +338,64 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     return rs;
   }
 
+  /**
+   * Fetch set of manufacturer names through project, ie. collection, bodyPart and
+   * modality This method is used for NBIA Rest API.
+   * 
+   * @param collection
+   *            A label used to name a set of images collected for a specific
+   *            trial or other reason. Assigned during the process of curating the
+   *            data. The info is kept under project column
+   * @param modality
+   *            Modality
+   * @param bodyPart
+   *            Body Part Examined
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> getManufacturerValues_v4(String collection, String modality, String bodyPart,
+      List<String> authorizedProjAndSites) throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }
+
+    StringBuffer where = new StringBuffer();
+    String sql = "select distinct(upper(e.manufacturer)) from general_series s "
+      + "join general_equipment e on s.general_equipment_pk_id = e.general_equipment_pk_id " 
+      + "where s.visibility in ('1') ";
+    String order = " order by upper(e.manufacturer)";
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (modality != null) {
+      where.append(" and UPPER(s.modality)=:modality");
+      params.put("modality", modality.toUpperCase());
+    }
+    if (bodyPart != null) {
+      where = where.append(" and UPPER(s.body_part_examined)=:bodyPart");
+      params.put("bodyPart", bodyPart.toUpperCase());
+    }
+
+    sql = sql + where.toString() + order;
+
+    System.out.println(
+        "===== In nbia-dao, GeneralSeriesDAOImpl:getManufacturerValues_v4() - downloadable visibility sql is: "
+        + sql);
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+    return rs;
+  }
   /**
    * Fetch set of manufacturer names through project, ie. collection, bodyPart and
    * modality This method is used for NBIA Rest API.

@@ -180,7 +180,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<Object[]> collectionQuery_v4(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-	    String SQLQuery ="select dp.project, count(distinct p.patient_pk_id) thecoun, "  
+	    String SQLQuery ="select dp.project, count(distinct p.patient_pk_id) thecount, "  
       + processAuthorizationCaseStatement(criteria.getAuth())
       + " from patient p, trial_data_provenance dp, general_series gs " 
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id "
@@ -368,7 +368,9 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     private List<Object[]> bodyPartQuery_v4(ValuesAndCountsCriteria criteria){
 
       StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
-	    String SQLQuery="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs where VISIBILITY in ('1') ";
+	    String SQLQuery="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs where "
+        + "p.trial_dp_pk_id = dp.trial_dp_pk_id and p.patient_pk_id = gs.patient_pk_id "
+        + "and VISIBILITY in ('1') ";
         
       Map<String, Object> params = new HashMap<>();
 
@@ -391,6 +393,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
           .setProperties(params);
 
       List<Object[]> rs = query.list();
+      for (Object[] row : rs) {
+        if (row[0] == null || row[0].toString().trim().isEmpty()) {
+            row[0] = "NOT SPECIFIED"; 
+        }
+}
 		  return rs;
     }
 	@Transactional(propagation=Propagation.REQUIRED)

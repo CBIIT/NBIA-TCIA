@@ -315,6 +315,20 @@ public class getData {
 		return list.get(0);
 	}
 
+	protected List<String> getModalityValues_v4(String collection, String bodyPart, List<String> authorizedCollections) {
+		List<String> results = null;
+
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO) SpringApplicationContext
+				.getBean("generalSeriesDAO");
+		try {
+			results = tDao.getModalityValues_v4(collection, bodyPart,
+					authorizedCollections);
+		} catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<String>) results;
+	}
+
 	protected List<String> getModalityValues(String collection, String bodyPart, List<String> authorizedCollections) {
 		List<String> results = null;
 
@@ -329,6 +343,19 @@ public class getData {
 		return (List<String>) results;
 	}
 
+
+	protected List<String> getBodyPartValues_v4(String collection, String modality, List<String> authorizedCollections) {
+		List<String> results = null;
+
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		try {
+			results = tDao.getBodyPartValues_v4(collection, modality, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<String>) results;
+	}
 
 	protected List<String> getBodyPartValues(String collection, String modality, List<String> authorizedCollections) {
 		List<String> results = null;
@@ -354,6 +381,19 @@ public class getData {
 			ex.printStackTrace();
 		}
 		return (List<String>) results;
+	}
+
+	protected List<String> getManufacturerValues_v4(String collection, String modality, String bodyPart, List<String> authorizedCollections) {
+		List<String> results = null;
+
+		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
+		try {
+			results = tDao.getManufacturerValues_v4(collection, modality, bodyPart, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
 	}
 
 	protected List<String> getManufacturerValues(String collection, String modality, String bodyPart, List<String> authorizedCollections) {
