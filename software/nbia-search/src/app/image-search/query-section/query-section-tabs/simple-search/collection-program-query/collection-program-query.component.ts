@@ -926,6 +926,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.searchHasFocus = true;
         this.searchInput = '';
         this.onSearchChange();
+        this.sortTciaProgramListPrograms();
+        this.sortTciaProgramList();
     }
 
     /**
@@ -1098,6 +1100,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         // Clear the criteria search (The magnifying glass)
         this.showSearch = false;
         this.searchInput = '';
+        this.showAll = false;
         //this.onSearchChange();
 
 
@@ -1201,8 +1204,6 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         // (Re)sort the list because a checked criteria is higher than unchecked.
         this.sortNumChecked = sortCriteria === 0;
         this.persistenceService.put( this.persistenceService.Field.COLLECTIONS_SORT_BY_COUNT, this.sortNumChecked );
-        //this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox, this.sortNumChecked ); // sortNumChecked is a bool
-        //this.setSequenceValue();
         this.sortTciaProgramListPrograms();
         this.sortTciaProgramList();
 
