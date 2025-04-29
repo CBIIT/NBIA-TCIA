@@ -3,7 +3,6 @@ import { Consts } from '@app/consts';
 import { UtilService } from '@app/common/services/util.service';
 import { PersistenceService } from '@app/common/services/persistence.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -236,6 +235,17 @@ export class CommonService{
     textSearchResults = '';
     simpleSearchResults = '';
     criteriaSearchResults = '';
+
+    //trace user login status
+
+    userLoggedIn = false;
+   
+    setUserLoggedIn(status: boolean) {
+        this.userLoggedIn = status;
+    }
+    getUserLoggedIn() {
+        return this.userLoggedIn;
+    }
 
 
     minimumMatchedStudiesValue;

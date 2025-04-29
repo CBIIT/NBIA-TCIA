@@ -511,6 +511,12 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 // Only switch to the Login screen if the default user is logged in.
                 if (this.menuService.getCurrentItem() !== this.menuItem.LOGIN_MENU_ITEM) {
 
+                    //reset userLogged in status
+                    const isUserLoggedIn = this.commonService.getUserLoggedIn();
+                    if (isUserLoggedIn) {
+                        this.commonService.setUserLoggedIn(false);
+                    }
+
                     // Clear the search criteria on the left when users login or out
                     this.commonService.resetAllSimpleSearch();
 

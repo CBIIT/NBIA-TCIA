@@ -121,6 +121,9 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
     completeCriteriaList;
     completeCriteriaListHold = null;
 
+    completeCriteriaListHoldLoggedIn = null;
+    completeCriteriaListHoldGuest = null;
+
     /**
      * If a query passed in the URL has criteria that don't exist in our current list, they are put in the array, used to alert the user.
      *
@@ -173,11 +176,17 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeCriteriaList = data;
+                const isLoggedIn = this.commonService.getUserLoggedIn();
 
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
                 if( this.completeCriteriaListHold === null ){
                     this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    if(isLoggedIn){ 
+                        this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    }else{
+                        this.completeCriteriaListHoldGuest = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    }
                 }
 
                 // There is no query (anymore) reset the list of criteria to the initial original values.
@@ -264,7 +273,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                     await this.commonService.sleep( Consts.waitTime );
                 }
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
-
+                this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
                 // Was there a search passed in with the URL
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.setInitialCriteriaList();
@@ -280,6 +289,13 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
+                const isLoggedIn = this.commonService.getUserLoggedIn();
+                this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray(
+                    isLoggedIn ? this.completeCriteriaListHoldLoggedIn : this.completeCriteriaListHoldGuest
+                  );
+                if (! this.completeCriteriaListHold ||  this.completeCriteriaListHold.length === 0) {
+                     this.completeCriteriaListHold =  [];
+                }
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
                 this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );               
             }
@@ -480,6 +496,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         if( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
             return;
         }
+        const isLoggedIn = this.commonService.getUserLoggedIn();
 
         // If this is the first time this is running just copy the data to the criteriaList
         if( this.resetFlag ){
@@ -516,7 +533,13 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         }
 
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
-        this.criteriaListHold = this.criteriaList;
+        this.criteriaListHold = [...this.criteriaList];
+
+        if( isLoggedIn ){
+            this.completeCriteriaListHoldLoggedIn = [...this.criteriaList];          
+        }else{
+            if( this.completeCriteriaListHoldGuest === null) this.completeCriteriaListHoldGuest = [...this.criteriaList ];
+        }
 
         this.setSequenceValue();
 

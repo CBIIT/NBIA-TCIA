@@ -175,13 +175,13 @@ export class LoginComponent implements OnInit, OnDestroy{
             // Successful login
             ( res ) => {
                 this.accessToken = res['access_token'];
+                this.commonService.setUserLoggedIn(true); 
 
                 this.apiServerService.setToken( res );
                 this.persistenceService.put( this.persistenceService.Field.USER, this.loginForm.value.username );
 
                 // Reset charts
                 this.commonService.reInitCharts();
-
 
                 // Reload available search criteria, it can be different for each user.
                 this.commonService.resetAllSimpleSearchForLogin();
@@ -264,6 +264,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         // Log out current user.
         this.apiServerService.setLoggingOut( true );
         this.apiServerService.setSimpleSearchQueryHold( '' );
+
 
         this.commonService.emitSimpleSearchQueryForDisplay( [] );
         this.loadingDisplayService.setLoading( true, 'Logging in as guest' );
