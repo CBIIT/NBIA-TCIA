@@ -31,12 +31,12 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     /**
      * The list used by the HTML.
      */
-    criteriaList;
+   tciaProgramList = [];  //criteriaList;
 
     /**
      * Used by the UI search within this criteria list (with the red magnifying glass), NOT the data search.
      */
-    criteriaListHold;
+    tciaProgramListHold = [] ; //criteriaListHold;
     resetFlag = true;
 
     /**
@@ -73,13 +73,6 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
      * Used in the HTML when calculating how many criteria to display.  Checked criteria are always shown.
      */
     checkedProgramCount = 0;
-
-    /**
-     * Tracks which criteria have been selected, used in the code, and the HTML.
-     *
-     * @type {Array}
-     */
-    cBox = [];
 
     /**
      * Used by the UI search within this criteria list (with the red magnifying glass), NOT the data search.
@@ -150,10 +143,10 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
     descriptionTooltipDelay = 1000;
 
-    tciaProgramList = [];
-    tciaProgramListHold = null;
     completeTciaProgramList = [];
     completeTciaProgramListHold = null;
+    completeTciaProgramListHoldGuest = null;  // used to hold the original list for guest user
+    completeTciaProgramListHoldLoggedIn= null; // used to hold the original list for logged in user
 
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
@@ -204,7 +197,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
                 // There is no query (anymore) reset the list of criteria to the initial original values.
                 else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
-                    this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
+                    this.completeCriteriaList = this.utilService.copyCriteriaObjectArray(this.completeCriteriaListHold);
                 }
 
             }
@@ -231,7 +224,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             await this.commonService.sleep( Consts.waitTime );
         }
         this.loadingDisplayService.setLoading( false, 'Done updateCriteriaList' );
-        await this.loadNbiaProgramList();
+        await this.loadTciaProgramList();
 
         // ------------------------------------------------------------------------------------------
 
@@ -247,9 +240,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
                     // If a Simple Search returned no results
                     if( data === 0 ){
-                        for( let completeCriteria of this.criteriaList ){
-                            completeCriteria.count = 0;
-                        }
+                        this.resetTciaProgramListAllZero();
                     }
 
                     // No search, restore criteria and counts to their original state.
@@ -293,7 +284,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 }
 
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
-
+             
                 // Was there a search passed in with the URL
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.initTciaProgramList();
@@ -311,10 +302,21 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
-                this.completeTciaProgramList = [...this.completeTciaProgramListHold];
-                this.resetTciaProgramListState();
-                this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
-                this.queryUrlService.clear( this.queryUrlService.COLLECTIONS );          
+                const isLoggedIn = this.commonService.getUserLoggedInStatus();
+                const loginStatusChanged = this.commonService.hasLoginStatusChanged();
+                // If the user has logged status changed, we need to get the new list of criteria.
+                if( loginStatusChanged ){
+                    this.completeTciaProgramList = isLoggedIn ? this.utilService.copyTciaProgramList(this.completeTciaProgramListHoldLoggedIn) : this.utilService.copyTciaProgramList(this.completeTciaProgramListHoldGuest);
+                }
+                
+                this.tciaProgramList = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
+                //this.resetTciaProgramListState();
+                //this.tciaProgramListHold = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
+                this.queryUrlService.clear( this.queryUrlService.COLLECTIONS );   
+                if(this.showSearch){
+                    this.showSearch = false;
+                    this.onClearSearchInputClick();
+                } 
             }
         );
 
@@ -457,21 +459,22 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
     /**
      * Loads the list of Collections to be used as selectable search TCIA-program in the 'Collections' TCIA-program panel in the Query section.
+     * wait for the completeCriteriaList to be populated before calling this method.
      */
-    async loadNbiaProgramList() : Promise<void> {
+    async loadTciaProgramList() : Promise<void> {
         this.loadingDisplayService.setLoading(true, 'Loading Manufacturer query data...');
         return new Promise<void>( ( resolve, reject ) => {
-            this.apiServerService.doGetNBIAProgram().pipe(
+            this.apiServerService.doGetTCIAProgram().pipe(
             takeUntil(this.ngUnsubscribe),
             catchError(err => {
-                console.error('Error fetching manufacturer values:', err);
+                console.error('Error fetching tcia program values:', err);
                 this.loadingDisplayService.setLoading(false, 'Failed to load data');
                 reject(err);
                 return [];
             })
         ).subscribe(data => {
             if (data && data.length) {
-                this.tciaProgramList = data.map(
+                this.completeTciaProgramListHold = data.map(
                     (item, index) => {
                         const originalString = this.setOriginalString(item?.related_collections);
                         const mappedItem = {
@@ -486,33 +489,31 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                     return mappedItem;
                 }).sort((a, b) => (a.programName ?? '').localeCompare(b.programName ?? '', undefined, { sensitivity: 'base' }));
                 // init time, run only once
-                console.log('this.tciaProgramList one time - 1');
                 this.initTciaProgramList();
-                
+                this.loadingDisplayService.setLoading(false, 'Done loading query data');                
             } else {
                 console.warn('Received empty tciaProgram list from API.');
             }
-            this.loadingDisplayService.setLoading(false, 'Done loading query data');
+           
             resolve();
         });
         });
     }
 
     initTciaProgramList() {
-        this.updateCriteriaList();
-        this.initProgramListWithCounts(this.tciaProgramList, this.criteriaList);
-        this.tciaProgramListHold = [...this.tciaProgramList];
-
+        //this.updateCriteriaList();
+        this.initProgramListWithCounts(this.completeTciaProgramListHold, this.completeCriteriaListHold);
+        this.tciaProgramList = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
+        //this.tciaProgramListHold = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
+        const isLoggedIn = this.commonService.getUserLoggedInStatus();
+        if (isLoggedIn) {
+            this.completeTciaProgramListHoldLoggedIn = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
+        } else {
+            this.completeTciaProgramListHoldGuest = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
+        }
         this.showAllCollections = new Array(this.tciaProgramList.length).fill(false);
         this.expandedPrograms = new Array(this.tciaProgramList.length).fill(false);
-        this.completeTciaProgramList = this.tciaProgramList.map(item => ({
-            ...item,
-            count: item.relatedCollectionsList.length
-        }));
-        this.completeTciaProgramListHold = this.tciaProgramList.map(item => ({
-            ...item,
-            count: item.relatedCollectionsList.length
-        }));
+       
         if( !this.utilService.isNullOrUndefined( this.tciaProgramList ) ){
             this.uncheckedProgramCount = this.tciaProgramList.length;
         }else{
@@ -529,62 +530,21 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     }
 
      /**
-     * Sets up the list of TCIA-program and initializes it's check boxes.
-     *
-     * @param initCheckBox  Should all the check boxes be set to unchecked
-     */
-     updateTciaProgramList() {
-
-        this.updateCriteriaList();
-
-        this.updateTciaProgramListFromCriteriaList();
-        
-        //this.tciaProgramListHold = [...this.tciaProgramList];
-    }
-
-     /**
      * Sets up the list of criteria and initializes it's check boxes.
      *
      * @param initCheckBox  Should all the check boxes be set to unchecked
      */
-     updateCriteriaList() {
+     updateTciaProgramList() {
         // If we are waiting on an update due to user (re)login
+        // the API results in completeCriteriaList 
+        // only update collections counts
+    
         if( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
             return;
         }
-
-        // If this is the first time this is running just copy the data to the criteriaList
-        if( this.resetFlag ){
-            this.criteriaList = this.completeCriteriaList.map( item => (
-                {
-                    ...item,
-                    unfilteredCount: item.count
-                }
-            ));
-            this.resetFlag = false;
-
-        }else{
-            // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
-            this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
-
-            this.criteriaList = this.criteriaList.map( item => (
-                { ...item,
-                    count: 0,
-                    unfilteredCount: item.count
-                }
-            ));
-
-            // Create a Map for quick lookup
-            const criteriaMap = new Map(this.completeCriteriaList.map(item => [item.criteria, item.count]));
-
-            // Update criteriaList using the Map
-            this.criteriaList.forEach(item => {
-                if (criteriaMap.has(item.criteria)) {
-                    item.count = criteriaMap.get(item.criteria);
-                }
-            });         
-        }
-        this.criteriaListHold = this.utilService.copyCriteriaObjectArray( this.criteriaList );
+       
+        this.updateTciaProgramListFromCriteriaList();
+        this.tciaProgramListHold = this.tciaProgramList;
     }
 
     private cleanCollectionsList(collections: string): any []{
@@ -622,8 +582,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
 
         // If there is no query just reset criteriaList to criteriaListHold.
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
-            this.criteriaList = this.criteriaListHold;
-            this.updateTciaProgramList();
+           this.tciaProgramList = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
         }else if( !this.utilService.isNullOrUndefined( collectionCriteriaObj ) ){
             while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
                 await this.commonService.sleep( Consts.waitTime );
@@ -659,14 +618,13 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     // }
 
     updateTciaProgramListFromCriteriaList(): void {
-        const collectionCountMap = new Map<string, { count:number, unfilteredCount :number}>();
+        const collectionCountMap = new Map<string, { count:number}>();
         
         // Build a quick lookup map from criteriaList
-        this.criteriaList.forEach(item => {
+        this.completeCriteriaList.forEach(item => {
             // set with Normalized name for comparison
             collectionCountMap.set( item.criteria, {
-                    count: Number(item.count)||0,
-                    unfilteredCount: Number(item.unfilteredCount ?? item.count) || 0,
+                    count: Number(item.count)||0
                 });
         });
       
@@ -687,9 +645,13 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             program.totalCount = totalCount;         
         });
         
-      }
+    }
 
     initProgramListWithCounts(programList, collectionsWithCount): void {
+        // init method will update 
+        // 1. collection name, 2. unfiltered counts, 3. intial selection status
+        //  results in completeTciaProgramList
+
         const collectionCountMap = new Map<string, { criteria: string, count:number, unfilteredCount :number}>();
         const programCollectionSet = new Set<string>;
         
@@ -702,7 +664,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                     unfilteredCount: item.unfilteredCount || item.count,
                 });
         });
-      // init the tciaProgramList only include collectionNmae (no criteria)
+      //  the original completeTciaProgramListHold only include collectionNmae (no criteria)
         const filteredProgramList = programList.map(program => {
             let totalCount = 0;
             let totalUnfilteredCount = 0;
@@ -762,7 +724,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         }
 
        // Replace original list
-        this.tciaProgramList =  filteredProgramList;
+        this.completeTciaProgramList =  [...filteredProgramList];
       
         // Now programList is enriched, can re-sort if needed
         // this.sortCollectionsInPrograms(programList); // Optional
@@ -995,7 +957,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     onSearchGlassClick() {
         this.showSearch = (!this.showSearch);
         if( !this.showSearch ){
-            this.tciaProgramList = [...this.tciaProgramListHold];
+            this.tciaProgramList = this.tciaProgramListHold;
             this.onClearSearchInputClick();
         }
     }
@@ -1050,7 +1012,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     }
 
     resetTciaProgramListState(): void {
-        this.tciaProgramList = this.completeTciaProgramListHold.map(program => {
+        this.tciaProgramList = this.completeTciaProgramList.map(program => {
           const originalList = program.relatedCollectionsList;
       
           const resetCollections = originalList.map((col, i) => ({
@@ -1067,6 +1029,29 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.uncheckedProgramCount = this.tciaProgramList.length;
         this.checkedProgramCount = 0;
       }
+    
+    resetTciaProgramListAllZero(): void {
+        this.tciaProgramList = this.completeTciaProgramList.map(program => {
+          const originalList = program.relatedCollectionsList;
+      
+          const resetCollections = originalList.map((col, i) => ({
+            ...col,
+            count:0,
+            selected: false,
+          }));
+          return {
+            ...program,
+            totalCount:0,
+            selected: false,
+            indeterminate: false,
+            relatedCollectionsList: resetCollections,
+          };
+        });
+        this.uncheckedProgramCount = this.tciaProgramList.length;
+        this.checkedProgramCount = 0;
+        this.sortTciaProgramListPrograms();
+        this.sortTciaProgramList();
+    }
 
 
     /**
@@ -1107,8 +1092,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.queryUrlService.clear( this.queryUrlService.COLLECTIONS );
 
         // Restore original criteria list and counts.
-        this.completeCriteriaList = [...this.completeCriteriaListHold];
-        this.completeTciaProgramList = [...this.completeTciaProgramListHold]
+        this.completeCriteriaList = this.utilService.copyCriteriaObjectArray(this.completeCriteriaListHold);
+        this.tciaProgramList = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
         this.resetTciaProgramListState();
         //this.updateTciaProgramList();
     }

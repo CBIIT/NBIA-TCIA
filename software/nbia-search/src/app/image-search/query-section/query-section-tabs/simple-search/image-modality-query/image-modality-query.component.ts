@@ -121,6 +121,9 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
     completeCriteriaList;
     completeCriteriaListHold = null;
 
+    completeCriteriaListHoldLoggedIn = null;
+    completeCriteriaListHoldGuest = null;
+
     /**
      * If a query passed in the URL has criteria that don't exist in our current list, they are put in the array, used to alert the user.
      *
@@ -173,11 +176,17 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeCriteriaList = data;
+                const isLoggedIn = this.commonService.getUserLoggedInStatus();
 
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
-                if( this.completeCriteriaListHold === null ){
+                if( this.completeCriteriaListHold == null || this.completeCriteriaListHoldLoggedIn == null || this.completeCriteriaListHoldGuest == null ){
                     this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    if(isLoggedIn){ 
+                        this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    }else{
+                        this.completeCriteriaListHoldGuest = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    }
                 }
 
                 // There is no query (anymore) reset the list of criteria to the initial original values.
@@ -264,7 +273,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                     await this.commonService.sleep( Consts.waitTime );
                 }
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
-
+                this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
                 // Was there a search passed in with the URL
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.setInitialCriteriaList();
@@ -280,7 +289,22 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
+                const isLoggedIn = this.commonService.getUserLoggedInStatus();
+                const loginStatusChanged = this.commonService.hasLoginStatusChanged();
+                // If the user has logged status changed, we need to get the new list of criteria.
+                if( loginStatusChanged ){
+                    if( isLoggedIn ){
+                        this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHoldLoggedIn );
+                    }else{
+                        this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHoldGuest );
+                    }
+                }
+                if (! this.completeCriteriaListHold ||  this.completeCriteriaListHold.length === 0) {
+                     this.completeCriteriaListHold =  [];
+                }
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
+                this.setInitialCriteriaList();
+                this.updateCheckboxCount();
                 this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );               
             }
         );
@@ -480,7 +504,6 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         if( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
             return;
         }
-
         // If this is the first time this is running just copy the data to the criteriaList
         if( this.resetFlag ){
             this.criteriaList = this.completeCriteriaList.map( item => (
@@ -516,7 +539,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         }
 
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
-        this.criteriaListHold = this.criteriaList;
+        this.criteriaListHold = this.utilService.copyCriteriaObjectArray(this.criteriaList);
 
         this.setSequenceValue();
 
