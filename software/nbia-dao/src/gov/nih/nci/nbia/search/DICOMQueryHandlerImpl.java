@@ -1496,9 +1496,9 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
                   if (i > 0) {
                       conditionBuilder.append(" or ");
                   }
-                  conditionBuilder.append("(series.studyDesc like '%").append(word).append("%' or ")
-                                  .append("series.seriesDesc like '%").append(word).append("%' or ")
-                                  .append("series.protocolName like '%").append(word).append("%')");
+                  conditionBuilder.append("(upper(series.studyDesc) like '%").append(word).append("%' or ")
+                                  .append("upper(series.seriesDesc) like '%").append(word).append("%' or ")
+                                  .append("upper(series.protocolName) like '%").append(word).append("%')");
               }
               
               conditionBuilder.append(")");
