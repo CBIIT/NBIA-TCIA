@@ -175,7 +175,7 @@ export class LoginComponent implements OnInit, OnDestroy{
             // Successful login
             ( res ) => {
                 this.accessToken = res['access_token'];
-                this.commonService.setUserLoggedIn(true); 
+                this.commonService.setUserLoggedInStatus(true); 
 
                 this.apiServerService.setToken( res );
                 this.persistenceService.put( this.persistenceService.Field.USER, this.loginForm.value.username );

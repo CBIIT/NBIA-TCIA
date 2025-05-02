@@ -1402,7 +1402,7 @@ export class ApiServerService implements OnDestroy {
         return results;
     }
 
-    doGetNBIAProgram() {
+    doGetTCIAProgram() {
         let getUrl = Consts.API_CANCERIMAGINGARCHIVE_PROGRAM;
 
         if (Properties.DEBUG_CURL) {

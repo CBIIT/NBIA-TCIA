@@ -512,9 +512,9 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                 if (this.menuService.getCurrentItem() !== this.menuItem.LOGIN_MENU_ITEM) {
 
                     //reset userLogged in status
-                    const isUserLoggedIn = this.commonService.getUserLoggedIn();
+                    const isUserLoggedIn = this.commonService.getUserLoggedInStatus();
                     if (isUserLoggedIn) {
-                        this.commonService.setUserLoggedIn(false);
+                        this.commonService.setUserLoggedInStatus(false);
                     }
 
                     // Clear the search criteria on the left when users login or out

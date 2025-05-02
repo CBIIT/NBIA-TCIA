@@ -116,6 +116,18 @@ export class UtilService{
         return copyCrit;
     }
 
+    // deep copy of an tciaProgramList
+    copyTciaProgramList( source: any[]): any[] {
+        if (!Array.isArray(source)) return [];
+
+        return source.map(program => ({
+          ...program,
+          relatedCollectionsList: Array.isArray(program.relatedCollectionsList)
+            ? program.relatedCollectionsList.map(col => ({ ...col }))
+            : []
+        }));
+    }
+
     /**
      * Build a csv formatted string from a cart list, with a header row
      *

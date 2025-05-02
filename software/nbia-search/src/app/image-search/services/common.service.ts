@@ -238,14 +238,20 @@ export class CommonService{
 
     //trace user login status
 
-    userLoggedIn = false;
+    userLoggedInStatus = false;
+    prevUserLoggedInStatus = false;
    
-    setUserLoggedIn(status: boolean) {
-        this.userLoggedIn = status;
+    setUserLoggedInStatus(status: boolean) {
+        this.prevUserLoggedInStatus = this.userLoggedInStatus || status;
+        this.userLoggedInStatus = status;
+
     }
-    getUserLoggedIn() {
-        return this.userLoggedIn;
+    getUserLoggedInStatus() {
+        return this.userLoggedInStatus;
     }
+    hasLoginStatusChanged(): boolean {
+        return this.prevUserLoggedInStatus !== this.userLoggedInStatus;
+      }
 
 
     minimumMatchedStudiesValue;
