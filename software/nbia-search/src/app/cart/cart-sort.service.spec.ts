@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { PersistenceService } from '../common/services/persistence.service';
 
 import { CartSortService } from './cart-sort.service';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 
 describe( 'CartSortService', () => {
 

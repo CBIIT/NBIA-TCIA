@@ -223,7 +223,7 @@
 
 
         <!-- ----- Calendar dates when collapsed ----- -->
-        <div class="ml-3" *ngIf="(! widgetShowCriteria) && criteriaCalendar && date0 !== undefined && date1 !== undefined">
+        <div class="ml-3" *ngIf="(! widgetShowCriteria) && criteriaCalendar && date0 != null && date1 != null">
             <span *ngIf="applyState">
                 *
             </span>
@@ -304,7 +304,7 @@
     <!-- TODO add font sizing -->
     <!-- ----- Subheading ----- -->
     <div
-        *ngIf="widgetShowCriteria  && criteriaSubheading !== undefined  && criteriaSubheading.length > 0 && (!criteriaSingleLineRadio)">
+        *ngIf="widgetShowCriteria  && criteriaSubheading != null  && criteriaSubheading.length > 0 && (!criteriaSingleLineRadio)">
         <span class="dynamic-query-subheading">{{criteriaSubheading}}</span>
     </div>
     <!-- ----- END Subheading ----- -->
@@ -483,16 +483,16 @@
             *ngIf="criteriaApplyButton"
             [disabled]="(! haveInput) &&      (
                 (
-                    (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
-                    (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                    (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) &&
+                    (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                 )
                 ||
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
                         (
-                            (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) ||
-                            (date1 === undefined || date1['formatted']  === undefined|| date1['formatted'].length < 1)
+                            (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) ||
+                            (date1 == null || date1['formatted']  == null|| date1['formatted'].length < 1)
                         ) &&
                         ( ! criteriaCalendarAllowOneEmpty )
                     )
@@ -515,16 +515,16 @@
              [ngClass]="{
                      'disabled-text':             (
                 (
-                    (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
-                    (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                    (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) &&
+                    (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                 )
                 ||
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
                             (
-                                (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) ||
-                                (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                                (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) ||
+                                (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                             ) &&
                             ( ! criteriaCalendarAllowOneEmpty )
                     )
@@ -541,16 +541,16 @@
                 id="list-checkbox-cal-{{sequenceNumber}}"
                 [disabled]="            (
                 (
-                    (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) &&
-                    (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                    (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) &&
+                    (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                 )
                 ||
                 (
                     ( criteriaCalendarPrompt1.length >0 ) &&
                     (
                             (
-                                (date0 === undefined || date0['formatted'] === undefined || date0['formatted'].length < 1) ||
-                                (date1 === undefined || date1['formatted'] === undefined || date1['formatted'].length < 1)
+                                (date0 == null || date0['formatted'] == null || date0['formatted'].length < 1) ||
+                                (date1 == null || date1['formatted'] == null || date1['formatted'].length < 1)
                             ) &&
                             ( ! criteriaCalendarAllowOneEmpty )
                     )

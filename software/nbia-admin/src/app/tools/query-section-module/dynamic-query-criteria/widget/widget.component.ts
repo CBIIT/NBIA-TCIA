@@ -199,12 +199,12 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         this.criteriaQueryInputType = this.queryCriteriaData['inputType'];
         this.criteriaLevelAndOrOr = this.queryCriteriaData['widgetAndOrOr'];
 
-        if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] !== undefined ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] != null ){
             this.andOrRadio[0] = (this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'].toUpperCase() === 'AND');
             this.andOrRadio[1] = (this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'].toUpperCase() !== 'AND');
         }
 
-        if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'] !== undefined ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'] != null ){
             this.allAnyRadio[0] = (this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'].toUpperCase() === 'ALL');
             this.allAnyRadio[1] = (this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'].toUpperCase() !== 'ALL');
         }
@@ -219,7 +219,7 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         this.criteriaSubheading = this.queryCriteriaData['dynamicQueryCriteriaSubHeading'];
         this.criteriaApplyButton = this.queryCriteriaData['dynamicQueryCriteriaApplyButton'];
         this.criteriaApplyCheckbox = this.queryCriteriaData['dynamicQueryCriteriaApplyCheckbox'];
-        if( this.criteriaApplyCheckbox === undefined ){
+        if( this.criteriaApplyCheckbox == null ){
             this.criteriaApplyCheckbox = false;
         }
         this.criteriaApplyText = this.queryCriteriaData['dynamicQueryCriteriaApplyText'];
@@ -257,11 +257,11 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
             this.widgetType = WIDGET_TYPE.CALENDAR;
         }
         this.criteriaCalendarPrompt0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPrompt0'];
-        if( this.criteriaCalendarPrompt0 === undefined ){
+        if( this.criteriaCalendarPrompt0 == null ){
             this.criteriaCalendarPrompt0 = '';
         }
         this.criteriaCalendarPrompt1 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPrompt1'];
-        if( this.criteriaCalendarPrompt1 === undefined ){
+        if( this.criteriaCalendarPrompt1 == null ){
             this.criteriaCalendarPrompt1 = '';
         }
         this.criteriaCalendarPlaceHolder0 = this.queryCriteriaData['dynamicQueryCriteriaCalendarPlaceHolder0'];
@@ -292,31 +292,31 @@ export class WidgetComponent implements OnInit, OnDestroy, AfterViewInit{
         this.criteriaAllowNoChoice = this.queryCriteriaData['dynamicQueryCriteriaAllowNoChoice'];
         this.criteriaSort = this.queryCriteriaData['dynamicQueryCriteriaSort'];
 
-        if( this.queryCriteriaData['dynamicQueryCriteriaListData'] !== undefined && this.queryCriteriaData['dynamicQueryCriteriaListData'].length > 0 ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaListData'] != null && this.queryCriteriaData['dynamicQueryCriteriaListData'].length > 0 ){
             this.initItemList( this.queryCriteriaData['dynamicQueryCriteriaListData'] );
         }
         /*
 
-                if (this.queryCriteriaData['dynamicQueryCriteriaSmallTextInput'] !== undefined && this.queryCriteriaData['dynamicQueryCriteriaSmallTextInput']) {
+                if (this.queryCriteriaData['dynamicQueryCriteriaSmallTextInput'] != null && this.queryCriteriaData['dynamicQueryCriteriaSmallTextInput']) {
                     this.criteriaType = CriteriaTypes.TEXT_INPUT_SMALL;
                 }
-                if (this.queryCriteriaData['dynamicQueryCriteriaLargeTextInput'] !== undefined && this.queryCriteriaData['dynamicQueryCriteriaLargeTextInput']) {
+                if (this.queryCriteriaData['dynamicQueryCriteriaLargeTextInput'] != null && this.queryCriteriaData['dynamicQueryCriteriaLargeTextInput']) {
                     this.criteriaType = CriteriaTypes.TEXT_INPUT_LARGE;
                 }
 
         */
-        if( this.queryCriteriaData['dynamicQueryCriteriaAndOrType'] !== undefined && this.queryCriteriaData['dynamicQueryCriteriaAndOrType'].length > 0 ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaAndOrType'] != null && this.queryCriteriaData['dynamicQueryCriteriaAndOrType'].length > 0 ){
             this.criteriaAndOrType = this.queryCriteriaData['dynamicQueryCriteriaAndOrType'].toUpperCase();
         }
-        if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] !== undefined ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'] != null ){
             this.criteriaAndOrDefault = this.queryCriteriaData['dynamicQueryCriteriaAndOrDefault'].toUpperCase();
         }
 
-        if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'] !== undefined && this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'].length > 0 ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'] != null && this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'].length > 0 ){
             this.criteriaAllAnyType = this.queryCriteriaData['dynamicQueryCriteriaAllAnyType'].toUpperCase();
         }
 
-        if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'] !== undefined ){
+        if( this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'] != null ){
             this.criteriaAllAnyDefault = this.queryCriteriaData['dynamicQueryCriteriaAllAnyDefault'].toUpperCase();
         }
         /*
@@ -754,12 +754,12 @@ console.log('MHL onClearClick: ', rerunTheQuery );
 
             case WIDGET_TYPE.CALENDAR:
                 userInput = [];
-                if( this.date0 !== undefined ){
+                if( this.date0 != null ){
                     userInput.push( this.date0['formatted'] );
                 }else{
                     userInput.push( '' );
                 }
-                if( this.date1 !== undefined ){
+                if( this.date1 != null ){
                     userInput.push( this.date1['formatted'] );
                 }else{
                     userInput.push( '' );
@@ -778,7 +778,7 @@ console.log('MHL onClearClick: ', rerunTheQuery );
         // Calendar will always have some input because "Clear" sets the dates to yesterday and today, but, unchecks apply
         else if( this.widgetType === WIDGET_TYPE.CALENDAR && (!this.applyState) ){
             noInputData = clear;
-        }else if( (userInput !== undefined) && (userInput[0] !== undefined) && (userInput.length > 0) ){
+        }else if( (userInput != null) && (userInput[0] != null) && (userInput.length > 0) ){
             for( let f = 0; f < userInput.length; f++ ){
                 if( userInput[f].length > 0 ){
                     noInputData = false;
@@ -809,15 +809,15 @@ console.log('MHL onClearClick: ', rerunTheQuery );
             // Calendar
         {
             // if there is a subheading use it
-            if( this.criteriaSubheading !== undefined ){
+            if( this.criteriaSubheading != null ){
                 displayQuery['criteriaSubheading'] = this.criteriaSubheading;
             }else
                 // If there are two dates (range), use '' (nothing)
-            if( this.criteriaCalendarPrompt1 !== undefined && this.criteriaCalendarPrompt1.length > 0 ){
+            if( this.criteriaCalendarPrompt1 != null && this.criteriaCalendarPrompt1.length > 0 ){
                 displayQuery['criteriaSubheading'] = '';
             }else
                 // If there is just one date use criteriaCalendarPrompt0
-            if( this.criteriaCalendarPrompt0 !== undefined && this.criteriaCalendarPrompt0.length > 0 ){
+            if( this.criteriaCalendarPrompt0 != null && this.criteriaCalendarPrompt0.length > 0 ){
                 displayQuery['criteriaSubheading'] = this.criteriaCalendarPrompt0;
             }else{
                 displayQuery['criteriaSubheading'] = '';

@@ -93,7 +93,7 @@
 		<div class="p-g p-fluid" *ngIf="pe">
 			<div class="p-g-12">
 				<div class="p-g-4"><label for="peName">Protection Elements</label></div>
-				<div class="p-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPe"/>
+				<div class="p-g-8"><input pInputText id="peName" [(ngModel)]="fullAppName"[disabled]="!newPe"/>
 				</div>
 			</div>
 			<div class="p-g-12">
@@ -114,7 +114,7 @@
 		<div class="p-g p-fluid" *ngIf="pe">
 			<div class="p-g-12">
 				<div class="p-g-4"><label for="dataGroup">Protection Elements</label></div>
-				<div class="p-g-8"><input pInputText id="peName" [(ngModel)]="appName + pe.collection + comma + appName + pe.collection +combSym+ pe.site"[disabled]="!newPe"/></div>
+				<div class="p-g-8"><input pInputText id="peName" [(ngModel)]="fullAppName"[disabled]="!newPe"/></div>
 			</div>
 			<div class="p-g-12">
 				<div class="p-g-4"><label for="description">Associated Protection Groups</label></div>

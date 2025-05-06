@@ -699,7 +699,7 @@ export class SearchResultsTableComponent implements OnInit, OnDestroy{
 
 
     getSelectedByIndex( i ): boolean {
-        if( this.columns === undefined ){
+        if( this.columns == null ){
             return true;
         }
         return this.columns[i].selected;

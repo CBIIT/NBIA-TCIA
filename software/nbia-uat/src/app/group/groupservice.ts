@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import {catchError, map} from 'rxjs/operators';
 //import {Observable, of} from 'rxjs';
 import {Group} from './group';

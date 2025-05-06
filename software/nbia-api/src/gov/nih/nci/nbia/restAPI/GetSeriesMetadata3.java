@@ -68,6 +68,7 @@ public class GetSeriesMetadata3 extends getData {
             "Longitudinal Temporal Event Type", "Longitudinal Temporal Offset From Event", 
             "Series Instance UID", "Project", "Modality", "Protocol Name", "Series Date", "Series Description",
             "Body Part Examined", "Series Number", "Annotations Flag", "Manufacturer", "Manufacturer Model Name",
+            "Pixel Spacing(mm)- Row","Slice Thickness(mm)",
             "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Collection URI",
             "File Size", "Date Released", "Third Party Analysis" 
         };

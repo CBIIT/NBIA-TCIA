@@ -35,9 +35,13 @@ public interface PatientDAO {
 	 * Assigned during the process of curating the data. The info is kept under project column
 	 * This method is used for NBIA Rest API.
 	 */
+	public List<Object[]> getPatientByCollectionAndId_v4(String collection, String patientId, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getPatientByCollectionAndId(String collection, String patientId, List<String> authorizedProjAndSites) throws DataAccessException;
+	public List<Object[]> getPatientByCollection_v4(String collection, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getPatientByCollection(String collection, List<String> authorizedProjAndSites) throws DataAccessException;
+	public List<Object[]> getPatientByCollection_v4(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getPatientByCollection(String collection, String dateFrom, List<String> authorizedProjAndSites) throws DataAccessException;
+	public List<Object[]> getPatientByCollectionAndModality_v4(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getPatientByCollectionAndModality(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException;
 
 	public List<Object[]> getPatientBySeries(String series, List<String> authorizedProjAndSites) throws DataAccessException;

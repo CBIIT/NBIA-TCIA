@@ -121,6 +121,9 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
     completeCriteriaList;
     completeCriteriaListHold = null;
 
+    completeCriteriaListHoldLoggedIn = null;
+    completeCriteriaListHoldGuest = null;
+
     /**
      * If a query passed in the URL has criteria that don't exist in our current list, they are put in the array, used to alert the user.
      *
@@ -173,11 +176,17 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeCriteriaList = data;
+                const isLoggedIn = this.commonService.getUserLoggedInStatus();
 
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
-                if( this.completeCriteriaListHold === null ){
+                if( this.completeCriteriaListHold == null || this.completeCriteriaListHoldLoggedIn == null || this.completeCriteriaListHoldGuest == null ){
                     this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    if(isLoggedIn){ 
+                        this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    }else{
+                        this.completeCriteriaListHoldGuest = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+                    }
                 }
 
                 // There is no query (anymore) reset the list of criteria to the initial original values.
@@ -264,7 +273,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                     await this.commonService.sleep( Consts.waitTime );
                 }
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
-
+                this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
                 // Was there a search passed in with the URL
                 if( this.parameterService.haveUrlSimpleSearchParameters() ){
                     this.setInitialCriteriaList();
@@ -280,7 +289,22 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // Called when the "Clear" button on the left side of the Display query at the top.
         this.commonService.resetAllSimpleSearchEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             () => {
+                const isLoggedIn = this.commonService.getUserLoggedInStatus();
+                const loginStatusChanged = this.commonService.hasLoginStatusChanged();
+                // If the user has logged status changed, we need to get the new list of criteria.
+                if( loginStatusChanged ){
+                    if( isLoggedIn ){
+                        this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHoldLoggedIn );
+                    }else{
+                        this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHoldGuest );
+                    }
+                }
+                if (! this.completeCriteriaListHold ||  this.completeCriteriaListHold.length === 0) {
+                     this.completeCriteriaListHold =  [];
+                }
                 this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
+                this.setInitialCriteriaList();
+                this.updateCheckboxCount();
                 this.queryUrlService.clear( this.queryUrlService.IMAGE_MODALITY );               
             }
         );
@@ -367,15 +391,19 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      * Adds this category of search criteria to the query that the QueryUrlService will provide for "Share" -> "Share my query"
      */
     sendSelectedCriteriaString() {
-        let criteriaString = '';
-        for( let f = 0; f < this.cBox.length; f++ ){
-            if( this.cBox[f] ){
-                if( f > 0 ){
-                    criteriaString += ',';
-                }
-                criteriaString += this.criteriaList[f]['criteria'];
-            }
-        }
+        // let criteriaString = '';
+        // for( let f = 0; f < this.cBox.length; f++ ){
+        //     if( this.cBox[f] ){
+        //         if( f > 0 ){
+        //             criteriaString += ',';
+        //         }
+        //         criteriaString += this.criteriaList[f]['criteria'];
+        //     }
+        // }
+        let criteriaString = this.criteriaList
+            .filter((_, index) => this.cBox[index])  // Keep only selected criteria
+            .map(item => item.criteria)  // Extract the criteria names
+            .join(',');  // Join them with commas
         this.queryUrlService.update( this.queryUrlService.IMAGE_MODALITY, criteriaString );
     }
 
@@ -392,24 +420,15 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         }
 
         // Find our (Image Modality) data
-        let imageModalityCriteriaObj;
-
+        const imageModalityCriteriaObj = data.res.find(criteria => criteria.criteria === 'Image Modality')?.values;
         // data.res is an array of Objects,  each object is one criteria's data.
-        for( let criteria of data.res ){
-            if( criteria.criteria === 'Image Modality' ){
-                imageModalityCriteriaObj = criteria.values;
-            }
-        }
+        
 
         // Before we update the list, save the original list so we can restore checkboxes by criteria name.
-        let criteriaListTemp = this.criteriaList;
+        const criteriaListTemp = [...this.criteriaList];
 
-        let cBoxHold = [];
+        const cBoxHold = [...this.cBox];
         // Before we update the criteria list, save all the checked boxes.
-        for( let f = 0; f < this.cBox.length; f++ ){
-            cBoxHold[f] = this.cBox[f];
-        }
-
 
         // If there is no query just reset criteriaList to criteriaListHold.
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
@@ -422,17 +441,13 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
             }
 
             // CHECKME - this is a hasty fix, is there is a better way
-            for( let criteria of this.completeCriteriaList ){
-                criteria.count = 0;
-            }
-
-            for( let criteria of imageModalityCriteriaObj ){
-                for( let completeCriteria of this.completeCriteriaList ){
-                    if( criteria.criteria === completeCriteria.criteria ){
-                        completeCriteria.count = criteria.count;
-                    }
+            this.completeCriteriaList.forEach( item => {
+                if (imageModalityCriteriaObj.some(criteria => criteria.criteria === item.criteria)) {
+                    item.count = imageModalityCriteriaObj.find(criteria => criteria.criteria === item.criteria).count;
+                }else{
+                    item.count = 0;
                 }
-            }
+            });
         }
 
         this.updateCriteriaList( false );
@@ -440,19 +455,16 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         // Put back the checkboxes.
         // After the criteria list has been changed check the checkbox for any criteria that is in the list,
         // that was also in the criteriaListTemp list and is true in cBoxHold[] array.
-        let len = this.criteriaList.length;
-        for( let f0 = 0; f0 < len; f0++ ){
-            this.cBox[f0] = false;
-        }
-        for( let f0 = 0; f0 < len; f0++ ){
-            for( let f1 = 0; f1 < criteriaListTemp.length; f1++ ){
-                if( criteriaListTemp[f1].criteria === this.criteriaList[f0].criteria ){
-                    if( cBoxHold[f1] ){
-                        this.cBox[f0] = true;
-                    }
-                }
+        this.cBox = Array(this.criteriaList.length).fill(false);
+        let criteriaMap = new Map(criteriaListTemp.map((item, index) => [item.criteria, index]));
+
+        // Update cBox based on cBoxHold
+        this.criteriaList.forEach((item, index) => {
+            let tempIndex = criteriaMap.get(item.criteria);
+            if (tempIndex !== undefined && cBoxHold[tempIndex]) {
+                this.cBox[index] = true;
             }
-        }
+        });
 
         // Need to sort after checkboxes change.
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
@@ -466,12 +478,8 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      * This is used by the HTML when displaying only part of criteriaList.
      */
     setSequenceValue() {
-        let len = this.criteriaList.length;
         let seq = 0;
-        for( let f = 0; f < len; f++ ){
-            this.criteriaList[f].seq = seq;
-            seq++;
-        }
+        this.criteriaList.forEach(item => item.seq = seq++);
     }
 
     /**
@@ -496,39 +504,42 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         if( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
             return;
         }
-
         // If this is the first time this is running just copy the data to the criteriaList
         if( this.resetFlag ){
-            this.criteriaList = this.completeCriteriaList;
+            this.criteriaList = this.completeCriteriaList.map( item => (
+                {   ...item,
+                    unfilteredCount: item.count
+                }
+            ));
         }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
-
-            for( let f = 0; f < this.criteriaList.length; f++ ){
-                this.criteriaList[f].count = 0;
-            }
-
-            for( let dataCriteria of this.completeCriteriaList ){
-                for( let f = 0; f < this.criteriaList.length; f++ ){
-                    if( this.criteriaList[f].criteria === dataCriteria.criteria ){
-                        this.criteriaList[f].count = dataCriteria.count;
-                    }
+            this.criteriaList = this.criteriaList.map( item => (
+                { ...item,
+                    count: 0,
+                    unfilteredCount: item.count
                 }
-            }
+            ));
+
+            // Create a Map for quick lookup
+            const criteriaMap = new Map(this.completeCriteriaList.map(item => [item.criteria, item.count]));
+
+            // Update criteriaList using the Map
+            this.criteriaList.forEach(item => {
+                if (criteriaMap.has(item.criteria)) {
+                    item.count = criteriaMap.get(item.criteria);
+                }
+            });
         }
 
         if( (this.resetFlag) || (initCheckBox) ){
             this.resetFlag = false;
-            this.cBox = [];
-            let len = this.criteriaList.length;
-            for( let f = 0; f < len; f++ ){
-                this.cBox[f] = false;
-            }
+            this.cBox = Array(this.criteriaList.length).fill(false);
             this.updateCheckboxCount();
         }
 
         this.criteriaList = this.sortService.criteriaSort( this.criteriaList, this.cBox );
-        this.criteriaListHold = this.criteriaList;
+        this.criteriaListHold = this.utilService.copyCriteriaObjectArray(this.criteriaList);
 
         this.setSequenceValue();
 
@@ -692,9 +703,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
      */
     imageModalityQueryClearAllClick( totalClear: boolean ) {
         this.commonService.setHaveUserInput( true );
-        for( let f = 0; f < this.cBox.length; f++ ){
-            this.cBox[f] = false;
-        }
+        this.cBox.fill(false);
 
         this.checkedCount = 0;
         this.apiServerService.refreshCriteriaCounts();

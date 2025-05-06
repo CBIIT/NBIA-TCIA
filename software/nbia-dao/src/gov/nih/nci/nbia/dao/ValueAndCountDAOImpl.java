@@ -87,6 +87,44 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	 }
 
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getValuesAndCounts_v4(ValuesAndCountsCriteria criteria) throws DataAccessException{
+        if (criteria.getObjectType().equalsIgnoreCase("COLLECTION"))
+        {
+        	return collectionQuery_v4(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("MODALITY"))
+        {
+        	return modalityQuery_v4(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("BODYPART"))
+        {
+        	return bodyPartQuery_v4(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("SPECIES"))
+        {
+        	return speciesQuery_v4(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER"))
+        {
+        	return manufacturerQuery_v4(criteria);
+        }
+        /*
+        if (criteria.getObjectType().equalsIgnoreCase("MODALITY_FAST"))
+        {
+         return modalityFastQuery(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER_FAST"))
+        {
+         return manufacturerFastQuery(criteria);
+        }
+        if (criteria.getObjectType().equalsIgnoreCase("MANUFACTURER_TREE"))
+        {
+        	return manufacturerQuery(criteria);
+        }
+        */
+        return null;
+	}
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<ValuesAndCountsDTO> getValuesAndCounts(ValuesAndCountsCriteria criteria) throws DataAccessException{
         if (criteria.getObjectType().equalsIgnoreCase("COLLECTION"))
         {
@@ -140,6 +178,28 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		return returnValue;
     }
 	@Transactional(propagation=Propagation.REQUIRED)
+    private List<Object[]> collectionQuery_v4(ValuesAndCountsCriteria criteria){
+    	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
+	    String SQLQuery ="select dp.project, count(distinct p.patient_pk_id) thecount, "  
+      + processAuthorizationCaseStatement(criteria.getAuth())
+      + " from patient p, trial_data_provenance dp, general_series gs " 
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id "
+      +" and VISIBILITY in ('1') group by dp.project ";
+
+
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();		
+        for(Object[] row : data)
+        {
+
+           ValuesAndCountsDTO item=new ValuesAndCountsDTO();
+           item.setCriteria(row[0].toString());
+           item.setCount(row[1].toString());
+           returnValue.add(item);
+        }
+		return data;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
     public List<SpeciesDTO> speciesTax(ValuesAndCountsCriteria criteria){
     	List<SpeciesDTO> returnValue=new ArrayList<SpeciesDTO>();
         String SQLQuery = SPECIES_TABLE_QUERY+processAuthorizationSites(criteria.getAuth());
@@ -166,6 +226,29 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         	returnValue.add(newSpeciesValue);
         }
 		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+    private List<Object[]> speciesQuery_v4(ValuesAndCountsCriteria criteria){
+        StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
+        Map<String, Object> params = new HashMap<>();
+        String speciesCode =NCIAConfig.getSpeciesCode();
+
+	      String SQLQuery = "select case when p.species_code is null then '" + speciesCode + "' else p.species_code end as species_code, count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs "
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
+        SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_code, "
+          + caseStatement.substring(0, caseStatement.length() - 15);
+        
+        // Create the query and set parameters in one go
+        Query query = this.getHibernateTemplate()
+            .getSessionFactory()
+            .getCurrentSession()
+            .createSQLQuery(SQLQuery)
+            .setProperties(params);
+
+        List<Object[]> rs = query.list();
+		    return rs;
+
+
     }
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> speciesQuery(ValuesAndCountsCriteria criteria){
@@ -199,6 +282,40 @@ public class ValueAndCountDAOImpl extends AbstractDAO
            }
         }
 		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+    private List<Object[]> modalityQuery_v4(ValuesAndCountsCriteria criteria){
+        StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
+	      String SQLQuery ="select modality, count(distinct p.patient_pk_id) thecount,"
+          + caseStatement
+          + " from patient p, trial_data_provenance dp, general_series gs"
+			    + " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id "
+          + " and VISIBILITY in ('1') ";
+
+      Map<String, Object> params = new HashMap<>();
+
+		  if (criteria.getCollection() != null) {
+		  	SQLQuery=SQLQuery+" and UPPER(dp.project)=:project";
+        params.put("project", criteria.getCollection().toUpperCase());
+		  }
+		  if (criteria.getBodyPart() != null) {
+		  	SQLQuery=SQLQuery+" and UPPER(gs.body_part_examined)=:bodyPartExamined";
+        params.put("bodyPartExamined", criteria.getBodyPart().toUpperCase());
+		  }
+
+      //last 15 of caseStatement is to remove 'as authorized '
+		  SQLQuery = SQLQuery+" group by modality, "
+          + caseStatement.substring(0, caseStatement.length() - 15);
+
+      // Create the query and set parameters in one go
+      Query query = this.getHibernateTemplate()
+          .getSessionFactory()
+          .getCurrentSession()
+          .createSQLQuery(SQLQuery)
+          .setProperties(params);
+
+      List<Object[]> rs = query.list();
+		  return rs;
     }
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> modalityQuery(ValuesAndCountsCriteria criteria){
@@ -248,6 +365,42 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     }
 
 	@Transactional(propagation=Propagation.REQUIRED)
+    private List<Object[]> bodyPartQuery_v4(ValuesAndCountsCriteria criteria){
+
+      StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
+	    String SQLQuery="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs where "
+        + "p.trial_dp_pk_id = dp.trial_dp_pk_id and p.patient_pk_id = gs.patient_pk_id "
+        + "and VISIBILITY in ('1') ";
+        
+      Map<String, Object> params = new HashMap<>();
+
+		  if (criteria.getCollection() != null) {
+		  	SQLQuery=SQLQuery+" and UPPER(dp.project)=:project";
+        params.put("project", criteria.getCollection().toUpperCase());
+		  }
+		  if (criteria.getModality() != null) {
+		  	SQLQuery=SQLQuery+" and UPPER(gs.modality)=:modality";
+        params.put("modality", criteria.getModality().toUpperCase());
+		  }
+		  SQLQuery = SQLQuery+" group by upper(body_part_examined), "
+          + caseStatement.substring(0, caseStatement.length() - 15);
+
+      // Create the query and set parameters in one go
+      Query query = this.getHibernateTemplate()
+          .getSessionFactory()
+          .getCurrentSession()
+          .createSQLQuery(SQLQuery)
+          .setProperties(params);
+
+      List<Object[]> rs = query.list();
+      for (Object[] row : rs) {
+        if (row[0] == null || row[0].toString().trim().isEmpty()) {
+            row[0] = "NOT SPECIFIED"; 
+        }
+}
+		  return rs;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> bodyPartQuery(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
         String SQLQuery = BODYPART_QUERY+processAuthorizationSites(criteria.getAuth())+" and VISIBILITY in ('1') ";
@@ -282,6 +435,46 @@ public class ValueAndCountDAOImpl extends AbstractDAO
            }
         }
 		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
+    private List<Object[]> manufacturerQuery_v4(ValuesAndCountsCriteria criteria){
+        StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
+        Map<String, Object> params = new HashMap<>();
+
+	      String SQLQuery = "select manufacturer, count(distinct p.patient_pk_id) thecount, " 
+          + caseStatement
+          + " from patient p, trial_data_provenance dp, general_series gs, general_equipment ge"
+			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id and VISIBILITY in ('1') ";
+        
+		    if (criteria.getCollection() != null) {
+		    	SQLQuery=SQLQuery+" and UPPER(dp.project)=:project";
+          params.put("project", criteria.getCollection().toUpperCase());
+		    }
+		    if (criteria.getModality() != null) {
+		    	SQLQuery=SQLQuery+" and UPPER(gs.modality)=:modality";
+          params.put("modality", criteria.getModality().toUpperCase());
+		    }
+		    if (criteria.getBodyPart() != null) {
+		    	SQLQuery=SQLQuery+" and UPPER(gs.body_part_examined)=:bodyPartExamined";
+          params.put("bodyPartExamined", criteria.getBodyPart().toUpperCase());
+		    }
+		    SQLQuery = SQLQuery+" group by manufacturer, " 
+          + caseStatement.substring(0, caseStatement.length() - 15);
+        
+        
+        // Create the query and set parameters in one go
+        Query query = this.getHibernateTemplate()
+            .getSessionFactory()
+            .getCurrentSession()
+            .createSQLQuery(SQLQuery)
+            .setProperties(params);
+
+        List<Object[]> rs = query.list();
+		    return rs;
+
+
+
+
     }
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<ValuesAndCountsDTO> manufacturerQuery(ValuesAndCountsCriteria criteria){
@@ -483,6 +676,27 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         }  
         
 		return returnValue;
+    }
+    private static StringBuffer processAuthorizationCaseStatement(AuthorizationCriteria authCrit)  {
+      StringBuffer where = new StringBuffer();
+
+      if (!authCrit.isEmpty()) {
+        where = where.append(" case when concat(gs.project, '//', gs.site) in (");
+
+        // For each site, need to include both collection and site
+        // since site names can be duplicated across collections
+        for (SiteData siteData : authCrit.getSites()) {
+            where.append("'");
+            where.append(siteData.getCollection());
+            where.append("//");
+            where.append(siteData.getSiteName());
+            where.append("',");
+        }
+        where.deleteCharAt(where.length() - 1);  // Removes the last character
+        where.append(") then 1 else 0 end as authorized ");
+      }
+
+      return where;
     }
     private static String processAuthorizationSites(AuthorizationCriteria authCrit)  {
    

@@ -1105,7 +1105,7 @@ export class ApiServerService implements OnDestroy {
      * @param accessToken
      */
     doPost(queryType, query, accessToken ?) {
-        if (accessToken === undefined) {
+        if (accessToken == null) {
             accessToken = this.accessToken;
         }
 
@@ -1402,6 +1402,25 @@ export class ApiServerService implements OnDestroy {
         return results;
     }
 
+    doGetTCIAProgram() {
+        let getUrl = Consts.API_CANCERIMAGINGARCHIVE_PROGRAM;
+
+        if (Properties.DEBUG_CURL) {
+            let curl = 'curl  -k \'' + getUrl + '\'';
+            console.log('doGet: ' + curl);
+        }
+
+        let results;
+        try {
+            results = this.httpClient.get(getUrl).pipe(timeout(Properties.HTTP_TIMEOUT));
+        } catch (e) {
+            // TODO react to error.
+            console.error('doGetNBIAProgram Exception: ' + e);
+        }
+
+        return results;
+    }
+
 
     downloadSeriesList(seriesList) {
         let query = seriesList + '&password=' + this.currentApiPassword + '&includeAnnotation=true';
@@ -1476,7 +1495,7 @@ export class ApiServerService implements OnDestroy {
      */
     getAccessToken(user, password, secret): Observable<any> {
         // Guest user
-        if( user === undefined){
+        if( user == null){
             user = Properties.DEFAULT_USER;
             password = Properties.DEFAULT_PASSWORD;
         }

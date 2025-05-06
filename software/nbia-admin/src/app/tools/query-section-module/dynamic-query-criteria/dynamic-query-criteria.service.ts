@@ -52,7 +52,7 @@ export class DynamicQueryCriteriaService{
 
     getDynamicQueryWidget( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if( criteriaData !== undefined ){
+        if( criteriaData != null ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
         }else{
@@ -97,7 +97,7 @@ export class DynamicQueryCriteriaService{
 
     getDynamicQueryWidget1( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if( criteriaData !== undefined ){
+        if( criteriaData != null ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
         }else{
@@ -133,7 +133,7 @@ export class DynamicQueryCriteriaService{
 
     getDynamicQueryWidget2( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if( criteriaData !== undefined ){
+        if( criteriaData != null ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
         }else{
@@ -158,7 +158,7 @@ export class DynamicQueryCriteriaService{
     /*
         getDynamicQueryWidget2(criteriaData?) {
             Properties.dynamicQueryCriteriaSequenceNumber++;
-            if (criteriaData !== undefined) {
+            if (criteriaData != null) {
                 criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
                 return criteriaData;
             } else {
@@ -184,7 +184,7 @@ export class DynamicQueryCriteriaService{
 
     getDynamicQueryCriteriaSmallTextInput( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
-        if( criteriaData !== undefined ){
+        if( criteriaData != null ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
         }else{
@@ -344,7 +344,7 @@ export class DynamicQueryCriteriaService{
     getDynamicQueryCriteriaLargeTextInput( criteriaData? ) {
         Properties.dynamicQueryCriteriaSequenceNumber++;
 
-        if( criteriaData !== undefined ){
+        if( criteriaData != null ){
             criteriaData.sequenceNumber = Properties.dynamicQueryCriteriaSequenceNumber;
             return criteriaData;
         }else{

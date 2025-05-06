@@ -43,6 +43,7 @@ export const Consts = {
         API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS: 'getRestrictionsForSimpleSearch',
         API_MANIFEST_FROM_TEXT_SEARCH_RESULTS: 'getManifestForTextSearch',
         API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS: 'getRestrictionsForTextSearch',
+        API_CANCERIMAGINGARCHIVE_PROGRAM: 'https://cancerimagingarchive.net/api/v1/programs?per_page=50',
 
         // API_SAVE_SHARED_LIST_URL: 'nbia-api/services/createSharedList',
 
@@ -201,6 +202,7 @@ export const Consts = {
         SHOW_CRITERIA_PIXEL_SPACING: 'showQueryPixelSpacing',
         SHOW_CRITERIA_QUERY_IMAGE_DESCRIPTION: 'showQueryImageDescription',
         SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES: 'showQueryManufacturerValues',
+        SHOW_CRITERIA_TCIA_PROGRAM: 'showQueryTciaProgram',
        
 
         SHOW_CRITERIA_QUERY_THIRD_PARTY_DEFAULT: false,
@@ -220,6 +222,8 @@ export const Consts = {
 
         SHOW_CRITERIA_QUERY_AVAILABLE_DEFAULT: false,
         SHOW_CRITERIA_QUERY_SUBJECT_ID_DEFAULT: false,
+
+        SHOW_CRITERIA_TCIA_PROGRAM_DEFAULT: false,
 
         DISPLAY_DATA_TYPE_SEARCH_RESULTS: 0,
         DISPLAY_DATA_TYPE_CART_LIST: 1,

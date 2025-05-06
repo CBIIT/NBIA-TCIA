@@ -270,6 +270,98 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		}
     }
 	@Transactional(propagation=Propagation.REQUIRED)
+    public List<PatientStudySeriesQuintuple> findQuintles_v4(DICOMQuery theQuery) throws DataAccessException {
+		try {
+	        query = theQuery;
+
+	        selectStmt = SQL_QUERY_SELECT2 + " || '/' || " +  authorizationCaseStatement(theQuery);
+	        fromStmt = SQL_QUERY_FROM_NEITHER;
+	        whereStmt = SQL_QUERY_WHERE_NEITHER;
+
+	        /* List to return */
+	        List<PatientStudySeriesQuintuple> patientList = new ArrayList<PatientStudySeriesQuintuple>();
+
+	        /* Process non-image criteria */
+	        this.nonImageProcess();
+
+	        /* Process UrlParamCriteria if the DICOMQuery is URLType */
+	        if (query.isQueryFromUrl()) {
+	            whereStmt += urlCriteriaProcess();
+	        }
+
+            
+	        /* Process image criteria */
+	        String imageClause = imageCriteriaProcess(this.query);
+	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
+
+
+	        /* Run the query */
+	        logger.debug("Search Issuing query : " + hql);
+
+          System.out.println("Simple search query: ");
+          System.out.println(hql);
+
+	        long startTime = System.currentTimeMillis();
+	        List<String> results = getHibernateTemplate().find(hql);
+	        long elapsedTime = System.currentTimeMillis() - startTime;
+	        logger.debug("Results returned from query in " + elapsedTime + " ms.");
+            int i=0;
+            int x=0;
+	        /* Convert the results to PatientResultSet objects */
+	        if (results != null) {
+
+	            for (String str : results) {
+
+	                //Parse out the primary keys These are concatenated into one
+	                //column to improve performance The fewer columns returned, the
+	                //better that Hibernate performs
+	            	
+	                String[] ids = str.split("/");
+
+                  PatientStudySeriesQuintuple prs = new PatientStudySeriesQuintuple();
+                  prs.setPatientPkId(Integer.valueOf(ids[0]));
+                  prs.setStudyPkId(Integer.valueOf(ids[1]));
+                  prs.setSeriesPkId(Integer.valueOf(ids[2]));
+                  if (ids.length>3) {
+                    prs.setModality(ids[3]);
+                  } 
+                  if (ids.length>4) {
+                    if (ids[4]!=null) {
+                      prs.setBodyPart(ids[4].toUpperCase());
+                    }
+                  }
+                  if (ids.length>5) {
+                    prs.setSpecies(ids[5]);
+                  }
+                  if (ids.length>6&&ids[6]!="") {
+                    prs.setEventType(ids[6]);
+                  } 
+                  if (ids.length>7&&ids[7]!="") {
+                    try {
+                      prs.setEventOffset(Integer.parseInt(ids[7]));
+                    } catch (Exception e) {
+                      // TODO Auto-generated catch block
+                      e.printStackTrace();
+                    }
+                  }
+                  if (ids.length>8&&ids[8]!=null) {
+                    System.out.println(ids[8]);
+                    System.out.println(Integer.parseInt(ids[8]));
+                    prs.setAuthorized(Integer.parseInt(ids[8]));
+                  }
+	                patientList.add(prs);
+	            }
+	        }
+
+
+	        return patientList;
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
     public List<PatientStudySeriesQuintuple> findQuintles(DICOMQuery theQuery) throws DataAccessException {
 		try {
 	        query = theQuery;
@@ -858,6 +950,38 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         }
     }
 
+    private static String processAuthorizationSites_v4(DICOMQuery theQuery)  {
+        AuthorizationCriteria authCrit = theQuery.getAuthorizationCriteria();
+
+        if (authCrit.getSites().isEmpty()) {
+            // User is not allowed to view any sites.
+            // Since all data has a site, user is not allowed to see anything
+            // Return empty list
+            logger.debug("No results returned because user does not have access to any sites");
+
+            return null;
+        }
+        else {
+            // Build HQL for sites
+        	String statement = " case when concat(series.project, '//', series.site) in (";
+
+            // For each site, need to include both collection and site
+            // since site names can be duplicated across collections
+            for (SiteData siteData : authCrit.getSites()) {
+
+                statement += "'";
+                statement += siteData.getCollection();
+                statement += "//";
+                statement += siteData.getSiteName();
+                statement += "', ";
+            }
+            statement = statement.substring(0, statement.length() - 2);
+
+            statement += ") then 1 else 0 end ";
+
+            return statement;
+        }
+    }
     private static String processAuthorizationSites(DICOMQuery theQuery)  {
         AuthorizationCriteria authCrit = theQuery.getAuthorizationCriteria();
 
@@ -917,6 +1041,26 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
     	return "";
     }
 
+    /**
+     * Process authorization to ensure the authorization criteria is valid
+     *
+     * @throws Exception
+     */
+    private static String authorizationCaseStatement(DICOMQuery theQuery) throws Exception {
+    	authorizationCriteriaPreconditions(theQuery);
+
+    	String statement = "";
+
+      String sitesStmt = processAuthorizationSites_v4(theQuery);
+      if(sitesStmt==null) {
+      	return null;
+      }
+      else {
+      	statement += sitesStmt;
+      }
+
+      return statement;
+    }
     /**
      * Process authorization to ensure the authorization criteria is valid
      *

@@ -22,6 +22,7 @@ import org.springframework.dao.DataAccessException;
 public interface ValueAndCountDAO {
 	 
 
+	public List<Object[]> getValuesAndCounts_v4(ValuesAndCountsCriteria criteria) throws DataAccessException;
 	public List<ValuesAndCountsDTO> getValuesAndCounts(ValuesAndCountsCriteria criteria) throws DataAccessException;
 	public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException;
 	public Map<String, ExtendedPatientSearchResult> extendedQuery(ExtendedSearchResultCriteria criteria) throws DataAccessException;

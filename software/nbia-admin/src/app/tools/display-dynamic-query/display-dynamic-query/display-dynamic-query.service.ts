@@ -44,7 +44,7 @@ export class DisplayDynamicQueryService{
      */
     setCondition( criteriaQueryData ){
         let subHead = ''
-        if( criteriaQueryData['criteriaSubheading'] !== undefined ){
+        if( criteriaQueryData['criteriaSubheading'] != null ){
             subHead = criteriaQueryData['criteriaSubheading'];
         }
 

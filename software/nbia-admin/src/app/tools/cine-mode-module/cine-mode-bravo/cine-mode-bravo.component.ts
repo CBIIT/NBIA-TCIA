@@ -346,7 +346,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
     updateDicom(){
         if( this.showDicomData ){
-            if( this.images[this.currentImage - 1] !== undefined ){
+            if( this.images[this.currentImage - 1] != null ){
                 this.dicomData = [];
 
                 // currentImage - 1,  because currentImage starts at 1 not 0.

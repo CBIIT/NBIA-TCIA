@@ -414,11 +414,11 @@ export class CartComponent implements OnInit, OnDestroy{
                 }
 
                 if( Properties.DEBUG_CURL ){
-                    let curl = 'curl -O -H \'Authorization:Bearer  ' + this.apiServerService.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/getSeriesMetadata2' + '\' -d \'' + query + '\'';
+                    let curl = 'curl -O -H \'Authorization:Bearer  ' + this.apiServerService.showToken() + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/getSeriesMetadata3' + '\' -d \'' + query + '\'';
                     console.log( 'downloadCartAsCsv: ', curl );
                 }
 
-                let csvDownloadUrl = Properties.API_SERVER_URL + '/nbia-api/services/getSeriesMetadata2';
+                let csvDownloadUrl = Properties.API_SERVER_URL + '/nbia-api/services/getSeriesMetadata3';
 
                 let headers = new HttpHeaders( {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -470,7 +470,7 @@ export class CartComponent implements OnInit, OnDestroy{
                 this.apiServerService.downloadSeriesList( this.seriesListForDownloadQuery ).subscribe(
                     data_inner => {
                         let databasketId = data_inner.match(/databasketId=(.*)/);
-                        if( databasketId[1] === undefined ){
+                        if( databasketId[1] == null ){
                             console.error('Error can not get databasketId from manifest data.');
                         }
                         let tciaManifestFile = new Blob( [data_inner], { type: 'application/x-nbia-manifest-file' } );
@@ -621,7 +621,7 @@ export class CartComponent implements OnInit, OnDestroy{
         let downloadQueryList: string[] = [];
 
         this.cart.forEach((item, index) => {
-            if (this.cartList[index] !== undefined) {
+            if (this.cartList[index] != null) {
                 item.disabled = this.cartList[index].disabled;
             }
 

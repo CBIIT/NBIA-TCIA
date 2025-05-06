@@ -63,6 +63,14 @@ export class UtilService{
         return false;
     }
 
+    // In a util service or inside your component
+    normalizeName(name: string): string {
+        if (!name) return '';
+        return name
+        .toLowerCase()
+        .replace(/[\s_-]+/g, '')  // remove spaces, dashes, underscores
+        .trim();
+    }
 
     copyCriteriaObjectArray( origObject ) {
         if( origObject === null ){
@@ -106,6 +114,18 @@ export class UtilService{
             copyCrit['seq'] = origCrit['seq'];
         }
         return copyCrit;
+    }
+
+    // deep copy of an tciaProgramList
+    copyTciaProgramList( source: any[]): any[] {
+        if (!Array.isArray(source)) return [];
+
+        return source.map(program => ({
+          ...program,
+          relatedCollectionsList: Array.isArray(program.relatedCollectionsList)
+            ? program.relatedCollectionsList.map(col => ({ ...col }))
+            : []
+        }));
     }
 
     /**

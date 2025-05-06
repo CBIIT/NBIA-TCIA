@@ -523,7 +523,7 @@ export class ApiService{
         this.loadingDisplayService.setLoading( true, 'Loading data...' );
 
         // Check for empty query. If empty just send Consts.NO_SEARCH, this will tell search results component not to show count and pager etc. at the top
-        if( query === undefined || query.length < 1 ){
+        if( query == null || query.length < 1 ){
             this.searchResultsEmitter.emit( [Consts.NO_SEARCH] );
             return;
         }

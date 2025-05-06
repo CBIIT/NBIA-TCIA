@@ -99,7 +99,7 @@ export class DataSectionTabsComponent implements OnInit, OnDestroy{
      */
     initTabSelection() {
         let previousTab = this.persistenceService.get( this.persistenceService.Field.DATA_DISPLAY_TAB );
-        if( previousTab !== undefined ){
+        if( previousTab != null ){
             this.activeTab = this.persistenceService.get( this.persistenceService.Field.DATA_DISPLAY_TAB );
         }
     }

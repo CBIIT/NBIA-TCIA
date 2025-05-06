@@ -396,25 +396,23 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
             return;
         }
 
-        // Find our (Collections) data
-        let collectionCriteriaObj;
+        // // Find our (Collections) data
+        // let collectionCriteriaObj;
 
-        // data.res is an array of Objects, each object is one criteria's data, get the Collections data.
-        for( let criteria of data.res ){
-            if( criteria.criteria === 'Collections' ){
-                collectionCriteriaObj = criteria.values;
-            }
-        }
+        // // data.res is an array of Objects, each object is one criteria's data, get the Collections data.
+        // for( let criteria of data.res ){
+        //     if( criteria.criteria === 'Collections' ){
+        //         collectionCriteriaObj = criteria.values;
+        //     }
+        // }
+
+        const collectionCriteriaObj = data.res.find(criteria => criteria.criteria === 'Collections')?.values;
 
         // Before we update the list, save the original list so we can restore checkboxes by criteria name.
-        let criteriaListTemp = this.criteriaList;
+        const criteriaListTemp = [...this.criteriaList];
 
-        let cBoxHold = [];
+        const cBoxHold = [...this.cBox];
         // Before we update the criteria list, save all the checked boxes.
-        for( let f = 0; f < this.cBox.length; f++ ){
-            cBoxHold[f] = this.cBox[f];
-        }
-
 
         // If there is no query just reset criteriaList to criteriaListHold.
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
@@ -430,14 +428,19 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
             for( let criteria of this.completeCriteriaList ){
                 criteria.count = 0;
             }
-
-            for( let criteria of collectionCriteriaObj ){
-                for( let completeCriteria of this.completeCriteriaList ){
-                    if( criteria.criteria === completeCriteria.criteria ){
-                        completeCriteria.count = criteria.count;
-                    }
+            this.completeCriteriaList.forEach( item => {
+                if (collectionCriteriaObj.some(criteria => criteria.criteria === item.criteria)) {
+                    item.count = collectionCriteriaObj.find(criteria => criteria.criteria === item.criteria).count;
                 }
-            }
+            });
+
+            // for( let criteria of collectionCriteriaObj ){
+            //     for( let completeCriteria of this.completeCriteriaList ){
+            //         if( criteria.criteria === completeCriteria.criteria ){
+            //             completeCriteria.count = criteria.count;
+            //         }
+            //     }
+            // }
         }
 
         this.updateCriteriaList( false );
@@ -502,32 +505,46 @@ export class CollectionQueryComponent implements OnInit, OnDestroy{
 
         // If this is the first time this is running just copy the data to the criteriaList
         if( this.resetFlag ){
-            this.criteriaList = this.completeCriteriaList;
+            this.criteriaList = this.completeCriteriaList.map( item => (
+                {
+                    ...item,
+                    unfilteredCount: item.count
+                }
+            ));
 
         }else{
             // This will let us keep all of the criteria, but the ones that are not included in "data" will have a count of zero.
             this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaListHold );
 
-            for( let f = 0; f < this.criteriaList.length; f++ ){
-                this.criteriaList[f].count = 0;
-            }
-
-            for( let dataCriteria of this.completeCriteriaList ){
-                for( let f = 0; f < this.criteriaList.length; f++ ){
-                    if( this.criteriaList[f].criteria === dataCriteria.criteria ){
-                        this.criteriaList[f].count = dataCriteria.count;
-                    }
+            this.criteriaList = this.criteriaList.map( item => (
+                { ...item,
+                    count: 0,
+                    unfilteredCount: item.count
                 }
-            }
+            ));
+
+            // for( let dataCriteria of this.completeCriteriaList ){
+            //     for( let f = 0; f < this.criteriaList.length; f++ ){
+            //         if( this.criteriaList[f].criteria === dataCriteria.criteria ){
+            //             this.criteriaList[f].count = dataCriteria.count;
+            //         }
+            //     }
+            // }
+
+            // Create a Map for quick lookup
+            const criteriaMap = new Map(this.completeCriteriaList.map(item => [item.criteria, item.count]));
+
+            // Update criteriaList using the Map
+            this.criteriaList.forEach(item => {
+                if (criteriaMap.has(item.criteria)) {
+                    item.count = criteriaMap.get(item.criteria);
+                }
+            });         
         }
 
         if( (this.resetFlag) || (initCheckBox) ){
             this.resetFlag = false;
-            this.cBox = [];
-            let len = this.criteriaList.length;
-            for( let f = 0; f < len; f++ ){
-                this.cBox[f] = false;
-            }
+            this.cBox = Array(this.criteriaList.length).fill(false);
             this.updateCheckboxCount();
         }
 

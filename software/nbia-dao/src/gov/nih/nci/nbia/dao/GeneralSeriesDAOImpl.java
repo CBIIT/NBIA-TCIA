@@ -39,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +143,57 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
    *            Body Part Examined
    */
   @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> getModalityValues_v4(String collection, String bodyPart, List<String> authorizedProjAndSites)
+    throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }		
+
+    String sql = "select distinct(upper(modality)) from general_series s where visibility in ('1') ";
+    String order = " order by upper(modality)";
+    StringBuffer where = new StringBuffer();
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (bodyPart != null) {
+      where.append(" and UPPER(s.body_part_examined)=:bodyPart");
+      params.put("bodyPart", bodyPart.toUpperCase());
+    }
+
+    sql = sql + where.toString() + order;
+
+    System.out.println(
+        "===== In nbia-dao, GeneralSeriesDAOImpl:getModalityValues_v4() - downloadable visibility sql is: " + sql);
+        
+    // Create the query and set parameters in one go
+
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+    return rs;
+
+  }
+  /**
+   * Fetch set of Modality through project, ie. collection, and bodyPartExamined
+   * This method is used for NBIA Rest API.
+   * 
+   * @param collection
+   *            A label used to name a set of images collected for a specific
+   *            trial or other reason. Assigned during the process of curating the
+   *            data. The info is kept under project column
+   * @param bodyPart
+   *            Body Part Examined
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<String> getModalityValues(String collection, String bodyPart, List<String> authorizedProjAndSites)
     throws DataAccessException {
 
@@ -182,6 +234,56 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     return rs;
   }
 
+  /**
+   * Fetch set of body part values through project, ie. collection, and modality
+   * This method is used for NBIA Rest API.
+   * 
+   * @param collection
+   *            A label used to name a set of images collected for a specific
+   *            trial or other reason. Assigned during the process of curating the
+   *            data. The info is kept under project column
+   * @param modality
+   *            Body Part Examined
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> getBodyPartValues_v4(String collection, String modality, List<String> authorizedProjAndSites)
+    throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }				
+
+    String sql = "select distinct(upper(body_part_examined)) from general_series s where visibility in ('1') ";
+    String order = " order by upper(body_part_examined)";
+    Map<String, Object> params = new HashMap<>();
+
+    StringBuffer where = new StringBuffer();
+    if (collection != null) {
+      where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (modality != null) {
+      where.append(" and UPPER(s.modality)=:modality");
+      params.put("modality", modality.toUpperCase());
+    }
+
+    sql = sql + where.toString() + order;
+
+    System.out.println(
+        "===== In nbia-dao, GeneralSeriesDAOImpl:getBodyPartValues_v4() - downloadable visibility sql is: " + sql);
+
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+    return rs;
+  }
   /**
    * Fetch set of body part values through project, ie. collection, and modality
    * This method is used for NBIA Rest API.
@@ -250,6 +352,64 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
    *            Body Part Examined
    */
   @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> getManufacturerValues_v4(String collection, String modality, String bodyPart,
+      List<String> authorizedProjAndSites) throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    }
+
+    StringBuffer where = new StringBuffer();
+    String sql = "select distinct(upper(e.manufacturer)) from general_series s "
+      + "join general_equipment e on s.general_equipment_pk_id = e.general_equipment_pk_id " 
+      + "where s.visibility in ('1') ";
+    String order = " order by upper(e.manufacturer)";
+    Map<String, Object> params = new HashMap<>();
+
+    if (collection != null) {
+      where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+    }
+    if (modality != null) {
+      where.append(" and UPPER(s.modality)=:modality");
+      params.put("modality", modality.toUpperCase());
+    }
+    if (bodyPart != null) {
+      where = where.append(" and UPPER(s.body_part_examined)=:bodyPart");
+      params.put("bodyPart", bodyPart.toUpperCase());
+    }
+
+    sql = sql + where.toString() + order;
+
+    System.out.println(
+        "===== In nbia-dao, GeneralSeriesDAOImpl:getManufacturerValues_v4() - downloadable visibility sql is: "
+        + sql);
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+    return rs;
+  }
+  /**
+   * Fetch set of manufacturer names through project, ie. collection, bodyPart and
+   * modality This method is used for NBIA Rest API.
+   * 
+   * @param collection
+   *            A label used to name a set of images collected for a specific
+   *            trial or other reason. Assigned during the process of curating the
+   *            data. The info is kept under project column
+   * @param modality
+   *            Modality
+   * @param bodyPart
+   *            Body Part Examined
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<String> getManufacturerValues(String collection, String modality, String bodyPart,
       List<String> authorizedProjAndSites) throws DataAccessException {
 
@@ -295,6 +455,44 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     return rs;
   }
+  private StringBuffer addAuthorizedProjAndSites2(List<String> authorizedProjAndSites) {
+    StringBuffer where = new StringBuffer();
+
+    if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+      where = where.append(" and concat(s.project, '//', s.site) in (");
+
+      for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+        String str = projAndSites.next();
+        where.append(str);
+
+        if (projAndSites.hasNext()) {
+          where.append(",");
+        }
+      }
+      where.append(")");
+    }
+
+    return where;
+  }
+  private StringBuffer addAuthorizedProjAndSitesCaseStatement(List<String> authorizedProjAndSites) {
+    StringBuffer where = new StringBuffer();
+
+    if ((authorizedProjAndSites != null) && (!authorizedProjAndSites.isEmpty())) {
+      where = where.append(" case when concat(s.project, '//', s.site) in (");
+
+      for (Iterator<String> projAndSites = authorizedProjAndSites.iterator(); projAndSites.hasNext();) {
+        String str = projAndSites.next();
+        where.append(str);
+
+        if (projAndSites.hasNext()) {
+          where.append(",");
+        }
+      }
+      where.append(") then 1 else 0 end as authorized ");
+    }
+
+    return where;
+  }
 
   /**
    * Construct the partial where clause which contains checking with authorized
@@ -321,6 +519,101 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     return where;
   }
+  @Transactional(propagation = Propagation.REQUIRED)
+  public List<Object[]> getSeries_v4(String collection, String patientId, String studyInstanceUid, List<String> authCol, String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer, String seriesInstanceUID) throws DataAccessException {
+
+
+    StringBuffer where = new StringBuffer();
+    List<Object[]> rs = null;
+    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, s.series_date, s.series_desc, "
+      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, e.manufacturer, "
+      + "e.manufacturer_model_name, e.software_versions, "
+      + "(select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, "
+      + "s.max_submission_timestamp, "
+      + "s.license_name, s.license_url, s.description_uri, "
+      + "(select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as total_size, "
+      + "s.date_released, "
+      + "s.study_desc, s.study_date, s.third_party_analysis, "
+      + addAuthorizedProjAndSitesCaseStatement(authCol) 
+      + " from general_series s join general_equipment e " 
+      + " on s.general_equipment_pk_id = e.general_equipment_pk_id where s.visibility in ('1') ";
+
+    Map<String, Object> params = new HashMap<>();
+    int i = 0;
+
+    if (collection != null) {
+      where = where.append(" and UPPER(s.project)=:project");
+      params.put("project", collection.toUpperCase());
+      ++i;
+    }
+    if (patientId != null) {
+      where = where.append(" and UPPER(s.patient_id)=:patientId");
+      params.put("patientId", patientId.toUpperCase());
+      ++i;
+    }
+    if (studyInstanceUid != null) {
+      where = where.append(" and s.study_instance_uid=:study_instance_uid");
+      params.put("study_instance_uid", studyInstanceUid);
+      ++i;
+    }
+    if (modality != null) {
+      where = where.append(" and s.modality=:modality");
+      params.put("modality", modality);
+      ++i;
+    }
+    if (bodyPartExamined != null) {
+      where = where.append(" and s.body_part_examined=:body_part_examined");
+      params.put("body_part_examined", bodyPartExamined);
+      ++i;
+    }
+    if (manufacturerModelName != null) {
+      where = where.append(" and e.manufacturer_model_name=:manufacturer_model_name");
+      params.put("manufacturer_model_name", manufacturerModelName);
+      ++i;
+    }
+    if (manufacturer != null) {
+      where = where.append(" and e.manufacturer=:manufacturer");
+      params.put("manufacturer", manufacturer);
+      ++i;
+    }
+    if (seriesInstanceUID != null) {
+      where = where.append(" and s.series_instance_uid=:series_instance_uid");
+      params.put("series_instance_uid", seriesInstanceUID);
+      ++i;
+    }
+
+    //where.append(" and exists("
+    //  + " select 1 from csm_user join csm_user_group ug on csm_user.USER_ID = ug.user_id "
+    //  + "join csm_user_group_role_pg cugrp on cugrp.GROUP_ID = ug.group_id "
+    //  + "join csm_pg_pe cpp on cpp.PROTECTION_GROUP_ID = cugrp.PROTECTION_GROUP_ID "
+    //  + "join csm_protection_element cpe on cpe.PROTECTION_ELEMENT_ID = cpp.PROTECTION_ELEMENT_ID "
+    //  + "where csm_user.LOGIN_NAME = :userName and cugrp.ROLE_ID = '1' and cpe.PROTECTION_ELEMENT_NAME = concat('NCIA.', s.project, '//', s.site))"
+    //);
+
+    //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
+    //				+ hql + where.toString());
+
+    sql = sql + where.toString();
+    //System.out.println(sql);
+
+    //long startTime = System.currentTimeMillis();
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+    
+    List<Object[]> seriesResults = query.list();
+
+    //long endTime = System.currentTimeMillis();
+    //System.out.println("Query execution time: " + (endTime - startTime) + " ms");
+
+    return seriesResults;
+
+  }
+
 
   /**
    * Fetch set of series objects filtered by project, ie. collection, patientId
@@ -400,11 +693,13 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
     //				+ hql + where.toString());
 
+
     if (i > 0) {
       Object[] values = paramList.toArray(new Object[paramList.size()]);
       rs = getHibernateTemplate().find(hql + where.toString(), values);
     } else
       rs = getHibernateTemplate().find(hql + where.toString());
+
 
     return rs;
   }
@@ -588,6 +883,41 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
         rs = getHibernateTemplate().find(hql + where.toString(), values);
       } else
         rs = getHibernateTemplate().find(hql + where.toString());
+      return rs;
+  }
+
+  public List<Object[]> getSeriesSize_v4(String seriesInstanceUID, List<String> authorizedProjAndSites)
+          throws DataAccessException {
+  
+      if (authorizedProjAndSites == null || authorizedProjAndSites.isEmpty()){
+          return null;
+      }
+  
+      StringBuffer where = new StringBuffer();
+      Map<String, Object> params = new HashMap<>();
+  
+      String sql = "select sum(gi.dicom_size), s.image_count, " +
+                   addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
+                   " from general_series s join general_image_collection gi on s.id = gi.series_id " +
+                   " where s.visibility in ('1') ";
+  
+      if (seriesInstanceUID != null) {
+          where.append(" and UPPER(s.series_instance_uid) = :seriesInstanceUID");
+          params.put("seriesInstanceUID", seriesInstanceUID.toUpperCase());
+      }
+  
+      sql += where.toString();
+  
+      System.out.println("===== In nbia-dao, getSeriesSize_v4() - SQL is: " + sql);
+  
+      // Create the query and set parameters in one go
+      Query query = this.getHibernateTemplate()
+                        .getSessionFactory()
+                        .getCurrentSession()
+                        .createSQLQuery(sql)
+                        .setProperties(params);
+  
+      List<Object[]> rs = query.list();
       return rs;
   }
 
@@ -1785,4 +2115,6 @@ public String getCollectionNameForSeriesInstanceUid(String seriesId) throws Data
     return collections.get(0);
 
 }
+
+
 }

@@ -162,6 +162,7 @@ export let Properties = {
     SHOW_IMAGE_DESCRIPTION: false,
 
     USE_COLLECTIONS_LESS_MORE: true,
+    USE_TCIAPROGRAMS_LESS_MORE: true,
 
     // If false sort just by name, this is the default for criteria sorting
     // This is the sort for "Image Modality" and "Anatomical Site" and the default sort for Collections.

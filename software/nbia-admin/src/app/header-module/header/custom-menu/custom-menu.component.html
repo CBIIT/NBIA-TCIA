@@ -5,14 +5,14 @@
 
     <span *ngFor="let topMenuEntry of properties.CUSTOM_MENU_DATA">
         <span
-            *ngIf="topMenuEntry['menuData'] !== undefined"
+            *ngIf="topMenuEntry['menuData'] != null"
             class="dropdown custom-menu-dropdown-span"
             align="left"
         >
             <a class="custom-menu-no-dropdown " [href]=topMenuEntry.menuData.target TARGET="_blank">{{topMenuEntry.entryTitle}}</a>
         </span>
         <span
-            *ngIf="topMenuEntry['menuDataDropdown'] !== undefined"
+            *ngIf="topMenuEntry['menuDataDropdown'] != null"
             class="dropdown custom-menu-dropdown-span"
             dropdown
             align="left"

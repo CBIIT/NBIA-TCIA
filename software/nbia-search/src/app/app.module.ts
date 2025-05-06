@@ -127,6 +127,8 @@ import { ImagesDescriptionExplanationComponent } from './image-search/query-sect
 import { MinimumMatchedStudiesExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/minimum-matched-studies/minimum-matched-studies-explanation/minimum-matched-studies-explanation.component';    
 import { SubjectIdExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/subject-id-query/subject-id-explanation/subject-id-explanation.component'; 
 import { PhantomQueryExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query-explanation/phantom-query-explanation.component';   
+import { CollectionProgramQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/collection-program-query/collection-program-query.component';
+import { MatIconModule } from '@angular/material/icon';
 /*
 const appRoutes: Routes = [
     { path: '', component: NbiaClientComponent },
@@ -235,7 +237,8 @@ const appRoutes: Routes = [
         ImagesDescriptionExplanationComponent,
         MinimumMatchedStudiesExplanationComponent,
         SubjectIdExplanationComponent,
-        PhantomQueryExplanationComponent
+        PhantomQueryExplanationComponent,
+        CollectionProgramQueryComponent
     ],
     imports: [
         BrowserModule,
@@ -244,6 +247,8 @@ const appRoutes: Routes = [
         AppRoutingModule,
         BrowserAnimationsModule,
         MatExpansionModule,
+        MatCheckboxModule,
+        MatIconModule,
         NgxSliderModule,
         ClipboardModule,
 

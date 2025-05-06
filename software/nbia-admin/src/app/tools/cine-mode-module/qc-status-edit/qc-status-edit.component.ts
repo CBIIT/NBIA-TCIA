@@ -134,7 +134,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         this.showUpdateDescriptionUri = false;
         this.descriptionUri = '';
         let n = 0;
-        if( dataCount !== undefined){
+        if( dataCount != null && dataCount > 0 ){
             for( let n = 0; n < dataCount; n++ ){
                 this.radioStatus[n] = false;
             }
@@ -154,7 +154,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
     async updateSiteList(){
         let runaway = 10;
 
-        while( (this.seriesData === undefined) && runaway > 0 ){
+        while( (this.seriesData == null) && runaway > 0 ){
             runaway--;
             await this.utilService.sleep( 500 );
         }
