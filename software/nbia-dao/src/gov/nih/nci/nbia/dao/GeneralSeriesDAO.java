@@ -106,17 +106,20 @@ public interface GeneralSeriesDAO  {
 	           List<String> seriesIDs) throws DataAccessException;
 	public List<SeriesDTO> findSeriesBySeriesInstanceUIDAllVisibilities(List<String> seriesIds, List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException;
 	public List<SeriesDTO> findSeriesBySeriesInstanceUIDAllVisibilitiesLight(List<String> seriesIds, List<SiteData> authorizedSites, List<String> authorizedSeriesSecurityGroups) throws DataAccessException;
+	public List<String> findSeriesByCollectionAndVisibility_v4(String collection, String visibility) throws DataAccessException;
 	public List<String> findSeriesByCollectionAndVisibility(String collection, String visibility) throws DataAccessException;
 	public List<SeriesDTO> getSeriesFromSeriesInstanceUIDsIgnoreSecurity(List<String> seriesIds) throws DataAccessException;
 	public Object [] findSeriesBySeriesInstanceUIDAllVisibilitiesLight(boolean allVisibilities, String seriesId,
 			List<String> authorizedCollections) throws DataAccessException;
 	public List<String> getDeniedSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
 	public int updateDOIForSeries(String project, String doi)throws DataAccessException;
+	public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException;
 	public List<DOIDTO> getCollectionOrSeriesForDOI(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException;
 	public String getMD5ForSeries(String seriesInstanceUID)throws DataAccessException;
 	public String getMD5ForStudy(String studyInstanceUID,List<SiteData> authorizedSites)throws DataAccessException;
 	public String getMD5ForPatientId(String patientId, String project, List<SiteData> authorizedSites)throws DataAccessException;
 	public String getMD5ForCollection(String project, List<SiteData> authorizedSites)throws DataAccessException;
+	public List<String> getSitesForSeries_v4(List<String> seriesIds) throws DataAccessException;
 	public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException;
 	public void cacheMD5ForAllCollections()throws DataAccessException;
 	public List<Object[]> findSeriesQCInfoBySeriesInstanceUIDs(List<String> seriesIds, List<String> authorizedSite) throws DataAccessException;

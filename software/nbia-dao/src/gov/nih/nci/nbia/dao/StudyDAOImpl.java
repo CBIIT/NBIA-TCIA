@@ -907,6 +907,31 @@ public class StudyDAOImpl extends AbstractDAO
         return returnList;
     }
 	@Transactional(propagation=Propagation.REQUIRED)
+	public TimePointDTO getMinMaxTimepoints_v4() throws DataAccessException
+	{
+		TimePointDTO returnValue=new TimePointDTO();
+		String selectFrom = "select max(study.longitudinal_temporal_offset_from_event), min(study.longitudinal_temporal_offset_from_event), study.longitudinal_temporal_event_type " + 
+				" from study, general_series gs " + 
+				" where study.study_pk_id = gs.study_pk_id " +
+				" and study.longitudinal_temporal_event_type is not null ";	
+		String groupBy=" group by study.longitudinal_temporal_event_type ";
+		String sql = selectFrom+groupBy;
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sql)
+		        .list();
+		Map maxTimePoints=new HashMap<String, Integer>();
+		Map minTimePoints=new HashMap<String, Integer>();
+        for(Object[] row : data)
+        {
+        	if (row[0]!=null&&row[1]!=null&&row[2]!=null) {
+        		maxTimePoints.put(row[2].toString(), new Integer(((Double)row[0]).intValue()));
+        		minTimePoints.put(row[2].toString(), new Integer(((Double)row[1]).intValue()));
+        	}
+        }
+        returnValue.setMaxTimepoints(maxTimePoints);
+        returnValue.setMinTimepoints(minTimePoints);
+		return returnValue;
+	}
+	@Transactional(propagation=Propagation.REQUIRED)
 	public TimePointDTO getMinMaxTimepoints(AuthorizationCriteria auth) throws DataAccessException
 	{
 		TimePointDTO returnValue=new TimePointDTO();

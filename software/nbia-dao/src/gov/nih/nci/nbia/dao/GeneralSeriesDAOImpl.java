@@ -1475,6 +1475,45 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
    * This method is used for NBIA Rest API.
    */
   @Transactional(propagation = Propagation.REQUIRED)
+  public List<String> findSeriesByCollectionAndVisibility_v4(String collection, String visibility)
+    throws DataAccessException {
+    String visiblityClause = "";
+    if (!visibility.isEmpty() && !visibility.contains("13")) {
+      String[] vList = visibility.split(",");
+      StringBuffer sb = new StringBuffer();
+      for (int i = 0; i < vList.length; ++i) {
+        sb.append("'");
+        sb.append(vList[i].trim());
+        sb.append("'");
+        if (i < vList.length-1)
+          sb.append(",");
+      }
+      visibility = sb.toString();
+      visiblityClause = " and gs.visibility in (" + visibility + ")";
+    }
+    String sql = "select gs.series_instance_uid from general_series gs where gs.project = '" + collection + "' "
+      + visiblityClause + " order by gs.series_instance_uid";
+
+    //		System.out.println(
+    //				"===== In nbia-dao, GeneralSeriesDAOImpl:findSeriesByCollectionAndVisibility() - hql is: " + hql);
+
+    // Create the query and set parameters in one go
+
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql);
+
+    List<String> rs = query.list();
+    return rs;
+
+  }
+  /**
+   * Fetch the list series instance uid by giving collection name and visibility.
+   *
+   * This method is used for NBIA Rest API.
+   */
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<String> findSeriesByCollectionAndVisibility(String collection, String visibility)
     throws DataAccessException {
     String visiblityClause = "";
@@ -1496,6 +1535,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     //		System.out.println(
     //				"===== In nbia-dao, GeneralSeriesDAOImpl:findSeriesByCollectionAndVisibility() - hql is: " + hql);
+
 
     return (List<String>) getHibernateTemplate().find(hql);
   }
@@ -1889,6 +1929,96 @@ public List<DOIDTO> getCollectionOrSeriesForDOI(String doi, String collectionOrS
   }
   return returnValue;
 }
+public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException{
+  List<DOIDTO> returnValue=new ArrayList<DOIDTO>();
+  if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+    return returnValue;
+  }
+  boolean forSeries=false;
+  if (collectionOrSeries!=null&&collectionOrSeries.equalsIgnoreCase("Series")) {
+    forSeries=true;
+  }
+  String sqlString = "select project, third_party_analysis ";
+  if (forSeries) {
+    sqlString += ", series_instance_uid ";
+  }
+  sqlString += addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites);
+
+  Map<String, Object> params = new HashMap<>();
+  sqlString +=" from general_series s where 1=1 ";
+  if (doi!=null&&doi.length()>0) {
+    sqlString += " and s.description_uri=:doi";
+    params.put("doi", doi);
+  }
+  if (forSeries) {
+    sqlString += " group by project, third_party_analysis, series_instance_uid ";
+
+    // Create the query and set parameters in one go
+
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sqlString)
+        .setProperties(params);
+
+    List<String> resultsData = query.list();
+
+    for (Object item : resultsData) {
+      DOIDTO dto = new DOIDTO();
+      Object[] row = (Object[]) item;
+      if (row[0] != null) {
+        dto.setCollection(row[0].toString());
+
+      }
+      if (row[1] != null) {
+        dto.setThirdPartyAnanlysis(row[1].toString());
+
+      }
+      if (row[2] != null) {
+        dto.setSeriesInstanceUID(row[2].toString());
+
+      }
+      if (row[3] != null) {
+        dto.setAuthorized(((Number) row[3]).intValue());
+
+
+      }
+      returnValue.add(dto);
+    } 
+  } else {
+    sqlString += " group by project, third_party_analysis ";
+
+    // Create the query and set parameters in one go
+
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sqlString)
+        .setProperties(params);
+
+    List<String> resultsData = query.list();
+
+    for (Object item : resultsData) {
+      DOIDTO dto = new DOIDTO();
+      Object[] row = (Object[]) item;
+      if (row[0] != null) {
+        dto.setCollection(row[0].toString());
+
+      }
+      if (row[1] != null) {
+        dto.setThirdPartyAnanlysis(row[1].toString());
+
+      }
+      if (row[2] != null) {
+        dto.setAuthorized(((Number) row[2]).intValue());
+
+
+      }
+      returnValue.add(dto);
+    } 
+  }
+  return returnValue;
+}
 
 @Transactional(propagation = Propagation.REQUIRED)
 public void cacheMD5ForAllCollections()throws DataAccessException{
@@ -2068,6 +2198,37 @@ private static String digest(String input) {
     e.printStackTrace();
   }
   return result;
+}
+@Transactional(propagation=Propagation.REQUIRED)
+public List<String> getSitesForSeries_v4(List<String> seriesIds) throws DataAccessException{
+  if (seriesIds==null || seriesIds.size()<1) {
+    return null;
+  }
+  String sql = "select distinct project, site from general_series where series_instance_uid in (:ids)";
+  Query query=getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(sql);
+  query.setParameterList("ids", seriesIds);
+  List<Object[]> siteRows = query.list();
+  boolean firstTime=true;
+  String onlyCollection =null;
+  for (Object[] siteRow : siteRows) {
+    if (firstTime) {
+      onlyCollection=(String)siteRow[0];
+      firstTime=false;
+    }
+    if (!onlyCollection.equalsIgnoreCase((String)siteRow[0])){
+      //more than one collection
+      return null;
+    }
+  }
+  List<String> returnValue=new ArrayList<String>();
+  String protectionElementQuery="select  distinct s.dp_site_name "+
+    " from trial_data_provenance tdp, site s where s.trial_dp_pk_id =tdp.trial_dp_pk_id and project like '"+
+    onlyCollection+"'";
+  List<String> results= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(protectionElementQuery).list();
+  for (String result:results) {
+    returnValue.add(result);
+  }
+  return returnValue;
 }
 @Transactional(propagation=Propagation.REQUIRED)
 public List<String> getSitesForSeries(List<String> seriesIds) throws DataAccessException{

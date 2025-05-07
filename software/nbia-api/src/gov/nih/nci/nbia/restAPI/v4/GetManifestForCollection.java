@@ -1,4 +1,4 @@
-package gov.nih.nci.nbia.restAPI;
+package gov.nih.nci.nbia.restAPI.v4;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +16,7 @@ import gov.nih.nci.nbia.restUtil.ManifestMaker;
 import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 
 
-@Path("/getManifestForCollection")
+@Path("/v4/getManifestForCollection")
 public class GetManifestForCollection extends getData {
 	public final static String TEXT_CSV = "text/csv";
 
@@ -47,7 +47,7 @@ public class GetManifestForCollection extends getData {
 		List<String> seriesList = null;
 
 		GeneralSeriesDAO generalSeriesDAO = (GeneralSeriesDAO) SpringApplicationContext.getBean("generalSeriesDAO");
-		List<String> seriesListOut = generalSeriesDAO.findSeriesByCollectionAndVisibility(collection, visibility);
+		List<String> seriesListOut = generalSeriesDAO.findSeriesByCollectionAndVisibility_v4(collection, visibility);
 		String manifest = ManifestMaker.getManifextFromSeriesIds(seriesListOut, includeAnnotation,
 				manifestFileName);
 		return Response.ok(manifest).type("application/x-nbia-manifest-file").build();

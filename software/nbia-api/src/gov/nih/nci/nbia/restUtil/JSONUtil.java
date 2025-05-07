@@ -326,6 +326,8 @@ public class JSONUtil {
 		String jsonInString = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+      mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
 			jsonInString = mapper.writeValueAsString(dois);
 		} catch (Exception e) {
 

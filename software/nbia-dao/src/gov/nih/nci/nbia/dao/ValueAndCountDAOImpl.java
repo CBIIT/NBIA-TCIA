@@ -200,6 +200,35 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		return data;
     }
 	@Transactional(propagation=Propagation.REQUIRED)
+    public List<SpeciesDTO> speciesTax_v4(){
+    	List<SpeciesDTO> returnValue=new ArrayList<SpeciesDTO>();
+	      String SQLQuery = "select distinct sp.species_description, sp.species_code from patient p, trial_data_provenance dp, general_series gs, species sp "
+			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id and p.species_code=sp.species_code "
+      +" and VISIBILITY in ('1')";
+		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
+        .list();		
+		String defaultCode=NCIAConfig.getSpeciesCode();
+		String defaultDescription=NCIAConfig.getSpeciesDescription();
+		boolean found = false;
+        for(Object[] row : data)
+        {
+        	SpeciesDTO newSpeciesValue=new SpeciesDTO();
+        	newSpeciesValue.setSpeciesDescription(row[0].toString());
+        	newSpeciesValue.setSpeciesCode(row[1].toString());
+        	if (defaultCode.equalsIgnoreCase(row[1].toString())){
+        		found=true;
+        	}
+        	returnValue.add(newSpeciesValue);
+        }
+        if(!found) {
+        	SpeciesDTO newSpeciesValue=new SpeciesDTO();
+        	newSpeciesValue.setSpeciesDescription(defaultDescription);
+        	newSpeciesValue.setSpeciesCode(defaultCode);
+        	returnValue.add(newSpeciesValue);
+        }
+		return returnValue;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
     public List<SpeciesDTO> speciesTax(ValuesAndCountsCriteria criteria){
     	List<SpeciesDTO> returnValue=new ArrayList<SpeciesDTO>();
         String SQLQuery = SPECIES_TABLE_QUERY+processAuthorizationSites(criteria.getAuth());
@@ -298,6 +327,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		  	SQLQuery=SQLQuery+" and UPPER(dp.project)=:project";
         params.put("project", criteria.getCollection().toUpperCase());
 		  }
+
 		  if (criteria.getBodyPart() != null) {
 		  	SQLQuery=SQLQuery+" and UPPER(gs.body_part_examined)=:bodyPartExamined";
         params.put("bodyPartExamined", criteria.getBodyPart().toUpperCase());

@@ -27,6 +27,7 @@ public interface StudyDAO  {
      * for the second level query.
      */
 	public List<String> getEventTypes() throws DataAccessException;
+	public TimePointDTO getMinMaxTimepoints_v4() throws DataAccessException;
 	public TimePointDTO getMinMaxTimepoints(AuthorizationCriteria auth) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesId(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesIdForCart(Collection<Integer> seriesPkIds) throws DataAccessException;

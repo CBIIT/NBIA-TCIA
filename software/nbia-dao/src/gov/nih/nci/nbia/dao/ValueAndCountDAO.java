@@ -27,5 +27,6 @@ public interface ValueAndCountDAO {
 	public List<CriteriaValuesForPatientDTO> patientQuery(ValuesAndCountsCriteria criteria) throws DataAccessException;
 	public Map<String, ExtendedPatientSearchResult> extendedQuery(ExtendedSearchResultCriteria criteria) throws DataAccessException;
 	public TreeNode manufacturerTreeQuery(ValuesAndCountsCriteria criteria);
+	public List<SpeciesDTO> speciesTax_v4();
 	public List<SpeciesDTO> speciesTax(ValuesAndCountsCriteria criteria);
 }

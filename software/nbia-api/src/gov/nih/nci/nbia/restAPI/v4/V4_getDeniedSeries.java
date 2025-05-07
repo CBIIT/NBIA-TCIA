@@ -38,7 +38,7 @@ public class V4_getDeniedSeries extends getData {
 		List<String> authorizedCollections = null;
 		List<String> results = null;
 
-		if (seriesList == null) {
+		if (seriesList == null || seriesList.isEmpty()) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, seriesList,  a list of SeriesInstanceUID is required for this API call.")
 					.type(MediaType.APPLICATION_JSON).build();

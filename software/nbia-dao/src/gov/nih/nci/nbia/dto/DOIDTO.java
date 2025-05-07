@@ -4,6 +4,7 @@ public class DOIDTO {
 private String collection;
 private String seriesInstanceUID;
 private String thirdPartyAnanlysis;
+private Integer authorized;
 public String getCollection() {
 	return collection;
 }
@@ -21,6 +22,14 @@ public String getSeriesInstanceUID() {
 }
 public void setSeriesInstanceUID(String seriesInstanceUID) {
 	this.seriesInstanceUID = seriesInstanceUID;
+}
+
+public Integer getAuthorized() {
+  return this.authorized;
+}
+
+public void setAuthorized(Integer authorized) {
+  this.authorized = authorized;
 }
 
 }
