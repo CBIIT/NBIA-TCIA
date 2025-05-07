@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
       console.error("Access token not found in localStorage.");
     }
     //this.globals.accessToken = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')[0].split('=')[1];
-    console.log( "url=" + this.globals.serviceUrl + " access token=" + this.globals.accessToken );
+   // console.log( "url=" + this.globals.serviceUrl + " access token=" + this.globals.accessToken );
     //	this.loadingDisplayService.setLoading( true, 'Standby...' );
     this.appservice.getWikiUrlParam().then(
       (data) => {
