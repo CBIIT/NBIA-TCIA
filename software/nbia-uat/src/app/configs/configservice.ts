@@ -23,7 +23,6 @@ export class ConfigService{
 		return await this.http.get('assets/shared-config.json')
 		.toPromise().then(data => {
 			this.sharedConfig = data;
-			console.log('shared-config loaded', this.sharedConfig);
 		}).catch( err => { console.error( 'could not load shared-config ', err);
 			this.sharedConfig ={};
 		}
