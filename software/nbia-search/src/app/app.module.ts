@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -129,6 +129,7 @@ import { SubjectIdExplanationComponent } from './image-search/query-section/quer
 import { PhantomQueryExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query-explanation/phantom-query-explanation.component';   
 import { CollectionProgramQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/collection-program-query/collection-program-query.component';
 import { MatIconModule } from '@angular/material/icon';
+
 /*
 const appRoutes: Routes = [
     { path: '', component: NbiaClientComponent },
@@ -142,7 +143,9 @@ const appRoutes: Routes = [
     { path: 'ncia/externalPatientSearch.jsf', component: NbiaClientComponent }
 ];
 */
-
+export function initSharedConfig(configService: ConfigurationService) {
+    return () => configService.loadSharedConfig();
+  }
 
 @NgModule( {
     declarations: [
@@ -253,7 +256,14 @@ const appRoutes: Routes = [
         ClipboardModule,
 
     ],
-    providers: [CookieService],
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initSharedConfig,
+            deps: [ConfigurationService],
+            multi: true
+          },
+        CookieService],
     bootstrap: [AppComponent]
 } )
 export class AppModule{

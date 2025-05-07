@@ -6,6 +6,7 @@ import { Consts } from '@app/consts';
 import { CommonService } from '@app/image-search/services/common.service';
 import { timeout } from 'rxjs/operators';
 import { UtilService } from '@app/common/services/util.service';
+import { ConfigurationService } from './configuration.service';
 
 @Injectable( {
     providedIn: 'root'
@@ -42,7 +43,7 @@ export class BrandingService{
     currentDate = new Date();
 
     constructor( private httpClient: HttpClient, private commonService: CommonService,
-                 private utilService: UtilService ) {
+                 private utilService: UtilService , private configurationService: ConfigurationService ) {
     }
 
 
@@ -130,15 +131,15 @@ export class BrandingService{
                 break;
             case this.FOOTER_HTML:
                 Properties.FOOTER_HTML = value.trim()
-                .replace( /%VERSION%/g, Properties.VERSION + Properties.VERSION_SUFFIX )
-                .replace( /%TEST_VERSION%/g, Properties.TEST_VERSION )
+                .replace( /%VERSION%/g, this.configurationService.getSharedConfig('version') + Properties.VERSION_SUFFIX )
+                .replace( /%TEST_VERSION%/g, this.configurationService.getSharedConfig('testVersion') )
                 .replace( /%HOST_NAME%/g, Properties.HOST_NAME );
                 Properties.FOOTER_HTML = value.trim()
-                .replace( /%VERSION%/g, Properties.VERSION )
-                .replace( /%TEST_VERSION%/g, Properties.TEST_VERSION )
+                .replace( /%VERSION%/g, this.configurationService.getSharedConfig('version') )
+                .replace( /%TEST_VERSION%/g,this.configurationService.getSharedConfig('testVersion') )
                 .replace( /%HOST_NAME%/g, Properties.HOST_NAME )
-                .replace( /%CURRENT_YEAR%/g, Properties.CURRENT_YEAR )
-                .replace(/%RELEASE_COMMIT%/g, Properties.RELEASE_COMMIT);
+                .replace( /%CURRENT_YEAR%/g, this.configurationService.getSharedConfig('currentYear') )
+                .replace(/%RELEASE_COMMIT%/g, this.configurationService.getSharedConfig('releaseCommit') );
                 break;
         }
     }

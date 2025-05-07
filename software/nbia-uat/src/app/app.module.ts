@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GroupComponent } from './group/group.component';
@@ -35,9 +35,14 @@ import { PgMemberList } from './pg/pgmemberlist';
 import { PgMemberService } from './pg/pgmemberservice';
 import { UgMemberList } from './group/ugmemberlist';
 import { UgMemberService } from './group/ugmemberservice';
+import { ConfigService } from './configs/configservice';
 import { UserToGroupComponent } from './userToGroup/userToGroup.component';
+export function initSharedConfig(configService: ConfigService) {
+    return () => configService.loadSharedConfig();
+  }
 
-@NgModule({ declarations: [
+@NgModule({ 
+    declarations: [
         AppComponent,
         GroupComponent,
         PeComponent,
@@ -50,7 +55,8 @@ import { UserToGroupComponent } from './userToGroup/userToGroup.component';
         UgMemberList,
         UserToGroupComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent], 
+    imports: [BrowserModule,
         ButtonModule,
         CheckboxModule,
         ConfirmDialogModule,
@@ -65,5 +71,19 @@ import { UserToGroupComponent } from './userToGroup/userToGroup.component';
         TabViewModule,
         TooltipModule,
         FormsModule,
-        BrowserAnimationsModule], providers: [Globals, LoadingDisplayService, PgMemberService, UgMemberService, ConfirmationService, provideHttpClient(withInterceptorsFromDi())] })
+        BrowserAnimationsModule
+    ], 
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initSharedConfig,
+            deps: [ConfigService],
+            multi: true
+          },
+        Globals, LoadingDisplayService, 
+        PgMemberService, UgMemberService, 
+        ConfirmationService, 
+        provideHttpClient(withInterceptorsFromDi())
+    ] 
+})
 export class AppModule { }

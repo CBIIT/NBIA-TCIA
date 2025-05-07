@@ -18,7 +18,12 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              {
+                "glob": "shared-config.json",
+                "input": "../config",
+                "output": "/assets"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -111,10 +116,14 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "nbia",
-      "style": "scss"
+      "style": "scss",
+      "project": "nbia"
     },
     "@schematics/angular:directive": {
       "prefix": "nbia"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

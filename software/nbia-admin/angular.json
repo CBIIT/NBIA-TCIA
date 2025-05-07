@@ -25,7 +25,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/popout.html"
+              "src/popout.html",
+              {
+                "glob": "shared-config.json",
+                "input": "../config",
+                "output": "/assets"
+              }
             ],
             "styles": [
               "src/styles.scss"

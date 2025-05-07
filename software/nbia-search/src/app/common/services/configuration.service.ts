@@ -9,10 +9,33 @@ import { UtilService } from '@app/common/services/util.service';
     providedIn: 'root'
 } )
 export class ConfigurationService{
+    private sharedConfig: any;
 
     constructor( private httpClient: HttpClient, private commonService: CommonService,
                  private utilService: UtilService ) {
     }
+
+    async loadSharedConfig(): Promise<any> {
+
+		//const env = this.resolveEnv(); // "dev" or "prod"
+		//const configFile = `/assets/config.${env}.json`;
+	
+		return await this.httpClient.get('assets/shared-config.json')
+		.toPromise().then(data => {
+			this.sharedConfig = data;
+			console.log('shared-config loaded', this.sharedConfig);
+		}).catch( err => { console.error( 'could not load shared-config ', err);
+			this.sharedConfig ={};
+		}
+		);
+	}
+	getSharedConfig(key: string): any {
+		return this.sharedConfig?.[key];
+	}
+
+	getAllSharedConfig(): any {
+		return this.sharedConfig;
+	}
 
     initConfiguration() {
 

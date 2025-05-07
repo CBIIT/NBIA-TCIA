@@ -26,7 +26,12 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "shared-config.json",
+                "input": "../config",
+                "output": "/assets"
+              }
             ],
             "styles": [
 			  "./node_modules/font-awesome/css/font-awesome.min.css",	

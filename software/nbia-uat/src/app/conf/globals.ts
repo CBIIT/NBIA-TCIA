@@ -18,7 +18,7 @@ export class Globals {
 	managePEWiki = this.wikiUrlSubSection + "-ManagingProtectionElements";
 	userAuthorizationWiki = this.wikiUrlSubSection + "-AuthorizingProtectionGroups";
 	userAuthorizationWithGroupWiki = this.wikiUrlSubSection + "-AuthorizingUserGroups";
-	uatVersionNumber = "9.4";
-	uatVersionCommit = "3bf2b4a5";
-	uatVersionYear  = "2025";
+	// uatVersionNumber = "9.4";
+	// uatVersionCommit = "3bf2b4a5";
+	// uatVersionYear  = "2025";
 }

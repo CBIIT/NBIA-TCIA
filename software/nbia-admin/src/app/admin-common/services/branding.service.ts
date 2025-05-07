@@ -6,6 +6,7 @@ import { Properties } from '@assets/properties';
 import { Consts } from '@app/constants';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+import { ConfigurationService } from '@app/admin-common/services/configuration.service';
 
 
 @Injectable( {
@@ -42,7 +43,7 @@ export class BrandingService{
     currentDate = new Date();
 
     constructor( private httpClient: HttpClient, private commonService: CommonService,
-                 private utilService: UtilService ) {
+                 private utilService: UtilService, private configurationService: ConfigurationService ) {
     }
 
 
@@ -131,11 +132,11 @@ export class BrandingService{
                 Properties.VERSION_SUFFIX = value;
                 break;
             case this.FOOTER_HTML:
-                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, Properties.VERSION )
-                .replace( /%TEST_VERSION%/g, Properties.TEST_VERSION )
+                Properties.FOOTER_HTML = value.trim().replace( /%VERSION%/g, this.configurationService.getSharedConfig('version') )
+                .replace( /%TEST_VERSION%/g, this.configurationService.getSharedConfig('testVersion') )
                 .replace( /%HOST_NAME%/g, Properties.HOST_NAME )
-                .replace( /%CURRENT_YEAR%/g, Properties.CURRENT_YEAR )
-                .replace(/%RELEASE_COMMIT%/g, Properties.RELEASE_COMMIT);
+                .replace( /%CURRENT_YEAR%/g, this.configurationService.getSharedConfig('currentYear') )
+                .replace(/%RELEASE_COMMIT%/g, this.configurationService.getSharedConfig('releaseCommit') );
                
                 break;
         }

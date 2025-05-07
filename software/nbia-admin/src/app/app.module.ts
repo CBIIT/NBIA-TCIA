@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,7 +25,12 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { DynamicQueryTestModule } from '@app/tools/dynamic-query-test-module/dynamic-query-test.module';
 import { CriteriaSelectionMenuComponent } from './criteria-selection-menu/criteria-selection-menu.component';
 import { SearchResultsSectionModule } from '@app/tools/search-results-section-module/search-results-section.module';
+import { ConfigurationService } from './admin-common/services/configuration.service';
 import { CineModeBravoComponent } from '@app/tools/cine-mode-module/cine-mode-bravo/cine-mode-bravo.component';
+
+export function initSharedConfig(configService: ConfigurationService) {
+    return () => configService.loadSharedConfig();
+  }
 
 @NgModule( {
     declarations: [
@@ -57,6 +62,12 @@ import { CineModeBravoComponent } from '@app/tools/cine-mode-module/cine-mode-br
         SearchResultsSectionModule,
     ],
     providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initSharedConfig,
+            deps: [ConfigurationService],
+            multi: true
+          },
         AccessTokenService,
         CookieService
     ],
