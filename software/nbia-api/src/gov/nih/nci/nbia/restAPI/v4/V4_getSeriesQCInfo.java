@@ -11,6 +11,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Context;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Set;
 
 @Path("/v4/getSeriesQCInfo")
 public class V4_getSeriesQCInfo extends getData {
@@ -37,7 +42,22 @@ public class V4_getSeriesQCInfo extends getData {
 	 */
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
-	public Response  constructResponse(@FormParam("seriesId") List<String> seriesList, @FormParam("format") String format)  {
+	public Response  constructResponse(@FormParam("seriesId") List<String> seriesList, @FormParam("format") String format, @Context HttpServletRequest request)  {
+
+    Set<String> allowedParams = Set.of("seriesId", "format");
+
+    Enumeration<String> paramNames = request.getParameterNames();
+    while (paramNames.hasMoreElements()) {
+        String param = paramNames.nextElement();
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid form parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
+
 		if (seriesList == null) {
 			return Response.status(Status.BAD_REQUEST)
 					.entity("A parameter, SeriesInstanceUID is required for this API call.")

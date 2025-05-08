@@ -43,6 +43,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 
 @Path("/v4/getUpdatedSeries")
@@ -58,7 +63,21 @@ public class V4_getUpdatedSeries extends getData {
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
-	public Response  constructResponse(@QueryParam("fromDate") String fromDate, @QueryParam("format") String format) {
+	public Response  constructResponse(@QueryParam("fromDate") String fromDate, @QueryParam("format") String format, @Context UriInfo uriInfo) {
+
+    Set<String> allowedParams = Set.of("fromDate", "format");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
+
 	
 	
 		List<String> authorizedCollections = null;

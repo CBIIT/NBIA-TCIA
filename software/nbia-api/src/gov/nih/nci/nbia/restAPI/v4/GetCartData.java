@@ -9,6 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Context;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Set;
 
 import gov.nih.nci.nbia.util.SpringApplicationContext;
 import gov.nih.nci.nbia.security.*;
@@ -30,7 +35,21 @@ public class GetCartData extends getData{
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@FormParam("list") List<String> list) {
+	public Response constructResponse(@FormParam("list") List<String> list, @Context HttpServletRequest request) {
+
+    Set<String> allowedParams = Set.of("list");
+
+    Enumeration<String> paramNames = request.getParameterNames();
+    while (paramNames.hasMoreElements()) {
+        String param = paramNames.nextElement();
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid form parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
  		String user = getUserName();
 
 		List<SiteData> authorizedSiteData = AuthorizationUtil.getUserSiteData(user);

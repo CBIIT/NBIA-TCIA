@@ -9,6 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 import gov.nih.nci.nbia.util.CollectionSiteUtil;
 import gov.nih.nci.nbia.util.SiteData;
@@ -31,7 +36,20 @@ public class GetCollectionDescriptions extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse( @QueryParam("collectionName") String collectionName) throws Exception {
+	public Response constructResponse( @QueryParam("collectionName") String collectionName, @Context UriInfo uriInfo) throws Exception {
+
+    Set<String> allowedParams = Set.of("collectionName");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
 
 
 		if (collectionName==null || collectionName.equals("")){

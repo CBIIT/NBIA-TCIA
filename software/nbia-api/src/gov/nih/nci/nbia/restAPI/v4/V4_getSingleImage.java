@@ -11,6 +11,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +33,20 @@ public class V4_getSingleImage extends getData {
 	@GET
 	@Produces("application/dicom")
 	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid, 
-			@QueryParam("SOPInstanceUID") String sOPInstanceUID) throws IOException {
+			@QueryParam("SOPInstanceUID") String sOPInstanceUID, @Context UriInfo uriInfo) throws IOException {
+
+    Set<String> allowedParams = Set.of("SeriesInstanceUID", "SOPInstanceUID");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
 
 		final String sid = seriesInstanceUid;
 		if (seriesInstanceUid == null||sOPInstanceUID == null) {

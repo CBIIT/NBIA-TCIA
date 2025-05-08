@@ -25,8 +25,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.Response.Status;
-import org.apache.commons.io.IOUtils;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
 
+import java.util.Set;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +56,21 @@ public class V4_getDCMImage extends getData {
 	@GET
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid, @QueryParam("IncludeAnnotation") String includeAnnotation,
-			@QueryParam("MD5Verification") String md5Verify) throws IOException {
+			@QueryParam("MD5Verification") String md5Verify, @Context UriInfo uriInfo) throws IOException {
+
+    Set<String> allowedParams = Set.of("SeriesInstanceUID", "IncludeAnnotation", "MD5Verification");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
+    
 //		Timestamp btimestamp = new Timestamp(System.currentTimeMillis());
 //		System.out.println("Begining of zip streaming API call--" + sdf.format(btimestamp));
 		final String sid = seriesInstanceUid;

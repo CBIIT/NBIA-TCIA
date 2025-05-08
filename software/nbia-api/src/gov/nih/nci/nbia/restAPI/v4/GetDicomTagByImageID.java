@@ -9,6 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 import gov.nih.nci.ncia.criteria.*;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
@@ -29,7 +34,20 @@ public class GetDicomTagByImageID extends getData{
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public Response constructResponse(@QueryParam("imageID") Integer imageID) {
+	public Response constructResponse(@QueryParam("imageID") Integer imageID, @Context UriInfo uriInfo) {
+
+    Set<String> allowedParams = Set.of("imageID");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
 		String message="";
 		String user = getUserName();
 		try {

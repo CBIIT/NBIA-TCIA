@@ -8,6 +8,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -23,7 +28,21 @@ public class V4_getNewStudiesInPatientCollection extends getData{
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
-	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("PatientID") String patientId, @QueryParam("Date") String dateFrom, @QueryParam("format") String format) {
+	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("PatientID") String patientId, @QueryParam("Date") String dateFrom, @QueryParam("format") String format, @Context UriInfo uriInfo) {
+
+    Set<String> allowedParams = Set.of("Collection", "PatientID", "Date", "format");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
+
 		List<String> authorizedCollections = null;
 		if (collection == null||dateFrom == null) {
 			return Response.status(Status.BAD_REQUEST)

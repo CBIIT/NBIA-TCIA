@@ -14,6 +14,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
@@ -31,7 +36,20 @@ public class V4_getM5HashForImage extends getData{
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@QueryParam("SOPInstanceUid") String sopInstanceUid) {
+	public Response constructResponse(@QueryParam("SOPInstanceUid") String sopInstanceUid, @Context UriInfo uriInfo) {
+
+    Set<String> allowedParams = Set.of("SOPInstanceUID");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
 		String results="";
 //		Authentication authentication = SecurityContextHolder.getContext()
 //				.getAuthentication();

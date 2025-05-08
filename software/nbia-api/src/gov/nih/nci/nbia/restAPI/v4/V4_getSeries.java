@@ -42,6 +42,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 
 @Path("/v4/getSeries")
@@ -69,7 +74,21 @@ public class V4_getSeries extends getData {
 			@QueryParam("PatientID") String patientId, @QueryParam("StudyInstanceUID") String studyInstanceUid,
 			@QueryParam("Modality") String modality, @QueryParam("BodyPartExamined") String bodyPartExamined,
 			@QueryParam("ManufacturerModelName") String manufacturerModelName, @QueryParam("Manufacturer") String manufacturer,
-			@QueryParam("SeriesInstanceUID") String seriesInstanceUID)  {
+			@QueryParam("SeriesInstanceUID") String seriesInstanceUID, @Context UriInfo uriInfo)  {
+
+    Set<String> allowedParams = Set.of("Collection", "format", "PatientID", "StudyInstanceUID", "Modality", "BodyPartExamined", "ManufacturerModelName", "Manufacturer", "SeriesInstanceUID");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
+
 
     //long startTime = System.currentTimeMillis();
       //
