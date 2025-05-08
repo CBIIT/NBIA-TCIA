@@ -9,6 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 import gov.nih.nci.ncia.criteria.*;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
@@ -30,7 +35,20 @@ public class GetModalityValuesAndCounts extends getData{
   @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
 	public Response constructResponse(@QueryParam("Collection") String collection,
-			@QueryParam("BodyPartExamined") String bodyPart) throws Exception{
+			@QueryParam("BodyPartExamined") String bodyPart, @Context UriInfo uriInfo) throws Exception{
+
+    Set<String> allowedParams = Set.of("Collection", "BodyPartExamined");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
 
     String format = "JSON";
 		String user = getUserName(); 

@@ -26,6 +26,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.Set;
 
 
 @Path("/v4/getBodyPartValues")
@@ -42,7 +47,20 @@ public class V4_getBodyPartValues extends getData{
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
 	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("format") String format,
-			@QueryParam("Modality") String modality) {
+			@QueryParam("Modality") String modality, @Context UriInfo uriInfo) {
+
+    Set<String> allowedParams = Set.of("Collection", "format", "Modality");
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+    for (String param : queryParams.keySet()) {
+        if (!allowedParams.contains(param)) {
+            String msg = "Invalid query parameter: '" + param +
+                         "'. Allowed parameters are: " + allowedParams;
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(msg)
+                           .build();
+        }
+    }
 		//String returnString = null;
 		List<String> authorizedCollections = null;
 		try {
