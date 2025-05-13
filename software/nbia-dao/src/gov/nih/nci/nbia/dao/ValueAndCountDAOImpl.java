@@ -266,6 +266,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
         SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_code, "
           + caseStatement.substring(0, caseStatement.length() - 15);
+
         
         // Create the query and set parameters in one go
         Query query = this.getHibernateTemplate()

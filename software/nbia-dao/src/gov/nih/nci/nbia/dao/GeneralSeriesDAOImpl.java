@@ -1929,6 +1929,8 @@ public List<DOIDTO> getCollectionOrSeriesForDOI(String doi, String collectionOrS
   }
   return returnValue;
 }
+
+@Transactional(propagation = Propagation.REQUIRED)
 public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collectionOrSeries, List<String> authorizedProjAndSites)throws DataAccessException{
   List<DOIDTO> returnValue=new ArrayList<DOIDTO>();
   if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
@@ -1938,9 +1940,9 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
   if (collectionOrSeries!=null&&collectionOrSeries.equalsIgnoreCase("Series")) {
     forSeries=true;
   }
-  String sqlString = "select project, third_party_analysis ";
+  String sqlString = "select project, third_party_analysis, ";
   if (forSeries) {
-    sqlString += ", series_instance_uid ";
+    sqlString += " series_instance_uid, ";
   }
   sqlString += addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites);
 

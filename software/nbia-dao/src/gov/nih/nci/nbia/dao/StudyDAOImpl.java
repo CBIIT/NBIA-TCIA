@@ -50,6 +50,142 @@ public class StudyDAOImpl extends AbstractDAO
      * for the second level query.
      */
 	@Transactional(propagation=Propagation.REQUIRED)
+    public List<StudyDTO> findStudiesBySeriesId_v4(Collection<Integer> seriesPkIds) throws DataAccessException {
+    	if(seriesPkIds.size()==0) {
+    		return new ArrayList<StudyDTO>();
+    	}
+
+        String selectStmt =  "SELECT distinct series.general_series_pk_id, study.study_pk_id, study.study_instance_uid, series.series_instance_uid, study.study_date, study.study_desc, (select count(*) from general_image gi where gi.general_series_pk_id = series.general_series_pk_id) as image_count, series.series_desc, series.modality, ge.manufacturer, series.series_number, series.annotations_flag, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = series.general_series_pk_id) as total_size, series.patient_id, series.project, (select coalesce(sum(a.file_size), 0) from annotation a where a.general_series_pk_id = series.general_series_pk_id) as annotation_total_size, (select coalesce(max(gi.us_frame_number), '0') from general_image gi where gi.general_series_pk_id = series.general_series_pk_id), series.patient_pk_id, study.study_id, series.body_part_examined, series.third_party_analysis, series.description_uri, series.project , series.exclude_commercial "; 
+
+        String fromStmt = "FROM Study study join general_series series on study.study_pk_id = series.study_pk_id join general_equipment ge on ge.general_equipment_pk_id = series.general_equipment_pk_id";
+
+        String whereStmt =  "WHERE series.visibility in ('1') ";
+
+        // Add the series PK IDs to the where clause
+        
+
+        int listSize = seriesPkIds.size();
+		if (listSize > PARAMETER_LIMIT) {
+			Collection<Collection<Integer>> seriesPkIdsBatches = split(
+					seriesPkIds, PARAMETER_LIMIT);
+			whereStmt = whereStmt +" and (";
+			int i = 0;
+			for (Collection<Integer> seriesPkIdBatch : seriesPkIdsBatches) {
+				if (i==0) {
+					whereStmt += "series.id IN (";
+				} else {
+				    whereStmt += "or series.id IN (";
+				}
+				i++;
+				whereStmt += constructSeriesIdList(seriesPkIdBatch);
+				whereStmt += ")";
+			}
+			whereStmt += ")";
+		} else {
+			  whereStmt += "and series.id IN (";
+              whereStmt += constructSeriesIdList(seriesPkIds);
+		}
+
+        whereStmt += ")";
+
+        long start = System.currentTimeMillis();
+        logger.debug("Issuing the query: " + selectStmt + fromStmt + whereStmt);
+
+        // Create the query and set parameters in one go
+        Query query = this.getHibernateTemplate()
+            .getSessionFactory()
+            .getCurrentSession()
+            .createSQLQuery(selectStmt + fromStmt + whereStmt);
+
+        List<Object[]> seriesResults  = query.list();
+
+        long end = System.currentTimeMillis();
+        logger.debug("total query time: " + (end - start) + " ms");
+
+
+        // List of StudyDTOs to eventually be returned
+        Map<Integer, StudyDTO> studyList = new HashMap<Integer, StudyDTO>();
+        Iterator<Object[]> iter = seriesResults.iterator();
+
+        // Loop through the results.  There is one result for each series
+        while (iter.hasNext()) {
+        	Object[] row = iter.next();
+
+            // Create the seriesDTO
+        	System.out.println("in series dto");
+            SeriesDTO seriesDTO = new SeriesDTO();
+            //modality should never be null... but currently possible
+            seriesDTO.setModality(Util.nullSafeString(row[8]));
+            //Getting real data from Surendra, find data for manufacture could be null
+            seriesDTO.setManufacturer(Util.nullSafeString(row[9]));
+            seriesDTO.setSeriesUID(row[3].toString());
+            seriesDTO.setSeriesNumber(Util.nullSafeString(row[10]));
+            seriesDTO.setSeriesPkId((Integer) row[0]);
+            seriesDTO.setDescription(Util.nullSafeString(row[7]));
+            seriesDTO.setNumberImages((Integer) row[6]);
+            Boolean annotationFlag = (Boolean) row[11];
+            if(annotationFlag!=null) {
+            	seriesDTO.setAnnotationsFlag(true);
+            }
+            seriesDTO.setAnnotationsSize((row[15] != null) ? (Long) row[15] : 0);
+            seriesDTO.setStudyPkId((Integer) row[1]);
+            seriesDTO.setStudyId(row[2].toString());
+            seriesDTO.setTotalImagesInSeries((Integer)row[6]);
+            seriesDTO.setTotalSizeForAllImagesInSeries((Long)row[12]);
+            seriesDTO.setPatientId((String)row[13]);
+            seriesDTO.setProject((String)row[14]);
+            seriesDTO.setMaxFrameCount((String)row[16]);
+            seriesDTO.setPatientPkId(row[17].toString());
+            seriesDTO.setBodyPartExamined(Util.nullSafeString(row[19]));
+            seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[20]));
+            seriesDTO.setDescriptionURI(Util.nullSafeString(row[21]));
+            seriesDTO.setProject(Util.nullSafeString(row[22]));
+            // Try to get the study if it already exists
+            StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
+
+            if (studyDTO != null) {
+                // Study already exists.  Just add series info
+                studyDTO.getSeriesList().add(seriesDTO);
+            } else {
+                // Create the StudyDTO
+                studyDTO = new StudyDTO();
+                studyDTO.setStudyId(row[2].toString());
+                studyDTO.setDate((Date) row[4]);
+                studyDTO.setDescription(Util.nullSafeString(row[5]));
+                if (row[18]!=null){
+                    studyDTO.setStudy_id(row[18].toString());
+                }
+                studyDTO.setId(seriesDTO.getStudyPkId());
+
+                // Add the series to the study
+                studyDTO.getSeriesList().add(seriesDTO);
+
+                // Add the study to the list
+                studyList.put(studyDTO.getId(), studyDTO);
+            }
+        }
+
+        //maybe a candidate to move this out of DAO into higher level
+
+        // Convert to a list for sorting and to be returned
+        List<StudyDTO> returnList = new ArrayList<StudyDTO>(studyList.values());
+
+        // Sort the studies
+        Collections.sort(returnList);
+        for (StudyDTO studyDTO : returnList) {
+        	List<SeriesDTO> seriesList = new ArrayList<SeriesDTO>(studyDTO.getSeriesList());
+            Collections.sort(seriesList);
+            studyDTO.setSeriesList(seriesList);
+        }
+        return returnList;
+    }
+    /**
+     * This method will deal with the query where a list of SeriesPkId's
+     * is passed in as a Query to the QueryHandler.  It will then return
+     * the SeriesListResultSet, which contains all of the information necessary
+     * for the second level query.
+     */
+	@Transactional(propagation=Propagation.REQUIRED)
     public List<StudyDTO> findStudiesBySeriesId(Collection<Integer> seriesPkIds) throws DataAccessException {
     	if(seriesPkIds.size()==0) {
     		return new ArrayList<StudyDTO>();
@@ -171,10 +307,130 @@ public class StudyDAOImpl extends AbstractDAO
         return returnList;
     }
 	@Transactional(propagation=Propagation.REQUIRED)
+    public List<StudyDTO> findStudiesBySeriesUIds_v4(Collection<String> seriesPkIds) throws DataAccessException {
+    	if(seriesPkIds.size()==0) {
+    		return new ArrayList<StudyDTO>();
+    	}
+
+        String selectStmt =  "SELECT distinct series.general_series_pk_id, study.study_pk_id, study.study_instance_uid, series.series_instance_uid, study.study_date, study.study_desc, (select count(*) from general_image gi where gi.general_series_pk_id = series.general_series_pk_id) as image_count, series.series_desc, series.modality, ge.manufacturer, series.series_number, series.annotations_flag, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = series.general_series_pk_id) as total_size, series.patient_id, series.project, (select coalesce(sum(a.file_size), 0) from annotation a where a.general_series_pk_id = series.general_series_pk_id) as annotation_total_size, (select coalesce(max(gi.us_frame_number), '0') from general_image gi where gi.general_series_pk_id = series.general_series_pk_id), series.patient_pk_id, study.study_id, series.body_part_examined, series.third_party_analysis, series.description_uri, series.project , series.exclude_commercial "; 
+
+        String fromStmt = "FROM Study study join general_series series on study.study_pk_id = series.study_pk_id join general_equipment ge on ge.general_equipment_pk_id = series.general_equipment_pk_id";
+
+        String whereStmt =  "WHERE series.visibility in ('1') ";
+
+        // Add the series PK IDs to the where clause
+        whereStmt += "and series.seriesInstanceUID IN (";
+
+        whereStmt += constructSeriesIUdList(seriesPkIds);
+
+        whereStmt += ")";
+
+        long start = System.currentTimeMillis();
+        logger.debug("Issuing query: " + selectStmt + fromStmt + whereStmt);
+
+        // Create the query and set parameters in one go
+        Query query = this.getHibernateTemplate()
+            .getSessionFactory()
+            .getCurrentSession()
+            .createSQLQuery(selectStmt + fromStmt + whereStmt);
+
+        List<Object[]> seriesResults = query.list();
+        long end = System.currentTimeMillis();
+        logger.debug("total query time: " + (end - start) + " ms");
+
+
+        // List of StudyDTOs to eventually be returned
+        Map<Integer, StudyDTO> studyList = new HashMap<Integer, StudyDTO>();
+        Iterator<Object[]> iter = seriesResults.iterator();
+
+        // Loop through the results.  There is one result for each series
+        while (iter.hasNext()) {
+        	Object[] row = iter.next();
+			boolean excludeFlag=false;
+
+            // Create the seriesDTO
+            SeriesDTO seriesDTO = new SeriesDTO();
+            //modality should never be null... but currently possible
+            seriesDTO.setModality(Util.nullSafeString(row[8]));
+            //Getting real data from Surendra, find data for manufacture could be null
+            seriesDTO.setManufacturer(Util.nullSafeString(row[9]));
+            seriesDTO.setSeriesUID(row[3].toString());
+            seriesDTO.setSeriesNumber(Util.nullSafeString(row[10]));
+            seriesDTO.setSeriesPkId((Integer) row[0]);
+            seriesDTO.setDescription(Util.nullSafeString(row[7]));
+            seriesDTO.setNumberImages((Integer) row[6]);
+            Boolean annotationFlag = (Boolean) row[11];
+            if(annotationFlag!=null) {
+            	seriesDTO.setAnnotationsFlag(true);
+            }
+            seriesDTO.setAnnotationsSize((row[15] != null) ? (Long) row[15] : 0);
+            seriesDTO.setStudyPkId((Integer) row[1]);
+            seriesDTO.setStudyId(row[2].toString());
+            seriesDTO.setTotalImagesInSeries((Integer)row[6]);
+            seriesDTO.setTotalSizeForAllImagesInSeries((Long)row[12]);
+            seriesDTO.setPatientId((String)row[13]);
+            seriesDTO.setProject((String)row[14]);
+            seriesDTO.setMaxFrameCount((String)row[16]);
+            seriesDTO.setPatientPkId(row[17].toString());
+            seriesDTO.setBodyPartExamined(Util.nullSafeString(row[19]));
+            seriesDTO.setThirdPartyAnalysis(Util.nullSafeString(row[20]));
+            seriesDTO.setDescriptionURI(Util.nullSafeString(row[21]));
+            seriesDTO.setProject(Util.nullSafeString(row[22]));
+			if (row[23]!=null&&row[23].toString().equalsIgnoreCase("YES")){
+            	excludeFlag=true;
+            }
+            // Try to get the study if it already exists
+            StudyDTO studyDTO = studyList.get(seriesDTO.getStudyPkId());
+
+            if (studyDTO != null) {
+                // Study already exists.  Just add series info
+                studyDTO.getSeriesList().add(seriesDTO);
+				if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
+
+            } else {
+                // Create the StudyDTO
+                studyDTO = new StudyDTO();
+                studyDTO.setStudyId(row[2].toString());
+                studyDTO.setDate((Date) row[4]);
+                studyDTO.setDescription(Util.nullSafeString(row[5]));
+                if (row[18]!=null){
+                    studyDTO.setStudy_id(row[18].toString());
+                }
+                studyDTO.setId(seriesDTO.getStudyPkId());
+
+                // Add the series to the study
+                studyDTO.getSeriesList().add(seriesDTO);
+
+                // Add the study to the list
+                studyList.put(studyDTO.getId(), studyDTO);
+				if (excludeFlag) {
+                	studyDTO.setExcludeCommercial("YES");
+                }
+            }
+        }
+
+        //maybe a candidate to move this out of DAO into higher level
+
+        // Convert to a list for sorting and to be returned
+        List<StudyDTO> returnList = new ArrayList<StudyDTO>(studyList.values());
+
+        // Sort the studies
+        Collections.sort(returnList);
+        for (StudyDTO studyDTO : returnList) {
+        	List<SeriesDTO> seriesList = new ArrayList<SeriesDTO>(studyDTO.getSeriesList());
+            Collections.sort(seriesList);
+            studyDTO.setSeriesList(seriesList);
+        }
+        return returnList;
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
     public List<StudyDTO> findStudiesBySeriesUIds(Collection<String> seriesPkIds) throws DataAccessException {
     	if(seriesPkIds.size()==0) {
     		return new ArrayList<StudyDTO>();
     	}
+
 
         String selectStmt = SQL_QUERY_SELECT;
         String fromStmt = SQL_QUERY_FROM;

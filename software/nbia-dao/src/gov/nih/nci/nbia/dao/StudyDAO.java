@@ -29,8 +29,10 @@ public interface StudyDAO  {
 	public List<String> getEventTypes() throws DataAccessException;
 	public TimePointDTO getMinMaxTimepoints_v4() throws DataAccessException;
 	public TimePointDTO getMinMaxTimepoints(AuthorizationCriteria auth) throws DataAccessException;
+    public List<StudyDTO> findStudiesBySeriesId_v4(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesId(Collection<Integer> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesIdForCart(Collection<Integer> seriesPkIds) throws DataAccessException;
+    public List<StudyDTO> findStudiesBySeriesUIds_v4(Collection<String> seriesPkIds) throws DataAccessException;
     public List<StudyDTO> findStudiesBySeriesUIds(Collection<String> seriesPkIds) throws DataAccessException;
 	public List<Object[]> getSeriesMetadata(List<String> seriesIDs, List<String> authorizedProjAndSites) throws DataAccessException;
     public List<Object[]> getPatientStudy_v4(String collection, String patientId, String studyInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException;
