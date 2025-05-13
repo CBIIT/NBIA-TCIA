@@ -182,4 +182,67 @@ export class UtilService{
         } );
     }
 
+    /**
+    * Preserves transient properties from the original list while merging new data.
+    * @param originalList The current tciaProgramList with UI state.
+    * @param updatedList The new list with server-updated data.
+    * @param transientKeys The list of transient keys to preserve (e.g., 'selected', 'expanded')
+    * @param collectionTransientKeys The list of transient keys for related collections to preserve.
+    */
+    preserveProgramListTransientState<T extends object>(
+        originalList: T[],
+        updatedList: T[],
+        transientKeys: (keyof T)[],
+        collectionTransientKeys: string[]
+      ): T[] {
+        const originalMap = new Map<string, T>();
+      
+        originalList.forEach(item => {
+          const key = (item as any).criteria || (item as any).id;
+          if (key) {
+            originalMap.set(key, item);
+          }
+        });
+      
+        return updatedList.map(updated => {
+          const key = (updated as any).criteria || (updated as any).id;
+          const original = originalMap.get(key);
+          if (!original) return updated;
+      
+          const preserved: Partial<T> = {};
+      
+          for (const k of transientKeys) {
+            if (k in original) {
+              preserved[k] = original[k];
+            }
+          }
+      
+          const originalNested = (original as any).relatedCollectionsList || [];
+          const originalNestedMap = new Map<string, any>(
+            originalNested.map((c: any) => [c.criteria, c])
+          );
+      
+          const updatedNested = ((updated as any).relatedCollectionsList || []).map((c: any) => {
+            const o = originalNestedMap.get(c.criteria);
+            if (!o) return c;
+      
+            const preservedNested: any = {};
+            for (const k of collectionTransientKeys) {
+              if (k in o) {
+                preservedNested[k] = o[k];
+              }
+            }
+            return {
+              ...c,
+              ...preservedNested
+            };
+          });
+      
+          return {
+            ...(updated as any),
+            ...preserved,
+            relatedCollectionsList: updatedNested
+          };
+        });
+      }
 }

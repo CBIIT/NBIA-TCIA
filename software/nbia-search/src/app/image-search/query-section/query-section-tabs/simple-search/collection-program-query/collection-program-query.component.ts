@@ -575,7 +575,12 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         // If there is no query just reset criteriaList to criteriaListHold.
         if( this.apiServerService.getSimpleSearchQueryHold() === null ){
            //this.tciaProgramList = this.utilService.copyTciaProgramList(this.completeTciaProgramList);
-           this.tciaProgramList = this.tciaProgramListHold;
+           this.tciaProgramList = this.utilService.preserveProgramListTransientState(
+            this.tciaProgramList,      // source of transient UI state
+            this.tciaProgramListHold,  // fallback source of data
+            ['selected', 'indeterminate'],
+            ['selected']
+            );
         }else if( !this.utilService.isNullOrUndefined( collectionCriteriaObj ) ){
             while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
                 await this.commonService.sleep( Consts.waitTime );
@@ -588,7 +593,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 item.count = criteriaCountMap.get(item.criteria) ?? 0;
             }
             
-            this.tciaProgramList = this.tciaProgramList.map(program => {
+           const updatedList = this.tciaProgramList.map(program => {
                 let totalCount = 0;
                 const updatedCollections = program.relatedCollectionsList.map(collection => {
                     const updatedCount =  criteriaCountMap.get(collection.criteria) ?? 0;
@@ -601,12 +606,19 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 return {
                     ...program,
                     relatedCollectionsList: updatedCollections,
-                    totalCount: totalCount,
+                    totalCount: totalCount,                 
                 }         
             });
 
+            this.tciaProgramList = this.utilService.preserveProgramListTransientState(
+                this.tciaProgramList,
+                updatedList,
+                ['selected', 'indeterminate'],
+                ['selected']
+            );
+
             if( this.showSearch){
-                this.tciaProgramListHold = this.tciaProgramListHold.map(program => {
+                const updatedListHold = this.tciaProgramListHold.map(program => {
                     let totalCount = 0;
                     const updatedCollections = program.relatedCollectionsList.map(collection => {
                         const updatedCount =  criteriaCountMap.get(collection.criteria) ?? 0;
@@ -619,14 +631,21 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                     return {
                         ...program,
                         relatedCollectionsList: updatedCollections,
-                        totalCount: totalCount,
+                        totalCount: totalCount,                  
                     }         
                 }); 
+                this.tciaProgramListHold = this.utilService.preserveProgramListTransientState(
+                    this.tciaProgramListHold,
+                    updatedListHold,
+                    ['selected', 'indeterminate'],
+                    ['selected']
+                );
             }else{
                 this.tciaProgramListHold = this.tciaProgramList;
             }           
-            this.sortTciaProgramList();
+        
             this.sortTciaProgramListPrograms();
+            this.sortTciaProgramList();
             this.updateCheckboxCount();
         }
     }
@@ -754,6 +773,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
       
         program.selected = all;
         program.indeterminate = !all && some;
+        this.updateProgramSelectionInHold(program.programName, program.selected, program.indeterminate);
         this.updateCollectionSelectionInHold(program.programName, program.relatedCollectionsList[collectionIndex].criteria, program.relatedCollectionsList[collectionIndex].selected);
         this.onCheckboxClick();
       }
@@ -772,6 +792,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     updateProgramSelectionInHold(programName: string, selected: boolean, indeterminate: boolean): void {
         const holdProgram = this.tciaProgramListHold.find(p => p.programName === programName);
         if (!holdProgram) return;
+        holdProgram.relatedCollectionsList.forEach(c => (c.selected = selected));
     
         holdProgram.selected = selected;
         holdProgram.indeterminate = indeterminate;
@@ -986,8 +1007,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             this.searchInput = '';
             this.searchHasFocus = false;
             this.showAll = false;
-            this.sortTciaProgramList();
             this.sortTciaProgramListPrograms();
+            this.sortTciaProgramList();
             this.updateCheckboxCount();
         }
     }
@@ -1060,19 +1081,19 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
       }
     
     resetTciaProgramListAllZero(): void {
-        this.tciaProgramList = this.completeTciaProgramList.map(program => {
+        this.tciaProgramList = this.tciaProgramList.map(program => {
           const originalList = program.relatedCollectionsList;
       
           const resetCollections = originalList.map((col, i) => ({
             ...col,
             count:0,
-            selected: false,
+            //selected: false,
           }));
           return {
             ...program,
             totalCount:0,
-            selected: false,
-            indeterminate: false,
+            //selected: false,
+            //indeterminate: false,
             relatedCollectionsList: resetCollections,
           };
         });
