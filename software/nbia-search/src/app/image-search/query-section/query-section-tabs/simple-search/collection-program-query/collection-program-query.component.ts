@@ -773,7 +773,12 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
       
         program.selected = all;
         program.indeterminate = !all && some;
-        this.updateCollectionSelectionInHold(program.programName, program.relatedCollectionsList[collectionIndex].criteria, program.relatedCollectionsList[collectionIndex].selected);
+        this.updateCollectionSelectionInHold(program.programName, 
+            program.relatedCollectionsList[collectionIndex].criteria, 
+            program.relatedCollectionsList[collectionIndex].selected);
+        
+             // NEW: Update program flags in hold list based on updated collections
+        this.updateProgramFlagsInHold(program.programName);
         this.onCheckboxClick();
       }
     // update tciaProgramListHold selected status
@@ -795,6 +800,17 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     
         holdProgram.selected = selected;
         holdProgram.indeterminate = indeterminate;
+    }
+
+    updateProgramFlagsInHold(programName: string): void {
+        const holdProgram = this.tciaProgramListHold.find(p => p.programName === programName);
+        if (!holdProgram) return;
+      
+        const all = holdProgram.relatedCollectionsList.every(c => c.selected);
+        const some = holdProgram.relatedCollectionsList.some(c => c.selected);
+      
+        holdProgram.selected = all;
+        holdProgram.indeterminate = !all && some;
     }
 
     sortTciaProgramListPrograms(): void {
