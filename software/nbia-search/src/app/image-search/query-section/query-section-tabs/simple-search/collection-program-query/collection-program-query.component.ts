@@ -773,7 +773,6 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
       
         program.selected = all;
         program.indeterminate = !all && some;
-        this.updateProgramSelectionInHold(program.programName, program.selected, program.indeterminate);
         this.updateCollectionSelectionInHold(program.programName, program.relatedCollectionsList[collectionIndex].criteria, program.relatedCollectionsList[collectionIndex].selected);
         this.onCheckboxClick();
       }
