@@ -47,8 +47,10 @@ public interface ImageDAO {
 	public List<ImageDTO> findImagesbySeriesDTO(SeriesDTO seriesDTO) throws DataAccessException; 
 
 
+	public List<ImageDTO> findImagesbySeriesPkID_v4(Integer seriesPkId) throws DataAccessException; 
 	public List<ImageDTO> findImagesbySeriesPkID(Integer seriesPkId) throws DataAccessException; 
 
+	public List<ImageDTO> findImagesbySeriesPkID_v4(Collection<Integer> seriesPkIds) throws DataAccessException; 
 	public List<ImageDTO> findImagesbySeriesPkID(Collection<Integer> seriesPkIds) throws DataAccessException; 
 	
 	public List<ImageDTO> findImagesbySeriesInstandUid(Collection<String> seriesInstanceUids) throws DataAccessException; 

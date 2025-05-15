@@ -58,6 +58,7 @@
 */
 package gov.nih.nci.nbia.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 
@@ -66,6 +67,7 @@ public class ImageDTO implements Comparable<ImageDTO>  {
 
 
     private Integer imagePkId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     private Date contentDate;
     private String contentTime;
     private Integer seriesPkId;

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 
@@ -57,6 +58,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class StudyDTO implements Comparable<StudyDTO>  {
     
     private String studyId; //study instance UID
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     private Date date;
     private String description;
     private Integer id;		//study pk id

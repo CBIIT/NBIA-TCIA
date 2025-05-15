@@ -16,6 +16,8 @@ import gov.nih.nci.nbia.internaldomain.GeneralImage;
 import gov.nih.nci.nbia.util.HqlUtils;
 import gov.nih.nci.nbia.util.Util;
 
+import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +35,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
@@ -218,6 +222,18 @@ public class ImageDAOImpl extends AbstractDAO
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED)
+	public List<ImageDTO> findImagesbySeriesPkID_v4(Integer seriesPkId)throws DataAccessException {
+		Collection<Integer> ids = new ArrayList<Integer>();
+		ids.add(seriesPkId);
+		return this.findImagesbySeriesPkID_v4(ids);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<ImageDTO> findImagesbySeriesPkID_v4(Collection<Integer> seriesPkIds)throws DataAccessException {
+		String whereStmt = HqlUtils.buildInClauseUsingIntegers(" image.general_series_pk_id in ", seriesPkIds);
+        return searchImagesbySql(whereStmt);
+    }
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<ImageDTO> findImagesbySeriesPkID(Integer seriesPkId)throws DataAccessException {
 		Collection<Integer> ids = new ArrayList<Integer>();
 		ids.add(seriesPkId);
@@ -268,6 +284,60 @@ public class ImageDAOImpl extends AbstractDAO
     private static final String SQL_QUERY_FROM = "FROM GeneralImage image ";
     private static final String SQL_QUERY_WHERE = "WHERE ";
 
+	private List<ImageDTO> searchImagesbySql(String whereCondi) throws DataAccessException {
+	      String selectStmt =  "SELECT image.image_pk_id, image.content_date, image.content_time, image.dicom_file_uri, image.general_series_pk_id, image.dicom_size, image.instance_number, image.series_instance_uid, image.sop_instance_uid, image.us_frame_number, image.study_instance_uid, image.acquisition_number ";
+        String fromStmt = "FROM general_image image ";
+        String whereStmt = "WHERE ";
+        List<ImageDTO> imageList = new ArrayList<ImageDTO>();
+        whereStmt += whereCondi;
+
+
+        // Submit the search
+        long start = System.currentTimeMillis();
+        logger.debug("Issuing query: " + selectStmt + fromStmt + whereStmt);
+
+        // Create the query and set parameters in one go
+        Query query = this.getHibernateTemplate()
+            .getSessionFactory()
+            .getCurrentSession()
+            .createSQLQuery(selectStmt + fromStmt + whereStmt);
+
+        List seriesQuery = query.list();
+
+        long end = System.currentTimeMillis();
+        logger.debug("total query time: " + (end - start) + " ms");
+
+        for (Object item : seriesQuery) {
+            Object[] row = (Object[]) item;
+
+
+            String imageFileName = row[3].toString();
+
+            ImageDTO thumbnailDTO = new ImageDTO();
+            thumbnailDTO.setImagePkId(((BigInteger) row[0]).intValue());
+            thumbnailDTO.setContentDate((Date) row[1]);
+            thumbnailDTO.setContentTime(Util.nullSafeString(row[2]));
+            thumbnailDTO.setSeriesPkId(((BigInteger) row[4]).intValue());
+            thumbnailDTO.setInstanceNumber(((BigInteger) row[6]).intValue());
+            thumbnailDTO.setSeriesInstanceUid(row[7].toString());
+            thumbnailDTO.setSopInstanceUid(row[8].toString());
+            thumbnailDTO.setFileURI(imageFileName);
+            thumbnailDTO.setSize(((BigDecimal) row[5]).longValue());
+             if (row[9]== null) {
+			            	thumbnailDTO.setFrameNum(0);
+			            }
+			            else {
+			            	thumbnailDTO.setFrameNum(Integer.parseInt((String) row[9]));
+            }
+             thumbnailDTO.setStudyInstanceUid(row[10].toString());
+             thumbnailDTO.setAcquisitionNumber(((BigInteger) row[6]).intValue());
+            imageList.add(thumbnailDTO);
+        }
+
+        Collections.sort(imageList);
+        
+        return imageList;
+    }
 	private List<ImageDTO> searchImagesbyHql(String whereCondi) throws DataAccessException {
         String selectStmt = SQL_QUERY_SELECT;
         String fromStmt = SQL_QUERY_FROM;
