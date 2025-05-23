@@ -525,15 +525,15 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     StringBuffer where = new StringBuffer();
     List<Object[]> rs = null;
-    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, s.series_date, s.series_desc, "
+    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
       + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, e.manufacturer, "
       + "e.manufacturer_model_name, e.software_versions, "
       + "(select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, "
-      + "s.max_submission_timestamp, "
+      + "date_format(s.max_submission_timestamp, '%m-%d-%Y'), "
       + "s.license_name, s.license_url, s.description_uri, "
       + "(select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as total_size, "
-      + "s.date_released, "
-      + "s.study_desc, s.study_date, s.third_party_analysis, "
+      + "date_format(s.date_released, '%m-%d-%Y'), "
+      + "s.study_desc, date_format(s.study_date, '%m-%d-%Y'), s.third_party_analysis, "
       + addAuthorizedProjAndSitesCaseStatement(authCol) 
       + " from general_series s join general_equipment e " 
       + " on s.general_equipment_pk_id = e.general_equipment_pk_id where s.visibility in ('1') ";
@@ -557,23 +557,23 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       ++i;
     }
     if (modality != null) {
-      where = where.append(" and s.modality=:modality");
-      params.put("modality", modality);
+      where = where.append(" and UPPER(s.modality)=:modality");
+      params.put("modality", modality.toUpperCase());
       ++i;
     }
     if (bodyPartExamined != null) {
-      where = where.append(" and s.body_part_examined=:body_part_examined");
-      params.put("body_part_examined", bodyPartExamined);
+      where = where.append(" and UPPER(s.body_part_examined)=:body_part_examined");
+      params.put("body_part_examined", bodyPartExamined.toUpperCase());
       ++i;
     }
     if (manufacturerModelName != null) {
-      where = where.append(" and e.manufacturer_model_name=:manufacturer_model_name");
-      params.put("manufacturer_model_name", manufacturerModelName);
+      where = where.append(" and UPPER(e.manufacturer_model_name)=:manufacturer_model_name");
+      params.put("manufacturer_model_name", manufacturerModelName.toUpperCase());
       ++i;
     }
     if (manufacturer != null) {
-      where = where.append(" and e.manufacturer=:manufacturer");
-      params.put("manufacturer", manufacturer);
+      where = where.append(" and UPPER(e.manufacturer)=:manufacturer");
+      params.put("manufacturer", manufacturer.toUpperCase());
       ++i;
     }
     if (seriesInstanceUID != null) {
@@ -750,6 +750,47 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
   }
 
   @Transactional(propagation = Propagation.REQUIRED)
+  public List<Object[]> getSeries_v4(String fromDate, List<String> authorizedProjAndSites) throws DataAccessException {
+
+    if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
+      return null;
+    } 
+    StringBuffer where = new StringBuffer();
+    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
+      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, ge.manufacturer, "
+      + "ge.manufacturer_model_name, ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, date_format(s.date_released, '%m-%d-%Y'), " 
+      + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) 
+      + " from general_series s join general_equipment ge on s.general_equipment_pk_id = ge.general_equipment_pk_id  where s.visibility in ('1') ";
+
+    Map<String, Object> params = new HashMap<>();
+
+    if (fromDate==null) {
+      fromDate="01-01-1900";
+    }
+    if (fromDate != null) {
+      where.append(" and s.date_released > STR_TO_DATE(:fromDate, '%m-%d-%Y') ");
+      params.put("fromDate", fromDate);
+    }
+    sql = sql + where.toString();
+
+
+    //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries_v4() - downloadable visibility sql is: "
+    //				+ sql);
+
+
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+                      .getSessionFactory()
+                      .getCurrentSession()
+                      .createSQLQuery(sql)
+                      .setProperties(params);
+  
+    List<Object[]> rs = query.list();
+    return rs;
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<Object[]> getSeries(String fromDate, List<String> authorizedProjAndSites) throws DataAccessException {
 
     if (authorizedProjAndSites == null || authorizedProjAndSites.size() == 0){
@@ -886,6 +927,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       return rs;
   }
 
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<Object[]> getSeriesSize_v4(String seriesInstanceUID, List<String> authorizedProjAndSites)
           throws DataAccessException {
   
@@ -896,9 +938,9 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       StringBuffer where = new StringBuffer();
       Map<String, Object> params = new HashMap<>();
   
-      String sql = "select sum(gi.dicom_size), s.image_count, " +
+      String sql = "select ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as dicom_size, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, " +
                    addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
-                   " from general_series s join general_image_collection gi on s.id = gi.series_id " +
+                   " from general_series s " +
                    " where s.visibility in ('1') ";
   
       if (seriesInstanceUID != null) {

@@ -97,8 +97,10 @@ public interface GeneralSeriesDAO  {
 	public List<Object[]> getSeries_v4(String collection, String patientId, String studyInstanceUid, List<String> authCol,
 			String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer, String seriesInstanceUID) throws DataAccessException;
 	public List<Object[]> getSeriesById(String series, List<String> authorizedProjAndSites) throws DataAccessException;
+	public List<Object[]> getSeries_v4(String collection, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getSeries(String collection, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getSeries(List<String> seriesInstanceUids, List<String> authorizedProjAndSites) throws DataAccessException;
+	public List<Object[]> getSeriesSize_v4(String seriesInstanceUID, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getSeriesSize(String seriesInstanceUID, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<String> getRequestedProjectAndSite(Map<String,String> queryParams) throws DataAccessException;
 	public List<String> getSeriesFromPatientStudySeriesUIDs(List<String> patientIDs,
