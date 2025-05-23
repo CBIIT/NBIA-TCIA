@@ -148,6 +148,8 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     completeTciaProgramListHoldGuest = null;  // used to hold the original list for guest user
     completeTciaProgramListHoldLoggedIn= null; // used to hold the original list for logged in user
 
+    showCollectionProgramQueryExplanation = false;
+    posY = 0;
     /**
      * Used to clean up subscribes on the way out to prevent memory leak.
      *
@@ -313,6 +315,12 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         }else{
             this.uncheckedProgramCount = 0;
         }
+
+        this.commonService.showCollectionProgramQueryExplanationEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
+            data => {
+                this.showCollectionProgramQueryExplanation = <boolean>data;
+            }
+        );
 
         // Get persisted showTciaProgramList value.  Used to show, or collapse this category of criteria in the UI.
         this.showTciaProgramList = this.commonService.getCriteriaQueryShow( Consts.SHOW_CRITERIA_QUERY_COLLECTIONS );
@@ -1244,6 +1252,11 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.sortTciaProgramListPrograms();
         this.sortTciaProgramList();
 
+    }
+
+    onCollectionProgramQueryExplanationClick(e) {
+        this.showCollectionProgramQueryExplanation = true;
+        this.posY = e.view?.pageYOffset + e.clientY;
     }
 
     ngOnDestroy() {

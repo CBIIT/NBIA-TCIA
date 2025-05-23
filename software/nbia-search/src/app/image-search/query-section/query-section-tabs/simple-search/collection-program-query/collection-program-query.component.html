@@ -2,7 +2,6 @@
 
 <!-- -----  Tool top that shows the Collection description  ----- -->
 <nbia-tool-tip
-
         (mouseover)="mouseOverToolTip()"
         (mouseleave)="mouseleaveToolTip()"
         (mouseout)="mouseleaveToolTip()"
@@ -13,7 +12,7 @@
         [toolTipHeading]=toolTipHeading
 ></nbia-tool-tip>
 
-<div class="query-panel">
+<div class="query-panel fixed-width">
     <!-- ----------  Heading & hide/show buttons  ---------- -->
     <div class="query-panel-heading">
         <!-- Hide the Collections list.  Still show the heading (with this img to its left) -->
@@ -61,10 +60,19 @@
                  >
                 </label>
             </span>
+          <!-- Uncheck all the Collection criteria and restore their counts back to the full count in the database. -->
+        <label *ngIf="checkedProgramCount > 0" class="collection-program-red-clear">
+            <img
+                    class="clicker cart-button-icon"
+                    src="assets/images/TOOLS/clear_red.png"
+                    alt="Search"
+                    (click)="onCollectionsClearAllClick(false)"
+            >
+        </label>
 
         <!--  Search the list of Collections (The red magnifying glass) -->
         <label
-                class="search-glass-with-clear"
+                class="collection-program-search-glass-with-clear"
                 for="collectionsSearchText"
                 title="{{searchToolTip}}"
         >
@@ -76,15 +84,9 @@
             >
         </label>
 
-        <!-- Uncheck all the Collection criteria and restore their counts back to the full count in the database. -->
-        <label *ngIf="checkedProgramCount > 0" class="red-clear">
-            <img
-                    class="clicker cart-button-icon"
-                    src="assets/images/TOOLS/clear_red.png"
-                    alt="Search"
-                    (click)="onCollectionsClearAllClick(false)"
-            >
-        </label>
+         <img src="assets/images/TOOLS/question_red_small.png" alt="question_red_small"
+      class="clicker  collection-program-explanation-x" (click)="onCollectionProgramQueryExplanationClick($event)">
+
     </div>
 
     <div [ngClass]="{ 'hide-div': !showTciaProgramList}">
@@ -195,3 +197,7 @@
     </div>
     <!-- ----------  This is the left side Collections list of check boxes.  ---------- -->
 </div>
+
+<nbia-collection-program-query-explanation *ngIf="showCollectionProgramQueryExplanation"
+  [posY]="posY">
+</nbia-collection-program-query-explanation>

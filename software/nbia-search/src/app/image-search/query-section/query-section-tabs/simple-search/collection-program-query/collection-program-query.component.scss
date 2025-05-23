@@ -225,3 +225,25 @@
   margin-left: auto;
   flex-shrink: 0; /* prevent it from shrinking */
 }
+
+  .fixed-width {
+    width: 345px ;
+  }
+
+  .collection-program-red-clear {
+    position: absolute;
+    //margin-right: -40px;
+    left: $left-section-width - 80px;
+  }
+
+  .collection-program-search-glass-with-clear {
+    position: absolute;
+    //margin-right: -20px;
+    left: $left-section-width - 60px;
+  }
+
+.collection-program-explanation-x {
+    float: right;
+    margin-right: 10px;
+    height: 16px;
+}

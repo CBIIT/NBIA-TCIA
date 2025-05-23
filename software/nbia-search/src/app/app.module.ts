@@ -129,6 +129,7 @@ import { SubjectIdExplanationComponent } from './image-search/query-section/quer
 import { PhantomQueryExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/phantom-query/phantom-query-explanation/phantom-query-explanation.component';   
 import { CollectionProgramQueryComponent } from './image-search/query-section/query-section-tabs/simple-search/collection-program-query/collection-program-query.component';
 import { MatIconModule } from '@angular/material/icon';
+import { CollectionProgramQueryExplanationComponent } from './image-search/query-section/query-section-tabs/simple-search/collection-program-query/collection-program-query-explanation/collection-program-query-explanation.component';
 
 /*
 const appRoutes: Routes = [
@@ -241,7 +242,8 @@ export function initSharedConfig(configService: ConfigurationService) {
         MinimumMatchedStudiesExplanationComponent,
         SubjectIdExplanationComponent,
         PhantomQueryExplanationComponent,
-        CollectionProgramQueryComponent
+        CollectionProgramQueryComponent,
+        CollectionProgramQueryExplanationComponent,
     ],
     imports: [
         BrowserModule,

@@ -132,6 +132,9 @@ export class CommonService{
     showPhantomQueryExplanationEmitter = new EventEmitter();
     showPhantomQueryExplanation = false;
 
+    showCollectionProgramQueryExplanationEmitter = new EventEmitter();
+    showCollectionProgramQueryExplanation = false;
+
     /**
      * Called when something in the query section changes<br>
      *
@@ -537,6 +540,11 @@ export class CommonService{
     setShowPhantomQueryExplanation( e ) {
         this.showPhantomQueryExplanation = e;
         this.showPhantomQueryExplanationEmitter.emit( this.showPhantomQueryExplanation );
+    }
+
+    setShowCollectionProgramQueryExplanation( e ) {
+        this.showCollectionProgramQueryExplanation = e;
+        this.showCollectionProgramQueryExplanationEmitter.emit( this.showCollectionProgramQueryExplanation );
     }
 
 

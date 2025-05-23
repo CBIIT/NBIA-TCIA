@@ -1,0 +1,13 @@
+@import '../../../../../../app.component.scss';
+
+.collection-program-search-explanation{
+  width: 550px;
+  position: absolute;
+  top: 200px;
+  left: calc( 50% - 275px);
+}
+
+.collection-program-search-explanation-text{
+  font-size: 12pt;
+  margin: 8px;
+}
