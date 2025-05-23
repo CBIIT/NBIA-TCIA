@@ -32,7 +32,7 @@
 //To Test: http://localhost:8080/nbia-api/api/v1/getSeries?StudyInstanceUID=1.3.6.1.4.1.9328.50.1.2&format=json
 //To Test: http://localhost:8080/nbia-api/api/v1/getSeries?StudyInstanceUID=1.3.6.1.4.1.9328.50.1.3&format=csv
 
-package gov.nih.nci.nbia.restAPI;
+package gov.nih.nci.nbia.restAPI.v4;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;

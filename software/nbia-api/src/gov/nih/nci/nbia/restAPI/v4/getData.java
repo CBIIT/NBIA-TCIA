@@ -516,7 +516,7 @@ public class getData {
 		List<Object[]> results = null;
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
-			results = tDao.getSeries(fromDate, authorizedCollections);
+			results = tDao.getSeries_v4(fromDate, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();
@@ -540,7 +540,7 @@ public class getData {
 
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
-			results = tDao.getSeriesSize(seriesInstanceUID, authorizedCollections);
+			results = tDao.getSeriesSize_v4(seriesInstanceUID, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();

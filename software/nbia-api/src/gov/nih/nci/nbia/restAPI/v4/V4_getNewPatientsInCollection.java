@@ -28,7 +28,7 @@ import java.util.Set;
 
 @Path("/v4/NewPatientsInCollection")
 public class V4_getNewPatientsInCollection extends getData{
-	private static final String[] columns={"PatientId", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection","Phantom","SpeciesCode","SpeciesDescription", "Authorization"};
+	private static final String[] columns={"PatientId", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection","Phantom","SpeciesCode","SpeciesDescription", "Authorized"};
 	public final static String TEXT_CSV = "text/csv";
 
 	/**

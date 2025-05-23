@@ -1,4 +1,4 @@
-package gov.nih.nci.nbia.restAPI;
+package gov.nih.nci.nbia.restAPI.v4;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 import gov.nih.nci.nbia.dao.PatientDAO;
 
-@Path("/v4/getSeriesMetadataCombined")
+@Path("/v4/getSeriesMetadata")
 public class V4_getSeriesMetadata extends getData {
 
     public final static String TEXT_CSV = "text/csv";
@@ -49,7 +49,7 @@ public class V4_getSeriesMetadata extends getData {
         PatientDAO patientDAO = (PatientDAO) SpringApplicationContext.getBean("patientDAO");
         for(String uid : seriesInstanceUIDs) {
             System.out.println("Processing SeriesInstanceUID: " + uid);
-            results.addAll(patientDAO.getCombinedDataBySeries(uid, authorizedCollections));
+            results.addAll(patientDAO.getCombinedDataBySeries_v4(uid, authorizedCollections));
         }
 
         // Use the columns defined in getSeriesMetadata3
@@ -59,9 +59,10 @@ public class V4_getSeriesMetadata extends getData {
             "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
             "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Modality", 
             "Protocol Name", "Series Date", "Series Description", "Body Part Examined", "Series Number", 
-            "Annotations Flag", "Manufacturer", "Manufacturer Model Name", "Software Versions", 
-            "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Collection URI", 
-            "File Size", "Date Released", "Third Party Analysis"
+            "Annotations Flag", "Manufacturer", "Manufacturer Model Name", 
+            "Pixel Spacing(mm)- Row","Slice Thickness(mm)",
+            "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Collection URI", 
+            "File Size", "Date Released", "Third Party Analysis", "Authorized"
         };
 
         return formatResponse("CSV-DOWNLOAD", results, columns);

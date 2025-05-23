@@ -1,4 +1,4 @@
-package gov.nih.nci.nbia.restAPI;
+package gov.nih.nci.nbia.restAPI.v4;
 
 import java.util.Arrays;
 import java.util.List;

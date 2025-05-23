@@ -174,7 +174,7 @@ public class SearchUtil {
 			}
 			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("DateRangeCriteria")){
 				DateRangeCriteria criteria=new DateRangeCriteria();
-				SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
 			    criteria.setFromDate(formatter.parse(inFormParams.get("fromDate"+i).get(0)));
 			    criteria.setToDate(formatter.parse(inFormParams.get("toDate"+i).get(0)));
 				query.setCriteria(criteria);

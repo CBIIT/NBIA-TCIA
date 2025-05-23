@@ -33,7 +33,7 @@ public class GetSimpleSearch extends getData{
 			returnValue=util.getPatients_v4(inFormParams, user, true);
 		}
 		else
-			returnValue=util.getPatients(inFormParams, null, false);
+			returnValue=util.getPatients_v4(inFormParams, null, false);
 		return Response.ok(JSONUtil.getJSONforPatientSearchSummary(returnValue)).type("application/json")
 				.build();
 	}

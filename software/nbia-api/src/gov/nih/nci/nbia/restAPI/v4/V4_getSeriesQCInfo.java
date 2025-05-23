@@ -1,6 +1,6 @@
 //To Test: curl -H "Authorization:Bearer <access KeycloakGetToken>"  -d "<series instance uid>" -d "seriesId=<series instance uid>" "http://localhost:8080/nbia-api/services/v2/getSeriesQCInfo"
 
-package gov.nih.nci.nbia.restAPI;
+package gov.nih.nci.nbia.restAPI.v4;
 
 import java.util.List;
 
