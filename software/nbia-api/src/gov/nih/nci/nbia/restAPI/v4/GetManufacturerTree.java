@@ -23,7 +23,7 @@ import gov.nih.nci.nbia.dao.ValueAndCountDAO;
 import gov.nih.nci.ncia.criteria.ValuesAndCountsCriteria;
 
 @Path("/v4/getManufacturerTree")
-public class GetManufactureTree extends getData{
+public class GetManufacturerTree extends getData{
 
 
 	@Context private HttpServletRequest httpRequest;

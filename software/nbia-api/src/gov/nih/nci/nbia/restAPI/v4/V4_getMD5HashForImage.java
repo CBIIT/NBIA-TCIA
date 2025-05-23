@@ -26,8 +26,8 @@ import gov.nih.nci.nbia.security.*;
 import gov.nih.nci.nbia.util.SiteData;
 import gov.nih.nci.nbia.restUtil.AuthorizationUtil;
 
-@Path("/v4/getM5HashForImage")
-public class V4_getM5HashForImage extends getData{
+@Path("/v4/getMD5HashForImage")
+public class V4_getMD5HashForImage extends getData{
 	/**
 	 * 
 	 *

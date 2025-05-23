@@ -43,7 +43,7 @@ import gov.nih.nci.nbia.restUtil.QAUserUtil;
 import gov.nih.nci.nbia.restUtil.MD5Cache;
 import io.swagger.annotations.*;
 @Path("/v4/getMD5Hierarchy")
-public class GetMD5Heirarchy extends getData{
+public class GetMD5Hierarchy extends getData{
 
 
 	@Context private HttpServletRequest httpRequest;
