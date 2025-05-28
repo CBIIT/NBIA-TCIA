@@ -417,7 +417,7 @@ public class PatientDAOImpl extends AbstractDAO
 			"ge.manufacturer_model_name, " + 
 			"gi.pixel_spacing, gi.slice_thickness, " +
 			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as image_count, " +
-			"gs.max_submission_timestamp, gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
+			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
 			"date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
       addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
 			"from general_series gs " +

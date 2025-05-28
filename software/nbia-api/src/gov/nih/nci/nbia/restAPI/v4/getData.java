@@ -490,7 +490,7 @@ public class getData {
 
 		GeneralSeriesDAO tDao = (GeneralSeriesDAO)SpringApplicationContext.getBean("generalSeriesDAO");
 		try {
-			results = tDao.findSeriesQCInfoBySeriesInstanceUIDs(seriesList, authorizedCollections);
+			results = tDao.findSeriesQCInfoBySeriesInstanceUIDs_v4(seriesList, authorizedCollections);
 		}
 		catch (DataAccessException ex) {
 			ex.printStackTrace();

@@ -773,7 +773,7 @@ public class StudyDAOImpl extends AbstractDAO
 
 		if (collection != null) {
 			where = where.append(" and UPPER(gs.project)=:project");
-			params.put(":project", collection.toUpperCase());
+			params.put("project", collection.toUpperCase());
 		}
 		if (patientId != null) {
 			where = where.append(" and UPPER(p.patient_id)=:patientId");

@@ -1604,6 +1604,21 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
   }
 
   @Transactional(propagation = Propagation.REQUIRED)
+  public List<Object []> findSeriesQCInfoBySeriesInstanceUIDs_v4(List<String> seriesIds, List<String> authorizedSite) throws DataAccessException {
+    List<Object[]> seriesDTOList = null;
+
+    if (seriesIds == null || seriesIds.size() <= 0) {			
+      return null;
+    }
+
+    if (authorizedSite == null || authorizedSite.size() == 0){		
+      return null;
+    }	
+
+    seriesDTOList = getSeriesQCInfoDTOs_v4(seriesIds, authorizedSite);
+    return seriesDTOList;
+  }	
+  @Transactional(propagation = Propagation.REQUIRED)
   public List<Object []> findSeriesQCInfoBySeriesInstanceUIDs(List<String> seriesIds, List<String> authorizedSite) throws DataAccessException {
     List<Object[]> seriesDTOList = null;
 
@@ -1847,6 +1862,39 @@ private List<SeriesDTO> getSeriesDTOs(boolean allVisibilities, List<String> seri
   return returnValue;	
 }
 
+private List<Object []> getSeriesQCInfoDTOs_v4(List<String> seriesIds, List <String> authorizedSites) {
+  String sQL = "select s.SERIES_INSTANCE_UID, s.VISIBILITY, s.RELEASED_STATUS, date_format(s.DATE_RELEASED, '%m-%d-%Y'), " +
+    "( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, " +
+    " s.DESCRIPTION_URI," +
+    " s.license_name," +
+    " s.site, s.project, s.patient_id, s.modality, s.study_desc, s.series_desc " +
+    " from GENERAL_SERIES s";
+
+  StringBuffer where = new StringBuffer();
+  where = where.append(" and concat(concat(s.project, '//'), s.site) in (");
+
+  for (Iterator<String> projAndSites = authorizedSites.iterator(); projAndSites.hasNext();) {
+    String str = projAndSites.next();
+    where.append(str);
+
+    if (projAndSites.hasNext()) {
+      where.append(",");
+    }
+  }
+  where.append(")");		
+  String seriesIdWhereClause=" where s.SERIES_INSTANCE_UID IN (:ids) ";
+  String fullSQL=sQL + seriesIdWhereClause + where.toString();
+  System.out.println(fullSQL);
+
+  List<Object[]> seriesResults= (this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(fullSQL).setParameterList("ids", seriesIds)).list();
+
+  List<Object[]> modifiedResults = new ArrayList<Object[]>();
+  for (Object[] objs : seriesResults) {
+    objs[1] = VisibilityStatus.statusFactory(Integer.parseInt((String) objs[1])).getText();
+    modifiedResults.add(objs);
+  }
+  return modifiedResults;
+}	
 private List<Object []> getSeriesQCInfoDTOs(List<String> seriesIds, List <String> authorizedSites) {
   String sQL = "select s.SERIES_INSTANCE_UID, s.VISIBILITY, s.RELEASED_STATUS, s.DATE_RELEASED, " +
     "( SELECT COUNT(*) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as IMAGECOUNT, " +
