@@ -1,6 +1,6 @@
 openapi: 3.0.4
 info:
-  title: NBIA Search with Authentication API
+  title: NBIA API
   description: |
     This API provides access to the National Biomedical Imaging Archive (NBIA) for searching and downloading imaging data, including restricted collections requiring authentication.
   termsOfService: https://www.cancerimagingarchive.net/terms-of-service/
@@ -10,9 +10,6 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
-externalDocs:
-  description: NBIA API Documentation
-  url: https://wiki.cancerimagingarchive.net/display/Public/NBIA+Search+with+Authentication+REST+API+Guide
 servers:
   - url: https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/
     description: v4 Production server
