@@ -1,0 +1,1700 @@
+openapi: 3.0.4
+info:
+  title: NBIA Search with Authentication API
+  description: |
+    This API provides access to the National Biomedical Imaging Archive (NBIA) for searching and downloading imaging data, including restricted collections requiring authentication.
+  termsOfService: https://www.cancerimagingarchive.net/terms-of-service/
+  contact:
+    email: help@cancerimagingarchive.net
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: NBIA API Documentation
+  url: https://wiki.cancerimagingarchive.net/display/Public/NBIA+Search+with+Authentication+REST+API+Guide
+servers:
+  - url: https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/
+    description: v4 Production server
+  - url: https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/
+    description: v4 Stage Server
+  - url: https://services.cancerimagingarchive.net/nbia-api/services/v1/
+    description: v1 Production Server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: UUID
+  schemas:
+    Collection:
+      type: object
+      properties:
+        collection:
+          type: string
+          description: Name of the collection
+      required:
+        - collection
+
+security:
+  - bearerAuth: []
+
+paths:
+  /getTextSearch:
+    post:
+      summary: Perform a text search
+      description: Performs a text search on the NBIA data repository.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                textValue:
+                  type: string
+      responses:
+        '200':
+          description: Successful search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getThumbnail:
+    post:
+      summary: Retrieve a thumbnail JPG image for a DICOM object
+      description: Returns a JPG thumbnail image given a seriesUID and objectUID.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                seriesUID:
+                  type: string
+                objectUID:
+                  type: string
+              required:
+                - seriesUID
+                - objectUID
+      responses:
+        '200':
+          description: Successful thumbnail image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getStudyDrillDownWithSeriesIds:
+    post:
+      summary: Retrieve study and series data for given series UIDs
+      description: Drill down into study and series information using series instance UIDs.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                list:
+                  type: string
+                  description: Comma-separated seriesInstanceUIDs
+      responses:
+        '200':
+          description: Successful response with study/series details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getSpeciesValuesAndCounts:
+    get:
+      summary: Get species values and their counts
+      description: Returns the species values and counts.
+      responses:
+        '200':
+          description: Successful species counts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    criteria:
+                      type: string
+                    count:
+                      type: string
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getSpeciesTax:
+    get:
+      summary: Retrieve species taxonomy
+      description: Returns the current species taxonomy.
+      responses:
+        '200':
+          description: Successful taxonomy list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    speciesCode:
+                      type: string
+                    speciesDescription:
+                      type: string
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getSimpleSearch:
+    post:
+      summary: Perform a paged simple search using modality and body part
+      description: Performs paged simple search with various criteria.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+      responses:
+        '200':
+          description: Successful search results
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getRestrictionsForSimpleSearch:
+    post:
+      summary: Check for commercial restrictions in a simple search
+      description: Returns whether any results from the simple search have commercial restrictions.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                criteriaType0:
+                  type: string
+                value0:
+                  type: string
+                sortField:
+                  type: string
+                sortDirection:
+                  type: string
+                start:
+                  type: string
+                size:
+                  type: string
+      responses:
+        '200':
+          description: Successful restriction result
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getMD5Hierarchy:
+    post:
+      summary: Get MD5 hash hierarchy for specified collection, patient, study, or series
+      description: Returns MD5 hash hierarchy.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                Collection:
+                  type: string
+                PatientID:
+                  type: string
+                StudyInstanceUID:
+                  type: string
+                SeriesInstanceUID:
+                  type: string
+      responses:
+        '200':
+          description: Successful response with MD5 hash
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getMD5HashForImage:
+    get:
+      summary: Get MD5 hash for a single image
+      description: Returns MD5 hash for the given SOPInstanceUID.
+      parameters:
+        - name: SOPInstanceUid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with MD5 hash
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getManifestFromPatientStudySeries:
+    post:
+      summary: Generate a manifest from patient, study, and series UIDs
+      description: |
+        Returns a manifest file containing series for the specified patient, study, or series UIDs.
+        Requires authentication via a Bearer token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                patientIDs:
+                  type: string
+                  description: Patient IDs (comma-separated)
+                studyUIDs:
+                  type: string
+                  description: StudyInstanceUIDs (optional)
+                seriesUIDs:
+                  type: string
+                  description: SeriesInstanceUIDs (optional)
+                anyOrAll:
+                  type: string
+                  description: Any or All criteria (optional)
+                includeAnnotation:
+                  type: string
+                  description: Whether to include annotations (true/false)
+              required:
+                - patientIDs
+      responses:
+        '200':
+          description: Manifest text file generated successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /GetManifestForTextSearch:
+    post:
+      summary: Generate a manifest file using text search
+      description: |
+        Returns a manifest file of series resulting from a text search query. This replicates the functionality of the text search in the NBIA Radiology Portal GUI.
+        Requires authentication via a Bearer token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                textValue:
+                  type: string
+                  description: The text search value to query for
+              required:
+                - textValue
+      responses:
+        '200':
+          description: Successfully generated text search manifest
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getManifestText:
+    post:
+      summary: Generate a manifest file for a list of series
+      description: |
+        Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
+        Requires authentication via a Bearer token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                list:
+                  type: array
+                  items:
+                    type: string
+                  description: A repeatable parameter of series UIDs for each series you want to download
+                includeAnnotation:
+                  type: boolean
+                  description: If true, annotations are included in the manifest
+              required:
+                - list
+      responses:
+        '200':
+          description: Successfully generated manifest text
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getManifestForSimpleSearch:
+    post:
+      summary: Generate a manifest file from simple search criteria
+      description: |
+        Creates a manifest file from the specified simple search parameters, which can be used with the NBIA Data Retriever.
+        Requires authentication via a Bearer token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                criteriaType0:
+                  type: string
+                  description: The type of criteria to search for (e.g., ThirdPartyAnalysis)
+                value0:
+                  type: string
+                  description: The value associated with the criteria type
+                sortField:
+                  type: string
+                  description: Field to sort by (e.g., subject)
+                sortDirection:
+                  type: string
+                  description: Sort order (ascending or descending)
+                start:
+                  type: integer
+                  description: Index of the first result to return
+                size:
+                  type: integer
+                  description: Maximum number of results to return
+              required:
+                - criteriaType0
+                - value0
+                - sortField
+                - sortDirection
+                - start
+                - size
+      responses:
+        '200':
+          description: Manifest file generated successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getDicomTags:
+    get:
+      summary: Retrieve DICOM metadata for a specific series
+      description: |
+        Returns metadata (DICOM tags and values) for the specified SeriesInstanceUID.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: SeriesUID
+          in: query
+          description: SeriesInstanceUID for which to retrieve DICOM tags
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with DICOM tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    element:
+                      type: string
+                      description: DICOM element tag (e.g., (0028,0010))
+                    name:
+                      type: string
+                      description: Name of the DICOM tag
+                    data:
+                      type: string
+                      description: Value associated with the tag
+        '400':
+          description: Bad request – Missing or invalid SeriesUID
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: SeriesUID not found
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /createSharedList:
+    post:
+      summary: Create a saved shared list (cart)
+      description: |
+        Creates a saved cart (list) containing the specified series. Each series is identified by its SeriesInstanceUID.
+        The list name must be unique. Requires authentication via a Bearer token.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                list:
+                  type: array
+                  items:
+                    type: string
+                  description: A repeatable parameter for each series you want to have in the saved cart
+                name:
+                  type: string
+                  description: Name for the saved cart (note that names of saved carts must be unique)
+                description:
+                  type: string
+                  description: Description of the saved cart
+                url:
+                  type: string
+                  description: URL of the saved cart
+              required:
+                - list
+                - name
+                - description
+                - url
+      responses:
+        '200':
+          description: Successfully created the shared list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message for the saved list
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '409':
+          description: Conflict – A list with this name already exists
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getCollectionDescriptions:
+    get:
+      summary: Retrieve detailed metadata for NBIA collections
+      description: |
+        Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
+        You may optionally filter by collection name.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: collectionName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Collection name to filter results
+      responses:
+        '200':
+          description: Successful response with collection descriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      description: HTML-formatted description of the collection
+                    id:
+                      type: integer
+                      description: Internal identifier for the collection metadata
+                    collectionDescTimestamp:
+                      type: integer
+                      description: Last update timestamp (epoch format)
+                    collectionName:
+                      type: string
+                      description: Name of the collection
+                    userName:
+                      type: string
+                      description: User who submitted or last updated the description
+                    licenseId:
+                      type: integer
+                      nullable: true
+                      description: Internal license reference ID (often null)
+                    descriptionURI:
+                      type: string
+                      description: DOI or external metadata page link for the collection
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getCollectionOrSeriesForDOI:
+    get:
+      summary: Resolve a DOI to a collection or series
+      description: |
+        Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
+        Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to a SeriesInstanceUID.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: DOI
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Digital Object Identifier (DOI) to resolve"
+        - name: CollectionOrSeries
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [collection, series]
+            default: collection
+          description: "Whether to search for a collection or a series (default: collection)"
+      responses:
+        '200':
+          description: Successful response with resolved collection or series
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    collection:
+                      type: string
+                      nullable: true
+                      description: Name of the collection (if resolved to a collection)
+                    seriesInstanceUID:
+                      type: string
+                      nullable: true
+                      description: SeriesInstanceUID (if resolved to a series)
+                    thirdPartyAnanlysis:
+                      type: string
+                      nullable: true
+                      description: Reserved field (currently unused)
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: DOI not found
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getManufacturerValuesAndCounts:
+    get:
+      summary: Retrieve manufacturer values and their occurrence counts
+      description: |
+        Returns manufacturer names and the number of times each appears in the database,
+        along with authorization information.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExamined
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with manufacturer counts and authorization
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    manufacturer:
+                      type: string
+                      description: Manufacturer name
+                    count:
+                      type: integer
+                      description: Number of series produced by this manufacturer
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getModalityValuesAndCounts:
+    get:
+      summary: Retrieve modality values and their occurrence counts
+      description: |
+        Returns modality types along with how often each appears in the database,
+        and whether the user is authorized to access the associated collection.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExamined
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with modality counts and authorization
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    modality:
+                      type: string
+                      description: Modality type (e.g., CT, MR)
+                    count:
+                      type: integer
+                      description: Number of series using this modality
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getCollectionValuesAndCounts:
+    get:
+      summary: Retrieve collection names and patient counts
+      description: |
+        Returns all collection names, patient counts, and authorization status.
+        Requires authentication via a Bearer token.
+      responses:
+        '200':
+          description: Successful response with collection counts and authorization
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    collection:
+                      type: string
+                      description: Collection name
+                    count:
+                      type: integer
+                      description: Number of patients in the collection
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getBodyPartValuesAndCounts:
+    get:
+      summary: Retrieve body part values and their occurrence counts
+      description: |
+        Returns a list of body part names along with the number of times each appears in the database.
+        Optionally filter by Collection or Modality.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with body part counts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    bodyPart:
+                      type: string
+                      description: Body part name
+                    count:
+                      type: integer
+                      description: Number of series/studies with this body part
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getPatient:
+    get:
+      summary: Retrieve patients in a collection
+      description: |
+        Returns a list of de-identified patients associated with the specified collection.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Name of the collection to retrieve patients from
+      responses:
+        '200':
+          description: Successful response with patient metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PatientID:
+                      type: string
+                      description: DICOM Tag (0010,0020) – De-identified patient ID
+                    PatientName:
+                      type: string
+                      description: DICOM Tag (0010,0010) – De-identified patient name
+                    PatientSex:
+                      type: string
+                      description: DICOM Tag (0010,0040) – Patient’s sex
+                    PatientBirthDate:
+                      type: string
+                      format: date
+                      description: DICOM Tag (0010,0030) – De-identified birth date
+                    EthnicGroup:
+                      type: string
+                      description: DICOM Tag (0010,2160) – Ethnic group of the patient
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getPatientStudy:
+    get:
+      summary: Retrieve studies for patients in a collection
+      description: |
+        Returns metadata for studies associated with patients in the specified collection.
+        You can optionally filter by PatientID.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          description: Name of the image collection
+          required: true
+          schema:
+            type: string
+        - name: PatientID
+          in: query
+          description: De‑identified PatientID (optional – restricts results to a single patient)
+          required: false
+          schema:
+            type: string
+        - name: StudyInstanceUID
+          in: query
+          description: DICOM Tag (0020,000D) – Unique identifier for the study
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with study metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    StudyDate:
+                      type: string
+                      format: date
+                      description: DICOM Tag (0008,0020) – Date the study was performed
+                    StudyDescription:
+                      type: string
+                      description: DICOM Tag (0008,1030) – Description of the study
+                    PatientID:
+                      type: string
+                      description: DICOM Tag (0010,0020) – De‑identified Patient ID
+                    PatientName:
+                      type: string
+                      description: DICOM Tag (0010,0010) – De‑identified Patient Name
+                    PatientSex:
+                      type: string
+                      description: DICOM Tag (0010,0040) – Sex of the patient
+                    Collection:
+                      type: string
+                      description: Name of the collection
+                    SeriesCount:
+                      type: integer
+                      description: Number of series in this study
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getUpdatedSeries:
+    get:
+      summary: Retrieve updated series in a collection since a specified date
+      description: |
+        Returns a list of SeriesInstanceUIDs for imaging series in a given collection that have been updated on or after the specified date.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Name of the image collection
+        - name: Date
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Date in YYYY/MM/DD format. Returns series updated on or after this date.
+      responses:
+        '200':
+          description: Successful response with updated SeriesInstanceUIDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: DICOM Tag (0020,000E) – Unique identifier for a DICOM series
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: No updated series found
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getSOPInstanceUIDs:
+    get:
+      summary: Retrieve SOP Instance UIDs for a DICOM series
+      description: |
+        Returns a list of SOPInstanceUIDs (unique image identifiers) associated with the specified SeriesInstanceUID.
+        Useful for accessing or referencing individual DICOM images.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          required: true
+          schema:
+            type: string
+          description: DICOM Tag (0020,000E) – Unique identifier for the DICOM series
+      responses:
+        '200':
+          description: Successful response with SOPInstanceUIDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: DICOM Tag (0008,0018) – Unique identifier for an individual DICOM image
+        '400':
+          description: Bad request – Missing or invalid SeriesInstanceUID
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: Series not found or contains no images
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getSeriesSize:
+    get:
+      summary: Retrieve size and image count for a DICOM series
+      description: |
+        Returns the number of images and total file size (in bytes) for the specified SeriesInstanceUID.
+        Useful for estimating storage requirements before downloading.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          required: true
+          schema:
+            type: string
+          description: DICOM Tag (0020,000E) – Unique identifier for the image series
+      responses:
+        '200':
+          description: Successful response with image count and total size
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageCount:
+                    type: integer
+                    description: Number of images in the series
+                  seriesSize:
+                    type: integer
+                    description: Total size in bytes of the series
+        '400':
+          description: Bad request – Missing or invalid SeriesInstanceUID
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: Series not found
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getSeriesMetaData:
+    get:
+      summary: Retrieve detailed metadata for a DICOM series
+      description: |
+        Returns a list of metadata fields and values for the specified SeriesInstanceUID.
+        This includes DICOM tags and related technical attributes.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          required: true
+          schema:
+            type: string
+          description: DICOM Tag (0020,000E) – Unique identifier for the image series
+      responses:
+        '200':
+          description: Successful response with series metadata key-value pairs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tagName:
+                      type: string
+                      description: Name of the DICOM field (e.g., Modality, Manufacturer)
+                    tagValue:
+                      type: string
+                      description: Value of the field for the specified series
+        '400':
+          description: Bad request – Missing or invalid SeriesInstanceUID
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: SeriesInstanceUID not found
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getSeries:
+    get:
+      summary: Retrieve DICOM series metadata
+      description: |
+        Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID, Modality, and BodyPartExamined.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by collection name
+        - name: PatientID
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by patient ID
+        - name: StudyInstanceUID
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by StudyInstanceUID
+        - name: Modality
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by imaging modality (e.g., CT, MR)
+        - name: BodyPartExamined
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by body part examined
+      responses:
+        '200':
+          description: Successful response with series metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    SeriesInstanceUID:
+                      type: string
+                      description: DICOM Tag (0020,000E) – Unique identifier for the imaging series
+                    StudyInstanceUID:
+                      type: string
+                      description: DICOM Tag (0020,000D) – Unique identifier for the study
+                    SeriesDate:
+                      type: string
+                      format: date
+                      description: DICOM Tag (0008,0021) – Date the series was performed
+                    Modality:
+                      type: string
+                      description: DICOM Tag (0008,0060) – Modality of the imaging series (e.g., CT, MR)
+                    SeriesDescription:
+                      type: string
+                      description: DICOM Tag (0008,103E) – Description of the series
+                    BodyPartExamined:
+                      type: string
+                      description: DICOM Tag (0018,0015) – Anatomical region examined
+                    SeriesNumber:
+                      type: integer
+                      description: DICOM Tag (0020,0011) – Number identifying the series within the study
+                    Manufacturer:
+                      type: string
+                      description: DICOM Tag (0008,0070) – Name of the manufacturer of the equipment
+                    ImageCount:
+                      type: integer
+                      description: Number of images in the series
+                    PatientID:
+                      type: string
+                      description: DICOM Tag (0010,0020) – De-identified patient ID
+                    Collection:
+                      type: string
+                      description: Collection name that the series belongs to
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getPatientByCollectionAndModality:
+    get:
+      summary: Retrieve patients in a collection filtered by modality
+      description: |
+        Returns a list of de-identified patients associated with a specific collection and imaging modality.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          description: Name of the image collection
+          required: true
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          description: Imaging modality to filter by (e.g., CT, MR)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with patient metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PatientID:
+                      type: string
+                      description: DICOM Tag (0010,0020) – De-identified patient ID
+                    PatientName:
+                      type: string
+                      description: DICOM Tag (0010,0010) – De-identified patient name
+                    PatientSex:
+                      type: string
+                      description: DICOM Tag (0010,0040) – Patient’s sex
+                    PatientBirthDate:
+                      type: string
+                      format: date
+                      description: DICOM Tag (0010,0030) – De-identified birth date
+                    EthnicGroup:
+                      type: string
+                      description: DICOM Tag (0010,2160) – Ethnic group of the patient
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /NewStudiesInPatientCollection:
+    get:
+      summary: Retrieve new studies in a patient collection since a specified date
+      description: |
+        Returns a list of studies for patients that were added to the specified collection on or after the given date.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          description: Name of the image collection
+          required: true
+          schema:
+            type: string
+        - name: Date
+          in: query
+          description: Date in YYYY/MM/DD format to filter new studies
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with study metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PatientID:
+                      type: string
+                      description: DICOM Tag (0010,0020) – De-identified patient ID
+                    StudyInstanceUID:
+                      type: string
+                      description: DICOM Tag (0020,000D) – Unique identifier for the study
+                    StudyDate:
+                      type: string
+                      format: date
+                      description: DICOM Tag (0008,0020) – Date the study was performed
+                    StudyDescription:
+                      type: string
+                      description: DICOM Tag (0008,1030) – Description of the study
+                    AccessionNumber:
+                      type: string
+                      description: DICOM Tag (0008,0050) – Identifier for the study requested
+                    StudyID:
+                      type: string
+                      description: DICOM Tag (0020,0010) – User or system-supplied ID for the study
+                    Collection:
+                      type: string
+                      description: Name of the image collection
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /NewPatientsInCollection:
+    get:
+      summary: Retrieve new patients in a collection since a specified date
+      description: |
+        Returns a list of patients added to a specified collection since a given date.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          description: Name of the collection
+          required: true
+          schema:
+            type: string
+        - name: Date
+          in: query
+          description: Date in YYYY/MM/DD format to filter new patients
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with patient data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PatientID:
+                      type: string
+                      description: DICOM Tag (0010,0020) – De-identified patient identifier.
+                    PatientName:
+                      type: string
+                      description: DICOM Tag (0010,0010) – De-identified patient name.
+                    PatientBirthDate:
+                      type: string
+                      format: date
+                      description: DICOM Tag (0010,0030) – De-identified birth date.
+                    PatientSex:
+                      type: string
+                      description: DICOM Tag (0010,0040) – Patient's sex.
+                    EthnicGroup:
+                      type: string
+                      description: DICOM Tag (0010,2160) – Ethnic group of the patient.
+                    Collection:
+                      type: string
+                      description: Label for the image collection.
+                    Phantom:
+                      type: string
+                      description: DICOM Tag (0010,0200) – Indicates if the subject is a quality control phantom.
+                    SpeciesCode:
+                      type: string
+                      description: DICOM Tag (0010,2202) – Taxonomic rank value of the patient.
+                    SpeciesDescription:
+                      type: string
+                      description: DICOM Tag (0010,2201) – Description of the species.
+                    Authorized:
+                      type: integer
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getModalityValues:
+    get:
+      summary: Retrieve available modality values
+      description: |
+        Returns a list of modality types (e.g., CT, MR, PET) available in the NBIA database.
+        Optional query parameters allow filtering by collection name and body part examined.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          description: Filter results by collection name
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExamined
+          in: query
+          description: Filter results by body part examined
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with modality values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getImageWithMD5Hash:
+    get:
+      summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID
+      description: |
+        Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          description: The unique identifier for the image series.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A ZIP file containing the DICOM images and their MD5 hash values.
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request – Missing or invalid parameters.
+        '401':
+          description: Unauthorized – Invalid or missing access token.
+        '404':
+          description: SeriesInstanceUID not found.
+        '500':
+          description: Internal server error.
+      security:
+        - bearerAuth: []
+  /getImage:
+    get:
+      summary: Download a ZIP of DICOM images for a given SeriesInstanceUID
+      description: |
+        Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID.
+        Optionally, you can specify whether to use new file naming conventions.
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          description: The unique identifier for the image series.
+          required: true
+          schema:
+            type: string
+        - name: NewFileNames
+          in: query
+          description: >
+            If set to 'Yes', the naming scheme changes from sequential numbers to 'acquisition number - instance number'.
+          required: false
+          schema:
+            type: string
+            enum: [Yes, No]
+      responses:
+        '200':
+          description: A ZIP file containing the DICOM images.
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request – Missing or invalid parameters.
+        '401':
+          description: Unauthorized – Invalid or missing access token.
+        '404':
+          description: SeriesInstanceUID not found.
+        '500':
+          description: Internal server error.
+      security:
+        - bearerAuth: []
+  /getContentsByName:
+    get:
+      summary: Retrieve content metadata by series UID
+      description: |
+        Returns metadata for a specific imaging series identified by its SeriesInstanceUID.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: name
+          in: query
+          description: SeriesInstanceUID of the imaging series
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with series metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  SeriesInstanceUID:
+                    type: string
+                    description: DICOM Tag (0020,000E) – Unique identifier for the series; de-identified.
+                  StudyInstanceUID:
+                    type: string
+                    description: DICOM Tag (0020,000D) – Unique identifier for the study; de-identified.
+                  Modality:
+                    type: string
+                    description: DICOM Tag (0008,0060) – Type of equipment that originally acquired the data.
+                  ProtocolName:
+                    type: string
+                    description: DICOM Tag (0018,1030) – Name of the protocol used; inspected and cleaned of any PHI.
+                  SeriesDate:
+                    type: string
+                    format: date
+                    description: DICOM Tag (0008,0021) – Date the series started.
+                  SeriesDescription:
+                    type: string
+                    description: DICOM Tag (0008,103E) – Description of the series; inspected and cleaned of any PHI.
+                  BodyPartExamined:
+                    type: string
+                    description: DICOM Tag (0018,0015) – Body part examined.
+                  SeriesNumber:
+                    type: integer
+                    description: DICOM Tag (0020,0011) – Number identifying the series.
+                  AnnotationsFlag:
+                    type: boolean
+                    description: Indicates if there are annotations for the collection.
+                  Collection:
+                    type: string
+                    description: Label used to name a set of images collected for a specific trial or reason.
+                  PatientID:
+                    type: string
+                    description: DICOM Tag (0010,0020) – Identifier for the patient; de-identified.
+                  Manufacturer:
+                    type: string
+                    description: DICOM Tag (0008,0070) – Manufacturer of the equipment.
+                  ManufacturerModelName:
+                    type: string
+                    description: DICOM Tag (0008,1090) – Model name of the equipment.
+                  SoftwareVersions:
+                    type: string
+                    description: DICOM Tag (0018,1020) – Software versions used.
+                  ImageCount:
+                    type: integer
+                    description: Number of images in the specified series.
+                  DateReleased:
+                    type: string
+                    format: date
+                    description: The date that TCIA published the series.
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '404':
+          description: Series not found
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /getCollectionValues:
+    get:
+      summary: Retrieve available collection values
+      description: Returns a list of available collection names in NBIA.
+      tags:
+        - Collections
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of collection names.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+        '401':
+          description: Unauthorized. Authentication token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized access.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An unexpected error occurred.
+  /getManufacturerValues:
+    get:
+      summary: Retrieve available manufacturer values
+      description: |
+        Returns a list of manufacturer names filtered by optional query parameters.
+        Requires authentication via a Bearer token.
+      parameters:
+        - name: Collection
+          in: query
+          description: Filter results by collection name
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExamined
+          in: query
+          description: Filter results by body part examined
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          description: Filter results by modality
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with manufacturer names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
+
+  /getBodyPartValues:
+    get:
+      summary: Retrieve available body part values
+      description: Returns a list of body part names filtered by optional query parameters.
+      parameters:
+        - name: Collection
+          in: query
+          description: Filter results by collection name
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          description: Filter results by modality
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    BodyPartExamined:
+                      type: string
+                      description: Name of the body part
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - bearerAuth: []
