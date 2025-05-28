@@ -11,12 +11,10 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-  - url: https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/
+  - url: https://nbia.cancerimagingarchive.net/nbia-api/services/v4/
     description: v4 Production server
   - url: https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/
     description: v4 Stage Server
-  - url: https://services.cancerimagingarchive.net/nbia-api/services/v1/
-    description: v1 Production Server
 components:
   securitySchemes:
     bearerAuth:
