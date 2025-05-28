@@ -37,34 +37,6 @@ security:
   - bearerAuth: []
 
 paths:
-  /getTextSearch:
-    post:
-      summary: Perform a text search
-      description: Performs a text search on the NBIA data repository.
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                textValue:
-                  type: string
-      responses:
-        '200':
-          description: Successful search results
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-        '401':
-          description: Unauthorized – Invalid or missing access token
-        '500':
-          description: Internal server error
-      security:
-        - bearerAuth: []
   /getThumbnail:
     post:
       summary: Retrieve a thumbnail JPG image for a DICOM object
@@ -1584,7 +1556,7 @@ paths:
       summary: Retrieve available collection values
       description: Returns a list of available collection names in NBIA.
       tags:
-        - Collections
+        - Collection Metadata
       security:
         - bearerAuth: []
       responses:
