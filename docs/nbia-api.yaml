@@ -20,7 +20,7 @@ tags:
     description: Endpoints for downloading DICOM images and thumbnails
   - name: Patient Metadata
     description: Patient-related data retrieval
-  - name: Studies Metadata
+  - name: Study Metadata
     description: Study-level metadata operations
   - name: Series Metadata
     description: Series-level metadata and operations
@@ -684,7 +684,7 @@ paths:
 
   /getManufacturerValuesAndCounts:
     get:
-      summary: Retrieve manufacturer values and their occurrence counts
+      summary: Retrieve manufacturer values and their occurrence counts.
       description: |
         Returns manufacturer names and the number of times each appears in the database,
         along with authorization information.
@@ -735,7 +735,7 @@ paths:
 
   /getModalityValuesAndCounts:
     get:
-      summary: Retrieve modality values and their occurrence counts
+      summary: Retrieve modality values and their occurrence counts.
       description: |
         Returns modality types along with how often each appears in the database,
         and whether the user is authorized to access the associated collection.
@@ -781,7 +781,7 @@ paths:
 
   /getCollectionValuesAndCounts:
     get:
-      summary: Retrieve collection names and patient counts
+      summary: Retrieve collection names and patient counts.
       description: |
         Returns all collection names, patient counts, and authorization status.
         Requires authentication via a Bearer token.
