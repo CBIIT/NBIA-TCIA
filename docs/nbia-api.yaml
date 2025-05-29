@@ -77,16 +77,16 @@ paths:
       tags:
         - Study Metadata
         - Series Metadata
-        requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                list:
-                  type: string
-                  description: Comma-separated seriesInstanceUIDs
+           requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              list:
+                type: string
+                description: Comma-separated seriesInstanceUIDs
       responses:
         '200':
           description: Successful response with study/series details
