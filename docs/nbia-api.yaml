@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.4
 info:
   title: NBIA API
   description: |
@@ -31,10 +31,8 @@ components:
           example: "TCGA-LUAD"
       required:
         - collection
-
 security:
   - bearerAuth: []
-
 paths:
   /getThumbnail:
     post:
@@ -70,7 +68,7 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-    /getStudyDrillDownWithSeriesIds:
+  /getStudyDrillDownWithSeriesIds:
     post:
       summary: Retrieve study and series data for given series UIDs
       description: Drill down into study and series information using series instance UIDs.
@@ -106,11 +104,11 @@ paths:
     get:
       summary: Get species values and their counts
       description: Returns the species values and counts.
+      tags:
+        - Species Metadata
       responses:
         '200':
           description: Successful species counts
-          tags:
-            - Species Metadata
           content:
             application/json:
               schema:
@@ -132,11 +130,11 @@ paths:
     get:
       summary: Retrieve species taxonomy
       description: Returns the current species taxonomy.
+      tags:
+        - Species Metadata
       responses:
         '200':
           description: Successful taxonomy list
-          tags:
-            - Species Metadata
           content:
             application/json:
               schema:
@@ -154,7 +152,7 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-    /getSimpleSearch:
+  /getSimpleSearch:
     post:
       summary: Perform a paged simple search using modality and body part
       description: Performs paged simple search with various criteria.
@@ -219,7 +217,6 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-
   /getMD5Hierarchy:
     post:
       summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
@@ -254,13 +251,12 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-
   /getMD5HashForImage:
     get:
       summary: Get MD5 hash for a single image
       description: Returns MD5 hash for the given SOPInstanceUID.
       tags:
-        - Utilties
+        - Utilities
       parameters:
         - name: SOPInstanceUid
           in: query
@@ -280,7 +276,6 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-
   /getManifestFromPatientStudySeries:
     post:
       summary: Generate a manifest from patient, study, and series UIDs
@@ -330,7 +325,6 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-
   /GetManifestForTextSearch:
     post:
       summary: Generate a manifest file using text search
