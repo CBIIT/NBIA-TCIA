@@ -1,4 +1,4 @@
-openapi: 3.0.4
+openapi: 3.1.0
 info:
   title: NBIA API
   description: |
@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 4.0.0
 servers:
   - url: https://nbia.cancerimagingarchive.net/nbia-api/services/v4/
     description: v4 Production server
@@ -39,7 +39,7 @@ paths:
     post:
       summary: Retrieve a thumbnail JPG image for a DICOM object
       description: Returns a JPG thumbnail image given a seriesUID and objectUID.
-       tags:
+      tags:
         - Image Downloads
       requestBody:
         required: true
@@ -108,7 +108,7 @@ paths:
       responses:
         '200':
           description: Successful species counts
-           tags:
+          tags:
         - Species Metadata
           content:
             application/json:
