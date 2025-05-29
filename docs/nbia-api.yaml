@@ -110,7 +110,7 @@ paths:
         '200':
           description: Successful species counts
           tags:
-        - Species Metadata
+            - Species Metadata
           content:
             application/json:
               schema:
@@ -136,7 +136,7 @@ paths:
         '200':
           description: Successful taxonomy list
           tags:
-        - Species Metadata
+            - Species Metadata
           content:
             application/json:
               schema:
@@ -159,7 +159,7 @@ paths:
       summary: Perform a paged simple search using modality and body part
       description: Performs paged simple search with various criteria.
        tags:
-        - Patient Metadata
+         - Patient Metadata
        requestBody:
         required: true
         content:
