@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 4.0.0
+  version: 1.0.0
 servers:
   - url: https://nbia.cancerimagingarchive.net/nbia-api/services/v4/
     description: v4 Production server
@@ -78,9 +78,9 @@ paths:
         - Study Metadata
         - Series Metadata
       requestBody:
-      required: true
-      content:
-        application/json:
+        required: true
+        content:
+         application/json:
           schema:
             type: object
             properties:
@@ -160,7 +160,7 @@ paths:
       description: Performs paged simple search with various criteria.
        tags:
         - Patient Metadata
-        requestBody:
+       requestBody:
         required: true
         content:
           application/json:
