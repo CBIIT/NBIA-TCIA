@@ -39,6 +39,8 @@ paths:
     post:
       summary: Retrieve a thumbnail JPG image for a DICOM object
       description: Returns a JPG thumbnail image given a seriesUID and objectUID.
+       tags:
+        - Image Downloads
       requestBody:
         required: true
         content:
@@ -71,7 +73,10 @@ paths:
     post:
       summary: Retrieve study and series data for given series UIDs
       description: Drill down into study and series information using series instance UIDs.
-      requestBody:
+       tags:
+        - Study Metadata
+        - Series Metadata
+        requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -103,6 +108,8 @@ paths:
       responses:
         '200':
           description: Successful species counts
+           tags:
+        - Species Metadata
           content:
             application/json:
               schema:
@@ -127,6 +134,8 @@ paths:
       responses:
         '200':
           description: Successful taxonomy list
+           tags:
+        - Species Metadata
           content:
             application/json:
               schema:
@@ -148,7 +157,9 @@ paths:
     post:
       summary: Perform a paged simple search using modality and body part
       description: Performs paged simple search with various criteria.
-      requestBody:
+       tags:
+        - Patient Metadata
+        requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -173,6 +184,8 @@ paths:
     post:
       summary: Check for commercial restrictions in a simple search
       description: Returns whether any results from the simple search have commercial restrictions.
+       tags:
+        - Patient Metadata
       requestBody:
         required: true
         content:
@@ -208,8 +221,10 @@ paths:
 
   /getMD5Hierarchy:
     post:
-      summary: Get MD5 hash hierarchy for specified collection, patient, study, or series
+      summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
       description: Returns MD5 hash hierarchy.
+       tags:
+        - Utilities
       requestBody:
         required: true
         content:
@@ -243,6 +258,8 @@ paths:
     get:
       summary: Get MD5 hash for a single image
       description: Returns MD5 hash for the given SOPInstanceUID.
+       tags:
+        - Utilties
       parameters:
         - name: SOPInstanceUid
           in: query
@@ -269,6 +286,10 @@ paths:
       description: |
         Returns a manifest file containing series for the specified patient, study, or series UIDs.
         Requires authentication via a Bearer token.
+       tags:
+        - Patient Metadata
+        - Study Metadata
+        - Series Metadata
       requestBody:
         required: true
         content:
@@ -315,6 +336,8 @@ paths:
       description: |
         Returns a manifest file of series resulting from a text search query. This replicates the functionality of the text search in the NBIA Radiology Portal GUI.
         Requires authentication via a Bearer token.
+       tags:
+        - Utilities
       requestBody:
         required: true
         content:
@@ -348,6 +371,8 @@ paths:
       description: |
         Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       requestBody:
         required: true
         content:
@@ -387,6 +412,8 @@ paths:
       description: |
         Creates a manifest file from the specified simple search parameters, which can be used with the NBIA Data Retriever.
         Requires authentication via a Bearer token.
+       tags:
+        - Image Downloads
       requestBody:
         required: true
         content:
@@ -440,6 +467,8 @@ paths:
       description: |
         Returns metadata (DICOM tags and values) for the specified SeriesInstanceUID.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: SeriesUID
           in: query
@@ -483,6 +512,8 @@ paths:
       description: |
         Creates a saved cart (list) containing the specified series. Each series is identified by its SeriesInstanceUID.
         The list name must be unique. Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       requestBody:
         required: true
         content:
@@ -537,6 +568,8 @@ paths:
         Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
         You may optionally filter by collection name.
         Requires authentication via a Bearer token.
+       tags:
+        - Collection Metadata
       parameters:
         - name: collectionName
           in: query
@@ -589,6 +622,8 @@ paths:
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
         Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to a SeriesInstanceUID.
         Requires authentication via a Bearer token.
+       tags:
+        - Collection Metadata
       parameters:
         - name: DOI
           in: query
@@ -644,6 +679,8 @@ paths:
         Returns manufacturer names and the number of times each appears in the database,
         along with authorization information.
         Requires authentication via a Bearer token.
+       tags:
+        - Utilities
       parameters:
         - name: Collection
           in: query
@@ -693,6 +730,8 @@ paths:
         Returns modality types along with how often each appears in the database,
         and whether the user is authorized to access the associated collection.
         Requires authentication via a Bearer token.
+       tags:
+        - Utilities
       parameters:
         - name: Collection
           in: query
@@ -736,6 +775,9 @@ paths:
       description: |
         Returns all collection names, patient counts, and authorization status.
         Requires authentication via a Bearer token.
+       tags:
+        - Collection Metadata
+        - Patient Metadata
       responses:
         '200':
           description: Successful response with collection counts and authorization
@@ -764,11 +806,13 @@ paths:
 
   /getBodyPartValuesAndCounts:
     get:
-      summary: Retrieve body part values and their occurrence counts
+      summary: Retrieve body part values and their occurrence counts.
       description: |
         Returns a list of body part names along with the number of times each appears in the database.
         Optionally filter by Collection or Modality.
         Requires authentication via a Bearer token.
+       tags:
+        - Patient Metadata
       parameters:
         - name: Collection
           in: query
@@ -808,10 +852,12 @@ paths:
 
   /getPatient:
     get:
-      summary: Retrieve patients in a collection
+      summary: Retrieve patients in a collection.
       description: |
         Returns a list of de-identified patients associated with the specified collection.
         Requires authentication via a Bearer token.
+       tags:
+        - Patient Metadata
       parameters:
         - name: Collection
           in: query
@@ -859,11 +905,14 @@ paths:
 
   /getPatientStudy:
     get:
-      summary: Retrieve studies for patients in a collection
+      summary: Retrieve studies for patients in a collection.
       description: |
         Returns metadata for studies associated with patients in the specified collection.
         You can optionally filter by PatientID.
         Requires authentication via a Bearer token.
+       tags:
+        - Study Metadata
+        - Patient Metadata
       parameters:
         - name: Collection
           in: query
@@ -929,10 +978,12 @@ paths:
 
   /getUpdatedSeries:
     get:
-      summary: Retrieve updated series in a collection since a specified date
+      summary: Retrieve updated series in a collection since a specified date.
       description: |
         Returns a list of SeriesInstanceUIDs for imaging series in a given collection that have been updated on or after the specified date.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: Collection
           in: query
@@ -974,6 +1025,8 @@ paths:
         Returns a list of SOPInstanceUIDs (unique image identifiers) associated with the specified SeriesInstanceUID.
         Useful for accessing or referencing individual DICOM images.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: SeriesInstanceUID
           in: query
@@ -1004,11 +1057,13 @@ paths:
 
   /getSeriesSize:
     get:
-      summary: Retrieve size and image count for a DICOM series
+      summary: Retrieve size and image count for a DICOM series.
       description: |
         Returns the number of images and total file size (in bytes) for the specified SeriesInstanceUID.
         Useful for estimating storage requirements before downloading.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: SeriesInstanceUID
           in: query
@@ -1048,6 +1103,8 @@ paths:
         Returns a list of metadata fields and values for the specified SeriesInstanceUID.
         This includes DICOM tags and related technical attributes.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: SeriesInstanceUID
           in: query
@@ -1084,29 +1141,31 @@ paths:
 
   /getSeries:
     get:
-      summary: Retrieve DICOM series metadata
+      summary: Retrieve DICOM series metadata.
       description: |
         Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID, Modality, and BodyPartExamined.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: Collection
           in: query
           required: false
           schema:
             type: string
-          description: Filter results by collection name
+          description: Filter results by collection name.
         - name: PatientID
           in: query
           required: false
           schema:
             type: string
-          description: Filter results by patient ID
+          description: Filter results by patient ID.
         - name: StudyInstanceUID
           in: query
           required: false
           schema:
             type: string
-          description: Filter results by StudyInstanceUID
+          description: Filter results by StudyInstanceUID.
         - name: Modality
           in: query
           required: false
@@ -1118,7 +1177,7 @@ paths:
           required: false
           schema:
             type: string
-          description: Filter results by body part examined
+          description: Filter results by body part examined.
       responses:
         '200':
           description: Successful response with series metadata
@@ -1178,6 +1237,8 @@ paths:
       description: |
         Returns a list of de-identified patients associated with a specific collection and imaging modality.
         Requires authentication via a Bearer token.
+       tags:
+        - Patient Metadata
       parameters:
         - name: Collection
           in: query
@@ -1231,10 +1292,12 @@ paths:
 
   /NewStudiesInPatientCollection:
     get:
-      summary: Retrieve new studies in a patient collection since a specified date
+      summary: Retrieve new studies in a patient collection since a specified date.
       description: |
         Returns a list of studies for patients that were added to the specified collection on or after the given date.
         Requires authentication via a Bearer token.
+       tags:
+        - Study Metadata
       parameters:
         - name: Collection
           in: query
@@ -1294,10 +1357,12 @@ paths:
 
   /NewPatientsInCollection:
     get:
-      summary: Retrieve new patients in a collection since a specified date
+      summary: Retrieve new patients in a collection since a specified date.
       description: |
         Returns a list of patients added to a specified collection since a given date.
         Requires authentication via a Bearer token.
+       tags:
+        - Patient Metadata
       parameters:
         - name: Collection
           in: query
@@ -1367,6 +1432,8 @@ paths:
         Returns a list of modality types (e.g., CT, MR, PET) available in the NBIA database.
         Optional query parameters allow filtering by collection name and body part examined.
         Requires authentication via a Bearer token.
+       tags:
+        - Utilities
       parameters:
         - name: Collection
           in: query
@@ -1404,6 +1471,8 @@ paths:
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
         Requires authentication via a Bearer token.
+       tags:
+        - Image Downloads
       parameters:
         - name: SeriesInstanceUID
           in: query
@@ -1435,6 +1504,8 @@ paths:
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID.
         Optionally, you can specify whether to use new file naming conventions.
+       tags:
+        - Image Downloads
       parameters:
         - name: SeriesInstanceUID
           in: query
@@ -1474,6 +1545,8 @@ paths:
       description: |
         Returns metadata for a specific imaging series identified by its SeriesInstanceUID.
         Requires authentication via a Bearer token.
+       tags:
+        - Series Metadata
       parameters:
         - name: name
           in: query
@@ -1592,6 +1665,8 @@ paths:
       description: |
         Returns a list of manufacturer names filtered by optional query parameters.
         Requires authentication via a Bearer token.
+       tags:
+        - Utilities
       parameters:
         - name: Collection
           in: query
@@ -1633,6 +1708,8 @@ paths:
     get:
       summary: Retrieve available body part values
       description: Returns a list of body part names filtered by optional query parameters.
+       tags:
+        - Utilities
       parameters:
         - name: Collection
           in: query
