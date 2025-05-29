@@ -154,13 +154,13 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-  /getSimpleSearch:
+    /getSimpleSearch:
     post:
       summary: Perform a paged simple search using modality and body part
       description: Performs paged simple search with various criteria.
-       tags:
-         - Patient Metadata
-       requestBody:
+      tags:
+        - Patient Metadata
+      requestBody:
         required: true
         content:
           application/json:
