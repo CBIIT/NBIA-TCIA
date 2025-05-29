@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: NBIA API
   description: |
@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 4.0.0
 servers:
   - url: https://nbia.cancerimagingarchive.net/nbia-api/services/v4/
     description: v4 Production server
@@ -70,7 +70,7 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-  /getStudyDrillDownWithSeriesIds:
+    /getStudyDrillDownWithSeriesIds:
     post:
       summary: Retrieve study and series data for given series UIDs
       description: Drill down into study and series information using series instance UIDs.
@@ -80,13 +80,13 @@ paths:
       requestBody:
         required: true
         content:
-         application/json:
-          schema:
-            type: object
-            properties:
-              list:
-                type: string
-                description: Comma-separated seriesInstanceUIDs
+          application/json:
+            schema:
+              type: object
+              properties:
+                list:
+                  type: string
+                  description: Comma-separated seriesInstanceUIDs
       responses:
         '200':
           description: Successful response with study/series details
