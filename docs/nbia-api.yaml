@@ -33,6 +33,21 @@ components:
         - collection
 security:
   - bearerAuth: []
+tags:
+  - name: Image Downloads
+    description: Endpoints for downloading DICOM images and thumbnails
+  - name: Patient Metadata
+    description: Patient-related data retrieval
+  - name: Studies Metadata
+    description: Study-level metadata operations
+  - name: Series Metadata
+    description: Series-level metadata and operations
+  - name: Collection Metadata
+    description: Collection information and descriptions
+  - name: Species Metadata
+    description: Species taxonomy and related data
+  - name: Utilities
+    description: Helper endpoints for values, counts, and validation
 paths:
   /getThumbnail:
     post:
@@ -991,7 +1006,7 @@ paths:
           required: true
           schema:
             type: string
-          description: Date in YYYY/MM/DD format. Returns series updated on or after this date.
+          description: Date in MM/DD/YYYY format. Returns series updated on or after this date.
       responses:
         '200':
           description: Successful response with updated SeriesInstanceUIDs
@@ -1302,7 +1317,7 @@ paths:
             type: string
         - name: Date
           in: query
-          description: Date in YYYY/MM/DD format to filter new studies
+          description: Date in MM/DD/YYYY format to filter new studies
           required: true
           schema:
             type: string
@@ -1367,7 +1382,7 @@ paths:
             type: string
         - name: Date
           in: query
-          description: Date in YYYY/MM/DD format to filter new patients
+          description: Date in MM/DD/YYYY format to filter new patients
           required: true
           schema:
             type: string
