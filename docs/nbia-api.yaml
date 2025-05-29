@@ -48,21 +48,6 @@ components:
         - collection
 security:
   - bearerAuth: []
-tags:
-  - name: Image Downloads
-    description: Endpoints for downloading DICOM images and thumbnails
-  - name: Patient Metadata
-    description: Patient-related data retrieval
-  - name: Studies Metadata
-    description: Study-level metadata operations
-  - name: Series Metadata
-    description: Series-level metadata and operations
-  - name: Collection Metadata
-    description: Collection information and descriptions
-  - name: Species Metadata
-    description: Species taxonomy and related data
-  - name: Utilities
-    description: Helper endpoints for values, counts, and validation
 paths:
   /getThumbnail:
     post:
