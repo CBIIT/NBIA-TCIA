@@ -26,8 +26,6 @@ tags:
     description: Study-level metadata operations
   - name: Series Metadata
     description: Series-level metadata and operations
-  - name: Species Metadata
-    description: Species taxonomy and related data
   - name: Utilities
     description: Helper endpoints for values, counts, and validation
 components:
