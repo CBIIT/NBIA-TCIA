@@ -18,14 +18,14 @@ servers:
 tags:
   - name: Image Downloads
     description: Endpoints for downloading DICOM images and thumbnails
+    - name: Collection Metadata
+    description: Collection information and descriptions
   - name: Patient Metadata
     description: Patient-related data retrieval
   - name: Study Metadata
     description: Study-level metadata operations
   - name: Series Metadata
     description: Series-level metadata and operations
-  - name: Collection Metadata
-    description: Collection information and descriptions
   - name: Species Metadata
     description: Species taxonomy and related data
   - name: Utilities
@@ -88,8 +88,7 @@ paths:
       summary: Retrieve study and series data for given series UIDs
       description: Drill down into study and series information using series instance UIDs.
       tags:
-        - Study Metadata
-        - Series Metadata
+        - Utilities
       requestBody:
         required: true
         content:
@@ -120,7 +119,7 @@ paths:
       summary: Get species values and their counts
       description: Returns the species values and counts.
       tags:
-        - Species Metadata
+        - Patient Metadata
       responses:
         '200':
           description: Successful species counts
@@ -146,7 +145,7 @@ paths:
       summary: Retrieve species taxonomy
       description: Returns the current species taxonomy.
       tags:
-        - Species Metadata
+        - Utilities
       responses:
         '200':
           description: Successful taxonomy list
@@ -237,7 +236,7 @@ paths:
       summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
       description: Returns MD5 hash hierarchy.
       tags:
-        - Utilities
+        - Patient Metadata
       requestBody:
         required: true
         content:
@@ -271,7 +270,7 @@ paths:
       summary: Get MD5 hash for a single image
       description: Returns MD5 hash for the given SOPInstanceUID.
       tags:
-        - Utilities
+        - Patient Metadata
       parameters:
         - name: SOPInstanceUid
           in: query
@@ -328,41 +327,6 @@ paths:
       responses:
         '200':
           description: Manifest text file generated successfully
-          content:
-            text/plain:
-              schema:
-                type: string
-        '400':
-          description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
-        '500':
-          description: Internal server error
-      security:
-        - bearerAuth: []
-  /GetManifestForTextSearch:
-    post:
-      summary: Generate a manifest file using text search
-      description: |
-        Returns a manifest file of series resulting from a text search query. This replicates the functionality of the text search in the NBIA Radiology Portal GUI.
-        Requires authentication via a Bearer token.
-      tags:
-        - Utilities
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                textValue:
-                  type: string
-                  description: The text search value to query for
-              required:
-                - textValue
-      responses:
-        '200':
-          description: Successfully generated text search manifest
           content:
             text/plain:
               schema:
@@ -523,7 +487,7 @@ paths:
         Creates a saved cart (list) containing the specified series. Each series is identified by its SeriesInstanceUID.
         The list name must be unique. Requires authentication via a Bearer token.
       tags:
-        - Series Metadata
+        - Data Collaboration
       requestBody:
         required: true
         content:
@@ -787,7 +751,6 @@ paths:
         Requires authentication via a Bearer token.
       tags:
         - Collection Metadata
-        - Patient Metadata
       responses:
         '200':
           description: Successful response with collection counts and authorization
@@ -921,7 +884,6 @@ paths:
         You can optionally filter by PatientID.
         Requires authentication via a Bearer token.
       tags:
-        - Study Metadata
         - Patient Metadata
       parameters:
         - name: Collection
@@ -1474,40 +1436,6 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-
-  /getImageWithMD5Hash:
-    get:
-      summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID
-      description: |
-        Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
-        Requires authentication via a Bearer token.
-      tags:
-        - Image Downloads
-      parameters:
-        - name: SeriesInstanceUID
-          in: query
-          description: The unique identifier for the image series.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A ZIP file containing the DICOM images and their MD5 hash values.
-          content:
-            application/zip:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Bad request – Missing or invalid parameters.
-        '401':
-          description: Unauthorized – Invalid or missing access token.
-        '404':
-          description: SeriesInstanceUID not found.
-        '500':
-          description: Internal server error.
-      security:
-        - bearerAuth: []
   /getImage:
     get:
       summary: Download a ZIP of DICOM images for a given SeriesInstanceUID
@@ -1534,6 +1462,39 @@ paths:
       responses:
         '200':
           description: A ZIP file containing the DICOM images.
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request – Missing or invalid parameters.
+        '401':
+          description: Unauthorized – Invalid or missing access token.
+        '404':
+          description: SeriesInstanceUID not found.
+        '500':
+          description: Internal server error.
+      security:
+        - bearerAuth: []
+  /getImageWithMD5Hash:
+    get:
+      summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID
+      description: |
+        Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
+        Requires authentication via a Bearer token.
+      tags:
+        - Image Downloads
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          description: The unique identifier for the image series.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A ZIP file containing the DICOM images and their MD5 hash values.
           content:
             application/zip:
               schema:
