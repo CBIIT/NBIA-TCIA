@@ -18,7 +18,7 @@ servers:
 tags:
   - name: Image Downloads
     description: Endpoints for downloading DICOM images and thumbnails
-    - name: Collection Metadata
+  - name: Collection Metadata
     description: Collection information and descriptions
   - name: Patient Metadata
     description: Patient-related data retrieval
