@@ -47,38 +47,158 @@ components:
 security:
   - bearerAuth: []
 paths:
-  /getThumbnail:
-    post:
-      summary: Retrieve a thumbnail JPG image for a DICOM object
-      description: Returns a JPG thumbnail image given a seriesUID and objectUID.
+  
+  /getDicomTagsByImageID:
+    get:
+      summary: Retrieve DICOM tags for a specific image
+      description: |
+        Returns all available DICOM tags for the specified image using its ImageID.
+        Requires authentication via a Bearer token.
       tags:
         - Image Downloads
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                seriesUID:
-                  type: string
-                objectUID:
-                  type: string
-              required:
-                - seriesUID
-                - objectUID
+      parameters:
+        - name: ImageID
+          in: query
+          description: Unique identifier of the image for which to retrieve DICOM tags.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Successful thumbnail image
+          description: Successful response with DICOM tag data.
           content:
-            image/jpeg:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+            application/xml:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+            text/csv:
+              schema:
+                type: string
+                description: CSV-formatted DICOM tag data.
+        '400':
+          description: Bad request – Missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing ImageID or invalid parameter.
+        '401':
+          description: Unauthorized – Invalid or missing access token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Access token required.
+        '404':
+          description: Image not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Image not found for the given ID.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An unexpected error occurred.
+      security:
+        - bearerAuth: []
+  /getDCMImage:
+    get:
+      summary: Download DICOM images for a given SeriesInstanceUID
+      description: |
+        Retrieves a ZIP archive of DICOM images associated with the specified SeriesInstanceUID.
+        Optional parameters allow inclusion of annotations and MD5 hash verification.
+        Requires authentication via a Bearer token.
+      tags:
+        - Image Downloads
+      parameters:
+        - name: SeriesInstanceUID
+          in: query
+          description: Unique identifier for the DICOM series to download.
+          required: true
+          schema:
+            type: string
+        - name: IncludeAnnotation
+          in: query
+          description: Set to true to include annotations in the ZIP file.
+          required: false
+          schema:
+            type: boolean
+        - name: MD5Verification
+          in: query
+          description: Set to true to include MD5 hash values for each image.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A ZIP archive containing DICOM images (and optionally annotations and MD5 hashes).
+          content:
+            application/zip:
               schema:
                 type: string
                 format: binary
+        '400':
+          description: Bad request – Missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing SeriesInstanceUID or invalid parameter format.
         '401':
-          description: Unauthorized – Invalid or missing access token
+          description: Unauthorized – Invalid or missing access token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Access token required.
+        '404':
+          description: SeriesInstanceUID not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Series not found for the given UID.
         '500':
-          description: Internal server error
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An unexpected error occurred.
       security:
         - bearerAuth: []
   /getStudyDrillDownWithSeriesIds:
@@ -170,6 +290,19 @@ paths:
       description: Performs paged simple search with various criteria.
       tags:
         - Patient Metadata
+      parameters:
+      - name: criteriaType0
+        in: query
+        description: The type of criteria to search for (e.g., CollectionCriteria)
+        required: true
+        schema:
+          type: string
+      - name: value0
+        in: query
+        description: The value associated with the criteria type (e.g., 4D-Lung)
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -230,26 +363,36 @@ paths:
       security:
         - bearerAuth: []
   /getMD5Hierarchy:
-    post:
+    get:
       summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
       description: Returns MD5 hash hierarchy.
       tags:
         - Patient Metadata
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                Collection:
-                  type: string
-                PatientID:
-                  type: string
-                StudyInstanceUID:
-                  type: string
-                SeriesInstanceUID:
-                  type: string
+      parameters:
+        - name: Collection
+          in: query
+          description: Name of the collection.
+          required: false
+          schema:
+            type: string
+        - name: PatientID
+          in: query
+          description: DICOM Tag (0010,0020) – De-identified patient ID.
+          required: false
+          schema:
+            type: string
+        - name: StudyInstanceUID
+          in: query
+          description: DICOM Tag (0020,000D) – Unique identifier for the study.
+          required: false
+          schema:
+            type: string
+        - name: SeriesInstanceUID
+          in: query
+          description: DICOM Tag (0020,000E) – Unique identifier for the series.
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful response with MD5 hash
@@ -259,10 +402,25 @@ paths:
                 type: string
         '401':
           description: Unauthorized – Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
       security:
         - bearerAuth: []
+
   /getMD5HashForImage:
     get:
       summary: Get MD5 hash for a single image
@@ -289,8 +447,8 @@ paths:
       security:
         - bearerAuth: []
   /getManifestFromPatientStudySeries:
-    post:
-      summary: Generate a manifest from patient, study, and series UIDs
+    get:
+      summary: Generate a manifest from patient, study, and series UIDs.
       description: |
         Returns a manifest file containing series for the specified patient, study, or series UIDs.
         Requires authentication via a Bearer token.
@@ -298,86 +456,151 @@ paths:
         - Patient Metadata
         - Study Metadata
         - Series Metadata
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                patientIDs:
-                  type: string
-                  description: Patient IDs (comma-separated)
-                studyUIDs:
-                  type: string
-                  description: StudyInstanceUIDs (optional)
-                seriesUIDs:
-                  type: string
-                  description: SeriesInstanceUIDs (optional)
-                anyOrAll:
-                  type: string
-                  description: Any or All criteria (optional)
-                includeAnnotation:
-                  type: string
-                  description: Whether to include annotations (true/false)
-              required:
-                - patientIDs
+      parameters:
+        - name: patientIDs
+          in: query
+          description: Comma-separated patient IDs.
+          required: true
+          schema:
+            type: string
+        - name: studyUIDs
+          in: query
+          description: Comma-separated studyInstanceUIDs (optional).
+          required: false
+          schema:
+            type: string
+        - name: seriesUIDs
+          in: query
+          description: Comma-separated seriesInstanceUIDs (optional).
+          required: false
+          schema:
+            type: string
+        - name: anyOrAll
+          in: query
+          description: Criteria filter (optional).
+          required: false
+          schema:
+            type: string
+        - name: includeAnnotation
+          in: query
+          description: Whether to include annotations (true/false).
+          required: false
+          schema:
+            type: string
       responses:
         '200':
-          description: Manifest text file generated successfully
+          description: Manifest text file generated successfully.
           content:
             text/plain:
               schema:
                 type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '400':
-          description: Bad request – Missing or invalid parameters
+          description: Bad request – Missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
         '401':
-          description: Unauthorized – Invalid or missing access token
+          description: Unauthorized – Invalid or missing access token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
         '500':
-          description: Internal server error
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
       security:
         - bearerAuth: []
   /getManifestText:
-    post:
-      summary: Generate a manifest file for a list of series
+    get:
+      summary: Generate a manifest file for a list of series.
       description: |
         Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
         Requires authentication via a Bearer token.
       tags:
         - Series Metadata
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                list:
-                  type: array
-                  items:
-                    type: string
-                  description: A repeatable parameter of series UIDs for each series you want to download
-                includeAnnotation:
-                  type: boolean
-                  description: If true, annotations are included in the manifest
-              required:
-                - list
+      parameters:
+        - name: list
+          in: query
+          description: Comma-separated list of series UIDs for each series you want to download.
+          required: true
+          schema:
+            type: string
+        - name: includeAnnotation
+          in: query
+          description: If true, annotations are included in the manifest.
+          required: false
+          schema:
+            type: boolean
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv).
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
       responses:
         '200':
-          description: Successfully generated manifest text
+          description: Successfully generated manifest text.
           content:
             text/plain:
               schema:
                 type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '400':
-          description: Bad request – Missing or invalid parameters
+          description: Bad request – Missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
         '401':
-          description: Unauthorized – Invalid or missing access token
+          description: Unauthorized – Invalid or missing access token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
         '500':
-          description: Internal server error
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
       security:
         - bearerAuth: []
-
+  
   /getManifestForSimpleSearch:
     post:
       summary: Generate a manifest file from simple search criteria
@@ -386,6 +609,31 @@ paths:
         Requires authentication via a Bearer token.
       tags:
         - Image Downloads
+      parameters:
+        - name: criteriaType0
+          in: query
+          description: The type of criteria to search for (e.g., CollectionCriteria)
+          required: true
+          schema:
+            type: string
+        - name: value0
+          in: query
+          description: The value associated with the criteria type (e.g., 4D-Lung)
+          required: true
+          schema:
+            type: string
+        - name: Collection
+          in: query
+          description: Filter results by collection name
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          description: Filter results by modality
+          required: false
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -418,6 +666,60 @@ paths:
                 - sortDirection
                 - start
                 - size
+          application/xml:
+            schema:
+              type: object
+              properties:
+                criteriaType0:
+                  type: string
+                  description: The type of criteria to search for (e.g., ThirdPartyAnalysis)
+                value0:
+                  type: string
+                  description: The value associated with the criteria type
+                sortField:
+                  type: string
+                  description: Field to sort by (e.g., subject)
+                sortDirection:
+                  type: string
+                  description: Sort order (ascending or descending)
+                start:
+                  type: integer
+                  description: Index of the first result to return
+                size:
+                  type: integer
+                  description: Maximum number of results to return
+              required:
+                - criteriaType0
+                - value0
+                - sortField
+                - sortDirection
+                - start
+                - size
+              xml:
+                name: SimpleSearchRequest
+          text/csv:
+            schema:
+              type: object
+              properties:
+                criteriaType0:
+                  type: string
+                value0:
+                  type: string
+                sortField:
+                  type: string
+                sortDirection:
+                  type: string
+                start:
+                  type: integer
+                size:
+                  type: integer
+              required:
+                - criteriaType0
+                - value0
+                - sortField
+                - sortDirection
+                - start
+                - size
       responses:
         '200':
           description: Manifest file generated successfully
@@ -427,10 +729,34 @@ paths:
                 type: string
         '400':
           description: Bad request – Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing or invalid input.
         '401':
           description: Unauthorized – Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized access.
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An unexpected error occurred.
       security:
         - bearerAuth: []
   /getDicomTags:
@@ -830,6 +1156,20 @@ paths:
       tags:
         - Patient Metadata
       parameters:
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv)
+          required: false
+          schema: 
+            type: string
+            enum: [json, xml, csv]
+            default: json
+        - name: PatientID
+          in: query
+          description: De‑identified PatientID (optional – restricts results to a single patient)
+          required: false
+          schema:
+            type: string
         - name: Collection
           in: query
           required: true
@@ -884,6 +1224,14 @@ paths:
       tags:
         - Patient Metadata
       parameters:
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv)
+          required: false
+          schema: 
+            type: string
+            enum: [json, xml, csv]
+            default: json
         - name: Collection
           in: query
           description: Name of the image collection
@@ -961,12 +1309,20 @@ paths:
           schema:
             type: string
           description: Name of the image collection
-        - name: Date
+        - name: fromDate
           in: query
           required: true
           schema:
             type: string
           description: Date in MM/DD/YYYY format. Returns series updated on or after this date.
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          description: Desired response format (json, xml, or csv)
       responses:
         '200':
           description: Successful response with updated SeriesInstanceUIDs
@@ -1041,6 +1397,14 @@ paths:
           schema:
             type: string
           description: DICOM Tag (0020,000E) – Unique identifier for the image series
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          description: Desired output format.
       responses:
         '200':
           description: Successful response with image count and total size
@@ -1076,12 +1440,12 @@ paths:
       tags:
         - Series Metadata
       parameters:
-        - name: SeriesInstanceUID
+        - name: list
           in: query
           required: true
           schema:
             type: string
-          description: DICOM Tag (0020,000E) – Unique identifier for the image series
+          description: Comma-separated list of SeriesInstanceUIDs (DICOM Tag 0020,000E)
       responses:
         '200':
           description: Successful response with series metadata key-value pairs
@@ -1108,46 +1472,72 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-
   /getSeries:
     get:
       summary: Retrieve DICOM series metadata.
       description: |
-        Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID, Modality, and BodyPartExamined.
+        Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID, 
+        Modality, BodyPartExamined, Manufacturer, ManufacturerModelName, and SeriesInstanceUID.
         Requires authentication via a Bearer token.
       tags:
         - Series Metadata
       parameters:
-        - name: Collection
+        - name: SeriesInstanceUID
           in: query
           required: false
           schema:
             type: string
-          description: Filter results by collection name.
-        - name: PatientID
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter results by patient ID.
+          description: Filter results by SeriesInstanceUID.
         - name: StudyInstanceUID
           in: query
           required: false
           schema:
             type: string
           description: Filter results by StudyInstanceUID.
-        - name: Modality
+        - name: format
           in: query
           required: false
           schema:
             type: string
-          description: Filter results by imaging modality (e.g., CT, MR)
+            enum: [json, xml, csv]
+            default: json
+          description: Desired output format.
+        - name: Collection
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by collection name.
+        - name: ManufacturerModelName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by ManufacturerModelName.
+        - name: PatientID
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by patient ID.
+        - name: Manufacturer
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by manufacturer.
         - name: BodyPartExamined
           in: query
           required: false
           schema:
             type: string
           description: Filter results by body part examined.
+        - name: Modality
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter results by imaging modality (e.g., CT, MR).
       responses:
         '200':
           description: Successful response with series metadata
@@ -1210,6 +1600,14 @@ paths:
       tags:
         - Patient Metadata
       parameters:
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv)
+          required: false
+          schema: 
+            type: string
+            enum: [json, xml, csv]
+            default: json
         - name: Collection
           in: query
           description: Name of the image collection
@@ -1269,6 +1667,20 @@ paths:
       tags:
         - Study Metadata
       parameters:
+        - name: PatientID
+          in: query
+          description: De‑identified PatientID (optional – restricts results to a single patient)
+          required: false
+          schema:
+            type: string
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv)
+          required: false
+          schema: 
+            type: string
+            enum: [json, xml, csv]
+            default: json
         - name: Collection
           in: query
           description: Name of the image collection
@@ -1334,6 +1746,14 @@ paths:
       tags:
         - Patient Metadata
       parameters:
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv)
+          required: false
+          schema: 
+            type: string
+            enum: [json, xml, csv]
+            default: json
         - name: Collection
           in: query
           description: Name of the collection
@@ -1417,6 +1837,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv).
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
       responses:
         '200':
           description: Successful response with modality values
@@ -1692,6 +2120,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv).
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
       responses:
         '200':
           description: Successful response
