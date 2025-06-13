@@ -28,12 +28,18 @@ tags:
     description: Series-level metadata and operations
   - name: Utilities
     description: Helper endpoints for values, counts, and validation
+
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: UUID
+    oauth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://keycloak-stg.dbmi.cloud/auth/realms/TCIA/protocol/openid-connect/token
+          refreshUrl: https://keycloak-stg.dbmi.cloud/auth/realms/TCIA/protocol/openid-connect/token
+          scopes:
+            openid: ''
+
   schemas:
     Collection:
       type: object
@@ -44,10 +50,8 @@ components:
           example: "TCGA-LUAD"
       required:
         - collection
-security:
-  - bearerAuth: []
 paths:
-  
+
   /getDicomTagsByImageID:
     get:
       summary: Retrieve DICOM tags for a specific image
@@ -122,7 +126,7 @@ paths:
                     type: string
                     example: An unexpected error occurred.
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getDCMImage:
     get:
       summary: Download DICOM images for a given SeriesInstanceUID
@@ -200,7 +204,7 @@ paths:
                     type: string
                     example: An unexpected error occurred.
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getStudyDrillDownWithSeriesIds:
     post:
       summary: Retrieve study and series data for given series UIDs
@@ -231,7 +235,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getSpeciesValuesAndCounts:
     get:
       summary: Get species values and their counts
@@ -257,7 +261,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getSpeciesTax:
     get:
       summary: Retrieve species taxonomy
@@ -283,7 +287,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getSimpleSearch:
     post:
       summary: Perform a paged simple search using modality and body part
@@ -323,7 +327,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getRestrictionsForSimpleSearch:
     post:
       summary: Check for commercial restrictions in a simple search
@@ -361,7 +365,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getMD5Hierarchy:
     get:
       summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
@@ -419,7 +423,7 @@ paths:
                   error:
                     type: string
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getMD5HashForImage:
     get:
@@ -445,7 +449,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getManifestFromPatientStudySeries:
     get:
       summary: Generate a manifest from patient, study, and series UIDs.
@@ -528,7 +532,7 @@ paths:
                   error:
                     type: string
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getManifestText:
     get:
       summary: Generate a manifest file for a list of series.
@@ -599,8 +603,8 @@ paths:
                   error:
                     type: string
       security:
-        - bearerAuth: []
-  
+        - oauth2: []
+
   /getManifestForSimpleSearch:
     post:
       summary: Generate a manifest file from simple search criteria
@@ -758,7 +762,7 @@ paths:
                     type: string
                     example: An unexpected error occurred.
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getDicomTags:
     get:
       summary: Retrieve DICOM metadata for a specific series
@@ -802,7 +806,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /createSharedList:
     post:
@@ -858,7 +862,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getCollectionDescriptions:
     get:
       summary: Retrieve detailed metadata for NBIA collections
@@ -912,7 +916,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getCollectionOrSeriesForDOI:
     get:
       summary: Resolve a DOI to a collection or series
@@ -968,7 +972,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getManufacturerValuesAndCounts:
     get:
@@ -1019,7 +1023,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getModalityValuesAndCounts:
     get:
@@ -1065,7 +1069,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getCollectionValuesAndCounts:
     get:
@@ -1099,7 +1103,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getBodyPartValuesAndCounts:
     get:
@@ -1145,7 +1149,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getPatient:
     get:
@@ -1160,7 +1164,7 @@ paths:
           in: query
           description: Desired response format (json, xml, csv)
           required: false
-          schema: 
+          schema:
             type: string
             enum: [json, xml, csv]
             default: json
@@ -1212,7 +1216,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getPatientStudy:
     get:
@@ -1228,7 +1232,7 @@ paths:
           in: query
           description: Desired response format (json, xml, csv)
           required: false
-          schema: 
+          schema:
             type: string
             enum: [json, xml, csv]
             default: json
@@ -1292,7 +1296,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getUpdatedSeries:
     get:
@@ -1342,7 +1346,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getSOPInstanceUIDs:
     get:
@@ -1379,7 +1383,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getSeriesSize:
     get:
@@ -1428,7 +1432,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getSeriesMetaData:
     get:
@@ -1471,12 +1475,12 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getSeries:
     get:
       summary: Retrieve DICOM series metadata.
       description: |
-        Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID, 
+        Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID,
         Modality, BodyPartExamined, Manufacturer, ManufacturerModelName, and SeriesInstanceUID.
         Requires authentication via a Bearer token.
       tags:
@@ -1589,7 +1593,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getPatientByCollectionAndModality:
     get:
@@ -1604,7 +1608,7 @@ paths:
           in: query
           description: Desired response format (json, xml, csv)
           required: false
-          schema: 
+          schema:
             type: string
             enum: [json, xml, csv]
             default: json
@@ -1656,7 +1660,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /NewStudiesInPatientCollection:
     get:
@@ -1677,7 +1681,7 @@ paths:
           in: query
           description: Desired response format (json, xml, csv)
           required: false
-          schema: 
+          schema:
             type: string
             enum: [json, xml, csv]
             default: json
@@ -1735,7 +1739,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /NewPatientsInCollection:
     get:
@@ -1750,7 +1754,7 @@ paths:
           in: query
           description: Desired response format (json, xml, csv)
           required: false
-          schema: 
+          schema:
             type: string
             enum: [json, xml, csv]
             default: json
@@ -1814,7 +1818,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getModalityValues:
     get:
       summary: Retrieve available modality values
@@ -1861,7 +1865,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getImage:
     get:
       summary: Download a ZIP of DICOM images for a given SeriesInstanceUID
@@ -1902,7 +1906,7 @@ paths:
         '500':
           description: Internal server error.
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getImageWithMD5Hash:
     get:
       summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID
@@ -1935,7 +1939,7 @@ paths:
         '500':
           description: Internal server error.
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getContentsByName:
     get:
       summary: Retrieve content metadata by series UID
@@ -2018,7 +2022,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
   /getCollectionValues:
     get:
       summary: Retrieve available collection values
@@ -2026,7 +2030,7 @@ paths:
       tags:
         - Collection Metadata
       security:
-        - bearerAuth: []
+        - oauth2: []
       responses:
         '200':
           description: A list of collection names.
@@ -2099,7 +2103,7 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
 
   /getBodyPartValues:
     get:
@@ -2146,4 +2150,4 @@ paths:
         '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+        - oauth2: []
