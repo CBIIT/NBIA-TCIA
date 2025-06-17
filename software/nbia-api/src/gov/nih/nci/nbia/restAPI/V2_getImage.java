@@ -147,7 +147,6 @@ public class V2_getImage extends getData {
 						System.out.println("size <= 0; not recording");
 					}	
 				}
-				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
 			}
 		}; } else {
 		    stream = new StreamingOutput() {
@@ -217,7 +216,6 @@ public class V2_getImage extends getData {
 						System.out.println("size <= 0; not recording");
 					}	
 				}
-				recodeDownload(seriesInstanceUid, size, "v2API", userName);	
 			}
 		};
 		}
