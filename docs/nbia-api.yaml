@@ -51,7 +51,6 @@ components:
       required:
         - collection
 paths:
-
   /getDicomTagsByImageID:
     get:
       summary: Retrieve DICOM tags for a specific image
@@ -295,18 +294,136 @@ paths:
       tags:
         - Patient Metadata
       parameters:
-      - name: criteriaType0
-        in: query
-        description: The type of criteria to search for (e.g., CollectionCriteria)
-        required: true
-        schema:
-          type: string
-      - name: value0
-        in: query
-        description: The value associated with the criteria type (e.g., 4D-Lung)
-        required: true
-        schema:
-          type: string
+        - name: AuthorizationCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ImageModalityCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: CollectionCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SpeciesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PatientSexCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: AnatomicalSiteCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExaminedCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ManufacturerCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ModelCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SoftwareVersionCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DateRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PatientAgeRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DescriptionCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PixelSpacingRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SliceThicknessRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PatientCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: StudyCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SeriesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: MinNumberOfStudiesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: MinNumberOfStudyDatesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ModalityAndedSearchCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PhantomCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ThirdPartyAnalysisCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DataLicenseCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: TimePointCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DynamicSearchCriteria
+          in: query
+          required: false
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -379,7 +496,7 @@ paths:
           required: false
           schema:
             type: string
-        - name: PatientID
+        - name: PatientId
           in: query
           description: DICOM Tag (0010,0020) – De-identified patient ID.
           required: false
@@ -432,7 +549,7 @@ paths:
       tags:
         - Patient Metadata
       parameters:
-        - name: SOPInstanceUid
+        - name: SOPInstanceUID
           in: query
           required: true
           schema:
@@ -458,8 +575,6 @@ paths:
         Requires authentication via a Bearer token.
       tags:
         - Patient Metadata
-        - Study Metadata
-        - Series Metadata
       parameters:
         - name: patientIDs
           in: query
@@ -614,27 +729,133 @@ paths:
       tags:
         - Image Downloads
       parameters:
-        - name: criteriaType0
+        - name: AuthorizationCriteria
           in: query
-          description: The type of criteria to search for (e.g., CollectionCriteria)
-          required: true
-          schema:
-            type: string
-        - name: value0
-          in: query
-          description: The value associated with the criteria type (e.g., 4D-Lung)
-          required: true
-          schema:
-            type: string
-        - name: Collection
-          in: query
-          description: Filter results by collection name
           required: false
           schema:
             type: string
-        - name: Modality
+        - name: ImageModalityCriteria
           in: query
-          description: Filter results by modality
+          required: false
+          schema:
+            type: string
+        - name: CollectionCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SpeciesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PatientSexCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: AnatomicalSiteCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExaminedCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ManufacturerCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ModelCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SoftwareVersionCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DateRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PatientAgeRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DescriptionCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PixelSpacingRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SliceThicknessRangeCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PatientCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: StudyCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: SeriesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: MinNumberOfStudiesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: MinNumberOfStudyDatesCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ModalityAndedSearchCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: PhantomCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ThirdPartyAnalysisCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DataLicenseCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: TimePointCriteria
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: DynamicSearchCriteria
+          in: query
           required: false
           schema:
             type: string
@@ -645,27 +866,15 @@ paths:
             schema:
               type: object
               properties:
-                criteriaType0:
-                  type: string
-                  description: The type of criteria to search for (e.g., ThirdPartyAnalysis)
-                value0:
-                  type: string
-                  description: The value associated with the criteria type
                 sortField:
                   type: string
-                  description: Field to sort by (e.g., subject)
                 sortDirection:
                   type: string
-                  description: Sort order (ascending or descending)
                 start:
                   type: integer
-                  description: Index of the first result to return
                 size:
                   type: integer
-                  description: Maximum number of results to return
               required:
-                - criteriaType0
-                - value0
                 - sortField
                 - sortDirection
                 - start
@@ -674,27 +883,15 @@ paths:
             schema:
               type: object
               properties:
-                criteriaType0:
-                  type: string
-                  description: The type of criteria to search for (e.g., ThirdPartyAnalysis)
-                value0:
-                  type: string
-                  description: The value associated with the criteria type
                 sortField:
                   type: string
-                  description: Field to sort by (e.g., subject)
                 sortDirection:
                   type: string
-                  description: Sort order (ascending or descending)
                 start:
                   type: integer
-                  description: Index of the first result to return
                 size:
                   type: integer
-                  description: Maximum number of results to return
               required:
-                - criteriaType0
-                - value0
                 - sortField
                 - sortDirection
                 - start
@@ -705,10 +902,6 @@ paths:
             schema:
               type: object
               properties:
-                criteriaType0:
-                  type: string
-                value0:
-                  type: string
                 sortField:
                   type: string
                 sortDirection:
@@ -718,8 +911,6 @@ paths:
                 size:
                   type: integer
               required:
-                - criteriaType0
-                - value0
                 - sortField
                 - sortDirection
                 - start
@@ -763,6 +954,7 @@ paths:
                     example: An unexpected error occurred.
       security:
         - oauth2: []
+
   /getDicomTags:
     get:
       summary: Retrieve DICOM metadata for a specific series
@@ -1168,7 +1360,7 @@ paths:
             type: string
             enum: [json, xml, csv]
             default: json
-        - name: PatientID
+        - name: PatientId
           in: query
           description: De‑identified PatientID (optional – restricts results to a single patient)
           required: false
@@ -1190,7 +1382,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    PatientID:
+                    PatientId:
                       type: string
                       description: DICOM Tag (0010,0020) – De-identified patient ID
                     PatientName:
@@ -2147,7 +2339,3 @@ paths:
                       description: Name of the body part
         '401':
           description: Unauthorized – Invalid or missing access token
-        '500':
-          description: Internal server error
-      security:
-        - oauth2: []
