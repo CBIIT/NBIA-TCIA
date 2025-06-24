@@ -45,6 +45,7 @@ public interface PatientDAO {
 	public List<Object[]> getPatientByCollectionAndModality(String collection, String modality, List<String> authorizedProjAndSites) throws DataAccessException;
 
 	public List<Object[]> getPatientBySeries(String series, List<String> authorizedProjAndSites) throws DataAccessException;
+	public List<Object[]> getSeriesQCInfo_v4(List<String> seriesInstanceUIDs, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getCombinedDataBySeries_v4(String seriesInstanceUIDs, List<String> authorizedProjAndSites) throws DataAccessException;
 	public List<Object[]> getCombinedDataBySeries(String seriesInstanceUIDs, List<String> authorizedProjAndSites) throws DataAccessException;
 }
