@@ -175,7 +175,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getModalityValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
-                this.completeCriteriaList = data;
+                this.completeCriteriaList = this.utilService.copyCriteriaObjectArraywithFieldName(data, Consts.MODALITY) ;
                 const isLoggedIn = this.commonService.getUserLoggedInStatus();
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -213,7 +213,7 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
         this.loadingDisplayService.setLoading( true, 'Loading query data. This could take up to a minute.' );
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
-        this.apiServerService.dataGet( 'getModalityValuesAndCounts', '' );
+        this.apiServerService.dataGet( 'v4/getModalityValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
@@ -268,10 +268,11 @@ export class ImageModalityQueryComponent implements OnInit, OnDestroy{
                 this.completeCriteriaList = null;
 
                 // Get the list of all Image modalities in the database and the number of records which contain each Image modality.
-                this.apiServerService.dataGet( 'getModalityValuesAndCounts', '' );
+                this.apiServerService.dataGet( 'v4/getModalityValuesAndCounts', '' );
                 while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );
                 }
+
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
                 this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
                 // Was there a search passed in with the URL

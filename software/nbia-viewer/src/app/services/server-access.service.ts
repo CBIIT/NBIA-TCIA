@@ -178,7 +178,7 @@ export class ServerAccessService{
 
 
     getThumbnails( seriesUid, objectId ): Observable<any> {
-        let post_url = this.API_SERVER_URL + '/nbia-api/services/getThumbnail';
+        let post_url = this.API_SERVER_URL + '/nbia-api/services/v4/getThumbnail';
         let headers = new HttpHeaders( {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer  ' + this.getToken()

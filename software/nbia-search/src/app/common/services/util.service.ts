@@ -94,6 +94,27 @@ export class UtilService{
         return copyCrit;
     }
 
+    copyCriteriaObjectArraywithFieldName( origObject: any[] , fieldName: string ) : any[] | null {
+        if (!Array.isArray(origObject)) return null;
+        return origObject.map(criteria => this.copyCriteriaObjectwithFieldName(criteria, fieldName)).filter(copy => copy != null);;
+    }
+
+    copyCriteriaObjectwithFieldName( origCrit: any, fieldName: string ): any {
+        if (!origCrit || !origCrit.Authorized || origCrit.Authorized !== 1) return null;
+
+        const result: any = {
+            criteria: origCrit[fieldName] ?? origCrit['criteria'], // fallback if already shaped
+            description: origCrit.description,
+            count: origCrit.Count ?? origCrit.count,
+        };
+
+        if (!this.isNullOrUndefined(origCrit.seq)) {
+            result.seq = origCrit.seq;
+        }
+
+        return result;
+    }
+
     // Manufacturer values copy
     copyManufacturerObjectArray( origObject ) {
         if( origObject === null ){

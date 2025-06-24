@@ -501,11 +501,14 @@ export class ApiServerService implements OnDestroy {
         if ((allData[Consts.DATE_RANGE_CRITERIA] !== undefined) && (allData[Consts.DATE_RANGE_CRITERIA].length > 0)) {
             isSearchable = true;
               // Convert from MM/dd/yyyy to dd/MM/yyyy to match API expectation
-              let fromDateParts = allData[Consts.DATE_RANGE_CRITERIA][0].split('/');
-              let toDateParts = allData[Consts.DATE_RANGE_CRITERIA][1].split('/');
+              // since v9.5, all dates in format MM-dd-yyyy
+              //let fromDateParts = allData[Consts.DATE_RANGE_CRITERIA][0].split('/');
+              //let toDateParts = allData[Consts.DATE_RANGE_CRITERIA][1].split('/');
 
-              let fromDateFormatted = fromDateParts[1] + '/' + fromDateParts[0] + '/' + fromDateParts[2];
-              let toDateFormatted = toDateParts[1] + '/' + toDateParts[0] + '/' + toDateParts[2];
+              //let fromDateFormatted = fromDateParts[1] + '/' + fromDateParts[0] + '/' + fromDateParts[2];
+              //let toDateFormatted = toDateParts[1] + '/' + toDateParts[0] + '/' + toDateParts[2];
+              let fromDateFormatted = allData[Consts.DATE_RANGE_CRITERIA][0].replace(/\//g, "-");
+              let toDateFormatted = allData[Consts.DATE_RANGE_CRITERIA][1].replace(/\//g, "-");
 
               searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=' + Consts.DATE_RANGE_CRITERIA + '&' +
                              'fromDate' + this.queryBuilderIndex + '=' + fromDateFormatted + '&' +
@@ -1160,15 +1163,15 @@ export class ApiServerService implements OnDestroy {
      * @param res
      */
     emitGetResults(queryType, res, id ?) {
-        if (queryType === 'getCollectionValuesAndCounts') {
+        if (queryType.includes('getCollectionValuesAndCounts') ) {
             this.getCollectionValuesAndCountsEmitter.emit(res);
         } else if (queryType === Consts.GET_HOST_NAME) {
             this.getHostNameEmitter.emit(res);
-        } else if (queryType === 'getModalityValuesAndCounts') {
+        } else if (queryType.includes( 'getModalityValuesAndCounts')) {
             this.getModalityValuesAndCountsEmitter.emit(res);
-        } else if (queryType === 'getBodyPartValuesAndCounts') {
+        } else if (queryType.includes('getBodyPartValuesAndCounts')) {
             this.getBodyPartValuesAndCountsEmitter.emit(res);
-        } else if (queryType === 'getSpeciesValuesAndCounts') {
+        } else if (queryType.includes('getSpeciesValuesAndCounts')) {
             this.getSpeciesValuesAndCountsEmitter.emit(res);
         } else if (queryType === Consts.GET_SPECIES_TAX) {
             this.speciesTax = res;
@@ -1177,7 +1180,7 @@ export class ApiServerService implements OnDestroy {
             this.getEventTypesEmitter.emit(res);
         } else if (queryType === Consts.GET_MIN_MAX_TIME_POINTS) {
             this.getMinMaxTimepointsEmitter.emit(res);
-        }else if (queryType === 'v1/getManufacturerValues') {
+        }else if (queryType === 'v4/getManufacturerValues') {
             this.getManufacturerValuesEmitter.emit(res);
         }else if (queryType === 'getManufacturerTree') {
             this.getManufacturerTreeEmitter.emit(res);
@@ -1193,21 +1196,21 @@ export class ApiServerService implements OnDestroy {
 
 
     emitGetError(queryType, err, id ?) {
-        if (queryType === 'getCollectionValuesAndCounts') {
+        if (queryType.includes('getCollectionValuesAndCounts')) {
             this.getCollectionValuesAndCountsErrorEmitter.emit(err);
         } else if (queryType === Consts.GET_HOST_NAME) {
             this.getHostNameErrorEmitter.emit(err);
-        } else if (queryType === 'getModalityValuesAndCounts') {
+        } else if (queryType.includes('getModalityValuesAndCounts')) {
             this.getModalityValuesAndCountsErrorEmitter.emit(err);
-        } else if (queryType === 'getBodyPartValuesAndCounts') {
+        } else if (queryType.includes('getBodyPartValuesAndCounts')) {
             this.getBodyPartValuesAndCountsErrorEmitter.emit(err);
-        } else if (queryType === 'getSpeciesValuesAndCounts') {
+        } else if (queryType.includes('getSpeciesValuesAndCounts')) {
             this.getSpeciesValuesAndCountsErrorEmitter.emit(err);
         } else if (queryType === Consts.GET_SPECIES_TAX) {
             this.getSpeciesTaxErrorEmitter.emit(err);
         } else if (queryType === 'getEventTypes') {
             this.getEventTypesErrorEmitter.emit(err);
-        } else if (queryType === 'v1/getManufacturerValues') {
+        } else if (queryType === 'v4/getManufacturerValues') {
             this.getManufacturerValuesErrorEmitter.emit(err);
         } else if (queryType === 'getManufacturerTree') {
             this.getManufacturerTreeErrorEmitter.emit(err);

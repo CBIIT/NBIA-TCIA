@@ -39,7 +39,7 @@ export const Consts = {
 
         API_ACCESS_TOKEN_URL: 'nbia-api/oauth/token',
         API_LOGOUT_URL: 'nbia-api/logout',
-        API_MANIFEST_FROM_SEARCH_RESULTS: 'getManifestForSimpleSearch',
+        API_MANIFEST_FROM_SEARCH_RESULTS: 'v4/getManifestForSimpleSearch',
         API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS: 'getRestrictionsForSimpleSearch',
         API_MANIFEST_FROM_TEXT_SEARCH_RESULTS: 'getManifestForTextSearch',
         API_MANIFEST_RESTRICTIONS_FROM_TEXT_SEARCH_RESULTS: 'getRestrictionsForTextSearch',
@@ -67,6 +67,7 @@ export const Consts = {
 
         ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
         ANATOMICAL_SITE: 'AnatomicalSite',
+        BODY_PART_EXAMINED: 'BodyPart',
         MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',
         MINIMUM_STUDIES_TYPE_DATE: 'MinNumberOfStudyDatesCriteria',
         DAYS_FROM_BASELINE_CRITERIA: 'TimePointCriteria',
@@ -139,13 +140,13 @@ export const Consts = {
 
         DRILL_DOWN: 'getStudyDrillDown',
         // DRILL_DOWN_CART: 'getStudyDrillDownCart',
-        DRILL_DOWN_CART: 'getCartData',
+        DRILL_DOWN_CART: 'v4/getCartData',
         DRILL_DOWN_WITH_SERIES: 'getStudyDrillDownWithSeriesIds',
         DRILL_DOWN_CART_FROM_SERIES: 'getStudyDrillDownCartFromSeries',
         DRILL_DOWN_IMAGE: 'getImageDrillDown',
-        GET_THUMBNAIL: 'getThumbnail\'',
-        COLLECTION_DESCRIPTIONS: 'getCollectionDescriptions',
-        GET_MIN_MAX_TIME_POINTS: 'getMinMaxTimepoints',
+        GET_THUMBNAIL: 'v4/getThumbnail\'',
+        COLLECTION_DESCRIPTIONS: 'v4/getCollectionDescriptions',
+        GET_MIN_MAX_TIME_POINTS: 'v4/getMinMaxTimepoints',
         GET_HOST_NAME: 'hostName',
 
         // For getting subject "id" data with the subject "subjectId"  will be a simple search
@@ -156,11 +157,13 @@ export const Consts = {
         // SIMPLE_SEARCH: 'getExtendedSimpleSearch', // This was too slow
 
 
-        SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPartPaged',
+        SIMPLE_SEARCH: 'v4/getSimpleSearch',
+        //SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPartPaged',
         // SIMPLE_SEARCH: 'getSimpleSearchWithModalityAndBodyPart',
 
         // If you change SIMPLE_SEARCH or TEXT_SEARCH change here too.
-        SEARCH_TYPES: ['getSimpleSearchWithModalityAndBodyPartPaged', 'getTextSearch'], // Used when getting the string when we have an index  FIXME  This is a little messy.
+        SEARCH_TYPES: ['v4/getSimpleSearch', 'getTextSearch'], // use v4 apis
+        //SEARCH_TYPES: ['getSimpleSearchWithModalityAndBodyPartPaged', 'getTextSearch'], // Used when getting the string when we have an index  FIXME  This is a little messy.
         // SEARCH_TYPES: ['getExtendedSimpleSearch', 'getTextSearch'], // Used when getting the string when we have an index  FIXME  This is a little messy.
 
 
@@ -175,15 +178,16 @@ export const Consts = {
         LOG_ENTRY: 'addClientAudit',
         GET_USER_ROLES: 'getRoles',
         GET_COLLECTION_LICENSES: 'getLicenses',
-        API_MANIFEST_URL: 'nbia-api/services/getManifestTextV2',
+        //API_MANIFEST_URL: 'nbia-api/services/getManifestTextV2',
+        API_MANIFEST_URL: 'nbia-api/services/v4/getManifestText',
         SEARCH_TYPE_DEFAULT: 0,  // Simple Search = 0, Free Text = 1, Query Builder = 2
     //
-        GET_SPECIES_TAX: 'getSpeciesTax',
+        GET_SPECIES_TAX: 'v4/getSpeciesTax',
         SEARCH_CRITERIA_VALUES: 'getSimpleSearchCriteriaValues',
         SERIES_FOR_SUBJECT: 'seriesForSubject',
         SERIES_FOR_SHARED_LIST_SUBJECT: 'seriesForSharedListSubject',
-        DICOM_TAGS: 'getDicomTags',
-        DICOM_TAGS_BY_IMAGE: 'getDicomTagsByImageID',
+        DICOM_TAGS: 'v4/getDicomTags',
+        DICOM_TAGS_BY_IMAGE: 'v4/getDicomTagsByImageID',
 
         SHOW_CRITERIA_QUERY_THIRD_PARTY: 'showQueryThirdParty',
         SHOW_CRITERIA_QUERY_PHANTOMS: 'showQueryPhantoms',
