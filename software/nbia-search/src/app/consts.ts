@@ -144,7 +144,7 @@ export const Consts = {
         DRILL_DOWN_WITH_SERIES: 'getStudyDrillDownWithSeriesIds',
         DRILL_DOWN_CART_FROM_SERIES: 'getStudyDrillDownCartFromSeries',
         DRILL_DOWN_IMAGE: 'getImageDrillDown',
-        GET_THUMBNAIL: 'v4/getThumbnail\'',
+        GET_THUMBNAIL: 'getThumbnail\'',
         COLLECTION_DESCRIPTIONS: 'v4/getCollectionDescriptions',
         GET_MIN_MAX_TIME_POINTS: 'v4/getMinMaxTimepoints',
         GET_HOST_NAME: 'hostName',

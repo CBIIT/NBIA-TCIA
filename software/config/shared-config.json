@@ -1,6 +1,6 @@
 {
     "currentYear":"2025",
-    "version": "9.5",
-    "testVersion": "9.4",
+    "version": "9.6",
+    "testVersion": "9.5",
     "releaseCommit": "3bf2b4a5-test"
 }
