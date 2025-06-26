@@ -36,7 +36,7 @@ public class V4_getMD5HashForImage extends getData{
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public Response constructResponse(@QueryParam("SOPInstanceUid") String sopInstanceUid, @Context UriInfo uriInfo) {
+	public Response constructResponse(@QueryParam("SOPInstanceUID") String sopInstanceUid, @Context UriInfo uriInfo) {
 
     Set<String> allowedParams = Set.of("SOPInstanceUID");
     MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
