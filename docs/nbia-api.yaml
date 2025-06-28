@@ -53,7 +53,7 @@ components:
 paths:
   /getDCMImage:
     get:
-      summary: Download DICOM images for a given SeriesInstanceUID
+      summary: Download DICOM images for a given SeriesInstanceUID.
       description: |
         Retrieves a ZIP archive of DICOM images associated with the specified SeriesInstanceUID.
         Optional parameters allow inclusion of annotations and MD5 hash verification.
@@ -137,7 +137,7 @@ paths:
                     example: An unexpected error occurred.
   /getSpeciesValuesAndCounts:
     get:
-      summary: Get species values and their counts
+      summary: Get species values and their counts.
       description: Returns the species values and counts.
       tags:
         - Patient Metadata
@@ -163,7 +163,7 @@ paths:
         - oauth2: []
   /getSpeciesTax:
     get:
-      summary: Retrieve species taxonomy
+      summary: Retrieve species taxonomy.
       description: Returns the current species taxonomy.
       tags:
         - Utilities
@@ -189,7 +189,7 @@ paths:
         - oauth2: []
   /getSimpleSearch:
     post:
-      summary: Perform a paged simple search using modality and body part
+      summary: Perform a paged simple search using modality and body part.
       description: Performs paged simple search with various criteria.
       tags:
         - Patient Metadata
@@ -284,7 +284,7 @@ paths:
         - oauth2: []
   /getSimpleSearch2:
     get:
-      summary: Perform a paged simple search using modality and body part
+      summary: Perform a paged simple search using modality and body part.
       description: Performs paged simple search with various criteria.
       tags:
         - Patient Metadata
@@ -444,7 +444,7 @@ paths:
         - oauth2: []
   /getRestrictionsForSimpleSearch:
     post:
-      summary: Check for commercial restrictions in a simple search
+      summary: Check for commercial restrictions in a simple search.
       description: Returns whether any results from the simple search have commercial restrictions.
       tags:
         - Patient Metadata
@@ -536,7 +536,7 @@ paths:
 
   /getMD5HashForImage:
     get:
-      summary: Get MD5 hash for a single image
+      summary: Get MD5 hash for a single image.
       description: Returns MD5 hash for the given SOPInstanceUID.
       tags:
         - Patient Metadata
@@ -780,7 +780,7 @@ paths:
         - oauth2: []
   /getManifestForSimpleSearch:
     post:
-      summary: Generate a manifest file from simple search criteria
+      summary: Generate a manifest file from simple search criteria.
       description: |
         Creates a manifest file from the specified simple search parameters,
         which can be used with the NBIA Data Retriever.
@@ -907,7 +907,7 @@ paths:
 
   /getDicomTags:
     get:
-      summary: Retrieve DICOM metadata for a specific series
+      summary: Retrieve DICOM metadata for a specific series.
       description: |
         Returns metadata (DICOM tags and values) for the specified SeriesInstanceUID.
         Requires authentication via a Bearer token.
@@ -952,7 +952,7 @@ paths:
 
   /getCollectionDescriptions:
     get:
-      summary: Retrieve detailed metadata for NBIA collections
+      summary: Retrieve detailed metadata for NBIA collections.
       description: |
         Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
         You may optionally filter by collection name.
@@ -1008,7 +1008,7 @@ paths:
   
   /getCollectionOrSeriesForDOI:
     post:
-      summary: Resolve a DOI to a collection or series
+      summary: Resolve a DOI to a collection or series.
       description: |
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
         Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.
@@ -1438,7 +1438,7 @@ paths:
 
   /getSOPInstanceUIDS:
     get:
-      summary: Retrieve SOP Instance UIDs for a DICOM series
+      summary: Retrieve SOP Instance UIDs for a DICOM series.
       description: |
         Returns a list of SOPInstanceUIDs (unique image identifiers) associated with the specified SeriesInstanceUID.
         Useful for accessing or referencing individual DICOM images.
@@ -1524,7 +1524,7 @@ paths:
 
   /getSeriesMetaData1:
     get:
-      summary: Retrieve detailed metadata for a DICOM series
+      summary: Retrieve detailed metadata for a DICOM series.
       description: |
         Returns a list of metadata fields and values for the specified SeriesInstanceUID.
         This includes DICOM tags and related technical attributes.
@@ -1567,7 +1567,7 @@ paths:
         
   /getSeriesMetadata:
     post:
-      summary: Retrieve detailed metadata for a DICOM series
+      summary: Retrieve detailed metadata for a DICOM series.
       description: |
         Returns a list of metadata fields and values for the specified SeriesInstanceUID.
         This includes DICOM tags and related technical attributes.
@@ -1722,7 +1722,7 @@ paths:
 
   /getPatientByCollectionAndModality:
     get:
-      summary: Retrieve patients in a collection filtered by modality
+      summary: Retrieve patients in a collection filtered by modality.
       description: |
         Returns a list of de-identified patients associated with a specific collection and imaging modality.
         Requires authentication via a Bearer token.
@@ -1946,7 +1946,7 @@ paths:
         - oauth2: []
   /getModalityValues:
     get:
-      summary: Retrieve available modality values
+      summary: Retrieve available modality values.
       description: |
         Returns a list of modality types (e.g., CT, MR, PET) available in the NBIA database.
         Optional query parameters allow filtering by collection name and body part examined.
@@ -1993,7 +1993,7 @@ paths:
         - oauth2: []
   /getImage:
     get:
-      summary: Download a ZIP of DICOM images for a given SeriesInstanceUID
+      summary: Download a ZIP of DICOM images for a given SeriesInstanceUID.
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID.
         Optionally, you can specify whether to use new file naming conventions.
@@ -2034,7 +2034,7 @@ paths:
         - oauth2: []
   /getImageWithMD5Hash:
     get:
-      summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID
+      summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID.
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
         Requires authentication via a Bearer token.
@@ -2068,7 +2068,7 @@ paths:
 
   /getCollectionValues:
     get:
-      summary: Retrieve available collection values
+      summary: Retrieve available collection values.
       description: Returns a list of available collection names in NBIA.
       tags:
         - Collection Metadata
@@ -2105,7 +2105,7 @@ paths:
                     example: An unexpected error occurred.
   /getManufacturerValues:
     get:
-      summary: Retrieve available manufacturer values
+      summary: Retrieve available manufacturer values.
       description: |
         Returns a list of manufacturer names filtered by optional query parameters.
         Requires authentication via a Bearer token.
@@ -2150,7 +2150,7 @@ paths:
 
   /getBodyPartValues:
     get:
-      summary: Retrieve available body part values
+      summary: Retrieve available body part values.
       description: Returns a list of body part names filtered by optional query parameters.
       tags:
         - Utilities
