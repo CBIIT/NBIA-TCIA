@@ -27,12 +27,14 @@ objectClass: inetOrgPerson
 cn: nbia_guest
 sn: Bar1
 userPassword: test
+#userPassword:: YWRtaW4=
 
 dn: cn=nbiaAdmin,ou=users,dc=example,dc=org
 objectClass: inetOrgPerson
 cn: nbiaAdmin
 sn: Bar3
-userPassword:: YWRtaW4=
+userPassword:: ZmFrZStwYXNzd29yZA== 
+seeAlso: cn=tcia-team,ou=users,dc=example,dc=org
 
 dn: cn=readers,ou=users,dc=example,dc=org
 objectClass: groupOfNames
