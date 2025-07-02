@@ -794,7 +794,7 @@ paths:
               properties:
                 DOI:
                   type: string
-                 description: Digital Object Identifier (DOI) to resolve              
+                  description: Digital Object Identifier (DOI) to resolve              
                 CollectionOrSeries:
                   type: string
                   enum: [collection, series]
