@@ -166,7 +166,6 @@ public class V4_getImage extends getData {
 						System.out.println("size <= 0; not recording");
 					}	
 				}
-				recodeDownload(seriesInstanceUid, size, "v4API", userName);	
 			}
 		}; } else {
 		    stream = new StreamingOutput() {
