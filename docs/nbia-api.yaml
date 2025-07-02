@@ -776,14 +776,14 @@ paths:
       summary: Resolve a DOI to a collection or series.
       x-code-samples:
        - lang: curl
-    source: |
-      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer YOUR_TOKEN" \
-        -d '{
-          "DOI": "https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE",
-          "CollectionOrSeries": "collection"
-        }'
+         source: |
+           curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" \
+             -H "Content-Type: application/json" \
+             -H "Authorization: Bearer YOUR_TOKEN" \
+             -d '{
+             "DOI": "https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE",
+             "CollectionOrSeries": "collection"
+             }'
       description: |
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
         Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.
