@@ -808,7 +808,7 @@ paths:
               schema:
                 type: array
                 items:
-                type: object
+                  type: object
                   properties:
                     collection:
                       type: string
