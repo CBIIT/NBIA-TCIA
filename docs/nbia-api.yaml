@@ -769,12 +769,20 @@ paths:
           description: Internal server error
       security:
         - oauth2: []
-  /getCollectionOrSeriesForDOI:
+ /getCollectionOrSeriesForDOI:
     post:
       summary: Resolve a DOI to a collection or series.
       description: |
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
         Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.
+      
+        **Example curl command:**
+        ```bash
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+          -d "DOI=https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE&CollectionOrSeries=collection"
+        ```
       tags:
         - Collection Metadata
       requestBody:     
@@ -786,42 +794,37 @@ paths:
               properties:
                 DOI:
                   type: string
-                  description: Digital Object Identifier (DOI) to resolve
-                  example: "https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE"
+                 description: Digital Object Identifier (DOI) to resolve              
                 CollectionOrSeries:
                   type: string
                   enum: [collection, series]
                   default: collection
-                  description: Whether to search for a collection or a series 
-                  example: "collection"
-              example:
-                DOI: "https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE"
-                CollectionOrSeries: "collection"
-        responses:
-          '200':
-            description: Successful response with resolved collection or series
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      collection:
-                        type: string
-                        nullable: true
-                        description: Name of the collection (if resolved to a collection)
-                      seriesInstanceUID:
-                        type: string
-                        nullable: true
-                        description: SeriesInstanceUID (if resolved to a series)
-                      thirdPartyAnalysis:
-                        type: string
-                        nullable: true
-                        description: Reserved field (currently unused)
-        '400':
-          description: Bad request – Missing or invalid parameters
-        '401':
+                  description: Whether to search for a collection or a series             
+      responses:
+        '200':
+          description: Successful response with resolved collection or series
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                type: object
+                  properties:
+                    collection:
+                      type: string
+                      nullable: true
+                      description: Name of the collection (if resolved to a collection)
+                    seriesInstanceUID:
+                      type: string
+                      nullable: true
+                      description: SeriesInstanceUID (if resolved to a series)
+                    thirdPartyAnalysis:
+                      type: string
+                      nullable: true
+                      description: Reserved field (currently unused)
+         '400':
+           description: Bad request – Missing or invalid parameters
+         '401':
           description: Unauthorized – Invalid or missing access token
         '404':
           description: DOI not found
