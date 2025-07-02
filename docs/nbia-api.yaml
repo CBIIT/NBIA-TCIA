@@ -57,7 +57,7 @@ paths:
       description: |
         Retrieves a ZIP archive of DICOM images associated with the specified SeriesInstanceUID.
         Optional parameters allow inclusion of annotations and MD5 hash verification.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Image Downloads
       parameters:
@@ -405,7 +405,7 @@ paths:
       summary: Generate a manifest from patient, study, and series UIDs.
       description: |
         Returns a manifest file containing series for the specified patient, study, or series UIDs.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Image Downloads
       requestBody:
@@ -480,7 +480,7 @@ paths:
       summary: Generate a manifest file for a list of series.
       description: |
         Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Image Downloads
       requestBody:
@@ -551,7 +551,7 @@ paths:
       description: |
         Creates a manifest file from the specified simple search parameters,
         which can be used with the NBIA Data Retriever.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Image Downloads
       requestBody:
@@ -677,7 +677,7 @@ paths:
       summary: Retrieve DICOM metadata for a specific series.
       description: |
         Returns metadata (DICOM tags and values) for the specified SeriesInstanceUID.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Series Metadata
       parameters:
@@ -714,16 +714,14 @@ paths:
           description: SeriesUID not found
         '500':
           description: Internal server error
-      security:
-        - oauth2: []
+   
 
   /getCollectionDescriptions:
     get:
       summary: Retrieve detailed metadata for NBIA collections.
       description: |
         Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
-        You may optionally filter by collection name.
-        Requires authentication via a Bearer token.
+        You may optionally filter by collection name.      
       tags:
         - Collection Metadata
       parameters:
@@ -779,7 +777,8 @@ paths:
       description: |
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
         Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.
-        Requires authentication via a Bearer token.
+        Sample Call: 
+        curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" -d "DOI=https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE&CollectionOrSeries=collection"
       tags:
         - Collection Metadata
       requestBody:
@@ -835,7 +834,7 @@ paths:
       description: |
         Returns manufacturer names and the number of times each appears in the database,
         along with authorization information.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Utilities
       parameters:
@@ -886,7 +885,7 @@ paths:
       description: |
         Returns modality types along with how often each appears in the database,
         and whether the user is authorized to access the associated collection.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Utilities
       parameters:
@@ -931,7 +930,7 @@ paths:
       summary: Retrieve collection names and patient counts.
       description: |
         Returns all collection names, patient counts, and authorization status.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Collection Metadata
       responses:
@@ -966,7 +965,7 @@ paths:
       description: |
         Returns a list of body part names along with the number of times each appears in the database.
         Optionally filter by Collection or Modality.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Patient Metadata
       parameters:
@@ -1011,7 +1010,7 @@ paths:
       summary: Retrieve patients in a collection.
       description: |
         Returns a list of de-identified patients associated with the specified collection.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Patient Metadata
       parameters:
@@ -1079,7 +1078,7 @@ paths:
       description: |
         Returns metadata for studies associated with patients in the specified collection.
         You can optionally filter by PatientID.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Patient Metadata
       parameters:
@@ -1158,7 +1157,7 @@ paths:
       summary: Retrieve updated series in a collection since a specified date.
       description: |
         Returns a list of SeriesInstanceUIDs for imaging series in a given collection that have been updated on or after the specified date.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Series Metadata
       parameters:
@@ -1209,7 +1208,7 @@ paths:
       description: |
         Returns a list of SOPInstanceUIDs (unique image identifiers) associated with the specified SeriesInstanceUID.
         Useful for accessing or referencing individual DICOM images.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Series Metadata
       parameters:
@@ -1246,7 +1245,7 @@ paths:
       description: |
         Returns the number of images and total file size (in bytes) for the specified SeriesInstanceUID.
         Useful for estimating storage requirements before downloading.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Series Metadata
       parameters:
@@ -1294,7 +1293,7 @@ paths:
       description: |
         Returns a list of metadata fields and values for the specified SeriesInstanceUID.
         This includes DICOM tags and related technical attributes.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Series Metadata
       requestBody:
@@ -1330,7 +1329,7 @@ paths:
       description: |
         Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID,
         Modality, BodyPartExamined, Manufacturer, ManufacturerModelName, and SeriesInstanceUID.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Series Metadata
       parameters:
@@ -1448,7 +1447,7 @@ paths:
       summary: Retrieve patients in a collection filtered by modality.
       description: |
         Returns a list of de-identified patients associated with a specific collection and imaging modality.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Patient Metadata
       parameters:
@@ -1515,7 +1514,7 @@ paths:
       summary: Retrieve new studies in a patient collection since a specified date.
       description: |
         Returns a list of studies for patients that were added to the specified collection on or after the given date.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Study Metadata
       parameters:
@@ -1594,7 +1593,7 @@ paths:
       summary: Retrieve new patients in a collection since a specified date.
       description: |
         Returns a list of patients added to a specified collection since a given date.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Patient Metadata
       parameters:
@@ -1673,7 +1672,7 @@ paths:
       description: |
         Returns a list of modality types (e.g., CT, MR, PET) available in the NBIA database.
         Optional query parameters allow filtering by collection name and body part examined.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Utilities
       parameters:
@@ -1760,7 +1759,7 @@ paths:
       summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID.
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Image Downloads
       parameters:
@@ -1831,7 +1830,7 @@ paths:
       summary: Retrieve available manufacturer values.
       description: |
         Returns a list of manufacturer names filtered by optional query parameters.
-        Requires authentication via a Bearer token.
+        
       tags:
         - Utilities
       parameters:
