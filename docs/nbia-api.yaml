@@ -407,9 +407,7 @@ paths:
         Returns a manifest file containing series for the specified patient, study, or series UIDs.
         Requires authentication via a Bearer token.
       tags:
-        - Patient Metadata
-        - Study Metadata
-        - Series Metadata
+        - Image Downloads
       requestBody:
         required: true
         content:
@@ -475,78 +473,7 @@ paths:
                   error:
                     type: string
       security:
-        - oauth2: []
-  /getManifestText1:
-    get:
-      summary: Generate a manifest file for a list of series.
-      description: |
-        Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
-        Requires authentication via a Bearer token.
-      tags:
-        - Series Metadata
-      parameters:
-        - name: list
-          in: query
-          description: Comma-separated list of series UIDs for each series you want to download.
-          required: true
-          schema:
-            type: string
-        - name: includeAnnotation
-          in: query
-          description: If true, annotations are included in the manifest.
-          required: false
-          schema:
-            type: boolean
-        - name: format
-          in: query
-          description: Desired response format (json, xml, csv).
-          required: false
-          schema:
-            type: string
-            enum: [json, xml, csv]
-            default: json
-      responses:
-        '200':
-          description: Successfully generated manifest text.
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-        '400':
-          description: Bad request – Missing or invalid parameters.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '500':
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-      security:
-        - oauth2: []
+        - oauth2: [] 
         
   /getManifestText:
     post:
@@ -555,7 +482,7 @@ paths:
         Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
         Requires authentication via a Bearer token.
       tags:
-        - Series Metadata
+        - Image Downloads
       requestBody:
         required: true
         content:
