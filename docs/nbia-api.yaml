@@ -822,9 +822,9 @@ paths:
                       type: string
                       nullable: true
                       description: Reserved field (currently unused)
-         '400':
-           description: Bad request – Missing or invalid parameters
-         '401':
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
           description: Unauthorized – Invalid or missing access token
         '404':
           description: DOI not found
