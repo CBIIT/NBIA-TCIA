@@ -769,7 +769,7 @@ paths:
           description: Internal server error
       security:
         - oauth2: []
- /getCollectionOrSeriesForDOI:
+  /getCollectionOrSeriesForDOI:
     post:
       summary: Resolve a DOI to a collection or series.
       description: |
