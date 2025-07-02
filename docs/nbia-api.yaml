@@ -786,8 +786,6 @@ paths:
       description: |
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
         Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.
-        Sample Call: 
-        curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" -d "DOI=https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE&CollectionOrSeries=collection"
       tags:
         - Collection Metadata
       requestBody:
@@ -1920,3 +1918,8 @@ paths:
                       description: Name of the body part
         '401':
           description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - oauth2: []
+
