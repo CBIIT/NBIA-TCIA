@@ -775,7 +775,7 @@ paths:
     post:
       summary: Resolve a DOI to a collection or series.
       x-code-samples:
-  - lang: curl
+       - lang: curl
     source: |
       curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" \
         -H "Content-Type: application/json" \
