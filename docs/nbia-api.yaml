@@ -1801,7 +1801,8 @@ paths:
     get:
       summary: Retrieve available collection values.
       description: Returns a list of available collection names in NBIA.
-             **Example curl command:**
+      
+       **Example curl command:**
         ```bash
         curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
           -H "Content-Type: application/x-www-form-urlencoded" \
