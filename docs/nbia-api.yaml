@@ -1797,51 +1797,51 @@ paths:
       security:
         - oauth2: []
 
-/getCollectionValues:
-  get:
-    summary: Retrieve available collection values.
-    description: |
-      Returns a list of available collection names in NBIA.
+ /getCollectionValues:
+   get:
+     summary: Retrieve available collection values.
+     description: |
+       Returns a list of available collection names in NBIA.
       
-      **Example curl command:**
-      ```bash
-      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
+       **Example curl command:**
+       ```bash
+       curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
+         -H "Content-Type: application/x-www-form-urlencoded" \
         -H "Authorization: Bearer YOUR_TOKEN" \
-      ```
-    tags:
-      - Collection Metadata
-    security:
-      - oauth2: []
-    responses:
-      '200':
-        description: A list of collection names.
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Collection'
-      '401':
-        description: Unauthorized. Authentication token is missing or invalid.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                error:
+       ```
+     tags:
+       - Collection Metadata
+     security:
+       - oauth2: []
+     responses:
+       '200':
+         description: A list of collection names.
+         content:
+           application/json:
+             schema:
+               type: array
+               items:
+                 $ref: '#/components/schemas/Collection'
+       '401':
+         description: Unauthorized. Authentication token is missing or invalid.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 error:
+                   type: string
+                   example: Unauthorized access.
+       '500':
+         description: Internal server error.
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 error:
                   type: string
-                  example: Unauthorized access.
-      '500':
-        description: Internal server error.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                error:
-                  type: string
-                  example: An unexpected error occurred.
+                   example: An unexpected error occurred.
 /getManufacturerValues:
   get:
     summary: Retrieve available manufacturer values.
