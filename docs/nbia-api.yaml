@@ -1850,9 +1850,7 @@ paths:
       
         **Example curl command:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Authorization: Bearer YOUR_TOKEN" \
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues"         
         ```
       tags:
         - Utilities
@@ -1901,9 +1899,7 @@ paths:
       
         **Example curl command:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Authorization: Bearer YOUR_TOKEN" \
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" 
         ```
       tags:
         - Utilities
@@ -1947,4 +1943,3 @@ paths:
           description: Internal server error
       security:
         - oauth2: []
-
