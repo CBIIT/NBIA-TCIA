@@ -1841,7 +1841,7 @@ paths:
                 properties:
                   error:
                    type: string
-                     example: An unexpected error occurred.
+                   example: An unexpected error occurred.
   /getManufacturerValues:
     get:
       summary: Retrieve available manufacturer values.
