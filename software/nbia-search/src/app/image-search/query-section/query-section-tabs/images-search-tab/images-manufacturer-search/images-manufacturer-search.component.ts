@@ -184,7 +184,8 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
-        this.apiServerService.dataGet( 'v1/getManufacturerValues', '' );
+        //this.apiServerService.dataGet( 'v1/getManufacturerValues', '' );
+        this.apiServerService.dataGet( 'v4/getManufacturerValues', '' );
         while( (this.utilService.isNullOrUndefined( this.completeManufacturerValues )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }

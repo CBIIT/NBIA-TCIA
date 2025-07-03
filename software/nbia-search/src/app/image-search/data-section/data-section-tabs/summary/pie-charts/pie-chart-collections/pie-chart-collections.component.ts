@@ -134,7 +134,7 @@ export class PieChartCollectionsComponent implements OnInit, OnDestroy{
         // Get the full complete criteria list.
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-                this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( data );
+                this.completeCriteriaList = this.utilService.copyCriteriaObjectArraywithFieldName( data , Consts.COLLECTION );
 
                 // Initialize criteriaList with completeCriteriaList here at the start, before there is any searching
                 this.criteriaList = this.completeCriteriaList;

@@ -61,7 +61,7 @@ export class QcSeriesReportComponent implements OnInit, OnDestroy{
                     console.log( 'downloadCartAsCsv: ', curl );
                 }
 
-                let csvDownloadUrl = Properties.API_SERVER_URL + '/nbia-api/services/v2/getSeriesQCInfo';
+                let csvDownloadUrl = Properties.API_SERVER_URL + '/nbia-api/services/v4/getSeriesQCInfo';
 
                 let headers = new HttpHeaders( {
                     'Content-Type': 'application/x-www-form-urlencoded',

@@ -161,7 +161,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getBodyPartValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
-                this.completeCriteriaList = data;
+                this.completeCriteriaList = this.utilService.copyCriteriaObjectArraywithFieldName(data, Consts.BODY_PART_EXAMINED);
                 const isLoggedIn = this.commonService.getUserLoggedInStatus();
 
                 // If completeCriteriaListHold is null, this is the initial call.
@@ -199,7 +199,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
-        this.apiServerService.dataGet( 'getBodyPartValuesAndCounts', '' );
+        this.apiServerService.dataGet( 'v4/getBodyPartValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
@@ -255,7 +255,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
                 this.completeCriteriaList = null;
 
                 // Get the list of all Anatomical Sites in the database and the number of records which contain each Anatomical Site.
-                this.apiServerService.dataGet( 'getBodyPartValuesAndCounts', '' );
+                this.apiServerService.dataGet( 'v4/getBodyPartValuesAndCounts', '' );
                 while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );
                 }

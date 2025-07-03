@@ -253,6 +253,8 @@ public class QcStatusDAOImpl extends AbstractDAO
 			
 		
 		String whereStmt = " where 1=1 ";
+    boolean hasCriteria = false;
+
 
 		List<String> processedItem = new ArrayList<>();
 
@@ -261,11 +263,17 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	 if(!processedItem.contains(item)) {
 		    		 processedItem.add(item);
 		    		 whereStmt=whereStmt+hqlMap.get(item);
+             hasCriteria = true;
 		    	 }
 		     }
         }
         processedItem.clear();
 		List<QcSearchResultDTO> searchResultDtos = new ArrayList<QcSearchResultDTO>();
+
+    //If no criteria have been added, return an empty response
+    if (hasCriteria == false) {
+      return searchResultDtos;
+    }
 
 		String hql = selectStmt + fromStmt + whereStmt;
 	    

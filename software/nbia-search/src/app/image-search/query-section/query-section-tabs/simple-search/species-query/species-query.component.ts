@@ -166,7 +166,7 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getSpeciesValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
-                this.completeCriteriaList = data;
+                this.completeCriteriaList = this.utilService.copyCriteriaObjectArraywithFieldName( data, Consts.SPECIES);
                 const isLoggedIn = this.commonService.getUserLoggedInStatus();
                 this.addDescriptions();
 
@@ -204,12 +204,11 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
 
-        this.apiServerService.dataGet( 'getSpeciesValuesAndCounts', '' );
+        this.apiServerService.dataGet( 'v4/getSpeciesValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
         this.loadingDisplayService.setLoading( false, 'Done Loading query data' );
-
         // ------------------------------------------------------------------------------------------
         // ------------------------------------------------------------------------------------------
 
@@ -269,12 +268,11 @@ export class SpeciesQueryComponent implements OnInit, OnDestroy{
 
 
                 // Get the list of all Species in the database and the number of records which contain each Species Site.
-                this.apiServerService.dataGet( 'getSpeciesValuesAndCounts', '' );
+                this.apiServerService.dataGet( 'v4/getSpeciesValuesAndCounts', '' );
                 while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );
                 }
-
-
+                
                 this.completeCriteriaListHold = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
                 this.completeCriteriaListHoldLoggedIn = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
               

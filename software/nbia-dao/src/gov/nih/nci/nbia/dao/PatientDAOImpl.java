@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;  
 import java.util.Date;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -392,6 +393,60 @@ public class PatientDAOImpl extends AbstractDAO
         return rs;
 	}
 
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<Object[]> getSeriesQCInfo_v4(List<String> seriesInstanceUIDs, List<String> authorizedProjAndSites) throws DataAccessException {
+    
+		// Rather than pull all series if list is null, exits instead
+		if (authorizedProjAndSites == null || authorizedProjAndSites.isEmpty() || seriesInstanceUIDs == null || seriesInstanceUIDs.isEmpty()) {
+			return null;
+		}
+
+    List<String> seriesList = seriesInstanceUIDs.stream()
+      .map(s -> s.replaceAll("[^0-9,\\.]", "")) // clean each string
+      .collect(Collectors.toList());
+
+    String queryString=constructSeriesUIDList(seriesList);
+
+		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
+		whereCondition.append(" and UPPER(gs.series_instance_uid) in (" + queryString + ")");
+
+		String sql = "select distinct " +
+			"p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
+			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
+			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
+			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
+			"ge.manufacturer_model_name, " + 
+			"gi.pixel_spacing, gi.slice_thickness, " +
+			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as image_count, " +
+			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
+			"gs.released_status, date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
+      addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
+			"from general_series gs " +
+			"join general_image gi on gi.general_series_pk_id = gs.general_series_pk_id " +
+      "join general_equipment ge on gs.general_equipment_pk_id = ge.general_equipment_pk_id " +
+			"join study s on s.study_pk_id = gs.study_pk_id " +
+			"join patient  p on p.patient_pk_id = gs.patient_pk_id " +
+			whereCondition.toString();
+
+		System.out.println("Executing combined query: " + sql);
+    
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql);
+
+    List<Object[]> results = query.list();
+
+		for (Object[] patient:results) {
+			
+			if (patient[5]==null) patient[5]="NO";
+			if (patient[6]==null) patient[6]="337915000";
+			if (patient[7]==null) patient[7]="Homo sapiens";
+		}
+		return results;
+	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<Object[]> getCombinedDataBySeries_v4(String seriesInstanceUIDs, List<String> authorizedProjAndSites) throws DataAccessException {
     
