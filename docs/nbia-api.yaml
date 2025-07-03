@@ -1841,57 +1841,57 @@ paths:
                 properties:
                   error:
                    type: string
-                    example: An unexpected error occurred.
-/getManufacturerValues:
-  get:
-    summary: Retrieve available manufacturer values.
-    description: |
-      Returns a list of manufacturer names filtered by optional query parameters.
+                     example: An unexpected error occurred.
+  /getManufacturerValues:
+    get:
+      summary: Retrieve available manufacturer values.
+      description: |
+        Returns a list of manufacturer names filtered by optional query parameters.
       
-      **Example curl command:**
-      ```bash
-      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        -H "Authorization: Bearer YOUR_TOKEN" \
-      ```
-    tags:
-      - Utilities
-    parameters:
-      - name: Collection
-        in: query
-        description: Filter results by collection name
-        required: false
-        schema:
-          type: string
-      - name: BodyPartExamined
-        in: query
-        description: Filter results by body part examined
-        required: false
-        schema:
-          type: string
-      - name: Modality
-        in: query
-        description: Filter results by modality
-        required: false
-        schema:
-          type: string
-    responses:
-      '200':
-        description: Successful response with manufacturer names
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-      '400':
-        description: Bad request – Missing or invalid parameters
-      '401':
-        description: Unauthorized – Invalid or missing access token
-      '500':
-        description: Internal server error
-    security:
-      - oauth2: []
+        **Example curl command:**
+        ```bash
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
+      tags:
+        - Utilities
+      parameters:
+        - name: Collection
+          in: query
+          description: Filter results by collection name
+          required: false
+          schema:
+            type: string
+        - name: BodyPartExamined
+          in: query
+          description: Filter results by body part examined
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          description: Filter results by modality
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with manufacturer names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: Bad request – Missing or invalid parameters
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - oauth2: []
 
 /getBodyPartValues:
   get:
