@@ -1762,7 +1762,7 @@ paths:
       summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID.
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
-                     **Example curl command:**
+           **Example curl command:**
         ```bash
         curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash" \
           -H "Content-Type: application/x-www-form-urlencoded" \
@@ -1797,61 +1797,61 @@ paths:
       security:
         - oauth2: []
 
-  /getCollectionValues:
-    get:
-      summary: Retrieve available collection values.
-      description: Returns a list of available collection names in NBIA.
-      
-       **Example curl command:**
-        ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Authorization: Bearer YOUR_TOKEN" \
-        ```
-      tags:
-        - Collection Metadata
-      security:
-        - oauth2: []
-      responses:
-        '200':
-          description: A list of collection names.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Collection'
-        '401':
-          description: Unauthorized. Authentication token is missing or invalid.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Unauthorized access.
-        '500':
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: An unexpected error occurred.
+/getCollectionValues:
+  get:
+    summary: Retrieve available collection values.
+    description: Returns a list of available collection names in NBIA.
+    
+    **Example curl command:**
+    ```bash
+    curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      -H "Authorization: Bearer YOUR_TOKEN" \
+    ```
+    tags:
+      - Collection Metadata
+    security:
+      - oauth2: []
+    responses:
+      '200':
+        description: A list of collection names.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Collection'
+      '401':
+        description: Unauthorized. Authentication token is missing or invalid.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: Unauthorized access.
+      '500':
+        description: Internal server error.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: An unexpected error occurred.
   /getManufacturerValues:
     get:
       summary: Retrieve available manufacturer values.
       description: |
         Returns a list of manufacturer names filtered by optional query parameters.
-                 **Example curl command:**
-        ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Authorization: Bearer YOUR_TOKEN" \
-        ```
+          **Example curl command:**
+      ```bash
+      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer YOUR_TOKEN" \
+      ```
       tags:
         - Utilities
       parameters:
@@ -1895,7 +1895,7 @@ paths:
     get:
       summary: Retrieve available body part values.
       description: Returns a list of body part names filtered by optional query parameters.
-              **Example curl command:**
+          **Example curl command:**
         ```bash
         curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" \
           -H "Content-Type: application/x-www-form-urlencoded" \
