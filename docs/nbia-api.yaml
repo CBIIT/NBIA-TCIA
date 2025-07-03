@@ -1842,12 +1842,13 @@ paths:
                 error:
                   type: string
                   example: An unexpected error occurred.
-  /getManufacturerValues:
-    get:
-      summary: Retrieve available manufacturer values.
-      description: |
-        Returns a list of manufacturer names filtered by optional query parameters.
-          **Example curl command:**
+ /getManufacturerValues:
+  get:
+    summary: Retrieve available manufacturer values.
+    description: |
+      Returns a list of manufacturer names filtered by optional query parameters.
+      
+      **Example curl command:**
       ```bash
       curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" \
         -H "Content-Type: application/x-www-form-urlencoded" \
