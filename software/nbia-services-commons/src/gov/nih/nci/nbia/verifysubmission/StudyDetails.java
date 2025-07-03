@@ -57,7 +57,7 @@ public class StudyDetails {
      * series how many submission they have.
      */     
     public int getSubmissionCount() {
-    	int total = 0 ;
+    	long total = 0 ;
     
     	for(SeriesDetails seriesDetail : seriesDetails) {
  			total += seriesDetail.getSubmissionCount();
