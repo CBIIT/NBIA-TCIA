@@ -1893,58 +1893,58 @@ paths:
       security:
         - oauth2: []
 
-/getBodyPartValues:
-  get:
-    summary: Retrieve available body part values.
-    description: |
-      Returns a list of body part names filtered by optional query parameters.
+  /getBodyPartValues:
+    get:
+      summary: Retrieve available body part values.
+      description: |
+        Returns a list of body part names filtered by optional query parameters.
       
-      **Example curl command:**
-      ```bash
-      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        -H "Authorization: Bearer YOUR_TOKEN" \
-      ```
-    tags:
-      - Utilities
-    parameters:
-      - name: Collection
-        in: query
-        description: Filter results by collection name
-        required: false
-        schema:
-          type: string
-      - name: Modality
-        in: query
-        description: Filter results by modality
-        required: false
-        schema:
-          type: string
-      - name: format
-        in: query
-        description: Desired response format (json, xml, csv).
-        required: false
-        schema:
-          type: string
-          enum: [json, xml, csv]
-          default: json
-    responses:
-      '200':
-        description: Successful response
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  BodyPartExamined:
-                    type: string
-                    description: Name of the body part
-      '401':
-        description: Unauthorized – Invalid or missing access token
-      '500':
-        description: Internal server error
-    security:
-      - oauth2: []
+        **Example curl command:**
+        ```bash
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
+      tags:
+        - Utilities
+      parameters:
+        - name: Collection
+          in: query
+          description: Filter results by collection name
+          required: false
+          schema:
+            type: string
+        - name: Modality
+          in: query
+          description: Filter results by modality
+          required: false
+          schema:
+            type: string
+        - name: format
+          in: query
+          description: Desired response format (json, xml, csv).
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    BodyPartExamined:
+                      type: string
+                      description: Name of the body part
+        '401':
+          description: Unauthorized – Invalid or missing access token
+        '500':
+          description: Internal server error
+      security:
+        - oauth2: []
 
