@@ -1800,14 +1800,15 @@ paths:
 /getCollectionValues:
   get:
     summary: Retrieve available collection values.
-    description: Returns a list of available collection names in NBIA.
+    description: |
+      Returns a list of available collection names in NBIA.
     
-    **Example curl command:**
-    ```bash
-    curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
-      -H "Content-Type: application/x-www-form-urlencoded" \
-      -H "Authorization: Bearer YOUR_TOKEN" \
-    ```
+       **Example curl command:**
+      ```bash
+      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer YOUR_TOKEN" \
+      ```
     tags:
       - Collection Metadata
     security:
