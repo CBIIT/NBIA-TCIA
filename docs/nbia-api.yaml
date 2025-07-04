@@ -55,6 +55,12 @@ paths:
     get:
       summary: Get species values and their counts.
       description: Returns the species values and counts.
+      **Example curl command:**
+        ```bash
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesValuesAndCounts" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Patient Metadata
       responses:
@@ -81,6 +87,12 @@ paths:
     get:
       summary: Retrieve species taxonomy.
       description: Returns the current species taxonomy.
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Utilities
       responses:
@@ -202,6 +214,12 @@ paths:
     post:
       summary: Check for commercial restrictions in a simple search.
       description: Returns whether any results from the simple search have commercial restrictions.
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Patient Metadata
       requestBody:
@@ -241,6 +259,12 @@ paths:
     post:
       summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
       description: Returns MD5 hash hierarchy.
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getMD5Hierarchy" -d "Collection=ISPY1" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Patient Metadata
       requestBody:
@@ -294,6 +318,12 @@ paths:
     get:
       summary: Get MD5 hash for a single image.
       description: Returns MD5 hash for the given SOPInstanceUID.
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/v2/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Patient Metadata
       parameters:
@@ -321,7 +351,12 @@ paths:
       summary: Generate a manifest from patient, study, and series UIDs.
       description: |
         Returns a manifest file containing series for the specified patient, study, or series UIDs.
-        
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN>" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001"" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ``` 
       tags:
         - Image Downloads
       requestBody:
@@ -396,7 +431,12 @@ paths:
       summary: Generate a manifest file for a list of series.
       description: |
         Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
-        
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Image Downloads
       requestBody:
@@ -467,7 +507,12 @@ paths:
       description: |
         Creates a manifest file from the specified simple search parameters,
         which can be used with the NBIA Data Retriever.
-        
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Image Downloads
       requestBody:
@@ -637,7 +682,13 @@ paths:
       summary: Retrieve detailed metadata for NBIA collections.
       description: |
         Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
-        You may optionally filter by collection name.      
+        You may optionally filter by collection name.
+        **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionDescriptions?collectionName=4D-Lung" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Collection Metadata
       parameters:
@@ -805,7 +856,12 @@ paths:
       description: |
         Returns modality types along with how often each appears in the database,
         and whether the user is authorized to access the associated collection.
-        
+      **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getModalityValuesAndCounts?Collection=VICTRE" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ``` 
       tags:
         - Utilities
       parameters:
@@ -850,7 +906,12 @@ paths:
       summary: Retrieve collection names and patient counts.
       description: |
         Returns all collection names, patient counts, and authorization status.
-        
+        **Example curl command:**
+        ```bash
+        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionValuesAndCounts"\
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Collection Metadata
       responses:
@@ -887,7 +948,7 @@ paths:
         Optionally filter by Collection or Modality.    
         **Example curl:**
         ```bash
-        curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getBodyPartValuesAndCounts?Modality=PT"
+        curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getBodyPartValuesAndCounts?Modality=PT" \
          ```  
       tags:
         - Patient Metadata
@@ -935,7 +996,7 @@ paths:
         Returns a list of de-identified patients associated with the specified collection.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatient
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatient \
         ```    
       tags:
         - Patient Metadata
@@ -1006,7 +1067,7 @@ paths:
         You can optionally filter by PatientID.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientStudy?Collection=VICTRE&Modality=MG
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientStudy?Collection=VICTRE&Modality=MG \
         ```   
       tags:
         - Patient Metadata
@@ -1088,7 +1149,7 @@ paths:
         Returns a list of SeriesInstanceUIDs for imaging series in a given collection that have been updated on or after the specified date.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getUpdatedSeries?fromDate=28/03/2023
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getUpdatedSeries?fromDate=28/03/2023 \
         ```        
       tags:
         - Series Metadata
@@ -1142,7 +1203,7 @@ paths:
         Useful for accessing or referencing individual DICOM images.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSOPInstanceUIDs?SeriesInstanceUID=1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSOPInstanceUIDs?SeriesInstanceUID=1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992 \
         ```       
       tags:
         - Series Metadata
@@ -1183,7 +1244,7 @@ paths:
       
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesSize?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesSize?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726 \
         ```     
       tags:
         - Series Metadata
@@ -1234,7 +1295,7 @@ paths:
         This includes DICOM tags and related technical attributes.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesMetaData?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesMetaData?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726 \
         ```   
       tags:
         - Series Metadata
@@ -1273,7 +1334,7 @@ paths:
         Modality, BodyPartExamined, Manufacturer, ManufacturerModelName, and SeriesInstanceUID.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeries?Collection=VICTRE&Modality=MG
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeries?Collection=VICTRE&Modality=MG \
         ```       
       tags:
         - Series Metadata
@@ -1394,7 +1455,7 @@ paths:
         Returns a list of de-identified patients associated with a specific collection and imaging modality.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientByCollectionAndModality?Collection=VICTRE&Modality=MG
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientByCollectionAndModality?Collection=VICTRE&Modality=MG \
         ```    
       tags:
         - Patient Metadata
@@ -1464,7 +1525,7 @@ paths:
         Returns a list of studies for patients that were added to the specified collection on or after the given date.
         **Example call:**
          ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010/08/16
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010/08/16 \
         ```     
       tags:
         - Study Metadata
@@ -1546,7 +1607,7 @@ paths:
         Returns a list of patients added to a specified collection since a given date.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010/08/16
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010/08/16 \
         ```     
       tags:
         - Patient Metadata
@@ -1628,7 +1689,7 @@ paths:
         Optional query parameters allow filtering by collection name and body part examined.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getModalityValues
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getModalityValues \
         ```  
       tags:
         - Utilities
@@ -1678,7 +1739,7 @@ paths:
         Optionally, you can specify whether to use new file naming conventions.
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getImage?SeriesInstanceUID=1.3.6.1.4.1.9328.50.1.216116555221814778114703363464001196508
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getImage?SeriesInstanceUID=1.3.6.1.4.1.9328.50.1.216116555221814778114703363464001196508 \
         ```
       tags:
         - Image Downloads
@@ -1727,7 +1788,7 @@ paths:
           -H "Authorization: Bearer YOUR_TOKEN" \
           -d "SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798"
         **Example call:"
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798 \
         ```
       tags:
         - Image Downloads
@@ -1765,7 +1826,7 @@ paths:
       
         **Example call:**
         ```bash
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getCollectionValues \
         ```
       tags:
         - Collection Metadata
