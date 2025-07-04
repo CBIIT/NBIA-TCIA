@@ -85,17 +85,16 @@ paths:
           description: Internal server error
       security:
         - oauth2: []
-  /getSpeciesTax:
-    get:
-      summary: Retrieve species taxonomy.
-      description: 
-        Returns the current species taxonomy.|
-        **Example curl command:**
-          ```bash
-          curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            -H "Authorization: Bearer YOUR_TOKEN" \
-          ```
+ /getSpeciesTax:
+  get:
+    summary: Retrieve species taxonomy.
+    description: |
+      Returns the current species taxonomy.
+      
+      **Example curl command:**
+      ```bash
+      curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax"
+      ```
       tags:
         - Utilities
       responses:
@@ -215,15 +214,17 @@ paths:
         - oauth2: []
   /getRestrictionsForSimpleSearch:
     post:
-      summary: Check for commercial restrictions in a simple search.
-      description: 
-        Returns whether any results from the simple search have commercial restrictions.|
-        **Example curl command:**
-          ```bash
-          curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            -H "Authorization: Bearer YOUR_TOKEN" \
-          ```
+    summary: Check for commercial restrictions in a simple search.
+    description: |
+      Returns whether any results from the simple search have commercial restrictions.
+      
+      **Example curl command:**
+      ```bash
+      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+        -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
+      ```
       tags:
         - Patient Metadata
       requestBody:
@@ -262,8 +263,8 @@ paths:
   /getMD5Hierarchy:
     post:
       summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
-      description: 
-        Returns MD5 hash hierarchy.|
+      description: |
+        Returns MD5 hash hierarchy.
         **Example curl command:**
           ```bash
           curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getMD5Hierarchy" -d "Collection=ISPY1" \
@@ -322,8 +323,8 @@ paths:
   /getMD5HashForImage:
     get:
       summary: Get MD5 hash for a single image.
-      description: 
-        Returns MD5 hash for the given SOPInstanceUID.|
+      description: |
+        Returns MD5 hash for the given SOPInstanceUID.
         **Example curl command:**
           ```bash
           curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/v2/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" \
@@ -686,9 +687,9 @@ paths:
   /getCollectionDescriptions:
     get:
       summary: Retrieve detailed metadata for NBIA collections.
-      description: 
+      description: |
         Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
-        You may optionally filter by collection name.|
+        You may optionally filter by collection name.
         **Example curl command:**
         ```bash
         curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionDescriptions?collectionName=4D-Lung" \
@@ -745,9 +746,9 @@ paths:
   /getCollectionOrSeriesForDOI:
     post:
       summary: Resolve a DOI to a collection or series.
-      description: 
+      description: |
         Resolves a DOI to its associated NBIA collection name or SeriesInstanceUID.
-        Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.|
+        Specify CollectionOrSeries=collection to resolve to a collection name or CollectionOrSeries=series to resolve to SeriesInstanceUID.
       
         **Example curl command:**
         ```bash
@@ -859,15 +860,15 @@ paths:
   /getModalityValuesAndCounts:
     get:
       summary: Retrieve modality values and their occurrence counts.
-      description: 
+      description: |
         Returns modality types along with how often each appears in the database,
-        and whether the user is authorized to access the associated collection.|
-      **Example curl command:**
-        ```bash
-        curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getModalityValuesAndCounts?Collection=VICTRE" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Authorization: Bearer YOUR_TOKEN" \
-        ``` 
+        and whether the user is authorized to access the associated collection.
+        **Example curl command:**
+          ```bash
+          curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getModalityValuesAndCounts?Collection=VICTRE" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -H "Authorization: Bearer YOUR_TOKEN" \
+          ``` 
       tags:
         - Utilities
       parameters:
