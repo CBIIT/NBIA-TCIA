@@ -650,6 +650,13 @@ paths:
       description: |
         Returns metadata (DICOM tags and values) for the specified SeriesInstanceUID.
         
+        **Example curl command:**
+          ```bash
+          curl -X POST "curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "Authorization:Bearer <TOKEN>" -k "https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -H "Authorization: Bearer YOUR_TOKEN" \
+          ```
+        
       tags:
         - Series Metadata
       parameters:
