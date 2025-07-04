@@ -51,18 +51,18 @@ components:
       required:
         - collection
 paths:
-/getSpeciesValuesAndCounts:
-  get:
-    summary: Get species values and their counts.
-    description: |
-      Returns the species values and counts.
-      
-      **Example curl command:**
-      ```bash
-      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesValuesAndCounts" \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        -H "Authorization: Bearer YOUR_TOKEN" \
-      ```
+  /getSpeciesValuesAndCounts:
+    get:
+      summary: Get species values and their counts.
+      description: |
+        Returns the species values and counts.
+        
+        **Example curl command:**
+        ```bash
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesValuesAndCounts" \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Authorization: Bearer YOUR_TOKEN" \
+        ```
       tags:
         - Patient Metadata
       responses:
@@ -86,15 +86,15 @@ paths:
       security:
         - oauth2: []
   /getSpeciesTax:
-   get:
-    summary: Retrieve species taxonomy.
-    description: |
-      Returns the current species taxonomy.
-      
-      **Example curl command:**
-      ```bash
-      curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax"
-      ```
+    get:
+      summary: Retrieve species taxonomy.
+      description: |
+        Returns the current species taxonomy.
+        
+        **Example curl command:**
+        ```bash
+        curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax"
+        ```
       tags:
         - Utilities
       responses:
