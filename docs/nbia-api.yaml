@@ -885,10 +885,10 @@ paths:
       description: |
         Returns a list of body part names along with the number of times each appears in the database.
         Optionally filter by Collection or Modality.    
-      **Example curl:**
-      ```bash
-      curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getBodyPartValuesAndCounts?Modality=PT"
-      ```  
+        **Example curl:**
+        ```bash
+        curl -H "Authorization:Bearer YOUR_ACCESS_TOKEN" -k "https://services.cancerimagingarchive.net/nbia-api/services/getBodyPartValuesAndCounts?Modality=PT"
+         ```  
       tags:
         - Patient Metadata
       parameters:
@@ -933,10 +933,10 @@ paths:
       summary: Retrieve patients in a collection.
       description: |
         Returns a list of de-identified patients associated with the specified collection.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatient
-      ```    
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatient
+        ```    
       tags:
         - Patient Metadata
       parameters:
@@ -1004,10 +1004,10 @@ paths:
       description: |
         Returns metadata for studies associated with patients in the specified collection.
         You can optionally filter by PatientID.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientStudy?Collection=VICTRE&Modality=MG
-      ```   
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientStudy?Collection=VICTRE&Modality=MG
+        ```   
       tags:
         - Patient Metadata
       parameters:
@@ -1086,10 +1086,10 @@ paths:
       summary: Retrieve updated series in a collection since a specified date.
       description: |
         Returns a list of SeriesInstanceUIDs for imaging series in a given collection that have been updated on or after the specified date.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getUpdatedSeries?fromDate=28/03/2023
-      ```        
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getUpdatedSeries?fromDate=28/03/2023
+        ```        
       tags:
         - Series Metadata
       parameters:
@@ -1140,10 +1140,10 @@ paths:
       description: |
         Returns a list of SOPInstanceUIDs (unique image identifiers) associated with the specified SeriesInstanceUID.
         Useful for accessing or referencing individual DICOM images.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getSOPInstanceUIDs?SeriesInstanceUID=1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992
-      ```       
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSOPInstanceUIDs?SeriesInstanceUID=1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992
+        ```       
       tags:
         - Series Metadata
       parameters:
@@ -1181,10 +1181,10 @@ paths:
         Returns the number of images and total file size (in bytes) for the specified SeriesInstanceUID.
         Useful for estimating storage requirements before downloading.
       
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesSize?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726
-      ```     
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesSize?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726
+        ```     
       tags:
         - Series Metadata
       parameters:
@@ -1232,10 +1232,10 @@ paths:
       description: |
         Returns a list of metadata fields and values for the specified SeriesInstanceUID.
         This includes DICOM tags and related technical attributes.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesMetaData?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726
-      ```   
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeriesMetaData?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726
+        ```   
       tags:
         - Series Metadata
       requestBody:
@@ -1271,10 +1271,10 @@ paths:
       description: |
         Returns metadata for imaging series based on optional filters like Collection, PatientID, StudyInstanceUID,
         Modality, BodyPartExamined, Manufacturer, ManufacturerModelName, and SeriesInstanceUID.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeries?Collection=VICTRE&Modality=MG
-      ```       
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getSeries?Collection=VICTRE&Modality=MG
+        ```       
       tags:
         - Series Metadata
       parameters:
@@ -1392,10 +1392,10 @@ paths:
       summary: Retrieve patients in a collection filtered by modality.
       description: |
         Returns a list of de-identified patients associated with a specific collection and imaging modality.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientByCollectionAndModality?Collection=VICTRE&Modality=MG
-      ```    
+        **Example call:**
+        ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getPatientByCollectionAndModality?Collection=VICTRE&Modality=MG
+        ```    
       tags:
         - Patient Metadata
       parameters:
@@ -1462,10 +1462,10 @@ paths:
       summary: Retrieve new studies in a patient collection since a specified date.
       description: |
         Returns a list of studies for patients that were added to the specified collection on or after the given date.
-      **Example call:**
-      ```bash
-      https://services.cancerimagingarchive.net/nbia-api/services/v1/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010/08/16
-      ```     
+        **Example call:**
+         ```bash
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010/08/16
+        ```     
       tags:
         - Study Metadata
       parameters:
@@ -1544,9 +1544,9 @@ paths:
       summary: Retrieve new patients in a collection since a specified date.
       description: |
         Returns a list of patients added to a specified collection since a given date.
-      **Example call:**
+        **Example call:**
         ```bash
-       https://services.cancerimagingarchive.net/nbia-api/services/v1/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010/08/16
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010/08/16
         ```     
       tags:
         - Patient Metadata
@@ -1626,9 +1626,9 @@ paths:
       description: |
         Returns a list of modality types (e.g., CT, MR, PET) available in the NBIA database.
         Optional query parameters allow filtering by collection name and body part examined.
-       **Example call:**
+        **Example call:**
         ```bash
-       https://services.cancerimagingarchive.net/nbia-api/services/v1/getModalityValues
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getModalityValues
         ```  
       tags:
         - Utilities
@@ -1720,14 +1720,14 @@ paths:
       summary: Download a ZIP of DICOM images with MD5 hashes for a given SeriesInstanceUID.
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
-           **Example curl command:**
+        **Example curl command:**
         ```bash
         curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash" \
           -H "Content-Type: application/x-www-form-urlencoded" \
           -H "Authorization: Bearer YOUR_TOKEN" \
           -d "SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798"
-          **Example call:"
-          https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798
+        **Example call:"
+        https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798
         ```
       tags:
         - Image Downloads
