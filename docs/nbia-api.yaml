@@ -85,8 +85,8 @@ paths:
           description: Internal server error
       security:
         - oauth2: []
- /getSpeciesTax:
-  get:
+  /getSpeciesTax:
+   get:
     summary: Retrieve species taxonomy.
     description: |
       Returns the current species taxonomy.
