@@ -1680,8 +1680,7 @@ paths:
           description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
-      security:
-        - oauth2: []
+     
   /getImage:
     get:
       summary: Download a ZIP of DICOM images for a given SeriesInstanceUID.
@@ -1781,8 +1780,6 @@ paths:
         ```
       tags:
         - Collection Metadata
-      security:
-        - oauth2: []
       responses:
         '200':
           description: A list of collection names.
@@ -1812,6 +1809,7 @@ paths:
                   error:
                    type: string
                    example: An unexpected error occurred.
+                   
   /getManufacturerValues:
     get:
       summary: Retrieve available manufacturer values.
