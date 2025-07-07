@@ -1098,7 +1098,7 @@ paths:
         '500':
           description: Internal server error
  
-   /getUpdatedSeries:
+  /getUpdatedSeries:
     get:
       summary: Retrieve updated series in a collection since a specified date.
       description: |
