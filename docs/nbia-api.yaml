@@ -29,18 +29,7 @@ tags:
   - name: Utilities
     description: Helper endpoints for values, counts, and validation
 
-components:
-  securitySchemes:
-    oauth2:
-      type: oauth2
-      flows:
-        password:
-          tokenUrl: https://keycloak-stg.dbmi.cloud/auth/realms/TCIA/protocol/openid-connect/token
-          refreshUrl: https://keycloak-stg.dbmi.cloud/auth/realms/TCIA/protocol/openid-connect/token
-          scopes:
-            openid: ''
-
-  schemas:
+ schemas:
     Collection:
       type: object
       properties:
@@ -115,8 +104,7 @@ paths:
           description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
-      security:
-        - oauth2: []
+     
   /getSimpleSearch:
     post:
       summary: Perform a paged simple search using modality and body part.
