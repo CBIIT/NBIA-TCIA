@@ -28,8 +28,7 @@ tags:
     description: Series-level metadata and operations
   - name: Utilities
     description: Helper endpoints for values, counts, and validation
-
- schemas:
+schemas:
     Collection:
       type: object
       properties:
