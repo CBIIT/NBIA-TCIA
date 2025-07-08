@@ -70,8 +70,8 @@ public class PatientDetails {
      * This is an aggregate computed by asking each associated
      * study and it turn each series how many submission they have.
      */    
-    public int getSubmissionCount() {
-    	int total = 0 ;
+    public long getSubmissionCount() {
+    	long total = 0 ;
     
     	for(StudyDetails studyDetail : studyDetails) {
     		List<SeriesDetails> seriesDetails = studyDetail.getSeriesDetails();
