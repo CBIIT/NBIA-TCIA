@@ -79,7 +79,7 @@ paths:
         ```
       tags:
         - Utilities
-      responses:
+     responses:
         '200':
           description: Successful taxonomy list
           content:
@@ -93,7 +93,7 @@ paths:
                       type: string
                     speciesDescription:
                       type: string
-         '500':
+        '500':
           description: Internal server error
      
   /getSimpleSearch:
