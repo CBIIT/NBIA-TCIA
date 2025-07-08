@@ -47,7 +47,7 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesValuesAndCounts" \
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesValuesAndCounts"
         ```
       tags:
         - Patient Metadata
@@ -77,7 +77,7 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax"
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getSpeciesTax"
         ```
       tags:
         - Utilities
@@ -201,7 +201,7 @@ paths:
       
       **Example curl command:**
       ```bash
-      curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch"   
+      curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch"   
         -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
       ```
       tags:
@@ -245,7 +245,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getMD5Hierarchy" -d "Collection=ISPY1" 
+          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getMD5Hierarchy" -d "Collection=ISPY1" 
           ```
       tags:
         - Patient Metadata
@@ -302,7 +302,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/v2/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" 
+          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/v2/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" 
           ```
       tags:
         - Patient Metadata
@@ -332,7 +332,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001"" 
+          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001"" 
           ``` 
       tags:
         - Image Downloads
@@ -409,7 +409,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false" \
+          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false" \
           ```
       tags:
         - Image Downloads
@@ -482,7 +482,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" 
+          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" 
           ```
       tags:
         - Image Downloads
@@ -610,7 +610,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" 
+          curl -X POST -H "Content-Type: application/json" -k "https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" 
           ```        
       tags:
         - Series Metadata
@@ -658,7 +658,7 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionDescriptions?collectionName=4D-Lung" 
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionDescriptions?collectionName=4D-Lung" 
         ```
       tags:
         - Collection Metadata
@@ -715,7 +715,7 @@ paths:
       
         **Example curl command:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" 
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" 
           -d "DOI=https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE&CollectionOrSeries=collection"
         ```
       tags:
@@ -772,7 +772,10 @@ paths:
       description: 
         Returns manufacturer names and the number of times each appears in the database,
         along with authorization information.|
-        
+        **Example curl command:**
+        ```bash
+        curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
+        ```
       tags:
         - Utilities
       parameters:
@@ -824,7 +827,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getModalityValuesAndCounts?Collection=VICTRE" 
+          curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getModalityValuesAndCounts?Collection=VICTRE" 
           ``` 
       tags:
         - Utilities
@@ -871,7 +874,7 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -X POST "curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionValuesAndCounts"
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionValuesAndCounts"
         ```
       tags:
         - Collection Metadata
@@ -908,7 +911,7 @@ paths:
         
         **Example curl:**
         ```bash
-        curl -H -k "https://services.cancerimagingarchive.net/nbia-api/services/getBodyPartValuesAndCounts?Modality=PT" \
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getBodyPartValuesAndCounts?Modality=PT" 
          ```  
       tags:
         - Patient Metadata
@@ -1817,7 +1820,7 @@ paths:
       
         **Example call:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" 
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/v1/getManufacturerValues" 
         ```
       tags:
         - Utilities
@@ -1864,7 +1867,7 @@ paths:
       
         **Example call:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" 
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/v1/getBodyPartValues" 
         ```
       tags:
         - Utilities
