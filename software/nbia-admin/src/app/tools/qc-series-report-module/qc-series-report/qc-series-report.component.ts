@@ -37,7 +37,7 @@ export class QcSeriesReportComponent implements OnInit, OnDestroy{
 
                 // Sort by Series Id then Time Stamp
                 this.qcSeriesReportResults.sort( ( row1, row2 ) =>
-                    row1['SeriesInstanceUID'] < row2['SeriesInstanceUID'] ? 1 : row1['SeriesInstanceUID'] > row2['SeriesInstanceUID'] ? 1 : row1['Visibility'] < row2['Visibility'] ? -1 : 1 );
+                    row1['Series Instance UID'] < row2['Series Instance UID'] ? 1 : row1['Series Instance UID'] > row2['Series Instance UID'] ? 1 : row1['Visibility'] < row2['Visibility'] ? -1 : 1 );
                 this.showReport = true;
             } );
 
@@ -52,7 +52,7 @@ export class QcSeriesReportComponent implements OnInit, OnDestroy{
                         }else{
                             query += '&seriesId=';
                         }
-                        query += series.SeriesInstanceUID;
+                        query += series['Series Instance UID'];
                 }
 				query +='&format=csv';
 
