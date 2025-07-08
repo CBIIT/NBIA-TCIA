@@ -721,7 +721,7 @@ paths:
         along with authorization information.|
         **Example curl command:**
         ```bash
-           curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
+        curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
         ```
       tags:
         - Utilities
