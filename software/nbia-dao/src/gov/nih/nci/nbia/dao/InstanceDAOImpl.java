@@ -18,6 +18,12 @@ import gov.nih.nci.nbia.internaldomain.TrialDataProvenance;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -83,6 +89,34 @@ public class InstanceDAOImpl extends AbstractDAO
 		return rs;
 	}
 
+	@Transactional(propagation=Propagation.REQUIRED)
+	public List<String> getImages_v4(String seriesInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
+		StringBuffer where = new StringBuffer();
+		
+		String sql = "select gi.sop_instance_uid" +
+		" from general_image gi where "
+		+ " gi.sop_instance_uid is not null ";
+
+    Map<String, Object> params = new HashMap<>();
+
+		if (seriesInstanceUid != null) {
+			where = where.append(" and gi.series_instance_uid=:seriesInstanceUid");
+			params.put("seriesInstanceUid", seriesInstanceUid.toUpperCase());
+		}
+
+    sql = sql + where.toString();
+
+    // Create the query and set parameters in one go
+    Query query = this.getHibernateTemplate()
+        .getSessionFactory()
+        .getCurrentSession()
+        .createSQLQuery(sql)
+        .setProperties(params);
+
+    List<String> rs = query.list();
+
+		return rs;
+	}
 	@Transactional(propagation=Propagation.REQUIRED)
 	public List<String> getImages(String seriesInstanceUid, List<String> authorizedProjAndSites) throws DataAccessException {
 		StringBuffer where = new StringBuffer();

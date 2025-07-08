@@ -523,6 +523,18 @@ public class getData {
 		}
 		return results;
 	}
+	protected List<String> getSOPUIDS_v4(String seriesInstanceUID, List<String> authorizedCollections) {
+		List<String> results = null;
+
+		InstanceDAO tDao = (InstanceDAO)SpringApplicationContext.getBean("instanceDAO");
+		try {
+			results = tDao.getImages_v4(seriesInstanceUID, authorizedCollections);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return results;
+	}
 	protected List<String> getSOPUIDS(String seriesInstanceUID, List<String> authorizedCollections) {
 		List<String> results = null;
 
