@@ -267,7 +267,7 @@ paths:
             '*/*':
               schema:
                 type: string
-         '500':
+        '500':
           description: Internal server error
           content:
             application/json:
