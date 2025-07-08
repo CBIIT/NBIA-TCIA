@@ -65,7 +65,7 @@ paths:
                       type: string
                     count:
                       type: string
-         '500':
+        '500':
           description: Internal server error
   /getSpeciesTax:
     get:
