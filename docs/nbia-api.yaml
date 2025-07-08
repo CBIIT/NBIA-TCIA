@@ -714,15 +714,15 @@ paths:
           description: Internal server error
 
   /getManufacturerValuesAndCounts:
-    get:
-      summary: Retrieve manufacturer values and their occurrence counts.
-      description: 
-        Returns manufacturer names and the number of times each appears in the database,
-        along with authorization information.|
-        **Example curl command:**
-        ```bash
-        curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
-        ```
+  get:
+    summary: Retrieve manufacturer values and their occurrence counts.
+    description: |
+      Returns manufacturer names and the number of times each appears in the database,
+      along with authorization information.
+      **Example curl command:**
+      ```bash
+      curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
+      ```
       tags:
         - Utilities
       parameters:
