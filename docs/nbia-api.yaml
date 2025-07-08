@@ -65,9 +65,7 @@ paths:
                       type: string
                     count:
                       type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token
-        '500':
+         '500':
           description: Internal server error
   /getSpeciesTax:
     get:
@@ -95,9 +93,7 @@ paths:
                       type: string
                     speciesDescription:
                       type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token
-        '500':
+         '500':
           description: Internal server error
      
   /getSimpleSearch:
@@ -189,8 +185,6 @@ paths:
             application/json:
               schema:
                 type: object
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
   /getRestrictionsForSimpleSearch:
@@ -232,8 +226,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -245,7 +237,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getMD5Hierarchy" -d "Collection=ISPY1" 
+              curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getMD5Hierarchy" -d "Collection=ISPY1" 
           ```
       tags:
         - Patient Metadata
@@ -275,16 +267,7 @@ paths:
             '*/*':
               schema:
                 type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '500':
+         '500':
           description: Internal server error
           content:
             application/json:
@@ -302,7 +285,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/v2/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" 
+             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/v2/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" 
           ```
       tags:
         - Patient Metadata
@@ -319,8 +302,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
  
@@ -332,7 +313,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001"" 
+             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001"" 
           ``` 
       tags:
         - Image Downloads
@@ -382,15 +363,6 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
         '500':
           description: Internal server error.
           content:
@@ -409,7 +381,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false" \
+             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false" \
           ```
       tags:
         - Image Downloads
@@ -455,15 +427,6 @@ paths:
                 properties:
                   error:
                     type: string
-        '401':
-          description: Unauthorized – Invalid or missing access token.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
         '500':
           description: Internal server error.
           content:
@@ -482,7 +445,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" 
+             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" 
           ```
       tags:
         - Image Downloads
@@ -581,16 +544,6 @@ paths:
                   error:
                     type: string
                     example: Missing or invalid input.
-        '401':
-          description: Unauthorized – Invalid or missing access token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Unauthorized access.
         '500':
           description: Internal server error
           content:
@@ -610,7 +563,7 @@ paths:
         
         **Example curl command:**
           ```bash
-          curl -X POST -H "Content-Type: application/json" -k "https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" 
+             curl -X POST -H "Content-Type: application/json" -k "https://nbia-stage.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" 
           ```        
       tags:
         - Series Metadata
@@ -642,8 +595,6 @@ paths:
                       description: Value associated with the tag
         '400':
           description: Bad request – Missing or invalid SeriesUID
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '404':
           description: SeriesUID not found
         '500':
@@ -658,7 +609,7 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionDescriptions?collectionName=4D-Lung" 
+           curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionDescriptions?collectionName=4D-Lung" 
         ```
       tags:
         - Collection Metadata
@@ -701,8 +652,6 @@ paths:
                     descriptionURI:
                       type: string
                       description: DOI or external metadata page link for the collection
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -715,7 +664,7 @@ paths:
       
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" 
+           curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getCollectionOrSeriesForDOI" 
           -d "DOI=https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE&CollectionOrSeries=collection"
         ```
       tags:
@@ -759,8 +708,6 @@ paths:
                       description: Reserved field (currently unused)
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '404':
           description: DOI not found
         '500':
@@ -774,7 +721,7 @@ paths:
         along with authorization information.|
         **Example curl command:**
         ```bash
-        curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
+           curl -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManufacturerValuesAndCounts?Collection=4D-Lung"
         ```
       tags:
         - Utilities
@@ -813,8 +760,6 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -861,8 +806,6 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -897,8 +840,6 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -945,8 +886,6 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1014,8 +953,6 @@ paths:
                       description: User has access to the specified collection. 1 means yes and 0 means no.
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1096,8 +1033,6 @@ paths:
                       description: User has access to the specified collection. 1 means yes and 0 means no.
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
  
@@ -1146,8 +1081,6 @@ paths:
                   description: DICOM Tag (0020,000E) – Unique identifier for a DICOM series
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '404':
           description: No updated series found
         '500':
@@ -1185,8 +1118,6 @@ paths:
                   description: DICOM Tag (0008,0018) – Unique identifier for an individual DICOM image
         '400':
           description: Bad request – Missing or invalid SeriesInstanceUID
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '404':
           description: Series not found or contains no images
         '500':
@@ -1236,8 +1167,6 @@ paths:
                     description: Total size in bytes of the series
         '400':
           description: Bad request – Missing or invalid SeriesInstanceUID
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '404':
           description: Series not found
         '500':
@@ -1275,8 +1204,6 @@ paths:
                 type: string
         '400':
           description: Bad request – Missing or invalid SeriesInstanceUID
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '404':
           description: SeriesInstanceUID not found
         '500':
@@ -1398,8 +1325,6 @@ paths:
                       description: Collection name that the series belongs to
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1467,8 +1392,6 @@ paths:
                       description: User has access to the specified collection. 1 means yes and 0 means no.
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1548,8 +1471,6 @@ paths:
                       description: User has access to the specified collection. 1 means yes and 0 means no.
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1629,8 +1550,6 @@ paths:
                       description: User has access to the specified collection. 1 means yes and 0 means no.
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1679,8 +1598,6 @@ paths:
                   type: string
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
      
@@ -1722,8 +1639,6 @@ paths:
                 format: binary
         '400':
           description: Bad request – Missing or invalid parameters.
-        '401':
-          description: Unauthorized – Invalid or missing access token.
         '404':
           description: SeriesInstanceUID not found.
         '500':
@@ -1763,8 +1678,6 @@ paths:
                 format: binary
         '400':
           description: Bad request – Missing or invalid parameters.
-        '401':
-          description: Unauthorized – Invalid or missing access token.
         '404':
           description: SeriesInstanceUID not found.
         '500':
@@ -1791,16 +1704,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Collection'
-        '401':
-          description: Unauthorized. Authentication token is missing or invalid.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Unauthorized access.
         '500':
           description: Internal server error.
           content:
@@ -1854,8 +1757,6 @@ paths:
                   type: string
         '400':
           description: Bad request – Missing or invalid parameters
-        '401':
-          description: Unauthorized – Invalid or missing access token
         '500':
           description: Internal server error
 
@@ -1905,7 +1806,5 @@ paths:
                     BodyPartExamined:
                       type: string
                       description: Name of the body part
-        '401':
-          description: Unauthorized – Invalid or missing access token
-        '500':
+         '500':
           description: Internal server error
