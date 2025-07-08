@@ -1794,17 +1794,17 @@ paths:
             enum: [json, xml, csv]
             default: json
       responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    BodyPartExamined:
-                      type: string
-                      description: Name of the body part
-         '500':
-          description: Internal server error
+  '200':
+    description: Successful response
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              BodyPartExamined:
+                type: string
+                description: Name of the body part
+  '500':
+    description: Internal server error
