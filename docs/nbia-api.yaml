@@ -79,7 +79,7 @@ paths:
         ```
       tags:
         - Utilities
-     responses:
+      responses:
         '200':
           description: Successful taxonomy list
           content:
