@@ -189,16 +189,16 @@ paths:
           description: Internal server error
   /getRestrictionsForSimpleSearch:
     post:
-    summary: Check for commercial restrictions in a simple search.
-    description: |
-      Returns whether any results from the simple search have commercial restrictions.
+      summary: Check for commercial restrictions in a simple search.
+      description: |
+        Returns whether any results from the simple search have commercial restrictions.
       
-      **Example curl command:**
-      ```bash
-      curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch"   
-        -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
-      ```
-    tags:
+        **Example curl command:**
+        ```bash
+        curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch"   
+          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
+        ```
+      tags:
         - Patient Metadata
       requestBody:
         required: true
