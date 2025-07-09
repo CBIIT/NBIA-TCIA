@@ -187,14 +187,18 @@ System.out.println("get collection name="+ collectionName);
 					if (in != null)
 						in.close();
 				}
-				downloadLogger.info(
-								"collection="+collectionName + "," +
-								"seriesUID="+ seriesInstanceUid + "," +
-								"numberOfFiles=" + numberOfFiles + "," +
-								"totalSize="+ size + "," +
-								"userId="+ userName + "," +
-								"downloadType=CLI/v1API");		
-				recodeDownload(seriesInstanceUid, size, "CLI/v1API", userName);
+        try {
+				  downloadLogger.info(
+				  				"collection="+collectionName + "," +
+				  				"seriesUID="+ seriesInstanceUid + "," +
+				  				"numberOfFiles=" + numberOfFiles + "," +
+				  				"totalSize="+ size + "," +
+				  				"userId="+ userName + "," +
+				  				"downloadType=CLI/v1API");		
+				  recodeDownload(seriesInstanceUid, size, "CLI/v1API", userName);
+		    } catch (Exception e) {
+		    	downloadLogger.error("Exception recording download " + e.getMessage());
+		    }
 			}
 		};
 

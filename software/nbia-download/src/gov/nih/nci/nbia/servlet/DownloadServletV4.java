@@ -242,7 +242,7 @@ System.out.println("!!! download servletv4 logged in");
 //									"userId="+ userId + "," +
 //									"downloadType=V4");
 			} catch (Exception e) {
-				logger.error("Exception recording download " + e.getMessage());
+				downloadLogger.error("Exception recording download " + e.getMessage());
 			}
 		} else
 			sendAccessDenial(response);
