@@ -198,7 +198,7 @@ paths:
       curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getRestrictionsForSimpleSearch"   
         -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
       ```
-      tags:
+    tags:
         - Patient Metadata
       requestBody:
         required: true
@@ -313,7 +313,7 @@ paths:
         
         **Example curl command:**
           ```bash
-             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001"" 
+             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001" 
           ``` 
       tags:
         - Image Downloads
@@ -381,7 +381,7 @@ paths:
         
         **Example curl command:**
           ```bash
-             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false" \
+             curl -X POST -H "Content-Type: application/json" -k "https://services.cancerimagingarchive.net/nbia-api/services/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false"
           ```
       tags:
         - Image Downloads
@@ -1652,8 +1652,8 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash" \
-          -H "Content-Type: application/x-www-form-urlencoded" \
+        curl -X POST "https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash"
+          -H "Content-Type: application/x-www-form-urlencoded"
           -d "SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798"
           
         **Example call:"
