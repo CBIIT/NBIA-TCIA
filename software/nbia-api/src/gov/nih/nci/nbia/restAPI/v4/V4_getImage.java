@@ -152,15 +152,19 @@ public class V4_getImage extends getData {
 					if (in != null)
 						in.close();
 					if (size > 0) {
-						recodeDownload(seriesInstanceUid, size, "v4API", userName);
-						downloadLogger.info(
-								"collection="+collectionName + "," +
-								"seriesUID="+ seriesInstanceUid + "," +
-								"numberOfFiles=" + numberOfFiles + "," +
-								"totalSize="+ size + "," +
-								"userId="+ userName + "," +
-								"downloadType=v4API");												
-						System.out.println("size=" + size +"; recording");
+            try {
+						  recodeDownload(seriesInstanceUid, size, "v4API", userName);
+						  downloadLogger.info(
+						  		"collection="+collectionName + "," +
+						  		"seriesUID="+ seriesInstanceUid + "," +
+						  		"numberOfFiles=" + numberOfFiles + "," +
+						  		"totalSize="+ size + "," +
+						  		"userId="+ userName + "," +
+						  		"downloadType=v4API");												
+						  System.out.println("size=" + size +"; recording");
+		        } catch (Exception e) {
+		        	downloadLogger.error("Exception recording download " + e.getMessage());
+		        }
 					}
 					else {
 						System.out.println("size <= 0; not recording");

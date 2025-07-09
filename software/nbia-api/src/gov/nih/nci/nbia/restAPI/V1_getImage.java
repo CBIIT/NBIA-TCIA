@@ -143,14 +143,18 @@ public class V1_getImage extends getData {
 					if (in != null)
 						in.close();
 				}
-				recodeDownload(seriesInstanceUid, size, "v1API", userName);	
-				downloadLogger.info(
-						"collection="+collectionName + "," +
-						"seriesUID="+ seriesInstanceUid + "," +
-						"numberOfFiles=" + numberOfFiles + "," +
-						"totalSize="+ size + "," +
-						"userId="+ userName + "," +
-						"downloadType=v1API");						
+        try {
+				  recodeDownload(seriesInstanceUid, size, "v1API", userName);	
+				  downloadLogger.info(
+				  		"collection="+collectionName + "," +
+				  		"seriesUID="+ seriesInstanceUid + "," +
+				  		"numberOfFiles=" + numberOfFiles + "," +
+				  		"totalSize="+ size + "," +
+				  		"userId="+ userName + "," +
+				  		"downloadType=v1API");						
+		    } catch (Exception e) {
+		    	downloadLogger.error("Exception recording download " + e.getMessage());
+		    }
 			}
 			
 		}; } else {
