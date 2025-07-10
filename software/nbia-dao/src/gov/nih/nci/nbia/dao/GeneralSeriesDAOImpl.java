@@ -536,7 +536,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       + "s.study_desc, date_format(s.study_date, '%m-%d-%Y'), s.third_party_analysis, "
       + addAuthorizedProjAndSitesCaseStatement(authCol) 
       + " from general_series s join general_equipment e " 
-      + " on s.general_equipment_pk_id = e.general_equipment_pk_id where s.visibility in ('1') and authorized = 1 ";
+      + " on s.general_equipment_pk_id = e.general_equipment_pk_id where s.visibility in ('1') ";
 
     Map<String, Object> params = new HashMap<>();
     int i = 0;
@@ -760,7 +760,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, ge.manufacturer, "
       + "ge.manufacturer_model_name, ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, date_format(s.date_released, '%m-%d-%Y'), " 
       + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) 
-      + " from general_series s join general_equipment ge on s.general_equipment_pk_id = ge.general_equipment_pk_id  where s.visibility in ('1') and authorized = 1 ";
+      + " from general_series s join general_equipment ge on s.general_equipment_pk_id = ge.general_equipment_pk_id  where s.visibility in ('1') ";
 
     Map<String, Object> params = new HashMap<>();
 
@@ -941,7 +941,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       String sql = "select ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as dicom_size, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, " +
                    addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
                    " from general_series s " +
-                   " where s.visibility in ('1')  and authorized = 1 ";
+                   " where s.visibility in ('1') ";
   
       if (seriesInstanceUID != null) {
           where.append(" and UPPER(s.series_instance_uid) = :seriesInstanceUID");
@@ -2037,7 +2037,7 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
   sqlString += addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites);
 
   Map<String, Object> params = new HashMap<>();
-  sqlString +=" from general_series s where 1=1 and authorized = 1 ";
+  sqlString +=" from general_series s where 1=1 ";
   if (doi!=null&&doi.length()>0) {
     sqlString += " and s.description_uri=:doi";
     params.put("doi", doi);

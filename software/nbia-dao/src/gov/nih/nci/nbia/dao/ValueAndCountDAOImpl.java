@@ -184,7 +184,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
       + processAuthorizationCaseStatement(criteria.getAuth())
       + " from patient p, trial_data_provenance dp, general_series gs " 
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id "
-      +" and VISIBILITY in ('1') and authorized = 1 group by dp.project ";
+      +" and VISIBILITY in ('1') group by dp.project ";
 
 
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
@@ -264,7 +264,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 
 	      String SQLQuery = "select case when p.species_code is null then '" + speciesCode + "' else p.species_code end as species_code, count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs "
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
-        SQLQuery=SQLQuery+" and VISIBILITY in ('1') and authorized = 1 group by p.species_code, "
+        SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_code, "
           + caseStatement.substring(0, caseStatement.length() - 15);
 
         
@@ -320,7 +320,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
           + caseStatement
           + " from patient p, trial_data_provenance dp, general_series gs"
 			    + " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id "
-          + " and VISIBILITY in ('1') and authorized = 1 ";
+          + " and VISIBILITY in ('1') ";
 
       Map<String, Object> params = new HashMap<>();
 
@@ -401,7 +401,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
       StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
 	    String SQLQuery="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs where "
         + "p.trial_dp_pk_id = dp.trial_dp_pk_id and p.patient_pk_id = gs.patient_pk_id "
-        + "and VISIBILITY in ('1') and authorized = 1 ";
+        + "and VISIBILITY in ('1') ";
         
       Map<String, Object> params = new HashMap<>();
 
@@ -475,7 +475,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	      String SQLQuery = "select manufacturer, count(distinct p.patient_pk_id) thecount, " 
           + caseStatement
           + " from patient p, trial_data_provenance dp, general_series gs, general_equipment ge"
-			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id and VISIBILITY in ('1') and authorized = 1 ";
+			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id and VISIBILITY in ('1') ";
         
 		    if (criteria.getCollection() != null) {
 		    	SQLQuery=SQLQuery+" and UPPER(dp.project)=:project";
