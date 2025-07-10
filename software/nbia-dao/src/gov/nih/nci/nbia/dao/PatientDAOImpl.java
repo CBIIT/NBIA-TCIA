@@ -121,7 +121,7 @@ public class PatientDAOImpl extends AbstractDAO
     }
 
 		String sql = "select distinct p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
-				" where gs.visibility in ('1') and p.patient_id = :patientId and p.patient_pk_id = gs.patient_pk_id "+ where;
+				" where gs.visibility in ('1') and p.patient_id = :patientId and p.patient_pk_id = gs.patient_pk_id  and authorized = 1 "+ where;
     params.put("patientId", patientId);
 				
     System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollectionAndId_v4() - downloadable visibility - sql is: " + sql);
@@ -194,7 +194,7 @@ public class PatientDAOImpl extends AbstractDAO
 
 
 		String sql = "select distinct p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
-				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where;
+				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id and authorized = 1 "+ where;
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
 
@@ -287,7 +287,7 @@ public class PatientDAOImpl extends AbstractDAO
     }
 
 		String sql = "select distinct p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
-				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where;
+				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id and authorized = 1 "+ where;
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
 
@@ -355,7 +355,7 @@ public class PatientDAOImpl extends AbstractDAO
 		String sql = "select distinct p.patient_id, " 
       + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites)
       + ", p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description from patient as p, general_series as gs " +
-				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where;
+				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id and authorized = 1 "+ where;
 				
 	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
     // Create the query and set parameters in one go
@@ -407,7 +407,7 @@ public class PatientDAOImpl extends AbstractDAO
 
     String queryString=constructSeriesUIDList(seriesList);
 
-		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
+		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1') and authorized = 1 ");
 		whereCondition.append(" and UPPER(gs.series_instance_uid) in (" + queryString + ")");
 
 		String sql = "select distinct " +
@@ -460,7 +460,7 @@ public class PatientDAOImpl extends AbstractDAO
     List<String> seriesList=Arrays.asList(seriesStrings);
     String queryString=constructSeriesUIDList(seriesList);
 
-		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
+		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1') and authorized = 1 ");
 		whereCondition.append(" and UPPER(gs.series_instance_uid) in (" + queryString + ")");
 
 		String sql = "select distinct " +

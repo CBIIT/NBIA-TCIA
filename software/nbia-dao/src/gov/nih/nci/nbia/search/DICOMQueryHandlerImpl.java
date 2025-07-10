@@ -276,7 +276,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
 	        selectStmt = SQL_QUERY_SELECT2 + " || '/' || " +  authorizationCaseStatement(theQuery);
 	        fromStmt = SQL_QUERY_FROM_NEITHER;
-	        whereStmt = SQL_QUERY_WHERE_NEITHER;
+	        whereStmt = SQL_QUERY_WHERE_NEITHER + " and authorized = 1 ";
 
 	        /* List to return */
 	        List<PatientStudySeriesQuintuple> patientList = new ArrayList<PatientStudySeriesQuintuple>();
