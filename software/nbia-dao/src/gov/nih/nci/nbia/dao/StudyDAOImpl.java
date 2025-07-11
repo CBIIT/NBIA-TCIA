@@ -604,7 +604,7 @@ public class StudyDAOImpl extends AbstractDAO
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
 				" from study s join general_series gs on s.study_instance_uid = gs.study_instance_uid " +
         "left join patient p on s.patient_pk_id = p.patient_pk_id" + 
-        " where gs.visibility in ('1') ";
+        " where gs.visibility in ('1') and authorized = 1 ";
 		
 
 		if (collection != null) {
@@ -766,7 +766,7 @@ public class StudyDAOImpl extends AbstractDAO
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
 				" from study s join general_series gs on s.study_instance_uid = gs.study_instance_uid " +
         "left join patient p on s.patient_pk_id = p.patient_pk_id " + 
-        "where gs.visibility in ('1') ";
+        "where gs.visibility in ('1') and authorized = 1 ";
 		StringBuffer where = new StringBuffer();
 		
 		Map<String, Object> params = new HashMap<>();

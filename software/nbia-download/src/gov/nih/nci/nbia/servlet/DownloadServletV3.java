@@ -186,7 +186,7 @@ public class DownloadServletV3 extends HttpServlet {
 								"userId="+ userId + "," +
 								"downloadType=V3");		
 			} catch (Exception e) {
-				logger.error("Exception recording download " + e.getMessage());
+				downloadLogger.error("Exception recording download " + e.getMessage());
 			}
 		} else
 			sendAccessDenial(response);

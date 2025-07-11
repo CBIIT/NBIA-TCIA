@@ -67,14 +67,18 @@ public class V1_getSingleImage extends getData {
 		int size = wdto.getImage().length;
 		String collectionName = wdto.getCollection();
 
-		downloadLogger.info(
-				"collection="+collectionName + "," +
-				"seriesUID="+ seriesInstanceUid + "," +
-				"numberOfFiles=1" +  "," +
-				"totalSize="+ size + "," +
-				"userId="+ user + "," +
-				"downloadType=v1API");			
-		recodeDownload(seriesInstanceUid, size, "v1API", user);
+    try {
+		  downloadLogger.info(
+		  		"collection="+collectionName + "," +
+		  		"seriesUID="+ seriesInstanceUid + "," +
+		  		"numberOfFiles=1" +  "," +
+		  		"totalSize="+ size + "," +
+		  		"userId="+ user + "," +
+		  		"downloadType=v1API");			
+		  recodeDownload(seriesInstanceUid, size, "v1API", user);
+		} catch (Exception e) {
+			downloadLogger.error("Exception recording download " + e.getMessage());
+		}
 		return Response.ok(wdto.getImage(), "application/dicom").header("Content-Disposition", "attachment; filename=" + sOPInstanceUID + ".dcm").build();
 	}
 }

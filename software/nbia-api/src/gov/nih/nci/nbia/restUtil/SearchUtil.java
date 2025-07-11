@@ -128,7 +128,8 @@ public class SearchUtil {
 				}
 			}
 			
-			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("AnatomicalSiteCriteria")){
+			if (inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("AnatomicalSiteCriteria") || 
+          inFormParams.get("criteriaType"+i).get(0).equalsIgnoreCase("BodyPartExaminedCriteria")) {
 				if (query.getAnatomicalSiteCriteria()==null){
 					AnatomicalSiteCriteria criteria=new AnatomicalSiteCriteria();
 				   criteria.setAnatomicalSiteValue(inFormParams.get("value"+i).get(0));

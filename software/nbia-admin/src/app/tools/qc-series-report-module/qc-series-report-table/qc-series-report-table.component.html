@@ -7,43 +7,127 @@
         <thead>
         <tr class="data-table-thead-tr">
             <th class="data-table-thead-th">
-                Series ID
+                Patient ID 
             </th>
             <th class="data-table-thead-th">
-                Visibility
+                Patient Name 
             </th>
             <th class="data-table-thead-th">
-                Release Status
+                Patient Birth Date 
             </th>
             <th class="data-table-thead-th">
-                Release Date
+                Patient Sex 
             </th>
             <th class="data-table-thead-th">
-                Image Count
+                Ethnic Group 
             </th>			
             <th class="data-table-thead-th">
-                DOI
+                Phantom 
             </th>
             <th class="data-table-thead-th">
-                License
+                Species Code 
             </th>
             <th class="data-table-thead-th">
-                Site
+                Species Description
             </th>
             <th class="data-table-thead-th">
-                Project
+                Study Instance UID 
             </th>
             <th class="data-table-thead-th">
-                Patient ID
-            </th>
-            <th class="data-table-thead-th">
-                Modality
+                Study Date
             </th>
             <th class="data-table-thead-th">
                 Study Description
             </th>
             <th class="data-table-thead-th">
+                Admitting Diagnosis Description
+            </th>
+            <th class="data-table-thead-th">
+                Study ID
+            </th>
+            <th class="data-table-thead-th">
+                Patient Age
+            </th>
+            <th class="data-table-thead-th">
+                Longitudinal Temporal Event Type
+            </th>
+            <th class="data-table-thead-th">
+                Longitudinal Temporal Offset From Event
+            </th>
+            <th class="data-table-thead-th">
+                Series Instance UID
+            </th>
+            <th class="data-table-thead-th">
+                Project
+            </th>
+            <th class="data-table-thead-th">
+                Site
+            </th>
+            <th class="data-table-thead-th">
+                Modality
+            </th>
+            <th class="data-table-thead-th">
+                Protocol Name
+            </th>
+            <th class="data-table-thead-th">
+                Series Date
+            </th>
+            <th class="data-table-thead-th">
                 Series Description
+            </th>
+            <th class="data-table-thead-th">
+                Body Part Examined
+            </th>
+            <th class="data-table-thead-th">
+                Series Number
+            </th>
+            <th class="data-table-thead-th">
+                Annotations Flag
+            </th>
+            <th class="data-table-thead-th">
+                Manufacturer
+            </th>
+            <th class="data-table-thead-th">
+                Manufacturer Model Name
+            </th>
+            <th class="data-table-thead-th">
+                Pixel Spacing (mm) - Row
+            </th>
+            <th class="data-table-thead-th">
+                Slice Thickness (mm)
+            </th>
+            <th class="data-table-thead-th">
+                Software Versions
+            </th>
+            <th class="data-table-thead-th">
+                Image Count
+            </th>
+            <th class="data-table-thead-th">
+                Max Submission Timestamp
+            </th>
+            <th class="data-table-thead-th">
+                License Name
+            </th>
+            <th class="data-table-thead-th">
+                License URI
+            </th>
+            <th class="data-table-thead-th">
+                Collection URI
+            </th>
+            <th class="data-table-thead-th">
+                File Size
+            </th>
+            <th class="data-table-thead-th">
+                Released Status
+            </th>
+            <th class="data-table-thead-th">
+                Date Released
+            </th>
+            <th class="data-table-thead-th">
+                Third Party Analysis
+            </th>
+            <th class="data-table-thead-th">
+                Authorized
             </th>
         </tr>
         </thead>
@@ -56,45 +140,130 @@
                     'data-table-body-dark-tr': odd
                 }"
         >
-            <td class="data-table-body-td">
-                {{ row["SeriesInstanceUID"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["Visibility"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["ReleaseStatus"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["ReleaseDate"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["ImageCount"] }}
-            </td>			
-            <td class="data-table-body-td">
-                {{ row["Doi"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["LicenseName"] }}
-            </td>	
-            <td class="data-table-body-td">
-                {{ row["Site"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["Project"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["PatientID"] }}
-            </td>	
-            <td class="data-table-body-td">
-                {{ row["Modality"] }}
-            </td>
-            <td class="data-table-body-td">
-                {{ row["StudyDescription"] }}
-            </td>		
-            <td class="data-table-body-td">
-                {{ row["SeriesDescription"] }}
-            </td>	
+          <td class="data-table-body-td">
+              {{ row["Patient ID"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Patient Name"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Patient Birth Date"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Patient Sex"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Ethnic Group"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Phantom"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Species Code"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Species Description"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Study Instance UID"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Study Date"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Study Description"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Admitting Diagnosis Description"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Study ID"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Patient Age"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Longitudinal Temporal Event Type"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Longitudinal Temporal Offset From Event"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Series Instance UID"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Project"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Site"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Modality"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Protocol Name"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Series Date"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Series Description"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Body Part Examined"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Series Number"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Annotations Flag"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Manufacturer"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Manufacturer Model Name"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Pixel Spacing(mm)- Row"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Slice Thickness(mm)"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Software Versions"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Image Count"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Max Submission Timestamp"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["License Name"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["License URI"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Collection URI"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["File Size"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Released Status"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Date Released"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Third Party Analysis"] }}
+          </td>
+          <td class="data-table-body-td">
+              {{ row["Authorized"] }}
+          </td>
+
         </tr>
         </tbody>
     </table>

@@ -178,14 +178,18 @@ public class V2_getDCMImage extends getData {
 						in.close();
 				}
 				
-				recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
-				downloadLogger.info(
-								"collection="+collectionName + "," +
-								"seriesUID="+ seriesInstanceUid + "," +
-								"numberOfFiles=" + numberOfFiles + "," +
-								"totalSize="+ size + "," +
-								"userId="+ userName + "," +
-								"downloadType=CLI/v2API");		
+        try {
+				  recodeDownload(seriesInstanceUid, size, "CLI/v2API", userName);
+				  downloadLogger.info(
+				  				"collection="+collectionName + "," +
+				  				"seriesUID="+ seriesInstanceUid + "," +
+				  				"numberOfFiles=" + numberOfFiles + "," +
+				  				"totalSize="+ size + "," +
+				  				"userId="+ userName + "," +
+				  				"downloadType=CLI/v2API");		
+		    } catch (Exception e) {
+		    	downloadLogger.error("Exception recording download " + e.getMessage());
+		    }
 				}
 		};
 

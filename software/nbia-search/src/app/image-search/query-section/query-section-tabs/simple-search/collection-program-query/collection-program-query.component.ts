@@ -189,7 +189,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.apiServerService.getCollectionValuesAndCountsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             data => {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
-                this.completeCriteriaList = data;
+                this.completeCriteriaList = this.utilService.copyCriteriaObjectArraywithFieldName(data, Consts.COLLECTION);
 
                 // If completeCriteriaListHold is null, this is the initial call.
                 // completeCriteriaListHold lets us reset completeCriteriaList when ever needed.
@@ -220,17 +220,17 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.loadingDisplayService.setLoading( true, 'Loading query data. This could take up to a minute.' );
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
-        this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
+        this.apiServerService.dataGet( 'v4/getCollectionValuesAndCounts', '' );
+      
         let tempCount = 0;
         while( (this.utilService.isNullOrUndefined( this.completeCriteriaList )) && (!errorFlag) && (tempCount < 500) ){
             await this.commonService.sleep( Consts.waitTime );
         }
         this.loadingDisplayService.setLoading( false, 'Done updateCriteriaList' );
+
         await this.loadTciaProgramList();
 
         // ------------------------------------------------------------------------------------------
-
-
         // When the number of search results changes. data is the search results count
         // If data equals -1 there is no search, so no results.
         // If data equals 0 there is a search, but no search results.
@@ -276,7 +276,7 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 this.completeCriteriaList = undefined;
 
                 // Get the list of all Collections in the database and the number of records which contain each collection.
-                this.apiServerService.dataGet( 'getCollectionValuesAndCounts', '' );
+                this.apiServerService.dataGet( 'v4/getCollectionValuesAndCounts', '' );
 
                 while( (this.completeCriteriaList === undefined) && (!errorFlag) ){
                     await this.commonService.sleep( Consts.waitTime );

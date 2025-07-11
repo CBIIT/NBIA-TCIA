@@ -128,7 +128,7 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
         // Get the full complete criteria list.
         this.apiServerService.getModalityValuesAndCountsEmitter.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
             data => {
-                this.completeCriteriaList = this.utilService.copyCriteriaObjectArray( data );
+                this.completeCriteriaList = this.utilService.copyCriteriaObjectArraywithFieldName( data, Consts.MODALITY );
 
                 // Initialize criteriaList with completeCriteriaList here at the start, before there is any searching
                 this.criteriaList = this.completeCriteriaList;
@@ -188,13 +188,13 @@ export class PieChartImageModalityComponent implements OnInit, OnDestroy{
     async reInit() {
         // The call to trigger populating this.completeCriteriaList (above), and wait for the results.
         this.completeCriteriaList = null;
-        this.apiServerService.dataGet( 'getModalityValuesAndCounts', '' );
+        this.apiServerService.dataGet( 'v4/getModalityValuesAndCounts', '' );
         while( this.utilService.isNullOrUndefined( this.completeCriteriaList ) ){
             await this.commonService.sleep( Consts.waitTime );
         }
 
         // Initialize criteriaList with completeCriteriaList here at the start, before there is any searching
-        this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList );
+        this.criteriaList = this.utilService.copyCriteriaObjectArray( this.completeCriteriaList  );
         this.updateChart();
     }
 

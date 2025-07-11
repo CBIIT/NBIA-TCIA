@@ -99,7 +99,7 @@ public class V2_getImageWithMD5Hash extends getData {
 				// Generate your ZIP and write it to the OutputStream
 				ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(output));
 				InputStream in = null;
-				int size = 0;
+				long size = 0;
 				int numberOfFiles = 0;
 				String collectionName = null;				
 				try {
@@ -166,14 +166,18 @@ public class V2_getImageWithMD5Hash extends getData {
 					if (in != null)
 						in.close();
 				}
-				recodeDownload(seriesInstanceUid, size, "v2API", userName);
-				downloadLogger.info(
-						"collection="+collectionName + "," +
-						"seriesUID="+ seriesInstanceUid + "," +
-						"numberOfFiles=" + numberOfFiles + "," +
-						"totalSize="+ size + "," +
-						"userId="+ userName + "," +
-						"downloadType=v2API");							
+        try {
+				  recodeDownload(seriesInstanceUid, size, "v2API", userName);
+				  downloadLogger.info(
+				  		"collection="+collectionName + "," +
+				  		"seriesUID="+ seriesInstanceUid + "," +
+				  		"numberOfFiles=" + numberOfFiles + "," +
+				  		"totalSize="+ size + "," +
+				  		"userId="+ userName + "," +
+				  		"downloadType=v2API");							
+			  } catch (Exception e) {
+			  	downloadLogger.error("Exception recording download " + e.getMessage());
+			  }
 			}
 		};
 

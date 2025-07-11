@@ -16,24 +16,23 @@ import javax.ws.rs.core.Context;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.Set;
+import gov.nih.nci.nbia.dao.PatientDAO;
+import gov.nih.nci.nbia.util.SpringApplicationContext;
 
 @Path("/v4/getSeriesQCInfo")
 public class V4_getSeriesQCInfo extends getData {
 	private static final String[] columns = {
-		"SeriesInstanceUID", 
-		"Visibility", 
-		"ReleaseStatus", 
-		"ReleaseDate", 
-		"ImageCount",
-		"Doi",
-		"LicenseName",
-		"Site",
-		"Project",
-		"PatientID",
-		"Modality",
-		"StudyDescription",
-		"SeriesDescription"	 
-	};
+            "Patient ID", "Patient Name", "Patient Birth Date", "Patient Sex", "Ethnic Group", "Phantom", 
+            "Species Code", "Species Description", "Study Instance UID", "Study Date", "Study Description", 
+            "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
+            "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Site", "Modality", 
+            "Protocol Name", "Series Date", "Series Description", "Body Part Examined", "Series Number", 
+            "Annotations Flag", "Manufacturer", "Manufacturer Model Name", 
+            "Pixel Spacing(mm)- Row","Slice Thickness(mm)",
+            "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Collection URI", 
+            "File Size", "Released Status", "Date Released", "Third Party Analysis", "Authorized"
+  };
+
 	public final static String TEXT_CSV = "text/csv"; 
 	/**
 	 * This method get a set of series info filtered by series instance UID
@@ -72,7 +71,8 @@ public class V4_getSeriesQCInfo extends getData {
 			e.printStackTrace();
 		}
 		
-		List<Object[]> results = getSeriesQCInfo(seriesList, authorizedCollections);
+    PatientDAO patientDAO = (PatientDAO) SpringApplicationContext.getBean("patientDAO");
+		List<Object[]> results = patientDAO.getSeriesQCInfo_v4(seriesList, authorizedCollections);
 		
 		if (results == null) {
 			return Response.status(Status.NO_CONTENT)

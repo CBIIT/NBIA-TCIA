@@ -644,7 +644,7 @@ export class CineModeBravoComponent implements OnInit, OnDestroy{
 
     getThumbnails( seriesUid, objectId, accessToken ): Observable<any>{
         let post_url =
-            Properties.API_SERVER_URL + '/nbia-api/services/getThumbnail';
+            Properties.API_SERVER_URL + '/nbia-api/services/v4/getThumbnail';
         let headers = new HttpHeaders( {
             'Content-Type': 'application/x-www-form-urlencoded',
             Authorization:

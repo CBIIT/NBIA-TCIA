@@ -65,7 +65,7 @@ export let Consts = {
     GET_COLLECTION_LICENSES: 'getLicenses', // @TODO this wil not be needed soon @SEE GET_SITE_LICENSE
     GET_CONFIG_PARAMS: 'v3/getConfigParams',
     GET_SEARCH_FOR_APPROVE_DELETIONS: 'getQCSearchForDeletion',
-    GET_SERIES_REPORT: 'v2/getSeriesQCInfo',
+    GET_SERIES_REPORT: 'v4/getSeriesQCInfo',
     GET_HISTORY_REPORT: 'getQCHistoryReport',
     GET_VISIBILITIES: 'getVisibilities',
     GET_HISTORY_REPORT_TABLE: 'getQCHistoryReportTable',
