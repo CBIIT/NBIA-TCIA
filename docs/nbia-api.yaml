@@ -1562,7 +1562,7 @@ paths:
         
         **Example call:**
         ```bash
-       https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getModalityValues 
+        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getModalityValues 
         ```  
       tags:
         - Utilities
