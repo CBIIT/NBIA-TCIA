@@ -180,11 +180,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<Object[]> collectionQuery_v4(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-	    String SQLQuery ="select dp.project, count(distinct p.patient_pk_id) thecount, "  
+	    String SQLQuery ="select * from (select dp.project, count(distinct p.patient_pk_id) thecount, "  
       + processAuthorizationCaseStatement(criteria.getAuth())
       + " from patient p, trial_data_provenance dp, general_series gs " 
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id "
-      +" and VISIBILITY in ('1') group by dp.project ";
+      +" and VISIBILITY in ('1') group by dp.project) where authorized = 1 ";
 
 
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
@@ -262,10 +262,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         Map<String, Object> params = new HashMap<>();
         String speciesCode =NCIAConfig.getSpeciesCode();
 
-	      String SQLQuery = "select case when p.species_code is null then '" + speciesCode + "' else p.species_code end as species_code, count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs "
+	      String SQLQuery = "select * from (select case when p.species_code is null then '" + speciesCode + "' else p.species_code end as species_code, count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs "
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
         SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_code, "
-          + caseStatement.substring(0, caseStatement.length() - 15);
+          + caseStatement.substring(0, caseStatement.length() - 15) +
+          ") where authorized = 1";
 
         
         // Create the query and set parameters in one go
@@ -316,7 +317,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<Object[]> modalityQuery_v4(ValuesAndCountsCriteria criteria){
         StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
-	      String SQLQuery ="select modality, count(distinct p.patient_pk_id) thecount,"
+	      String SQLQuery ="select * from (select modality, count(distinct p.patient_pk_id) thecount,"
           + caseStatement
           + " from patient p, trial_data_provenance dp, general_series gs"
 			    + " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id "
@@ -336,7 +337,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 
       //last 15 of caseStatement is to remove 'as authorized '
 		  SQLQuery = SQLQuery+" group by modality, "
-          + caseStatement.substring(0, caseStatement.length() - 15);
+          + caseStatement.substring(0, caseStatement.length() - 15) +
+          ") where authorized = 1";
 
       // Create the query and set parameters in one go
       Query query = this.getHibernateTemplate()
@@ -399,7 +401,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
     private List<Object[]> bodyPartQuery_v4(ValuesAndCountsCriteria criteria){
 
       StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
-	    String SQLQuery="select upper(body_part_examined), count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs where "
+	    String SQLQuery="select * from (select upper(body_part_examined), count(distinct p.patient_pk_id) thecount, " + caseStatement + " from patient p, trial_data_provenance dp, general_series gs where "
         + "p.trial_dp_pk_id = dp.trial_dp_pk_id and p.patient_pk_id = gs.patient_pk_id "
         + "and VISIBILITY in ('1') ";
         
@@ -414,7 +416,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         params.put("modality", criteria.getModality().toUpperCase());
 		  }
 		  SQLQuery = SQLQuery+" group by upper(body_part_examined), "
-          + caseStatement.substring(0, caseStatement.length() - 15);
+          + caseStatement.substring(0, caseStatement.length() - 15) +
+          ") where authorized = 1";
 
       // Create the query and set parameters in one go
       Query query = this.getHibernateTemplate()
@@ -472,7 +475,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
         StringBuffer caseStatement = processAuthorizationCaseStatement(criteria.getAuth());
         Map<String, Object> params = new HashMap<>();
 
-	      String SQLQuery = "select manufacturer, count(distinct p.patient_pk_id) thecount, " 
+	      String SQLQuery = "select * from (select manufacturer, count(distinct p.patient_pk_id) thecount, " 
           + caseStatement
           + " from patient p, trial_data_provenance dp, general_series gs, general_equipment ge"
 			+ " where p.trial_dp_pk_id=dp.trial_dp_pk_id and gs.patient_pk_id=p.patient_pk_id and gs.general_equipment_pk_id=ge.general_equipment_pk_id and VISIBILITY in ('1') ";
@@ -490,7 +493,8 @@ public class ValueAndCountDAOImpl extends AbstractDAO
           params.put("bodyPartExamined", criteria.getBodyPart().toUpperCase());
 		    }
 		    SQLQuery = SQLQuery+" group by manufacturer, " 
-          + caseStatement.substring(0, caseStatement.length() - 15);
+          + caseStatement.substring(0, caseStatement.length() - 15) +
+          ") where authorized = 1";
         
         
         // Create the query and set parameters in one go

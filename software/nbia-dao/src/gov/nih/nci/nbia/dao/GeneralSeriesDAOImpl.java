@@ -525,7 +525,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
 
     StringBuffer where = new StringBuffer();
     List<Object[]> rs = null;
-    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
+    String sql = "select * from (select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
       + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, e.manufacturer, "
       + "e.manufacturer_model_name, e.software_versions, "
       + "(select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, "
@@ -593,7 +593,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
     //				+ hql + where.toString());
 
-    sql = sql + where.toString();
+    sql = sql + where.toString() + ") where authorized = 1";
     //System.out.println(sql);
 
     //long startTime = System.currentTimeMillis();
@@ -756,7 +756,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       return null;
     } 
     StringBuffer where = new StringBuffer();
-    String sql = "select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
+    String sql = "select * from (select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
       + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, ge.manufacturer, "
       + "ge.manufacturer_model_name, ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, date_format(s.date_released, '%m-%d-%Y'), " 
       + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) 
@@ -771,7 +771,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       where.append(" and s.date_released > STR_TO_DATE(:fromDate, '%m-%d-%Y') ");
       params.put("fromDate", fromDate);
     }
-    sql = sql + where.toString();
+    sql = sql + where.toString() + ") where authorized = 1";
 
 
     //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries_v4() - downloadable visibility sql is: "
@@ -938,7 +938,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       StringBuffer where = new StringBuffer();
       Map<String, Object> params = new HashMap<>();
   
-      String sql = "select ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as dicom_size, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, " +
+      String sql = "select * from ( select ( SELECT SUM(gi.dicom_size) FROM general_image gi WHERE gi.general_series_pk_id = s.GENERAL_SERIES_PK_ID ) as dicom_size, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, " +
                    addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
                    " from general_series s " +
                    " where s.visibility in ('1') ";
@@ -948,7 +948,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
           params.put("seriesInstanceUID", seriesInstanceUID.toUpperCase());
       }
   
-      sql += where.toString();
+      sql += where.toString() + ") where authorized = 1";
   
       System.out.println("===== In nbia-dao, getSeriesSize_v4() - SQL is: " + sql);
   
@@ -2030,7 +2030,7 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
   if (collectionOrSeries!=null&&collectionOrSeries.equalsIgnoreCase("Series")) {
     forSeries=true;
   }
-  String sqlString = "select project, third_party_analysis, ";
+  String sqlString = "select * from (select project, third_party_analysis, ";
   if (forSeries) {
     sqlString += " series_instance_uid, ";
   }
@@ -2044,6 +2044,8 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
   }
   if (forSeries) {
     sqlString += " group by project, third_party_analysis, series_instance_uid ";
+
+  sqlString += " ) where authorized = 1";
 
     // Create the query and set parameters in one go
 

@@ -292,7 +292,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             
 	        /* Process image criteria */
 	        String imageClause = imageCriteriaProcess(this.query);
-	        String hql = selectStmt + fromStmt + whereStmt + imageClause;
+	        String hql = "select * from (" + selectStmt + fromStmt + whereStmt + imageClause +
+            ") where authoried = 1";
 
 
 	        /* Run the query */
