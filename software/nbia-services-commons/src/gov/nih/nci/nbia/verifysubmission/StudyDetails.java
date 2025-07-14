@@ -56,7 +56,7 @@ public class StudyDetails {
      * This is an aggregate computed by asking each associated
      * series how many submission they have.
      */     
-    public int getSubmissionCount() {
+    public long getSubmissionCount() {
     	long total = 0 ;
     
     	for(SeriesDetails seriesDetail : seriesDetails) {
