@@ -54,7 +54,7 @@ public class V4_getSeriesMetadata extends getData {
 
         // Use the columns defined in getSeriesMetadata3
         String[] columns = {
-            "Patient ID", "Patient Name", "Patient Birth Date", "Patient Sex", "Ethnic Group", "Phantom", 
+            "Patient ID", "Patient Name",  "Patient Sex", "Ethnic Group", "Phantom", 
             "Species Code", "Species Description", "Study Instance UID", "Study Date", "Study Description", 
             "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
             "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Modality", 

@@ -22,7 +22,7 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 @Path("/v4/getSeriesQCInfo")
 public class V4_getSeriesQCInfo extends getData {
 	private static final String[] columns = {
-            "Patient ID", "Patient Name", "Patient Birth Date", "Patient Sex", "Ethnic Group", "Phantom", 
+            "Patient ID", "Patient Name",  "Patient Sex", "Ethnic Group", "Phantom", 
             "Species Code", "Species Description", "Study Instance UID", "Study Date", "Study Description", 
             "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
             "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Site", "Modality", 

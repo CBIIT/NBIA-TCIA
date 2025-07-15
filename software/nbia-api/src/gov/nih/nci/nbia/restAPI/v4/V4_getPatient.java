@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Path("/v4/getPatient")
 public class V4_getPatient extends getData{
-	private static final String[] columns={"PatientId", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection","Phantom","SpeciesCode","SpeciesDescription", "Authorized"};
+	private static final String[] columns={"PatientId", "PatientName",  "PatientSex", "EthnicGroup", "Collection","Phantom","SpeciesCode","SpeciesDescription", "Authorized"};
 	public final static String TEXT_CSV = "text/csv";
 	/**
 	 * This method get a set of patient objects filtered by collection

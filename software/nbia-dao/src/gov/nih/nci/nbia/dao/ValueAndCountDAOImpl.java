@@ -184,7 +184,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
       + processAuthorizationCaseStatement(criteria.getAuth())
       + " from patient p, trial_data_provenance dp, general_series gs " 
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id "
-      +" and VISIBILITY in ('1') group by dp.project) where authorized = 1 ";
+      +" and VISIBILITY in ('1') group by dp.project) subquery where authorized = 1 ";
 
 
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)
@@ -266,7 +266,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id ";
         SQLQuery=SQLQuery+" and VISIBILITY in ('1') group by p.species_code, "
           + caseStatement.substring(0, caseStatement.length() - 15) +
-          ") where authorized = 1";
+          ") subquery where authorized = 1";
 
         
         // Create the query and set parameters in one go
@@ -338,7 +338,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
       //last 15 of caseStatement is to remove 'as authorized '
 		  SQLQuery = SQLQuery+" group by modality, "
           + caseStatement.substring(0, caseStatement.length() - 15) +
-          ") where authorized = 1";
+          ") subquery where authorized = 1";
 
       // Create the query and set parameters in one go
       Query query = this.getHibernateTemplate()
@@ -417,7 +417,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		  }
 		  SQLQuery = SQLQuery+" group by upper(body_part_examined), "
           + caseStatement.substring(0, caseStatement.length() - 15) +
-          ") where authorized = 1";
+          ") subquery where authorized = 1";
 
       // Create the query and set parameters in one go
       Query query = this.getHibernateTemplate()
@@ -494,7 +494,7 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 		    }
 		    SQLQuery = SQLQuery+" group by manufacturer, " 
           + caseStatement.substring(0, caseStatement.length() - 15) +
-          ") where authorized = 1";
+          ") subquery where authorized = 1";
         
         
         // Create the query and set parameters in one go

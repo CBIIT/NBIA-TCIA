@@ -598,7 +598,7 @@ public class StudyDAOImpl extends AbstractDAO
 
 
 		String sql = "select * from (select s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-				"s.patient_age, p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, " +
+				"s.patient_age, p.patient_id, p.patient_name,  p.patient_sex, " +
 				"p.ethnic_group, gs.project, " +
 				"count(gs.general_series_pk_id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " 
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
@@ -620,7 +620,7 @@ public class StudyDAOImpl extends AbstractDAO
 			params.put("studyInstanceUid", studyInstanceUid.toUpperCase());
 		}
 
-		where.append(" group by s.study_pk_id) where authorized = 1 ");
+		where.append(" group by s.study_pk_id) subquery where authorized = 1 ");
 		
 	  System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
 
@@ -760,7 +760,7 @@ public class StudyDAOImpl extends AbstractDAO
 			return null;
 		}		
 		String sql = "select * from (select distinct s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-				"s.patient_age, p.patient_id, p.patient_name, date_format(p.patient_birth_date, '%m-%d-%Y'), p.patient_sex, " +
+				"s.patient_age, p.patient_id, p.patient_name,  p.patient_sex, " +
 				"p.ethnic_group, gs.project, " +
 				"count(gs.general_series_pk_id), s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, "  
         + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + 
@@ -784,7 +784,7 @@ public class StudyDAOImpl extends AbstractDAO
 			params.put("dateFrom", dateFrom);
 		}
 
-		where.append(" group by s.study_pk_id ) where authorized = 1");		
+		where.append(" group by s.study_pk_id ) subquery where authorized = 1");		
   	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
 		
     // Create the query and set parameters in one go

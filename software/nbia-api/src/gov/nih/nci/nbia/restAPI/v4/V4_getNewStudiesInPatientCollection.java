@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response.Status;
 
 @Path("/v4/NewStudiesInPatientCollection")
 public class V4_getNewStudiesInPatientCollection extends getData{
-	private static final String[] columns={"StudyInstanceUID", "StudyDate", "StudyDescription", "AdmittingDiagnosesDescription", "StudyID", "PatientAge", "PatientID", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection", "SeriesCount", "LongitudinalTemporalEventType", "LongitudinalTemporalOffsetFromEvent", "Authorized"};
+	private static final String[] columns={"StudyInstanceUID", "StudyDate", "StudyDescription", "AdmittingDiagnosesDescription", "StudyID", "PatientAge", "PatientID", "PatientName",  "PatientSex", "EthnicGroup", "Collection", "SeriesCount", "LongitudinalTemporalEventType", "LongitudinalTemporalOffsetFromEvent", "Authorized"};
 	public final static String TEXT_CSV = "text/csv";
 	/**
 	 * This method get a set of patient objects filtered by collection

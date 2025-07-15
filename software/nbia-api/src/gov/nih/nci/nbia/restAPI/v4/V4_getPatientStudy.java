@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Path("/v4/getPatientStudy")
 public class V4_getPatientStudy extends getData{
-	private static final String[] columns={"StudyInstanceUID", "StudyDate", "StudyDescription", "AdmittingDiagnosesDescription", "StudyID", "PatientAge", "PatientID", "PatientName", "PatientBirthDate", "PatientSex", "EthnicGroup", "Collection", "SeriesCount", "LongitudinalTemporalEventType", "LongitudinalTemporalOffsetFromEvent", "Authorized"};
+	private static final String[] columns={"StudyInstanceUID", "StudyDate", "StudyDescription", "AdmittingDiagnosesDescription", "StudyID", "PatientAge", "PatientID", "PatientName",  "PatientSex", "EthnicGroup", "Collection", "SeriesCount", "LongitudinalTemporalEventType", "LongitudinalTemporalOffsetFromEvent", "Authorized"};
 	public final static String TEXT_CSV = "text/csv";
 
 	/**

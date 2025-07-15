@@ -593,7 +593,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries() - downloadable visibility hql is: "
     //				+ hql + where.toString());
 
-    sql = sql + where.toString() + ") where authorized = 1";
+    sql = sql + where.toString() + ") subquery where authorized = 1";
     //System.out.println(sql);
 
     //long startTime = System.currentTimeMillis();
@@ -771,7 +771,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       where.append(" and s.date_released > STR_TO_DATE(:fromDate, '%m-%d-%Y') ");
       params.put("fromDate", fromDate);
     }
-    sql = sql + where.toString() + ") where authorized = 1";
+    sql = sql + where.toString() + ") subquery where authorized = 1";
 
 
     //		System.out.println("===== In nbia-dao, GeneralSeriesDAOImpl:getSeries_v4() - downloadable visibility sql is: "
@@ -948,7 +948,7 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
           params.put("seriesInstanceUID", seriesInstanceUID.toUpperCase());
       }
   
-      sql += where.toString() + ") where authorized = 1";
+      sql += where.toString() + ") subquery where authorized = 1";
   
       System.out.println("===== In nbia-dao, getSeriesSize_v4() - SQL is: " + sql);
   
@@ -2045,7 +2045,7 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
   if (forSeries) {
     sqlString += " group by project, third_party_analysis, series_instance_uid ";
 
-  sqlString += " ) where authorized = 1";
+  sqlString += " ) subquery where authorized = 1";
 
     // Create the query and set parameters in one go
 
