@@ -136,7 +136,11 @@ public class PatientDAOImpl extends AbstractDAO
     List<Object[]> rs = query.list();
 
 
-    fillInHuman(rs);
+		for (Object[] patient:rs) {
+		  if (patient[5]==null) patient[5]="NO";
+		  if (patient[6]==null) patient[6]="337915000";
+		  if (patient[7]==null) patient[7]="Homo sapiens";
+    }
     return rs;
 	}
 
@@ -207,7 +211,11 @@ public class PatientDAOImpl extends AbstractDAO
 
     List<Object[]> rs = query.list();
 
-  	fillInHuman(rs);
+		for (Object[] patient:rs) {
+		  if (patient[5]==null) patient[5]="NO";
+		  if (patient[6]==null) patient[6]="337915000";
+		  if (patient[7]==null) patient[7]="Homo sapiens";
+    }
     return rs;
 	}
 
@@ -301,7 +309,11 @@ public class PatientDAOImpl extends AbstractDAO
     List<Object[]> rs = query.list();
 
 
-	  fillInHuman(rs);
+		for (Object[] patient:rs) {
+		  if (patient[5]==null) patient[5]="NO";
+		  if (patient[6]==null) patient[6]="337915000";
+		  if (patient[7]==null) patient[7]="Homo sapiens";
+    }
     return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -366,7 +378,11 @@ public class PatientDAOImpl extends AbstractDAO
         .setProperties(params);
 
     List<Object[]> rs = query.list();
-	  fillInHuman(rs);
+		for (Object[] patient:rs) {
+		  if (patient[6]==null) patient[6]="NO";
+		  if (patient[7]==null) patient[7]="337915000";
+		  if (patient[8]==null) patient[8]="Homo sapiens";
+    }
     return rs;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -442,9 +458,9 @@ public class PatientDAOImpl extends AbstractDAO
 
 		for (Object[] patient:results) {
 			
-			if (patient[5]==null) patient[5]="NO";
-			if (patient[6]==null) patient[6]="337915000";
-			if (patient[7]==null) patient[7]="Homo sapiens";
+			if (patient[4]==null) patient[4]="NO";
+			if (patient[5]==null) patient[5]="337915000";
+			if (patient[6]==null) patient[6]="Homo sapiens";
 		}
 		return results;
 	}
@@ -496,9 +512,9 @@ public class PatientDAOImpl extends AbstractDAO
 
 		for (Object[] patient:results) {
 			
-			if (patient[5]==null) patient[5]="NO";
-			if (patient[6]==null) patient[6]="337915000";
-			if (patient[7]==null) patient[7]="Homo sapiens";
+			if (patient[4]==null) patient[4]="NO";
+			if (patient[5]==null) patient[5]="337915000";
+			if (patient[6]==null) patient[6]="Homo sapiens";
 		}
 		return results;
 	}
