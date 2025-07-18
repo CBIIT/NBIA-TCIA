@@ -94,7 +94,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
         this.cineModeService.displayCineModeBravoImagesEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
                 this.seriesData = undefined;  // So we can tell when it has been (re)populated
-                this.apiService.getSites( [data.series['series']] );
+                this.apiService.getSites( [data.series['series']] ).subscribe();
                 this.updateSiteList();
             } );
 
@@ -114,6 +114,8 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
 
         // Get the initial value
         this.currentFont = this.preferencesService.getFontSize();
+
+        this.updateSiteList();
 
     }
 
@@ -158,7 +160,7 @@ export class QcStatusEditComponent implements OnInit, OnDestroy{
             runaway--;
             await this.utilService.sleep( 500 );
         }
-        this.apiService.getSites( [this.seriesData['series']] );
+        this.apiService.getSites( [this.seriesData['series']] ).subscribe();
     }
 
     onShowCineUpdateCollectionSiteClick(){
