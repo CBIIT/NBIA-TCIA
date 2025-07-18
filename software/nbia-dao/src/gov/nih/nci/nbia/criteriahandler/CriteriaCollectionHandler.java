@@ -71,7 +71,7 @@ public class CriteriaCollectionHandler implements CriteriaHandler {
             tempObject = tempIterator.next();
 
             if (tempObject instanceof String) {
-                tempString = tempObject.toString();
+                tempString = tempObject.toString().toUpperCase();
             } else if (tempObject instanceof Integer) {
                 tempInteger = (Integer) tempObject;
             } else {
@@ -82,10 +82,10 @@ public class CriteriaCollectionHandler implements CriteriaHandler {
             if (tempQueryString.equals("")) {
                 if (tempString != null) {
                 	if(tempString.contains(wildChar) && (inputCrit instanceof PatientCriteria || inputCrit instanceof StudyCriteria || inputCrit instanceof SeriesCriteria)) {
-                		tempQueryString += (" " + field + " like ('" + tempString.replace(wildChar, queryWildChar) +
+                		tempQueryString += (" UPPER(" + field + ") like ('" + tempString.replace(wildChar, queryWildChar) +
                 				"')");
                 	} else {
-                		tempQueryString += (" " + field + " IN ('" + tempString +
+                		tempQueryString += (" UPPER(" + field + ") IN ('" + tempString +
                 				"'");
                 	}
                 } else if (tempInteger != null) {
@@ -95,7 +95,7 @@ public class CriteriaCollectionHandler implements CriteriaHandler {
             } else {
                 if (tempString != null) {
                 	if(tempString.contains(wildChar) && (inputCrit instanceof PatientCriteria || inputCrit instanceof StudyCriteria || inputCrit instanceof SeriesCriteria)) {
-                		tempQueryString += (" or (" + field + " like ('" + tempString.replace(wildChar, queryWildChar) +
+                		tempQueryString += (" or (UPPER(" + field + ") like ('" + tempString.replace(wildChar, queryWildChar) +
                 				"'))");
                 	} else {
                 		tempQueryString += (", '" + tempString + "'");
