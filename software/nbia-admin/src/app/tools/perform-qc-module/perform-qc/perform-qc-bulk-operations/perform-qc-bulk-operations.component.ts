@@ -134,20 +134,25 @@ export class PerformQcBulkOperationsComponent implements OnInit, OnDestroy{
     
     processSiteData(data){
         
-        if( typeof data === 'object' && data[0].length > 1 ){
-            this.siteDropdownArray = data;
-            this.newSite = this.siteDropdownArray[0];
+        if (data[0] === undefined) {
+          this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
+        } else {
 
-        }else{
-            if( data.startsWith( 'The series do not belong to one collection' ) ){
-                if( this.showUpdateCollectionSite ){
-                    alert( 'Can not update Series Sites for series from multiple Collections.\nDeselecting "Update Site"' );
-                    this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
-                }
-            }else{
-                this.siteDropdownArray = data;
-                alert( 'getSitesForSeriesEmitter error' );
-            }
+          if( typeof data === 'object' && data[0].length > 1 ){
+              this.siteDropdownArray = data;
+              this.newSite = this.siteDropdownArray[0];
+
+          }else{
+              if( data.startsWith( 'The series do not belong to one collection' ) ){
+                  if( this.showUpdateCollectionSite ){
+                      alert( 'Can not update Series Sites for series from multiple Collections.\nDeselecting "Update Site"' );
+                      this.showUpdateCollectionSite = false; // @CHECKME Should we flip the checkbox?
+                  }
+              }else{
+                  this.siteDropdownArray = data;
+                  alert( 'getSitesForSeriesEmitter error' );
+              }
+          }
         }
     }
 
