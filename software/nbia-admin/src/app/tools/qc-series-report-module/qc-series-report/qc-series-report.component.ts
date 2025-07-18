@@ -33,12 +33,16 @@ export class QcSeriesReportComponent implements OnInit, OnDestroy{
     ngOnInit() { 
         this.apiService.qcSeriesResultsEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                this.qcSeriesReportResults = data;
+                if (data !== null) {
+              
+                  this.qcSeriesReportResults = data;
 
-                // Sort by Series Id then Time Stamp
-                this.qcSeriesReportResults.sort( ( row1, row2 ) =>
-                    row1['Series Instance UID'] < row2['Series Instance UID'] ? 1 : row1['Series Instance UID'] > row2['Series Instance UID'] ? 1 : row1['Visibility'] < row2['Visibility'] ? -1 : 1 );
-                this.showReport = true;
+                  
+                  // Sort by Series Id then Time Stamp
+                  this.qcSeriesReportResults.sort( ( row1, row2 ) =>
+                      row1['Series Instance UID'] < row2['Series Instance UID'] ? 1 : row1['Series Instance UID'] > row2['Series Instance UID'] ? 1 : row1['Visibility'] < row2['Visibility'] ? -1 : 1 );
+                  this.showReport = true;
+                }
             } );
 
         this.commonService.downloadCartAsCsvEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
