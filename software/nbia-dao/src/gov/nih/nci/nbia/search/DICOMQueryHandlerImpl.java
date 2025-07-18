@@ -205,7 +205,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 
 	        selectStmt = SQL_QUERY_SELECT;
 	        fromStmt = SQL_QUERY_FROM_NEITHER;
-	        whereStmt = SQL_QUERY_WHERE_NEITHER;
+	        whereStmt = SQL_QUERY_WHERE_NEITHER; 
 
 	        /* List to return */
 	        List<PatientStudySeriesTriple> patientList = new ArrayList<PatientStudySeriesTriple>();
@@ -274,9 +274,10 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 		try {
 	        query = theQuery;
 
-	        selectStmt = SQL_QUERY_SELECT2 + " || '/' || " +  authorizationCaseStatement(theQuery);
+          //Adding '1' since we're only returning authorized results, and moving check to where clause.
+	        selectStmt = SQL_QUERY_SELECT2 + " || '/' || 1 " ;
 	        fromStmt = SQL_QUERY_FROM_NEITHER;
-	        whereStmt = SQL_QUERY_WHERE_NEITHER;
+	        whereStmt = SQL_QUERY_WHERE_NEITHER + " and " + authorizationClause(theQuery);
 
 	        /* List to return */
 	        List<PatientStudySeriesQuintuple> patientList = new ArrayList<PatientStudySeriesQuintuple>();
@@ -292,8 +293,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             
 	        /* Process image criteria */
 	        String imageClause = imageCriteriaProcess(this.query);
-	        String hql = "select * from (" + selectStmt + fromStmt + whereStmt + imageClause +
-            ") where authoried = 1";
+	        String hql =  selectStmt + fromStmt + whereStmt + imageClause;
 
 
 	        /* Run the query */
@@ -964,7 +964,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         }
         else {
             // Build HQL for sites
-        	String statement = " case when concat(series.project, '//', series.site) in (";
+        	String statement = " concat(series.project, '//', series.site) in (";
 
             // For each site, need to include both collection and site
             // since site names can be duplicated across collections
@@ -978,7 +978,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             }
             statement = statement.substring(0, statement.length() - 2);
 
-            statement += ") then 1 else 0 end ";
+            statement += ") ";
 
             return statement;
         }
@@ -1047,7 +1047,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
      *
      * @throws Exception
      */
-    private static String authorizationCaseStatement(DICOMQuery theQuery) throws Exception {
+    private static String authorizationClause(DICOMQuery theQuery) throws Exception {
     	authorizationCriteriaPreconditions(theQuery);
 
     	String statement = "";
