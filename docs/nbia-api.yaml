@@ -98,8 +98,45 @@ paths:
      
   /getSimpleSearch:
     post:
-      summary: Perform a paged simple search using modality and body part.
-      description: Performs paged simple search with various criteria.
+      summary: Perform a paged search with customizable criteria.
+      description: |
+        Performs a search with customizable criteria and returns results matching the specified filters.
+        To use this endpoint, specify one or more search criteria by providing the name of the criterion in the `criteriaType0` (and, if applicable, `criteriaType1`, `criteriaType2`, etc.) parameter(s), and the corresponding value(s) in `value0` (and `value1`, `value2`, etc.).
+  
+        **Allowed values for each `criteriaType` parameter:**
+        - AuthorizationCriteria
+        - ImageModalityCriteria
+        - CollectionCriteria
+        - SpeciesCriteria
+        - PatientSexCriteria
+        - AnatomicalSiteCriteria
+        - BodyPartExaminedCriteria
+        - ManufacturerCriteria
+        - ModelCriteria
+        - SoftwareVersionCriteria
+        - DateRangeCriteria
+        - PatientAgeRangeCriteria
+        - DescriptionCriteria
+        - PixelSpacingRangeCriteria
+        - SliceThicknessRangeCriteria
+        - PatientCriteria
+        - StudyCriteria
+        - SeriesCriteria
+        - MinNumberOfStudiesCriteria
+        - MinNumberOfStudyDatesCriteria
+        - ModalityAndedSearchCriteria
+        - PhantomCriteria
+        - ThirdPartyAnalysisCriteria
+        - DataLicenseCriteria
+        - TimePointCriteria
+        - DynamicSearchCriteria
+
+                **Example curl command:**
+        ```bash
+        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
+          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
+        ```
+  
       tags:
         - Patient Metadata
       requestBody:
@@ -111,8 +148,10 @@ paths:
               properties:
                 criteriaType0:
                   type: string
+                  description: Name of the first search criterion. See allowed values in the endpoint description.
                 value0:
                   type: string
+                  description: Value for the first search criterion.
                 sortField:
                   type: string
                   description: Field to sort by (e.g., subject)
@@ -126,58 +165,6 @@ paths:
                 size:
                   type: integer
                   description: Page size
-                AuthorizationCriteria:
-                  type: string
-                ImageModalityCriteria:
-                  type: string
-                CollectionCriteria:
-                  type: string
-                SpeciesCriteria:
-                  type: string
-                PatientSexCriteria:
-                  type: string
-                AnatomicalSiteCriteria:
-                  type: string
-                BodyPartExaminedCriteria:
-                  type: string
-                ManufacturerCriteria:
-                  type: string
-                ModelCriteria:
-                  type: string
-                SoftwareVersionCriteria:
-                  type: string
-                DateRangeCriteria:
-                  type: string
-                PatientAgeRangeCriteria:
-                  type: string
-                DescriptionCriteria:
-                  type: string
-                PixelSpacingRangeCriteria:
-                  type: string
-                SliceThicknessRangeCriteria:
-                  type: string
-                PatientCriteria:
-                  type: string
-                StudyCriteria:
-                  type: string
-                SeriesCriteria:
-                  type: string
-                MinNumberOfStudiesCriteria:
-                  type: string
-                MinNumberOfStudyDatesCriteria:
-                  type: string
-                ModalityAndedSearchCriteria:
-                  type: string
-                PhantomCriteria:
-                  type: string
-                ThirdPartyAnalysisCriteria:
-                  type: string
-                DataLicenseCriteria:
-                  type: string
-                TimePointCriteria:
-                  type: string
-                DynamicSearchCriteria:
-                  type: string
       responses:
         '200':
           description: Successful search results
@@ -193,32 +180,68 @@ paths:
       description: |
         Returns whether any results from the simple search have commercial restrictions.
       
-        **Example curl command:**
+        **Allowed values for each `criteriaType` parameter:**
+        - AuthorizationCriteria
+        - ImageModalityCriteria
+        - CollectionCriteria
+        - SpeciesCriteria
+        - PatientSexCriteria
+        - AnatomicalSiteCriteria
+        - BodyPartExaminedCriteria
+        - ManufacturerCriteria
+        - ModelCriteria
+        - SoftwareVersionCriteria
+        - DateRangeCriteria
+        - PatientAgeRangeCriteria
+        - DescriptionCriteria
+        - PixelSpacingRangeCriteria
+        - SliceThicknessRangeCriteria
+        - PatientCriteria
+        - StudyCriteria
+        - SeriesCriteria
+        - MinNumberOfStudiesCriteria
+        - MinNumberOfStudyDatesCriteria
+        - ModalityAndedSearchCriteria
+        - PhantomCriteria
+        - ThirdPartyAnalysisCriteria
+        - DataLicenseCriteria
+        - TimePointCriteria
+        - DynamicSearchCriteria
+
+                **Example curl command:**
         ```bash
         curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
           -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
         ```
+  
       tags:
         - Patient Metadata
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
                 criteriaType0:
                   type: string
+                  description: Name of the first search criterion. See allowed values in the endpoint description.
                 value0:
                   type: string
+                  description: Value for the first search criterion.
                 sortField:
                   type: string
+                  description: Field to sort by (e.g., subject)
                 sortDirection:
                   type: string
+                  enum: [ascending, descending]
+                  description: Sort direction
                 start:
-                  type: string
+                  type: integer
+                  description: Offset for paged results
                 size:
-                  type: string
+                  type: integer
+                  description: Page size
       responses:
         '200':
           description: Successful restriction result
