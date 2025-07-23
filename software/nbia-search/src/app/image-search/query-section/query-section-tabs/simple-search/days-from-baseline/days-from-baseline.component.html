@@ -67,27 +67,26 @@
                         </button>
                         <div class="dropdown-menu" >
                             <a class="dropdown-item"
-
                                     *ngFor="let eventType of eventTypeList; let c = index"
                                     [ngClass]="{
-                                        'disabled': (searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] == null) &&
-                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] == null) &&
+                                        'disabled': eventType !== 'none' && (searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] == undefined) &&
+                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] == undefined) &&
                                          c > 0
                                     }"
                                     (click)="onEventTypeDropdownClick(c)"
                             >
                                     <img
-                                            *ngIf="c === currentEventTypeIndex && currentEventTypeIndex > 0"
+                                            *ngIf=" eventType !== 'none' && c != null && c === currentEventTypeIndex && currentEventTypeIndex > 0"
                                             src="assets/images/check.png"
                                     >
                                     {{ eventType }}
-                                    <span *ngIf="searchResultsMinMaxTimePoints['minTimepoints'] !== null && searchResultsMinMaxTimePoints['minTimepoints'][eventType] !== undefined &&
+                                    <span *ngIf="eventType !== 'none' &&searchResultsMinMaxTimePoints['minTimepoints'] !== null && searchResultsMinMaxTimePoints['minTimepoints'][eventType] !== undefined &&
                                      searchResultsMinMaxTimePoints['maxTimepoints'] !== null && searchResultsMinMaxTimePoints['maxTimepoints'][eventType] !== undefined ">
                                         &nbsp;Available range: {{searchResultsMinMaxTimePoints['minTimepoints'][eventType]}}&nbsp;To&nbsp;{{searchResultsMinMaxTimePoints['maxTimepoints'][eventType]}}
                                     </span>
                                     <span
-                                            *ngIf="(searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] == null) &&
-                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] == null) &&
+                                            *ngIf="eventType !== 'none' && (searchResultsMinMaxTimePoints['minTimepoints'] === null ||  searchResultsMinMaxTimePoints['minTimepoints'][eventType] == undefined) &&
+                                         (searchResultsMinMaxTimePoints['maxTimepoints'] === null || searchResultsMinMaxTimePoints['maxTimepoints'][eventType] == undefined) &&
                                       c > 0">
                                         &nbsp;Available range:&nbsp;N/A
                                     </span>

@@ -344,25 +344,21 @@ export class DaysFromBaselineComponent implements OnInit, OnDestroy{
     }
 
     getMinByEvent( event ) {
-        if( this.searchResultsMinMaxTimePoints['minTimepoints'] === null ){
+        const minTimePoints = this.searchResultsMinMaxTimePoints?.['minTimepoints'];
+        if( !minTimePoints || !(event in minTimePoints) ){
             return '';
         }
-        let val = this.searchResultsMinMaxTimePoints['minTimepoints'][event];
-        if( val != null ){
-            return val;
-        }
-        return '';
+        let val = minTimePoints[event];
+        return val ?? '';
     }
 
     getMaxByEvent( event ) {
-        if( this.searchResultsMinMaxTimePoints['maxTimepoints'] === null ){
+        const maxTimePoints = this.searchResultsMinMaxTimePoints?.['maxTimepoints'];
+        if( !maxTimePoints || !(event in maxTimePoints) ){
             return '';
         }
-        let val = this.searchResultsMinMaxTimePoints['maxTimepoints'][event];
-        if( val !== undefined ){
-            return val;
-        }
-        return '';
+        let val = maxTimePoints[event];
+        return val ?? '';
     }
 
     onBaseLineFromChange() {

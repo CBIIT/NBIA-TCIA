@@ -1734,7 +1734,7 @@ export class ApiServerService implements OnDestroy {
         }
         let speciesObjPaged = {'criteria': 'Species', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if ((this.currentSearchResultsData['species'] !== 'null') && (this.currentSearchResultsData['species'] !== null)) {
+        if (Array.isArray(this.currentSearchResultsData?.species))  {
             for (let species of this.currentSearchResultsData['species']) {
                 speciesObjPaged.values.push(
                     {
