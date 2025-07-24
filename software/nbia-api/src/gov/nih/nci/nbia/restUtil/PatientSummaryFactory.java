@@ -21,7 +21,7 @@ public class PatientSummaryFactory {
 			returnValue.setBodyParts(bodyCounts);
 			returnValue.setModalities(modalityCounts);
 			returnValue.setCollections(collectionCounts);
-			returnValue.setCollections(speciesCounts);
+			returnValue.setSpecies(speciesCounts);
 		}
 		if (isModalityAll(theQuery)) {
 			returnValue.setResultSet(cleanAllModalityScans(returnValue.getResultSet(), theQuery));
