@@ -1,4 +1,4 @@
-openapi: 3.0.4
+openapi: 3.1.0
 info:
   title: NBIA API
   description: |
@@ -133,7 +133,7 @@ paths:
         The `sortField` parameter allows you to specify the field by which to sort the results, and `sortDirection` specifies whether to sort in ascending or descending order.
         The `start` parameter is used for paged results, indicating the offset from which to start returning results, and `size` specifies the number of results to return per page.
 
-        Allowed values for `criteriaTypeX`: see [CriteriaTypeEnum](#schemacriteriatypeenum).
+        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below.
 
         **General Section**:
         - `CollectionCriteria`: Data collection or study name
@@ -178,16 +178,19 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  description: select from the following criteria types
-                  type: string
-                  $ref: '#/components/schemas/CriteriaTypeEnum'
+                  allOf:
+                    - description: select from the following criteria types
+                      type: string
+                    - $ref: '#/components/schemas/CriteriaTypeEnum'
 
                 value0:
                   type: string
                   description: Value for the first search criterion.
+                  default: CMB-CRC
                 sortField:
                   type: string
                   description: Field to sort by (e.g., subject)
+                  default: collection
                 sortDirection:
                   type: string
                   enum: [ascending, descending]
@@ -214,7 +217,7 @@ paths:
       description: |
         Returns whether any results from the simple search have commercial restrictions.
 
-        Allowed values for `criteriaTypeX`: see [CriteriaTypeEnum](#/components/schemas/CriteriaTypeEnum).
+        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below
 
         **Example curl command:**
         ```bash
@@ -232,7 +235,10 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  $ref: '#/components/schemas/CriteriaTypeEnum'
+                  allOf:
+                    - type: string
+                      description: Select from the following criteria types
+                    - $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value for the first search criterion.
@@ -473,8 +479,8 @@ paths:
       summary: Generate a manifest file from simple search criteria.
       description: |
         Creates a manifest file from the specified simple search parameters, which can be used with the NBIA Data Retriever.
-        
-        Allowed values for `criteriaTypeX`: see [CriteriaTypeEnum](#schemacriteriatypeenum).
+
+        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below
 
         **Example curl command:**
           ```bash
@@ -490,7 +496,10 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  $ref: '#/components/schemas/CriteriaTypeEnum'
+                  allOf:
+                    - type: string
+                      description: Select from the following criteria types
+                    - $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value to match for the specified criteriaType0
