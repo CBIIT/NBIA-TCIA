@@ -165,7 +165,7 @@ paths:
         **Example curl command:**
         ```bash
         curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
-          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
+          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=10"
         ```
   
       tags:
@@ -198,6 +198,7 @@ paths:
                 size:
                   type: integer
                   description: Page size
+                  default: 10
       responses:
         '200':
           description: Successful search results
@@ -218,7 +219,7 @@ paths:
         **Example curl command:**
         ```bash
         curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
-          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
+          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=10"
         ```
   
       tags:
@@ -248,6 +249,7 @@ paths:
                 size:
                   type: integer
                   description: Page size
+                  default: 10
       responses:
         '200':
           description: Successful restriction result
@@ -505,6 +507,7 @@ paths:
                 size:
                   type: integer
                   description: Number of results to return
+                  default: 10
       responses:
         '200':
           description: Manifest file generated successfully
