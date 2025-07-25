@@ -50,8 +50,8 @@ components:
         - `DateRangeCriteria`: Date range for the study (e.g., start and end dates, in MM-DD-YYYY format)
         - `ExcludeCommercialCriteria`: Exclude commercial use
         - `PatientCriteria`: PatientID or (subject ID in the case of TCIA), one or more patient IDs separated by commas
-        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series IDs separated by commas
-        - `StudyCriteria`: studyUIDs, one or more study IDs separated by commas
+        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series UIDs separated by commas
+        - `StudyCriteria`: StudyUIDs, one or more study UIDs separated by commas
         - `ThirdPartyAnalysis`: Third-party analysis criteria
 
         **Patient Section**:
@@ -140,8 +140,8 @@ paths:
         - `DateRangeCriteria`: Date range for the study (e.g., start and end dates, in MM-DD-YYYY format)
         - `ExcludeCommercialCriteria`: Exclude commercial use
         - `PatientCriteria`: PatientID or (subject ID in the case of TCIA), one or more patient IDs separated by commas
-        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series IDs separated by commas
-        - `StudyCriteria`: studyUIDs, one or more study IDs separated by commas
+        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series UIDs separated by commas
+        - `StudyCriteria`: StudyUIDs, one or more study UIDs separated by commas
         - `ThirdPartyAnalysis`: Third-party analysis criteria
 
         **Patient Section**:
