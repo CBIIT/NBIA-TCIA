@@ -164,7 +164,7 @@ paths:
 
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
+        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSimpleSearch"   
           -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=10"
         ```
   
