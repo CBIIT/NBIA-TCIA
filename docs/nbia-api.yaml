@@ -28,7 +28,8 @@ tags:
     description: Series-level metadata and operations
   - name: Utilities
     description: Helper endpoints for values, counts, and validation
-schemas:
+components:
+  schemas:
     Collection:
       type: object
       properties:
@@ -38,35 +39,62 @@ schemas:
           example: "TCGA-LUAD"
       required:
         - collection
-paths:
-  /getSpeciesValuesAndCounts:
-    get:
-      summary: Get species values and their counts.
+    CriteriaTypeEnum:
+      type: string
       description: |
-        Returns the species values and counts.
+        Enum of criteria types used for filtering search results.
+        Each criterion corresponds to a specific filter that can be applied in searches.
+
+        **General Section**:
+        - `CollectionCriteria`: Data collection or study name
+        - `DateRangeCriteria`: Date range for the study (e.g., start and end dates, in MM-DD-YYYY format)
+        - `ExcludeCommercialCriteria`: Exclude commercial use
+        - `PatientCriteria`: PatientID or (subject ID in the case of TCIA), one or more patient IDs separated by commas
+        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series IDs separated by commas
+        - `StudyCriteria`: studyUIDs, one or more study IDs separated by commas
+        - `ThirdPartyAnalysis`: Third-party analysis criteria
+
+        **Patient Section**:
+        - `MinNumberOfStudiesCriteria`: Minimum number of studies per patient
+        - `MinNumberOfStudyDatesCriteria`: Minimum number of study dates per patient
+        - `PatientAgeRangeCriteria`: Age range of the patient, max-age is 90 (more than 90 is considered as 90 years old)
+        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Reported'
+        - `PhantomCriteria`: Phantom-related criteria
+        - `SpeciesCriteria`: Species-related criteria
+        - `TimePointCriteria`: Time point criteria
+
+        **Image Section**:
+        - `BodyPartExaminedCriteria`: Specific body part examined (e.g., brain, lung)
+        - `DescriptionCriteria`: Description of the image, Free-text metadata search  
+        - `ImageModalityCriteria`: Imaging modality (CT, MRI, etc.)
+        - `ManufacturerCriteria`: Manufacturer of the imaging equipment
+        - `PixelSpacingRangeCriteria`: Range of pixel spacing values - row spacing only
+        - `SliceThicknessRangeCriteria`: Range of slice thickness values
         
-        **Example curl command:**
-        ```bash
-        curl -X POST "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesValuesAndCounts"
-        ```
-      tags:
-        - Patient Metadata
-      responses:
-        '200':
-          description: Successful species counts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    criteria:
-                      type: string
-                    count:
-                      type: string
-        '500':
-          description: Internal server error
+      enum:
+        - CollectionCriteria
+        - DateRangeCriteria
+        - ExcludeCommercialCriteria
+        - PatientCriteria
+        - SeriesCriteria
+        - StudyCriteria
+        - ThirdPartyAnalysis
+        - MinNumberOfStudiesCriteria
+        - MinNumberOfStudyDatesCriteria
+        - PatientAgeRangeCriteria
+        - PatientSexCriteria
+        - PhantomCriteria
+        - SpeciesCriteria
+        - TimePointCriteria
+        - BodyPartExaminedCriteria
+        - DescriptionCriteria
+        - ImageModalityCriteria
+        - ManufacturerCriteria
+        - PixelSpacingRangeCriteria
+        - SliceThicknessRangeCriteria
+
+paths:
+   
   /getSpeciesTax:
     get:
       summary: Retrieve species taxonomy.
@@ -102,36 +130,39 @@ paths:
       description: |
         Performs a search with customizable criteria and returns results matching the specified filters.
         To use this endpoint, specify one or more search criteria by providing the name of the criterion in the `criteriaType0` (and, if applicable, `criteriaType1`, `criteriaType2`, etc.) parameter(s), and the corresponding value(s) in `value0` (and `value1`, `value2`, etc.).
-  
-        **Allowed values for each `criteriaType` parameter:**
-        - AuthorizationCriteria
-        - ImageModalityCriteria
-        - CollectionCriteria
-        - SpeciesCriteria
-        - PatientSexCriteria
-        - AnatomicalSiteCriteria
-        - BodyPartExaminedCriteria
-        - ManufacturerCriteria
-        - ModelCriteria
-        - SoftwareVersionCriteria
-        - DateRangeCriteria
-        - PatientAgeRangeCriteria
-        - DescriptionCriteria
-        - PixelSpacingRangeCriteria
-        - SliceThicknessRangeCriteria
-        - PatientCriteria
-        - StudyCriteria
-        - SeriesCriteria
-        - MinNumberOfStudiesCriteria
-        - MinNumberOfStudyDatesCriteria
-        - ModalityAndedSearchCriteria
-        - PhantomCriteria
-        - ThirdPartyAnalysisCriteria
-        - DataLicenseCriteria
-        - TimePointCriteria
-        - DynamicSearchCriteria
+        The `sortField` parameter allows you to specify the field by which to sort the results, and `sortDirection` specifies whether to sort in ascending or descending order.
+        The `start` parameter is used for paged results, indicating the offset from which to start returning results, and `size` specifies the number of results to return per page.
 
-                **Example curl command:**
+        Allowed values for `criteriaTypeX`: see [CriteriaTypeEnum](#schemacriteriatypeenum).
+
+        **General Section**:
+        - `CollectionCriteria`: Data collection or study name
+        - `DateRangeCriteria`: Date range for the study (e.g., start and end dates, in MM-DD-YYYY format)
+        - `ExcludeCommercialCriteria`: Exclude commercial use
+        - `PatientCriteria`: PatientID or (subject ID in the case of TCIA), one or more patient IDs separated by commas
+        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series IDs separated by commas
+        - `StudyCriteria`: studyUIDs, one or more study IDs separated by commas
+        - `ThirdPartyAnalysis`: Third-party analysis criteria
+
+        **Patient Section**:
+        - `MinNumberOfStudiesCriteria`: Minimum number of studies per patient
+        - `MinNumberOfStudyDatesCriteria`: Minimum number of study dates per patient
+        - `PatientAgeRangeCriteria`: Age range of the patient, max-age is 90 (more than 90 is considered as 90 years old)
+        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Reported'
+        - `PhantomCriteria`: Phantom-related criteria
+        - `SpeciesCriteria`: Species-related criteria
+        - `TimePointCriteria`: Time point criteria
+
+        **Image Section**:
+        - `BodyPartExaminedCriteria`: Specific body part examined (e.g., brain, lung)
+        - `DescriptionCriteria`: Description of the image, Free-text metadata search  
+        - `ImageModalityCriteria`: Imaging modality (CT, MRI, etc.)
+        - `ManufacturerCriteria`: Manufacturer of the imaging equipment
+        - `PixelSpacingRangeCriteria`: Range of pixel spacing values - row spacing only
+        - `SliceThicknessRangeCriteria`: Range of slice thickness values
+        
+
+        **Example curl command:**
         ```bash
         curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
           -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
@@ -147,8 +178,10 @@ paths:
               type: object
               properties:
                 criteriaType0:
+                  description: select from the following criteria types
                   type: string
-                  description: Name of the first search criterion. See allowed values in the endpoint description.
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
+
                 value0:
                   type: string
                   description: Value for the first search criterion.
@@ -179,36 +212,10 @@ paths:
       summary: Check for commercial restrictions in a simple search.
       description: |
         Returns whether any results from the simple search have commercial restrictions.
-      
-        **Allowed values for each `criteriaType` parameter:**
-        - AuthorizationCriteria
-        - ImageModalityCriteria
-        - CollectionCriteria
-        - SpeciesCriteria
-        - PatientSexCriteria
-        - AnatomicalSiteCriteria
-        - BodyPartExaminedCriteria
-        - ManufacturerCriteria
-        - ModelCriteria
-        - SoftwareVersionCriteria
-        - DateRangeCriteria
-        - PatientAgeRangeCriteria
-        - DescriptionCriteria
-        - PixelSpacingRangeCriteria
-        - SliceThicknessRangeCriteria
-        - PatientCriteria
-        - StudyCriteria
-        - SeriesCriteria
-        - MinNumberOfStudiesCriteria
-        - MinNumberOfStudyDatesCriteria
-        - ModalityAndedSearchCriteria
-        - PhantomCriteria
-        - ThirdPartyAnalysisCriteria
-        - DataLicenseCriteria
-        - TimePointCriteria
-        - DynamicSearchCriteria
 
-                **Example curl command:**
+        Allowed values for `criteriaTypeX`: see [CriteriaTypeEnum](#/components/schemas/CriteriaTypeEnum).
+
+        **Example curl command:**
         ```bash
         curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
           -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=1000000"
@@ -224,8 +231,7 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  type: string
-                  description: Name of the first search criterion. See allowed values in the endpoint description.
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value for the first search criterion.
@@ -466,6 +472,8 @@ paths:
       description: |
         Creates a manifest file from the specified simple search parameters, which can be used with the NBIA Data Retriever.
         
+        Allowed values for `criteriaTypeX`: see [CriteriaTypeEnum](#schemacriteriatypeenum).
+
         **Example curl command:**
           ```bash
              curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" 
@@ -480,8 +488,7 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  type: string
-                  description: Field name to filter on (e.g., CollectionCriteria)
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value to match for the specified criteriaType0
@@ -498,58 +505,6 @@ paths:
                 size:
                   type: integer
                   description: Number of results to return
-                AuthorizationCriteria:
-                  type: string
-                ImageModalityCriteria:
-                  type: string
-                CollectionCriteria:
-                  type: string
-                SpeciesCriteria:
-                  type: string
-                PatientSexCriteria:
-                  type: string
-                AnatomicalSiteCriteria:
-                  type: string
-                BodyPartExaminedCriteria:
-                  type: string
-                ManufacturerCriteria:
-                  type: string
-                ModelCriteria:
-                  type: string
-                SoftwareVersionCriteria:
-                  type: string
-                DateRangeCriteria:
-                  type: string
-                PatientAgeRangeCriteria:
-                  type: string
-                DescriptionCriteria:
-                  type: string
-                PixelSpacingRangeCriteria:
-                  type: string
-                SliceThicknessRangeCriteria:
-                  type: string
-                PatientCriteria:
-                  type: string
-                StudyCriteria:
-                  type: string
-                SeriesCriteria:
-                  type: string
-                MinNumberOfStudiesCriteria:
-                  type: string
-                MinNumberOfStudyDatesCriteria:
-                  type: string
-                ModalityAndedSearchCriteria:
-                  type: string
-                PhantomCriteria:
-                  type: string
-                ThirdPartyAnalysisCriteria:
-                  type: string
-                DataLicenseCriteria:
-                  type: string
-                TimePointCriteria:
-                  type: string
-                DynamicSearchCriteria:
-                  type: string
       responses:
         '200':
           description: Manifest file generated successfully
@@ -622,7 +577,36 @@ paths:
           description: SeriesUID not found
         '500':
           description: Internal server error
-
+  
+  /getSpeciesValuesAndCounts:
+    get:
+      summary: Get species values and their counts.
+      description: |
+        Returns the species values and counts.
+        
+        **Example curl command:**
+        ```bash
+        curl -X POST "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesValuesAndCounts"
+        ```
+      tags:
+        - Patient Metadata
+      responses:
+        '200':
+          description: Successful species counts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    criteria:
+                      type: string
+                    count:
+                      type: string
+        '500':
+          description: Internal server error
+ 
   /getCollectionDescriptions:
     get:
       summary: Retrieve detailed metadata for NBIA collections.
@@ -737,15 +721,15 @@ paths:
           description: Internal server error
 
   /getManufacturerValuesAndCounts:
-  get:
-    summary: Retrieve manufacturer values and their occurrence counts.
-    description: |
-      Returns manufacturer names and the number of times each appears in the database,
-      along with authorization information.
-      **Example curl command:**
-      ```bash
-      curl -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValuesAndCounts?Collection=4D-Lung"
-      ```
+    get:
+      summary: Retrieve manufacturer values and their occurrence counts.
+      description: |
+        Returns manufacturer names and the number of times each appears in the database,
+        along with authorization information.
+        **Example curl command:**
+        ```bash
+        curl -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValuesAndCounts?Collection=4D-Lung"
+        ```
       tags:
         - Utilities
       parameters:
@@ -1817,17 +1801,17 @@ paths:
             enum: [json, xml, csv]
             default: json
       responses:
-  '200':
-    description: Successful response
-    content:
-      application/json:
-        schema:
-          type: array
-          items:
-            type: object
-            properties:
-              BodyPartExamined:
-                type: string
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                properties:
+                  BodyPartExamined:
+                    type: string
                 description: Name of the body part
-  '500':
-    description: Internal server error
+        '500':
+          description: Internal server error
