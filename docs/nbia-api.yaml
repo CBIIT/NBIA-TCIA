@@ -58,7 +58,7 @@ components:
         - `MinNumberOfStudiesCriteria`: Minimum number of studies per patient
         - `MinNumberOfStudyDatesCriteria`: Minimum number of study dates per patient
         - `PatientAgeRangeCriteria`: Age range of the patient, max-age is 90 (more than 90 is considered as 90 years old)
-        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Reported'
+        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Specified (Null)'
         - `PhantomCriteria`: Phantom-related criteria
         - `SpeciesCriteria`: Species-related criteria
         - `TimePointCriteria`: Time point criteria
@@ -148,7 +148,7 @@ paths:
         - `MinNumberOfStudiesCriteria`: Minimum number of studies per patient
         - `MinNumberOfStudyDatesCriteria`: Minimum number of study dates per patient
         - `PatientAgeRangeCriteria`: Age range of the patient, max-age is 90 (more than 90 is considered as 90 years old)
-        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Reported'
+        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Specified (Null)'
         - `PhantomCriteria`: Phantom-related criteria
         - `SpeciesCriteria`: Species-related criteria
         - `TimePointCriteria`: Time point criteria
