@@ -370,15 +370,22 @@ paths:
                   description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
                 studyUIDs:
                   type: string
+                  required: false
                   description: Comma-separated studyInstanceUIDs (optional).
                 seriesUIDs:
                   type: string
+                  required: false
                   description: Comma-separated seriesInstanceUIDs (optional).
                 anyOrAll:
                   type: string
+                  enum: [any, all]
+                  default: any
+                  required: false
                   description: Criteria filter (optional).
                 includeAnnotation:
                   type: string
+                  enum: [true, false]
+                  default: true
                   description: Whether to include annotations (true/false).
       responses:
         '200':
