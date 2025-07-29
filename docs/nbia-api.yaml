@@ -1270,7 +1270,7 @@ paths:
                     Collection:
                       type: string
                       description: Name of the collection
-                   SeriesCount:
+                    SeriesCount:
                       type: integer
                       description: Number of series in this study
                     Authorized:
