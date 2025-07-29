@@ -728,16 +728,16 @@ paths:
             schema:
               type: string
           application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  criteria:
-                    type: string
-                  count:
-                    type: string
-            example:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    criteria:
+                      type: string
+                    count:
+                      type: string
+              example:
                 - criteria: "337915000"
                   count: "33793"
                 - criteria: "447612001"
@@ -745,7 +745,7 @@ paths:
                 - criteria: "448771007"
                   count: "57"
       '500':
-        description: Internal server 
+        description: Internal server error
  
   /getCollectionDescriptions:
    get:
