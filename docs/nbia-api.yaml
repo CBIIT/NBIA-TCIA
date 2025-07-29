@@ -710,7 +710,7 @@ paths:
                     descriptionURI:
                       type: string
                       description: DOI or external metadata page link for the collection
-                   format:
+                    format:
                      type: string
                      enum: [json, xml, csv]
                      default: json
