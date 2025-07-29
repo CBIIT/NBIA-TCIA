@@ -2120,10 +2120,10 @@ paths:
             default: CR
             description: Filter results by imaging modality
         - name: format
-            type: string
-            enum: [json, xml, csv]
-            default: json
-            description: Desired response format (json, xml, csv).
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
 
       responses:
         '200':
