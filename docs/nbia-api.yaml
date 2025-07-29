@@ -1228,7 +1228,7 @@ paths:
             type: string
         - name: StudyInstanceUID
           in: query
-            description: DICOM Tag (0020,000D) – Unique identifier for the study
+          description: DICOM Tag (0020,000D) – Unique identifier for the study
           required: false
           schema:
             type: string
