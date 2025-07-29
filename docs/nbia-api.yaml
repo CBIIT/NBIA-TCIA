@@ -94,57 +94,55 @@ components:
         - SliceThicknessRangeCriteria
 
 paths:
-   
   /getSpeciesTax:
     get:
       summary: Retrieve species taxonomy.
       description: |
         Returns the current species taxonomy.
-        
+
         **Example curl command:**
         ```bash
         curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesTax"
         ```
       tags:
         - Utilities
-   responses:
-    '200':
-      description: Successful taxonomy list
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                criteria:
-                  type: string
-                count:
-                  type: string
-          example:        
-            - speciesCode: "447612001"
-              speciesDescription: "Mus musculus"
-            - speciesCode: "448771007"
-              speciesDescription: "Canis lupus familiaris"
-            - speciesCode: "337915000"
-              speciesDescription: "Homo sapiens"
-        text/plain:
-          schema:
-            type: string
-        application/xml:
-          schema:
-            type: string
-        text/csv:
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                speciesCode:
-                  type: string
-                speciesDescription:
-                  type: string
-
+      responses:
+        '200':
+          description: Successful taxonomy list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    criteria:
+                      type: string
+                    count:
+                      type: string
+              example:
+                - speciesCode: "447612001"
+                  speciesDescription: "Mus musculus"
+                - speciesCode: "448771007"
+                  speciesDescription: "Canis lupus familiaris"
+                - speciesCode: "337915000"
+                  speciesDescription: "Homo sapiens"
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    speciesCode:
+                      type: string
+                    speciesDescription:
+                      type: string
         '500':
           description: Internal server error
      
