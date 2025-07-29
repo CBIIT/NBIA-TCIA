@@ -678,6 +678,11 @@ paths:
           schema:
             type: string
           description: Collection name to filter results
+          format:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+            description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with collection descriptions
@@ -908,6 +913,11 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+                    format:
+                      type: string
+                      enum: [json, xml, csv]
+                      default: json
+                      description: Desired response format (json, xml, csv).
         '500':
           description: Internal server error
 
@@ -1552,6 +1562,11 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+                    format:
+                      type: string
+                      enum: [json, xml, csv]
+                      default: json
+                      description: Desired response format (json, xml, csv).
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -1631,6 +1646,11 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+                    format:
+                      type: string
+                      enum: [json, xml, csv]
+                      default: json
+                      description: Desired response format (json, xml, csv).
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -1787,6 +1807,11 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Collection'
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
         '500':
           description: Internal server error.
           content:
@@ -1879,8 +1904,6 @@ paths:
           required: false
           schema:
             type: string
-            enum: [json, xml, csv]
-            default: json
       responses:
         '200':
           description: Successful response
