@@ -717,7 +717,7 @@ paths:
       responses:
         '200':
           description: Successful species counts
-          content:
+           content:
             text/plain:
               schema:
                 type: string
@@ -728,22 +728,22 @@ paths:
               schema:
                 type: string
             application/json:
-                schema:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      criteria:
-                        type: string
-                      count:
-                        type: string
-                example:
-                  - criteria: "337915000"
-                    count: "33793"
-                  - criteria: "447612001"
-                    count: "393"
-                  - criteria: "448771007"
-                    count: "57"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    criteria:
+                      type: string
+                    count:
+                      type: string
+              example:
+                - criteria: "337915000"
+                  count: "33793"
+                - criteria: "447612001"
+                  count: "393"
+                - criteria: "448771007"
+                  count: "57"
         '500': 
           description: Internal server error
  
