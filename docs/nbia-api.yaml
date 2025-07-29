@@ -678,11 +678,11 @@ paths:
           schema:
             type: string
           description: Collection name to filter results
-          format:
-            type: string
-            enum: [json, xml, csv]
-            default: json
-            description: Desired response format (json, xml, csv).
+        - format:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with collection descriptions
@@ -894,6 +894,12 @@ paths:
         ```
       tags:
         - Collection Metadata
+      properties:
+        format:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with collection counts and authorization
@@ -934,6 +940,12 @@ paths:
          ```  
       tags:
         - Patient Metadata
+      properties:
+        format:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
       parameters:
         - name: Collection
           in: query
