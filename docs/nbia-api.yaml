@@ -1194,15 +1194,15 @@ paths:
 
   /getPatientStudy:
     get:
-      summary: Retrieve studies for patients in a collection.
+      summary: Retrieve studies for patients in a collection
       description: |
         Returns metadata for studies associated with patients in the specified collection.
         You can optionally filter by PatientID.
-        
+
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientStudy?Collection=VICTRE&Modality=MG 
-        ```   
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientStudy?Collection=VICTRE&Modality=MG&format=json"
+        ```
       tags:
         - Patient Metadata
       parameters:
@@ -1228,15 +1228,10 @@ paths:
             type: string
         - name: StudyInstanceUID
           in: query
-          description: DICOM Tag (0020,000D) – Unique identifier for the study
+            description: DICOM Tag (0020,000D) – Unique identifier for the study
           required: false
           schema:
             type: string
-        - name: format:
-          type: string
-          enum: [json, xml, csv]
-          default: json
-          description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with study metadata
@@ -1275,17 +1270,16 @@ paths:
                     Collection:
                       type: string
                       description: Name of the collection
-                    SeriesCount:
+                   SeriesCount:
                       type: integer
                       description: Number of series in this study
                     Authorized:
                       type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no.
+                      description: User has access to the specified collection. 1 means yes and 0 means no
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
           description: Internal server error
- 
   /getUpdatedSeries:
     get:
       summary: Retrieve updated series in a collection since a specified date.
