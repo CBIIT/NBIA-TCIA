@@ -121,13 +121,13 @@ paths:
                   type: string
                 count:
                   type: string
-          example:
-            - criteria: "337915000"
-              count: "33793"
-            - criteria: "447612001"
-              count: "393"
-            - criteria: "448771007"
-              count: "57"
+          example:        
+            - speciesCode: "447612001"
+              speciesDescription: "Mus musculus"
+            - speciesCode: "448771007"
+              speciesDescription: "Canis lupus familiaris"
+            - speciesCode: "337915000"
+              speciesDescription: "Homo sapiens"
         text/plain:
           schema:
             type: string
