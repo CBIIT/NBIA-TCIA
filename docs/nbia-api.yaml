@@ -873,13 +873,14 @@ paths:
 
   /getManufacturerValuesAndCounts:
     get:
-      summary: Retrieve manufacturer values and their occurrence counts.
+      summary: Retrieve manufacturer values and their occurrence counts
       description: |
         Returns manufacturer names and the number of times each appears in the database,
         along with authorization information.
+
         **Example curl command:**
         ```bash
-        curl -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValuesAndCounts?Collection=4D-Lung"
+        curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValuesAndCounts?Collection=4D-Lung&format=json"
         ```
       tags:
         - Utilities
@@ -899,11 +900,14 @@ paths:
           required: false
           schema:
             type: string
-         - name: format
-           type: string
-           enum: [json, xml, csv]
-           default: json
-           description: Desired response format (json, xml, csv).
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          description: Desired response format (json, xml, csv)
       responses:
         '200':
           description: Successful response with manufacturer counts and authorization
@@ -931,7 +935,7 @@ paths:
                       description: Number of series produced by this manufacturer
                     Authorized:
                       type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no.
+                      description: User has access to the specified collection. 1 means yes and 0 means no
         '500':
           description: Internal server error
 
