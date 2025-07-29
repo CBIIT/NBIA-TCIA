@@ -737,6 +737,13 @@ paths:
                     type: string
                   count:
                     type: string
+            example:
+                - criteria: "337915000"
+                  count: "33793"
+                - criteria: "447612001"
+                  count: "393"
+                - criteria: "448771007"
+                  count: "57"
       '500':
         description: Internal server 
  
