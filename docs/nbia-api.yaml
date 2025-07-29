@@ -551,7 +551,7 @@ paths:
                   type: integer
                   description: Number of results to return
                   default: 10
-               format:
+                format:
                   type: string
                   enum: [json, xml, csv]
                   default: json
