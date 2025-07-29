@@ -717,7 +717,7 @@ paths:
       responses:
         '200':
           description: Successful species counts
-           content:
+          content:
             text/plain:
               schema:
                 type: string
