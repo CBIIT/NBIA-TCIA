@@ -694,58 +694,58 @@ paths:
           description: Internal server error
   
   /getSpeciesValuesAndCounts:
-  get:
-    summary: Get species values and their counts
-    description: |
-      Returns the species values and counts.
+    get:
+      summary: Get species values and their counts
+      description: |
+        Returns the species values and counts.
 
-      **Example curl command:**
-      ```bash
-      curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesValuesAndCounts?format=json"
-      ```
-    tags:
-      - Patient Metadata
-    parameters:
-      - name: format
-        in: query
-        required: false
-        schema:
-          type: string
-          enum: [json, xml, csv]
-          default: json
-        description: Desired response format (json, xml, csv)
-    responses:
-      '200':
-        description: Successful species counts
-        content:
-          text/plain:
-            schema:
-              type: string
-          application/xml:
-            schema:
-              type: string
-          text/csv:
-            schema:
-              type: string
-          application/json:
+        **Example curl command:**
+        ```bash
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesValuesAndCounts?format=json"
+        ```
+      tags:
+        - Patient Metadata
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          description: Desired response format (json, xml, csv)
+      responses:
+        '200':
+          description: Successful species counts
+          content:
+            text/plain:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    criteria:
-                      type: string
-                    count:
-                      type: string
-              example:
-                - criteria: "337915000"
-                  count: "33793"
-                - criteria: "447612001"
-                  count: "393"
-                - criteria: "448771007"
-                  count: "57"
-      '500':
-        description: Internal server error
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+            application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      criteria:
+                        type: string
+                      count:
+                        type: string
+                example:
+                  - criteria: "337915000"
+                    count: "33793"
+                  - criteria: "447612001"
+                    count: "393"
+                  - criteria: "448771007"
+                    count: "57"
+        '500': 
+          description: Internal server error
  
   /getCollectionDescriptions:
    get:
