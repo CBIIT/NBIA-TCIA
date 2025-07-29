@@ -121,6 +121,11 @@ paths:
                       type: string
                     speciesDescription:
                       type: string
+                    format:
+                      type: string
+                      enum: [json, xml, csv]
+                      default: json
+                      description: Desired response format (json, xml, csv).
         '500':
           description: Internal server error
      
@@ -204,6 +209,11 @@ paths:
                   type: integer
                   description: Page size
                   default: 10
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful search results
@@ -258,6 +268,11 @@ paths:
                   type: integer
                   description: Page size
                   default: 10
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful restriction result
@@ -299,6 +314,11 @@ paths:
                 SeriesInstanceUID:
                   type: string
                   description: DICOM Tag (0020,000E) – Unique identifier for the series.
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with MD5 hash
@@ -387,6 +407,11 @@ paths:
                   enum: [true, false]
                   default: true
                   description: Whether to include annotations (true/false).
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Manifest text file generated successfully.
@@ -526,6 +551,11 @@ paths:
                   type: integer
                   description: Number of results to return
                   default: 10
+               format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Manifest file generated successfully
@@ -680,6 +710,11 @@ paths:
                     descriptionURI:
                       type: string
                       description: DOI or external metadata page link for the collection
+                   format:
+                     type: string
+                     enum: [json, xml, csv]
+                     default: json
+                     description: Desired response format (json, xml, csv).
         '500':
           description: Internal server error
 
@@ -711,7 +746,12 @@ paths:
                   type: string
                   enum: [collection, series]
                   default: collection
-                  description: Whether to search for a collection or a series             
+                  description: Whether to search for a collection or a series
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with resolved collection or series
@@ -895,6 +935,10 @@ paths:
           required: false
           schema:
             type: string
+            enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
+            default: collection
+            description: Whether to search for a collection or a series      
+
       responses:
         '200':
           description: Successful response with body part counts
@@ -1306,7 +1350,9 @@ paths:
           required: false
           schema:
             type: string
-          description: Filter results by imaging modality (e.g., CT, MR).
+            enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
+            default: CR
+            description: Filter results by imaging modality (e.g., CT, MR).
       responses:
         '200':
           description: Successful response with series metadata
@@ -1351,6 +1397,11 @@ paths:
                     Collection:
                       type: string
                       description: Collection name that the series belongs to
+                    format:
+                      type: string
+                      enum: [json, xml, csv]
+                      default: json
+                      description: Desired response format (json, xml, csv).
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -1385,10 +1436,14 @@ paths:
             type: string
         - name: Modality
           in: query
-          description: Imaging modality to filter by (e.g., CT, MR)
           required: true
           schema:
             type: string
+            enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
+            default: CR
+            description: Filter results by imaging modality (e.g., CT, MR)   
+
+
       responses:
         '200':
           description: Successful response with patient metadata
@@ -1770,10 +1825,13 @@ paths:
             type: string
         - name: Modality
           in: query
-          description: Filter results by modality
           required: false
           schema:
             type: string
+            enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
+            default: CR
+            description: Filter results by imaging modality      
+
       responses:
         '200':
           description: Successful response with manufacturer names
@@ -1808,11 +1866,13 @@ paths:
           schema:
             type: string
         - name: Modality
-          in: query
-          description: Filter results by modality
+          in: query           
           required: false
           schema:
             type: string
+            enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
+            default: CR
+            description: Filter results by imaging modality   
         - name: format
           in: query
           description: Desired response format (json, xml, csv).
