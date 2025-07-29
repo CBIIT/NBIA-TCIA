@@ -359,43 +359,46 @@ paths:
                     type: string
     
   /getMD5HashForImage:
-    get:
-      summary: Get MD5 hash for a single image.
-      description: |
-        Returns MD5 hash for the given SOPInstanceUID.
-        
-        **Example curl command:**
-          ```bash
-             curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getM5HashForImage?SOPInstanceUid=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268" 
-          ```
-      tags:
-        - Patient Metadata
-      parameters:
-        - name: SOPInstanceUID
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: format:
-            type: string
-            enum: [json, xml, csv]
-            default: json
-            description: Desired response format (json, xml, csv).
-      responses:
-        '200':
-          description: Successful response with MD5 hash
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-        '500':
-          description: Internal server error
+   get:
+     summary: Get MD5 hash for a single image
+     description: |
+       Returns the MD5 hash for the given SOPInstanceUID.
+ 
+       **Example curl command:**
+       ```bash
+       curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5HashForImage?SOPInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268"
+       ```
+     tags:
+       - Patient Metadata
+     parameters:
+       - name: SOPInstanceUID
+         in: query
+         required: true
+         schema:
+           type: string
+       - name: format
+         in: query
+         required: false
+         schema:
+           type: string
+           enum: [json, xml, csv]
+           default: json
+         description: Desired response format
+     responses:
+       '200':
+         description: Successful response with MD5 hash
+         content:
+           text/plain:
+             schema:
+               type: string
+           application/xml:
+             schema:
+               type: string
+           text/csv:
+             schema:
+               type: string
+       '500':
+         description: Internal server error
  
   /getManifestFromPatientStudySeries:
     post:
