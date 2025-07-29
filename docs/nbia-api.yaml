@@ -1578,13 +1578,13 @@ paths:
            text/plain:
               schema:
                 type: string
-            application/xml:
+           application/xml:
               schema:
                 type: string
-            text/csv:
+           text/csv:
               schema:
                 type: string
-            application/json:
+           application/json:
               schema:
                 type: array
                 items:
