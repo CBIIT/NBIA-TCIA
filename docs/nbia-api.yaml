@@ -795,7 +795,7 @@ paths:
                      description: Internal license reference ID (often null)
                    descriptionURI:
                      type: string
-                    description: DOI or external metadata page link for the collection
+                     description: DOI or external metadata page link for the collection
       '500':
         description: Internal server error
 
