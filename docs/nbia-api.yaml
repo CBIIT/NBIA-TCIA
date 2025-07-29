@@ -113,19 +113,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: string
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+               schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
                 items:
                   type: object
                   properties:
                     speciesCode:
                       type: string
                     speciesDescription:
-                      type: string
-                    format:
-                      type: string
-                      enum: [json, xml, csv]
-                      default: json
-                      description: Desired response format (json, xml, csv).
+                      type: string      
         '500':
           description: Internal server error
      
@@ -218,9 +222,15 @@ paths:
         '200':
           description: Successful search results
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '500':
           description: Internal server error
   /getRestrictionsForSimpleSearch:
@@ -280,6 +290,12 @@ paths:
             text/plain:
               schema:
                 type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '500':
           description: Internal server error
 
@@ -323,7 +339,13 @@ paths:
         '200':
           description: Successful response with MD5 hash
           content:
-            '*/*':
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
               schema:
                 type: string
         '500':
@@ -354,11 +376,22 @@ paths:
           required: true
           schema:
             type: string
+        - name: format:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+            description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with MD5 hash
           content:
             text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
               schema:
                 type: string
         '500':
@@ -563,6 +596,12 @@ paths:
             text/plain:
               schema:
                 type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -607,6 +646,15 @@ paths:
         '200':
           description: Successful response with DICOM tags
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -634,7 +682,12 @@ paths:
       summary: Get species values and their counts.
       description: |
         Returns the species values and counts.
-        
+      properties:
+        format:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
         **Example curl command:**
         ```bash
         curl -X POST "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesValuesAndCounts"
@@ -645,6 +698,15 @@ paths:
         '200':
           description: Successful species counts
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -687,6 +749,15 @@ paths:
         '200':
           description: Successful response with collection descriptions
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -715,11 +786,6 @@ paths:
                     descriptionURI:
                       type: string
                       description: DOI or external metadata page link for the collection
-                    format:
-                     type: string
-                     enum: [json, xml, csv]
-                     default: json
-                     description: Desired response format (json, xml, csv).
         '500':
           description: Internal server error
 
@@ -761,6 +827,15 @@ paths:
         '200':
           description: Successful response with resolved collection or series
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -814,10 +889,24 @@ paths:
           required: false
           schema:
             type: string
+         - name: format
+           type: string
+           enum: [json, xml, csv]
+           default: json
+           description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with manufacturer counts and authorization
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -860,10 +949,24 @@ paths:
           required: false
           schema:
             type: string
+        - format:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+            description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with modality counts and authorization
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -919,11 +1022,15 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-                    format:
-                      type: string
-                      enum: [json, xml, csv]
-                      default: json
-                      description: Desired response format (json, xml, csv).
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '500':
           description: Internal server error
 
@@ -965,6 +1072,15 @@ paths:
         '200':
           description: Successful response with body part counts
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1020,6 +1136,15 @@ paths:
         '200':
           description: Successful response with patient metadata
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1090,10 +1215,24 @@ paths:
           required: false
           schema:
             type: string
+        - name: format:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with study metadata
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1167,6 +1306,15 @@ paths:
         '200':
           description: Successful response with updated SeriesInstanceUIDs
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1200,10 +1348,24 @@ paths:
           schema:
             type: string
           description: DICOM Tag (0020,000E) – Unique identifier for the DICOM series
+        - name: format
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with SOPInstanceUIDs
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1249,6 +1411,15 @@ paths:
         '200':
           description: Successful response with image count and total size
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: object
@@ -1289,10 +1460,24 @@ paths:
                 list:
                   type: string
                   description: Comma-separated list of SeriesInstanceUIDs (DICOM Tag 0020,000E)
+                format:
+                  type: string
+                  enum: [json, xml, csv]
+                  default: json
+                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with series metadata key-value pairs
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             '*/*':
               schema:
                 type: string
@@ -1379,6 +1564,15 @@ paths:
         '200':
           description: Successful response with series metadata
           content:
+           text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1470,6 +1664,15 @@ paths:
         '200':
           description: Successful response with patient metadata
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1543,6 +1746,15 @@ paths:
         '200':
           description: Successful response with study metadata
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1574,11 +1786,6 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-                    format:
-                      type: string
-                      enum: [json, xml, csv]
-                      default: json
-                      description: Desired response format (json, xml, csv).
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -1621,6 +1828,15 @@ paths:
         '200':
           description: Successful response with patient data
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1706,6 +1922,15 @@ paths:
         '200':
           description: Successful response with modality values
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1808,12 +2033,27 @@ paths:
         ```bash
         https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionValues 
         ```
+      properties:
+        format:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+          description: Desired response format (json, xml, csv).
       tags:
         - Collection Metadata
       responses:
         '200':
           description: A list of collection names.
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1867,12 +2107,26 @@ paths:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CR
-            description: Filter results by imaging modality      
+            description: Filter results by imaging modality
+        - name: format
+            type: string
+            enum: [json, xml, csv]
+            default: json
+            description: Desired response format (json, xml, csv).
 
       responses:
         '200':
           description: Successful response with manufacturer names
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
@@ -1920,6 +2174,15 @@ paths:
         '200':
           description: Successful response
           content:
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
             application/json:
               schema:
                 type: array
