@@ -107,29 +107,44 @@ paths:
         ```
       tags:
         - Utilities
-      responses:
-        '200':
-          description: Successful taxonomy list
-          content:
-            application/json:
-              schema:
-                type: string
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-               schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-                items:
-                  type: object
-                  properties:
-                    speciesCode:
-                      type: string
-                    speciesDescription:
-                      type: string      
+   responses:
+    '200':
+      description: Successful taxonomy list
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                criteria:
+                  type: string
+                count:
+                  type: string
+          example:
+            - criteria: "337915000"
+              count: "33793"
+            - criteria: "447612001"
+              count: "393"
+            - criteria: "448771007"
+              count: "57"
+        text/plain:
+          schema:
+            type: string
+        application/xml:
+          schema:
+            type: string
+        text/csv:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                speciesCode:
+                  type: string
+                speciesDescription:
+                  type: string
+
         '500':
           description: Internal server error
      
