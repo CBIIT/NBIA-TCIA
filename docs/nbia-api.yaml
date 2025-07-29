@@ -796,7 +796,7 @@ paths:
                    descriptionURI:
                      type: string
                      description: DOI or external metadata page link for the collection
-      '500':
+       '500':
         description: Internal server error
 
   /getCollectionOrSeriesForDOI:
@@ -936,64 +936,67 @@ paths:
           description: Internal server error
 
   /getModalityValuesAndCounts:
-    get:
-      summary: Retrieve modality values and their occurrence counts.
-      description: |
-        Returns modality types along with how often each appears in the database,
-        and whether the user is authorized to access the associated collection.
-        
-        **Example curl command:**
-          ```bash
-          curl -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getModalityValuesAndCounts?Collection=VICTRE" 
-          ``` 
-      tags:
-        - Utilities
-      parameters:
-        - name: Collection
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: BodyPartExamined
-          in: query
-          required: false
-          schema:
-            type: string
-        - format:
-            type: string
-            enum: [json, xml, csv]
-            default: json
-            description: Desired response format (json, xml, csv).
-      responses:
-        '200':
-          description: Successful response with modality counts and authorization
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    modality:
-                      type: string
-                      description: Modality type (e.g., CT, MR)
-                    count:
-                      type: integer
-                      description: Number of series using this modality
-                    Authorized:
-                      type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no.
-        '500':
-          description: Internal server error
+   get:
+     summary: Retrieve modality values and their occurrence counts
+     description: |
+       Returns modality types along with how often each appears in the database,
+       and whether the user is authorized to access the associated collection.
+
+       **Example curl command:**
+       ```bash
+       curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getModalityValuesAndCounts?Collection=VICTRE&format=json"
+       ```
+     tags:
+       - Utilities
+     parameters:
+       - name: Collection
+         in: query
+         required: false
+         schema:
+           type: string
+       - name: BodyPartExamined
+         in: query
+         required: false
+         schema:
+           type: string
+       - name: format
+         in: query
+         required: false
+         schema:
+           type: string
+           enum: [json, xml, csv]
+           default: json
+         description: Desired response format (json, xml, csv)
+     responses:
+       '200':
+         description: Successful response with modality counts and authorization
+         content:
+           text/plain:
+             schema:
+               type: string
+           application/xml:
+             schema:
+               type: string
+           text/csv:
+             schema:
+               type: string
+           application/json:
+             schema:
+               type: array
+               items:
+                 type: object
+                 properties:
+                   modality:
+                     type: string
+                     description: Modality type (e.g., CT, MR)
+                   count:
+                     type: integer
+                     description: Number of series using this modality
+                   Authorized:
+                     type: integer
+                     description: User has access to the specified collection. 1 means yes, 0 means no
+       '500':
+         description: Internal server error
 
   /getCollectionValuesAndCounts:
     get:
