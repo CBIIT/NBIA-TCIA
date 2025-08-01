@@ -561,9 +561,10 @@ paths:
                 list:
                   type: string
                   description: Comma-separated list of series UIDs for each series you want to download.
-                includeAnnotation:
-                  type: boolean
-                  description: If true, annotations are included in the manifest.
+               includeAnnotation:
+                type: string
+                enum: [true, false]
+                description: If true, annotations are included in the manifest.
       responses:
         '200':
           description: Successfully generated manifest text.
