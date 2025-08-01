@@ -545,7 +545,7 @@ paths:
         
         **Example curl command:**
           ```bash
-             curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestTextV2" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false"
+             curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestText" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false"
           ```
       tags:
         - Image Downloads
@@ -564,11 +564,6 @@ paths:
                 includeAnnotation:
                   type: boolean
                   description: If true, annotations are included in the manifest.
-                format:
-                  type: string
-                  enum: [json, xml, csv]
-                  default: json
-                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successfully generated manifest text.
@@ -644,16 +639,11 @@ paths:
                   type: integer
                   description: Number of results to return
                   default: 10
-                format:
-                  type: string
-                  enum: [json, xml, csv]
-                  default: json
-                  description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Manifest file generated successfully
           content:
-            text/plain:
+            application/x-nbia-manifest-file:
               schema:
                 type: string
             application/xml:
