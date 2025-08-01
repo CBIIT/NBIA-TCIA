@@ -576,10 +576,10 @@ paths:
              application/x-nbia-manifest-file:
               schema:
                 type: string
-            application/xml:
+             application/xml:
               schema:
                 type: string
-            text/csv:
+             text/csv:
               schema:
                 type: string
         '400':
