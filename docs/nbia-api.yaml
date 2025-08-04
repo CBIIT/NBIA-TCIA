@@ -334,20 +334,25 @@ paths:
                 Collection:
                   type: string
                   description: Name of the collection.
+                  example: ISPY1
                 PatientId:
                   type: string
                   description: DICOM Tag (0010,0020) – De-identified patient ID.
+                  example: TCGA-02-0001
                 StudyInstanceUID:
                   type: string
                   description: DICOM Tag (0020,000D) – Unique identifier for the study.
+                  example: 1.2.840.113619.2.55.3.604688342.833.1594246382.467
                 SeriesInstanceUID:
                   type: string
                   description: DICOM Tag (0020,000E) – Unique identifier for the series.
+                  example: 1.2.840.113619.2.55.3.604688342.833.1594246390.245
                 format:
                   type: string
                   enum: [json, xml, csv]
                   default: json
                   description: Desired response format (json, xml, csv).
+                  example: json
       responses:
         '200':
           description: Successful response with MD5 hash
@@ -389,6 +394,7 @@ paths:
          required: true
          schema:
            type: string
+           example: 1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268
        - name: format
          in: query
          required: false
@@ -396,6 +402,7 @@ paths:
            type: string
            enum: [json, xml, csv]
            default: json
+           example: csv
          description: Desired response format
      responses:
        '200':
@@ -437,21 +444,22 @@ paths:
                 patientIDs:
                   type: string
                   description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
+                  example: ISPY1_1001
                 studyUIDs:
                   type: string
-                  description: Comma-separated studyInstanceUIDs (optional).
+                  description: Comma-separated studyInstanceUIDs (optional)
                 seriesUIDs:
                   type: string
-                  description: Comma-separated seriesInstanceUIDs (optional).
+                  description: Comma-separated seriesInstanceUIDs (optional)
                 anyOrAll:
                   type: string
                   enum: [any, all]
                   default: any
-                  description: Criteria filter (optional).
+                  description: Criteria filter (optional)
                 includeAnnotation:
                   type: string
                   enum: [true, false]
-                  description: Whether to include annotations (true/false).
+                  description: Whether to include annotations (true/false)
       responses:
         '200':
           description: Manifest text file generated successfully.
@@ -560,14 +568,14 @@ paths:
               properties:
                 list:
                   type: string
-                  description: Comma-separated list of series UIDs for each series you want to download.
+                  description: Comma-separated list of series UIDs for each series you want to download
                   includeAnnotation:
                     type: string
                     enum: [true, false]
                     description: If true, annotations are included in the manifest.
       responses:
         '200':
-          description: Successfully generated manifest text.
+          description: Successfully generated manifest text
           content:
              application/x-nbia-manifest-file:
               schema:
@@ -579,7 +587,7 @@ paths:
               schema:
                 type: string
         '400':
-          description: Bad request – Missing or invalid parameters.
+          description: Bad request – Missing or invalid parameters
           content:
             application/json:
               schema:
@@ -603,7 +611,7 @@ paths:
       description: |
         Creates a manifest file from the specified simple search parameters, which can be used with the NBIA Data Retriever.
 
-        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below
+        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below.
 
         **Example curl command:**
           ```bash
@@ -888,7 +896,7 @@ paths:
                   type: string
                   enum: [json, xml, csv]
                   default: json
-                  description: Desired response format (json, xml, csv).
+                  description: Desired response format (json, xml, csv)
       responses:
         '200':
           description: Successful response with resolved collection or series
@@ -991,7 +999,7 @@ paths:
                       description: Number of series produced by this manufacturer
                     Authorized:
                       type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
         '500':
           description: Internal server error
 
@@ -1054,7 +1062,7 @@ paths:
                      description: Number of series using this modality
                    Authorized:
                      type: integer
-                     description: User has access to the specified collection. 1 means yes, 0 means no
+                     description: User has access to the specified collection. 1 means yes, 0 means no.
        '500':
          description: Internal server error
 
@@ -1331,7 +1339,7 @@ paths:
                       description: Number of series in this study
                     Authorized:
                       type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no
+                      description: User has access to the specified collection. 1 means yes and 0 means no.
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -1473,7 +1481,7 @@ paths:
             type: string
             enum: [json, xml, csv]
             default: json
-          description: Desired output format.
+          description: Desired output format
       responses:
         '200':
           description: Successful response with image count and total size
@@ -1531,7 +1539,7 @@ paths:
                   type: string
                   enum: [json, xml, csv]
                   default: json
-                  description: Desired response format (json, xml, csv).
+                  description: Desired response format (json, xml, csv)
       responses:
         '200':
           description: Successful response with series metadata key-value pairs
@@ -1684,7 +1692,7 @@ paths:
                       type: string
                       enum: [json, xml, csv]
                       default: json
-                      description: Desired response format (json, xml, csv).
+                      description: Desired response format (json, xml, csv)
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -1725,7 +1733,6 @@ paths:
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CR
             description: Filter results by imaging modality (e.g., CT, MR)   
-
 
       responses:
         '200':
@@ -1883,12 +1890,14 @@ paths:
           in: query
           description: Name of the collection
           required: true
+          example: CBIA-DDSM
           schema:
             type: string
         - name: Date
           in: query
           description: Date in MM-DD-YYYY format to filter new patients
           required: true
+          example: 2010-08-16
           schema:
             type: string
       responses:
@@ -1912,32 +1921,32 @@ paths:
                   properties:
                     PatientID:
                       type: string
-                      description: DICOM Tag (0010,0020) – De-identified patient identifier.
+                      description: DICOM Tag (0010,0020) – De-identified patient identifier
                     PatientName:
                       type: string
-                      description: DICOM Tag (0010,0010) – De-identified patient name.
+                      description: DICOM Tag (0010,0010) – De-identified patient name
                     PatientBirthDate:
                       type: string
                       format: date
-                      description: DICOM Tag (0010,0030) – De-identified birth date.
+                      description: DICOM Tag (0010,0030) – De-identified birth date
                     PatientSex:
                       type: string
-                      description: DICOM Tag (0010,0040) – Patient's sex.
+                      description: DICOM Tag (0010,0040) – Patient's sex
                     EthnicGroup:
                       type: string
-                      description: DICOM Tag (0010,2160) – Ethnic group of the patient.
+                      description: DICOM Tag (0010,2160) – Ethnic group of the patient
                     Collection:
                       type: string
-                      description: Label for the image collection.
+                      description: Label for the image collection
                     Phantom:
                       type: string
-                      description: DICOM Tag (0010,0200) – Indicates if the subject is a quality control phantom.
+                      description: DICOM Tag (0010,0200) – Indicates if the subject is a quality control phantom
                     SpeciesCode:
                       type: string
-                      description: DICOM Tag (0010,2202) – Taxonomic rank value of the patient.
+                      description: DICOM Tag (0010,2202) – Taxonomic rank value of the patient
                     SpeciesDescription:
                       type: string
-                      description: DICOM Tag (0010,2201) – Description of the species.
+                      description: DICOM Tag (0010,2201) – Description of the species
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
@@ -1975,11 +1984,12 @@ paths:
           in: query
           description: Filter results by body part examined
           required: false
+          example: Kidney
           schema:
             type: string
         - name: format
           in: query
-          description: Desired response format (json, xml, csv).
+          description: Desired response format (json, xml, csv)
           required: false
           schema:
             type: string
@@ -2024,7 +2034,7 @@ paths:
       parameters:
         - name: SeriesInstanceUID
           in: query
-          description: The unique identifier for the image series.
+          description: The unique identifier for the image series
           required: true
           schema:
             type: string
@@ -2038,18 +2048,18 @@ paths:
             enum: [Yes, No]
       responses:
         '200':
-          description: A ZIP file containing the DICOM images.
+          description: A ZIP file containing the DICOM images
           content:
             application/zip:
               schema:
                 type: string
                 format: binary
         '400':
-          description: Bad request – Missing or invalid parameters.
+          description: Bad request – Missing or invalid parameters
         '404':
-          description: SeriesInstanceUID not found.
+          description: SeriesInstanceUID not found
         '500':
-          description: Internal server error.
+          description: Internal server error
 
   /getImageWithMD5Hash:
     get:
@@ -2077,18 +2087,18 @@ paths:
             type: string
       responses:
         '200':
-          description: A ZIP file containing the DICOM images and their MD5 hash values.
+          description: A ZIP file containing the DICOM images and their MD5 hash values
           content:
             '*/*':
               schema:
                 type: string
                 format: binary
         '400':
-          description: Bad request – Missing or invalid parameters.
+          description: Bad request – Missing or invalid parameters
         '404':
-          description: SeriesInstanceUID not found.
+          description: SeriesInstanceUID not found
         '500':
-          description: Internal server error.
+          description: Internal server error
 
   /getCollectionValues:
     get:
@@ -2105,12 +2115,12 @@ paths:
           type: string
           enum: [json, xml, csv]
           default: json
-          description: Desired response format (json, xml, csv).
+          description: Desired response format (json, xml, csv)
       tags:
         - Collection Metadata
       responses:
         '200':
-          description: A list of collection names.
+          description: A list of collection names
           content:
             text/plain:
               schema:
@@ -2130,7 +2140,7 @@ paths:
                   type: string
                   enum: [json, xml, csv]
                   default: json
-                  description: Desired response format (json, xml, csv).
+                  description: Desired response format (json, xml, csv)
         '500':
           description: Internal server error.
           content:
@@ -2179,7 +2189,7 @@ paths:
           type: string
           enum: [json, xml, csv]
           default: json
-          description: Desired response format (json, xml, csv).
+          description: Desired response format (json, xml, csv)
 
       responses:
         '200':
@@ -2233,7 +2243,7 @@ paths:
             description: Filter results by imaging modality   
         - name: format
           in: query
-          description: Desired response format (json, xml, csv).
+          description: Desired response format (json, xml, csv)
           required: false
           schema:
             type: string
@@ -2261,4 +2271,3 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
-
