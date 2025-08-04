@@ -1185,11 +1185,11 @@ paths:
       summary: Retrieve patients in a collection.
       description: |
         Returns a list of de-identified patients associated with the specified collection.
-        
+
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatient 
-        ```    
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatient?Collection=CBIS-DDSM&format=json"
+        ```
       tags:
         - Patient Metadata
       parameters:
@@ -1209,23 +1209,15 @@ paths:
             type: string
         - name: Collection
           in: query
+          description: Name of the collection to retrieve patients from
           required: true
+          example: CBIS-DDSM
           schema:
             type: string
-          description: Name of the collection to retrieve patients from
       responses:
         '200':
           description: Successful response with patient metadata
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -1251,6 +1243,15 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2270,6 +2271,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
