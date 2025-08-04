@@ -150,8 +150,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       return null;
     }		
 
-    String sql = "select distinct(upper(modality)) from general_series s where visibility in ('1') ";
-    String order = " order by upper(modality)";
+    String sql = "select modality from (select distinct(upper(modality)) as modality, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from general_series s where visibility in ('1') ";
+    String order = " ) subquery where authorized = 1 order by upper(modality)";
     StringBuffer where = new StringBuffer();
     Map<String, Object> params = new HashMap<>();
 
@@ -253,8 +253,8 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
       return null;
     }				
 
-    String sql = "select distinct(upper(body_part_examined)) from general_series s where visibility in ('1') ";
-    String order = " order by upper(body_part_examined)";
+    String sql = "select body_part_examined from (select distinct(upper(body_part_examined)) as body_part_examined, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from general_series s where visibility in ('1') ";
+    String order = " ) subquery where authorized = 1 order by upper(body_part_examined)";
     Map<String, Object> params = new HashMap<>();
 
     StringBuffer where = new StringBuffer();
@@ -360,10 +360,10 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     }
 
     StringBuffer where = new StringBuffer();
-    String sql = "select distinct(upper(e.manufacturer)) from general_series s "
+    String sql = "select manufacturer from (select distinct(upper(e.manufacturer)) as manufacturer, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from general_series s "
       + "join general_equipment e on s.general_equipment_pk_id = e.general_equipment_pk_id " 
       + "where s.visibility in ('1') ";
-    String order = " order by upper(e.manufacturer)";
+    String order = " ) subquery where authorized = 1 order by upper(manufacturer)";
     Map<String, Object> params = new HashMap<>();
 
     if (collection != null) {
