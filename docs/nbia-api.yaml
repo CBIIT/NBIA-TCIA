@@ -1874,11 +1874,11 @@ paths:
       summary: Retrieve new patients in a collection since a specified date.
       description: |
         Returns a list of patients added to a specified collection since a given date.
-        
+
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010-08-16 
-        ```     
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010-08-16"
+        ```
       tags:
         - Patient Metadata
       parameters:
@@ -1894,12 +1894,12 @@ paths:
           in: query
           description: Name of the collection
           required: true
-          example: CBIA-DDSM
+          example: CBIS-DDSM
           schema:
             type: string
         - name: Date
           in: query
-          description: Date in MM-DD-YYYY format to filter new patients
+          description: Date in YYYY-MM-DD format to filter new patients
           required: true
           example: 2010-08-16
           schema:
@@ -1908,15 +1908,6 @@ paths:
         '200':
           description: Successful response with patient data
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -1954,11 +1945,15 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-                    format:
-                      type: string
-                      enum: [json, xml, csv]
-                      default: json
-                      description: Desired response format (json, xml, csv).
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2275,6 +2270,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
