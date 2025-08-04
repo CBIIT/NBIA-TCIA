@@ -12,6 +12,7 @@ import gov.nih.nci.nbia.dto.PatientDTO;
 import gov.nih.nci.nbia.internaldomain.Patient;
 import gov.nih.nci.nbia.internaldomain.Site;
 import gov.nih.nci.nbia.util.SiteData;
+import gov.nih.nci.nbia.qctool.VisibilityStatus;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -31,6 +32,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StringType;
+import org.hibernate.type.LongType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -422,37 +425,106 @@ public class PatientDAOImpl extends AbstractDAO
       .collect(Collectors.toList());
 
     String queryString=constructSeriesUIDList(seriesList);
+    String caseStatement = addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites).toString();
+    String caseSub = caseStatement.substring(0, caseStatement.length() - 14);
 
-		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
-		whereCondition.append(" and UPPER(gs.series_instance_uid) in (" + queryString + ")");
+		StringBuffer whereCondition = new StringBuffer(" where UPPER(gs.series_instance_uid) in (" + queryString + ")");
 
 		String sql = "select * from (select distinct " +
 			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
-			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y') as study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
 			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
-			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
+			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y') as series_date, gs.series_desc, " +
 			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
 			"ge.manufacturer_model_name, " + 
-			"gi.pixel_spacing, gi.slice_thickness, " +
+			"GROUP_CONCAT(DISTINCT gi.pixel_spacing ORDER BY gi.pixel_spacing SEPARATOR ', ') as pixel_spacing, " +
+      "GROUP_CONCAT(DISTINCT gi.slice_thickness ORDER BY gi.slice_thickness SEPARATOR ', ') as slice_thickness, " +
 			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as image_count, " +
-			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
-			"gs.released_status, date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
-      addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
+			"date_format(gs.max_submission_timestamp, '%m-%d-%Y') as max_submission_timestamp, gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
+			"gs.visibility, gs.released_status, date_format(gs.date_released, '%m-%d-%Y') as date_released,  gs.third_party_analysis,  " +
+      caseStatement  +
 			"from general_series gs " +
 			"join general_image gi on gi.general_series_pk_id = gs.general_series_pk_id " +
       "join general_equipment ge on gs.general_equipment_pk_id = ge.general_equipment_pk_id " +
 			"join study s on s.study_pk_id = gs.study_pk_id " +
 			"join patient  p on p.patient_pk_id = gs.patient_pk_id " +
 			whereCondition.toString() +
+      " group by " +
+			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
+			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
+			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
+			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
+			"ge.manufacturer_model_name, " + 
+			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
+			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
+			"gs.visibility, gs.released_status, date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
+      caseSub +
       ") subquery where authorized = 1";
 
 		System.out.println("Executing combined query: " + sql);
     
     // Create the query and set parameters in one go
-    Query query = this.getHibernateTemplate()
+    SQLQuery query = (SQLQuery) this.getHibernateTemplate()
         .getSessionFactory()
         .getCurrentSession()
         .createSQLQuery(sql);
+    query.addScalar("patient_id", new StringType());
+    query.addScalar("patient_name", new StringType());
+    query.addScalar("patient_sex", new StringType());
+    query.addScalar("ethnic_group", new StringType());
+    query.addScalar("qc_subject", new StringType());
+    query.addScalar("species_code", new StringType());
+    query.addScalar("species_description", new StringType());
+    
+    query.addScalar("study_instance_uid", new StringType());
+    query.addScalar("study_date", new StringType());  // alias needed
+    
+    query.addScalar("study_desc", new StringType());
+    query.addScalar("admitting_diagnoses_desc", new StringType());
+    query.addScalar("study_id", new StringType());
+    
+    query.addScalar("patient_age", new StringType());
+    query.addScalar("longitudinal_temporal_event_type", new StringType());
+    query.addScalar("longitudinal_temporal_offset_from_event", new StringType());
+    
+    query.addScalar("series_instance_uid", new StringType());
+    query.addScalar("project", new StringType());
+    query.addScalar("site", new StringType());
+    query.addScalar("modality", new StringType());
+    query.addScalar("protocol_name", new StringType());
+    
+    query.addScalar("series_date", new StringType());  // alias needed
+    
+    query.addScalar("series_desc", new StringType());
+    query.addScalar("body_part_examined", new StringType());
+    query.addScalar("series_number", new StringType());
+    query.addScalar("annotations_flag", new StringType());
+    
+    query.addScalar("manufacturer", new StringType());
+    query.addScalar("manufacturer_model_name", new StringType());
+    
+    query.addScalar("pixel_spacing", new StringType());
+    query.addScalar("slice_thickness", new StringType());
+    
+    query.addScalar("software_versions", new StringType());
+    
+    query.addScalar("image_count", new LongType());  // count(*)
+    
+    query.addScalar("max_submission_timestamp", new StringType());  // alias needed
+    
+    query.addScalar("license_name", new StringType());
+    query.addScalar("license_url", new StringType());
+    query.addScalar("description_uri", new StringType());
+    
+    query.addScalar("total_size", new LongType());
+    
+    query.addScalar("visibility", new StringType());
+    query.addScalar("released_status", new StringType());
+    query.addScalar("date_released", new StringType());  // alias needed
+    
+    query.addScalar("third_party_analysis", new StringType());
+    query.addScalar("authorized", new StringType());
 
     List<Object[]> results = query.list();
 
@@ -462,6 +534,14 @@ public class PatientDAOImpl extends AbstractDAO
 			if (patient[5]==null) patient[5]="337915000";
 			if (patient[6]==null) patient[6]="Homo sapiens";
 		}
+
+
+    List<Object[]> modifiedResults = new ArrayList<Object[]>();
+    for (Object[] objs : results) {
+      objs[36] = VisibilityStatus.statusFactory(Integer.parseInt((String) objs[36])).getText();
+      modifiedResults.add(objs);
+    }
+
 		return results;
 	}
 	@Transactional(propagation=Propagation.REQUIRED)
@@ -476,37 +556,108 @@ public class PatientDAOImpl extends AbstractDAO
     String[] seriesStrings=seriesString.split(",");
     List<String> seriesList=Arrays.asList(seriesStrings);
     String queryString=constructSeriesUIDList(seriesList);
+    String caseStatement = addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites).toString();
+    String caseSub = caseStatement.substring(0, caseStatement.length() - 14);
 
 		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
 		whereCondition.append(" and UPPER(gs.series_instance_uid) in (" + queryString + ")");
 
-		String sql = "select * from (select distinct " +
+		String sql = "select * from (select " +
 			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
-			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y') as study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
 			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
-			"gs.series_instance_uid, gs.project, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
+			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y') as series_date, gs.series_desc, " +
 			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
 			"ge.manufacturer_model_name, " + 
-			"gi.pixel_spacing, gi.slice_thickness, " +
+			"GROUP_CONCAT(DISTINCT gi.pixel_spacing ORDER BY gi.pixel_spacing SEPARATOR ', ') as pixel_spacing, " +
+      "GROUP_CONCAT(DISTINCT gi.slice_thickness ORDER BY gi.slice_thickness SEPARATOR ', ') as slice_thickness, " +
 			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as image_count, " +
-			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
-			"date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
-      addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) +
+			"date_format(gs.max_submission_timestamp, '%m-%d-%Y') as max_submission_timestamp, gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
+			" gs.released_status, date_format(gs.date_released, '%m-%d-%Y') as date_released,  gs.third_party_analysis,  " +
+      caseStatement +
 			"from general_series gs " +
 			"join general_image gi on gi.general_series_pk_id = gs.general_series_pk_id " +
       "join general_equipment ge on gs.general_equipment_pk_id = ge.general_equipment_pk_id " +
 			"join study s on s.study_pk_id = gs.study_pk_id " +
 			"join patient  p on p.patient_pk_id = gs.patient_pk_id " +
 			whereCondition.toString() +
+      " group by " +
+			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
+			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
+			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
+			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
+			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
+			"ge.manufacturer_model_name, " + 
+			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
+			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
+			"gs.released_status, date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
+      caseSub +
+
       ") subquery where authorized = 1";
 
 		System.out.println("Executing combined query: " + sql);
     
     // Create the query and set parameters in one go
-    Query query = this.getHibernateTemplate()
+    SQLQuery query = (SQLQuery) this.getHibernateTemplate()
         .getSessionFactory()
         .getCurrentSession()
         .createSQLQuery(sql);
+    query.addScalar("patient_id", new StringType());
+    query.addScalar("patient_name", new StringType());
+    query.addScalar("patient_sex", new StringType());
+    query.addScalar("ethnic_group", new StringType());
+    query.addScalar("qc_subject", new StringType());
+    query.addScalar("species_code", new StringType());
+    query.addScalar("species_description", new StringType());
+    
+    query.addScalar("study_instance_uid", new StringType());
+    query.addScalar("study_date", new StringType());  // alias needed
+    
+    query.addScalar("study_desc", new StringType());
+    query.addScalar("admitting_diagnoses_desc", new StringType());
+    query.addScalar("study_id", new StringType());
+    
+    query.addScalar("patient_age", new StringType());
+    query.addScalar("longitudinal_temporal_event_type", new StringType());
+    query.addScalar("longitudinal_temporal_offset_from_event", new StringType());
+    
+    query.addScalar("series_instance_uid", new StringType());
+    query.addScalar("project", new StringType());
+    query.addScalar("site", new StringType());
+    query.addScalar("modality", new StringType());
+    query.addScalar("protocol_name", new StringType());
+    
+    query.addScalar("series_date", new StringType());  // alias needed
+    
+    query.addScalar("series_desc", new StringType());
+    query.addScalar("body_part_examined", new StringType());
+    query.addScalar("series_number", new StringType());
+    query.addScalar("annotations_flag", new StringType());
+    
+    query.addScalar("manufacturer", new StringType());
+    query.addScalar("manufacturer_model_name", new StringType());
+    
+    query.addScalar("pixel_spacing", new StringType());
+    query.addScalar("slice_thickness", new StringType());
+    
+    query.addScalar("software_versions", new StringType());
+    
+    query.addScalar("image_count", new LongType());  // count(*)
+    
+    query.addScalar("max_submission_timestamp", new StringType());  // alias needed
+    
+    query.addScalar("license_name", new StringType());
+    query.addScalar("license_url", new StringType());
+    query.addScalar("description_uri", new StringType());
+    
+    query.addScalar("total_size", new LongType());
+    
+    query.addScalar("released_status", new StringType());
+    query.addScalar("date_released", new StringType());  // alias needed
+    
+    query.addScalar("third_party_analysis", new StringType());
+    query.addScalar("authorized", new StringType());
+
 
     List<Object[]> results = query.list();
 
@@ -516,6 +667,7 @@ public class PatientDAOImpl extends AbstractDAO
 			if (patient[5]==null) patient[5]="337915000";
 			if (patient[6]==null) patient[6]="Homo sapiens";
 		}
+
 		return results;
 	}
 
