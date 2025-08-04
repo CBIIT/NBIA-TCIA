@@ -1335,12 +1335,12 @@ paths:
                   Authorized:
                     type: integer
                     description: User has access to the specified collection. 1 means yes and 0 means no.
-     application/xml:
-        schema:
-          type: string
-      text/csv:
-        schema:
-          type: string
+          application/xml:
+            schema:
+              type: string
+          text/csv:
+            schema:
+              type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2272,4 +2272,5 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
