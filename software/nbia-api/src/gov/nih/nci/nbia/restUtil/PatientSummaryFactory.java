@@ -10,7 +10,10 @@ import gov.nih.nci.ncia.criteria.ImageModalityCriteria;
 public class PatientSummaryFactory {
 	public static PatientSearchSummary getNewPatientSearchSummary(List<PatientSearchResultWithModilityAndBodyPart> input, String sort, boolean compute,
 			List <ValueAndCount> bodyCounts, List <ValueAndCount> modalityCounts, List <ValueAndCount> collectionCounts, 
-			List <ValueAndCount> speciesCounts, DICOMQuery theQuery) {
+			List <ValueAndCount> speciesCounts, 
+      Map<String, Integer> minTimepoints,
+      Map<String, Integer> maxTimepoints,
+      DICOMQuery theQuery) {
 		PatientSearchSummary returnValue = new PatientSearchSummary();
 		returnValue.setResultSet(input);
 		returnValue.setSort(sort);
@@ -22,6 +25,8 @@ public class PatientSummaryFactory {
 			returnValue.setModalities(modalityCounts);
 			returnValue.setCollections(collectionCounts);
 			returnValue.setSpecies(speciesCounts);
+			returnValue.setMinTimepoints(minTimepoints);
+			returnValue.setMaxTimepoints(maxTimepoints);
 		}
 		if (isModalityAll(theQuery)) {
 			returnValue.setResultSet(cleanAllModalityScans(returnValue.getResultSet(), theQuery));

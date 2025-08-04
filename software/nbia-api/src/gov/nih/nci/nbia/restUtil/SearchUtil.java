@@ -351,14 +351,14 @@ public class SearchUtil {
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
-            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null, query);
+            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null, null, null, query);
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
 		}  else {
 			if (!patientSearchSummary.getSort().equalsIgnoreCase(sort)) {
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
 				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
-						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies(), 
+						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies(), patientSearchSummary.getMinTimepoints(), patientSearchSummary.getMaxTimepoints(), 
 						null),
 						start, size);
 			} else {
@@ -664,14 +664,14 @@ public class SearchUtil {
             	patients = new ArrayList<PatientSearchResultWithModilityAndBodyPart>();
             }
             patients=new ResultSetSorter().sort2(patients, sortField, sortDirection);
-            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null, query);
+            PatientSearchSummary cacheValue = PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, true, null, null, null, null, null, null, query);
             cache.putPatientPatientSearchSummary(queryKey, cacheValue);
             returnValue = PatientSummaryFactory.getReturnValue(cacheValue, start, size);
 		}  else {
 			if (!patientSearchSummary.getSort().equalsIgnoreCase(sort)) {
 				patients=new ResultSetSorter().sort2(patientSearchSummary.getResultSet(), sortField, sortDirection);
 				returnValue = PatientSummaryFactory.getReturnValue(PatientSummaryFactory.getNewPatientSearchSummary(patients, sort, false, 
-						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies(), 
+						patientSearchSummary.getBodyParts(), patientSearchSummary.getModalities(), patientSearchSummary.getCollections(), patientSearchSummary.getSpecies(), patientSearchSummary.getMinTimepoints(), patientSearchSummary.getMaxTimepoints(),
 						null),
 						start, size);
 			} else {
