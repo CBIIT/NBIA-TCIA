@@ -1256,90 +1256,91 @@ paths:
         '500':
           description: Internal server error
 
-  /getPatientStudy:
-    get:
-      summary: Retrieve studies for patients in a collection
-      description: |
-        Returns metadata for studies associated with patients in the specified collection.
-        You can optionally filter by PatientID.
+/getPatientStudy:
+  get:
+    summary: Retrieve studies for patients in a collection
+    description: |
+      Returns metadata for studies associated with patients in the specified collection.
+      You can optionally filter by PatientID.
 
-        **Example call:**
-        ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientStudy?Collection=VICTRE&Modality=MG&format=json"
-        ```
-      tags:
-        - Patient Metadata
-      parameters:
-        - name: format
-          in: query
-          description: Desired response format (json, xml, csv)
-          required: false
-          schema:
-            type: string
-            enum: [json, xml, csv]
-            default: json
-        - name: Collection
-          in: query
-          description: Name of the image collection
-          required: true
-          schema:
-            type: string
-        - name: PatientID
-          in: query
-          description: De‑identified PatientID (optional – restricts results to a single patient)
-          required: false
-          schema:
-            type: string
-        - name: StudyInstanceUID
-          in: query
-          description: DICOM Tag (0020,000D) – Unique identifier for the study
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response with study metadata
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    StudyDate:
-                      type: string
-                      format: date
-                      description: DICOM Tag (0008,0020) – Date the study was performed
-                    StudyDescription:
-                      type: string
-                      description: DICOM Tag (0008,1030) – Description of the study
-                    PatientID:
-                      type: string
-                      description: DICOM Tag (0010,0020) – De‑identified Patient ID
-                    PatientName:
-                      type: string
-                      description: DICOM Tag (0010,0010) – De‑identified Patient Name
-                    PatientSex:
-                      type: string
-                      description: DICOM Tag (0010,0040) – Sex of the patient
-                    Collection:
-                      type: string
-                      description: Name of the collection
-                    SeriesCount:
-                      type: integer
-                      description: Number of series in this study
-                    Authorized:
-                      type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no.
+      **Example call:**
+      ```bash
+      curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientStudy?Collection=VICTRE&Modality=MG&format=json"
+      ```
+    tags:
+      - Patient Metadata
+    parameters:
+      - name: format
+        in: query
+        description: Desired response format (json, xml, csv)
+        required: false
+        schema:
+          type: string
+          enum: [json, xml, csv]
+          default: json
+      - name: Collection
+        in: query
+        description: Name of the image collection
+        required: true
+        example: VICTRE
+        schema:
+          type: string
+      - name: PatientID
+        in: query
+        description: De‑identified PatientID (optional – restricts results to a single patient)
+        required: false
+        schema:
+          type: string
+      - name: StudyInstanceUID
+        in: query
+        description: DICOM Tag (0020,000D) – Unique identifier for the study
+        required: false
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successful response with study metadata
+        headers:
+          Content-Type:
+            description: Format of the returned data
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  StudyDate:
+                    type: string
+                    format: date
+                    description: DICOM Tag (0008,0020) – Date the study was performed
+                  StudyDescription:
+                    type: string
+                    description: DICOM Tag (0008,1030) – Description of the study
+                  PatientID:
+                    type: string
+                    description: DICOM Tag (0010,0020) – De‑identified Patient ID
+                  PatientName:
+                    type: string
+                    description: DICOM Tag (0010,0010) – De‑identified Patient Name
+                  PatientSex:
+                    type: string
+                    description: DICOM Tag (0010,0040) – Sex of the patient
+                  Collection:
+                    type: string
+                    description: Name of the collection
+                  SeriesCount:
+                    type: integer
+                    description: Number of series in this study
+                  Authorized:
+                    type: integer
+                    description: User has access to the specified collection. 1 means yes and 0 means no.
+     application/xml:
+        schema:
+          type: string
+      text/csv:
+        schema:
+          type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2271,3 +2272,4 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
