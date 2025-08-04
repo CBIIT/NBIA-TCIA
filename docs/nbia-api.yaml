@@ -1300,9 +1300,6 @@ paths:
     responses:
       '200':
         description: Successful response with study metadata
-        headers:
-          Content-Type:
-            description: Format of the returned data
         content:
           application/json:
             schema:
@@ -1345,6 +1342,7 @@ paths:
           description: Bad request – Missing or invalid parameters
         '500':
           description: Internal server error
+          
   /getUpdatedSeries:
     get:
       summary: Retrieve updated series in a collection since a specified date.
@@ -2272,5 +2270,6 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
