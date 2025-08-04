@@ -1787,11 +1787,11 @@ paths:
       summary: Retrieve new studies in a patient collection since a specified date.
       description: |
         Returns a list of studies for patients that were added to the specified collection on or after the given date.
-        
+
         **Example call:**
-         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010-08-16 
-        ```     
+        ```bash
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010-08-16"
+        ```
       tags:
         - Study Metadata
       parameters:
@@ -1813,27 +1813,20 @@ paths:
           in: query
           description: Name of the image collection
           required: true
+          example: CBIS-DDSM
           schema:
             type: string
         - name: Date
           in: query
-          description: Date in MM-DD-YYYY format to filter new studies
+          description: Date in YYYY-MM-DD format to filter new studies
           required: true
+          example: 2010-08-16
           schema:
             type: string
       responses:
         '200':
           description: Successful response with study metadata
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -1865,7 +1858,13 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
-        '400':
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+        '400': 
           description: Bad request – Missing or invalid parameters
         '500':
           description: Internal server error
@@ -2276,6 +2275,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
