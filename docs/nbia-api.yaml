@@ -1313,14 +1313,6 @@ paths:
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CT
             description: Modality of imaging studies.
-        - name: format
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [json, xml, csv]
-            default: json
-            description: Desired response format.
       responses:
         '200':
           description: Successful response with body part counts
@@ -2448,6 +2440,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
