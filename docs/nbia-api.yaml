@@ -206,7 +206,6 @@ paths:
                     - description: select from the following criteria types
                       type: string
                     - $ref: '#/components/schemas/CriteriaTypeEnum'
-
                 value0:
                   type: string
                   description: Value for the first search criterion.
@@ -235,17 +234,78 @@ paths:
         '200':
           description: Successful search results
           content:
-            text/plain:
-              schema:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              PatientID:
                 type: string
-            application/xml:
-              schema:
+              PatientName:
                 type: string
-            text/csv:
-              schema:
+              PatientSex:
                 type: string
+              PatientBirthDate:
+                type: string
+                format: date
+              StudyInstanceUID:
+                type: string
+              StudyDate:
+               type: string
+              Modality:
+               type: string
+              BodyPartExamined:
+               type: string
+              Collection:
+               type: string
+              Manufacturer:
+               type: string
+              SliceThickness:
+               type: number
+              PixelSpacing:
+               type: string
+              SeriesUID:
+               type: string
+      example:
+        - PatientID: "TCIA-001"
+          PatientName: "Anonymous"
+          PatientSex: "Female"
+          PatientBirthDate: "1965-03-22"
+          StudyInstanceUID: "1.2.840.113619.2.55.3.604688405.781.1554839724.467"
+          StudyDate: "2019-04-09"
+          Modality: "CT"
+          BodyPartExamined: "Chest"
+          Collection: "LIDC-IDRI"
+          Manufacturer: "GE MEDICAL SYSTEMS"
+          SliceThickness: 1.25
+          PixelSpacing: "0.703125"
+          SeriesUID: "1.2.840.113619.2.55.3.604688405.781.1554839756.835"
+        - PatientID: "TCIA-002"
+          PatientName: "Anonymous"
+          PatientSex: "Male"
+          PatientBirthDate: "1952-11-07"
+          StudyInstanceUID: "1.3.6.1.4.1.14519.5.2.1.6279.6001.298806137288633453246975630178"
+          StudyDate: "2020-07-11"
+          Modality: "MR"
+          BodyPartExamined: "Brain"
+          Collection: "TCGA-GBM"
+          Manufacturer: "Siemens"
+          SliceThickness: 5.0
+          PixelSpacing: "0.9375"
+          SeriesUID: "1.3.6.1.4.1.14519.5.2.1.6279.6001.223679780596407876485803138694"
+      application/xml:
+        schema:
+          type: string
+      text/csv:
+        schema:
+          type: string
+      text/plain:
+        schema:
+          type: string
         '500':
           description: Internal server error
+          
   /getRestrictionsForSimpleSearch:
     post:
       summary: Check for commercial restrictions in a simple search.
@@ -298,17 +358,47 @@ paths:
                   description: Desired response format (json, xml, csv).
       responses:
         '200':
-          description: Successful restriction result
-          content:
-            text/plain:
+           description: Successful restriction result
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   hasRestrictions:
+                      type: boolean
+                      description: Indicates if any results have commercial or licensing restrictions
+                   restrictedCollections:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          collection:
+                            type: string
+                            description: Name of the restricted data collection
+                   restrictionType:
+                        type: string
+                        description: Type of restriction applied to the collection
+                        details:
+                          type: string
+                          description: Description of the restriction or licensing note
+               example:
+                 hasRestrictions: true
+                 restrictedCollections:
+                   - collection: "CMB-CRC"
+                restrictionType: "Commercial Use Restricted"
+                details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
+                   - collection: "LUNGx"
+                restrictionType: "Third-Party Analysis"
+                details: "Data includes annotations from external researchers not covered under TCIA’s general license."
+             application/xml:
+               schema:
+               type: string
+             text/csv:
               schema:
                 type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
+             text/plain:
+             schema:
+             type: string
         '500':
           description: Internal server error
 
@@ -1146,7 +1236,7 @@ paths:
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-            default: collection
+            default: CT
             description: Whether to search for a collection or a series      
 
       responses:
@@ -1709,11 +1799,11 @@ paths:
       summary: Retrieve patients in a collection filtered by modality.
       description: |
         Returns a list of de-identified patients associated with a specific collection and imaging modality.
-        
+
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientByCollectionAndModality?Collection=VICTRE&Modality=MG 
-        ```    
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientByCollectionAndModality?Collection=VICTRE&Modality=MG&format=json"
+        ```
       tags:
         - Patient Metadata
       parameters:
@@ -1729,30 +1819,21 @@ paths:
           in: query
           description: Name of the image collection
           required: true
+          example: VICTRE
           schema:
             type: string
         - name: Modality
           in: query
+          description: Filter results by imaging modality (e.g., CT, MR)
           required: true
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CR
-            description: Filter results by imaging modality (e.g., CT, MR)   
-
       responses:
         '200':
           description: Successful response with patient metadata
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -1778,6 +1859,15 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2271,10 +2361,5 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
-
-
-
-
-
 
 
