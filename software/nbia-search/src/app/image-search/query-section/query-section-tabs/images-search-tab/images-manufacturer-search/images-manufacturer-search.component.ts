@@ -146,7 +146,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 this.queryCriteriaInitService.endQueryCriteriaInit();
                 this.completeManufacturerValues = data;
                 // sample results from API
-                // [{}, {Manufacturer: "Carestream"}, {Manufacturer: "CPS"}, {Manufacturer: "Eigen"},…]
+                // [{Count:10, Authorized: 1}, {Manufacturer: "Carestream", Count: 10, Authorized: 1}, {Manufacturer: "CPS", Count: 10, Authorized: 1}, {Manufacturer: "Eigen", Count: 10, Authorized: 1},…]
                 if (this.completeManufacturerValues && this.completeManufacturerValues.length > 0) {
                     if (!this.completeManufacturerValues[0]?.Manufacturer) {
                         this.completeManufacturerValues[0] = { Manufacturer: 'NOT SPECIFIED' };
@@ -231,7 +231,10 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.parameterService.parameterManufacturerEmitter.pipe(
             takeUntil(this.ngUnsubscribe)
         ).subscribe(data => {
-            const manufacturerListQueryList = String(data).replace(/,$/, "").split(/\s*,\s*/);
+            const decoded = decodeURIComponent(String(data));
+            const manufacturerListQueryList = decoded.match(/"[^"]+"|[^,]+/g)?.map(item =>
+                item.replace(/^"|"$/g, '').trim()
+              ) || [];
     
             if (manufacturerListQueryList.length > 0) {
                 this.missingCriteria = [];
@@ -283,7 +286,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
        
         const criteriaForQuery = [
             Consts.MANUFACTURER_CRITERIA,
-            ...this.manufacturerList
+            ...this.completeManufacturerValues
                 .filter((manufacturer, index) => this.cBox[index])
                 .map(manufacturer => manufacturer['Manufacturer'])  // get the Manufacturer value       
         ];
