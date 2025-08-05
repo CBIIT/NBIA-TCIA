@@ -882,76 +882,118 @@ paths:
           description: Internal server error
  
   /getCollectionDescriptions:
-   get:
-     summary: Retrieve detailed metadata for NBIA collections
-     description: |
-       Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
-       You may optionally filter by collection name.
+    get:
+      summary: Retrieve detailed metadata for NBIA collections
+      description: |
+        Returns metadata for collections, including HTML-formatted descriptions, timestamps, submitter username, and DOI links.
+        You may optionally filter by collection name.
 
-       **Example curl command:**
-       ```bash
-       curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionDescriptions?collectionName=4D-Lung&format=json"
-       ```
-     tags:
-       - Collection Metadata
-     parameters:
-       - name: collectionName
-         in: query
-         required: false
-         schema:
-           type: string
-         description: Collection name to filter results
-       - name: format
-         in: query
-         required: false
-         schema:
-           type: string
-           enum: [json, xml, csv]
-           default: json
-         description: Desired response format (json, xml, csv)
-     responses:
-       '200':
-         description: Successful response with collection descriptions
-         content:
-           text/plain:
-             schema:
-               type: string
-           application/xml:
-             schema:
-               type: string
-           text/csv:
-             schema:
-               type: string
-           application/json:
-             schema:
-               type: array
-               items:
-                 type: object
-                 properties:
-                   description:
-                     type: string
-                     description: HTML-formatted description of the collection
-                   id:
-                     type: integer
-                     description: Internal identifier for the collection metadata
-                   collectionDescTimestamp:
-                     type: integer
-                     description: Last update timestamp (epoch format)
-                   collectionName:
-                     type: string
-                     description: Name of the collection
-                   userName:
-                     type: string
-                     description: User who submitted or last updated the description
-                   licenseId:
-                     type: integer
-                     nullable: true
-                     description: Internal license reference ID (often null)
-                   descriptionURI:
-                     type: string
-                     description: DOI or external metadata page link for the collection
-       '500':
-        description: Internal server error
+        **Example curl command:**
+        ```bash
+        curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionDescriptions?collectionName=4D-Lung&format=json"
+        ```
+      tags:
+        - Collection Metadata
+      parameters:
+        - name: collectionName
+          in: query
+          required: false
+          description: Collection name to filter results
+          schema:
+            type: string
+        - name: format
+          in: query
+          required: false
+          description: Desired response format (json, xml, csv)
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+      responses:
+        '200':
+          description: Successful response with collection descriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      description: HTML-formatted description of the collection
+                    id:
+                      type: integer
+                      description: Internal identifier for the collection metadata
+                    collectionDescTimestamp:
+                      type: integer
+                      description: Last update timestamp (epoch format)
+                    collectionName:
+                      type: string
+                      description: Name of the collection
+                    userName:
+                      type: string
+                      description: User who submitted or last updated the description
+                    licenseId:
+                      type: integer
+                      nullable: true
+                      description: Internal license reference ID (often null)
+                    descriptionURI:
+                      type: string
+                      description: DOI or external metadata page link for the collection
+              examples:
+                default:
+                  summary: Example JSON response
+                  value:
+                    - description: "<p>This dataset consists of 4D lung CT images...</p>"
+                      id: 101
+                      collectionDescTimestamp: 1695410133
+                      collectionName: "4D-Lung"
+                      userName: "jdoe"
+                      licenseId: null
+                      descriptionURI: "https://doi.org/10.7937/K9/TCIA.2023.ABC123"
+            application/xml:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Example XML response
+                  value: |
+                    <CollectionDescriptions>
+                      <Collection>
+                        <description><![CDATA[<p>This dataset consists of 4D lung CT images...</p>]]></description>
+                        <id>101</id>
+                        <collectionDescTimestamp>1695410133</collectionDescTimestamp>
+                        <collectionName>4D-Lung</collectionName>
+                        <userName>jdoe</userName>
+                        <licenseId xsi:nil="true" />
+                        <descriptionURI>https://doi.org/10.7937/K9/TCIA.2023.ABC123</descriptionURI>
+                      </Collection>
+                    </CollectionDescriptions>
+            text/csv:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Example CSV response
+                  value: |
+                    id,collectionName,collectionDescTimestamp,userName,licenseId,description,descriptionURI
+                    101,4D-Lung,1695410133,jdoe,,<p>This dataset consists of 4D lung CT images...</p>,https://doi.org/10.7937/K9/TCIA.2023.ABC123
+            text/plain:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Example plain text response
+                  value: |
+                    Collection Name: 4D-Lung
+                    Description: This dataset consists of 4D lung CT images...
+                    Last Updated: 1695410133
+                    Submitted By: jdoe
+                    License ID: null
+                    Metadata URI: https://doi.org/10.7937/K9/TCIA.2023.ABC123
+        '500':
+          description: Internal server error
 
   /getCollectionOrSeriesForDOI:
     post:
@@ -2361,6 +2403,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
