@@ -57,12 +57,12 @@ public class V4_getSeriesMetadata extends getData {
             "Patient ID", "Patient Name",  "Patient Sex", "Ethnic Group", "Phantom", 
             "Species Code", "Species Description", "Study Instance UID", "Study Date", "Study Description", 
             "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
-            "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Modality", 
+            "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Site", "Modality", 
             "Protocol Name", "Series Date", "Series Description", "Body Part Examined", "Series Number", 
             "Annotations Flag", "Manufacturer", "Manufacturer Model Name", 
             "Pixel Spacing(mm)- Row","Slice Thickness(mm)",
             "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Collection URI", 
-            "File Size", "Date Released", "Third Party Analysis", "Authorized"
+            "File Size", "Released Status", "Date Released", "Third Party Analysis", "Authorized"
         };
 
         return formatResponse("CSV-DOWNLOAD", results, columns);

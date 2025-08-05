@@ -28,9 +28,9 @@ public class V4_getSeriesQCInfo extends getData {
             "Longitudinal Temporal Offset From Event", "Series Instance UID", "Project", "Site", "Modality", 
             "Protocol Name", "Series Date", "Series Description", "Body Part Examined", "Series Number", 
             "Annotations Flag", "Manufacturer", "Manufacturer Model Name", 
-            "Pixel Spacing(mm)- Row","Slice Thickness(mm)",
+            "Pixel Spacing(mm)- Row", "Slice Thickness(mm)",
             "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Collection URI", 
-            "File Size", "Released Status", "Date Released", "Third Party Analysis", "Authorized"
+            "File Size", "Visibility", "Released Status", "Date Released", "Third Party Analysis", "Authorized"
   };
 
 	public final static String TEXT_CSV = "text/csv"; 
