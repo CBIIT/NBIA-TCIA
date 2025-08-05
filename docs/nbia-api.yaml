@@ -385,11 +385,11 @@ paths:
                  hasRestrictions: true
                  restrictedCollections:
                    - collection: "CMB-CRC"
-                restrictionType: "Commercial Use Restricted"
-                details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
+                 restrictionType: "Commercial Use Restricted"
+                 details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
                    - collection: "LUNGx"
-                restrictionType: "Third-Party Analysis"
-                details: "Data includes annotations from external researchers not covered under TCIA’s general license."
+                 restrictionType: "Third-Party Analysis"
+                 details: "Data includes annotations from external researchers not covered under TCIA’s general license."
              application/xml:
                schema:
                type: string
@@ -2361,5 +2361,6 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
