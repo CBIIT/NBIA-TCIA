@@ -381,26 +381,26 @@ paths:
                         details:
                           type: string
                           description: Description of the restriction or licensing note
-               example:
-                 hasRestrictions: true
-                 restrictedCollections:
-                   - collection: "CMB-CRC"
-                 restrictionType: "Commercial Use Restricted"
-                 details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
-                   - collection: "LUNGx"
-                 restrictionType: "Third-Party Analysis"
-                 details: "Data includes annotations from external researchers not covered under TCIA’s general license."
+             example:
+               hasRestrictions: true
+               restrictedCollections:
+                 - collection: "CMB-CRC"
+                   restrictionType: "Commercial Use Restricted"
+                   details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
+                 - collection: "LUNGx"
+                   restrictionType: "Third-Party Analysis"
+                   details: "Data includes annotations from external researchers not covered under TCIA’s general license."
              application/xml:
                schema:
-               type: string
+                 type: string
              text/csv:
-              schema:
-                type: string
+               schema:
+                 type: string
              text/plain:
-             schema:
-             type: string
+               schema:
+                 type: string
         '500':
-          description: Internal server error
+           description: Internal server error
 
   /getMD5Hierarchy:
     post:
@@ -2361,6 +2361,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
