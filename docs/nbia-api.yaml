@@ -704,9 +704,9 @@ paths:
         Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below.
 
         **Example curl command:**
-          ```bash
-             curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100" 
-          ```
+        ```bash
+        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100"
+        ```
       tags:
         - Image Downloads
       requestBody:
@@ -742,19 +742,57 @@ paths:
         '200':
           description: Manifest file generated successfully
           content:
+            application/json:
+              schema:
+                type: object
+                description: JSON format for successful manifest results
+              examples:
+                default:
+                  summary: Example JSON response
+                  value:
+                    manifestId: "abc123"
+                    downloadUrl: "https://nbia.cancerimagingarchive.net/download/abc123.manifest"
+                    fileSize: 2048
+                    creationDate: "2025-08-05T14:12:00Z"
+                    sortField: "subject"
+                    sortDirection: "descending"
             application/x-nbia-manifest-file:
               schema:
                 type: string
+              examples:
+                default:
+                  summary: Example NBIA manifest file content
+                  value: |
+                    NBIA-Manifest-Version: 1.0
+                    Collection: ThirdPartyAnalysis
+                    Subject: TCGA-LUAD-01
+                    File: CT_001.dcm
             application/xml:
               schema:
                 type: string
+              examples:
+                default:
+                  summary: Example XML response
+                  value: |
+                    <Manifest>
+                      <ManifestId>abc123</ManifestId>
+                      <DownloadUrl>https://nbia.cancerimagingarchive.net/download/abc123.manifest</DownloadUrl>
+                      <FileSize>2048</FileSize>
+                      <CreationDate>2025-08-05T14:12:00Z</CreationDate>
+                    </Manifest>
             text/csv:
               schema:
                 type: string
+              examples:
+                default:
+                  summary: Example CSV response
+                  value: |
+                    manifestId,downloadUrl,fileSize,creationDate
+                    abc123,https://nbia.cancerimagingarchive.net/download/abc123.manifest,2048,2025-08-05T14:12:00Z
         '400':
           description: Bad request – Missing or invalid parameters
           content:
-            application/x-nbia-manifest-file:
+            application/json:
               schema:
                 type: object
                 properties:
@@ -2403,6 +2441,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
