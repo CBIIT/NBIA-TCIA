@@ -1290,20 +1290,15 @@ paths:
       summary: Retrieve body part values and their occurrence counts.
       description: |
         Returns a list of body part names along with the number of times each appears in the database.
-        Optionally filter by Collection or Modality.    
-        
+        Optionally filter by Collection or Modality.  
+
         **Example curl:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValuesAndCounts?Modality=PT" 
-         ```  
+        curl -X GET -H "Accept: application/json" \
+          "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValuesAndCounts?Modality=PT"
+        ```  
       tags:
         - Patient Metadata
-      properties:
-        format:
-          type: string
-          enum: [json, xml, csv]
-          default: json
-          description: Desired response format (json, xml, csv).
       parameters:
         - name: Collection
           in: query
@@ -1317,21 +1312,19 @@ paths:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CT
-            description: Whether to search for a collection or a series      
-
+            description: Modality of imaging studies.
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+            description: Desired response format.
       responses:
         '200':
           description: Successful response with body part counts
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -1343,12 +1336,26 @@ paths:
                       description: Body part name
                     count:
                       type: integer
-                      description: Number of series/studies with this body part
+                      description: Number of studies/series with this body part
                     Authorized:
                       type: integer
-                      description: User has access to the specified collection. 1 means yes and 0 means no.
+                      description: 1 if user has access, 0 otherwise
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An unexpected error occurred.
 
   /getPatient:
     get:
@@ -2441,6 +2448,7 @@ paths:
                 description: Name of the body part
         '500':
           description: Internal server error
+
 
 
 
