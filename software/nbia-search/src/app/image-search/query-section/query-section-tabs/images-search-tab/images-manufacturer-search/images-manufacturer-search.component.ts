@@ -270,7 +270,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     sendSelectedCriteriaString() {
         const selectedManufacturer = this.manufacturerList
             .filter((manufacturer, index) => this.cBox[index])
-            .map(manufacturer => manufacturer['Manufacturer']?.replace(/,/g, ' ') || 'NOT SPECIFIED');  // get the Manufacturer value
+            .map(manufacturer => manufacturer['Manufacturer'] || 'NOT SPECIFIED');  // get the Manufacturer value
         
         const criteriaString = encodeURIComponent(selectedManufacturer.join(','));
         this.queryUrlService.update( this.queryUrlService.MANUFACTURER, criteriaString );
