@@ -241,7 +241,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     
                 manufacturerListQueryList.forEach(criteriaQuery => {
                     const criteriaUpper = criteriaQuery.toUpperCase();
-                    const matchedIndices = this.completeManufacturerValues
+                    const matchedIndices = this.manufacturerList
                         .map((manufacturer, index) => manufacturer['Manufacturer'].toUpperCase() === criteriaUpper ? index : -1)
                         .filter(index => index !== -1);
     
@@ -286,7 +286,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
        
         const criteriaForQuery = [
             Consts.MANUFACTURER_CRITERIA,
-            ...this.completeManufacturerValues
+            ...this.manufacturerList
                 .filter((manufacturer, index) => this.cBox[index])
                 .map(manufacturer => manufacturer['Manufacturer'])  // get the Manufacturer value       
         ];
