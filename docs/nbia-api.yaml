@@ -1126,7 +1126,7 @@ paths:
                   summary: Example CSV response
                   value: |
                     collection,seriesInstanceUID,thirdPartyAnalysis
-                    TCGA-LUAD,, 
+                    TCGA-LUAD,,
 
             text/plain:
               schema:
@@ -2602,5 +2602,6 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
