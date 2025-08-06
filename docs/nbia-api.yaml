@@ -1137,37 +1137,37 @@ paths:
                   value: TCGA-LUAD
 
         '400':
-          description: Bad request – Missing or invalid parameters
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Missing required parameter: DOI
+           description: Bad request – Missing or invalid parameters
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   error:
+                     type: string
+                     example: Missing required parameter: DOI
 
         '404':
-          description: DOI not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: DOI not found in registry
+           description: DOI not found
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   error:
+                     type: string
+                     example: DOI not found in registry
 
         '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Unexpected server error occurred.
+           description: Internal server error
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   error:
+                     type: string
+                     example: Unexpected server error occurred.
  
   /getManufacturerValuesAndCounts:
     get:
@@ -2649,6 +2649,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
