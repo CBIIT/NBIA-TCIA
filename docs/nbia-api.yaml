@@ -307,7 +307,7 @@ paths:
           https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5Hierarchy
         ```
       tags:
-        - DICOM Hashing
+        - Utilities
       requestBody:
         required: true
         content:
@@ -2488,6 +2488,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
