@@ -1145,7 +1145,7 @@ paths:
                  properties:
                    error:
                      type: string
-                     example: Missing required parameter: DOI
+                     example: Missing required parameter - DOI
 
         '404':
            description: DOI not found
@@ -2649,6 +2649,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
