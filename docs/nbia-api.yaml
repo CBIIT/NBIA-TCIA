@@ -540,21 +540,7 @@ paths:
         '200':
           description: Manifest generated successfully.
           content:
-            application/json: # <-- Add this section
-              schema:
-                type: object # Or whatever the JSON structure is
-                properties:
-                  manifestUrl:
-                    type: string
-                  seriesCount:
-                    type: integer
             application/x-nbia-manifest-file:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
               schema:
                 type: string
         '400':
@@ -2710,4 +2696,5 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
