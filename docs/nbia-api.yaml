@@ -116,17 +116,20 @@ paths:
                 items:
                   type: object
                   properties:
-                    criteria:
+                    speciesCode:
                       type: string
-                    count:
+                    speciesDescription:
                       type: string
-              example:
-                - speciesCode: "447612001"
-                  speciesDescription: "Mus musculus"
-                - speciesCode: "448771007"
-                  speciesDescription: "Canis lupus familiaris"
-                - speciesCode: "337915000"
-                  speciesDescription: "Homo sapiens"
+              examples:
+                default:
+                  summary: Example Species Taxonomy
+                  value:
+                    - speciesCode: "337915000"
+                      speciesDescription: "Homo sapiens"
+                    - speciesCode: "447612001"
+                      speciesDescription: "Mus musculus"
+                    - speciesCode: "448771007"
+                      speciesDescription: "Canis lupus familiaris"
             text/plain:
               schema:
                 type: string
@@ -156,40 +159,13 @@ paths:
         The `start` parameter is used for paged results, indicating the offset from which to start returning results, and `size` specifies the number of results to return per page.
 
         Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below.
-
-        **General Section**:
-        - `CollectionCriteria`: Data collection or study name
-        - `DateRangeCriteria`: Date range for the study (e.g., start and end dates, in MM-DD-YYYY format)
-        - `ExcludeCommercialCriteria`: Exclude commercial use
-        - `PatientCriteria`: PatientID or (subject ID in the case of TCIA), one or more patient IDs separated by commas
-        - `SeriesCriteria`: SeriesUID or SeriesInstanceUID, one or more series UIDs separated by commas
-        - `StudyCriteria`: StudyUIDs, one or more study UIDs separated by commas
-        - `ThirdPartyAnalysis`: Third-party analysis criteria
-
-        **Patient Section**:
-        - `MinNumberOfStudiesCriteria`: Minimum number of studies per patient
-        - `MinNumberOfStudyDatesCriteria`: Minimum number of study dates per patient
-        - `PatientAgeRangeCriteria`: Age range of the patient, max-age is 90 (more than 90 is considered as 90 years old)
-        - `PatientSexCriteria`: Sex of the patient, options are 'Female', 'Male', 'Not Specified (Null)'
-        - `PhantomCriteria`: Phantom-related criteria
-        - `SpeciesCriteria`: Species-related criteria
-        - `TimePointCriteria`: Time point criteria
-
-        **Image Section**:
-        - `BodyPartExaminedCriteria`: Specific body part examined (e.g., brain, lung)
-        - `DescriptionCriteria`: Description of the image, Free-text metadata search  
-        - `ImageModalityCriteria`: Imaging modality (CT, MRI, etc.)
-        - `ManufacturerCriteria`: Manufacturer of the imaging equipment
-        - `PixelSpacingRangeCriteria`: Range of pixel spacing values - row spacing only
-        - `SliceThicknessRangeCriteria`: Range of slice thickness values
         
-
         **Example curl command:**
         ```bash
         curl 'https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSimpleSearch' \
           -H 'accept: application/json' \
           -H 'Content-Type: application/x-www-form-urlencoded' \
-          -d 'criteriaType0=CollectionCriteria&value0=BodyPartExaminedCriteria&sortField=ABDOMEN&sortDirection=ascending&start=0&size=100'
+          -d 'criteriaType0=CollectionCriteria&value0=TCGA-GBM&sortField=PatientID&sortDirection=ascending&start=0&size=2&format=json'
         ```
   
       tags:
@@ -202,14 +178,10 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  allOf:
-                    - description: select from the following criteria types
-                      type: string
-                    - $ref: '#/components/schemas/CriteriaTypeEnum'
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value for the first search criterion.
-                  default: CMB-CRC
                 sortField:
                   type: string
                   description: Field to sort by (e.g., subject)
@@ -218,91 +190,101 @@ paths:
                   type: string
                   enum: [ascending, descending]
                   description: Sort direction
+                  default: ascending
                 start:
                   type: integer
                   description: Offset for paged results
+                  default: 0
                 size:
                   type: integer
                   description: Page size
-                  default: 10
+                  default: 25
                 format:
                   type: string
                   enum: [json, xml, csv]
                   default: json
                   description: Desired response format (json, xml, csv).
+              example:
+                criteriaType0: "CollectionCriteria"
+                value0: "TCGA-GBM"
+                sortField: "PatientID"
+                sortDirection: "ascending"
+                start: 0
+                size: 2
+                format: "json"
       responses:
         '200':
           description: Successful search results
           content:
-      application/json:
-        schema:
-          type: array
-          items:
-            type: object
-            properties:
-              PatientID:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    PatientID:
+                      type: string
+                    PatientName:
+                      type: string
+                    PatientSex:
+                      type: string
+                    PatientBirthDate:
+                      type: string
+                      format: date
+                    StudyInstanceUID:
+                      type: string
+                    StudyDate:
+                      type: string
+                    Modality:
+                      type: string
+                    BodyPartExamined:
+                      type: string
+                    Collection:
+                      type: string
+                    Manufacturer:
+                      type: string
+                    SliceThickness:
+                      type: number
+                    PixelSpacing:
+                      type: string
+                    SeriesUID:
+                      type: string
+              example:
+                - PatientID: "TCIA-001"
+                  PatientName: "Anonymous"
+                  PatientSex: "Female"
+                  PatientBirthDate: "1965-03-22"
+                  StudyInstanceUID: "1.2.840.113619.2.55.3.604688405.781.1554839724.467"
+                  StudyDate: "2019-04-09"
+                  Modality: "CT"
+                  BodyPartExamined: "Chest"
+                  Collection: "LIDC-IDRI"
+                  Manufacturer: "GE MEDICAL SYSTEMS"
+                  SliceThickness: 1.25
+                  PixelSpacing: "0.703125"
+                  SeriesUID: "1.2.840.113619.2.55.3.604688405.781.1554839756.835"
+                - PatientID: "TCIA-002"
+                  PatientName: "Anonymous"
+                  PatientSex: "Male"
+                  PatientBirthDate: "1952-11-07"
+                  StudyInstanceUID: "1.3.6.1.4.1.14519.5.2.1.6279.6001.298806137288633453246975630178"
+                  StudyDate: "2020-07-11"
+                  Modality: "MR"
+                  BodyPartExamined: "Brain"
+                  Collection: "TCGA-GBM"
+                  Manufacturer: "Siemens"
+                  SliceThickness: 5.0
+                  PixelSpacing: "0.9375"
+                  SeriesUID: "1.3.6.1.4.1.14519.5.2.1.6279.6001.223679780596407876485803138694"
+            application/xml:
+              schema:
                 type: string
-              PatientName:
+            text/csv:
+              schema:
                 type: string
-              PatientSex:
+            text/plain:
+              schema:
                 type: string
-              PatientBirthDate:
-                type: string
-                format: date
-              StudyInstanceUID:
-                type: string
-              StudyDate:
-               type: string
-              Modality:
-               type: string
-              BodyPartExamined:
-               type: string
-              Collection:
-               type: string
-              Manufacturer:
-               type: string
-              SliceThickness:
-               type: number
-              PixelSpacing:
-               type: string
-              SeriesUID:
-               type: string
-      example:
-        - PatientID: "TCIA-001"
-          PatientName: "Anonymous"
-          PatientSex: "Female"
-          PatientBirthDate: "1965-03-22"
-          StudyInstanceUID: "1.2.840.113619.2.55.3.604688405.781.1554839724.467"
-          StudyDate: "2019-04-09"
-          Modality: "CT"
-          BodyPartExamined: "Chest"
-          Collection: "LIDC-IDRI"
-          Manufacturer: "GE MEDICAL SYSTEMS"
-          SliceThickness: 1.25
-          PixelSpacing: "0.703125"
-          SeriesUID: "1.2.840.113619.2.55.3.604688405.781.1554839756.835"
-        - PatientID: "TCIA-002"
-          PatientName: "Anonymous"
-          PatientSex: "Male"
-          PatientBirthDate: "1952-11-07"
-          StudyInstanceUID: "1.3.6.1.4.1.14519.5.2.1.6279.6001.298806137288633453246975630178"
-          StudyDate: "2020-07-11"
-          Modality: "MR"
-          BodyPartExamined: "Brain"
-          Collection: "TCGA-GBM"
-          Manufacturer: "Siemens"
-          SliceThickness: 5.0
-          PixelSpacing: "0.9375"
-          SeriesUID: "1.3.6.1.4.1.14519.5.2.1.6279.6001.223679780596407876485803138694"
-      application/xml:
-        schema:
-          type: string
-      text/csv:
-        schema:
-          type: string
-      text/plain:
-        schema:
-          type: string
         '500':
           description: Internal server error
           
@@ -316,8 +298,8 @@ paths:
 
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch"   
-          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=10"
+        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getRestrictionsForSimpleSearch" \
+          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=10&format=json"
         ```
   
       tags:
@@ -330,10 +312,7 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  allOf:
-                    - type: string
-                      description: Select from the following criteria types
-                    - $ref: '#/components/schemas/CriteriaTypeEnum'
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value for the first search criterion.
@@ -356,6 +335,14 @@ paths:
                   enum: [json, xml, csv]
                   default: json
                   description: Desired response format (json, xml, csv).
+              example:
+                criteriaType0: "ThirdPartyAnalysis"
+                value0: "yes"
+                sortField: "subject"
+                sortDirection: "descending"
+                start: 0
+                size: 10
+                format: "json"
       responses:
         '200':
            description: Successful restriction result
@@ -375,21 +362,21 @@ paths:
                           collection:
                             type: string
                             description: Name of the restricted data collection
-                   restrictionType:
-                        type: string
-                        description: Type of restriction applied to the collection
-                        details:
-                          type: string
-                          description: Description of the restriction or licensing note
-             example:
-               hasRestrictions: true
-               restrictedCollections:
-                 - collection: "CMB-CRC"
-                   restrictionType: "Commercial Use Restricted"
-                   details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
-                 - collection: "LUNGx"
-                   restrictionType: "Third-Party Analysis"
-                   details: "Data includes annotations from external researchers not covered under TCIA’s general license."
+                          restrictionType:
+                            type: string
+                            description: Type of restriction applied to the collection
+                          details:
+                            type: string
+                            description: Description of the restriction or licensing note
+               example:
+                 hasRestrictions: true
+                 restrictedCollections:
+                   - collection: "CMB-CRC"
+                     restrictionType: "Commercial Use Restricted"
+                     details: "Use of data for commercial purposes is prohibited. See TCIA usage guidelines."
+                   - collection: "LUNGx"
+                     restrictionType: "Third-Party Analysis"
+                     details: "Data includes annotations from external researchers not covered under TCIA’s general license."
              application/xml:
                schema:
                  type: string
@@ -410,7 +397,7 @@ paths:
         
         **Example curl command:**
           ```bash
-              curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5Hierarchy" -d "Collection=ISPY1" 
+              curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5Hierarchy" -d "Collection=ISPY1&format=json"
           ```
       tags:
         - Patient Metadata
@@ -424,25 +411,23 @@ paths:
                 Collection:
                   type: string
                   description: Name of the collection.
-                  example: ISPY1
                 PatientId:
                   type: string
                   description: DICOM Tag (0010,0020) – De-identified patient ID.
-                  example: TCGA-02-0001
                 StudyInstanceUID:
                   type: string
                   description: DICOM Tag (0020,000D) – Unique identifier for the study.
-                  example: 1.2.840.113619.2.55.3.604688342.833.1594246382.467
                 SeriesInstanceUID:
                   type: string
                   description: DICOM Tag (0020,000E) – Unique identifier for the series.
-                  example: 1.2.840.113619.2.55.3.604688342.833.1594246390.245
                 format:
                   type: string
                   enum: [json, xml, csv]
                   default: json
                   description: Desired response format (json, xml, csv).
-                  example: json
+              example:
+                Collection: "ISPY1"
+                format: "json"
       responses:
         '200':
           description: Successful response with MD5 hash
@@ -474,7 +459,7 @@ paths:
  
        **Example curl command:**
        ```bash
-       curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5HashForImage?SOPInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268"
+       curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5HashForImage?SOPInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268&format=json"
        ```
      tags:
        - Patient Metadata
@@ -484,7 +469,7 @@ paths:
          required: true
          schema:
            type: string
-           example: 1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268
+         example: "1.3.6.1.4.1.14519.5.2.1.6834.5010.129790817462380794533151446268"
        - name: format
          in: query
          required: false
@@ -492,7 +477,6 @@ paths:
            type: string
            enum: [json, xml, csv]
            default: json
-           example: csv
          description: Desired response format
      responses:
        '200':
@@ -534,7 +518,6 @@ paths:
                 patientIDs:
                   type: string
                   description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
-                  example: ISPY1_1001
                 studyUIDs:
                   type: string
                   description: Comma-separated studyInstanceUIDs (optional)
@@ -550,6 +533,9 @@ paths:
                   type: string
                   enum: [true, false]
                   description: Whether to include annotations (true/false)
+              example:
+                patientIDs: "ISPY1_1001,ISPY1_1002"
+                includeAnnotation: "true"
       responses:
         '200':
           description: Manifest text file generated successfully.
@@ -557,59 +543,15 @@ paths:
             application/x-nbia-manifest-file:
               schema:
                 type: string
-                example: |
-                  downloadServerUrl=https://nbia.cancerimagingarchive.net/nbia-download/servlet/DownloadServlet
-                  includeAnnotation=true
-                  noOfrRetry=4
-                  databasketId=manifest-1754065042506.tcia
-                  manifestVersion=3.0
-                  ListOfSeriesToDownload=
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.250955243295773832626617549482
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.360389360742427667526070655843
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.334491271566855314830260417024
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.658441262671287309457346305705
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.131126392922209124942161386151
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.933316195746120155903339740103
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.274616783627161175251743615553
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.733313000644315272006192181431
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.220092773361369396087067751186
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.245270018412514241929134140425
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.229054711046553504545787083659
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.179162285704690412763684330250
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.234808560418629209017784958053
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.154616556555686498817341337478
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.177623757250131970264857092191
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.154110825244369885171851551255
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.284567351304426376226790714264
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.324328467511449053797650611970
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.741335780571671051586458569948
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.335719452327097001305227418372
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.210538707954985296677398591978
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.195983148423034180376334647727
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.244863941836141483641489109194
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.180831804100647525080922590445
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.134282805412721876700374897836
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.226038001772760333157260976449
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.248017107754573666956949261473
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.304222333797754930798522430195
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.571620122698689331448512191875
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.276008182492477899149189119200
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.135612062012804030483357359425
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.311831286327220528148178588078
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.509490993107578827767081500491
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.288985999148727959387883654619
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.180006052978659726439424740707
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.270834182764177195175091536181
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.177962682118221509857252041052
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.332791230985209928247615451914
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.121164861481441093151316977794
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.520396403274327587353342330294
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.195950422361997478270837056988
-                  1.3.6.1.4.1.14519.5.2.1.7695.1700.503697125043256633091008976690
-                  1.3.6.1.4.1.5962.1.1.0.0.1548529146.50549.286
-                  1.3.6.1.4.1.5962.1.1.0.0.1548529146.50549.288
-                  1.3.6.1.4.1.5962.1.1.0.0.1548529146.50549.287
-                  1.3.6.1.4.1.5962.1.1.0.0.1548529146.50549.285
+              example: |
+                downloadServerUrl=https://nbia.cancerimagingarchive.net/nbia-download/servlet/DownloadServlet
+                includeAnnotation=true
+                noOfrRetry=4
+                databasketId=manifest-1754065042506.tcia
+                manifestVersion=3.0
+                ListOfSeriesToDownload=
+                1.3.6.1.4.1.14519.5.2.1.7695.1700.250955243295773832626617549482
+                1.3.6.1.4.1.14519.5.2.1.7695.1700.360389360742427667526070655843
             application/xml:
               schema:
                 type: string
@@ -659,10 +601,13 @@ paths:
                 list:
                   type: string
                   description: Comma-separated list of series UIDs for each series you want to download
-                  includeAnnotation:
-                    type: string
-                    enum: [true, false]
-                    description: If true, annotations are included in the manifest.
+                includeAnnotation:
+                  type: string
+                  enum: [true, false]
+                  description: If true, annotations are included in the manifest.
+              example:
+                list: "1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723"
+                includeAnnotation: "false"
       responses:
         '200':
           description: Successfully generated manifest text
@@ -717,10 +662,7 @@ paths:
               type: object
               properties:
                 criteriaType0:
-                  allOf:
-                    - type: string
-                      description: Select from the following criteria types
-                    - $ref: '#/components/schemas/CriteriaTypeEnum'
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value to match for the specified criteriaType0
@@ -738,6 +680,13 @@ paths:
                   type: integer
                   description: Number of results to return
                   default: 10
+              example:
+                criteriaType0: "ThirdPartyAnalysis"
+                value0: "yes"
+                sortField: "subject"
+                sortDirection: "descending"
+                start: 0
+                size: 100
       responses:
         '200':
           description: Manifest file generated successfully
@@ -818,7 +767,7 @@ paths:
         
         **Example curl command:**
           ```bash
-             curl -X POST -H "Content-Type: application/zip" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" 
+             curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getDicomTags?SeriesUID=2.25.202638583638721901745794769668527472118" 
           ```        
       tags:
         - Series Metadata
@@ -829,20 +778,11 @@ paths:
           required: true
           schema:
             type: string
+          example: "2.25.202638583638721901745794769668527472118"
       responses:
         '200':
           description: Successful response with DICOM tags in ZIP format
           content:
-            application/zip:
-              schema:
-                type: string
-                format: binary
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -858,6 +798,23 @@ paths:
                     data:
                       type: string
                       description: Value associated with the tag
+              example:
+                - element: "(0008,0060)"
+                  name: "Modality"
+                  data: "CT"
+                - element: "(0028,0010)"
+                  name: "Rows"
+                  data: "512"
+            application/zip:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid SeriesUID
         '404':
@@ -939,6 +896,15 @@ paths:
           description: Collection name to filter results
           schema:
             type: string
+          example: "4D-Lung"
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv, text/plain]
+            default: json
+          description: Desired response format
       responses:
         '200':
           description: Successful response with collection descriptions
@@ -1053,19 +1019,20 @@ paths:
                 DOI:
                   type: string
                   description: Digital Object Identifier (DOI) to resolve
-                  example: https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE
                 CollectionOrSeries:
                   type: string
                   enum: [collection, series]
                   default: collection
                   description: Whether to search for a collection or a series
-                  example: collection
                 format:
                   type: string
                   enum: [json, xml, csv]
                   default: json
                   description: Desired response format
-                  example: json
+              example:
+                DOI: "https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE"
+                CollectionOrSeries: "collection"
+                format: "json"
 
       responses:
         '200':
@@ -1093,14 +1060,14 @@ paths:
                 collectionExample:
                   summary: Example response for collection resolution
                   value:
-                    - collection: TCGA-LUAD
+                    - collection: "TCGA-LUAD"
                       seriesInstanceUID: null
                       thirdPartyAnalysis: null
                 seriesExample:
                   summary: Example response for series resolution
                   value:
                     - collection: null
-                      seriesInstanceUID: 1.2.840.113619.2.55.3.604688437.781.1596539266.467
+                      seriesInstanceUID: "1.2.840.113619.2.55.3.604688437.781.1596539266.467"
                       thirdPartyAnalysis: null
 
             application/xml:
@@ -1188,16 +1155,27 @@ paths:
           required: false
           schema:
             type: string
+          example: "4D-Lung"
         - name: Modality
           in: query
           required: false
           schema:
             type: string
+          example: "CT"
         - name: BodyPartExamined
           in: query
           required: false
           schema:
             type: string
+          example: "LUNG"
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv, text/plain]
+            default: json
+          description: Desired response format
       responses:
         '200':
           description: Successful response with manufacturer counts and authorization
@@ -1221,10 +1199,10 @@ paths:
                 default:
                   summary: Example JSON response
                   value:
-                    - manufacturer: GE Medical Systems
+                    - manufacturer: "GE Medical Systems"
                       count: 120
                       Authorized: 1
-                    - manufacturer: Siemens
+                    - manufacturer: "Siemens"
                       count: 85
                       Authorized: 0
             application/xml:
@@ -1254,8 +1232,8 @@ paths:
                   summary: Example CSV response
                   value: |
                     manufacturer,count,Authorized
-                    GE Medical Systems,120,1
-                    Siemens,85,0
+                    "GE Medical Systems",120,1
+                    "Siemens",85,0
             text/plain:
               schema:
                 type: string
@@ -1295,11 +1273,13 @@ paths:
          required: false
          schema:
            type: string
+         example: "VICTRE"
        - name: BodyPartExamined
          in: query
          required: false
          schema:
            type: string
+         example: "BREAST"
        - name: format
          in: query
          required: false
@@ -1312,15 +1292,6 @@ paths:
        '200':
          description: Successful response with modality counts and authorization
          content:
-           text/plain:
-             schema:
-               type: string
-           application/xml:
-             schema:
-               type: string
-           text/csv:
-             schema:
-               type: string
            application/json:
              schema:
                type: array
@@ -1336,6 +1307,22 @@ paths:
                    Authorized:
                      type: integer
                      description: User has access to the specified collection. 1 means yes, 0 means no.
+             example:
+              - modality: "MG"
+                count: 500
+                Authorized: 1
+              - modality: "DX"
+                count: 120
+                Authorized: 1
+           text/plain:
+             schema:
+               type: string
+           application/xml:
+             schema:
+               type: string
+           text/csv:
+             schema:
+               type: string
        '500':
          description: Internal server error
 
@@ -1347,15 +1334,18 @@ paths:
         
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionValuesAndCounts"
+        curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionValuesAndCounts?format=json"
         ```
       tags:
         - Collection Metadata
-      properties:
-        format:
-          type: string
-          enum: [json, xml, csv]
-          default: json
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
           description: Desired response format (json, xml, csv).
       responses:
         '200':
@@ -1376,6 +1366,13 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              example:
+                - collection: "TCGA-GBM"
+                  count: 500
+                  Authorized: 1
+                - collection: "LIDC-IDRI"
+                  count: 1018
+                  Authorized: 1
             text/plain:
               schema:
                 type: string
@@ -1398,7 +1395,7 @@ paths:
         **Example curl:**
         ```bash
         curl -X GET -H "Accept: application/json" \
-          "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValuesAndCounts?Modality=PT"
+          "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValuesAndCounts?Modality=PT&format=json"
         ```  
       tags:
         - Patient Metadata
@@ -1408,14 +1405,22 @@ paths:
           required: false
           schema:
             type: string
+          example: "TCGA-HNSC"
         - name: Modality
           in: query
           required: false
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-            default: CT
-            description: Modality of imaging studies.
+          example: "PT"
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with body part counts
@@ -1435,6 +1440,13 @@ paths:
                     Authorized:
                       type: integer
                       description: 1 if user has access, 0 otherwise
+              example:
+                - bodyPart: "WHOLE BODY"
+                  count: 298
+                  Authorized: 1
+                - bodyPart: "HEADNECK"
+                  count: 150
+                  Authorized: 1
             application/xml:
               schema:
                 type: string
@@ -1479,13 +1491,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "Mass-Training_P_00001"
         - name: Collection
           in: query
           description: Name of the collection to retrieve patients from
           required: true
-          example: CBIS-DDSM
           schema:
             type: string
+          example: "CBIS-DDSM"
       responses:
         '200':
           description: Successful response with patient metadata
@@ -1515,6 +1528,13 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              example:
+                - PatientId: "Mass-Training_P_00001"
+                  PatientName: "Mass-Training_P_00001"
+                  PatientSex: "F"
+                  PatientBirthDate: ""
+                  EthnicGroup: ""
+                  Authorized: 1
             application/xml:
               schema:
                 type: string
@@ -1538,7 +1558,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientStudy?Collection=VICTRE&Modality=MG&format=json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getPatientStudy?Collection=VICTRE&PatientID=1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663&format=json"
         ```
       tags:
         - Patient Metadata
@@ -1555,15 +1575,16 @@ paths:
           in: query
           description: Name of the image collection
           required: true
-          example: VICTRE
           schema:
             type: string
+          example: "VICTRE"
         - name: PatientID
           in: query
           description: De‑identified PatientID (optional – restricts results to a single patient)
           required: false
           schema:
             type: string
+          example: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663"
         - name: StudyInstanceUID
           in: query
           description: DICOM Tag (0020,000D) – Unique identifier for the study
@@ -1573,12 +1594,6 @@ paths:
       responses:
         '200':
           description: Successful response
-          headers:
-            Content-Type:
-              description: Format of the returned data
-              schema:
-                type: string
-                enum: [application/json, application/xml, text/csv]
           content:
             application/json:
               schema:
@@ -1611,6 +1626,15 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              example:
+                - StudyDate: "20171120"
+                  StudyDescription: "DBT"
+                  PatientID: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663"
+                  PatientName: ""
+                  PatientSex: "F"
+                  Collection: "VICTRE"
+                  SeriesCount: 4
+                  Authorized: 1
             application/xml:
               schema:
                 type: string
@@ -1630,7 +1654,7 @@ paths:
         
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getUpdatedSeries?fromDate=28-03-2023 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getUpdatedSeries?fromDate=03-28-2023&format=json"
         ```        
       tags:
         - Series Metadata
@@ -1641,12 +1665,14 @@ paths:
           schema:
             type: string
           description: Name of the image collection
+          example: "TCGA-GBM"
         - name: fromDate
           in: query
           required: true
           schema:
             type: string
           description: Date in MM-DD-YYYY format. Returns series updated on or after this date.
+          example: "03-28-2023"
         - name: format
           in: query
           required: false
@@ -1659,6 +1685,15 @@ paths:
         '200':
           description: Successful response with updated SeriesInstanceUIDs
           content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: DICOM Tag (0020,000E) – Unique identifier for a DICOM series
+              example:
+                - "1.3.6.1.4.1.14519.5.2.1.7695.1700.121164861481441093151316977794"
+                - "1.3.6.1.4.1.14519.5.2.1.7695.1700.520396403274327587353342330294"
             text/plain:
               schema:
                 type: string
@@ -1668,12 +1703,6 @@ paths:
             text/csv:
               schema:
                 type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  description: DICOM Tag (0020,000E) – Unique identifier for a DICOM series
         '400':
           description: Bad request – Missing or invalid parameters
         '404':
@@ -1690,7 +1719,7 @@ paths:
         
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSOPInstanceUIDs?SeriesInstanceUID=1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSOPInstanceUIDs?SeriesInstanceUID=1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992&format=json"
         ```       
       tags:
         - Series Metadata
@@ -1701,15 +1730,28 @@ paths:
           schema:
             type: string
           description: DICOM Tag (0020,000E) – Unique identifier for the DICOM series
+          example: "1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992"
         - name: format
-          type: string
-          enum: [json, xml, csv]
-          default: json
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
           description: Desired response format (json, xml, csv).
       responses:
         '200':
           description: Successful response with SOPInstanceUIDs
           content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: DICOM Tag (0008,0018) – Unique identifier for an individual DICOM image
+              example:
+                - "1.3.6.1.4.1.9590.100.1.2.149132578118128281813333346511418228394"
+                - "1.3.6.1.4.1.9590.100.1.2.222720238118223402434311854341147854611"
             text/plain:
               schema:
                 type: string
@@ -1719,12 +1761,6 @@ paths:
             text/csv:
               schema:
                 type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  description: DICOM Tag (0008,0018) – Unique identifier for an individual DICOM image
         '400':
           description: Bad request – Missing or invalid SeriesInstanceUID
         '404':
@@ -1741,7 +1777,7 @@ paths:
       
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSeriesSize?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSeriesSize?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726&format=json"
         ```     
       tags:
         - Series Metadata
@@ -1752,6 +1788,7 @@ paths:
           schema:
             type: string
           description: DICOM Tag (0020,000E) – Unique identifier for the image series
+          example: "1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726"
         - name: format
           in: query
           required: false
@@ -1764,15 +1801,6 @@ paths:
         '200':
           description: Successful response with image count and total size
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: object
@@ -1783,6 +1811,18 @@ paths:
                   seriesSize:
                     type: integer
                     description: Total size in bytes of the series
+              example:
+                imageCount: 136
+                seriesSize: 71599388
+            text/plain:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid SeriesInstanceUID
         '404':
@@ -1799,7 +1839,9 @@ paths:
         
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSeriesMetaData?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726 
+        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" \
+          -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726&format=json" \
+          "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSeriesMetaData"
         ```   
       tags:
         - Series Metadata
@@ -1818,10 +1860,18 @@ paths:
                   enum: [json, xml, csv]
                   default: json
                   description: Desired response format (json, xml, csv)
+              example:
+                list: "1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726"
+                format: "json"
       responses:
         '200':
           description: Successful response with series metadata key-value pairs
           content:
+            application/json:
+              schema:
+                type: string
+              example:
+                '[{"patientId":"LIDC-IDRI-1000","seriesInstanceUid":"1.3.6.1.4.1.14519.5.2.1.6279.6001.202166363820228347198889476725","seriesDescription":"case_1000_1_01","modality":"CT"}]'
             text/plain:
               schema:
                 type: string
@@ -1829,9 +1879,6 @@ paths:
               schema:
                 type: string
             text/csv:
-              schema:
-                type: string
-            '*/*':
               schema:
                 type: string
         '400':
@@ -1850,7 +1897,7 @@ paths:
         
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSeries?Collection=VICTRE&Modality=MG 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSeries?Collection=VICTRE&Modality=MG&format=json"
         ```       
       tags:
         - Series Metadata
@@ -1881,6 +1928,7 @@ paths:
           schema:
             type: string
           description: Filter results by collection name.
+          example: "VICTRE"
         - name: ManufacturerModelName
           in: query
           required: false
@@ -1911,21 +1959,12 @@ paths:
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-            default: CR
-            description: Filter results by imaging modality (e.g., CT, MR).
+          description: Filter results by imaging modality (e.g., CT, MR).
+          example: "MG"
       responses:
         '200':
           description: Successful response with series metadata
           content:
-           text/plain:
-              schema:
-                type: string
-           application/xml:
-              schema:
-                type: string
-           text/csv:
-              schema:
-                type: string
            application/json:
               schema:
                 type: array
@@ -1966,11 +2005,27 @@ paths:
                     Collection:
                       type: string
                       description: Collection name that the series belongs to
-                    format:
-                      type: string
-                      enum: [json, xml, csv]
-                      default: json
-                      description: Desired response format (json, xml, csv)
+              example:
+                - SeriesInstanceUID: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663.1"
+                  StudyInstanceUID: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663"
+                  SeriesDate: "20171120"
+                  Modality: "MG"
+                  SeriesDescription: "L-CC"
+                  BodyPartExamined: "BREAST"
+                  SeriesNumber: 1
+                  Manufacturer: "Hologic, Inc."
+                  ImageCount: 55
+                  PatientID: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663"
+                  Collection: "VICTRE"
+           text/plain:
+              schema:
+                type: string
+           application/xml:
+              schema:
+                type: string
+           text/csv:
+              schema:
+                type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2001,9 +2056,9 @@ paths:
           in: query
           description: Name of the image collection
           required: true
-          example: VICTRE
           schema:
             type: string
+          example: "VICTRE"
         - name: Modality
           in: query
           description: Filter results by imaging modality (e.g., CT, MR)
@@ -2011,7 +2066,7 @@ paths:
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-            default: CR
+          example: "MG"
       responses:
         '200':
           description: Successful response with patient metadata
@@ -2041,6 +2096,13 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              example:
+                - PatientID: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663"
+                  PatientName: ""
+                  PatientSex: "F"
+                  PatientBirthDate: ""
+                  EthnicGroup: ""
+                  Authorized: 1
             application/xml:
               schema:
                 type: string
@@ -2063,7 +2125,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010-08-16"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010-08-16&format=json"
         ```
       tags:
         - Study Metadata
@@ -2086,16 +2148,17 @@ paths:
           in: query
           description: Name of the image collection
           required: true
-          example: CBIS-DDSM
           schema:
             type: string
+          example: "CBIS-DDSM"
         - name: Date
           in: query
           description: Date in YYYY-MM-DD format to filter new studies
           required: true
-          example: 2010-08-16
           schema:
             type: string
+            format: date
+          example: "2010-08-16"
       responses:
         '200':
           description: Successful response with study metadata
@@ -2131,6 +2194,15 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              example:
+                - PatientID: "Mass-Test_P_00040"
+                  StudyInstanceUID: "1.3.6.1.4.1.9328.50.1.11024"
+                  StudyDate: "20160427"
+                  StudyDescription: "ffdm"
+                  AccessionNumber: ""
+                  StudyID: "22670"
+                  Collection: "CBIS-DDSM"
+                  Authorized: 1
             application/xml:
               schema:
                 type: string
@@ -2150,7 +2222,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010-08-16"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010-08-16&format=json"
         ```
       tags:
         - Patient Metadata
@@ -2167,16 +2239,17 @@ paths:
           in: query
           description: Name of the collection
           required: true
-          example: CBIS-DDSM
           schema:
             type: string
+          example: "CBIS-DDSM"
         - name: Date
           in: query
           description: Date in YYYY-MM-DD format to filter new patients
           required: true
-          example: 2010-08-16
           schema:
             type: string
+            format: date
+          example: "2010-08-16"
       responses:
         '200':
           description: Successful response with patient data
@@ -2218,6 +2291,17 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              example:
+                - PatientID: "Mass-Test_P_00040"
+                  PatientName: "Mass-Test_P_00040"
+                  PatientBirthDate: ""
+                  PatientSex: "F"
+                  EthnicGroup: ""
+                  Collection: "CBIS-DDSM"
+                  Phantom: ""
+                  SpeciesCode: ""
+                  SpeciesDescription: ""
+                  Authorized: 1
             application/xml:
               schema:
                 type: string
@@ -2241,7 +2325,7 @@ paths:
         
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getModalityValues 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getModalityValues?format=json"
         ```  
       tags:
         - Utilities
@@ -2252,13 +2336,14 @@ paths:
           required: false
           schema:
             type: string
+          example: "TCGA-GBM"
         - name: BodyPartExamined
           in: query
           description: Filter results by body part examined
           required: false
-          example: Kidney
           schema:
             type: string
+          example: "BRAIN"
         - name: format
           in: query
           description: Desired response format (json, xml, csv)
@@ -2271,6 +2356,16 @@ paths:
         '200':
           description: Successful response with modality values
           content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+                - "CR"
+                - "CT"
+                - "MR"
+                - "PT"
             text/plain:
               schema:
                 type: string
@@ -2280,11 +2375,6 @@ paths:
             text/csv:
               schema:
                 type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
         '400':
           description: Bad request – Missing or invalid parameters
         '500':
@@ -2299,7 +2389,7 @@ paths:
         
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getImage?SeriesInstanceUID=1.3.6.1.4.1.9328.50.1.216116555221814778114703363464001196508 
+        curl -o images.zip -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getImage?SeriesInstanceUID=1.3.6.1.4.1.9328.50.1.216116555221814778114703363464001196508"
         ```
       tags:
         - Image Downloads
@@ -2310,6 +2400,7 @@ paths:
           required: true
           schema:
             type: string
+          example: "1.3.6.1.4.1.9328.50.1.216116555221814778114703363464001196508"
         - name: NewFileNames
           in: query
           description: >
@@ -2339,14 +2430,9 @@ paths:
       description: |
         Retrieves a ZIP archive containing all DICOM images associated with the specified SeriesInstanceUID, along with their corresponding MD5 hash values for integrity verification.
         
-        **Example curl command:**
+        **Example call:**
         ```bash
-        curl -X POST "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getImageWithMD5Hash"
-          -H "Content-Type: application/x-www-form-urlencoded"
-          -d "SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798"
-          
-        **Example call:"
-        https://services.cancerimagingarchive.net/nbia-api/services/v1/getImageWithMD5Hash?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798 
+        curl -o images_with_hash.zip -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getImageWithMD5Hash?SeriesInstanceUID=1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798"
         ```
       tags:
         - Image Downloads
@@ -2357,11 +2443,12 @@ paths:
           required: true
           schema:
             type: string
+          example: "1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798"
       responses:
         '200':
           description: A ZIP file containing the DICOM images and their MD5 hash values
           content:
-            '*/*':
+            application/zip:
               schema:
                 type: string
                 format: binary
@@ -2380,20 +2467,32 @@ paths:
       
         **Example call:**
         ```bash
-        https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionValues 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getCollectionValues?format=json"
         ```
-      properties:
-        format:
-          type: string
-          enum: [json, xml, csv]
-          default: json
-          description: Desired response format (json, xml, csv)
       tags:
         - Collection Metadata
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          description: Desired response format (json, xml, csv)
       responses:
         '200':
           description: A list of collection names
           content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+              example:
+                - collection: "4D-Lung"
+                - collection: "ACRIN-Contralateral-Breast-MR"
+                - collection: "ACRIN-FLT-Breast"
             text/plain:
               schema:
                 type: string
@@ -2403,16 +2502,6 @@ paths:
             text/csv:
               schema:
                 type: string
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Collection'
-                format:
-                  type: string
-                  enum: [json, xml, csv]
-                  default: json
-                  description: Desired response format (json, xml, csv)
         '500':
           description: Internal server error.
           content:
@@ -2432,7 +2521,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValues?Collection=TCGA-LUAD&Modality=CT" -H "Accept: application/json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValues?Collection=TCGA-LUAD&Modality=CT&format=json"
         ```
       tags:
         - Utilities
@@ -2443,16 +2532,14 @@ paths:
           required: false
           schema:
             type: string
-          example: TCGA-LUAD
-
+          example: "TCGA-LUAD"
         - name: BodyPartExamined
           in: query
           description: Filter results by body part examined
           required: false
           schema:
             type: string
-          example: CHEST
-
+          example: "CHEST"
         - name: Modality
           in: query
           description: Filter results by imaging modality
@@ -2460,19 +2547,15 @@ paths:
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-            default: CR
-          example: CT
-
+          example: "CT"
         - name: format
           in: query
           description: Desired response format (json, xml, csv)
           required: false
           schema:
             type: string
-            enum: [json, xml, csv]
+            enum: [json, xml, csv, text/plain]
             default: json
-          example: json
-
       responses:
         '200':
           description: Successful response with manufacturer names
@@ -2483,18 +2566,17 @@ paths:
                 items:
                   type: string
               examples:
-                success:
+                default:
                   summary: Example JSON response
                   value:
-                    - GE MEDICAL SYSTEMS
-                    - SIEMENS
-                    - PHILIPS
-
+                    - "GE MEDICAL SYSTEMS"
+                    - "SIEMENS"
+                    - "PHILIPS"
             application/xml:
               schema:
                 type: string
               examples:
-                success:
+                default:
                   summary: Example XML response
                   value: |
                     <Manufacturers>
@@ -2502,27 +2584,24 @@ paths:
                       <Manufacturer>SIEMENS</Manufacturer>
                       <Manufacturer>PHILIPS</Manufacturer>
                     </Manufacturers>
-
             text/csv:
               schema:
                 type: string
               examples:
-                success:
+                default:
                   summary: Example CSV response
                   value: |
                     Manufacturer
-                    GE MEDICAL SYSTEMS
-                    SIEMENS
-                    PHILIPS
-
+                    "GE MEDICAL SYSTEMS"
+                    "SIEMENS"
+                    "PHILIPS"
             text/plain:
               schema:
                 type: string
               examples:
-                success:
+                default:
                   summary: Example plain text response
-                  value: GE MEDICAL SYSTEMS, SIEMENS, PHILIPS
-
+                  value: "GE MEDICAL SYSTEMS,SIEMENS,PHILIPS"
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -2533,7 +2612,6 @@ paths:
                   error:
                     type: string
                     example: Invalid modality value provided.
-
         '500':
           description: Internal server error
           content:
@@ -2553,7 +2631,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValues?Collection=TCGA-LUAD&Modality=CT" -H "Accept: application/json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValues?Collection=TCGA-LUAD&Modality=CT&format=json"
         ```
       tags:
         - Utilities
@@ -2564,8 +2642,7 @@ paths:
           required: false
           schema:
             type: string
-          example: TCGA-LUAD
-
+          example: "TCGA-LUAD"
         - name: Modality
           in: query
           description: Filter results by imaging modality
@@ -2573,9 +2650,7 @@ paths:
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-            default: CR
-          example: CT
-
+          example: "CT"
         - name: format
           in: query
           description: Desired response format (json, xml, csv)
@@ -2584,8 +2659,6 @@ paths:
             type: string
             enum: [json, xml, csv]
             default: json
-          example: json
-
       responses:
         '200':
           description: Successful response
@@ -2600,37 +2673,34 @@ paths:
                       type: string
                       description: Name of the body part
               examples:
-                success:
+                default:
                   summary: Example JSON response
                   value:
-                    - BodyPartExamined: CHEST
-                    - BodyPartExamined: ABDOMEN
-                    - BodyPartExamined: BRAIN
-
+                    - BodyPartExamined: "CHEST"
+                    - BodyPartExamined: "ABDOMEN"
+                    - BodyPartExamined: "BRAIN"
             application/xml:
               schema:
                 type: string
               examples:
-                success:
+                default:
                   summary: Example XML response
                   value: |
                     <BodyParts>
                       <BodyPartExamined>CHEST</BodyPartExamined>
                       <BodyPartExamined>ABDOMEN</BodyPartExamined>
                     </BodyParts>
-
             text/csv:
               schema:
                 type: string
               examples:
-                success:
+                default:
                   summary: Example CSV response
                   value: |
                     BodyPartExamined
-                    CHEST
-                    ABDOMEN
-                    BRAIN
-
+                    "CHEST"
+                    "ABDOMEN"
+                    "BRAIN"
         '500':
           description: Internal server error
           content:
@@ -2641,10 +2711,3 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
-
-
-
-
-
-
-
