@@ -1795,30 +1795,20 @@ paths:
                   description: Comma-separated list of SeriesInstanceUIDs (DICOM Tag 0020,000E)
                 format:
                   type: string
-                  enum: [json, xml, csv]
-                  default: json
-                  description: Desired response format (json, xml, csv)
+                  default: csv
+                  description: Desired response format (csv)
               example:
                 list: "1.3.6.1.4.1.14519.5.2.1.6834.5010.322628904903035357840500590726"
-                format: "json"
+                format: "csv"
       responses:
         '200':
           description: Successful response with series metadata key-value pairs
-          content:
-            application/json:
+          content:      
+            text/csv:
               schema:
                 type: string
               example:
                 '[{"patientId":"LIDC-IDRI-1000","seriesInstanceUid":"1.3.6.1.4.1.14519.5.2.1.6279.6001.202166363820228347198889476725","seriesDescription":"case_1000_1_01","modality":"CT"}]'
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
         '400':
           description: Bad request – Missing or invalid SeriesInstanceUID
         '404':
@@ -2649,6 +2639,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
