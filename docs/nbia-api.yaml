@@ -1198,14 +1198,6 @@ paths:
           required: false
           schema:
             type: string
-        - name: format
-          in: query
-          required: false
-          description: Desired response format (json, xml, csv)
-          schema:
-            type: string
-            enum: [json, xml, csv]
-            default: json
       responses:
         '200':
           description: Successful response with manufacturer counts and authorization
@@ -2649,6 +2641,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
