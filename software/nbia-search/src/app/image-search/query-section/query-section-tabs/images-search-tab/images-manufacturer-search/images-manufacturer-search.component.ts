@@ -231,10 +231,8 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.parameterService.parameterManufacturerEmitter.pipe(
             takeUntil(this.ngUnsubscribe)
         ).subscribe(data => {
-            const decoded = decodeURIComponent(String(data));
-            const manufacturerListQueryList = decoded.match(/"[^"]+"|[^,]+/g)?.map(item =>
-                item.replace(/^"|"$/g, '').trim()
-              ) || [];
+            const decodedCriteria = decodeURIComponent(data);
+            const manufacturerListQueryList = JSON.parse(decodedCriteria);
     
             if (manufacturerListQueryList.length > 0) {
                 this.missingCriteria = [];
@@ -275,7 +273,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             .filter((manufacturer, index) => this.cBox[index])
             .map(manufacturer => manufacturer['Manufacturer'] || 'NOT SPECIFIED');  // get the Manufacturer value
         
-        const criteriaString = encodeURIComponent(selectedManufacturer.join(','));
+        const criteriaString = encodeURIComponent(JSON.stringify(selectedManufacturer));
         this.queryUrlService.update( this.queryUrlService.MANUFACTURER, criteriaString );
     }
 
