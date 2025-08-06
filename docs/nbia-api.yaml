@@ -409,6 +409,15 @@ paths:
           -d "patientIDs=ISPY1_1001,ISPY1_1002&includeAnnotation=true" \
           https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestFromPatientStudySeries
         ```
+      parameters:
+        - name: Accept
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - application/x-nbia-manifest-file
+          description: Must be set to application/x-nbia-manifest-file
       tags:
         - Image Downloads
       requestBody:
@@ -444,11 +453,19 @@ paths:
                 includeAnnotation: "true"
       responses:
         '200':
-          description: Manifest generated successfully.
+          description: Manifest file successfully generated
           content:
             application/x-nbia-manifest-file:
               schema:
                 type: string
+                format: binary
+              examples:
+                example1:
+                  summary: Sample manifest file
+                  value: |
+                    # Manifest File
+                    PatientID: ISPY1_1001
+                    StudyID: ...
         '400':
           description: Bad request – Missing or invalid parameters.
           content:
@@ -458,6 +475,8 @@ paths:
                 properties:
                   error:
                     type: string
+        '406':
+          description: Not Acceptable – Client must set Accept header to application/x-nbia-manifest-file
         '500':
           description: Internal server error.
           content:
@@ -470,73 +489,7 @@ paths:
 
   
   
-  /getManifestFromPatientStudySeries:
-    post:
-      summary: Generate a manifest from patient, study, and series UIDs.
-      description: |
-        Returns a manifest file containing series for the specified patient, study, or series UIDs.
-        
-        **Example curl command:**
-          ```bash
-             curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestFromPatientStudySeries" -d "patientIDs=ISPY1_1001" 
-          ``` 
-      tags:
-        - Image Downloads
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              required:
-                - patientIDs
-              properties:
-                patientIDs:
-                  type: string
-                  description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
-                studyUIDs:
-                  type: string
-                  description: Comma-separated studyInstanceUIDs (optional)
-                seriesUIDs:
-                  type: string
-                  description: Comma-separated seriesInstanceUIDs (optional)
-                anyOrAll:
-                  type: string
-                  enum: [any, all]
-                  default: any
-                  description: Criteria filter (optional)
-                includeAnnotation:
-                  type: string
-                  enum: [true, false]
-                  description: Whether to include annotations (true/false)
-              example:
-                patientIDs: "ISPY1_1001,ISPY1_1002"
-                includeAnnotation: "true"
-      responses:
-        '200':
-          description: Manifest generated successfully.
-          content:
-            application/x-nbia-manifest-file:
-              schema:
-                type: string
-        '400':
-          description: Bad request – Missing or invalid parameters.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '500':
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+  
         
   /getManifestText:
     post:
@@ -2565,6 +2518,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
