@@ -1201,24 +1201,15 @@ paths:
         - name: format
           in: query
           required: false
+          description: Desired response format (json, xml, csv)
           schema:
             type: string
             enum: [json, xml, csv]
             default: json
-          description: Desired response format (json, xml, csv)
       responses:
         '200':
           description: Successful response with manufacturer counts and authorization
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
@@ -1234,8 +1225,64 @@ paths:
                     Authorized:
                       type: integer
                       description: User has access to the specified collection. 1 means yes and 0 means no.
+              examples:
+                default:
+                  summary: Example JSON response
+                  value:
+                    - manufacturer: GE Medical Systems
+                      count: 120
+                      Authorized: 1
+                    - manufacturer: Siemens
+                      count: 85
+                      Authorized: 0
+            application/xml:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Example XML response
+                  value: |
+                    <Manufacturers>
+                      <Manufacturer>
+                        <name>GE Medical Systems</name>
+                        <count>120</count>
+                        <Authorized>1</Authorized>
+                      </Manufacturer>
+                      <Manufacturer>
+                        <name>Siemens</name>
+                        <count>85</count>
+                        <Authorized>0</Authorized>
+                      </Manufacturer>
+                    </Manufacturers>
+            text/csv:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Example CSV response
+                  value: |
+                    manufacturer,count,Authorized
+                    GE Medical Systems,120,1
+                    Siemens,85,0
+            text/plain:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Example plain text response
+                  value: |
+                    GE Medical Systems: 120 (Authorized: 1)
+                    Siemens: 85 (Authorized: 0)
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unexpected server error occurred.
 
   /getModalityValuesAndCounts:
    get:
@@ -2602,6 +2649,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
