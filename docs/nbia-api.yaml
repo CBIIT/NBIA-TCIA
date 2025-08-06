@@ -391,16 +391,24 @@ paths:
 
   /getMD5Hierarchy:
     post:
-      summary: Get MD5 hash hierarchy for specified collection, patient, study, or series.
+      summary: Get MD5 hash for DICOM object hierarchy
       description: |
-        Returns MD5 hash hierarchy.
-        
+        Returns an MD5 hash representing the hierarchy of DICOM objects based on the specified level (series, study, patient, or collection).
+
+        Only one hierarchy level should be specified per request.
+
+        **Note:** The response is returned as `text/plain`.
+
         **Example curl command:**
-          ```bash
-              curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5Hierarchy" -d "Collection=ISPY1&format=json"
-          ```
+        ```bash
+        curl -X POST \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Accept: text/plain" \
+          -d "SeriesInstanceUID=1.2.3.4.5" \
+          https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getMD5Hierarchy
+        ```
       tags:
-        - Patient Metadata
+        - DICOM Hashing
       requestBody:
         required: true
         content:
@@ -408,41 +416,31 @@ paths:
             schema:
               type: object
               properties:
-                Collection:
-                  type: string
-                  description: Name of the collection.
-                PatientId:
-                  type: string
-                  description: DICOM Tag (0010,0020) – De-identified patient ID.
-                StudyInstanceUID:
-                  type: string
-                  description: DICOM Tag (0020,000D) – Unique identifier for the study.
                 SeriesInstanceUID:
                   type: string
-                  description: DICOM Tag (0020,000E) – Unique identifier for the series.
-                format:
+                  description: The series UID to generate a hash from.
+                  example: "1.3.6.1.4.1.14519.5.2.1.1610.1214.245363808374225692018717388133"
+                StudyInstanceUID:
                   type: string
-                  enum: [json, xml, csv]
-                  default: json
-                  description: Desired response format (json, xml, csv).
-              example:
-                Collection: "ISPY1"
-                format: "json"
+                  description: The study UID to generate a hash from.
+                  example: "1.3.6.1.4.1.14519.5.2.1.1610.1214.245363808374225692018717388133"
+                PatientID:
+                  type: string
+                  description: The patient ID to generate a hash from.
+                  example: "subject01"
+                Collection:
+                  type: string
+                  description: The collection name to generate a hash from.
+                  example: "4D-Lung"
       responses:
         '200':
-          description: Successful response with MD5 hash
+          description: MD5 hash generated successfully.
           content:
             text/plain:
               schema:
                 type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-        '500':
-          description: Internal server error
+        '400':
+          description: Bad request – Invalid or unsupported parameters.
           content:
             application/json:
               schema:
@@ -450,6 +448,16 @@ paths:
                 properties:
                   error:
                     type: string
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
     
   /getMD5HashForImage:
    get:
@@ -2639,6 +2647,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
