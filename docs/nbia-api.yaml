@@ -1137,14 +1137,6 @@ paths:
           schema:
             type: string
           example: "LUNG"
-        - name: format
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [json, xml, csv, text/plain]
-            default: json
-          description: Desired response format
       responses:
         '200':
           description: Successful response with manufacturer counts and authorization
@@ -1249,14 +1241,6 @@ paths:
          schema:
            type: string
          example: "BREAST"
-       - name: format
-         in: query
-         required: false
-         schema:
-           type: string
-           enum: [json, xml, csv]
-           default: json
-         description: Desired response format (json, xml, csv)
      responses:
        '200':
          description: Successful response with modality counts and authorization
@@ -2665,6 +2649,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
