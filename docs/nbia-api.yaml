@@ -2326,10 +2326,10 @@ paths:
       summary: Retrieve available manufacturer values.
       description: |
         Returns a list of manufacturer names filtered by optional query parameters.
-      
+
         **Example call:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValues" 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManufacturerValues?Collection=TCGA-LUAD&Modality=CT" -H "Accept: application/json"
         ```
       tags:
         - Utilities
@@ -2340,58 +2340,117 @@ paths:
           required: false
           schema:
             type: string
+          example: TCGA-LUAD
+
         - name: BodyPartExamined
           in: query
           description: Filter results by body part examined
           required: false
           schema:
             type: string
+          example: CHEST
+
         - name: Modality
           in: query
+          description: Filter results by imaging modality
           required: false
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CR
-            description: Filter results by imaging modality
+          example: CT
+
         - name: format
-          type: string
-          enum: [json, xml, csv]
-          default: json
+          in: query
           description: Desired response format (json, xml, csv)
+          required: false
+          schema:
+            type: string
+            enum: [json, xml, csv]
+            default: json
+          example: json
 
       responses:
         '200':
           description: Successful response with manufacturer names
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
                 items:
                   type: string
+              examples:
+                success:
+                  summary: Example JSON response
+                  value:
+                    - GE MEDICAL SYSTEMS
+                    - SIEMENS
+                    - PHILIPS
+
+            application/xml:
+              schema:
+                type: string
+              examples:
+                success:
+                  summary: Example XML response
+                  value: |
+                    <Manufacturers>
+                      <Manufacturer>GE MEDICAL SYSTEMS</Manufacturer>
+                      <Manufacturer>SIEMENS</Manufacturer>
+                      <Manufacturer>PHILIPS</Manufacturer>
+                    </Manufacturers>
+
+            text/csv:
+              schema:
+                type: string
+              examples:
+                success:
+                  summary: Example CSV response
+                  value: |
+                    Manufacturer
+                    GE MEDICAL SYSTEMS
+                    SIEMENS
+                    PHILIPS
+
+            text/plain:
+              schema:
+                type: string
+              examples:
+                success:
+                  summary: Example plain text response
+                  value: GE MEDICAL SYSTEMS, SIEMENS, PHILIPS
+
         '400':
           description: Bad request – Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid modality value provided.
+
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unexpected server error occurred.
 
   /getBodyPartValues:
     get:
       summary: Retrieve available body part values.
       description: |
         Returns a list of body part names filtered by optional query parameters.
-      
+
         **Example call:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValues" 
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getBodyPartValues?Collection=TCGA-LUAD&Modality=CT" -H "Accept: application/json"
         ```
       tags:
         - Utilities
@@ -2402,49 +2461,81 @@ paths:
           required: false
           schema:
             type: string
+          example: TCGA-LUAD
+
         - name: Modality
-          in: query           
+          in: query
+          description: Filter results by imaging modality
           required: false
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
             default: CR
-            description: Filter results by imaging modality   
+          example: CT
+
         - name: format
           in: query
           description: Desired response format (json, xml, csv)
           required: false
           schema:
             type: string
+            enum: [json, xml, csv]
+            default: json
+          example: json
+
       responses:
         '200':
           description: Successful response
           content:
-            text/plain:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
             application/json:
               schema:
                 type: array
                 items:
                   type: object
-                properties:
-                  BodyPartExamined:
-                    type: string
-                description: Name of the body part
+                  properties:
+                    BodyPartExamined:
+                      type: string
+                      description: Name of the body part
+              examples:
+                success:
+                  summary: Example JSON response
+                  value:
+                    - BodyPartExamined: CHEST
+                    - BodyPartExamined: ABDOMEN
+                    - BodyPartExamined: BRAIN
+
+            application/xml:
+              schema:
+                type: string
+              examples:
+                success:
+                  summary: Example XML response
+                  value: |
+                    <BodyParts>
+                      <BodyPartExamined>CHEST</BodyPartExamined>
+                      <BodyPartExamined>ABDOMEN</BodyPartExamined>
+                    </BodyParts>
+
+            text/csv:
+              schema:
+                type: string
+              examples:
+                success:
+                  summary: Example CSV response
+                  value: |
+                    BodyPartExamined
+                    CHEST
+                    ABDOMEN
+                    BRAIN
+
         '500':
           description: Internal server error
-
-
-
-
-
-
-
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unexpected server error occurred.
 
