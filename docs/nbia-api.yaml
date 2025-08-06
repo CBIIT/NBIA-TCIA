@@ -1620,13 +1620,6 @@ paths:
       tags:
         - Series Metadata
       parameters:
-        - name: Collection
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Name of the image collection
-          example: "TCGA-GBM"
         - name: fromDate
           in: query
           required: true
@@ -2672,6 +2665,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
