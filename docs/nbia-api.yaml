@@ -405,19 +405,10 @@ paths:
         ```bash
         curl -X POST \
           -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Accept: application/x-nbia-manifest-file" \
+          -H "Accept: text/plain" \
           -d "patientIDs=ISPY1_1001,ISPY1_1002&includeAnnotation=true" \
           https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestFromPatientStudySeries
         ```
-      parameters:
-        - name: Accept
-          in: header
-          required: true
-          schema:
-            type: string
-            enum:
-              - application/x-nbia-manifest-file
-          description: Must be set to application/x-nbia-manifest-file
       tags:
         - Image Downloads
       requestBody:
@@ -455,7 +446,7 @@ paths:
         '200':
           description: Manifest file successfully generated
           content:
-            application/x-nbia-manifest-file:
+            text/plain:
               schema:
                 type: string
                 format: binary
@@ -476,7 +467,7 @@ paths:
                   error:
                     type: string
         '406':
-          description: Not Acceptable – Client must set Accept header to application/x-nbia-manifest-file
+          description: Not Acceptable – Client must set Accept header to text/plain
         '500':
           description: Internal server error.
           content:
@@ -487,8 +478,6 @@ paths:
                   error:
                     type: string
 
-  
-  
   
         
   /getManifestText:
@@ -2518,6 +2507,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
