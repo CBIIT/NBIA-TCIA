@@ -656,7 +656,7 @@ paths:
                 sortDirection: "descending"
                 start: 0
                 size: 100
-      responses:
+    responses:
         '200':
           description: Manifest file generated successfully
           content:
@@ -2538,6 +2538,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
