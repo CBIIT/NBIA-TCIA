@@ -573,7 +573,57 @@ paths:
         ```
       tags:
         - Image Downloads
-      requestBody:
+      parameters:
+        - name: criteriaType0
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          description: Type of search criteria (e.g., Modality, BodyPartExamined)
+
+        - name: value0
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          description: Value to match for the given criteria type
+
+        - name: sortField
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [subject, date, modality]
+          description: Field to sort results by
+
+        - name: sortDirection
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [ascending, descending]
+          description: Sort direction
+
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Pagination start index
+
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+          description: Number of results to return
+          
+    requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -2488,6 +2538,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
