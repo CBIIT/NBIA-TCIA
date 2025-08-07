@@ -477,19 +477,21 @@ paths:
                 properties:
                   error:
                     type: string
-
   
-        
   /getManifestText:
     post:
       summary: Generate a manifest file for a list of series.
       description: |
         Returns a manifest text file containing series UIDs and download instructions for the NBIA Data Retriever.
-        
+
         **Example curl command:**
-          ```bash
-             curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestText" -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false"
-          ```
+        ```bash
+           curl -X POST \
+           -H "Content-Type: application/x-www-form-urlencoded" \
+           -H "Accept: text/plain" \
+           -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestText" \
+           -d "list=1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723&includeAnnotation=false"
+        ```
       tags:
         - Image Downloads
       requestBody:
@@ -515,15 +517,17 @@ paths:
         '200':
           description: Successfully generated manifest text
           content:
-             application/x-nbia-manifest-file:
+            text/plain:
               schema:
                 type: string
-             application/xml:
-              schema:
-                type: string
-             text/csv:
-              schema:
-                type: string
+                format: binary
+              examples:
+                example1:
+                  summary: Sample manifest text
+                  value: |
+                    # NBIA Manifest
+                    SeriesUID: 1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723
+                    IncludeAnnotation: false
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -2507,6 +2511,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
