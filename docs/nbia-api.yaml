@@ -549,15 +549,27 @@ paths:
 
   /getManifestForSimpleSearch:
     post:
-      summary: Generate a manifest file from simple search criteria.
+      summary: Generate a manifest file from simple search criteria
       description: |
-        Creates a manifest file from the specified simple search parameters, which can be used with the NBIA Data Retriever.
+        Generates a plain text manifest file based on simple search parameters. This file can be used with the NBIA Data Retriever to download imaging series.
 
-        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below.
+        **Search Parameters:**
+        - `criteriaTypeX`: Specifies the metadata field to filter by (e.g., `ThirdPartyAnalysis`, `Modality`, etc.)
+        - `valueX`: The value to match for the corresponding `criteriaTypeX`
+        - `sortField`: Field by which to sort the results (e.g., `subject`, `collection`)
+        - `sortDirection`: Sorting direction (`ascending` or `descending`)
+        - `start`: Starting index for paginated results
+        - `size`: Number of results to return
+
+        **Note:** Multiple criteria can be specified using `criteriaType0`, `criteriaType1`, ..., and corresponding `value0`, `value1`, ...
 
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch" -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100"
+        curl -X POST \
+          -H "Content-Type: application/x-www-form-urlencoded" \
+          -H "Accept: text/plain" \
+          -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch" \
+          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100"
         ```
       tags:
         - Image Downloads
@@ -572,20 +584,20 @@ paths:
                   $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
-                  description: Value to match for the specified criteriaType0
+                  description: Value to match for the specified `criteriaType0`
                 sortField:
                   type: string
-                  description: Field by which to sort the manifest results
+                  description: Field by which to sort the manifest results (e.g., `subject`, `collection`)
                 sortDirection:
                   type: string
                   enum: [ascending, descending]
                   description: Direction to sort the results
                 start:
                   type: integer
-                  description: Starting index of the result set
+                  description: Starting index of the result set (for pagination)
                 size:
                   type: integer
-                  description: Number of results to return
+                  description: Number of results to return (default is 10)
                   default: 10
               example:
                 criteriaType0: "ThirdPartyAnalysis"
@@ -598,53 +610,18 @@ paths:
         '200':
           description: Manifest file generated successfully
           content:
-            application/json:
-              schema:
-                type: object
-                description: JSON format for successful manifest results
-              examples:
-                default:
-                  summary: Example JSON response
-                  value:
-                    manifestId: "abc123"
-                    downloadUrl: "https://nbia.cancerimagingarchive.net/download/abc123.manifest"
-                    fileSize: 2048
-                    creationDate: "2025-08-05T14:12:00Z"
-                    sortField: "subject"
-                    sortDirection: "descending"
-            application/x-nbia-manifest-file:
+            text/plain:
               schema:
                 type: string
+                format: binary
               examples:
                 default:
-                  summary: Example NBIA manifest file content
+                  summary: Example manifest text
                   value: |
                     NBIA-Manifest-Version: 1.0
                     Collection: ThirdPartyAnalysis
                     Subject: TCGA-LUAD-01
                     File: CT_001.dcm
-            application/xml:
-              schema:
-                type: string
-              examples:
-                default:
-                  summary: Example XML response
-                  value: |
-                    <Manifest>
-                      <ManifestId>abc123</ManifestId>
-                      <DownloadUrl>https://nbia.cancerimagingarchive.net/download/abc123.manifest</DownloadUrl>
-                      <FileSize>2048</FileSize>
-                      <CreationDate>2025-08-05T14:12:00Z</CreationDate>
-                    </Manifest>
-            text/csv:
-              schema:
-                type: string
-              examples:
-                default:
-                  summary: Example CSV response
-                  value: |
-                    manifestId,downloadUrl,fileSize,creationDate
-                    abc123,https://nbia.cancerimagingarchive.net/download/abc123.manifest,2048,2025-08-05T14:12:00Z
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -2511,6 +2488,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
