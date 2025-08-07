@@ -549,149 +549,106 @@ paths:
 
   /getManifestForSimpleSearch:
     post:
-      summary: Generate a manifest file from simple search criteria
+      summary: Generate a plain text manifest file from simple search criteria
       description: |
-        Generates a plain text manifest file based on simple search parameters. This file can be used with the NBIA Data Retriever to download imaging series.
+        Accepts search parameters and returns a plain text manifest file containing SeriesInstanceUIDs
+        for authorized patients and studies. The manifest can be used with the NBIA Data Retriever.
 
-        **Search Parameters:**
-        - `criteriaTypeX`: Specifies the metadata field to filter by (e.g., `ThirdPartyAnalysis`, `Modality`, etc.)
-        - `valueX`: The value to match for the corresponding `criteriaTypeX`
-        - `sortField`: Field by which to sort the results (e.g., `subject`, `collection`)
-        - `sortDirection`: Sorting direction (`ascending` or `descending`)
-        - `start`: Starting index for paginated results
-        - `size`: Number of results to return
-
-        **Note:** Multiple criteria can be specified using `criteriaType0`, `criteriaType1`, ..., and corresponding `value0`, `value1`, ...
+        **Note:** Only authorized series are included in the manifest.
 
         **Example curl command:**
         ```bash
         curl -X POST \
           -H "Content-Type: application/x-www-form-urlencoded" \
           -H "Accept: text/plain" \
-          -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch" \
-          -d "criteriaType0=ThirdPartyAnalysis&value0=yes&sortField=subject&sortDirection=descending&start=0&size=100"
+          -d "criteriaType0=Modality&value0=CT&sortField=subject&sortDirection=ascending&start=0&size=50" \
+          https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestForSimpleSearch
         ```
       tags:
         - Image Downloads
-      parameters:
-        - name: criteriaType0
-          in: query
-          required: false
-          schema:
-            type: string
-            minLength: 1
-          description: Type of search criteria (e.g., Modality, BodyPartExamined)
-
-        - name: value0
-          in: query
-          required: false
-          schema:
-            type: string
-            minLength: 1
-          description: Value to match for the given criteria type
-
-        - name: sortField
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [subject, date, modality]
-          description: Field to sort results by
-
-        - name: sortDirection
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [ascending, descending]
-          description: Sort direction
-
-        - name: start
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-          description: Pagination start index
-
-        - name: size
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 10
-          description: Number of results to return
-          
-    requestBody:
+      requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
               type: object
+              required:
+                - criteriaType0
+                - value0
               properties:
                 criteriaType0:
-                  $ref: '#/components/schemas/CriteriaTypeEnum'
+                  type: string
+                  description: Metadata field to filter by (e.g., Modality, ThirdPartyAnalysis)
                 value0:
                   type: string
-                  description: Value to match for the specified `criteriaType0`
+                  description: Value to match for the specified criteriaType0
                 sortField:
                   type: string
-                  description: Field by which to sort the manifest results (e.g., `subject`, `collection`)
+                  description: Field to sort results by (e.g., subject, collection)
                 sortDirection:
                   type: string
                   enum: [ascending, descending]
-                  description: Direction to sort the results
+                  description: Sort direction
                 start:
                   type: integer
-                  description: Starting index of the result set (for pagination)
+                  minimum: 0
+                  description: Starting index for paginated results
                 size:
                   type: integer
-                  description: Number of results to return (default is 10)
+                  minimum: 1
                   default: 10
-              example:
-                criteriaType0: "ThirdPartyAnalysis"
-                value0: "yes"
-                sortField: "subject"
-                sortDirection: "descending"
-                start: 0
-                size: 100
-    responses:
+                  description: Number of results to return
+            example:
+              criteriaType0: "Modality"
+              value0: "CT"
+              sortField: "subject"
+              sortDirection: "ascending"
+              start: 0
+              size: 50
+      responses:
         '200':
           description: Manifest file generated successfully
           content:
             text/plain:
               schema:
                 type: string
-                format: binary
               examples:
                 default:
-                  summary: Example manifest text
+                  summary: Sample manifest content
                   value: |
                     NBIA-Manifest-Version: 1.0
-                    Collection: ThirdPartyAnalysis
-                    Subject: TCGA-LUAD-01
-                    File: CT_001.dcm
+                    SeriesUID: 1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798
+                    SeriesUID: 1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464799
         '400':
           description: Bad request – Missing or invalid parameters
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Missing or invalid input.
+                type: string
+              examples:
+                default:
+                  summary: Missing required fields
+                  value: "Error: criteriaType0 and value0 are required."
+        '404':
+          description: No matching series found
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: No results
+                  value: "Error: No authorized series found for the given criteria."
         '500':
           description: Internal server error
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: An unexpected error occurred.
+                type: string
+              examples:
+                default:
+                  summary: Unexpected failure
+                  value: "Error: Unable to process the request due to a server error."
 
   /getDicomTags:
     get:
@@ -2628,6 +2585,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
