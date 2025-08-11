@@ -29,22 +29,46 @@
 <script>
 
     SwaggerUIBundle({
-
       url: "nbia-api.yaml",
-
       dom_id: "#swagger-ui",
-
       deepLinking: true,
-
       presets: [
-
         SwaggerUIBundle.presets.apis,
-
         SwaggerUIBundle.SwaggerUIStandalonePreset
-
       ],
+      layout: "BaseLayout",
+        /* turn syntax highlighting off → no more deep recursion */
+      syntaxHighlight: {
+        activated: false
+      },
 
-      layout: "BaseLayout"
+      requestInterceptor: (request) => {
+        if (request.url.includes('/v4/getManifest')) {
+          request.headers['Content-Disposition'] = 'attachment; filename="manifest.txt"';
+        }
+        return request;
+      },
+       /* ---- response trimming ---- */
+    responseInterceptor: res => {
+      if (
+        res.url.includes("/v4/getSeries") &&                 // target endpoint
+        res.headers["content-type"]?.includes("application/json")
+      ) {
+        try {
+          const data = JSON.parse(res.data || res.text);
+          if (Array.isArray(data) && data.length > 50) {    // keep first 200
+            res.data = JSON.stringify(data.slice(0, 50), null, 2);
+            res.text = res.data;
+            // option-al: flag the user
+            res.headers["x-swagger-ui-note"] =
+              `Truncated to 50 of ${data.length} items to avoid UI freeze`;
+          }
+        } catch (_) {
+          /* response wasn’t valid JSON or couldn’t be parsed – ignore */
+        }
+      }
+      return res;
+    }
 
     });
 </script>
