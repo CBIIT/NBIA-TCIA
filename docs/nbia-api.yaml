@@ -2200,20 +2200,12 @@ paths:
             type: string
             enum: [Yes, No]
           example: "Yes"
-
-        - name: Accept
-          in: header
-          required: false
-          description: Media types that are acceptable for the response. Use `*/*` to accept any type.
-          schema:
-            type: string
-            default: "*/*"
             
       responses:
         '200':
-          description: A text file containing the DICOM images
+          description: A ZIP file containing the DICOM images
           content:
-            text/plain:
+            application/zip:
               schema:
                 type: string
                 format: binary
@@ -2592,6 +2584,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
