@@ -2205,11 +2205,10 @@ paths:
         '200':
           description: Binary DICOM file
           content:
-            application/dicom:
+            application/zip:
               schema:
                 type: string
                 format: binary
-
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -2279,23 +2278,16 @@ paths:
         '200':
           description: A ZIP file containing the DICOM images and their MD5 hash values
           content:
-            text/plain:
+            application/zip:
               schema:
                 type: string
                 format: binary
+
               examples:
                 default:
                   summary: Plain text fallback response
                   value: |
                     Image download with MD5 hashes initiated for SeriesInstanceUID: 1.3.6.1.4.1.14519.5.2.1.6919.4624.313514201353787659031503464798
-            application/zip:
-              schema:
-                type: string
-                format: binary
-              examples:
-                default:
-                  summary: ZIP archive with DICOM images and MD5 hashes
-                  value: (binary ZIP file containing DICOM images and MD5 hash manifest)
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -2579,6 +2571,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
