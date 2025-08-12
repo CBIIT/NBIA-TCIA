@@ -2203,18 +2203,13 @@ paths:
             
       responses:
         '200':
-          description: A ZIP file containing the DICOM images
+          description: Binary DICOM file
           content:
-            application/zip:
+            application/dicom:
               schema:
                 type: string
                 format: binary
-              examples:
-                default:
-                  summary: Plain text fallback response
-                  value: |
-                    Image download initiated for SeriesInstanceUID: 1.3.6.1.4.1.14519.5.2.1.156004405617282635144529384437381232981
-                    File naming: acquisitionNumber-instanceNumber
+
         '400':
           description: Bad request – Missing or invalid parameters
           content:
@@ -2584,6 +2579,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
