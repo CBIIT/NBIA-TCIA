@@ -2205,7 +2205,7 @@ paths:
         '200':
           description: Binary DICOM file
           content:
-            application/zip:
+            */*:
               schema:
                 type: string
                 format: binary
@@ -2571,6 +2571,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
