@@ -1908,7 +1908,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=2010-08-16&format=json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=08-16-2010&format=json"
         ```
       tags:
         - Study Metadata
@@ -1936,12 +1936,12 @@ paths:
           example: "CBIS-DDSM"
         - name: Date
           in: query
-          description: Date in YYYY-MM-DD format to filter new studies
+          description: Date in MM-DD-YYYY format to filter new studies
           required: true
           schema:
             type: string
             format: date
-          example: "2010-08-16"
+          example: "08-16-2010"
       responses:
         '200':
           description: Successful response with study metadata
@@ -2005,7 +2005,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=2010-08-16&format=json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=08-16-2010&format=json"
         ```
       tags:
         - Patient Metadata
@@ -2027,12 +2027,12 @@ paths:
           example: "CBIS-DDSM"
         - name: Date
           in: query
-          description: Date in YYYY-MM-DD format to filter new patients
+          description: Date in MM-DD-YYYY format to filter new patients
           required: true
           schema:
             type: string
             format: date
-          example: "2010-08-16"
+          example: "08-16-2010"
       responses:
         '200':
           description: Successful response with patient data
@@ -2563,6 +2563,7 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+
 
 
 
