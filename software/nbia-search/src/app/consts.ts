@@ -65,7 +65,8 @@ export const Consts = {
         // The query type used in the client code to identify the type.
         SPECIES: 'Species',
 
-        ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
+        //ANATOMICAL_SITE_CRITERIA: 'AnatomicalSiteCriteria',
+        ANATOMICAL_SITE_CRITERIA: 'BodyPartExaminedCriteria',
         ANATOMICAL_SITE: 'AnatomicalSite',
         BODY_PART_EXAMINED: 'BodyPart',
         MINIMUM_STUDIES: 'MinNumberOfStudiesCriteria',

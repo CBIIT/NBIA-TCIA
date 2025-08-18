@@ -1,3 +1,35 @@
 @import '../../../../../app.component.scss';
+ 
+/* Limit length of long Manufacturer names, same as Collection component */
+.manufacturer-entry-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: inline-block;
+  vertical-align: text-top;
+}
 
+.count-box {
+    color: #fff;
+    background-color: #5b5151;
+    border-radius: 3px;
+    padding: 1px 5px 1px 5px;
+    margin-right: 15px;
+    float: right;
+    font-size: 8pt;
+    vertical-align: text-top;
+}
+
+.count-box_zero {
+    color: #fff;
+    background-color: #a39999;
+    border-radius: 3px;
+    padding: 1px 5px 1px 5px;
+    margin-right: 15px;
+    float: right;
+    font-size: 8pt;
+    vertical-align: text-top;
+
+}
 

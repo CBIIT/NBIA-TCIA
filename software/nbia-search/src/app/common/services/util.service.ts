@@ -102,17 +102,24 @@ export class UtilService{
     copyCriteriaObjectwithFieldName( origCrit: any, fieldName: string ): any {
         if (!origCrit || !origCrit.Authorized || origCrit.Authorized !== 1) return null;
 
-        const result: any = {
-            criteria: origCrit[fieldName] ?? origCrit['criteria'], // fallback if already shaped
-            description: origCrit.description,
-            count: origCrit.Count ?? origCrit.count,
-        };
+        if(fieldName === 'Manufacturer'){
+            const result: any = {
+                Manufacturer: origCrit[fieldName] ?? 'NOT SPECIFIED', // fallback if already shaped
+                count: origCrit.Count ?? origCrit.count,
+            };
+            return result;
+        }else{
+            const result: any = {
+                criteria: origCrit[fieldName] ?? origCrit['criteria'], // fallback if already shaped
+                description: origCrit.description,
+                count: origCrit.Count ?? origCrit.count,
+            };
 
-        if (!this.isNullOrUndefined(origCrit.seq)) {
-            result.seq = origCrit.seq;
+            if (!this.isNullOrUndefined(origCrit.seq)) {
+                result.seq = origCrit.seq;
+            }
+            return result;
         }
-
-        return result;
     }
 
     // Manufacturer values copy

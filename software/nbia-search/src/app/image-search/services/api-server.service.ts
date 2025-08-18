@@ -1180,7 +1180,7 @@ export class ApiServerService implements OnDestroy {
             this.getEventTypesEmitter.emit(res);
         } else if (queryType === Consts.GET_MIN_MAX_TIME_POINTS) {
             this.getMinMaxTimepointsEmitter.emit(res);
-        }else if (queryType === 'v4/getManufacturerValues') {
+        }else if (queryType === 'v4/getManufacturerValuesAndCounts') {
             this.getManufacturerValuesEmitter.emit(res);
         }else if (queryType === 'getManufacturerTree') {
             this.getManufacturerTreeEmitter.emit(res);
@@ -1210,7 +1210,7 @@ export class ApiServerService implements OnDestroy {
             this.getSpeciesTaxErrorEmitter.emit(err);
         } else if (queryType === 'getEventTypes') {
             this.getEventTypesErrorEmitter.emit(err);
-        } else if (queryType === 'v4/getManufacturerValues') {
+        } else if (queryType === 'v4/getManufacturerValueAndCounts') {
             this.getManufacturerValuesErrorEmitter.emit(err);
         } else if (queryType === 'getManufacturerTree') {
             this.getManufacturerTreeErrorEmitter.emit(err);

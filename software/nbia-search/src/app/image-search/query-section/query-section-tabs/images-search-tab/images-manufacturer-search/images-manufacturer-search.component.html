@@ -54,6 +54,37 @@
         </label>
     </div>
 
+    <div  *ngIf="showManufacturerValues">
+
+        <!-- Sort order buttons (alpha or num) -->
+        <span
+                *ngIf="properties.SHOW_COLLECTIONS_SORT_OPTIONS"
+                class="sort-text"
+        >
+             &nbsp;&nbsp;Sort:
+             <label for="sortAlphaCheckedManufacturer">alpha
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSortManufacturer"
+                         [checked]="sortAlphaChecked"
+                         id="sortAlphaCheckedManufacturer"
+                         (change)="onSetSort(1)"
+                 >
+             </label>
+             &nbsp;
+             <label for="sortNumCheckedManufacturer">num
+                 <input
+                         type="radio"
+                         name="radioGroupCollectionSortManufacturer"
+                         [(checked)]="sortNumChecked"
+                         id="sortNumCheckedManufacturer"
+                         (change)="onSetSort(0)"
+                 >
+                </label>
+            </span>
+
+    </div>
+
     <!-- ----------  Search input  ---------- -->
     <div
         [ngClass]="{
@@ -117,15 +148,20 @@
                     <input type="checkbox"
                        class="check-box"
                        id="checkbox-manufacturer-site{{i}}"
-                       [(ngModel)]="cBox[i]"
-                       (click)="onCheckboxClick(i, $event.target['checked'])">
+                       [(ngModel)]="criteria.selected"
+                       (click)="onCheckboxClick(i, $event.target.checked)">
                 </span>
 
                 <label
                 class="manufacturer-entry-text"
+                [title]="criteria['Manufacturer']"
                 [attr.for]="'checkbox-manufacturer-site'+i">
                 {{criteria['Manufacturer']}}
                 </label>
+
+                <span [ngClass]="{'count-box': criteria.count > 0, 'count-box-zero': criteria.count <= 0}">
+                    {{criteria.count}}/{{criteria.unfilteredCount}}
+                </span>
 
             </span>
         </div>

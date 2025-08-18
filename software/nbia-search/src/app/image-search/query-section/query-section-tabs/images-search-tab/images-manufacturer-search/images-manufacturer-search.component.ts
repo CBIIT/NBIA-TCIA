@@ -59,12 +59,8 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      */
     checkedCount: number = 0;
 
-    /**
-     * Tracks which Manufacturer have been selected, used in the code, and the HTML.
-     *
-     * @type {Array}
-     */
-    cBox = [];
+    /*  Each object in `manufacturerList` now carries its own
+        `selected :boolean` flag – no separate parallel array needed. */
 
     /**
      * Used by the UI search within this Manufacturer list (with the red magnifying glass), NOT the data search.
@@ -90,6 +86,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     completeManufacturerValues;
     completeManufacturerValuesHold: any[] = [];
 
+    completeManufacturerValuesHoldLoggedIn = null;
+    completeManufacturerValuesHoldGuest = null; 
+
     /**
      * If a query passed in the URL has Manufacturer that don't exist in our current list, they are put in the array, used to alert the user.
      *
@@ -110,7 +109,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      *
      * @type {boolean}
      */
-    sortNumChecked = Properties.SORT_COLLECTIONS_BY_COUNT;
+    sortNumChecked = false;
     sortAlphaChecked = !this.sortNumChecked;
 
 
@@ -144,22 +143,30 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             data => {
                 try {
                 this.queryCriteriaInitService.endQueryCriteriaInit();
-                this.completeManufacturerValues = data;
-                // sample results from API
-                // [{Count:10, Authorized: 1}, {Manufacturer: "Carestream", Count: 10, Authorized: 1}, {Manufacturer: "CPS", Count: 10, Authorized: 1}, {Manufacturer: "Eigen", Count: 10, Authorized: 1},…]
-                if (this.completeManufacturerValues && this.completeManufacturerValues.length > 0) {
-                    if (!this.completeManufacturerValues[0]?.Manufacturer) {
-                        this.completeManufacturerValues[0] = { Manufacturer: 'NOT SPECIFIED' };
-                    } 
-                }
+                this.completeManufacturerValues = this.utilService.copyCriteriaObjectArraywithFieldName(data, Consts.MANUFACTURER);
 
-                // If completeManufacturerValuesHold is null, this is the initial call.
-                // completeManufacturerValuesHold lets us reset completeManufacturerValues when ever needed.
-                if( this.completeManufacturerValuesHold == null || (this.completeManufacturerValuesHold && this.completeManufacturerValuesHold.length < 1)){
-                    this.completeManufacturerValuesHold = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValues );
-                }else if( this.apiServerService.getSimpleSearchQueryHold() == null ){
-                     // There is no query (anymore) reset the list of Manufacturer to the initial original values.
-                    this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
+                this.completeManufacturerValues.forEach(item => {
+                    item.unfilteredCount = item.count;
+                    item.selected = false;
+                });
+
+                const isLoggedIn = this.commonService.getUserLoggedInStatus();
+                if( this.completeManufacturerValuesHold == null || this.completeManufacturerValuesHoldLoggedIn == null || this.completeManufacturerValuesHoldGuest == null ){
+                     // sample results from API
+                    // [{Count:10, Authorized: 1}, {Manufacturer: "Carestream", Count: 10, Authorized: 1}, {Manufacturer: "CPS", Count: 10, Authorized: 1}, {Manufacturer: "Eigen", Count: 10, Authorized: 1},…]
+                    if (this.completeManufacturerValues && this.completeManufacturerValues.length > 0) {
+                        if (!this.completeManufacturerValues[0]?.Manufacturer) {
+                            this.completeManufacturerValues[0] = { Manufacturer: 'NOT SPECIFIED' };
+                        } 
+                    }
+                    this.completeManufacturerValuesHold        = this.completeManufacturerValues.map(v => ({ ...v }));
+                    if(isLoggedIn){ 
+                        this.completeManufacturerValuesHoldLoggedIn = this.completeManufacturerValues.map(v => ({ ...v }));
+                    }else{
+                        this.completeManufacturerValuesHoldGuest    = this.completeManufacturerValues.map(v => ({ ...v }));
+                    }
+                }else if( this.apiServerService.getSimpleSearchQueryHold() === null ){
+                    this.completeManufacturerValues = this.completeManufacturerValuesHold.map(v => ({ ...v }));
                 }
             } catch (error) {
                 console.error('Error in getManufacturerValuesEmitter.subscribe: ', error);
@@ -178,6 +185,16 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             }
         );
 
+        // Handle reset after login events (reloading criteria for the new user).
+        this.handleLoginReset();
+
+        // When counts of occurrences in the search results change
+        this.apiServerService.criteriaCountUpdateEmitter
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(data => {
+                this.onCriteriaCountsChange(data);
+            });
+
         // This call is to trigger populating this.completeManufacturerValues (above) and wait for the results.
         // Note that this is not in the .subscribe and will run when ngOnInit is called.
         this.loadingDisplayService.setLoading( true, 'Loading Manufacturer query data. This could take up to a minute.' );
@@ -185,7 +202,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // This is used when there is a URL parameter query to determine if the component initialization is complete, and it is okay to run the query.
         this.queryCriteriaInitService.startQueryCriteriaInit();
         //this.apiServerService.dataGet( 'v1/getManufacturerValues', '' );
-        this.apiServerService.dataGet( 'v4/getManufacturerValues', '' );
+        this.apiServerService.dataGet( 'v4/getManufacturerValuesAndCounts', '' );
         while( (this.utilService.isNullOrUndefined( this.completeManufacturerValues )) && (!errorFlag) ){
             await this.commonService.sleep( Consts.waitTime );
         }
@@ -205,7 +222,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         // Get persisted showManufacturerValues value.  Used to show, or collapse this category of criteria in the UI.
         // Set initial manufacturer values
-        //this.getShowManufacturerValues();
+        this.showManufacturerValues = this.getShowManufacturerValues();
 
         // This will tell the parameter service that it can send any query Manufacturer that where passed in the URL
         this.initMonitorService.setManufacturerInit(true);
@@ -214,17 +231,78 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
     private getShowManufacturerValues(): boolean {
         let value = this.commonService.getCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES);
-        return value != null ? value : Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES_DEFAULT;
+        if( value == null ){
+            this.commonService.setCriteriaQueryShow(Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES, Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES_DEFAULT);
+            value = Consts.SHOW_CRITERIA_QUERY_MANUFACTURER_VALUES_DEFAULT;
+        }
+        return value;
     }
 
     private handleSearchReset() {
         this.commonService.resetAllSimpleSearchEmitter.pipe(
             takeUntil(this.ngUnsubscribe)
         ).subscribe(() => {
-            this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray(this.completeManufacturerValuesHold);
+            const isLoggedIn = this.commonService.getUserLoggedInStatus();
+            const loginStatusChanged = this.commonService.hasLoginStatusChanged();
+            // If the user has logged status changed, we need to get the new list of criteria.
+            if( loginStatusChanged ){
+                if( isLoggedIn ){
+                    this.completeManufacturerValuesHold = this.completeManufacturerValuesHoldLoggedIn.map(v => ({ ...v }));
+                }else{
+                    this.completeManufacturerValuesHold = this.completeManufacturerValuesHoldGuest.map(v => ({ ...v }));
+                }
+            }
+            if (! this.completeManufacturerValuesHold ||  this.completeManufacturerValuesHold.length === 0) {
+                this.completeManufacturerValues = [];
+            }
+            this.completeManufacturerValues = this.completeManufacturerValuesHold.map(v => ({ ...v }));  
             this.updateManufacturerValues(true);
             this.queryUrlService.clear(this.queryUrlService.MANUFACTURER);
         });
+    }
+
+    /**
+     * Subscribes to resetAllSimpleSearchForLoginEmitter so that when a user logs in or out we can
+     * reload all Manufacturer criteria according to the user’s access rights.
+     */
+    private handleLoginReset() {
+        this.commonService.resetAllSimpleSearchForLoginEmitter
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(async () => {
+                // Prevent the URL-triggered search from executing until criteria are ready.
+                this.initMonitorService.setManufacturerRunning(true);
+
+                // Local flag for breaking out of wait loops on error.
+                let errorFlag = false;
+
+                // Fully reset current state.
+                this.resetFlag = true;
+                this.completeManufacturerValues = null;
+
+                // Re-request the full Manufacturer list and counts.
+                this.apiServerService.dataGet('v4/getManufacturerValuesAndCounts', '');
+                while (this.utilService.isNullOrUndefined(this.completeManufacturerValues) && !errorFlag) {
+                    await this.commonService.sleep(Consts.waitTime);
+                }
+
+                // Save copies for future resets.
+                this.completeManufacturerValues.forEach(item => {
+                    item.unfilteredCount = item.count;
+                    item.selected = false;
+                });
+                this.completeManufacturerValuesHold        = this.completeManufacturerValues.map(v => ({ ...v }));
+                this.completeManufacturerValuesHoldLoggedIn = this.completeManufacturerValues.map(v => ({ ...v }));
+
+                // Restore UI state depending on whether the URL contains search parameters.
+                if (this.parameterService.haveUrlSimpleSearchParameters()) {
+                    this.setInitialManufacturerValues();
+                    //this.updateCheckboxCount();
+                } else {
+                    this.resetAll();
+                }
+
+                this.initMonitorService.setManufacturerRunning(false);
+            });
     }
 
     private processUrlQueryParameters() {
@@ -244,7 +322,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                         .filter(index => index !== -1);
     
                     if (matchedIndices.length > 0) {
-                        matchedIndices.forEach(index => this.cBox[index] = true);
+                        matchedIndices.forEach(index => this.manufacturerList[index].selected = true);
                     } else {
                         this.missingCriteria.push(`Manufacturer: "${criteriaQuery}" is not available.`);
                     }
@@ -270,7 +348,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      */
     sendSelectedCriteriaString() {
         const selectedManufacturer = this.manufacturerList
-            .filter((manufacturer, index) => this.cBox[index])
+            .filter(m => m.selected)
             .map(manufacturer => manufacturer['Manufacturer'] || 'NOT SPECIFIED');  // get the Manufacturer value
         
         const criteriaString = encodeURIComponent(JSON.stringify(selectedManufacturer));
@@ -285,7 +363,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         const criteriaForQuery = [
             Consts.MANUFACTURER_CRITERIA,
             ...this.manufacturerList
-                .filter((manufacturer, index) => this.cBox[index])
+                .filter(m => m.selected)
                 .map(manufacturer => manufacturer['Manufacturer'])  // get the Manufacturer value       
         ];
         this.commonService.updateQuery( criteriaForQuery );
@@ -310,10 +388,11 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
     
     getSortedManufacturersAndCBox() {
-        // merge manufacturerList and cBox[] values
-        const combinedArray = this.manufacturerList.map((item, index) => ({
-            manufacturer: item, 
-            isChecked: this.cBox[index] || false    }));
+        // merge manufacturerList and their `selected` flags
+        const combinedArray = this.manufacturerList.map(item => ({
+            manufacturer: item,
+            isChecked: item.selected || false
+        }));
         
         // Sort based on cBox first (true first), then Manufacturer alphabetically
         combinedArray.sort((a, b) => {
@@ -324,7 +403,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         });
 
         this.manufacturerList = combinedArray.map(item => item.manufacturer);
-        this.cBox = combinedArray.map(item => item.isChecked);
 
     }
     
@@ -338,16 +416,81 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
 
     /**
-     * This is called when the component first loads, or when it needs to be 'cleared' back to its initial state, like when a new user logs in.
+     * Updates, sorts, etc. when the search-result counts for each Manufacturer change.
      */
-    setInitialManufacturerValues() {
-        this.updateManufacturerValues( true );
+    async onCriteriaCountsChange(data) {
+        if (this.utilService.isNullOrUndefined(data.res) || data.res.length < 1) {
+            return;
+        }
+
+        // Find our Manufacturer data inside the response.
+        const manufacturerCriteriaObj = data.res.find(c => c.criteria === 'Manufacturer')?.values;
+
+        // Save current lists so we can restore check-boxes afterwards.
+        const manufacturerListTemp = [...this.manufacturerList];
+        const cBoxHold = [...this.manufacturerList.map(m => m.selected)]; // Keep track of selected states
+
+        // If there is no active query, reset list to original.
+        if (this.apiServerService.getSimpleSearchQueryHold() === null) {
+            this.manufacturerList = this.manufacturerListHold;
+            this.setInitialManufacturerValues();
+        } else if (!this.utilService.isNullOrUndefined(manufacturerCriteriaObj)) {
+            // Wait until complete list is available.
+            while (this.utilService.isNullOrUndefined(this.completeManufacturerValues)) {
+                await this.commonService.sleep(Consts.waitTime);
+            }
+
+            // Update counts in completeManufacturerValues
+            this.completeManufacturerValues.forEach(item => {
+                const match = manufacturerCriteriaObj.find(m => m.criteria === item.Manufacturer);
+                item.count = match ? match.count : 0;
+            });
+        }
+
+        // Re-build list while keeping counts aligned.
+        this.updateManufacturerValues(false);
+
+        // Restore checkbox selections based on Manufacturer name.
+        this.manufacturerList.forEach((item, idx) => {
+            const tempIdx = manufacturerListTemp.findIndex(tempItem => tempItem.Manufacturer === item.Manufacturer);
+            if (tempIdx !== -1 && cBoxHold[tempIdx]) {
+                item.selected = true;
+            } else {
+                item.selected = false;
+            }
+        });
+
+        // Resort with checked items on top.
+        this.getSortedManufacturersAndCBox();
+        this.assignSequenceValues();
     }
 
     /**
-     * Sets up the list of manufacturer and initializes it's check boxes.
-     *
-     * @param initCheckBox  Should all the check boxes be set to unchecked
+     * This is called when the component first loads, or when it needs to be 'cleared' back to its initial state, like when a new user logs in.
+     */
+    setInitialManufacturerValues() {
+         // If we are waiting on an update due to user (re)login
+         if( !this.completeManufacturerValues ){
+            return;
+        }
+        this.manufacturerList = this.completeManufacturerValues.map(v => ({ ...v }));
+        this.manufacturerListHold = this.manufacturerList;
+
+        if(this.manufacturerList && this.manufacturerList.length > 0){
+            this.unCheckedCount = this.manufacturerList.length;
+            this.checkedCount = 0;
+        }else{
+            this.unCheckedCount = 0;
+            this.checkedCount = 0;
+        }
+
+        this.setSequenceValue() ;
+        this.manufacturerListHold = [...this.manufacturerList];
+    
+    }
+
+    /**
+     * Sets up the list of manufacturer and initializes selected.
      */
     updateManufacturerValues( initCheckBox ) {
 
@@ -360,12 +503,12 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         // This will let us keep all of the manufacturerList, but the ones that are not included in "data" will have a count of zero.
         this.manufacturerList = this.resetFlag 
             ? this.completeManufacturerValues
-            : this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
+            : this.completeManufacturerValuesHold.map(v => ({ ...v }));
 
         // hanlde checkbox state
         if( this.resetFlag || initCheckBox ){
             this.resetFlag = false;
-            this.cBox = new Array( this.manufacturerList.length ).fill( false );
+            this.manufacturerList.forEach(m => m.selected = false);
             this.updateCheckboxCount();
         }
 
@@ -396,7 +539,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
 
     updateCheckboxState(index: number, checked: boolean) {
-        this.cBox[index] = checked;
+        this.manufacturerList[index].selected = checked;
         this.updateCheckboxCount();
         this.setSequenceValue() ;
     }
@@ -408,7 +551,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         let criteriaForQuery: string[] = [Consts.MANUFACTURER_CRITERIA];
 
         this.manufacturerList.forEach((manufacturer, index) => {
-            if (this.cBox[index]) {
+            if (manufacturer.selected) {
                 criteriaForQuery.push(manufacturer['Manufacturer']);
             }
         });
@@ -456,7 +599,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             // Build a Set of checked manufacturers directly
             const checkedManufacturers = new Set();
             for (let i = 0; i < this.manufacturerList.length; i++) {
-                if (this.cBox[i]) {
+                if (this.manufacturerList[i].selected) {
                     checkedManufacturers.add(this.manufacturerList[i].Manufacturer);
                 }
             }
@@ -515,8 +658,8 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     }
 
     updateCheckboxCount() {
-        this.checkedCount = this.cBox.filter(checked => Boolean(checked)).length;
-        this.unCheckedCount = this.cBox.length - this.checkedCount;
+        this.checkedCount = this.manufacturerList.filter(m => m.selected).length;
+        this.unCheckedCount = this.manufacturerList.length - this.checkedCount;
     }
 
     /**
@@ -536,9 +679,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
     onManufacturerClearAllClick( totalClear: boolean ) {
         this.commonService.setHaveUserInput( true );
 
-        for( let f = 0; f < this.cBox.length; f++ ){
-            this.cBox[f] = false;
-        }
+        this.manufacturerList.forEach(m => m.selected = false);
         this.checkedCount = 0;
       //  this.apiServerService.refreshCriteriaCounts();
         let criteriaForQuery: string[] = [];
@@ -546,10 +687,9 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.commonService.updateQuery( criteriaForQuery );
         this.queryUrlService.clear( this.queryUrlService.MANUFACTURER );
         // Restore original Manufacturer list and counts.
-        this.completeManufacturerValues = this.utilService.copyManufacturerObjectArray( this.completeManufacturerValuesHold );
+        this.completeManufacturerValues = this.completeManufacturerValuesHold.map(v => ({ ...v }));
         this.updateManufacturerValues( true );
-    }
-
+    }   
 
     onSetSort( sortCriteria ) {
         // (Re)sort the list because a checked Manufacturer is higher than unchecked.
@@ -569,12 +709,14 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         const newCBox = tList.map(item =>  {
             const originalIndex = originalIndexMap.get(item.Manufacturer);
-            return originalIndex !== undefined ? this.cBox[originalIndex] || false : false;
+            return originalIndex !== undefined ? this.manufacturerListHold[originalIndex].selected || false : false;
         });
         
         this.manufacturerList = tList.map((item, index) => ({ ...item, seq: index }));
 
-        this.cBox = newCBox;
+        this.manufacturerList.forEach((item, idx) => {
+            item.selected = newCBox[idx];
+        });
 
         if( !(preListLength > this.manufacturerList.length) ){
             this.setSequenceValue();

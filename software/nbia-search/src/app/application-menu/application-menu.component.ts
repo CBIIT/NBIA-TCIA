@@ -657,7 +657,6 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
         // Check for restrictions
         this.apiServerService.doPost(Consts.API_MANIFEST_RESTRICTIONS_FROM_SEARCH_RESULTS, this.commonService.getDownloadManifestQuery(), this.apiServerService.showToken()).subscribe(
             (restrictionData: any) => {
-
                 // No restrictions, download the manifest
                 if (restrictionData.toUpperCase() === 'NO') {
                     this.downloadQueryAsManifest();
@@ -666,6 +665,7 @@ export class ApplicationMenuComponent implements OnInit, OnDestroy {
                     if (confirm('Your download includes data with commercial use restrictions.\nThere is a filter available to exclude restricted series.') === true) {
                         this.downloadQueryAsManifest();
                     } else {
+                        this.loadingDisplayService.setLoading( false );
                         console.log('User has canceled download');
                     }
                 }

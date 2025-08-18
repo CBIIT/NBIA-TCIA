@@ -385,7 +385,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
         }
 
         // Find our (Anatomical Site) data
-        const anatomicalSiteCriteriaObj = data.res.find(criteria => criteria.criteria === 'Anatomical Site')?.values;
+        const anatomicalSiteCriteriaObj = data.res.find(criteria => criteria.criteria === 'bodyParts')?.values;
 
         // Before we update the list, save the original list so we can restore checkboxes by criteria name.
         const criteriaListTemp = [...this.criteriaList];
