@@ -2601,10 +2601,12 @@ paths:
         '500':
           description: Internal server error
 
-/getMinMaxTimepoints:
+  /getMinMaxTimepoints:
     get:
       summary: Retrieve minimum and maximum timepoints across authorized studies
       description: Returns the earliest and latest timepoints for studies accessible to the authenticated user, based on site-level authorization.
+      tags:
+        - Study Metadata
       responses:
         '200':
           description: Successfully retrieved timepoint range
@@ -2625,8 +2627,8 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
-      tags:
-        - Study Metadata
+
+
 
 
 
