@@ -126,7 +126,7 @@ export class PieChartAnatomicalSiteComponent implements OnInit, OnDestroy{
                 let criteriaCounts = 0;
                 if( (!this.utilService.isNullOrUndefined( data )) && (!this.utilService.isNullOrUndefined( data['res'] )) && (data['res'].length > 0) ){
                     for( let crtCount of data['res'] ){
-                        if( crtCount.criteria === 'Anatomical Site' ){
+                        if( crtCount.criteria === 'Body Parts' ){
                             criteriaCounts = crtCount.values;
                         }
                     }

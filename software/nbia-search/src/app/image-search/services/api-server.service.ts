@@ -1593,6 +1593,7 @@ export class ApiServerService implements OnDestroy {
         this.criteriaCountsAnatomicalSite = {};
         this.criteriaCountsCollection = {};
         this.criteriaCountsSpecies = {};
+        this.criteriaCountsManufacturer = {};
 
         for (let data of this.currentSearchResults) {
             for (let modality of data.modalities) {
@@ -1621,6 +1622,12 @@ export class ApiServerService implements OnDestroy {
             }
             this.criteriaCountsCollection[data.project]++;
 
+            for (let manufacturer of data.manufacturer) {
+                if (this.utilService.isNullOrUndefined(this.criteriaCountsManufacturer[manufacturer])) {
+                    this.criteriaCountsManufacturer[manufacturer] = 0;
+                }
+                this.criteriaCountsManufacturer[manufacturer]++;
+            }
         }
 
         let resObj = [];
@@ -1637,7 +1644,7 @@ export class ApiServerService implements OnDestroy {
             }
         );
 
-        let anatomicalSiteObj = {'criteria': 'Anatomical Site', 'values': []};
+        let anatomicalSiteObj = {'criteria': 'Body Parts', 'values': []};
         Object.keys(this.criteriaCountsAnatomicalSite).forEach(
             (key) => {
                 anatomicalSiteObj.values.push(
@@ -1673,11 +1680,23 @@ export class ApiServerService implements OnDestroy {
             }
         );
 
+        let manufacturerObj = {'criteria': 'Manufacturer', 'values': []};
+        Object.keys(this.criteriaCountsManufacturer).forEach(
+            (key) => {
+                manufacturerObj.values.push(
+                    {
+                        'criteria': key,
+                        'count': this.criteriaCountsManufacturer [key]
+                    }
+                );
+            }
+        );
+
         resObj.push(collectionObj);
         resObj.push(anatomicalSiteObj);
         resObj.push(modalityObj);
         resObj.push(speciesObj);
-
+        resObj.push(manufacturerObj);
         this.criteriaCountUpdateEmitter.emit({'res': resObj});
     }
 
@@ -1710,7 +1729,7 @@ export class ApiServerService implements OnDestroy {
 
         let modalityObjPaged = {'criteria': 'Image Modality', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if (this.currentSearchResultsData['modalities'] !== 'null') {
+        if (Array.isArray(this.currentSearchResultsData?.modalities)) {
             for (let modality of this.currentSearchResultsData['modalities']) {
                 modalityObjPaged.values.push(
                     {
@@ -1720,9 +1739,9 @@ export class ApiServerService implements OnDestroy {
                 );
             }
         }
-        let anatomicalSiteObjPaged = {'criteria': 'Anatomical Site', 'values': []};
+        let anatomicalSiteObjPaged = {'criteria': 'Body Parts', 'values': []};
         // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
-        if (this.currentSearchResultsData['bodyParts'] !== 'null') {
+        if (Array.isArray(this.currentSearchResultsData?.bodyParts)) {
             for (let bodyPart of this.currentSearchResultsData['bodyParts']) {
                 anatomicalSiteObjPaged.values.push(
                     {
@@ -1745,11 +1764,24 @@ export class ApiServerService implements OnDestroy {
             }
         }
 
+        let manufacturerObjPaged = {'criteria': 'Manufacturer', 'values': []};
+        // CHECKME  This "if" is a work around for a bug on the server side which sometimes gives "null" as the counts
+        if (Array.isArray(this.currentSearchResultsData?.manufacturer))  {
+            for (let manufacturer of this.currentSearchResultsData['manufacturer']) {
+                manufacturerObjPaged.values.push(
+                    {
+                        'criteria': manufacturer.value,
+                        'count': manufacturer.count
+                    }
+                );
+            }
+        }
+
         resObj.push(collectionObjPaged);
         resObj.push(anatomicalSiteObjPaged);
         resObj.push(modalityObjPaged);
         resObj.push(speciesObjPaged);
-
+        resObj.push(manufacturerObjPaged);
         this.criteriaCountUpdateEmitter.emit({'res': resObj});
     }
 

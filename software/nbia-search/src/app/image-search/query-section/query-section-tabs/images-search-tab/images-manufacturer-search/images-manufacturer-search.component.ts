@@ -35,7 +35,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      * Used by the UI search within this Manufacturer list (with the red magnifying glass), NOT the data search.
      */
     manufacturerListHold: any[] = [];
-    resetFlag: boolean = false;
+    //resetFlag: boolean = false;
 
     /**
      * For hide or show this group of Manufacturer when the arrows next to the heading are clicked.
@@ -276,7 +276,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 let errorFlag = false;
 
                 // Fully reset current state.
-                this.resetFlag = true;
+               // this.resetFlag = true;
                 this.completeManufacturerValues = null;
 
                 // Re-request the full Manufacturer list and counts.
@@ -290,7 +290,7 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                     item.unfilteredCount = item.count;
                     item.selected = false;
                 });
-                this.completeManufacturerValuesHold        = this.completeManufacturerValues.map(v => ({ ...v }));
+                this.completeManufacturerValuesHold = this.completeManufacturerValues.map(v => ({ ...v }));
                 this.completeManufacturerValuesHoldLoggedIn = this.completeManufacturerValues.map(v => ({ ...v }));
 
                 // Restore UI state depending on whether the URL contains search parameters.
@@ -376,35 +376,49 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      * This is used by the HTML when displaying only part of manufacturerList.
      */
     setSequenceValue() {
-      
-        if(!this.manufacturerList[0]?.Manufacturer){
-            this.manufacturerList[0].Manufacturer ='NOT SPECIFIED';
-        }
         // Get sorted arrays while keeping `cBox` in sync
-        this.getSortedManufacturersAndCBox();
-    
+        //this.getSortedManufacturersAndCBox();
         // Assign sequence values
+        this.sortManufacturerValues();
         this.assignSequenceValues();
     }
     
-    getSortedManufacturersAndCBox() {
-        // merge manufacturerList and their `selected` flags
-        const combinedArray = this.manufacturerList.map(item => ({
-            manufacturer: item,
-            isChecked: item.selected || false
-        }));
-        
-        // Sort based on cBox first (true first), then Manufacturer alphabetically
-        combinedArray.sort((a, b) => {
-            if(b.isChecked !== a.isChecked){
-                return b.isChecked - a.isChecked; // isChecked (true values) first
+    sortManufacturerValues() {
+        this.manufacturerList.sort((a, b) => {
+            /* checked values first */
+            if(a.selected !== b.selected){
+                return Number(b.selected) - Number(a.selected);
             }
-            return a.manufacturer.Manufacturer.localeCompare(b.manufacturer.Manufacturer);
+            /* then alphabetical or numberic */
+            if(this.sortNumChecked){
+                const diff = Number(b.count) - Number(a.count);
+                if(diff !== 0){
+                    return diff;
+                }
+            }
+            /* tie-breaker alphabetical */
+            return a.Manufacturer.localeCompare(b.Manufacturer);
         });
-
-        this.manufacturerList = combinedArray.map(item => item.manufacturer);
-
     }
+
+    // getSortedManufacturersAndCBox() {
+    //     // merge manufacturerList and their `selected` flags
+    //     const combinedArray = this.manufacturerList.map(item => ({
+    //         manufacturer: item,
+    //         isChecked: item.selected || false
+    //     }));
+        
+    //     // Sort based on cBox first (true first), then Manufacturer alphabetically
+    //     combinedArray.sort((a, b) => {
+    //         if(b.isChecked !== a.isChecked){
+    //             return b.isChecked - a.isChecked; // isChecked (true values) first
+    //         }
+    //         return a.manufacturer.Manufacturer.localeCompare(b.manufacturer.Manufacturer);
+    //     });
+
+    //     this.manufacturerList = combinedArray.map(item => item.manufacturer);
+
+    // }
     
     /**
      * Assigns sequence values (`seq`) to the manufacturerList.
@@ -423,17 +437,16 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             return;
         }
 
+        // get current checobox state
+        const selectedMap = new Map();
+        this.manufacturerList.forEach(m => selectedMap.set(m.Manufacturer, m.selected));
+
         // Find our Manufacturer data inside the response.
         const manufacturerCriteriaObj = data.res.find(c => c.criteria === 'Manufacturer')?.values;
 
-        // Save current lists so we can restore check-boxes afterwards.
-        const manufacturerListTemp = [...this.manufacturerList];
-        const cBoxHold = [...this.manufacturerList.map(m => m.selected)]; // Keep track of selected states
-
         // If there is no active query, reset list to original.
         if (this.apiServerService.getSimpleSearchQueryHold() === null) {
-            this.manufacturerList = this.manufacturerListHold;
-            this.setInitialManufacturerValues();
+            this.manufacturerList = this.manufacturerListHold.map(v => ({ ...v }));
         } else if (!this.utilService.isNullOrUndefined(manufacturerCriteriaObj)) {
             // Wait until complete list is available.
             while (this.utilService.isNullOrUndefined(this.completeManufacturerValues)) {
@@ -445,24 +458,23 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
                 const match = manufacturerCriteriaObj.find(m => m.criteria === item.Manufacturer);
                 item.count = match ? match.count : 0;
             });
+
+            this.completeManufacturerValuesHold = this.completeManufacturerValues.map(v => ({ ...v }));
         }
 
         // Re-build list while keeping counts aligned.
-        this.updateManufacturerValues(false);
+        this.manufacturerList = this.completeManufacturerValues.map(v => ({ ...v }));
 
         // Restore checkbox selections based on Manufacturer name.
-        this.manufacturerList.forEach((item, idx) => {
-            const tempIdx = manufacturerListTemp.findIndex(tempItem => tempItem.Manufacturer === item.Manufacturer);
-            if (tempIdx !== -1 && cBoxHold[tempIdx]) {
-                item.selected = true;
-            } else {
-                item.selected = false;
-            }
+        this.manufacturerList.forEach((item) => {
+            item.selected = selectedMap.get(item.Manufacturer) || false;
         });
 
+        this.updateCheckboxCount();
+        this.manufacturerListHold = this.manufacturerList.map(v => ({ ...v }));
+
         // Resort with checked items on top.
-        this.getSortedManufacturersAndCBox();
-        this.assignSequenceValues();
+       this.setSequenceValue();
     }
 
     /**
@@ -501,19 +513,25 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
         // If this is the first time this is running just copy the data to the manufacturerList
         // This will let us keep all of the manufacturerList, but the ones that are not included in "data" will have a count of zero.
-        this.manufacturerList = this.resetFlag 
-            ? this.completeManufacturerValues
-            : this.completeManufacturerValuesHold.map(v => ({ ...v }));
+        this.manufacturerList = this.completeManufacturerValuesHold.map(v => ({ ...v }));
 
         // hanlde checkbox state
-        if( this.resetFlag || initCheckBox ){
-            this.resetFlag = false;
+        if(  initCheckBox ){
             this.manufacturerList.forEach(m => m.selected = false);
             this.updateCheckboxCount();
-        }
+            this.setSequenceValue() ;
+            this.manufacturerListHold = this.manufacturerList.map(v => ({ ...v }));
+        }else{
+            this.manufacturerList = this.manufacturerListHold.map(v => ({ ...v, count: 0 , unfilteredCount: v.count }));
 
-        this.setSequenceValue() ;
-        this.manufacturerListHold = [...this.manufacturerList];
+            const criteriaMap = new Map(this.completeManufacturerValues.map(item => [item.Manufacturer, item.count]));
+
+            this.manufacturerList.forEach(item => {
+                if (criteriaMap.has(item.Manufacturer)) {
+                    item.count = criteriaMap.get(item.Manufacturer);
+                }
+            });
+        }
     }
 
 
@@ -540,6 +558,14 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
 
     updateCheckboxState(index: number, checked: boolean) {
         this.manufacturerList[index].selected = checked;
+
+        //update the manufacturerListHold
+        const currentManufacturer = this.manufacturerList[index];
+        const HoldItem = this.manufacturerListHold?.find(item => item.Manufacturer === currentManufacturer.Manufacturer);
+        if( HoldItem ){
+            HoldItem.selected = checked;
+        }
+
         this.updateCheckboxCount();
         this.setSequenceValue() ;
     }
@@ -590,11 +616,14 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
      * @NOTE This is currently commented out for Manufacturer Sites
      */
     onSearchChange() {
-        const searchTerm = this.searchInput.trim().toUpperCase();
+        const searchTerm = this.searchInput?.trim().toUpperCase();
         const isSearchEmpty = searchTerm.length === 0;
 
         if( isSearchEmpty ){
-            this.adjustSequencesFromSearch( this.manufacturerListHold);
+            this.manufacturerList = this.manufacturerListHold.map(v => ({ ...v }));
+            this.setSequenceValue();
+            this.updateCheckboxCount();
+
         }else{
             // Build a Set of checked manufacturers directly
             const checkedManufacturers = new Set();
@@ -609,12 +638,14 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
             );
         
             if(tempList.length > 0){
-                this.adjustSequencesFromSearch(tempList);
+                // refresh the list
+                this.manufacturerList = tempList.map((v, index) => ({ ...v, seq: index }));
+                this.updateCheckboxCount();
             }
         }
 
         this.searchToolTip = isSearchEmpty ? 'Search' : this.searchInput;
-        this.showAllForSearch = !isSearchEmpty;
+        //this.showAllForSearch = !isSearchEmpty;
 
     }
 
@@ -696,33 +727,6 @@ export class ImagesManufacturerSearchComponent implements OnInit, OnDestroy{
         this.sortNumChecked = sortCriteria === 0;
         this.persistenceService.put( this.persistenceService.Field.MANUFACTURER_VALUES_SORT_BY_COUNT, this.sortNumChecked );
         this.setSequenceValue();
-    }
-
-    adjustSequencesFromSearch(tList) {
-        // tlist as 
-        //{Manufacturer: 'CPS', seq: 0}
-
-        if (!tList || tList.length === 0) return;
-        const preListLength = this.manufacturerList.length;
-        const originalIndexMap = new Map();
-        this.manufacturerList.forEach((item, index) => originalIndexMap.set(item.Manufacturer, index))
-
-        const newCBox = tList.map(item =>  {
-            const originalIndex = originalIndexMap.get(item.Manufacturer);
-            return originalIndex !== undefined ? this.manufacturerListHold[originalIndex].selected || false : false;
-        });
-        
-        this.manufacturerList = tList.map((item, index) => ({ ...item, seq: index }));
-
-        this.manufacturerList.forEach((item, idx) => {
-            item.selected = newCBox[idx];
-        });
-
-        if( !(preListLength > this.manufacturerList.length) ){
-            this.setSequenceValue();
-        }
-
-        this.updateCheckboxCount();
     }
 
     ngOnDestroy() {

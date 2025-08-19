@@ -323,7 +323,7 @@ export class AnatomicalSiteQueryComponent implements OnInit, OnDestroy{
 
                     // If one or more of the criteria we are trying to check/select is not in the list of available criteria.
                     if( !found ){
-                        this.missingCriteria.push( 'Anatomical Site: \"' + criteriaQuery + '\" is not available.' );
+                        this.missingCriteria.push( 'Body Parts: \"' + criteriaQuery + '\" is not available.' );
                     }
                 }
 
