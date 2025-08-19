@@ -2570,6 +2570,7 @@ paths:
       description: Returns a TCIA manifest file containing series IDs filtered by collection and visibility, optionally including annotations.
       tags:
         - Image Downloads
+      requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -2626,6 +2627,7 @@ paths:
           description: Internal server error
       tags:
         - Study Metadata
+
 
 
 
