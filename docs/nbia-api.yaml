@@ -2580,12 +2580,15 @@ paths:
                 collection:
                   type: string
                   description: Name of the collection
+                  example: "TCGA-LUAD"
                 visibility:
                   type: string
                   description: Visibility level (use "13" to select all)
+                  example: "1"
                 includeAnnotation:
                   type: string
                   description: Whether to include annotations ("true" or "false")
+                  example: "true"
               required:
                 - collection
       responses:
@@ -2627,6 +2630,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
