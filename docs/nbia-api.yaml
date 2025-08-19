@@ -2563,6 +2563,45 @@ paths:
                   error:
                     type: string
                     example: Unexpected server error occurred.
+                    
+  /getManifestForCollection:
+    post:
+      summary: Generate a manifest file for a given collection
+      description: Returns a TCIA manifest file containing series IDs filtered by collection and visibility, optionally including annotations.
+      tags:
+        - Image Downloads
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                collection:
+                  type: string
+                  description: Name of the collection
+                visibility:
+                  type: string
+                  description: Visibility level (use "13" to select all)
+                includeAnnotation:
+                  type: string
+                  description: Whether to include annotations ("true" or "false")
+              required:
+                - collection
+      responses:
+        '200':
+          description: Manifest file generated successfully
+          content:
+            application/x-nbia-manifest-file:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid input parameters
+        '500':
+          description: Internal server error
+      tags:
+        - Manifest
+
 
 
 
