@@ -2602,6 +2602,32 @@ paths:
       tags:
         - Manifest
 
+/getMinMaxTimepoints:
+    get:
+      summary: Retrieve minimum and maximum timepoints across authorized studies
+      description: Returns the earliest and latest timepoints for studies accessible to the authenticated user, based on site-level authorization.
+      responses:
+        '200':
+          description: Successfully retrieved timepoint range
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  minTimepoint:
+                    type: string
+                    format: date
+                    description: Earliest timepoint available
+                  maxTimepoint:
+                    type: string
+                    format: date
+                    description: Latest timepoint available
+        '401':
+          description: Unauthorized access
+        '500':
+          description: Internal server error
+      tags:
+        - Study Metadata
 
 
 
