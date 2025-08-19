@@ -2599,8 +2599,6 @@ paths:
           description: Invalid input parameters
         '500':
           description: Internal server error
-      tags:
-        - Manifest
 
 /getMinMaxTimepoints:
     get:
@@ -2628,6 +2626,7 @@ paths:
           description: Internal server error
       tags:
         - Study Metadata
+
 
 
 
