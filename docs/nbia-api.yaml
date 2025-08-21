@@ -2567,7 +2567,9 @@ paths:
   /getManifestForCollection:
     post:
       summary: Generate a manifest file for a given collection
-      description: Returns a TCIA manifest file containing series IDs filtered by collection and visibility, optionally including annotations.
+      description: |
+        Returns a TCIA manifest file containing series IDs filtered by collection and visibility.
+        Optionally includes annotations. The manifest is returned as a custom file format.
       tags:
         - Image Downloads
       requestBody:
@@ -2580,7 +2582,7 @@ paths:
                 collection:
                   type: string
                   description: Name of the collection
-                  example: "TCGA-LUAD"
+                  example: "VAREPOP-APOLLO"
                 visibility:
                   type: string
                   description: Visibility level (use "13" to select all)
@@ -2591,14 +2593,33 @@ paths:
                   example: "true"
               required:
                 - collection
+            examples:
+              default:
+                summary: Basic request
+                value:
+                  collection: "VAREPOP-APOLLO"
+                  visibility: "1"
+                  includeAnnotation: "true"
+              selectAll:
+                summary: Select all visibility levels
+                value:
+                  collection: "VAREPOP-APOLLO"
+                  visibility: "13"
+                  includeAnnotation: "false"
       responses:
         '200':
           description: Manifest file generated successfully
           content:
-            application/x-nbia-manifest-file:
+            text/plain:
               schema:
                 type: string
                 format: binary
+              examples:
+                sampleManifest:
+                  summary: Sample manifest file
+                  value: |
+                    SeriesInstanceUID|StudyInstanceUID|SOPInstanceUID
+                    	1.3.6.1.4.1.14519.5.2.1.7745686399684664633263090183100945605|1.3.6.1.4.1.14519.5.2.1.40123524573524350962667639236371857854|1.3.6.1.4.1.14519.5.2.1.245642591673705740064167099200830258604
         '400':
           description: Invalid input parameters
         '500':
@@ -2630,6 +2651,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
