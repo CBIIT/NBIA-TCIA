@@ -449,13 +449,7 @@ paths:
             text/plain:
               schema:
                 type: string
-              examples:
-                example1:
-                  summary: Sample manifest file
-                  value: |
-                    # Manifest File
-                    PatientID: ISPY1_1001
-                    StudyID: ...
+
         '400':
           description: Bad request – Missing or invalid parameters.
           content:
@@ -2651,6 +2645,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
