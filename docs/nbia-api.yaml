@@ -409,7 +409,6 @@ paths:
         ```
       tags:
         - Image Downloads
-      security: []
       requestBody:
         required: true
         content:
@@ -475,6 +474,8 @@ paths:
                 properties:
                   error:
                     type: string
+      security:
+        - oauth2: []
   
   /getManifestText:
     post:
@@ -2650,6 +2651,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
