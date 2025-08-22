@@ -447,7 +447,9 @@ paths:
           content:
             text/plain:
               schema:
-                type: string
+                schema:
+                  type: object
+                  additionalProperties: false
 
         '400':
           description: Bad request – Missing or invalid parameters.
@@ -2644,6 +2646,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
