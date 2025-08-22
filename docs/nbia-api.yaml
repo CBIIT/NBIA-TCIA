@@ -444,7 +444,7 @@ paths:
         '200':
           description: success
           content:
-            text/plain:
+            text/plain;charset=utf-8:
               schema:
                 type: string
                 # explicitly mark as not a file
@@ -2648,6 +2648,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
