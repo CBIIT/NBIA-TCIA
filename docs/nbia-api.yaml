@@ -410,6 +410,7 @@ paths:
         ```
       tags:
         - Image Downloads
+      security: []
       requestBody:
         required: true
         content:
@@ -448,6 +449,7 @@ paths:
             text/plain:
               schema:
                 type: string
+                format: binary
               examples:
                 example1:
                   summary: Sample manifest file
@@ -2650,6 +2652,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
