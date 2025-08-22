@@ -444,7 +444,7 @@ paths:
                 includeAnnotation: "true"
       responses:
         '200':
-          description: Manifest file successfully generated
+          description: success
           content:
             text/plain:
               schema:
@@ -2645,6 +2645,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
