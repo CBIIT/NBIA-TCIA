@@ -444,9 +444,11 @@ paths:
         '200':
           description: success
           content:
-            application/json:
-               schema:
+            text/plain:
+              schema:
                 type: string
+                # explicitly mark as not a file
+                example: "Sample manifest content"
          
 
         '400':
@@ -2646,6 +2648,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
