@@ -446,10 +446,14 @@ paths:
           description: success
           content:
             text/plain:
+               schema:
+                type: string
+            application/xml:
               schema:
-                schema:
-                  type: object
-                  additionalProperties: false
+                type: string
+            text/csv:
+              schema:
+                type: string
 
         '400':
           description: Bad request – Missing or invalid parameters.
@@ -2646,6 +2650,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
