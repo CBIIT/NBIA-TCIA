@@ -396,8 +396,7 @@ paths:
     post:
       summary: Generate a manifest from patient, study, and series UIDs
       description: |
-        Returns a manifest file in `application/x-nbia-manifest-file` format containing series for the specified patient, study, or series UIDs.
-
+       
         **Note:** Only the following form parameters are accepted: `patientIDs`, `studyUIDs`, `seriesUIDs`, `anyOrAll`, `includeAnnotation`.
 
         **Example curl command:**
@@ -2645,6 +2644,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
