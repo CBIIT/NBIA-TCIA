@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: NBIA API
   description: |
@@ -396,7 +396,8 @@ paths:
     post:
       summary: Generate a manifest from patient, study, and series UIDs
       description: |
-       
+        Returns a manifest file in `application/x-nbia-manifest-file` format containing series for the specified patient, study, or series UIDs.
+
         **Note:** Only the following form parameters are accepted: `patientIDs`, `studyUIDs`, `seriesUIDs`, `anyOrAll`, `includeAnnotation`.
 
         **Example curl command:**
@@ -442,17 +443,19 @@ paths:
                 includeAnnotation: "true"
       responses:
         '200':
-          description: success
+          description: Manifest file successfully generated
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                properties:
-                  manifest:
-                    type: string
-                    example: "Sample manifest content"
-         
-
+                type: string
+                format: binary
+              examples:
+                example1:
+                  summary: Sample manifest file
+                  value: |
+                    # Manifest File
+                    PatientID: ISPY1_1001
+                    StudyID: ...
         '400':
           description: Bad request – Missing or invalid parameters.
           content:
@@ -2650,6 +2653,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
