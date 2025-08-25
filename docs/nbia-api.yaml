@@ -476,8 +476,6 @@ paths:
                 properties:
                   error:
                     type: string
-      security:
-        - oauth2: []
   
   /getManifestText:
     post:
@@ -2653,6 +2651,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
