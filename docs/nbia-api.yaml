@@ -549,9 +549,13 @@ paths:
   /getManifestForSimpleSearch:
     post:
       summary: Generate a plain text manifest file from simple search criteria
+        
       description: |
-        Accepts search parameters and returns a plain text manifest file containing SeriesInstanceUIDs
-        for authorized patients and studies. The manifest can be used with the NBIA Data Retriever.
+        Accepts search parameters and returns a plain text manifest file containing SeriesInstanceUIDs for authorized patients and studies. The manifest can be used with the NBIA Data Retriever.
+        To use this endpoint, specify one or more search criteria by providing the name of the criterion in the `criteriaType0` (and, if applicable, `criteriaType1`, `criteriaType2`, etc.) parameter(s), and the corresponding value(s) in `value0` (and `value1`, `value2`, etc.).
+        The `sortField` parameter allows you to specify the field by which to sort the results, and `sortDirection` specifies whether to sort in ascending or descending order.
+        The `start` parameter is used for paged results, indicating the offset from which to start returning results, and `size` specifies the number of results to return per page.
+        Allowed values for `criteriaTypeX`: See `CriteriaTypeEnum` schema in the Schemas section below.
 
         **Note:** Only authorized series are included in the manifest.
 
@@ -576,8 +580,7 @@ paths:
                 - value0
               properties:
                 criteriaType0:
-                  type: string
-                  description: Metadata field to filter by (e.g., Modality, ThirdPartyAnalysis)
+                  $ref: '#/components/schemas/CriteriaTypeEnum'
                 value0:
                   type: string
                   description: Value to match for the specified criteriaType0
@@ -2651,6 +2654,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
