@@ -42,12 +42,7 @@
         activated: false
       },
 
-      requestInterceptor: (request) => {
-        if (request.url.includes('/v4/getManifest')) {
-          request.headers['Content-Disposition'] = 'attachment; filename="manifest.txt"';
-        }
-        return request;
-      },
+
        /* ---- response trimming ---- */
     responseInterceptor: res => {
       if (
