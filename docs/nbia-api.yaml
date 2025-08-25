@@ -392,91 +392,76 @@ paths:
        '500':
          description: Internal server error
  
-  /getManifestFromPatientStudySeries:
-    post:
-      summary: Generate a manifest from patient, study, and series UIDs
-      description: |
-        Returns a manifest file in `application/x-nbia-manifest-file` format containing series for the specified patient, study, or series UIDs.
+/getManifestFromPatientStudySeries:
+  post:
+    summary: Generate a manifest from patient, study, and series UIDs
+    description: |
+      Returns a manifest file in `text/plain` format containing series for the specified patient, study, or series UIDs.
 
-        **Note:** Only the following form parameters are accepted: `patientIDs`, `studyUIDs`, `seriesUIDs`, `anyOrAll`, `includeAnnotation`.
-
-        **Example curl command:**
-        ```bash
-        curl -X POST \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -H "Accept: text/plain" \
-          -d "patientIDs=ISPY1_1001,ISPY1_1002&includeAnnotation=true" \
-          https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getManifestFromPatientStudySeries
-        ```
-      tags:
-        - Image Downloads
-      requestBody:
-        required: true
+      **Note:** Only the following form parameters are accepted: `patientIDs`, `studyUIDs`, `seriesUIDs`, `anyOrAll`, `includeAnnotation`.
+    tags:
+      - Image Downloads
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required:
+              - patientIDs
+            properties:
+              patientIDs:
+                type: string
+                description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
+              studyUIDs:
+                type: string
+                description: Comma-separated studyInstanceUIDs (optional)
+              seriesUIDs:
+                type: string
+                description: Comma-separated seriesInstanceUIDs (optional)
+              anyOrAll:
+                type: string
+                enum: [any, all]
+                default: any
+              includeAnnotation:
+                type: string
+                enum: [true, false]
+                default: true
+          example:
+            patientIDs: "ISPY1_1001,ISPY1_1002"
+            includeAnnotation: "true"
+    responses:
+      '200':
+        description: Manifest file successfully generated
         content:
-          application/x-www-form-urlencoded:
+          text/plain:
+            schema:
+              type: string
+            example: |
+              # Manifest File
+              PatientID: ISPY1_1001
+              StudyID: ...
+      '400':
+        description: Bad request – Missing or invalid parameters.
+        content:
+          application/json:
             schema:
               type: object
-              required:
-                - patientIDs
               properties:
-                patientIDs:
+                error:
                   type: string
-                  description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
-                studyUIDs:
+      '406':
+        description: Not Acceptable – Client must set Accept header to text/plain
+      '500':
+        description: Internal server error.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
                   type: string
-                  description: Comma-separated studyInstanceUIDs (optional)
-                seriesUIDs:
-                  type: string
-                  description: Comma-separated seriesInstanceUIDs (optional)
-                anyOrAll:
-                  type: string
-                  enum: [any, all]
-                  default: any
-                  description: Criteria filter (optional)
-                includeAnnotation:
-                  type: string
-                  enum: [true, false]
-                  default: true
-                  description: Whether to include annotations (true/false)
-              example:
-                patientIDs: "ISPY1_1001,ISPY1_1002"
-                includeAnnotation: "true"
-      responses:
-        '200':
-          description: Manifest file successfully generated
-          content:
-            text/plain:
-              schema:
-                type: string
-                format: binary
-              examples:
-                example1:
-                  summary: Sample manifest file
-                  value: |
-                    # Manifest File
-                    PatientID: ISPY1_1001
-                    StudyID: ...
-        '400':
-          description: Bad request – Missing or invalid parameters.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '406':
-          description: Not Acceptable – Client must set Accept header to text/plain
-        '500':
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-  
+
   /getManifestText:
     post:
       summary: Generate a manifest file for a list of series.
@@ -2651,6 +2636,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
