@@ -1911,7 +1911,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&Date=08-16-2010&format=json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewStudiesInPatientCollection?Collection=CBIS-DDSM&fromDate=08-16-2010&format=json"
         ```
       tags:
         - Study Metadata
@@ -2008,7 +2008,7 @@ paths:
 
         **Example call:**
         ```bash
-        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&Date=08-16-2010&format=json"
+        curl -X GET "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/NewPatientsInCollection?Collection=CBIS-DDSM&fromDate=08-16-2010&format=json"
         ```
       tags:
         - Patient Metadata
@@ -2654,6 +2654,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
