@@ -1937,7 +1937,7 @@ paths:
           schema:
             type: string
           example: "CBIS-DDSM"
-        - name: Date
+        - name: fromDate
           in: query
           description: Date in MM-DD-YYYY format to filter new studies
           required: true
@@ -2028,7 +2028,7 @@ paths:
           schema:
             type: string
           example: "CBIS-DDSM"
-        - name: Date
+        - name: fromDate
           in: query
           description: Date in MM-DD-YYYY format to filter new patients
           required: true
@@ -2654,6 +2654,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
