@@ -54,7 +54,7 @@ public class V4_getSeries extends getData {
 	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount", "TimeStamp"
 			, "LicenseName"
 			, "LicenseURI"
-			, "CollectionURI"
+			, "DataDescriptionURI"
 			, "FileSize"
       , "DateReleased"
       , "StudyDesc"

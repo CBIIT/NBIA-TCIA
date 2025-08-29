@@ -103,6 +103,8 @@ public class CollectionDescDAOImpl extends AbstractDAO
 		dto.setCollectionName(collectionName);
 
         DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
+        authorizedCollection.replaceAll(s -> s.replaceAll("//.*", "")); 
+        authorizedCollection.replaceAll(s -> s.replaceFirst("^'", ""));
         if (authorizedCollection.contains(collectionName))
         	criteria.add(Restrictions.eq("collectionName", collectionName));
         else return null;
@@ -163,8 +165,12 @@ public class CollectionDescDAOImpl extends AbstractDAO
         List<CollectionDescDTO> returnValue=new ArrayList<CollectionDescDTO>();
         DetachedCriteria criteria = DetachedCriteria.forClass(CollectionDesc.class);
         criteria.add(Restrictions.isNotNull("collectionName"));
+
+        authorizedCollection.replaceAll(s -> s.replaceAll("//.*", "")); 
+        authorizedCollection.replaceAll(s -> s.replaceFirst("^'", ""));
         if (authorizedCollection != null)
         	criteria.add(Restrictions.in("collectionName", authorizedCollection));
+
         List<CollectionDesc> collectionDescList = getHibernateTemplate().findByCriteria(criteria);
 		Map <String, String>doiMap=findCollectionNamesAndDOI(null);
 	    

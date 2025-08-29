@@ -51,21 +51,30 @@ public class GetCollectionDescriptions extends getData{
         }
     }
 
+		List<String> authCol = null;
+
+		try {
+			//userName = getUserName();
+			authCol = getAuthorizedCollections();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (collectionName==null || collectionName.equals("")){
 
 			CollectionDescDAO collectionDescDAO = (CollectionDescDAO)SpringApplicationContext.getBean("collectionDescDAO");
-			List<CollectionDescDTO> values = collectionDescDAO.findCollectionDescs();
-			return Response.ok(JSONUtil.getJSONforCollectionDecs(values)).type("application/json")
+			List<CollectionDescDTO> values = collectionDescDAO.findCollectionDescs(authCol);
+			return Response.ok(JSONUtil.getJSONforCollectionDecs_v4(values)).type("application/json")
 					.build();
 	    } else {
 	    	List<CollectionDescDTO> values = new ArrayList<CollectionDescDTO>();
 	    	CollectionDescDAO collectionDescDAO = (CollectionDescDAO)SpringApplicationContext.getBean("collectionDescDAO");
-		    CollectionDescDTO value = collectionDescDAO.findCollectionDescByCollectionName(collectionName);
+		    CollectionDescDTO value = collectionDescDAO.findCollectionDescByCollectionName(collectionName, authCol);
 		    if (value!=null){
 		    	values.add(value);
 		    }
-		  return Response.ok(JSONUtil.getJSONforCollectionDecs(values)).type("application/json")
+		  return Response.ok(JSONUtil.getJSONforCollectionDecs_v4(values)).type("application/json")
 				.build();
 	    }
 	}

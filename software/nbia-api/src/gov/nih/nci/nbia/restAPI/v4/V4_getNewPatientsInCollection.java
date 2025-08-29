@@ -39,10 +39,10 @@ public class V4_getNewPatientsInCollection extends getData{
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
 
-	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("Date") String dateFrom,
+	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("fromDate") String dateFrom,
 			@QueryParam("format") String format, @Context UriInfo uriInfo) {
 
-    Set<String> allowedParams = Set.of("Collection", "Date", "format");
+    Set<String> allowedParams = Set.of("Collection", "fromDate", "format");
     MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
 
     for (String param : queryParams.keySet()) {

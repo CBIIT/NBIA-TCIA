@@ -758,7 +758,12 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     StringBuffer where = new StringBuffer();
     String sql = "select * from (select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
       + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, ge.manufacturer, "
-      + "ge.manufacturer_model_name, ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, date_format(s.date_released, '%m-%d-%Y'), " 
+      + "ge.manufacturer_model_name, ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, " 
+      + "date_format(s.max_submission_timestamp, '%m-%d-%Y'), "
+      + "s.license_name, s.license_url, s.description_uri, "
+      + "(select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as total_size, "
+      + "date_format(s.date_released, '%m-%d-%Y'), "
+      + "s.study_desc, date_format(s.study_date, '%m-%d-%Y'), s.third_party_analysis, "
       + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) 
       + " from general_series s join general_equipment ge on s.general_equipment_pk_id = ge.general_equipment_pk_id  where s.visibility in ('1') ";
 

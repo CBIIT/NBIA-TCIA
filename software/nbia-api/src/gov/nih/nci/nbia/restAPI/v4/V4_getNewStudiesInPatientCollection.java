@@ -28,9 +28,9 @@ public class V4_getNewStudiesInPatientCollection extends getData{
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
-	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("PatientID") String patientId, @QueryParam("Date") String dateFrom, @QueryParam("format") String format, @Context UriInfo uriInfo) {
+	public Response  constructResponse(@QueryParam("Collection") String collection, @QueryParam("PatientID") String patientId, @QueryParam("fromDate") String dateFrom, @QueryParam("format") String format, @Context UriInfo uriInfo) {
 
-    Set<String> allowedParams = Set.of("Collection", "PatientID", "Date", "format");
+    Set<String> allowedParams = Set.of("Collection", "PatientID", "fromDate", "format");
     MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
 
     for (String param : queryParams.keySet()) {

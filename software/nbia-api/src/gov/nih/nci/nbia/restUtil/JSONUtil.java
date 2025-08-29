@@ -23,6 +23,9 @@ import gov.nih.nci.nbia.textsupport.PatientTextSearchResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -164,6 +167,32 @@ public class JSONUtil {
 			return("Unable to map to JSON");
 		}
 		return jsonInString;
+	}
+
+	public static String getJSONforCollectionDecs_v4(List<CollectionDescDTO> collectionDescs){
+    String jsonInString = null;
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.valueToTree(collectionDescs);
+
+    if (root.isArray()) {
+        for (JsonNode node : root) {
+            if (node.isObject()) {
+                ObjectNode obj = (ObjectNode) node;
+                obj.remove("collectionDescTimestamp");
+                obj.remove("userName");
+                obj.remove("licenseId");
+            }
+        }
+    }
+    
+    // Convert back to JSON string
+    return mapper.writeValueAsString(root);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return "Unable to map to JSON";
+    }
 	}
 	public static String getJSONforCollectionDecs(List<CollectionDescDTO> collectionDescs){
 		String jsonInString = null;

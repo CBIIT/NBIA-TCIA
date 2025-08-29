@@ -430,15 +430,18 @@ public class PatientDAOImpl extends AbstractDAO
 
 		StringBuffer whereCondition = new StringBuffer(" where UPPER(gs.series_instance_uid) in (" + queryString + ")");
 
-		String sql = "select * from (select distinct " +
+		String sql = "select " +
+      "patient_id, patient_name,  patient_sex, ethnic_group, qc_subject, species_code, species_description, study_instance_uid, study_date, study_desc, admitting_diagnoses_desc, study_id, patient_age, longitudinal_temporal_event_type, longitudinal_temporal_offset_from_event, series_instance_uid, project, site, modality, protocol_name, series_date, series_desc, body_part_examined, series_number, annotations_flag, manufacturer, manufacturer_model_name, GROUP_CONCAT(DISTINCT pixel_spacing ORDER BY pixel_spacing SEPARATOR ', ') as pixel_spacing, GROUP_CONCAT(DISTINCT slice_thickness ORDER BY slice_thickness SEPARATOR ', ') as slice_thickness, software_versions, image_count, max_submission_timestamp, license_name, license_url, description_uri,  total_size,  visibility, released_status, date_released, third_party_analysis,  authorized " +
+
+      "from (select distinct " +
 			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
 			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y') as study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
 			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
 			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y') as series_date, gs.series_desc, " +
 			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
 			"ge.manufacturer_model_name, " + 
-			"GROUP_CONCAT(DISTINCT gi.pixel_spacing ORDER BY gi.pixel_spacing SEPARATOR ', ') as pixel_spacing, " +
-      "GROUP_CONCAT(DISTINCT gi.slice_thickness ORDER BY gi.slice_thickness SEPARATOR ', ') as slice_thickness, " +
+			"gi.pixel_spacing, " +
+      "gi.slice_thickness, " +
 			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as image_count, " +
 			"date_format(gs.max_submission_timestamp, '%m-%d-%Y') as max_submission_timestamp, gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
 			"gs.visibility, gs.released_status, date_format(gs.date_released, '%m-%d-%Y') as date_released,  gs.third_party_analysis,  " +
@@ -449,18 +452,17 @@ public class PatientDAOImpl extends AbstractDAO
 			"join study s on s.study_pk_id = gs.study_pk_id " +
 			"join patient  p on p.patient_pk_id = gs.patient_pk_id " +
 			whereCondition.toString() +
+      ") subquery where authorized = 1 " +
       " group by " +
-			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
-			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
-			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
-			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
-			"ge.manufacturer_model_name, " + 
-			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
-			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
-			"gs.visibility, gs.released_status, date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
-      caseSub +
-      ") subquery where authorized = 1";
+			"patient_id, patient_name,  patient_sex, ethnic_group, qc_subject, species_code, species_description, " +
+			"study_instance_uid, study_date, study_desc, admitting_diagnoses_desc, study_id, " +
+			"patient_age, longitudinal_temporal_event_type, longitudinal_temporal_offset_from_event, " +
+			"series_instance_uid, project, site, modality, protocol_name, series_date, series_desc, " +
+			"body_part_examined, series_number, annotations_flag, manufacturer, " +
+			"manufacturer_model_name, " + 
+			"software_versions, image_count,  " +
+			"max_submission_timestamp, license_name, license_url, description_uri, total_size, " +
+			"visibility, released_status, date_released,  third_party_analysis,  authorized";
 
 		System.out.println("Executing combined query: " + sql);
     
@@ -562,38 +564,39 @@ public class PatientDAOImpl extends AbstractDAO
 		StringBuffer whereCondition = new StringBuffer(" where gs.visibility in ('1')");
 		whereCondition.append(" and UPPER(gs.series_instance_uid) in (" + queryString + ")");
 
-		String sql = "select * from (select " +
+		String sql = "select " +
+      "patient_id, patient_name,  patient_sex, ethnic_group, qc_subject, species_code, species_description, study_instance_uid, study_date, study_desc, admitting_diagnoses_desc, study_id, patient_age, longitudinal_temporal_event_type, longitudinal_temporal_offset_from_event, series_instance_uid, project, site, modality, protocol_name, series_date, series_desc, body_part_examined, series_number, annotations_flag, manufacturer, manufacturer_model_name, GROUP_CONCAT(DISTINCT pixel_spacing ORDER BY pixel_spacing SEPARATOR ', ') as pixel_spacing, GROUP_CONCAT(DISTINCT slice_thickness ORDER BY slice_thickness SEPARATOR ', ') as slice_thickness, software_versions, image_count, max_submission_timestamp, license_name, license_url, description_uri,  total_size, released_status, date_released, third_party_analysis,  authorized " +
+
+      "from (select distinct " +
 			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
 			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y') as study_date, s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
 			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
 			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y') as series_date, gs.series_desc, " +
 			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
 			"ge.manufacturer_model_name, " + 
-			"GROUP_CONCAT(DISTINCT gi.pixel_spacing ORDER BY gi.pixel_spacing SEPARATOR ', ') as pixel_spacing, " +
-      "GROUP_CONCAT(DISTINCT gi.slice_thickness ORDER BY gi.slice_thickness SEPARATOR ', ') as slice_thickness, " +
+			"gi.pixel_spacing, " +
+      "gi.slice_thickness, " +
 			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as image_count, " +
 			"date_format(gs.max_submission_timestamp, '%m-%d-%Y') as max_submission_timestamp, gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) as total_size, " +
-			" gs.released_status, date_format(gs.date_released, '%m-%d-%Y') as date_released,  gs.third_party_analysis,  " +
-      caseStatement +
+			"gs.released_status, date_format(gs.date_released, '%m-%d-%Y') as date_released,  gs.third_party_analysis,  " +
+      caseStatement  +
 			"from general_series gs " +
 			"join general_image gi on gi.general_series_pk_id = gs.general_series_pk_id " +
       "join general_equipment ge on gs.general_equipment_pk_id = ge.general_equipment_pk_id " +
 			"join study s on s.study_pk_id = gs.study_pk_id " +
 			"join patient  p on p.patient_pk_id = gs.patient_pk_id " +
 			whereCondition.toString() +
+      ") subquery where authorized = 1 " +
       " group by " +
-			"p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, p.qc_subject, p.species_code, p.species_description, " +
-			"s.study_instance_uid, date_format(s.study_date, '%m-%d-%Y'), s.study_desc, s.admitting_diagnoses_desc, s.study_id, " +
-			"s.patient_age, s.longitudinal_temporal_event_type, s.longitudinal_temporal_offset_from_event, " +
-			"gs.series_instance_uid, gs.project, gs.site, gs.modality, gs.protocol_name, date_format(gs.series_date, '%m-%d-%Y'), gs.series_desc, " +
-			"gs.body_part_examined, gs.series_number, gs.annotations_flag, ge.manufacturer, " +
-			"ge.manufacturer_model_name, " + 
-			"ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
-			"date_format(gs.max_submission_timestamp, '%m-%d-%Y'), gs.license_name, gs.license_url, gs.description_uri, (select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = gs.general_series_pk_id) , " +
-			"gs.released_status, date_format(gs.date_released, '%m-%d-%Y'),  gs.third_party_analysis,  " +
-      caseSub +
-
-      ") subquery where authorized = 1";
+			"patient_id, patient_name,  patient_sex, ethnic_group, qc_subject, species_code, species_description, " +
+			"study_instance_uid, study_date, study_desc, admitting_diagnoses_desc, study_id, " +
+			"patient_age, longitudinal_temporal_event_type, longitudinal_temporal_offset_from_event, " +
+			"series_instance_uid, project, site, modality, protocol_name, series_date, series_desc, " +
+			"body_part_examined, series_number, annotations_flag, manufacturer, " +
+			"manufacturer_model_name, " + 
+			"software_versions, image_count,  " +
+			"max_submission_timestamp, license_name, license_url, description_uri, total_size, " +
+			"released_status, date_released,  third_party_analysis,  authorized";
 
 		System.out.println("Executing combined query: " + sql);
     

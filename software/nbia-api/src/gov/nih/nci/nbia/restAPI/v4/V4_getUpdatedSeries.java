@@ -52,7 +52,16 @@ import java.util.Set;
 
 @Path("/v4/getUpdatedSeries")
 public class V4_getUpdatedSeries extends getData {
-	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount", "DateReleased"};
+	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount", "TimeStamp"
+			, "LicenseName"
+			, "LicenseURI"
+			, "DataDescriptionURI"
+			, "FileSize"
+      , "DateReleased"
+      , "StudyDesc"
+      , "StudyDate"
+      , "ThirdPartyAnalysis"
+      , "Authorized"};
 	public final static String TEXT_CSV = "text/csv";
 
 	@Context private HttpServletRequest httpRequest;
