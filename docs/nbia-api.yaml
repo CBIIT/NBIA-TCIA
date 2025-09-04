@@ -422,7 +422,7 @@ paths:
                 patientIDs:
                   type: string
                   description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
-                  example: ISPY1_1001
+                  default: ISPY1_1001
                 studyUIDs:
                   type: string
                   description: Comma-separated studyInstanceUIDs (optional)
@@ -506,6 +506,7 @@ paths:
                 list:
                   type: string
                   description: Comma-separated list of series UIDs for each series you want to download
+                  default: 1.3.6.1.4.1.14519.5.2.1.6834.5010.100089621274100103247029607723
                 includeAnnotation:
                   type: string
                   enum: [true, false]
@@ -2655,6 +2656,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
