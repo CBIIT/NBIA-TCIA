@@ -1354,7 +1354,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "Mass-Training_P_00001"
+          example: "Mass-Training_P_01009_RIGHT_CC_1"
         - name: Collection
           in: query
           description: Name of the collection to retrieve patients from
@@ -2656,6 +2656,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
