@@ -1513,7 +1513,7 @@ paths:
     get:
       summary: Retrieve updated series in a collection since a specified date.
       description: |
-        Returns a list of SeriesInstanceUIDs for imaging series in a given collection that have been updated on or after the specified date.
+        Returns imaging series in a given collection that have been updated on or after the specified date.
         
         **Example call:**
         ```bash
@@ -1539,7 +1539,7 @@ paths:
           description: Desired response format (json, xml, or csv)
       responses:
         '200':
-          description: Successful response with updated SeriesInstanceUIDs
+          description: Successful response with updated series information.
           content:
             application/json:
               schema:
@@ -1547,9 +1547,32 @@ paths:
                 items:
                   type: string
                   description: DICOM Tag (0020,000E) – Unique identifier for a DICOM series
-              example:
-                - "1.3.6.1.4.1.14519.5.2.1.7695.1700.121164861481441093151316977794"
-                - "1.3.6.1.4.1.14519.5.2.1.7695.1700.520396403274327587353342330294"
+              example: |
+                {
+                  "SeriesInstanceUID": "1.3.6.1.4.1.14519.5.2.1.7695.2311.498163603405178114978583022189",
+                  "StudyInstanceUID": "1.3.6.1.4.1.14519.5.2.1.7695.2311.655527230305113320929910807554",
+                  "Modality": "MR",
+                  "SeriesDate": "06-19-1990",
+                  "SeriesDescription": "Sagittal-IR_3DFGRE",
+                  "BodyPartExamined": "BREAST",
+                  "SeriesNumber": 5,
+                  "Collection": "Breast-MRI-NACT-Pilot",
+                  "PatientID": "UCSF-BR-45",
+                  "Manufacturer": "GE MEDICAL SYSTEMS",
+                  "ManufacturerModelName": "GENESIS_SIGNA",
+                  "SoftwareVersions": "07",
+                  "ImageCount": 180,
+                  "TimeStamp": "08-04-2023",
+                  "LicenseName": "Creative Commons Attribution 3.0 Unported License",
+                  "LicenseURI": "http://creativecommons.org/licenses/by/3.0/",
+                  "DataDescriptionURI": "https://doi.org/10.7937/K9/TCIA.2016.QHSYHJKY",
+                  "FileSize": 24380256,
+                  "DateReleased": "08-07-2023",
+                  "StudyDesc": "MR BREAST",
+                  "StudyDate": "06-19-1990",
+                  "ThirdPartyAnalysis": "NO",
+                  "Authorized": 1
+                }
             text/plain:
               schema:
                 type: string
@@ -2656,6 +2679,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
