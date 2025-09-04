@@ -2146,14 +2146,13 @@ paths:
           required: false
           schema:
             type: string
-          example: "TCGA-GBM"
+          example: "4D-Lung"
         - name: BodyPartExamined
           in: query
           description: Filter results by body part examined
           required: false
           schema:
             type: string
-          example: "BRAIN"
         - name: format
           in: query
           description: Desired response format (json, xml, csv)
@@ -2678,6 +2677,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
