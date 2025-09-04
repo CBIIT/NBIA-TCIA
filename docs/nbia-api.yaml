@@ -1447,7 +1447,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "1.3.6.1.4.1.30072.1.1.282583578114131492523999238318859942663"
+          example: "1215936303"
         - name: StudyInstanceUID
           in: query
           description: DICOM Tag (0020,000D) – Unique identifier for the study
@@ -2656,6 +2656,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
