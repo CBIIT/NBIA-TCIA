@@ -317,19 +317,16 @@ paths:
                 SeriesInstanceUID:
                   type: string
                   description: The series UID to generate a hash from.
-                  example: "1.3.6.1.4.1.14519.5.2.1.1600.1201.118372230250017912588165730372"
                 StudyInstanceUID:
                   type: string
                   description: The study UID to generate a hash from.
-                  example: "1.3.6.1.4.1.14519.5.2.1.1600.1201.238264055930002373254453629668"
                 PatientID:
                   type: string
                   description: The patient ID to generate a hash from.
-                  example: "CMB-CRC-MSB-01068"
                 Collection:
                   type: string
                   description: The collection name to generate a hash from.
-                  example: "CMB-CRC"
+                  example: "4D-Lung"
       responses:
         '200':
           description: MD5 hash generated successfully.
@@ -2681,6 +2678,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
