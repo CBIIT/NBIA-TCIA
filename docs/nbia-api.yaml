@@ -422,6 +422,7 @@ paths:
                 patientIDs:
                   type: string
                   description: Comma-separated patient IDs. (e.g. ISPY1_1001,ISPY1_1002)
+                  example: ISPY1_1001
                 studyUIDs:
                   type: string
                   description: Comma-separated studyInstanceUIDs (optional)
@@ -2654,6 +2655,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
