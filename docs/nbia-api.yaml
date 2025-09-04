@@ -586,7 +586,6 @@ paths:
                 value0:
                   type: string
                   description: Value to match for the specified criteriaType0
-                  default: "4D-Lung"
                 sortField:
                   type: string
                   description: Field to sort results by (e.g., subject, collection)
@@ -2657,6 +2656,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
