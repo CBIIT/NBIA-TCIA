@@ -1276,14 +1276,14 @@ paths:
           required: false
           schema:
             type: string
-          example: "TCGA-HNSC"
+          example: "4D-Lung"
         - name: Modality
           in: query
           required: false
           schema:
             type: string
             enum: [CR, CT, DX, FUSION, KO, MG, MR, OT, NM, PR, PT, REG, RF, RTDOSE, RTPLAN, RTSTRUCT, RWV, SEG, SC, SR, US, XA]
-          example: "PT"
+          example: "CT"
       responses:
         '200':
           description: Successful response with body part counts
@@ -2656,6 +2656,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
