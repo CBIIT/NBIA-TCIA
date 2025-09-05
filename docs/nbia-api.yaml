@@ -317,12 +317,15 @@ paths:
                 SeriesInstanceUID:
                   type: string
                   description: The series UID to generate a hash from.
+                  default: ""
                 StudyInstanceUID:
                   type: string
                   description: The study UID to generate a hash from.
+                  default: ""
                 PatientID:
                   type: string
                   description: The patient ID to generate a hash from.
+                  default: ""
                 Collection:
                   type: string
                   description: The collection name to generate a hash from.
@@ -2677,6 +2680,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
