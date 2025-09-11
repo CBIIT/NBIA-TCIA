@@ -906,6 +906,7 @@ paths:
                 DOI:
                   type: string
                   description: Digital Object Identifier (DOI) to resolve
+                  default: "https://doi.org/10.7937/K9/TCIA.2016.ELN8YGLE"
                 CollectionOrSeries:
                   type: string
                   enum: [collection, series]
@@ -2680,6 +2681,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
