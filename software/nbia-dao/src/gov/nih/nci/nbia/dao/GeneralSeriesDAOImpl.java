@@ -2048,9 +2048,9 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
     params.put("doi", doi);
   }
   if (forSeries) {
-    sqlString += " group by project, third_party_analysis, series_instance_uid ";
+    sqlString += " group by project, site, third_party_analysis, series_instance_uid ";
 
-  sqlString += " ) subquery where authorized = 1";
+    sqlString += " ) subquery where authorized = 1 group by project, third_party_analysis, series_instance_uid ";
 
     // Create the query and set parameters in one go
 
@@ -2085,7 +2085,8 @@ public List<DOIDTO> getCollectionOrSeriesForDOI_v4(String doi, String collection
       returnValue.add(dto);
     } 
   } else {
-    sqlString += " group by project, third_party_analysis ";
+    sqlString += " group by project, site, third_party_analysis ";
+    sqlString += " ) subquery where authorized = 1 group by project, third_party_analysis";
 
     // Create the query and set parameters in one go
 
