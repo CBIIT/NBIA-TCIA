@@ -51,11 +51,12 @@ import java.util.Set;
 
 @Path("/v4/getSeries")
 public class V4_getSeries extends getData {
-	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "PatientID", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount", "TimeStamp"
+	private static final String[] columns={"SeriesInstanceUID", "StudyInstanceUID", "Modality", "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", "AnnotationsFlag", "Collection", "Site", "PatientID", "PatientSex", "PatientAge", "AdmittingDiagnosisDescription", "Manufacturer", "ManufacturerModelName", "SoftwareVersions", "ImageCount", "MaxSubmissionTimestamp"
 			, "LicenseName"
 			, "LicenseURI"
 			, "DataDescriptionURI"
 			, "FileSize"
+      , "ReleasedStatus"
       , "DateReleased"
       , "StudyDesc"
       , "StudyDate"

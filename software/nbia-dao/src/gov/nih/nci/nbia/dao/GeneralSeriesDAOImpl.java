@@ -526,12 +526,16 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     StringBuffer where = new StringBuffer();
     List<Object[]> rs = null;
     String sql = "select * from (select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
-      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, e.manufacturer, "
+      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.site, s.patient_id, "
+      + "s.patient_sex, s.patient_age, "
+      + "s.admitting_diagnoses_desc, "
+      + "e.manufacturer, "
       + "e.manufacturer_model_name, e.software_versions, "
       + "(select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, "
       + "date_format(s.max_submission_timestamp, '%m-%d-%Y'), "
       + "s.license_name, s.license_url, s.description_uri, "
       + "(select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as total_size, "
+      + "s.released_status, "
       + "date_format(s.date_released, '%m-%d-%Y'), "
       + "s.study_desc, date_format(s.study_date, '%m-%d-%Y'), s.third_party_analysis, "
       + addAuthorizedProjAndSitesCaseStatement(authCol) 
@@ -757,11 +761,15 @@ public class GeneralSeriesDAOImpl extends AbstractDAO implements GeneralSeriesDA
     } 
     StringBuffer where = new StringBuffer();
     String sql = "select * from (select s.series_instance_uid, s.study_instance_uid, s.modality, s.protocol_name, date_format(s.series_date, '%m-%d-%Y'), s.series_desc, "
-      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.patient_id, ge.manufacturer, "
+      + "s.body_part_examined, s.series_number, s.annotations_flag, s.project, s.site, s.patient_id, "
+      + "s.patient_sex, s.patient_age, "
+      + "s.admitting_diagnoses_desc, "
+      + "ge.manufacturer, "
       + "ge.manufacturer_model_name, ge.software_versions, (select count(*) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as image_count, " 
       + "date_format(s.max_submission_timestamp, '%m-%d-%Y'), "
       + "s.license_name, s.license_url, s.description_uri, "
       + "(select sum(gi.dicom_size) from general_image gi where gi.general_series_pk_id = s.general_series_pk_id) as total_size, "
+      + "s.released_status, "
       + "date_format(s.date_released, '%m-%d-%Y'), "
       + "s.study_desc, date_format(s.study_date, '%m-%d-%Y'), s.third_party_analysis, "
       + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) 

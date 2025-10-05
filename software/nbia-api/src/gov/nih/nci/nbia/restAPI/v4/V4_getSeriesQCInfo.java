@@ -22,15 +22,15 @@ import gov.nih.nci.nbia.util.SpringApplicationContext;
 @Path("/v4/getSeriesQCInfo")
 public class V4_getSeriesQCInfo extends getData {
 	private static final String[] columns = {
-            "Patient ID", "Patient Name",  "Patient Sex", "Ethnic Group", "Phantom", 
-            "Species Code", "Species Description", "Study Instance UID", "Study Date", "Study Description", 
-            "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
-            "Longitudinal Temporal Offset From Event", "Series Instance UID", "Collection", "Site", "Modality", 
-            "Protocol Name", "Series Date", "Series Description", "Body Part Examined", "Series Number", 
-            "Annotations Flag", "Manufacturer", "Manufacturer Model Name", 
-            "Pixel Spacing(mm)- Row", "Slice Thickness(mm)",
-            "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Data Description URI", 
-            "File Size", "Visibility", "Released Status", "Date Released", "Third Party Analysis", "Authorized"
+            "PatientID", "PatientName",  "PatientSex", "EthnicGroup", "Phantom", 
+            "SpeciesCode", "SpeciesDescription", "StudyInstanceUID", "StudyDate", "StudyDesc", 
+            "AdmittingDiagnosisDescription", "StudyID", "PatientAge", "LongitudinalTemporalEventType", 
+            "LongitudinalTemporalOffsetFromEvent", "SeriesInstanceUID", "Collection", "Site", "Modality", 
+            "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", 
+            "AnnotationsFlag", "Manufacturer", "ManufacturerModelName", 
+            "PixelSpacing(mm)-Row", "SliceThickness(mm)",
+            "SoftwareVersions", "ImageCount", "MaxSubmissionTimestamp", "LicenseName", "LicenseURI", "DataDescriptionURI", 
+            "FileSize", "Visibility", "ReleasedStatus", "DateReleased", "ThirdPartyAnalysis", "Authorized"
   };
 
 	public final static String TEXT_CSV = "text/csv"; 

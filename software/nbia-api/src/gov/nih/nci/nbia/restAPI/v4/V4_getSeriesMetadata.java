@@ -21,9 +21,9 @@ public class V4_getSeriesMetadata extends getData {
     public final static String TEXT_CSV = "text/csv";
 
     @POST
-    @Produces(TEXT_CSV)
+	  @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, TEXT_CSV})
     public Response constructResponse(
-            @FormParam("list") List<String> seriesInstanceUIDs) {
+            @FormParam("list") List<String> seriesInstanceUIDs, @FormParam("format") String format) {
 
         if (seriesInstanceUIDs == null || seriesInstanceUIDs.isEmpty()) {
             return Response.status(Status.BAD_REQUEST)
@@ -54,17 +54,20 @@ public class V4_getSeriesMetadata extends getData {
 
         // Use the columns defined in getSeriesMetadata3
         String[] columns = {
-            "Patient ID", "Patient Name",  "Patient Sex", "Ethnic Group", "Phantom", 
-            "Species Code", "Species Description", "Study Instance UID", "Study Date", "Study Description", 
-            "Admitting Diagnosis Description", "Study ID", "Patient Age", "Longitudinal Temporal Event Type", 
-            "Longitudinal Temporal Offset From Event", "Series Instance UID", "Collection", "Site", "Modality", 
-            "Protocol Name", "Series Date", "Series Description", "Body Part Examined", "Series Number", 
-            "Annotations Flag", "Manufacturer", "Manufacturer Model Name", 
-            "Pixel Spacing(mm)- Row","Slice Thickness(mm)",
-            "Software Versions", "Image Count", "Max Submission Timestamp", "License Name", "License URI", "Data Description URI", 
-            "File Size", "Released Status", "Date Released", "Third Party Analysis", "Authorized"
+            "PatientID", "PatientName",  "PatientSex", "EthnicGroup", "Phantom", 
+            "SpeciesCode", "SpeciesDescription", "StudyInstanceUID", "StudyDate", "StudyDesc", 
+            "AdmittingDiagnosisDescription", "StudyID", "PatientAge", "LongitudinalTemporalEventType", 
+            "LongitudinalTemporalOffsetFromEvent", "SeriesInstanceUID", "Collection", "Site", "Modality", 
+            "ProtocolName", "SeriesDate", "SeriesDescription", "BodyPartExamined", "SeriesNumber", 
+            "AnnotationsFlag", "Manufacturer", "ManufacturerModelName", 
+            "PixelSpacing(mm)-Row","SliceThickness(mm)",
+            "SoftwareVersions", "ImageCount", "MaxSubmissionTimestamp", "LicenseName", "LicenseURI", "DataDescriptionURI", 
+            "FileSize", "ReleasedStatus", "DateReleased", "ThirdPartyAnalysis", "Authorized"
         };
 
-        return formatResponse("CSV-DOWNLOAD", results, columns);
+        if (format.equalsIgnoreCase("CSV")) {
+          format = "CSV-DOWNLOAD";
+        }
+        return formatResponse(format, results, columns);
     }
 }
