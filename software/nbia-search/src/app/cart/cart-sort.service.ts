@@ -263,9 +263,13 @@ export class CartSortService {
      */
     seriesDescriptionSort(cartList, order) {
         let multiplier = (order === this.State.DOWN) ? -1 : 1;
-        cartList.sort((row1, row2) => row1.description.localeCompare(row2.description) * multiplier);
-
+        cartList.sort((row1, row2) => {
+            const desc1 = row1.description || "";
+            const desc2 = row2.description || "";
+            return desc1.localeCompare(desc2) * multiplier;
+        });
     }
+
 
     /**
      *
