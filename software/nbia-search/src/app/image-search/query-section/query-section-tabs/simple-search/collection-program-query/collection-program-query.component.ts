@@ -469,8 +469,9 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
             takeUntil(this.ngUnsubscribe),
             catchError(err => {
                 console.error('Error fetching tcia program values:', err);
+                this.completeTciaProgramListHold = [];
+                this.initTciaProgramList();
                 this.loadingDisplayService.setLoading(false, 'Failed to load data');
-                reject(err);
                 return [];
             })
         ).subscribe(data => {
