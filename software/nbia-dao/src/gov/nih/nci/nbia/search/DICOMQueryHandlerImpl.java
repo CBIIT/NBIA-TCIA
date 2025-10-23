@@ -346,8 +346,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
                     }
                   }
                   if (ids.length>8&&ids[8]!=null) {
-                    System.out.println(ids[8]);
-                    System.out.println(Integer.parseInt(ids[8]));
+                    //System.out.println(ids[8]);
+                    //System.out.println(Integer.parseInt(ids[8]));
                     prs.setAuthorized(Integer.parseInt(ids[8]));
                   }
 	                patientList.add(prs);
