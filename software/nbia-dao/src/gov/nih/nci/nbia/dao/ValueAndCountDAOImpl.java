@@ -180,11 +180,11 @@ public class ValueAndCountDAOImpl extends AbstractDAO
 	@Transactional(propagation=Propagation.REQUIRED)
     private List<Object[]> collectionQuery_v4(ValuesAndCountsCriteria criteria){
     	List<ValuesAndCountsDTO> returnValue=new ArrayList<ValuesAndCountsDTO>();
-	    String SQLQuery ="select project, sum(thecount) thecount, authorized from (select dp.project, count(distinct p.patient_pk_id) thecount, "  
+	    String SQLQuery ="select project, count(distinct(thepatients)) thecount, authorized from (select dp.project, p.patient_pk_id thepatients, "  
       + processAuthorizationCaseStatement(criteria.getAuth())
       + " from patient p, trial_data_provenance dp, general_series gs " 
 			+ "where p.trial_dp_pk_id=dp.trial_dp_pk_id  and gs.patient_pk_id=p.patient_pk_id "
-      +" and VISIBILITY in ('1') group by dp.project, gs.site) subquery where authorized = 1 group by project";
+      +" and VISIBILITY in ('1') group by dp.project, gs.site, gs.patient_pk_id) subquery where authorized = 1 group by project";
 
 
 		List<Object[]> data= this.getHibernateTemplate().getSessionFactory().getCurrentSession().createSQLQuery(SQLQuery)

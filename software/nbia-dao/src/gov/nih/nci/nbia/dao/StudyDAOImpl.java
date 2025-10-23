@@ -112,7 +112,7 @@ public class StudyDAOImpl extends AbstractDAO
         	Object[] row = iter.next();
 
             // Create the seriesDTO
-        	System.out.println("in series dto");
+        	  //System.out.println("in series dto");
             SeriesDTO seriesDTO = new SeriesDTO();
             //modality should never be null... but currently possible
             seriesDTO.setModality(Util.nullSafeString(row[8]));
