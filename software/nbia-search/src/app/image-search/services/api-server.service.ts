@@ -458,6 +458,7 @@ export class ApiServerService implements OnDestroy {
             if (this.getImageModalityAllOrAny() === 'All')  // FIXME make a constant
             {
                 searchQuery += '&' + 'criteriaType' + this.queryBuilderIndex + '=ModalityAndedSearchCriteria&value' + this.queryBuilderIndex + '=all';
+                this.queryBuilderIndex++;
             }
         }
 
