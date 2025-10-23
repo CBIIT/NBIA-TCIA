@@ -65,7 +65,7 @@ public class V4_getSeriesMetadata extends getData {
             "FileSize", "ReleasedStatus", "DateReleased", "ThirdPartyAnalysis", "Authorized"
         };
 
-        if (format.equalsIgnoreCase("CSV")) {
+        if (format == null || format.equalsIgnoreCase("CSV")) {
           format = "CSV-DOWNLOAD";
         }
         return formatResponse(format, results, columns);

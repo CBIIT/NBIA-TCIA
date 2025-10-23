@@ -56,7 +56,7 @@ export class QcSeriesReportComponent implements OnInit, OnDestroy{
                         }else{
                             query += '&seriesId=';
                         }
-                        query += series['Series Instance UID'];
+                        query += series['SeriesInstanceUID'];
                 }
 				query +='&format=csv';
 
