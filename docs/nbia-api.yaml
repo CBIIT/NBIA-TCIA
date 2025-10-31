@@ -102,7 +102,7 @@ paths:
 
         **Example curl command:**
         ```bash
-        curl -X POST -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesTax"
+        curl -X GET -H "Content-Type: application/json" -k "https://nbia.cancerimagingarchive.net/nbia-api/services/v4/getSpeciesTax"
         ```
       tags:
         - Utilities
@@ -2681,6 +2681,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
