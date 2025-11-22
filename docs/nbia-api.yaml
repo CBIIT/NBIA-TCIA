@@ -2241,6 +2241,17 @@ paths:
             type: string
             enum: [Yes, No]
           example: "Yes"
+
+        - name: IncludeMD5
+          in: query
+          required: false
+          description: |
+            If set to `'Yes'`, a file will be included with the filename/MD5 hash pairing.
+            If omitted or set to `'No'`, the MD5 mapping file will not be included
+          schema:
+            type: string
+            enum: [Yes, No]
+          example: "Yes"
             
       responses:
         '200':
@@ -2692,6 +2703,7 @@ paths:
           description: Unauthorized access
         '500':
           description: Internal server error
+
 
 
 
