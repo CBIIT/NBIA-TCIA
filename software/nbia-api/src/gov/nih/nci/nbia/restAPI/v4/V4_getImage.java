@@ -3,17 +3,20 @@
 package gov.nih.nci.nbia.restAPI.v4;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.util.ArrayList;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -40,6 +43,7 @@ import gov.nih.nci.nbia.dao.GeneralSeriesDAO;
 import gov.nih.nci.nbia.dao.ImageDAO2;
 import gov.nih.nci.nbia.dto.ImageDTO2;
 import gov.nih.nci.nbia.util.SpringApplicationContext;
+import gov.nih.nci.nbia.restUtil.FormatOutput;
 
 
 @Path("/v4/getImage")
@@ -54,9 +58,10 @@ public class V4_getImage extends getData {
 	@GET
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response constructResponse(@QueryParam("SeriesInstanceUID") String seriesInstanceUid,
-			@QueryParam("NewFileNames") String newFileNames, @Context UriInfo uriInfo) throws IOException {
+			@QueryParam("NewFileNames") String newFileNames, 
+      @QueryParam("IncludeMD5") String includeHash, @Context UriInfo uriInfo) throws IOException {
 
-    Set<String> allowedParams = Set.of("SeriesInstanceUID", "NewFileNames");
+    Set<String> allowedParams = Set.of("SeriesInstanceUID", "NewFileNames", "IncludeMD5");
     MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
 
     for (String param : queryParams.keySet()) {
@@ -107,7 +112,7 @@ public class V4_getImage extends getData {
 				try {
 //					Timestamp qbtimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Begining of querying the file name list--" + sdf.format(qbtimestamp));
-					List<String> fileNames = getImage(sid);
+					List<Object[]> fileNamesAndHash = getImage_v4(sid);
 //					Timestamp qetimestamp = new Timestamp(System.currentTimeMillis());
 //					System.out.println("Done with querying the file name list and start to zip and stram--"
 //							+ sdf.format(qetimestamp));
@@ -115,7 +120,10 @@ public class V4_getImage extends getData {
 					zip.putNextEntry(new ZipEntry("LICENSE"));
 					IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 					zip.closeEntry();
-					for (String filename : fileNames) {
+          Map<String,String> fileMD5Map = new HashMap<String,String>();
+					for (Object[] row : fileNamesAndHash ) {
+            String filename = row[0].toString();
+            String hash = row[1].toString();
 						File afile = new File(filename);
 						in = new FileInputStream(afile);
 						size +=  afile.length();
@@ -125,6 +133,7 @@ public class V4_getImage extends getData {
 							String fileNameInZip = String.format("%08d", ++counter)
 									+ filename.substring(filename.lastIndexOf("."));
 							zip.putNextEntry(new ZipEntry(fileNameInZip));
+              fileMD5Map.put(fileNameInZip, hash);
 
 							// Write file into zip
 							IOUtils.copy(in, zip);
@@ -133,6 +142,24 @@ public class V4_getImage extends getData {
 						}
 						numberOfFiles = counter;
 					}
+		      if (includeHash.equalsIgnoreCase("yes")) {
+            String[] columns={"Filename","MD5Hash"};
+            int i=0;
+            List <Object[]>data = new ArrayList<Object[]>();
+            for (Map.Entry<String, String> entry : fileMD5Map.entrySet()) {
+                Object[] row = new Object[2];
+                row[0]=entry.getKey();
+                row[1]=entry.getValue();
+                data.add(row);
+                i++;
+            }
+            String csvString=FormatOutput.toCsv(columns, data);
+                InputStream inputStream = new ByteArrayInputStream(csvString.getBytes(Charset.forName("UTF-8")));
+                zip.putNextEntry(new ZipEntry("md5hashes.csv"));
+            IOUtils.copy(inputStream, zip);
+            zip.closeEntry();
+            in.close();
+          }
 
 					zip.close();
 //					Timestamp zetimestamp = new Timestamp(System.currentTimeMillis());
@@ -179,13 +206,18 @@ public class V4_getImage extends getData {
 				InputStream in = null;
 				long size = 0;
 				int numberOfFiles = 0;						
+				String collectionName = null;				
 				zip.putNextEntry(new ZipEntry("LICENSE"));
 				IOUtils.copy(IOUtils.toInputStream(fileContents), zip);
 				zip.closeEntry();
 				try {
 					ImageDAO2 imageDAO = (ImageDAO2) SpringApplicationContext.getBean("imageDAO2");
 					List<ImageDTO2> imageResults = imageDAO.findImagesBySeriesUid(seriesInstanceUid);
+          Map<String,String> fileMD5Map = new HashMap<String,String>();
 					for (ImageDTO2 imageResult : imageResults) {
+            collectionName = imageResult.getProject();
+            String filename= imageResult.getFileName();
+
 						File afile = new File(imageResult.getFileName());
 						in = new FileInputStream(afile);
 						size +=  afile.length();
@@ -197,6 +229,8 @@ public class V4_getImage extends getData {
 							newFileName=newFileName.substring(pos+1);
 							zip.putNextEntry(new ZipEntry(newFileName));
 
+              fileMD5Map.put(newFileName, imageResult.getMd5Digest());
+
 							// Write file into zip
 							IOUtils.copy(in, zip);
 							zip.closeEntry();
@@ -204,6 +238,25 @@ public class V4_getImage extends getData {
 							++numberOfFiles;
 						}
 					}
+
+		      if (includeHash.equalsIgnoreCase("yes")) {
+            String[] columns={"Filename","MD5Hash"};
+            int i=0;
+            List <Object[]>data = new ArrayList<Object[]>();
+            for (Map.Entry<String, String> entry : fileMD5Map.entrySet()) {
+                Object[] row = new Object[2];
+                row[0]=entry.getKey();
+                row[1]=entry.getValue();
+                data.add(row);
+                i++;
+            }
+            String csvString=FormatOutput.toCsv(columns, data);
+                InputStream inputStream = new ByteArrayInputStream(csvString.getBytes(Charset.forName("UTF-8")));
+                zip.putNextEntry(new ZipEntry("md5hashes.csv"));
+            IOUtils.copy(inputStream, zip);
+            zip.closeEntry();
+            in.close();
+          }
 
 					zip.close();
 //					Timestamp zetimestamp = new Timestamp(System.currentTimeMillis());

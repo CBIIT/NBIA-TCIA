@@ -265,6 +265,27 @@ public class ImageDAO2Impl extends AbstractDAO
 	 * @param seriesInstanceUid series instance UID
 	 */
 	@Transactional(propagation=Propagation.REQUIRED)	
+	public List<Object[]> getImage_v4(String seriesInstanceUid) throws DataAccessException {
+		String hql = "select gi.filename, gi.md5Digest "
+				+ "from  GeneralImage gi "
+				+ "where gi.generalSeries.visibility in ('1')"
+				+ " and gi.seriesInstanceUID = ? ";
+		
+		//System.out.println("===== In nbia-dao, ImageDAO2Impl:getImage(..) - hql statement call with where visibility in ('1'): " + hql);
+
+    List<Object[]> rs = (List<Object[]>) getHibernateTemplate().find(hql, seriesInstanceUid);
+    for (Object[] row : rs) {
+        String col1 = (String) row[0];
+        String col2 = (String) row[1];
+    }
+    return rs;
+	}
+	/**
+	 * Fetch set of list of file path/name for given the series instance uid
+	 * This method is used for NBIA Rest API.
+	 * @param seriesInstanceUid series instance UID
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)	
 	public List<String> getImage(String seriesInstanceUid) throws DataAccessException {
 		String hql = "select gi.filename "
 				+ "from  GeneralImage gi "

@@ -34,6 +34,7 @@ public interface ImageDAO2 {
     public List<String []> getImageNamesBySeriesUid(String seriesUid) throws DataAccessException;
     
     public List<String> getImage(String seriesInstanceUid) throws DataAccessException;
+    public List<Object[]> getImage_v4(String seriesInstanceUid) throws DataAccessException;
     public String getImage(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;	
     public String getLicenseContent(String seriesInstanceUID);
 	public List<MD5DTO>  getImageAndMD5Hash(String sopInstanceUid, List<SiteData> siteDataList ) throws DataAccessException;

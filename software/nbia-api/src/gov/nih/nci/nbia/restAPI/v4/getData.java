@@ -602,6 +602,18 @@ public class getData {
 		}
 		return results;
 	}
+	protected List<Object[]> getImage_v4(String seriesInstanceUid) {
+		List<Object[]> results = null;
+
+		ImageDAO2 tDao = (ImageDAO2)SpringApplicationContext.getBean("imageDAO2");
+		try {
+			results = tDao.getImage_v4(seriesInstanceUid);
+		}
+		catch (DataAccessException ex) {
+			ex.printStackTrace();
+		}
+		return (List<Object[]>) results;
+	}
 	protected List<String> getImage(String seriesInstanceUid) {
 		List<String> results = null;
 
