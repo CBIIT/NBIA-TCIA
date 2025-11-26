@@ -82,7 +82,11 @@ export class SubjectStudyDetailsComponent implements OnInit, OnDestroy{
                     // When we have all of them set resultsArray.
                     if( this.tempResultsArray.length === this.studyCount ){
                         // Sort by date
-                        this.tempResultsArray.sort( ( row1, row2 ) => row1.date - row2.date );
+                        this.tempResultsArray.sort((row1, row2) => {
+                          const [m1, d1, y1] = row1.date.split('-').map(Number);
+                          const [m2, d2, y2] = row2.date.split('-').map(Number);
+                          return new Date(y1, m1 - 1, d1).getTime() - new Date(y2, m2 - 1, d2).getTime();
+                        });
                         this.resultsArray = this.tempResultsArray;
                         // TODO - We don't really need this if we are using "loadingDisplayService.setLoading"
                         this.busy = false;
