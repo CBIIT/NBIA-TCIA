@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.15",
-    "@angular/cli": "^18.2.15",
+    "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^18.2.13",
     "@angular/language-service": "^18.2.13",
     "@types/node": "^12.11.1",
