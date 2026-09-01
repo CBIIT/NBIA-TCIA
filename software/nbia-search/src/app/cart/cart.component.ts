@@ -609,6 +609,12 @@ export class CartComponent implements OnInit, OnDestroy{
         //let len = this.cart.length;
         this.allDisabled = true;
         //     
+
+        for( let f = 0; f < this.seriesListForDisplay.length; f++ ){
+            this.dicomDataShowQ[f] = false;
+            this.haveDicomData[f] = false;
+        }
+
         if (!this.cart || this.cart.length === 0) return; // Handle empty cart case
 
 
