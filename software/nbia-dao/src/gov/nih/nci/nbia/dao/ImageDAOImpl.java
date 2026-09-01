@@ -71,7 +71,7 @@ public class ImageDAOImpl extends AbstractDAO
             dtos.add(imageSecurityDTO);
         }
         
-     System.out.println("===== In nbia-dao, ImageDAOImpl:findImageSecurityBySeriesInstanceUID(..) - create ImageSecurityDTO obj with gi.getGeneralSeries().getVisibility().equals 1");
+     //System.out.println("===== In nbia-dao, ImageDAOImpl:findImageSecurityBySeriesInstanceUID(..) - create ImageSecurityDTO obj with gi.getGeneralSeries().getVisibility().equals 1");
         
         return dtos;
     }
@@ -136,7 +136,7 @@ public class ImageDAOImpl extends AbstractDAO
         	        		                                                 seriesVisibility.equals("1"),
         	        		                                                 fn);
         	   
-        	     System.out.println("===== In nbia-dao, ImageDAOImpl:findImageSecurity(..) - doInHibernate method, I passed in: seriesVisibility.equals 1");	        
+        	     //System.out.println("===== In nbia-dao, ImageDAOImpl:findImageSecurity(..) - doInHibernate method, I passed in: seriesVisibility.equals 1");	        
         	        
         	        return imageSecurityDTO;
                 }

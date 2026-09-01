@@ -81,10 +81,10 @@ public class QcStatusDAOImpl extends AbstractDAO
 
 		String hql = selectStmt + fromStmt + whereStmt;
 
-		System.out.println("In QcStatusDAOImpl:findSeries(...) with additional qc values: " 
-	        		+ "Batch = '" + additionalQcFlagList[0] + "', submissionType = '" + additionalQcFlagList[1] + "', releasedStatus = '"  + additionalQcFlagList[2] + "'");
+		//System.out.println("In QcStatusDAOImpl:findSeries(...) with additional qc values: " 
+	  //      		+ "Batch = '" + additionalQcFlagList[0] + "', submissionType = '" + additionalQcFlagList[1] + "', releasedStatus = '"  + additionalQcFlagList[2] + "'");
 	    
-		System.out.println("\n In QcStatusDAOImpl:findSeries(...) with hibernate hql query = " + hql + "\n");
+		//System.out.println("\n In QcStatusDAOImpl:findSeries(...) with hibernate hql query = " + hql + "\n");
 		
 //		List<Object[]> searchResults = getHibernateTemplate().find(hql);
 
@@ -183,14 +183,14 @@ public class QcStatusDAOImpl extends AbstractDAO
         Map<String, Object> parameters=new HashMap<String, Object>();
 	    for (Map.Entry<String, QCSearchCriteria> entry : criteria.entrySet()) {
 	    	   String andStmt="";
-		       System.out.println(entry.getKey() + ":" + entry.getValue());
-		       System.out.println(entry.getValue().getClass().getName());
+		       //System.out.println(entry.getKey() + ":" + entry.getValue());
+		       //System.out.println(entry.getValue().getClass().getName());
 		       String fieldName=null;
 		       andStmt=andStmt+" "+entry.getValue().getBooleanOperator()+" ";
 		      if (entry.getValue() instanceof TextCriteria) {
 		    	  TextCriteria textCriteria=(TextCriteria)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(textCriteria.getQueryField());
-		    	  System.out.println(textCriteria.getQueryField());
+		    	  //System.out.println(textCriteria.getQueryField());
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeTextCriteria(fieldName, textCriteria.getQueryType(), textCriteria.getQueryValue(), parameters, i);
 		    	  i++;
@@ -205,7 +205,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		      if (entry.getValue() instanceof DateRangeCriteriaForQCSearch) {
 		    	  DateRangeCriteriaForQCSearch dateCriteria=(DateRangeCriteriaForQCSearch)entry.getValue();
 		    	  AdvancedCriteriaDTO dto=criteriaMap.get(dateCriteria.getQueryField());
-		    	  System.out.println(dateCriteria.getQueryField());
+		    	  //System.out.println(dateCriteria.getQueryField());
 		    	  fieldName=dto.getField();
 		    	  andStmt=andStmt+" "+computeDateCriteria(fieldName, dateCriteria.getFromDate(), dateCriteria.getToDate());
 		      }
@@ -222,7 +222,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		    	  andStmt=andStmt+" "+computeDateToCriteria(fieldName, dateCriteria.getToDate());
 		      }
 		      hqlMap.put(entry.getKey(),andStmt);
-		      System.out.println("fieldName-"+fieldName);
+		      //System.out.println("fieldName-"+fieldName);
 		      if (fieldName.startsWith("gi.")){
 		    	  joinImage=true;
 		      }
@@ -277,14 +277,14 @@ public class QcStatusDAOImpl extends AbstractDAO
 
 		String hql = selectStmt + fromStmt + whereStmt;
 	    
-		System.out.println("\n In QcStatusDAOImpl:findSeries(...) with hibernate hql query = " + hql + "\n");
+		//System.out.println("\n In QcStatusDAOImpl:findSeries(...) with hibernate hql query = " + hql + "\n");
 	
 
 		SessionFactory sf = getHibernateTemplate().getSessionFactory();
 		Session s = sf.getCurrentSession();
 		Query q = s.createQuery(hql);
 	    for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-	    	System.out.println("paramter-"+entry.getKey()+"-"+entry.getValue());
+	    	//System.out.println("paramter-"+entry.getKey()+"-"+entry.getValue());
 	    	if (entry.getValue() instanceof ArrayList) {
 	    		q.setParameterList(entry.getKey(), (Collection)entry.getValue());
 	    		
@@ -294,7 +294,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    }
 		q.setFirstResult(0);
 		q.setMaxResults(maxRows);
-		System.out.println("maxRows-"+maxRows);
+		//System.out.println("maxRows-"+maxRows);
 		List<Object[]> searchResults = q.list();
 
 		for (Object[] row : searchResults) {
@@ -449,7 +449,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 			                   String[] additionalQcFlagList, String[] newAdditionalQcFlagList, 
 			                   String userName, String comment) throws DataAccessException {
 		
-		System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - statusList size is: " + statusList.size());
+		//System.out.println("========== In QcStatusDAOImpl:updateQcStatus(...) - statusList size is: " + statusList.size());
 		
 		
 		
@@ -615,7 +615,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 	    		retStr += " and gs.releasedStatus='No' ";	
 	    }
 		
-		System.out.println("In QcStatusDAOImpl:computeAdditionalFlags(...) retStr is: " + retStr);
+		//System.out.println("In QcStatusDAOImpl:computeAdditionalFlags(...) retStr is: " + retStr);
 		
 		return retStr;
 	}
@@ -811,7 +811,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 		          String site,
 		          String url,
 		          Date dateReleased) {
-		    System.out.println("newStatus-"+newStatus);
+		    //System.out.println("newStatus-"+newStatus);
 		    Integer visibility=null;
 		    if (newStatus!=null) {
 		      visibility=VisibilityStatus.stringStatusFactory(newStatus).getNumberValue();
@@ -867,7 +867,7 @@ public class QcStatusDAOImpl extends AbstractDAO
 					qsh.setUri(url);
 				}
 				if (site!=null) {
-					System.out.println("Site Sent-"+site);
+					//System.out.println("Site Sent-"+site);
 					gs.setSite(site);;
 					qsh.setSite(site);
 				}	

@@ -100,7 +100,7 @@ import org.springframework.transaction.annotation.Transactional;
 		List<Workflow> result = getHibernateTemplate().findByCriteria(criteria);
 		for (Workflow workflow : result){
 			WorkflowDTO wDto=convertObjectToDTO(workflow);
-			System.out.println("Adding workflow DTO");
+			//System.out.println("Adding workflow DTO");
 			wDtos.add(wDto);
 		}
 		return wDtos;

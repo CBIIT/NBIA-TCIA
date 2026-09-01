@@ -50,7 +50,7 @@ public class SiteDAOImpl extends AbstractDAO
         
         Site site = (Site)SpringApplicationContext.getBean("site");
         List siteList =getHibernateTemplate().find(hql);	        
-		System.out.println(dto);
+		//System.out.println(dto);
 		if(siteList != null && siteList.size() == 1)	{
 			Site s = (Site)siteList.get(0);
 			dto.setCollectionName(s.getTrialDataProvenance().getProject());
@@ -66,7 +66,7 @@ public class SiteDAOImpl extends AbstractDAO
 			   dto.setLicenseDTO(licenseDTO);
 			}
 		}
-		System.out.println(dto);
+		//System.out.println(dto);
 		return dto;
 	}	
 

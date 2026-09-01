@@ -163,7 +163,7 @@ public class InstanceDAOImpl extends AbstractDAO
 	        }
 			where.append(")");
 		}
-		System.out.println("&&&&&&&&&&&& where clause for project and group=" + where.toString());
+		//System.out.println("&&&&&&&&&&&& where clause for project and group=" + where.toString());
 		return where;
 	}
 }

@@ -239,7 +239,7 @@ public class StudyDAOImpl extends AbstractDAO
         	Object[] row = iter.next();
 
             // Create the seriesDTO
-        	System.out.println("in series dto");
+        	//System.out.println("in series dto");
             SeriesDTO seriesDTO = new SeriesDTO();
             //modality should never be null... but currently possible
             seriesDTO.setModality(Util.nullSafeString(row[8]));
@@ -562,7 +562,7 @@ public class StudyDAOImpl extends AbstractDAO
         String[] seriesStrings=seriesString.split(",");
         List<String> seriesList=Arrays.asList(seriesStrings);
         String queryString=constructSeriesIUdList(seriesList);
-        System.out.println("queryString-"+queryString);
+        //System.out.println("queryString-"+queryString);
 		if (seriesIDs != null) {
 			where = where.append(" and gs.seriesInstanceUID in("+queryString+")");
 			paramList.add(queryString);
@@ -571,7 +571,7 @@ public class StudyDAOImpl extends AbstractDAO
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 		
-	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
+	//System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
 		
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
 			rs = getHibernateTemplate().find(hql + where.toString());
@@ -622,7 +622,7 @@ public class StudyDAOImpl extends AbstractDAO
 
 		where.append(" group by s.study_pk_id) subquery where authorized = 1 ");
 		
-	  System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
+	  //System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
 
     // Create the query and set parameters in one go
     Query query = this.getHibernateTemplate()
@@ -680,8 +680,8 @@ public class StudyDAOImpl extends AbstractDAO
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 		where.append(" group by s.id ");
 		
-	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
-	System.out.println("=====New");
+	//System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
+	//System.out.println("=====New");
 	long startTime = System.currentTimeMillis();
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
@@ -689,7 +689,7 @@ public class StudyDAOImpl extends AbstractDAO
 		} else
 			rs = getHibernateTemplate().find(hql + where.toString());
         long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Results returned from query in " + elapsedTime + " ms.");
+        //System.out.println("Results returned from query in " + elapsedTime + " ms.");
         return rs;
 	}
 
@@ -726,8 +726,8 @@ public class StudyDAOImpl extends AbstractDAO
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 		where.append(" group by s.id ");
 		
-	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudyBySeries() - downloadable visibility - hql is: " + hql + where.toString());
-	System.out.println("=====New");
+	//System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudyBySeries() - downloadable visibility - hql is: " + hql + where.toString());
+	//System.out.println("=====New");
 	long startTime = System.currentTimeMillis();
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
@@ -735,7 +735,7 @@ public class StudyDAOImpl extends AbstractDAO
 		} else
 			rs = getHibernateTemplate().find(hql + where.toString());
         long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Results returned from query in " + elapsedTime + " ms.");
+        //System.out.println("Results returned from query in " + elapsedTime + " ms.");
         return rs;
 	}
 
@@ -785,7 +785,7 @@ public class StudyDAOImpl extends AbstractDAO
 		}
 
 		where.append(" group by s.study_pk_id ) subquery where authorized = 1");		
-  	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
+  	//System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy_v4() - downloadable visibility - sql is: " + sql + where.toString());
 		
     // Create the query and set parameters in one go
     Query query = this.getHibernateTemplate()
@@ -841,7 +841,7 @@ public class StudyDAOImpl extends AbstractDAO
 
 		where.append(addAuthorizedProjAndSites(authorizedProjAndSites));
 		where.append(" group by s.id ");		
-	System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
+	//System.out.println("===== In nbia-dao, StudyDAOImpl:getPatientStudy() - downloadable visibility - hql is: " + hql + where.toString());
 		
 		if (i > 0) {
 			Object[] values = paramList.toArray(new Object[paramList.size()]);
@@ -872,7 +872,7 @@ public class StudyDAOImpl extends AbstractDAO
 	        }
 			where.append(")");
 		}
-		System.out.println("&&&&&&&&&&&&where clause for project and group=" + where.toString());
+		//System.out.println("&&&&&&&&&&&&where clause for project and group=" + where.toString());
 		return where;
 	}
 
@@ -909,7 +909,7 @@ public class StudyDAOImpl extends AbstractDAO
    	String theWhereStmt = "";
    	for (Iterator<String> i = theSeriesPkIds.iterator(); i.hasNext();) {
            String seriesPkId = i.next();
-           System.out.println("seriesPkId-"+seriesPkId);
+           //System.out.println("seriesPkId-"+seriesPkId);
            theWhereStmt += ("'" + seriesPkId + "'");
 
            if (i.hasNext()) {
@@ -978,7 +978,7 @@ public class StudyDAOImpl extends AbstractDAO
 			returnList.addAll(getResults(hql.toString()));
 		}
 		
-	System.out.println("===== In nbia-dao, StudyDAOImpl:findStudiesBySeriesIdDBSorted() - downloadable visibility - hql is: " + hql);
+	//System.out.println("===== In nbia-dao, StudyDAOImpl:findStudiesBySeriesIdDBSorted() - downloadable visibility - hql is: " + hql);
 		
 		long end = System.currentTimeMillis();
 		logger.debug("total time to excute all queries: " + (end - start)

@@ -127,7 +127,7 @@ public class PatientDAOImpl extends AbstractDAO
 				" where gs.visibility in ('1') and p.patient_id = :patientId and p.patient_pk_id = gs.patient_pk_id "+ where + ") subquery where authorized = 1";
     params.put("patientId", patientId);
 				
-    System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollectionAndId_v4() - downloadable visibility - sql is: " + sql);
+    //System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollectionAndId_v4() - downloadable visibility - sql is: " + sql);
 
     // Create the query and set parameters in one go
     Query query = this.getHibernateTemplate()
@@ -172,7 +172,7 @@ public class PatientDAOImpl extends AbstractDAO
 				getHibernateTemplate().find(hql, patientId.toUpperCase()) : 
 				getHibernateTemplate().find(hql, patientId.toUpperCase(), collection.toUpperCase()); 
 				
-      System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);
+      //System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);
 	    fillInHuman(rs);
         return rs;
 	}
@@ -203,7 +203,7 @@ public class PatientDAOImpl extends AbstractDAO
 		String sql = "select * from (select distinct p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
 				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where + ") subquery where authorized = 1";
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
 
     // Create the query and set parameters in one go
     Query query = this.getHibernateTemplate()
@@ -246,7 +246,7 @@ public class PatientDAOImpl extends AbstractDAO
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection.toUpperCase()); // protect against sql injection
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
 	    fillInHuman(rs);
         return rs;
 	}
@@ -273,7 +273,7 @@ public class PatientDAOImpl extends AbstractDAO
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, series.toUpperCase()); // protect against sql injection
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientBySeries() - downloadable visibility - hql is: " + hql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientBySeries() - downloadable visibility - hql is: " + hql);				
 	    fillInHuman(rs);
         return rs;
 	}
@@ -300,7 +300,7 @@ public class PatientDAOImpl extends AbstractDAO
 		String sql = "select * from (select distinct p.patient_id, p.patient_name,  p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description, " + addAuthorizedProjAndSitesCaseStatement(authorizedProjAndSites) + " from patient as p, general_series as gs " +
 				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where + ") subquery where authorized = 1";
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
 
     // Create the query and set parameters in one go
     Query query = this.getHibernateTemplate()
@@ -344,7 +344,7 @@ public class PatientDAOImpl extends AbstractDAO
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection.toUpperCase(), date1); // protect against sql injection
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
 	    fillInHuman(rs);
         return rs;
 	}
@@ -372,7 +372,7 @@ public class PatientDAOImpl extends AbstractDAO
       + ", p.patient_name,  p.patient_sex, p.ethnic_group, gs.project, p.qc_subject, p.species_code, p.species_description from patient as p, general_series as gs " +
 				" where gs.visibility in ('1') and p.patient_pk_id = gs.patient_pk_id "+ where + ") subquery where authorized = 1";
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection_v4() - downloadable visibility - sql is: " + sql);				
     // Create the query and set parameters in one go
     Query query = this.getHibernateTemplate()
         .getSessionFactory()
@@ -407,7 +407,7 @@ public class PatientDAOImpl extends AbstractDAO
 				getHibernateTemplate().find(hql):
 				getHibernateTemplate().find(hql, collection, modality); // protect against sql injection
 				
-	System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
+	//System.out.println("===== In nbia-dao, PatientDAOImpl:getPatientByCollection() - downloadable visibility - hql is: " + hql);				
 	    fillInHuman(rs);
         return rs;
 	}
@@ -464,7 +464,7 @@ public class PatientDAOImpl extends AbstractDAO
 			"max_submission_timestamp, license_name, license_url, description_uri, total_size, " +
 			"visibility, released_status, date_released,  third_party_analysis,  authorized";
 
-		System.out.println("Executing combined query: " + sql);
+		//System.out.println("Executing combined query: " + sql);
     
     // Create the query and set parameters in one go
     SQLQuery query = (SQLQuery) this.getHibernateTemplate()
@@ -598,7 +598,7 @@ public class PatientDAOImpl extends AbstractDAO
 			"max_submission_timestamp, license_name, license_url, description_uri, total_size, " +
 			"released_status, date_released,  third_party_analysis,  authorized";
 
-		System.out.println("Executing combined query: " + sql);
+		//System.out.println("Executing combined query: " + sql);
     
     // Create the query and set parameters in one go
     SQLQuery query = (SQLQuery) this.getHibernateTemplate()
@@ -707,8 +707,8 @@ public class PatientDAOImpl extends AbstractDAO
 			"join s.patient  p " +
 			whereCondition.toString();
 
-		System.out.println("Executing combined query: " + hql);
-    System.out.println(whereCondition.toString());
+		//System.out.println("Executing combined query: " + hql);
+    //System.out.println(whereCondition.toString());
 
 		List<Object[]> results = getHibernateTemplate().find(hql);
 		for (Object[] patient:results) {
@@ -741,7 +741,7 @@ public class PatientDAOImpl extends AbstractDAO
 	        }
 			where.append(")");
 		}
-		System.out.println("&&&&&&&&&&&&where clause for project and group=" + where.toString());
+		//System.out.println("&&&&&&&&&&&&where clause for project and group=" + where.toString());
 		return where;
 	}
 	private void fillInHuman(List<Object[]> patients) {

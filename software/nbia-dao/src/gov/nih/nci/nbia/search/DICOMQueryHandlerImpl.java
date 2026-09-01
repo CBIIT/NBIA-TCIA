@@ -299,8 +299,8 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
 	        /* Run the query */
 	        logger.debug("Search Issuing query : " + hql);
 
-          System.out.println("Simple search query: ");
-          System.out.println(hql);
+          //System.out.println("Simple search query: ");
+          //System.out.println(hql);
 
 	        long startTime = System.currentTimeMillis();
 	        List<String> results = getHibernateTemplate().find(hql);
@@ -635,7 +635,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         if (sc != null) {
            handler = theHandlerFac.createSpeciesCriteria();
            speciesWhereStmt += (AND + handler.handle(SPECIES_FIELD, sc));
-           System.out.println("speciesWhereStmt===="+speciesWhereStmt);
+           //System.out.println("speciesWhereStmt===="+speciesWhereStmt);
         }
         return speciesWhereStmt;
     }
@@ -664,7 +664,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
              patientSexWhereStmt += " AND (p.patientSex is null) ";
            }
 
-           System.out.println("patientSexWhereStmt===="+patientSexWhereStmt);
+           //System.out.println("patientSexWhereStmt===="+patientSexWhereStmt);
         }
         return patientSexWhereStmt;
     }
@@ -678,7 +678,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         if (tc != null) {
            handler = theHandlerFac.createThirdPartyAnalyisCriteria();
            thirdWhereStmt += (AND + handler.handle(THIRD_PARTY_FIELD, tc));
-           System.out.println("thirdWhereStmt===="+thirdWhereStmt);
+           //System.out.println("thirdWhereStmt===="+thirdWhereStmt);
         }
         return thirdWhereStmt;
     }
@@ -691,7 +691,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
         	String exclude= dc.getExcludeCommercial();
             if (exclude.equalsIgnoreCase("YES"))
             	licenseStmt += AND + EXCLUDE_COMMERCIAL;
-           System.out.println("licenseStmt===="+licenseStmt);
+           //System.out.println("licenseStmt===="+licenseStmt);
         }
         return licenseStmt;
     }
@@ -707,7 +707,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             	phantomWhereStmt += AND + PHANTOM_ONLY;
             else if (phantomOption.equals(pc.ExcludePhantom))
             	phantomWhereStmt += AND + PHANTOM_EXCLUDED;
-           System.out.println("phantomWhereStmt===="+phantomWhereStmt);
+           //System.out.println("phantomWhereStmt===="+phantomWhereStmt);
         }
         return phantomWhereStmt;
     }
@@ -771,7 +771,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
             if (toDay!=null) {
             	timepointStmt += AND + EVENT_OFFSET+" <= "+toDay+" ";
             }
-           System.out.println("timepointStmt===="+timepointStmt);
+           //System.out.println("timepointStmt===="+timepointStmt);
         }
         return timepointStmt;
     }
@@ -1503,7 +1503,7 @@ public class DICOMQueryHandlerImpl extends AbstractDAO
               }
               
               conditionBuilder.append(")");
-              System.out.println(conditionBuilder.toString());
+              //System.out.println(conditionBuilder.toString());
               return conditionBuilder.toString();
           }
         }
