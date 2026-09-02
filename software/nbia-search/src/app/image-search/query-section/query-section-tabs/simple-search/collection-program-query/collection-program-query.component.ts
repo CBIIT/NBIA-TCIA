@@ -475,15 +475,16 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
                 return [];
             })
         ).subscribe(data => {
-            if (data && data.length) {
-                this.completeTciaProgramListHold = data.map(
+            const results = data?.results;
+            if (results && results.length) {
+                this.completeTciaProgramListHold = results.map(
                     (item, index) => {
                         const originalString = this.setOriginalString(item?.related_collections);
                         const mappedItem = {
                         //seq: index,
                         programName: item.program_name,
                         relatedCollections: originalString,
-                        relatedCollectionsList: this.cleanCollectionsList(item?.related_collections ?? ''),
+                        relatedCollectionsList: this.cleanCollectionsList(item?.related_collections ?? []),
                         selected: false,
                         indeterminate: false,
                     };
@@ -524,11 +525,14 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
     }
 
     private setOriginalString(value: any): string {
-        if (typeof value !== 'string' || !value.trim()) {
+        if (!Array.isArray(value)) {
             return 'No collections available'; // or ''
         }
-        
-        return value.trim();
+        const names = value.filter(item => typeof item === 'string' && item.trim() !== '');
+        if (names.length === 0) {
+            return 'No collections available';
+        }
+        return names.join(', ');
     }
 
      /**
@@ -548,21 +552,19 @@ export class CollectionProgramQueryComponent implements OnInit, OnDestroy{
         this.tciaProgramListHold = this.tciaProgramList;
     }
 
-    private cleanCollectionsList(collections: string): any []{
-        if (typeof collections !== 'string') {
+    private cleanCollectionsList(collections: any): any []{
+        if (!Array.isArray(collections)) {
             console.warn('Unexpected format for related_collections:', collections);
             return [];
             }
-        // Split the string by commas and trim whitespace
-        const collectionArray = collections.replace(' and ', ', ') .split(',')
+        // related_collections is an array of collection name strings (or `false` entries when none exist)
+        return collections
+        .filter(item => typeof item === 'string' && item.trim() !== '')
         .map(item => ({
             collectionName: item.trim(),
             selected: false,
             count: 0,
         }));
-
-        // Filter out any empty strings
-        return collectionArray.filter(item => item.collectionName.trim() !== '');
     }
 
     /**
